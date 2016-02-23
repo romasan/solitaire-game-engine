@@ -1,0 +1,173 @@
+<html>
+	<head>
+		<link rel="stylesheet" href="./css/SolitaireEngine.css"/>
+		<script language="javascript" src="./js/jquery.min.js"></script>
+		<script language="javascript" src="./js/SolitaireEngine.js"></script>
+
+		<style>
+			html, body {
+				margin : 0px;
+			}
+
+			.awesome:hover {
+				background: #1E90FF;
+			}
+			.awesome {
+				font-family: monospace;
+				background: #2BA9E3;
+				display: inline-block;
+				padding: 5px 10px 6px;
+				color: #fff;
+				text-decoration: none;
+				font-weight: bold;
+				line-height: 1;
+				-moz-border-radius: 4px;
+				-webkit-border-radius: 4px;
+				-moz-box-shadow: 0 1px 3px #999;
+				-webkit-box-shadow: 0 1px 3px #999;
+				text-shadow: 0 -1px 1px #2BA9E3;
+				border-bottom: 1px solid #2BA9E3;
+				position: relative;
+				cursor: pointer;
+			}
+
+		</style>
+	</head>
+	<body>
+
+		<div id="map" style="background : url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAIAAAAC64paAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAAsSURBVDhPY+jFCxrwglHNGACqCgcYkZqhNA4ANQMHGNWMAaCqcICRp7m3FwCmtnaXHj1bYwAAAABJRU5ErkJggg==') center center; width : 100%; height : 100%;"></div>
+
+		<script type="text/javascript">
+			var gameConfig = {
+    
+			    "autoTips"     : "allToAll",// DEBUG
+			    
+			    "field"        : "#map",
+			    "theme"        : "alternative_theme",
+			    "debugLabels"  : true,
+			    
+			    "moveDistance" : 30,
+			    "showTipsDestination" : true,
+			    "showTipPriority"     : true,
+			    
+			    "winCheck" : {
+			        // "callback" : function() {},
+			        
+			        "rules"     : {// "string" OR function(){} OR {object}
+			            "lego" : [{
+			                "filters" : [
+			                    {"group" : ["twindeck", "group_b"]}
+			                    // "allInOne"
+			                ],
+			                "rules"   : ["allEmpty"]
+			            }]
+			        }
+			    },
+			    "homeGroups" : ["group_a"],
+			    "groups"       : {
+			    // twindeck------------------------------
+			        "twindeck"  : {
+			            "position"    : {
+			                "x" : 100,
+			                "y" : 100
+			            },
+			            "placement"   : {
+			                "x" : 20
+			            },
+			            "decks" : [
+			                {
+			                    "name"        : "td_from_deck",
+			                    "showSlot"    : true,
+			                    "paddingType" : "twindeck_typeA",
+			                    "flip"        : "all",
+			                    "takeRules"   : ["not"],
+			                    "putRules"    : ["not"],
+			                    "fill"        : ["c1", "c2", "c3", "c4", "c5", "c6", "c7"],
+			                    "actions"     : {
+			                        "twindeck" : {
+			                            "to"         : "td_to_deck"//,
+			                            // "count"      : 3,
+			                            // "iterations" : 3,
+			                        }
+			                    }
+			                },
+			                {
+			                    "name"        : "td_to_deck",
+			                    // "paddingType" : "horizontal",
+			                    "paddingX"    : 20,
+			                    "paddingY"    : 1,
+			                    "takeRules"   : ["onlytop"],
+			                    "putRules"    : ["not"]
+			                }
+			            ]
+			        },
+			        // --------------------------------------
+			        "group_a" : {
+			            "position"  : {
+			                "x" : 373,
+			                "y" : 100
+			            },
+			            "placement" : {
+			                "x" : 20
+			            },
+			            "showSlot"  : true,
+			            "putRules"  : [
+			                "ascendOne", 
+			                "oneRank", 
+			                "firstAce", 
+			                "ascendDeck", 
+			                "oneRankDeck"
+			            ],
+			            "fillRule"  : "deckLength",
+			            "decks"     : 4
+			        },
+			        "group_b" : {
+			            "position" : {
+			                "x" : 100,
+			                "y" : 300
+			            },
+			            "flip" : "notlast",
+			            "placement"   : {
+			                "x" : 20
+			            },
+			            "paddingType" : "vertical",
+			            "showSlot"    : true,
+			            "takeRules"   : "any",
+			            "putRules"    : ["descentOne", "striped"],
+			            "decks"       : 7
+			        }
+			    }
+			};
+
+			SolitaireEngine.main.event.listen('win', function(e) {
+
+			    console.log('win');
+
+			    SolitaireEngine.main.lock();
+			});
+
+			// c1|h9,d6|d10,s5,d3|s1,s4,hj,cq|dq,s7,c6,c4,sq|hk,d2,h1,s8,s6,d8|d1,h6,h10,h3,c10,d7,h4|dj,c8,ck,c3,h2,sj,c5,h5,dk,s2,d9,hq,c2,h7,s10,sk,c9,d5,cj,d4,h8,c7,s9,s3
+		    var randomDeckForKosynkaSolitaire = SolitaireEngine.main.deckGenerator({
+		        // type      : 'one_rank_only',
+		        // cardsRank : '1 2 3 4 5 6 7 8 9 10'.split(' '),
+		        shuffle   : true,
+		    });
+		    var a = [];
+		    for(var i = 0; i < 7; i += 1) {
+		        a[i] = [];
+		        for(var j = 0; j <= i; j += 1) {
+		            a[i].push(randomDeckForKosynkaSolitaire.pop());
+		        }
+		    }
+
+		    gameConfig.groups.group_b.fill = a;
+		    gameConfig.groups.twindeck.decks[0].fill = randomDeckForKosynkaSolitaire;
+		    
+		    // gameConfig.groups.group_b.fill = [["d3", "d2", "d1"], ["hk", "hq", "hj", "h10", "h9", "h8", "h7", "h6", "h5", "h4", "h3", "h2", "h1"]];
+		    // gameConfig.groups.twindeck.decks[0].fill = ["d4"];
+		    
+			SolitaireEngine.main.Field(gameConfig);
+		</script>
+		
+	</body>
+</html>
