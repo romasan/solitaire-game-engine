@@ -1,13 +1,27 @@
 'use strict';
 
-module.exports = function(main, share) {
-	
-	main.addDeck = function(a) {
+import flipTypes      from './flipTypes';
+import PutRules       from './readyPutRules';
+import readyTakeRules from './readyTakeRules';
+import fillRulesExt   from './fillRules';
+import paddingTypes   from './paddingTypes';
+import addDeckAction  from './addDeckAction';
 
+export default function(main, share, data) {
+
+	var readyPutRules = PutRules       (main, share);
+	var fillRules     = fillRulesExt   (main, share);
+	var deckActions   = addDeckAction (main, share);
+
+	// console.log('readyPutRules:', readyPutRules);
+
+	var addDeck = function(a) {
+
+		// console.log('DECK:', a, share, data);
+		
 		if(!a) return false;
 		var _id = 'deck_' + share.genId();
 		var _el_deck = new (function(a) {
-
 
 			if(!a) return false;
 			
@@ -18,6 +32,7 @@ module.exports = function(main, share) {
 			this.getId = function() {
 				return id;
 			}
+
 			var _parent_el   = main.Group(a.parent),
 				_parent_name = _parent_el ? _parent_el.name : 'xname',
 				_new_id      = _parent_el ? _parent_el.getDecks().length : id;
@@ -76,10 +91,11 @@ module.exports = function(main, share) {
 			
 			// flipTypes.js
 
+
 			var flipType = a.flip && typeof a.flip == 'string' ? a.flip : share.default_flip_type,
-				checkFlip = share.flipTypes[flipType];
+				checkFlip = flipTypes[flipType];
 			this.flipCheck = function() {
-				for(i in cards) {
+				for(var i in cards) {
 					checkFlip(cards[i], i|0, cards.length);
 				}
 			}
@@ -89,7 +105,6 @@ module.exports = function(main, share) {
 			var cards = [];// 1 or N, id : {name: '', rank: '', color: '', flip: null, id: '', paddingType: N} id - dom element id
 			
 			// создать карту
-
 			this.genCardByName = function(name) {
 				// console.log('genCardByName:', name);
 				var _name = share.validateCardName(name);// {color, rank}
@@ -123,24 +138,26 @@ module.exports = function(main, share) {
 				
 				return false;
 			}//.bind(this)
-
 			// ------------- PUT -------------
 
 			// можно ли положить карту/стопку
 			
 			// readyPutRules.js
-			
+			// console.log('PUT DEBUG:', a.putRules, share.default_putName, readyPutRules);	
 			var putRules = a.putRules 
 				? typeof a.putRules == 'function' 
 					? a.putRules
 					: typeof a.putRules == 'string' 
-						? share.readyPutRules[a.putRules] 
-							? share.readyPutRules[a.putRules]
-							: share.readyPutRules[share.default_putName]
-						: typeof a.putRules == 'object' 
+						? readyPutRules[a.putRules] 
+							? readyPutRules[a.putRules]
+							: readyPutRules[share.default_putName]
+						// : readyPutRules[share.default_putName]
+						// : typeof a.putRules === 'object' 
+						// : a.putRules.toString() == "[object Object]" 
+						: a.putRules.constructor == Array 
 							? a.putRules
-							: share.readyPutRules[share.default_putName]
-				: share.readyPutRules[share.default_putName];
+							: readyPutRules[share.default_putName]
+				: readyPutRules[share.default_putName];
 
 			// проверяем, можем ли положить стопку/карту
 			// возвращает true, если согласно правилам сюда можно положить карту
@@ -149,6 +166,7 @@ module.exports = function(main, share) {
 			// this.Put = function(putDeck) {
 			// 	share.Put({deck : this, putDeck : putDeck})
 			// }
+
 			this.Put = function(putDeck) {
 
 				var rulesCorrect = true;
@@ -172,10 +190,10 @@ module.exports = function(main, share) {
 					
 						var _ruleName = (parseInt(ruleName).toString() == ruleName && typeof putRules[ruleName] == 'string') ? putRules[ruleName] : ruleName;
 
-						if(share.readyPutRules[_ruleName]) {
+						if(readyPutRules[_ruleName]) {
 							// var _c = '#' + (((Math.random() * 15728639)|0) + 1048576).toString(16);
 							// console.log('%c  ', 'border-radius : 100%;font-weight: bold;background:' + _c, _deckId, cards, _ruleName);
-							rulesCorrect = rulesCorrect && share.readyPutRules[_ruleName]({
+							rulesCorrect = rulesCorrect && readyPutRules[_ruleName]({
 								from      : {
 									deckId : _deckId, 
 									deck   : _deck_departure
@@ -203,7 +221,6 @@ module.exports = function(main, share) {
 
 				return rulesCorrect;
 			}
-
 			// ------------- TAKE -------------
 			
 			// можно ли взять карту/стопку
@@ -212,13 +229,15 @@ module.exports = function(main, share) {
 				? typeof a.takeRules == 'function' 
 					? a.takeRules
 					: typeof a.takeRules == 'string' 
-						? share.readyTakeRules[a.takeRules] 
-							? share.readyTakeRules[a.takeRules]
-							: share.readyTakeRules[share.default_takeName]
-						: typeof a.takeRules == 'object' 
-							? a.takeRules
-							: share.readyTakeRules[share.default_takeName]
-				: share.readyTakeRules[share.default_takeName];
+						? readyTakeRules[a.takeRules] 
+							? readyTakeRules[a.takeRules]
+							: readyTakeRules[share.default_takeName]
+						: readyTakeRules[share.default_takeName]
+						// : typeof a.takeRules == 'object' 
+						// 	? a.takeRules
+						// 	: readyTakeRules[share.default_takeName]
+				: readyTakeRules[share.default_takeName];
+			// console.log(this.name, a.takeRules);
 
 			this.Take = function(cardId) {
 
@@ -240,7 +259,7 @@ module.exports = function(main, share) {
 
 				var takeDeck = []
 
-				for(i in cards) {
+				for(var i in cards) {
 
 					if(cards[i].id == cardId) {
 						cardIndex = i|0;
@@ -281,7 +300,7 @@ module.exports = function(main, share) {
 
 						if(share.readyTakeRules[ruleName]) {
 							rulesCorrect = rulesCorrect && share.readyTakeRules[ruleName](_attrs);
-						} else /*if(typeof takeRules[ruleIndex] == 'function')*/ {
+						} else {// if(typeof takeRules[ruleIndex] == 'function') {
 							// rulesCorrect = rulesCorrect && takeRules[ruleIndex](_attrs);
 							console.log('Incorrect take rule:', ruleName);
 							rulesCorrect = false;
@@ -295,16 +314,15 @@ module.exports = function(main, share) {
 				rulesCorrect = rulesCorrect && (cardIndex >= 0);
 				return rulesCorrect && takeDeck;
 			}
-			
 			// ------------- FILL -------------
 			
 			this.fill = false;
 			var fillRule = (
 				a.fillRule 
 			 && typeof a.fillRule == "string" 
-			 && typeof share.fillRules[a.fillRule] == "function"
-			) ? share.fillRules[a.fillRule]
-			  : share.fillRules['not'];
+			 && typeof fillRules[a.fillRule] == "function"
+			) ? fillRules[a.fillRule]
+			  : fillRules['not'];
 			// console.log('Fill rule:', this.name, fillRule);
 			main.event.listen('moveDragDeck', function(data) {
 				if(data.destination.name != this.deck.name) return;
@@ -326,14 +344,15 @@ module.exports = function(main, share) {
 			// paddingTypes.js
 
 			var padding = a.paddingType 
-				? (typeof a.paddingType == 'string' && share.paddingTypes[a.paddingType]) 
-					? share.paddingTypes[a.paddingType] 
+				? (typeof a.paddingType == 'string' && paddingTypes[a.paddingType]) 
+					? paddingTypes[a.paddingType] 
 					: typeof a.paddingType == 'function' 
 						? a.paddingType 
-						: share.paddingTypes['none']
+						: paddingTypes['none']
 				: a.paddingX || a.paddingY 
-					? share.paddingTypes['special'] 
-					: share.paddingTypes[share.default_paddingType];
+					? paddingTypes['special'] 
+					: paddingTypes[share.default_paddingType];
+			
 			
 			this.padding = function(index) {
 				var _padding = padding(params, cards[index], index, cards.length, cards);
@@ -373,7 +392,6 @@ module.exports = function(main, share) {
 				});
 				
 			}
-
 			this.getCards = function() {
 				return cards;
 			}
@@ -392,6 +410,7 @@ module.exports = function(main, share) {
 				return this.getCardsByName(cardName)[0];
 			}
 			
+
 			this.Pop = function(count, clearParent) {
 				
 				if(cards.length < count) return false;
@@ -423,7 +442,7 @@ module.exports = function(main, share) {
 					cards.push(deck[i]);
 				}
 			}
-
+	
 			this.clear = function() {
 				for(var i in cards) {
 					main.event.dispatch('removeEl', cards[i]);
@@ -433,11 +452,12 @@ module.exports = function(main, share) {
 				main.event.dispatch('removeEl', this);
 			}
 
+
 			// Fill deck
 			// заполняет карты в порядке добавления
 			this.Fill = function(cardNames) {
 				
-				for(i in cardNames) {
+				for(var i in cardNames) {
 					this.genCardByName(cardNames[i]);
 				}
 			}
@@ -455,7 +475,7 @@ module.exports = function(main, share) {
 
 		share.elements[_id] = _el_deck;
 		return _el_deck;
-	}.bind(main);
+	};//.bind(main);
 
 
 
@@ -505,10 +525,11 @@ module.exports = function(main, share) {
 		return null;
 	}.bind(main);
 
+	
 	share.deckCardNames = function(a) {
 		
 		var _deck = [];
-		for(i in a) {
+		for(var i in a) {
 			if(a[i].card && a[i].card.name) {
 				_deck.push(a[i].card.name);
 			} else if(a[i].name) {
@@ -517,5 +538,7 @@ module.exports = function(main, share) {
 		}
 		return _deck;
 	}
+
+	return addDeck(data);
 
 };

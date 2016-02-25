@@ -1,6 +1,6 @@
 'use strict';
 
-module.exports = function(main, share) {
+export default function(main, share) {
 
 	main.event.listen('initField', function(e) {
 
@@ -163,12 +163,12 @@ module.exports = function(main, share) {
 	main.event.listen('hideTips', function(e) {
 		// console.log('hideTips', e);
 		if(e && e.types) {
-			for(i in e.types) {
+			for(var i in e.types) {
 				var typeName = e.types[i];
 				$('.' + typeName).removeClass(typeName);
 			}
 		} else {
-			for(i in share.tipTypes) {
+			for(var i in share.tipTypes) {
 				var typeName = share.tipTypes[i];
 				$('.' + typeName).removeClass(typeName);
 			}
@@ -200,7 +200,7 @@ module.exports = function(main, share) {
 
 		$(e.deck.domElement).css(_params);
 
-		for(i in e.cards) {
+		for(var i in e.cards) {
 			var _card_position = e.deck.padding(i);
 			var _params = {
 				left      : share.zoom * _card_position.x + 'px', 
@@ -242,7 +242,7 @@ module.exports = function(main, share) {
 	main.event.listen('moveDragDeck', function(e) {
 		// console.log('moveDragDeck', e);
 		share.curLock();
-		for(i in e.moveDeck) {
+		for(var i in e.moveDeck) {
 			var _position = e.destination.padding(e.destination.getCards().length - 1 + (i|0));
 			             // e.destination.padding(e.moveDeck[i].index);
 			var _params = {
@@ -280,7 +280,7 @@ module.exports = function(main, share) {
 		//  Move card home
 		// console.log('Move card home', e);
 		share.curLock();
-	    for(i in e.moveDeck) {
+	    for(var i in e.moveDeck) {
 	    	var _position = e.departure.padding(e.moveDeck[i].index);
 	    	var _params = {
 	    		left : _position.x + 'px',
@@ -309,7 +309,7 @@ module.exports = function(main, share) {
 		if(!e.deck.fill) return;
 		
 		var _deck = e.deck.getCards();
-		for(i in _deck) {
+		for(var i in _deck) {
 			$(_deck[i].domElement).addClass('fill');
 		}
 	});

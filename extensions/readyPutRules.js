@@ -1,8 +1,8 @@
 'use strict';
 
-module.exports = function(main, share) {
+export default function(main, share) {
 	
-	var rpr = share.readyPutRules = {
+	var rpr = {
 				
 		// Internal use
 		_downupcards : function(a) {
@@ -83,7 +83,7 @@ module.exports = function(main, share) {
 			if(a.putDeck.length == 1) return true;
 			
 			var ruleCorrect = true;
-			for(i in a.putDeck) {
+			for(var i in a.putDeck) {
 				if(i > 0) {
 					var down = share.cardsRankS.indexOf(
 							share.validateCardName(a.putDeck[i - 1].card.name).rank
@@ -103,7 +103,7 @@ module.exports = function(main, share) {
 			if(a.putDeck.length == 1) return true;
 			
 			var ruleCorrect = true;
-			for(i in a.putDeck) {
+			for(var i in a.putDeck) {
 				if(i > 0) {
 					var down = share.cardsRankS.indexOf(
 							share.validateCardName(a.putDeck[i - 1].card.name).rank
@@ -123,7 +123,7 @@ module.exports = function(main, share) {
 			if(a.putDeck.length == 1) return true;
 			
 			var ruleCorrect = true;
-			for(i in a.putDeck) {
+			for(var i in a.putDeck) {
 				if(i > 0) {
 					var down = share.validateCardName(a.putDeck[i - 1].card.name).suit,
 						up   = share.validateCardName(a.putDeck[i].card.name).suit
@@ -177,8 +177,10 @@ module.exports = function(main, share) {
 
 			var da = rpr._downupranknum(a);
 			return da && Math.abs(da.down - da.up) == 1;
-		},
+		}
 
-	}
+	};
+
+	return rpr;
 
 };

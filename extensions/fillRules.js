@@ -1,8 +1,8 @@
 'use strict';
 
-module.exports = function(main, share) {
+export default function(main, share) {
 
-	share.fillRules = {
+	return {
 		deckLength : function(a) {
 			return share.cardsRank.length <= a.deck.getCards().length;
 		},

@@ -1,6 +1,6 @@
 'use strict';
 
-module.exports = function(main, share) {
+export default function(main, share) {
 	// пусть будет
 	Math.sqr = function(i) {return i * i;}
 
@@ -142,7 +142,7 @@ module.exports = function(main, share) {
 		var _distance = share.startCursor ? Math.sqrt(Math.sqr(x - share.startCursor.x) + Math.sqr(y - share.startCursor.y)) : 0;
 
     	var _deck = main.getElementById(share.dragDeck[0].card.parent);
-	    for(i in share.dragDeck) {
+	    for(var i in share.dragDeck) {
 	    	var _position = _deck.padding(share.dragDeck[i].index);
 	    	var _params = {
 	    		left      : (_position.x + (x - share.startCursor.x)) + 'px',

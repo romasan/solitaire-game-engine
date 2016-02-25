@@ -1,6 +1,6 @@
 'use strict';
 
-module.exports = function(main, share) {
+export default function(main, share) {
 
 	var deckActions = {
 		
@@ -48,7 +48,7 @@ module.exports = function(main, share) {
 			share.oneStepWay.twindeck.toHide = share.deckCardNames(_deck);
 			
 			_deck.reverse();
-			for(i in _deck) {
+			for(var i in _deck) {
 				e.deck_from.twindeck.unshift(_deck[i]);
 			}
 			
@@ -105,7 +105,7 @@ module.exports = function(main, share) {
 
 					// deck_from.twindeck cards [toHide]  -> deck_to
 					var _twindeck = [];
-					for(i in a.twindeck.toHide) {
+					for(var i in a.twindeck.toHide) {
 						if(_deck_from.twindeck.length) {
 							_twindeck.push(
 								_deck_from.twindeck.pop()
@@ -173,5 +173,7 @@ module.exports = function(main, share) {
 		if(e.name && e.callback) deckActions[e.name] = e.callback;
 
 	});
+
+	return deckActions;
 
 };

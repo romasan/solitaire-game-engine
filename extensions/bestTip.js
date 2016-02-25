@@ -1,6 +1,6 @@
 'use strict';
 
-module.exports = function(main, share) {
+export default function(main, share) {
 	
 	share.bestTip = function(moveDeck, cursorMove) {
 

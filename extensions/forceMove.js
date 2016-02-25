@@ -1,6 +1,6 @@
 'use strict';
 
-module.exports = function(main, share) {
+export default function(main, share) {
 	
 	share.forceMove = function(a) {// {'from', 'to', deck[]}
 
@@ -11,8 +11,16 @@ module.exports = function(main, share) {
 			// if(share.debugLog == true) {console.log('Arguments:', a, index);}
 		}
 		
-		if(!a.from || !a.to || !a.deck) {_warn(1);return;}
-		if( typeof a.from != 'string' || typeof a.to != 'string') {_warn(2);return;}
+		if(!a.from || !a.to || !a.deck) {
+			_warn(1);
+			return;
+		}
+
+		if( typeof a.from != 'string' || typeof a.to != 'string') {
+			_warn(2);
+			return;
+		}
+
 		if(!a.deck.length) return;
 		
 		var _from = main.Deck(a.from);
@@ -23,7 +31,7 @@ module.exports = function(main, share) {
 		var _check = true;
 		var _from_deck = _from.getCards();
 		
-		for(i in _from_deck) {
+		for(var i in _from_deck) {
 			
 			if(i >= _from_deck.length - a.deck.length) {
 				var _id = i - (_from_deck.length|0) + (a.deck.length|0);
@@ -43,12 +51,13 @@ module.exports = function(main, share) {
 
 		_from.Redraw();
 		_to  .Redraw();
+		
 		//for(var i = deck.length;i;i -= 1) {
 		//	_to.push(_to.getCards)
 		//}
 
 		share.checkTips();
 
-	}/*.bind(main)*/;
+	};//.bind(main);
 
 };

@@ -1,6 +1,6 @@
 'use strict';
 
-module.exports = function(main, share) {
+export default function(main, share) {
 
 	share.elements = {};
 
@@ -61,9 +61,40 @@ module.exports = function(main, share) {
 	share.zoom = 1.0;
 	
 	share.card = {
-	    width       : 71,
-	    height      : 96
+	    width   : 71,
+	    height  : 96,
+
+	    suits   : ['h', 'd', 'c', 's'],
+	    colors  : {
+	    	red   : ['h', 'd'],
+			black : ['c', 's']
+	    },
+	    ranks   : ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', 'j', 'q', 'k'],
+	    indexes : [ 1,   2,   3,   4,   5,   6,   7,   8,   9,   10,   11,  12,  13]
 	}
+
+
+	main.event = new function() {
+	
+		var events = {};
+
+		this.listen = function(name, callback) {
+			if(typeof name != 'string' || typeof callback != 'function') return;
+			if(events[name]) {
+				events[name].push(callback);
+			} else {
+				events[name] = [callback];
+			}
+		};
+
+		this.dispatch = function(name, data) {
+			if(events[name]) {
+				for(var i in events[name]) {
+					events[name][i](data);
+				}
+			}
+		};
+	};
 
 	share.saveStepCallback = function() {};
 	share.winCheckCallback = function() {};
@@ -82,16 +113,18 @@ module.exports = function(main, share) {
 
 	share.lock = false;
 
-	main.lock = function() {
+	var _lock = main.lock = function() {
 		if(share.debugLog) console.log('LOCK');
 		share.lock = true;
 	}.bind(main);
+	main.event.listen('lock', _lock);
 
-	main.unlock = function() {
+	var _unlock = main.unlock = function() {
 		if(share.debugLog) console.log('UNLOCK');
 		// throw new Error('asda');
 		share.lock = false;
 	}.bind(main);
+	main.event.listen('unlock', _unlock);
 
 	share.curLockState = false;
 	share.curLock = function() {
@@ -107,7 +140,7 @@ module.exports = function(main, share) {
 
 	main.getElementsByName = function(name, type) {
 		var s = [];
-		for(i in share.elements) {
+		for(var i in share.elements) {
 			if(share.elements[i].name && typeof share.elements[i].name == 'string' && share.elements[i].name == name) {
 				if(type && typeof share.elements[i].type == 'string') {
 					if(type && share.elements[i].type == type) {

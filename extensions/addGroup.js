@@ -1,9 +1,17 @@
 'use strict';
 
-module.exports = function(main, share) {
-	
-	main.addGroup = function(a) {
+import Deck from './addDeck';
 
+export default function(main, share, data) {
+	
+	var addDeck = function(data) {
+		return new Deck(main, share, data);
+	};
+
+	var addGroup = function(a) {
+
+		// console.log('GROUP:', main, share, a);
+		
 		if(!a) return false;
 		var _id = 'group_' + share.genId();
 		var _el_group = new (function(a) {
@@ -98,8 +106,10 @@ module.exports = function(main, share) {
 
 				if(placement) {
 					// console.log('placement#2', placement);
-					if(placement.x) a.position.x = /*x + */(placement.x + share.card.width)  * (_index);
-					if(placement.y) a.position.y = /*y + */(placement.y + share.card.height) * (_index);
+					if(placement.x) a.position.x = (placement.x + share.card.width)  * (_index);
+					// if(placement.x) a.position.x = x + (placement.x + share.card.width)  * (_index);
+					if(placement.y) a.position.y = (placement.y + share.card.height) * (_index);
+					// if(placement.y) a.position.y = y + (placement.y + share.card.height) * (_index);
 				}
 
 				// прокидываем некоторые атрибуты всем колодам группы (у атрибутов заданных колоде приоритет выше)
@@ -122,7 +132,7 @@ module.exports = function(main, share) {
 				if(flipPaddingX && typeof a.flipPaddingX == "undefined") a.flipPaddingX = flipPaddingX;
 				if(flipPaddingY && typeof a.flipPaddingY == "undefined") a.flipPaddingY = flipPaddingY;
 				
-				var _el = main.addDeck(a);
+				var _el = addDeck(a);
 				
 				// _el.parent(_id);// write
 				deckIndex[_index] = _el.getId();
@@ -152,7 +162,7 @@ module.exports = function(main, share) {
 
 			this.getDecksByName = function(name) {
 				var _decks = {};
-				for(d in decks) {
+				for(var d in decks) {
 					if(decks[d].name == name) {
 						_decks[d] = decks[d];
 					}
@@ -171,18 +181,18 @@ module.exports = function(main, share) {
 
 				// создаём карты из списка cardNames в порядке очерёдности колод (по одной карте)
 
-				for(i in decks) {
+				for(var i in decks) {
 					_decksLength += 1;
 					deckIndex.push(null);
 				}
 				
-				for(i in decks) {
+				for(var i in decks) {
 					if(decks[i].groupIndex && decks[i].groupIndex <= _decksLength) {
 						deckIndex[decks[i].groupIndex - 1] = true;
 					}
 				}	
 				
-				for(i in decks) {
+				for(var i in decks) {
 					if(!decks[i].groupIndex) {
 						var _index = 0;
 						for(;deckIndex[_index] != null;_index += 1) {}
@@ -190,32 +200,32 @@ module.exports = function(main, share) {
 					}
 				}
 
-				for(i in decks) {
+				for(var i in decks) {
 					if(decks[i].groupIndex && decks[i].groupIndex <= _decksLength) {
 						deckIndex[decks[i].groupIndex - 1] = decks[i].getId();
 					}
 				}
 
 				var _decksWithBigIndex = {}
-				for(i in decks) {
+				for(var i in decks) {
 					if(decks[i].groupIndex && decks[i].groupIndex > _decksLength) {
 						_decksWithBigIndex[decks[i].groupIndex - 1] = decks[i].getId();
 					}
 				}
 
-				for(i in _decksWithBigIndex) {
+				for(var i in _decksWithBigIndex) {
 					var _index = 0;
 					for(;deckIndex[_index] != null;_index += 1) {}
 					deckIndex[_index] = decks[_decksWithBigIndex[i]].getId();
 				}
 
 				var _checkDeck = true;
-				for(i in cardNames) {
+				for(var i in cardNames) {
 					_checkDeck = _checkDeck && typeof cardNames[i] == 'string';//share.validateCardName(cardNames[i])
 				}
 
 				if(_checkDeck) {
-					for(i in cardNames) {
+					for(var i in cardNames) {
 						
 						// циклично добавляет карты в колоды в группе (в порядке добавления)
 	
@@ -223,7 +233,7 @@ module.exports = function(main, share) {
 						decks[_index].genCardByName(cardNames[i]);
 					}
 				} else {
-				 	for(i in cardNames) {
+				 	for(var i in cardNames) {
 				 		if(i < deckIndex.length) {
 				 			
 				 			decks[deckIndex[i]].Fill(cardNames[i]);
@@ -256,9 +266,9 @@ module.exports = function(main, share) {
 
 		if(a && a.fill) {
 			var _checkFillDeck = a.fill.length;
-			/*for(i in a.fill) {
-				_checkFillDeck = _checkFillDeck && typeof a.fill[i] == 'string' && share.validateCardName(a.fill[i]);
-			}*/
+			// for(i in a.fill) {
+			// 	_checkFillDeck = _checkFillDeck && typeof a.fill[i] == 'string' && share.validateCardName(a.fill[i]);
+			// }
 			if(_checkFillDeck) _el_group.Fill(a.fill);
 		}
 
@@ -281,13 +291,13 @@ module.exports = function(main, share) {
 				if(!_a.decks[i].parentPosition) {
 					_a.decks[i].parentPosition = {};
 				}
-				/*if( !_a.decks[i].position.x && a.position && a.position.x && typeof a.position.x == 'number') {
-					_a.decks[i].position.x = _a.position.x;
-					console.log('set position x', _a.decks[i].position)
-				}
-				if( !_a.decks[i].position.y && a.position && a.position.y && typeof a.position.y == 'number') {
-					_a.decks[i].position.y = _a.position.y;
-				}*/
+				// if( !_a.decks[i].position.x && a.position && a.position.x && typeof a.position.x == 'number') {
+				// 	_a.decks[i].position.x = _a.position.x;
+				// 	console.log('set position x', _a.decks[i].position)
+				// }
+				// if( !_a.decks[i].position.y && a.position && a.position.y && typeof a.position.y == 'number') {
+				// 	_a.decks[i].position.y = _a.position.y;
+				// }
 				if( !_a.decks[i].parentPosition.x && a.position && a.position.x && typeof a.position.x == 'number') {
 					_a.decks[i].parentPosition.x = _a.position.x;
 				}
@@ -299,8 +309,10 @@ module.exports = function(main, share) {
 					var _card = main.options.card;
 					// console.log('placement#3', _a.placement);
 
-					if(_a.placement.x) _a.decks[i].position.x = /*x + */(_a.placement.x + _card.width)  * i/* + a.parentPosition.x*/;
-					if(_a.placement.y) _a.decks[i].position.y = /*y + */(_a.placement.y + _card.height) * i/* + a.parentPosition.y*/;
+					if(_a.placement.x) _a.decks[i].position.x = (_a.placement.x + _card.width)  * i;
+					// if(_a.placement.x) _a.decks[i].position.x = x + (_a.placement.x + _card.width)  * i + a.parentPosition.x;
+					if(_a.placement.y) _a.decks[i].position.y = (_a.placement.y + _card.height) * i;
+					// if(_a.placement.y) _a.decks[i].position.y = y + (_a.placement.y + _card.height) * i + a.parentPosition.y;
 				}
 				if(!_a.decks[i].rotate       && _a.rotate        && typeof _a.rotate       == 'number') _a.decks[i].rotate       = _a.rotate;
 				if(!_a.decks[i].paddingX     && _a.paddingX      && typeof _a.paddingX     == 'number') _a.decks[i].paddingX     = _a.paddingX;
@@ -310,21 +322,24 @@ module.exports = function(main, share) {
 				_decks[i].Redraw(_a.decks[i]);
 				// if(_decks[i].name)
 			}
-			/*for(i in _a.decks) {
-				console.log('redraw:', _a.decks[i])
-				var _deck = main.Deck(_a.decks[i].name, _el_group.name);
-				if(_deck) {
-					_deck.Redraw(_a.decks[i]);
-				}
-			}*/
+			// for(i in _a.decks) {
+			// 	console.log('redraw:', _a.decks[i])
+			// 	var _deck = main.Deck(_a.decks[i].name, _el_group.name);
+			// 	if(_deck) {
+			// 		_deck.Redraw(_a.decks[i]);
+			// 	}
+			// }
 
 		};
 
 		return _el_group;
-	}.bind(main);
+	};//.bind(main);
 
 	main.Group = function(name) {
-		return this.getElementsByName(name, 'group')[0];
-	}.bind(main);
+		return main.getElementsByName(name, 'group')[0];
+	};
+	
+	return addGroup(data);
 
 };
+

@@ -1,6 +1,6 @@
 'use strict';
 
-module.exports = function(main, share) {	
+export default function(main, share) {
 	
 	main.Move = function(moveDeck, to, cursorMove) {
 		
@@ -99,6 +99,7 @@ module.exports = function(main, share) {
     		if(cursorMove.distance >= share.moveDistance) {
 
 	    		var Tip = share.bestTip(moveDeck, cursorMove);
+	    		
 	    		if(Tip) {
 	    			this.Move(moveDeck, Tip.to.deck.domElement, cursorMove);
 	    		} else {

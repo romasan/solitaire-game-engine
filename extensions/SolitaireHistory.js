@@ -1,6 +1,10 @@
 'use strict';
 
-module.exports = function(main, share) {
+import forceMove from './forceMove';
+
+export default function(main, share) {
+
+	forceMove(main, share);
 
 	share.undoMethods = {};
 	share.redoMethods = {};
@@ -11,7 +15,7 @@ module.exports = function(main, share) {
 
 		if(!a) return;
 		
-		for(i in share.undoMethods) {
+		for(var i in share.undoMethods) {
 			// console.log(i);
 			share.undoMethods[i](a);
 		}
@@ -26,7 +30,7 @@ module.exports = function(main, share) {
 			 && typeof a.unflip.card.name  == "string"
 			 && typeof a.unflip.card.index != "undefined"
 			) {
-				var _deck = main.Deck(a.unflip.deck);
+				var _deck = main.Deck(a.unflip.deck),
 					_cards = _deck ? _deck.getCards() : [];
 				if(_cards[a.unflip.card.index].name == a.unflip.card.name) {
 					_cards[a.unflip.card.index].flip = true;
@@ -61,7 +65,7 @@ module.exports = function(main, share) {
 
 		if(!a) return;
 		
-		for(i in share.redoMethods) {
+		for(var i in share.redoMethods) {
 			share.redoMethods[i](a);
 		}
 
@@ -75,7 +79,7 @@ module.exports = function(main, share) {
 			 && typeof a.unflip.card.name  == "string"
 			 && typeof a.unflip.card.index != "undefined"
 			) {
-				var _deck = main.Deck(a.unflip.deck);
+				var _deck = main.Deck(a.unflip.deck),
 					_cards = _deck ? _deck.getCards() : [];
 				if(_cards[a.unflip.card.index].name == a.unflip.card.name) {
 					_cards[a.unflip.card.index].flip = false;

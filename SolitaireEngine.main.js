@@ -7,59 +7,57 @@
  * Webpack version 24 Feb. 2016
  */
 
-var SolitaireExtensions = {};
+var SolitaireExtensions = {};                                    // ON | IN
 
-SolitaireExtensions.SolitaireCommon  = require('./extensions/SolitaireCommon');
-SolitaireExtensions.debug            = require('./extensions/debug');
-SolitaireExtensions.Field            = require('./extensions/Field');
-SolitaireExtensions.addGroup         = require('./extensions/addGroup');
-SolitaireExtensions.addDeck          = require('./extensions/addDeck');
-SolitaireExtensions.DomManager       = require('./extensions/DomManager');
-SolitaireExtensions.deckGenerator    = require('./extensions/deckGenerator');
-SolitaireExtensions.SolitaireHistory = require('./extensions/SolitaireHistory');
-SolitaireExtensions.tipsRules        = require('./extensions/tipsRules');
-SolitaireExtensions.Tips             = require('./extensions/Tips');
-SolitaireExtensions.bestTip          = require('./extensions/bestTip');
-SolitaireExtensions.readyTakeRules   = require('./extensions/readyTakeRules');
-SolitaireExtensions.readyPutRules    = require('./extensions/readyPutRules');
-SolitaireExtensions.fillRules        = require('./extensions/fillRules');
-SolitaireExtensions.Move             = require('./extensions/Move');
-SolitaireExtensions.forceMove        = require('./extensions/forceMove');
-SolitaireExtensions.winCheck         = require('./extensions/winCheck');
-SolitaireExtensions.addDeckAction    = require('./extensions/addDeckAction');
-SolitaireExtensions.flipTypes        = require('./extensions/flipTypes');
-SolitaireExtensions.paddingTypes     = require('./extensions/paddingTypes');
-SolitaireExtensions.DragNDrop        = require('./extensions/DragNDrop');
+import SolitaireCommon  from './extensions/SolitaireCommon';     // +
+import Field            from './extensions/Field';               // +
+//             import * from './extensions/addGroup';            // +    Field
+//             import * from './extensions/addDeck';             // +    Field
+import DomManager       from './extensions/DomManager';          // +
+//             import * from './extensions/deckGenerator';       // +    SolitaireDebug
+import SolitaireHistory from './extensions/SolitaireHistory';    // +
+//             import * from './extensions/tipsRules';           // +    Tips
+import Tips             from './extensions/Tips';                // +
+//             import * from './extensions/bestTip';             // +    Tips
+//             import * from './extensions/readyTakeRules';      // +    Field.addDeck
+//             import * from './extensions/readyPutRules';       // +    Field.addDeck
+//             import * from './extensions/fillRules';           // +    Field.addDeck
+import Move             from './extensions/Move';                // +
+//             import * from './extensions/forceMove';           // +    SolitaireHistory
+import winCheck         from './extensions/winCheck';            // +
+//             import * from './extensions/addDeckAction';       // +    Field.addDeck
+//             import * from './extensions/flipTypes';           // +    Field.addDeck
+//             import * from './extensions/paddingTypes';        // +    Field.addDeck
+import DragNDrop        from './extensions/DragNDrop';           // +
+import SolitaireDebug   from './extensions/SolitaireDebug';      // + 
 
 // --------------------- INDEX ---------------------
-var share = {},
-	main = new function() {
-	
-	this.event = new function() {
+var share = {};
 
-		var events = {};
-
-		this.listen = function(name, callback) {
-			if(typeof name != 'string' || typeof callback != 'function') return;
-			if(events[name]) {
-				events[name].push(callback);
-			} else {
-				events[name] = [callback];
-			}
-		};
-
-		this.dispatch = function(name, data) {
-			if(events[name]) {
-				for(i in events[name]) {
-					events[name][i](data);
-				}
-			}
-		};
-	}
+var main = new function() {
+	// this.event = null;
 };
 
-for(var i in SolitaireExtensions) {
+/*for(var i in SolitaireExtensions) {
 	SolitaireExtensions[i](main, share);
-};
-// -------------------------------------------------
+};*/
+
+SolitaireCommon  (main, share);
+DomManager       (main, share);
+DragNDrop        (main, share);
+Tips             (main, share);
+Move             (main, share);
+winCheck         (main, share);
+SolitaireHistory (main, share);
+
+if(typeof SolitaireDebug != "undefined") {
+	SolitaireDebug   (main, share);
+}
+
 exports.main = main;
+exports.event = main.event;
+
+exports.init = function(gameConfig) {
+	
+	Field(main, share, gameConfig);
+};

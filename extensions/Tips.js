@@ -1,6 +1,11 @@
 'use strict';
 
-module.exports = function(main, share) {
+import tipsRules from './tipsRules';
+import bestTip   from './bestTip';
+
+export default function(main, share) {
+
+	bestTip(main, share);
 
 	share.tipTypes = ['tip', 'tipTo', 'tipPriority'];
 	
@@ -33,11 +38,13 @@ module.exports = function(main, share) {
 		// console.log('share.checkTips')
 
 		var _decks = this.getDecks({visible : true});
-		/*for(i in _all_decks) {
-			if(_all_decks[i].visible) {
-				_decks.push(_all_decks[i])
-			}
-		}*/
+		
+		// for(i in _all_decks) {
+		// 	if(_all_decks[i].visible) {
+		// 		_decks.push(_all_decks[i])
+		// 	}
+		// }
+
 		// var tips = share.autoTips()
 		if(typeof share.autoTips == 'function') {
 			share.Tips = share.autoTips({
@@ -52,9 +59,9 @@ module.exports = function(main, share) {
 						})
 					);
 				} else {
-					if(share.tipsRules[i]) {
+					if(tipsRules[i]) {
 						share.Tips = share.Tips.concat(
-							share.tipsRules[i]({
+							tipsRules[i]({
 								decks : _decks,
 								rules : share.autoTips[i]
 							})
@@ -67,13 +74,14 @@ module.exports = function(main, share) {
 
 			// console.log('share.showTips', share.Tips, share.homeGroups);
 
-			for(i in share.Tips) {
+			for(var i in share.Tips) {
 
 				// TODO инициализировать "hideTipsInDom" в Field.js 
 				
 				// console.log('PARENT IS:', share.Tips[i].from.deck.parent());
 				
-				if(/*share.hideTipsInDom && */ share.homeGroups && share.homeGroups.indexOf(share.Tips[i].from.deck.parent()) >= 0) {
+				// if(share.hideTipsInDom &&  share.homeGroups && share.homeGroups.indexOf(share.Tips[i].from.deck.parent()) >= 0) {
+				if(share.homeGroups && share.homeGroups.indexOf(share.Tips[i].from.deck.parent()) >= 0) {
 					// ?#$%&!
 				} else {
 					// $(share.Tips[i].from.card.domElement).addClass('tip');
@@ -102,17 +110,12 @@ module.exports = function(main, share) {
 		) {
 
 			var Tip = share.bestTip(a.moveDeck, a.cursorMove);
+
 			if(Tip) {
-				/*if(Tip.to.lastCard) {
-					$(Tip.to.lastCard.domElement).addClass('tipPriority');
-				} else {
-					try {
-						$(Tip.to.deck.getDomElement()).addClass('tipPriority');
-					} catch(e) {
-						console.warn('#0', e, Tip)
-					}
-				}*/
-				main.event.dispatch('showTip', {el : share.Tips[i].to.deck, type : 'tipPriority'});
+
+				main.event.dispatch('showTip', {el : Tip.to.deck, type : 'tipPriority'});
+				// TODO: 'i' - undefined
+				// main.event.dispatch('showTip', {el : share.Tips[i].to.deck, type : 'tipPriority'});
 
 				// $(Tip.to.lastCard.domElement).addClass('tipPriority');
 			}
@@ -123,37 +126,46 @@ module.exports = function(main, share) {
 
 		// console.log('tipsDestination', a)
 		
-		if(/*share.showTips && */share.showTipsDestination) {
+		// if(share.showTips && share.showTipsDestination) {
+		if(share.showTipsDestination) {
 
 			// $('.tip')        .removeClass('tip');
 			// $('.tipTo')      .removeClass('tipTo');
 			// $('.tipPriority').removeClass('tipPriority');
-			main.event.dispatch('hideTips'/*, {types : ['tip']}*/);
 			
-			/*try {
-				if(a && a.currentCard && $(a.currentCard)) {
-					$(a.currentCard).addClass('tip');
-				}
-			} catch(e) {}*/
+			// main.event.dispatch('hideTips', {types : ['tip']});
+			main.event.dispatch('hideTips');
 			
-			if(a && a.currentCard && a.currentCard.id) for(i in share.Tips) {
-				if(share.Tips[i].from.card.id == a.currentCard.id) {					
-					// var _cards = share.Tips[i].to.deck.getCards(),
-					// _card  = _cards[_cards.length - 1];
-					main.event.dispatch('showTip', {el : share.Tips[i].to.deck, type : 'tipTo'});
-					/*if(share.Tips[i].to.lastCard) {
-						$(share.Tips[i].to.lastCard.domElement).addClass('tipTo');
-					} else {
-						try {
-							$(share.Tips[i].to.deck.getDomElement()).addClass('tipTo');
-						} catch(e) {
-							console.warn('#1', e, share.Tips[i]);
-						}
-					}*/
-					// $(share.Tips[i].to.lastCard.domElement).addClass('tipTo');
+			// try {
+			// 	if(a && a.currentCard && $(a.currentCard)) {
+			// 		$(a.currentCard).addClass('tip');
+			// 	}
+			// } catch(e) {}
+			
+			if(a && a.currentCard && a.currentCard.id) {
+				for(var i in share.Tips) {
+					if(share.Tips[i].from.card.id == a.currentCard.id) {					
+						
+						// var _cards = share.Tips[i].to.deck.getCards(),
+						// _card  = _cards[_cards.length - 1];
+						
+						main.event.dispatch('showTip', {el : share.Tips[i].to.deck, type : 'tipTo'});
+						
+						// if(share.Tips[i].to.lastCard) {
+						// 	$(share.Tips[i].to.lastCard.domElement).addClass('tipTo');
+						// } else {
+						// 	try {
+						// 		$(share.Tips[i].to.deck.getDomElement()).addClass('tipTo');
+						// 	} catch(e) {
+						// 		console.warn('#1', e, share.Tips[i]);
+						// 	}
+						// }
+
+						// $(share.Tips[i].to.lastCard.domElement).addClass('tipTo');
+					}
 				}
 			}
 		}
-	}.bind(main)
+	}.bind(main);
 
 };

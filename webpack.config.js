@@ -1,10 +1,11 @@
 'use strict';
 
 // const NODE_ENV = process.env.NODE_ENV || 'development';
-const webpack = require('webpack');
+// const webpack = require('webpack');
 
 module.exports = {
 	entry: "./SolitaireEngine.main",
+	// context: './extensions/',
 	output: {
 		filename: "./js/SolitaireEngine.js",
 		library: "SolitaireEngine"
@@ -27,18 +28,19 @@ module.exports = {
 		// })
 	],
 
-	/*resolve: {
+	resolve: {
 		modulesDirectories : ['node_modules'],
 		extensions: ['', '.js']
 	},
 
+	/*
 	resolveLoader: {
 		modulesDirectories: ['node_modules'],
 		moduleTemplates: ['*-loader', '*'],
 		extensions: ['', '.js']
 	},*/
 
-	/*module: {
+	module: {
 
 		loaders: [{
 			test: /\.js$/,
@@ -54,7 +56,7 @@ module.exports = {
 			// loader: 'babel?presets[]=es2015&optional[]=runtime'
 		}]
 
-	}*/
+	}
 };
 
 // if(NODE_ENV == 'production') {

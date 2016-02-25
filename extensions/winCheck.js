@@ -1,9 +1,8 @@
 'use strict';
 
-module.exports = function(main, share) {
+export default function(main, share) {
 	
 	var wcm = share.winCheckMethods = {
-			
 		// Filters
 
 		// возвращает колоды определённой группы/групп
@@ -98,11 +97,6 @@ module.exports = function(main, share) {
 			var _correct = _emptyDecksCount == _decksLength - 1;
 			if(a.filter) a.decks = _correct ? [a.decks[fillIndex]] : [];
 			return _correct
-
-				/*? a.rulesArgs 
-					? _oneDeck 
-					: true 
-				: false;*/
 		},
 
 		// step by step 1, 2, 3
@@ -118,7 +112,6 @@ module.exports = function(main, share) {
 		// во всех колодах карты по убыванию
 		allDescent : function(a) {
 				
-			// console.log('check Win, rule - allDescent:', a);
 			a.asc_desk = 1;
 			return wcm._asc_desk(a);
 		},
@@ -126,6 +119,7 @@ module.exports = function(main, share) {
 
 		// Composite rules (input arguments)
 		// комбинированное правило
+			
 		lego : function(_a) {
 			
 			// console.log(a.rulesArgs.filters, a.rulesArgs.rules)
@@ -134,10 +128,9 @@ module.exports = function(main, share) {
 			
 			var _correct = true;
 			
+			
 			// apply filters
 			for(var next in _a.rulesArgs) {
-			// console.log('check Win, LEGO RULE:', _a.rulesArgs[next]);
-
 				var _decksClone = {};
 				for(var i in _a.decks) _decksClone[i] = _a.decks[i];
 				var a = {
@@ -154,24 +147,14 @@ module.exports = function(main, share) {
 					
 
 					for(var i in _a.rulesArgs[next].filters) {
-						// console.log('LEGO FILTER', i, _a.rulesArgs[next].filters[i])
-
 						if(typeof _a.rulesArgs[next].filters[i] == 'string' && wcm[_a.rulesArgs[next].filters[i]]) {
-
-							// alert((function(a){var _c = 0;for(var _i in a){_c += 1;};return _c;})(a.decks));
-							// console.log('apply filter', _a.rulesArgs[next].filters[i], 'start', a);
-							
 							_correct = _correct && wcm[_a.rulesArgs[next].filters[i]](a);
-							// wcm[a.rulesArgs.filters[i]](a);
-							
-							// console.log('apply filter', a.rulesArgs.filters, 'result:', a);
 						} else {
-							if(typeof _a.rulesArgs[next].filters[i] == 'object') {
-
-								// console.log('filters:', _a.rulesArgs[next].filters[i]);
+							// if(typeof _a.rulesArgs[next].filters[i] == 'object') {
+							if (_a.rulesArgs[next].filters[i]
+							 && _a.rulesArgs[next].filters[i].toString() == "[object Object]"
+							) {
 								for(var filterName in _a.rulesArgs[next].filters[i]) {
-									// var filterName = _a.rulesArgs[next].filters[i][filterIndex];
-									// console.log('apply filter', filterName);
 									if(wcm[filterName]) {
 										a.filterArgs = _a.rulesArgs[next].filters[i][filterName]
 										_correct = _correct && wcm[filterName](a);
@@ -182,6 +165,8 @@ module.exports = function(main, share) {
 							} else {
 								_correct = _correct && wcm['newerWin']();
 							}
+							
+				
 						}
 					}
 					
@@ -193,7 +178,6 @@ module.exports = function(main, share) {
 				if(_a.rulesArgs[next].rules) {
 					
 					for(var i in _a.rulesArgs[next].rules) {
-						// console.log('apply rule', _a.rulesArgs[next].rules[i])
 						if(wcm[_a.rulesArgs[next].rules[i]]) {
 							_correct = _correct && wcm[_a.rulesArgs[next].rules[i]](a);
 						} else {
@@ -202,13 +186,13 @@ module.exports = function(main, share) {
 						}
 					}
 				}
-
-				// console.log('rules:', _correct ? 'success' : 'fail');
+				
 			}
+
 
 			return _correct;
 		}
-	}
+	};
 
 	main.winCheck = function(a) {
 		if(!a) a = {};
