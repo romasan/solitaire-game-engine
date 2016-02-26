@@ -1,13 +1,13 @@
 'use strict';
 
 /*
- * Solitaire game engine
+ * Solitaire game engine. v. 0.10.2
  * by Roman Bauer - kotapesic@gmail.com
  * Oct. 2015
  * Webpack version 24 Feb. 2016
  */
 
-var SolitaireExtensions = {};                                    // ON | IN
+// var SolitaireExtensions = {};                                 // ON | IN
 
 import SolitaireCommon  from './extensions/SolitaireCommon';     // +
 import Field            from './extensions/Field';               // +
@@ -54,10 +54,10 @@ if(typeof SolitaireDebug != "undefined") {
 	SolitaireDebug   (main, share);
 }
 
-exports.main = main;
+exports._main = main;
 exports.event = main.event;
 
 exports.init = function(gameConfig) {
-	
+
 	Field(main, share, gameConfig);
 };

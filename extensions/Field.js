@@ -7,6 +7,8 @@ import tipsRules from './tipsRules';
 
 
 var Field = function(main, share, data) {
+
+	// TODO избавиться от share.field и вообще от share ?
 	
 	var addDeck = function(data) {
 		return new Deck(main, share, data);
@@ -16,39 +18,28 @@ var Field = function(main, share, data) {
 		return new Group(main, share, data);
 	};
 	
-	if(!data && share.field) return share.field;
+	// if(!data && share.field) return share.field;
 	if(!data) return false;
 
+	main.unlock();
+	
 	if(data && share.field) {
 		share.field.clear();
 	}
 	
+	share.field = this;
+
 	var a = null;
 	try {
 		a = JSON.parse(JSON.stringify(data));
 	} catch(e) {
 		a = data;
 		console.warn('Field input params is not JSON, maybe the rules are wrong.');
-		// DEBUG
-		/*var _names = [];
-		for(var i in a.groups.group_a) {
-			_names.push(i);
-		}
-		console.log('DATA:', _names, a.groups.group_a);*/
 	}
 
 	share.homeGroups = a.homeGroups ? a.homeGroups : null;
 	
-	share.field = new (function(a) {
-		
-		main.unlock();
-	})(a);
-	
-	
-	main.event.dispatch('initField', {
-		a     : a//, 
-		// field : share.field
-	});
+	main.event.dispatch('initField', {a : a});
 
 	share.debugLog = a.debugLog && typeof a.debugLog == 'boolean' ? a.debugLog : share.debugLog;
 
@@ -105,6 +96,11 @@ var Field = function(main, share, data) {
 		share.zoom = a.zoom
 	}
 
+	if(a.tipsParams) {
+		share.field.tipsParams = a.tipsParams;
+		// console.log('count: 0, tips params:', share.field.tipsParams);
+	}
+
 	share.can_move_flip = a.can_move_flip && typeof a.can_move_flip == 'boolean' 
 		? a.can_move_flip 
 		: share.default_can_move_flip;
@@ -114,9 +110,7 @@ var Field = function(main, share, data) {
 	}
 
 	if(a.groups) for(var groupName in a.groups) {
-		// if(a.groups[i].elements) for(e in a.groups[i].elements) {
-		// 	main.addDeck(a.groups[i].elements[e])
-		// }
+
 		a.groups[groupName].name = groupName;
 		addGroup(a.groups[groupName]);
 	}
@@ -134,15 +128,6 @@ var Field = function(main, share, data) {
 	
 	if(a.fill) {
 		
-		// var _isDeck = true;
-		// for(i in a.fill) _isDeck = _isDeck && validateCardName(a.fill[i], true);
-		// _isDeck = _isDeck && a.fill.length;
-		
-		// if(_isDeck) {
-			// TODO
-			// Fill field, all decks
-			// field.fill(a.fill);
-		// } else {
 		for(var _name in a.fill) {
 			var _elements = this.getElementsByName(_name);
 			for(var i in _elements) {
@@ -154,35 +139,29 @@ var Field = function(main, share, data) {
 		// }
 	}
 
-	if(a.cardLoader && typeof a.cardLoader == 'function') {// && a.cardsSet) {
+	/*if(a.cardLoader && typeof a.cardLoader == 'function') {// && a.cardsSet) {
 		a.cardLoader(a.cardsSet, main);
-	}
+	}*/
 
-	// share.checkTips(); // has in 'newGame' listener
-
-	// Clear field
-
-	share.field.clear = function() {
-		// console.log('clear field');
-		for(var i in share.elements) {
-			// console.log(elements[i]);
-			if(share.elements[i].type == 'deck') {
-				share.elements[i].clear();
-				share.elements[i] = null;
-			} else if(share.elements[i].type == 'group') {
-				share.elements[i] = null;
-			}
-		}
-		share.elements = {};
-	}
-
-	// Redraw field
-
-
-	// field.fill = function(a) {};
 	main.event.dispatch('newGame');
 
-};//.bind(main);
+};
+
+Field.prototype.clear = function() {
+	
+	console.log('clear field', share);
+	
+	for(var i in share.elements) {
+		// console.log(elements[i]);
+		if(share.elements[i].type == 'deck') {
+			share.elements[i].clear();
+			share.elements[i] = null;
+		} else if(share.elements[i].type == 'group') {
+			share.elements[i] = null;
+		}
+	}
+	share.elements = {};
+}
 
 Field.prototype.Redraw = function() {
 	var a = null;
@@ -199,25 +178,23 @@ Field.prototype.Redraw = function() {
 		if(_group) {
 			_group.Redraw(a.groups[_groupName]);
 		}
-		// for(_deckIndex in a.groups[_groupName]) {
-		// 	a.groups[_groupName][_deckIndex].name
-		// }
 	}
+
 	for(var i in a.decks) {
-		//var _parent = main.getElementById(_decks[i].parent());
-		//var _parentName = _parent ? _parent.name : null;
 		var _deck = main.Deck(a.decks[i].name);
 		if(_deck) {
 			_deck.Redraw(a.decks[i]);
-		} //else {
-		// 	_decks[i].Redraw(a.groups[_parentName]);
-		// }
+		}
 	}
-	// }
 };
 
 export default function(main, share, data) {
 	
 	// return Field;
-	share.field = new Field(main, share, data);
+	// var a = 
+	new Field(main, share, data);
+	console.log(share.field);
+	// share.field = a;
+	// console.log(share.field);
+
 };

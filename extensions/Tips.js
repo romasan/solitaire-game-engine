@@ -79,9 +79,19 @@ export default function(main, share) {
 				// TODO инициализировать "hideTipsInDom" в Field.js 
 				
 				// console.log('PARENT IS:', share.Tips[i].from.deck.parent());
-				
+				console.log('count:', share.Tips[i].to.count, share.Tips[i].to.count == 0 && share.field.tipsParams, share.field.tipsParams);
 				// if(share.hideTipsInDom &&  share.homeGroups && share.homeGroups.indexOf(share.Tips[i].from.deck.parent()) >= 0) {
-				if(share.homeGroups && share.homeGroups.indexOf(share.Tips[i].from.deck.parent()) >= 0) {
+				if(
+					(
+					share.homeGroups 
+				 && share.homeGroups.indexOf(share.Tips[i].from.deck.parent()) >= 0
+					)
+				 || (
+				 	share.Tips[i].to.count == 0 
+				 && share.field.tipsParams 
+				 && share.field.tipsParams.hideOnEmpty
+				 	)
+				) {
 					// ?#$%&!
 				} else {
 					// $(share.Tips[i].from.card.domElement).addClass('tip');

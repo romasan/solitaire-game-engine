@@ -4,14 +4,15 @@ import flipTypes      from './flipTypes';
 import PutRules       from './readyPutRules';
 import readyTakeRules from './readyTakeRules';
 import fillRulesExt   from './fillRules';
-import paddingTypes   from './paddingTypes';
+import Padding        from './paddingTypes';
 import addDeckAction  from './addDeckAction';
 
 export default function(main, share, data) {
 
-	var readyPutRules = PutRules       (main, share);
-	var fillRules     = fillRulesExt   (main, share);
+	var readyPutRules = PutRules      (main, share);
+	var fillRules     = fillRulesExt  (main, share);
 	var deckActions   = addDeckAction (main, share);
+	var paddingTypes  = Padding       (main, share);
 
 	// console.log('readyPutRules:', readyPutRules);
 

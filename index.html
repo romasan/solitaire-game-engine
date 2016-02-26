@@ -38,6 +38,7 @@
 		<div id="map" style="background : url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAIAAAAC64paAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAAsSURBVDhPY+jFCxrwglHNGACqCgcYkZqhNA4ANQMHGNWMAaCqcICRp7m3FwCmtnaXHj1bYwAAAABJRU5ErkJggg==') center center; width : 100%; height : 100%;"></div>
 
 		<script type="text/javascript">
+			/*
 			var gameConfig = {
     
 			    "autoTips"     : "allToAll",// DEBUG
@@ -138,6 +139,168 @@
 			        }
 			    }
 			};
+			*/
+
+			var gameConfig = {
+			    // "scriptpath"   : "./js/",
+			    "field"        : "#map",
+			    "theme"        : "alternative_theme",
+			    // "autoTips"     : "allToAll",
+			    "tipsParams"   : {
+			    	"hideOnEmpty" : true
+			    },
+			    "moveDistance" : 10,
+			    "winCheck" : {
+			        /*"callback" : function() {},*/
+			        "rules"     : {// "string" OR function(){} OR {object}
+			            "lego" : [
+			                {
+			                    "filters" : [
+			                        {"group" : "group_b1"}
+			                    ],
+			                    "rules"   : ["allDescent"]
+			                },
+			                {
+			                    "filters" : [
+			                        {"group" : "group_b2"}
+			                    ],
+			                    "rules"   : ["allAscend"]
+			                },
+			                {
+			                    "filters" : [
+			                        {"group" : "group_a"}
+			                    ],
+			                    "rules"   : ["allEmpty"]
+			                }
+			            ]
+			        }
+			    },
+			    "groups"       : {
+			        
+			        "group_a" : {
+			            "putRules"    : ["ascdescOne", "oneRank"/*, "notForEmpty"*/],
+			            "showSlot"    : true,
+			            "paddingType" : "radial"
+			        },
+			        
+			        "group_b1" : {
+			            "position"    : {
+			                "x" : 280, 
+			                "y" : 250
+			            },
+			            "placement"   : {
+			                "x" : 20
+			            },
+			            "takeRules" : ["notFirst"],
+			            "putRules"  : ["descentOne", "oneRank"],
+			            // "putRules"  : "descentOne",
+			            "showSlot"  : true,
+			            "decks"     : [
+			                {
+			                    "name" : "b1_c",
+			                    "fill" : ['ck']
+			                },
+			                {
+			                    "name" : "b1_h",
+			                    "fill" : ['hk']
+			                },
+			                {
+			                    "name" : "b1_d",
+			                    "fill" : ['dk']
+			                },
+			                {
+			                    "name" : "b1_s",
+			                    "fill" : ['sk']
+			                },
+			                {
+			                    "name"      : "hint_1",
+			                    "showSlot"  : false,
+			                    "putRules"  : ["not"],
+			                    "takeRules" : ["not"],
+			                    "class"     : "hintDown",
+			                    "label"     : "ВНИЗ"
+			                }
+			            ]
+			        },
+			        
+			        "group_b2" : {
+			            "position"    : {
+			                "x" : 280, 
+			                "y" : 250 + 20 + 96
+			            },
+			            "placement"   : {
+			                "x" : 20
+			            },
+			            "takeRules"   : ["notFirst"],
+			            "putRules"    : ["ascendOne", "oneRank"],
+			            "fillRule"    : "deckLength",
+			            // "putRules"    : "ascendOne",
+			            "showSlot"    : true,
+			            "decks"       : [
+			                {
+			                    "name" : "b2_c",
+			                    "fill" : ['c1']
+			                },
+			                {
+			                    "name" : "b2_h",
+			                    "fill" : ['h1']
+			                },
+			                {
+			                    "name" : "b2_d",
+			                    "fill" : ['d1']
+			                },
+			                {
+			                    "name" : "b2_s",
+			                    "fill" : ['s1']
+			                },
+			                {
+			                    "name"      : "hint_1",
+			                    "showSlot"  : false,
+			                    "putRules"  : ["not"],
+			                    "takeRules" : ["not"],
+			                    "class"     : "hintUp",
+			                    "label"     : "ВВЕРХ"
+			                }
+			            ]
+			        },
+
+			        
+			    },
+			    "homeGroups" : ["group_b1", "group_b2"]
+			};
+
+			gameConfig.groups['group_a'].decks = [];
+            
+            // SolitaireEngine.ready(function(SE) {
+            //              b
+            //       C  ..`:   A = sin(b) * C
+            //     ...``   :B  B = cos(b) * C
+            // a.``.......+:
+            //        A     y 90deg
+            var _step = 180 / 16;
+            var _radius = 405;
+            var _center = {
+                x : 450 + 15,
+                y : 450 + 20
+            };
+            var _card = SolitaireEngine._main.options.card;
+            var _angle = _step / 2 + 270;
+            var _deg = Math.PI / 180;
+            for(var i = 0; i < 16; i += 1) {
+                var _a = Math.sin(_angle * _deg) * _radius;
+                var _b = Math.cos(_angle * _deg) * _radius;
+                if(_angle > 360) _angle -= 360;
+                // console.log("lunaDeck_" + i, _angle);
+                gameConfig.groups['group_a'].decks.push({
+                    "name" : "lunaDeck_" + i,
+                    "rotate" : _angle,
+                    "position" : {
+                        "x" : _center.x + _a - _card.width / 2,
+                        "y" : _center.y - _b - _card.height / 2
+                    }
+                });
+                _angle += _step;
+            }
 
 			SolitaireEngine.event.listen('win', function(e) {
 
@@ -163,8 +326,19 @@
 		    // gameConfig.groups.group_b.fill = a;
 		    // gameConfig.groups.twindeck.decks[0].fill = randomDeckForKosynkaSolitaire;
 		    
-		    gameConfig.groups.group_b.fill = [["d3", "d2", "d1"], ["hk", "hq", "hj", "h10", "h9", "h8", "h7", "h6", "h5", "h4", "h3", "h2", "h1"]];
-		    gameConfig.groups.twindeck.decks[0].fill = ["d4"];
+		    // gameConfig.groups.group_b.fill = [["d3", "d2", "d1"], ["hk", "hq", "hj", "h10", "h9", "h8", "h7", "h6", "h5", "h4", "h3", "h2", "h1"]];
+		    // gameConfig.groups.twindeck.decks[0].fill = ["d4"];
+
+		    var gameStructure = "h5,s9,c5,d4,h8,d2|c1,c7,c9,d7,dj,dq|s2,c3,s9,c10,s8,sj|c2,dj,cq,s5,h4,s7|hq,s10,h9,s6,c8,c6|d3,c9,h6,cq,h3,h2|dk,ck,s4,dq,cj,d9|sq,s8,c2,hj,hq,sq|sk,d1,h2,d8,s7,s10|sj,c7,s4,s3,d10,h10|c5,hj,s6,cj,h4,d3|d4,h8,h7,d7,c3,d9|d2,s3,h10,c6,d6,h6|c4,d5,d6,c10,h7,h9|h1,s1,hk,h3,c8,h5|d10,d5,c4,s5,s2,d8";
+
+		    var _decks = gameStructure.split('|');
+            var _cards = [];
+            for(var _i in _decks) {
+                _cards.push(_decks[_i].split(','));
+            }
+            gameConfig.groups['group_a'].fill = _cards;
+            
+            gameConfig.showTips = true;
 		    
 			SolitaireEngine.init(gameConfig);
 		</script>

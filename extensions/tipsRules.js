@@ -21,15 +21,18 @@ export default {
 							if(_put) {
 								var _cards_to = a.decks[deckIndex_2].getCards(),
 									_card_to  = _cards_to.length ? _cards_to[_cards_to.length - 1] : null;
-								// console.log('Tip:', a.decks[deckIndex_2].domElement/*_cards[cardIndex].name, 'from', a.decks[deckIndex].name, a.decks[deckIndex].visible, 'to', a.decks[deckIndex_2].name*/)
+								// console.log('Tip:', a.decks[deckIndex_2].domElement);
+								// _cards[cardIndex].name, 'from', a.decks[deckIndex].name, a.decks[deckIndex].visible, 'to', a.decks[deckIndex_2].name
 								_moves.push({
 									from : {
-										deck : a.decks[deckIndex],
-										card : _cards[cardIndex],
+										deck  : a.decks[deckIndex],
+										card  : _cards[cardIndex],//firstCard of moved deck
+										count : _cards.length
 									},
 									to : {
-										deck : a.decks[deckIndex_2],
-										lastCard : _card_to
+										deck     : a.decks[deckIndex_2],
+										lastCard : _card_to,
+										count    : _cards_to.length
 									}
 								});
 							}
