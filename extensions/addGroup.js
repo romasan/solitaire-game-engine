@@ -144,7 +144,7 @@ export default function(main, share, data) {
 
 			this.getDecks = function(a) {
 				var _decks = [];
-				for(i in decks) {
+				for(var i in decks) {
 					if(a && a.visible) {
 						if(decks[i].visible) {
 							_decks.push(decks[i]);
@@ -275,6 +275,9 @@ export default function(main, share, data) {
 		// Redraw group
 
 		_el_group.Redraw = function(_a) {
+
+			console.log('%cgroup redraw:', 'background: red;', {_a : _a, a : a});
+
 			var _decks = this.getDecks();
 			var _index = {}
 			// for(i in _a.decks)
@@ -282,26 +285,56 @@ export default function(main, share, data) {
 			for(var i in _decks) {
 				
 				if(!_a.decks[i]) _a.decks[i] = {};
+
+				console.log('GRD#1', i, _a.position);
+				console.log('GRD#1', i, _a.decks[i].position);
+				console.log('GRD#2', i, _a.decks[i].parentPosition);
 				
 				// changed values
+				if(
+					_a.position
+				 && _a.decks[i].parentPosition
+				) {
+					_a.decks[i].parentPosition = {
+						x : _a.position.x,
+						y : _a.position.y
+					}
+				}
+				
+				if(_a.rotate      ) {
+					_a.decks[i].rotate = _a.rotate;
+				}
+
+				if(_a.paddingX    ) {
+					_a.decks[i].paddingX = _a.paddingX;
+				}
+
+				if(_a.paddingY    ) {
+					_a.decks[i].paddingY = _a.paddingY;
+				}
+
+				if(_a.flipPaddingX) {
+					_a.decks[i].flipPaddingX = _a.flipPaddingX;
+				}
+
+				if(_a.flipPaddingY) {
+					_a.decks[i].flipPaddingY = _a.flipPaddingY;
+				}
 				
 				if(!_a.decks[i].position) {
+					console.log('#1');
 					_a.decks[i].position = {};
 				}
 				if(!_a.decks[i].parentPosition) {
+					console.log('#2');
 					_a.decks[i].parentPosition = {};
 				}
-				// if( !_a.decks[i].position.x && a.position && a.position.x && typeof a.position.x == 'number') {
-				// 	_a.decks[i].position.x = _a.position.x;
-				// 	console.log('set position x', _a.decks[i].position)
-				// }
-				// if( !_a.decks[i].position.y && a.position && a.position.y && typeof a.position.y == 'number') {
-				// 	_a.decks[i].position.y = _a.position.y;
-				// }
 				if( !_a.decks[i].parentPosition.x && a.position && a.position.x && typeof a.position.x == 'number') {
+					console.log('#3');
 					_a.decks[i].parentPosition.x = _a.position.x;
 				}
 				if( !_a.decks[i].parentPosition.y && a.position && a.position.y && typeof a.position.y == 'number') {
+					console.log('#4');
 					_a.decks[i].parentPosition.y = _a.position.y;
 				}
 				if(_a.placement) {

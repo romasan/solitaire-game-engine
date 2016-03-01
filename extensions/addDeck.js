@@ -385,6 +385,8 @@ export default function(main, share, data) {
 			
 			this.Redraw = function(_a) {
 
+				console.log('deck redraw777:', {_a : _a, a : a});
+				
 				main.event.dispatch('redrawDeck', {
 					deck   : this,
 					a      : _a,

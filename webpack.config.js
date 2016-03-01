@@ -7,6 +7,7 @@ module.exports = {
 	entry: "./SolitaireEngine.main",
 	// context: './extensions/',
 	output: {
+		// filename: "./js/SolitaireEngine.min.js",
 		filename: "./js/SolitaireEngine.js",
 		library: "SolitaireEngine"
 	},
@@ -17,7 +18,8 @@ module.exports = {
 		aggregateTimeout: 100
 	},
 
-	devtool: "cheap-inline-module-source-map",
+	// devtool: "cheap-inline-module-source-map",
+	devtool: "source-map",
 	// devtool: NODE_ENV == 'development' ? "cheap-inline-module-source-map" : null,
 
 	plugins: [
@@ -63,7 +65,7 @@ module.exports = {
 
 /*module.exports.plugins.push(
 	new webpack.optimize.UglifyJsPlugin({
-		warnings:     false,
+		// warnings:     false,
 		drop_console: true,
 		unsafe:       true
 	})

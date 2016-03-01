@@ -9,19 +9,23 @@ export default function(main, share) {
 
 	share.tipTypes = ['tip', 'tipTo', 'tipPriority'];
 	
-	main.showTips = function() {
+	var _showTips = main.showTips = function() {
 		
 		// console.log('main.showTips');
 		share.showTips = true;
 		share.checkTips();
 	}.bind(main);
 
-	main.hideTips = function() {
+	main.event.listen('tipsON', _showTips);
+
+	var _hideTips = main.hideTips = function() {
 		
 		// console.log('main.hideTips');
 		share.showTips = false;
 		share.checkTips();
 	}.bind(main);
+
+	main.event.listen('tipsOFF', _hideTips);
 
 	share.checkTips = function(a) {
 		
@@ -79,7 +83,6 @@ export default function(main, share) {
 				// TODO инициализировать "hideTipsInDom" в Field.js 
 				
 				// console.log('PARENT IS:', share.Tips[i].from.deck.parent());
-				console.log('count:', share.Tips[i].to.count, share.Tips[i].to.count == 0 && share.field.tipsParams, share.field.tipsParams);
 				// if(share.hideTipsInDom &&  share.homeGroups && share.homeGroups.indexOf(share.Tips[i].from.deck.parent()) >= 0) {
 				if(
 					(

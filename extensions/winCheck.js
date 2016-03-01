@@ -89,7 +89,7 @@ export default function(main, share) {
 				if(a.decks[i].getCards().length == 0) {
 					_emptyDecksCount += 1;
 				} else {
-					fillIndex = i;
+					_fillIndex = i;
 				}
 				_decksLength += 1;
 			}

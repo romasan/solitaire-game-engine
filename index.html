@@ -2,6 +2,8 @@
 	<head>
 		<link rel="stylesheet" href="./css/SolitaireEngine.css"/>
 		<script language="javascript" src="./js/jquery.min.js"></script>
+		<script language="javascript" src="./js/underscore-min.js">
+		</script>
 		<script language="javascript" src="./js/SolitaireEngine.js"></script>
 
 		<style>
@@ -38,6 +40,7 @@
 		<div id="map" style="background : url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAIAAAAC64paAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAAsSURBVDhPY+jFCxrwglHNGACqCgcYkZqhNA4ANQMHGNWMAaCqcICRp7m3FwCmtnaXHj1bYwAAAABJRU5ErkJggg==') center center; width : 100%; height : 100%;"></div>
 
 		<script type="text/javascript">
+			
 			/*
 			var gameConfig = {
     
@@ -141,6 +144,7 @@
 			};
 			*/
 
+			
 			var gameConfig = {
 			    // "scriptpath"   : "./js/",
 			    "field"        : "#map",
@@ -151,7 +155,7 @@
 			    },
 			    "moveDistance" : 10,
 			    "winCheck" : {
-			        /*"callback" : function() {},*/
+			        // "callback" : function() {},
 			        "rules"     : {// "string" OR function(){} OR {object}
 			            "lego" : [
 			                {
@@ -178,7 +182,7 @@
 			    "groups"       : {
 			        
 			        "group_a" : {
-			            "putRules"    : ["ascdescOne", "oneRank"/*, "notForEmpty"*/],
+			            "putRules"    : ["ascdescOne", "oneRank"],// "notForEmpty"],
 			            "showSlot"    : true,
 			            "paddingType" : "radial"
 			        },
@@ -268,6 +272,7 @@
 			    },
 			    "homeGroups" : ["group_b1", "group_b2"]
 			};
+			
 
 			gameConfig.groups['group_a'].decks = [];
             
@@ -310,7 +315,7 @@
 			});
 
 			// c1|h9,d6|d10,s5,d3|s1,s4,hj,cq|dq,s7,c6,c4,sq|hk,d2,h1,s8,s6,d8|d1,h6,h10,h3,c10,d7,h4|dj,c8,ck,c3,h2,sj,c5,h5,dk,s2,d9,hq,c2,h7,s10,sk,c9,d5,cj,d4,h8,c7,s9,s3
-		    /*var randomDeckForKosynkaSolitaire = SolitaireEngine.deckGenerator({
+		    /*var randomDeckForKosynkaSolitaire = SolitaireEngine._main.deckGenerator({
 		        // type      : 'one_rank_only',
 		        // cardsRank : '1 2 3 4 5 6 7 8 9 10'.split(' '),
 		        shuffle   : true,
@@ -321,10 +326,10 @@
 		        for(var j = 0; j <= i; j += 1) {
 		            a[i].push(randomDeckForKosynkaSolitaire.pop());
 		        }
-		    }*/
+		    }
 
-		    // gameConfig.groups.group_b.fill = a;
-		    // gameConfig.groups.twindeck.decks[0].fill = randomDeckForKosynkaSolitaire;
+		    gameConfig.groups.group_b.fill = a;
+		    gameConfig.groups.twindeck.decks[0].fill = randomDeckForKosynkaSolitaire;*/
 		    
 		    // gameConfig.groups.group_b.fill = [["d3", "d2", "d1"], ["hk", "hq", "hj", "h10", "h9", "h8", "h7", "h6", "h5", "h4", "h3", "h2", "h1"]];
 		    // gameConfig.groups.twindeck.decks[0].fill = ["d4"];

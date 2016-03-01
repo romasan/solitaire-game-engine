@@ -9,6 +9,7 @@ import tipsRules from './tipsRules';
 var Field = function(main, share, data) {
 
 	// TODO избавиться от share.field и вообще от share ?
+	// console.log('FIELD');	
 	
 	var addDeck = function(data) {
 		return new Deck(main, share, data);
@@ -18,8 +19,13 @@ var Field = function(main, share, data) {
 		return new Group(main, share, data);
 	};
 	
-	// if(!data && share.field) return share.field;
-	if(!data) return false;
+	// if(!data && share.field) {
+	// 	return share.field;
+	// }
+
+	if(!data) {
+		return false;
+	}
 
 	main.unlock();
 	
@@ -31,10 +37,15 @@ var Field = function(main, share, data) {
 
 	var a = null;
 	try {
-		a = JSON.parse(JSON.stringify(data));
+		// a = JSON.parse(JSON.stringify(data));
+		a = _.clone(data);
+		// a =  Object.assign({}, data);
 	} catch(e) {
 		a = data;
 		console.warn('Field input params is not JSON, maybe the rules are wrong.');
+		// 'zxczxc';
+		// console.log(JSON.parse(JSON.stringify(data)));
+		console.log(data);
 	}
 
 	share.homeGroups = a.homeGroups ? a.homeGroups : null;
@@ -143,58 +154,66 @@ var Field = function(main, share, data) {
 		a.cardLoader(a.cardsSet, main);
 	}*/
 
+	this.clear = function() {
+	
+		console.log('clear field', share);
+		
+		for(var i in share.elements) {
+			// console.log(elements[i]);
+			if(share.elements[i].type == 'deck') {
+				share.elements[i].clear();
+				share.elements[i] = null;
+			} else if(share.elements[i].type == 'group') {
+				share.elements[i] = null;
+			}
+		}
+		share.elements = {};
+	};
+
+	this.Redraw = function() {
+		
+		console.log('redraw field');
+
+		var a = null;
+
+		try {
+			// a = JSON.parse(JSON.stringify(data));
+			a = _.clone(data);
+			// a =  Object.assign({}, data);
+		} catch(e) {
+			a = data;
+			console.warn('Field.Redraw input params is not JSON, can\'t clone');
+		}
+
+		for(var _groupName in a.groups) {
+
+			console.log('redraw group:', _groupName);
+
+			var _group = main.Group(_groupName);
+			if(_group) {
+				_group.Redraw(a.groups[_groupName]);
+			}
+		}
+
+		for(var i in a.decks) {
+			
+			console.log('redraw group:', a.decks[i].name);
+			
+			var _deck = main.Deck(a.decks[i].name);
+			if(_deck) {
+				_deck.Redraw(a.decks[i]);
+			}
+		}
+	};
+
 	main.event.dispatch('newGame');
 
 };
 
-Field.prototype.clear = function() {
-	
-	console.log('clear field', share);
-	
-	for(var i in share.elements) {
-		// console.log(elements[i]);
-		if(share.elements[i].type == 'deck') {
-			share.elements[i].clear();
-			share.elements[i] = null;
-		} else if(share.elements[i].type == 'group') {
-			share.elements[i] = null;
-		}
-	}
-	share.elements = {};
-}
+// Field.prototype.clear
 
-Field.prototype.Redraw = function() {
-	var a = null;
-
-	try {
-		a = JSON.parse(JSON.stringify(data));
-	} catch(e) {
-		a = data;
-		console.warn('Field.Redraw input params is not JSON, can\'t clone');
-	}
-
-	for(var _groupName in a.groups) {
-		var _group = main.Group(_groupName);
-		if(_group) {
-			_group.Redraw(a.groups[_groupName]);
-		}
-	}
-
-	for(var i in a.decks) {
-		var _deck = main.Deck(a.decks[i].name);
-		if(_deck) {
-			_deck.Redraw(a.decks[i]);
-		}
-	}
-};
+// Field.prototype.Redraw
 
 export default function(main, share, data) {
-	
-	// return Field;
-	// var a = 
-	new Field(main, share, data);
-	console.log(share.field);
-	// share.field = a;
-	// console.log(share.field);
-
+	return new Field(main, share, data);
 };
