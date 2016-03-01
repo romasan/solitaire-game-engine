@@ -37,8 +37,8 @@ var Field = function(main, share, data) {
 
 	var a = null;
 	try {
-		// a = JSON.parse(JSON.stringify(data));
-		a = _.clone(data);
+		a = JSON.parse(JSON.stringify(data));
+		// a = _.clone(data);
 		// a =  Object.assign({}, data);
 	} catch(e) {
 		a = data;
@@ -48,7 +48,7 @@ var Field = function(main, share, data) {
 		console.log(data);
 	}
 
-	share.homeGroups = a.homeGroups ? a.homeGroups : null;
+	// share.homeGroups = typeof a != "undefined" && typeof a.homeGroups != "undefined" ? a.homeGroups : null;
 	
 	main.event.dispatch('initField', {a : a});
 
@@ -177,8 +177,8 @@ var Field = function(main, share, data) {
 		var a = null;
 
 		try {
-			// a = JSON.parse(JSON.stringify(data));
-			a = _.clone(data);
+			a = JSON.parse(JSON.stringify(data));
+			// a = _.clone(data);
 			// a =  Object.assign({}, data);
 		} catch(e) {
 			a = data;
@@ -187,7 +187,7 @@ var Field = function(main, share, data) {
 
 		for(var _groupName in a.groups) {
 
-			console.log('redraw group:', _groupName);
+			// console.log('redraw group:', _groupName);
 
 			var _group = main.Group(_groupName);
 			if(_group) {
@@ -197,7 +197,7 @@ var Field = function(main, share, data) {
 
 		for(var i in a.decks) {
 			
-			console.log('redraw group:', a.decks[i].name);
+			// console.log('redraw deck:', a.decks[i].name);
 			
 			var _deck = main.Deck(a.decks[i].name);
 			if(_deck) {

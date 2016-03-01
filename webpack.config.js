@@ -51,7 +51,10 @@ module.exports = {
 			query: {
 				presets: ['es2015'],
 				// optional: ['runtime'],
-				plugins: ['transform-runtime']
+				plugins: [
+					"transform-runtime"//,
+					//'transform-object-assign'
+				]
 			}
 			// loader: 'babel-loader?optional[]=runtime'
 			// loader: 'babel?optional[]=runtime'

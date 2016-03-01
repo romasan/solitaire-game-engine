@@ -276,8 +276,6 @@ export default function(main, share, data) {
 
 		_el_group.Redraw = function(_a) {
 
-			console.log('%cgroup redraw:', 'background: red;', {_a : _a, a : a});
-
 			var _decks = this.getDecks();
 			var _index = {}
 			// for(i in _a.decks)
@@ -286,10 +284,6 @@ export default function(main, share, data) {
 				
 				if(!_a.decks[i]) _a.decks[i] = {};
 
-				console.log('GRD#1', i, _a.position);
-				console.log('GRD#1', i, _a.decks[i].position);
-				console.log('GRD#2', i, _a.decks[i].parentPosition);
-				
 				// changed values
 				if(
 					_a.position

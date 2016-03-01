@@ -243,6 +243,7 @@ export default function(main, share, data) {
 			this.Take = function(cardId) {
 
 				var rulesCorrect = !share.lock;
+				
 				if(typeof this.fill == "boolean") {
 					rulesCorrect = rulesCorrect && !this.fill;
 				}
@@ -384,8 +385,6 @@ export default function(main, share, data) {
 			// Redraw deck
 			
 			this.Redraw = function(_a) {
-
-				console.log('deck redraw777:', {_a : _a, a : a});
 				
 				main.event.dispatch('redrawDeck', {
 					deck   : this,
