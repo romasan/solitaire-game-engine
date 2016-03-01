@@ -37,9 +37,10 @@ var Field = function(main, share, data) {
 
 	var a = null;
 	try {
-		a = JSON.parse(JSON.stringify(data));
+		// BABEL BUG
+		// a = JSON.parse(JSON.stringify(data));
+		a = Object['assign'] ? Object['assign']({}, data) : JSON.parse(JSON.stringify(data));
 		// a = _.clone(data);
-		// a =  Object.assign({}, data);
 	} catch(e) {
 		a = data;
 		console.warn('Field input params is not JSON, maybe the rules are wrong.');
@@ -177,9 +178,11 @@ var Field = function(main, share, data) {
 		var a = null;
 
 		try {
-			a = JSON.parse(JSON.stringify(data));
+			// BABEL BUG
+			// a = JSON.parse(JSON.stringify(data));
+			a = Object['assign'] ? Object['assign']({}, data) : JSON.parse(JSON.stringify(data));
 			// a = _.clone(data);
-			// a =  Object.assign({}, data);
+			// var g =  Object.assign({}, {});
 		} catch(e) {
 			a = data;
 			console.warn('Field.Redraw input params is not JSON, can\'t clone');

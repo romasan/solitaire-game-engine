@@ -65,6 +65,10 @@ export default function(main, share) {
 		},
 
 		oneRank : function(a) {
+			
+		},
+		
+		oneSuit : function(a) {
 			if(a.cards.length == 0) return true;
 			var du = rpr._downupcards(a);
 			return du && du.up.suit == du.down.suit;

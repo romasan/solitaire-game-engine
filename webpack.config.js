@@ -22,18 +22,18 @@ module.exports = {
 	devtool: "source-map",
 	// devtool: NODE_ENV == 'development' ? "cheap-inline-module-source-map" : null,
 
-	plugins: [
+	// plugins: [
 		// new webpack.EnvironmentPlugin('NODE_ENV', 'USER')
 		
 		// new webpack.DefinePlugin({
 		// 	NODE_ENV: JSON.stringify(NODE_ENV)
 		// })
-	],
+	// ],
 
-	resolve: {
-		modulesDirectories : ['node_modules'],
-		extensions: ['', '.js']
-	},
+	// resolve: {
+	// 	modulesDirectories : ['node_modules'],
+	// 	extensions: ['', '.js']
+	// },
 
 	/*
 	resolveLoader: {

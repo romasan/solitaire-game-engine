@@ -1,7 +1,7 @@
 'use strict';
 
 /*
- * Solitaire game engine. v. 0.10.5
+ * Solitaire game engine. v. 0.10.6
  * by Roman Bauer - kotapesic@gmail.com
  * Oct. 2015
  * Webpack version 24 Feb. 2016
