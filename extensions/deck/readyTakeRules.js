@@ -17,10 +17,14 @@ export default {
 	},
 
 	onlytop  : function(a) {
+
+		// console.log("take:onlytop", a.cardIndex == a.deckLength - 1);
+		
 		return a.cardIndex == a.deckLength - 1;
 	},
 	
 	// TODO rules
+	
 	ask : function(a) {
 		console.log(a);
 		return true;

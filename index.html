@@ -1,5 +1,6 @@
 <html>
 	<head>
+	<title>SOLITAIRE ENGINE TEST</title>
 		<link rel="stylesheet" href="./css/SolitaireEngine.css"/>
 		<script language="javascript" src="./js/jquery.min.js"></script>
 		</script>
@@ -40,6 +41,7 @@
 
 		<script type="text/javascript">
 			
+			// kosynka
 			/*
 			var gameConfig = {
     
@@ -143,18 +145,18 @@
 			};
 			*/
 
-			
+			// crescent
 			var gameConfig = {
 			    // "scriptpath"   : "./js/",
 			    "field"        : "#map",
 			    "theme"        : "alternative_theme",
 			    // "autoTips"     : "allToAll",
 			    "tipsParams"   : {
-			    	"hideOnEmpty" : true
+			        "hideOnEmpty" : true
 			    },
 			    "moveDistance" : 10,
 			    "winCheck" : {
-			        // "callback" : function() {},
+			        /*"callback" : function() {},*/
 			        "rules"     : {// "string" OR function(){} OR {object}
 			            "lego" : [
 			                {
@@ -181,9 +183,10 @@
 			    "groups"       : {
 			        
 			        "group_a" : {
-			            "putRules"    : ["ascdescOne", "oneRank"],// "notForEmpty"],
+			            "putRules"    : ["ascdescOne", "oneSuit"/*, "notForEmpty"*/],
 			            "showSlot"    : true,
-			            "paddingType" : "radial"
+			            "paddingType" : "radial",
+			            "takeRules"   : ["onlytop"]
 			        },
 			        
 			        "group_b1" : {
@@ -195,7 +198,7 @@
 			                "x" : 20
 			            },
 			            "takeRules" : ["notFirst"],
-			            "putRules"  : ["descentOne", "oneRank"],
+			            "putRules"  : ["descentOne", "oneSuit"],
 			            // "putRules"  : "descentOne",
 			            "showSlot"  : true,
 			            "decks"     : [
@@ -235,7 +238,7 @@
 			                "x" : 20
 			            },
 			            "takeRules"   : ["notFirst"],
-			            "putRules"    : ["ascendOne", "oneRank"],
+			            "putRules"    : ["ascendOne", "oneSuit"],
 			            "fillRule"    : "deckLength",
 			            // "putRules"    : "ascendOne",
 			            "showSlot"    : true,
@@ -271,8 +274,97 @@
 			    },
 			    "homeGroups" : ["group_b1", "group_b2"]
 			};
-			
 
+			// uznik
+			/*
+			var start = {x : 100, y : 100};
+			var gameConfig = {
+			    // "scriptpath"   : "./js/",
+			    "field"        : "#map",
+			    "theme"        : "alternative_theme",
+			    // "autoTips"     : "allToAll",
+			    // "tipsParams"   : {
+			    // 	"hideOnEmpty" : true
+			    // },
+			    "moveDistance" : 10,
+			    "winCheck" : {
+			        // "callback" : function() {},
+			        "rules"     : {// "string" OR function(){} OR {object}
+			            "lego" : [
+			                {
+			                    "filters" : [
+			                        {"group" : "l1"}
+			                    ],
+			                    "rules"   : ["allEmpty"]
+			                }
+			            ]
+			        }
+			    },
+			    "groups"       : {
+			        
+			        "l1" : {
+			        	"position" : {
+			        		"x" : (start.x|0) + 10,
+			        		"y" : (start.y|0) + 10
+			        	},
+			        	"placement" : {
+			        		"x" : 20
+			        	},
+			            // "putRules"    : ["ascdescOne", "oneRank"],// "notForEmpty"],
+			            // "showSlot"    : true,
+			            // "paddingType" : "radial"
+			            "decks" : 9,
+			            "fill" : [["c1"], ["c2"], ["c3"], ["c4"], ["c5"], ["c6"], ["c7"], ["c8"], ["c9"]]
+			        },
+			        
+			        "l2" : {
+			        	"position" : {
+			        		"x" : (start.x|0) + 284,
+			        		"y" : (start.y|0) + 160
+			        	},
+			        	"placement" : {
+			        		"x" : 20
+			        	},
+			        	"decks" : 3,
+			            "fill" : [["c1"], ["c2"], ["c3"]],
+			            "takeRules" : ["not"],
+
+
+
+			            "putRules"  : ["oneRank"]
+
+			        }   
+			    },
+			    "decks" : [
+			    	{
+			    		"name" : "dd",
+			    		"position" : {
+			        		"x" : (start.x|0) + 10,
+			        		"y" : (start.y|0) + 160
+			        	},
+			        	"flip" : "all",
+			        	"actions" : {
+			    			"dealerdeck" : {
+			    				"toGroup" : "l2"
+			    			}
+			    		},
+			            "fill" : ["c1"]
+
+			    	}
+			    ]
+			    // "homeGroups" : ["group_b1", "group_b2"]
+			};
+			*/
+
+
+			SolitaireEngine.event.listen('win', function(e) {
+
+			    console.log('win');
+
+			    // SolitaireEngine.event.dispatch('lock');
+			});
+			
+			
 			gameConfig.groups['group_a'].decks = [];
             
             // SolitaireEngine.ready(function(SE) {
@@ -287,7 +379,7 @@
                 x : 450 + 15,
                 y : 450 + 20
             };
-            var _card = SolitaireEngine._main.options.card;
+            var _card = SolitaireEngine.options.card;
             var _angle = _step / 2 + 270;
             var _deg = Math.PI / 180;
             for(var i = 0; i < 16; i += 1) {
@@ -306,12 +398,20 @@
                 _angle += _step;
             }
 
-			SolitaireEngine.event.listen('win', function(e) {
+            // var gameStructure = "c2|||||||||||||||";
+            var gameStructure = "h5,s9,c5,d4,h8,d2|c1,c7,c9,d7,dj,dq|s2,c3,s9,c10,s8,sj|c2,dj,cq,s5,h4,s7|hq,s10,h9,s6,c8,c6|d3,c9,h6,cq,h3,h2|dk,ck,s4,dq,cj,d9|sq,s8,c2,hj,hq,sq|sk,d1,h2,d8,s7,s10|sj,c7,s4,s3,d10,h10|c5,hj,s6,cj,h4,d3|d4,h8,h7,d7,c3,d9|d2,s3,h10,c6,d6,h6|c4,d5,d6,c10,h7,h9|h1,s1,hk,h3,c8,h5|d10,d5,c4,s5,s2,d8";
 
-			    console.log('win');
+		    var _decks = gameStructure.split('|');
+            var _cards = [];
+            for(var _i in _decks) {
+                _cards.push(_decks[_i].split(','));
+            }
+            gameConfig.groups['group_a'].fill = _cards;
+            
+            gameConfig.showTips = true;
+            
 
-			    // SolitaireEngine.event.dispatch('lock');
-			});
+			
 
 			// c1|h9,d6|d10,s5,d3|s1,s4,hj,cq|dq,s7,c6,c4,sq|hk,d2,h1,s8,s6,d8|d1,h6,h10,h3,c10,d7,h4|dj,c8,ck,c3,h2,sj,c5,h5,dk,s2,d9,hq,c2,h7,s10,sk,c9,d5,cj,d4,h8,c7,s9,s3
 		    /*var randomDeckForKosynkaSolitaire = SolitaireEngine._main.deckGenerator({
@@ -333,16 +433,7 @@
 		    // gameConfig.groups.group_b.fill = [["d3", "d2", "d1"], ["hk", "hq", "hj", "h10", "h9", "h8", "h7", "h6", "h5", "h4", "h3", "h2", "h1"]];
 		    // gameConfig.groups.twindeck.decks[0].fill = ["d4"];
 
-		    var gameStructure = "h5,s9,c5,d4,h8,d2|c1,c7,c9,d7,dj,dq|s2,c3,s9,c10,s8,sj|c2,dj,cq,s5,h4,s7|hq,s10,h9,s6,c8,c6|d3,c9,h6,cq,h3,h2|dk,ck,s4,dq,cj,d9|sq,s8,c2,hj,hq,sq|sk,d1,h2,d8,s7,s10|sj,c7,s4,s3,d10,h10|c5,hj,s6,cj,h4,d3|d4,h8,h7,d7,c3,d9|d2,s3,h10,c6,d6,h6|c4,d5,d6,c10,h7,h9|h1,s1,hk,h3,c8,h5|d10,d5,c4,s5,s2,d8";
-
-		    var _decks = gameStructure.split('|');
-            var _cards = [];
-            for(var _i in _decks) {
-                _cards.push(_decks[_i].split(','));
-            }
-            gameConfig.groups['group_a'].fill = _cards;
-            
-            gameConfig.showTips = true;
+		    
 		    
 			SolitaireEngine.init(gameConfig);
 		</script>

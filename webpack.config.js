@@ -2,6 +2,7 @@
 
 // const NODE_ENV = process.env.NODE_ENV || 'development';
 // const webpack = require('webpack');
+const path = require('path');
 
 module.exports = {
 	entry: "./SolitaireEngine.main",
@@ -9,7 +10,7 @@ module.exports = {
 	output: {
 		// filename: "./js/SolitaireEngine.min.js",
 		filename: "./js/SolitaireEngine.js",
-		library: "SolitaireEngine"
+		library:  "SolitaireEngine"
 	},
 
 	watch: true,//NODE_ENV == 'development',
@@ -30,10 +31,22 @@ module.exports = {
 		// })
 	// ],
 
-	// resolve: {
-	// 	modulesDirectories : ['node_modules'],
-	// 	extensions: ['', '.js']
-	// },
+	resolve: {
+		// root : [
+		// 	path.resolve('./extensions'),
+		// 	path.resolve('./extensions/common')
+		// ],
+		modulesDirectories: [
+			// /.*/,
+			'./extensions/'        ,
+			'./extensions/common/' ,
+			'./extensions/deck/'   ,
+			'./extensions/group/'  ,
+			'./extensions/tips/'   ,
+			'./extensions/history/'
+		],
+		extensions: ['', '.js']
+	},
 
 	/*
 	resolveLoader: {
@@ -49,12 +62,12 @@ module.exports = {
 			// loader: 'babel?presets[]=es2015'
 			loader: 'babel',
 			query: {
-				presets: ['es2015'],
+				presets: ['es2015']//,
 				// optional: ['runtime'],
-				plugins: [
-					"transform-runtime"//,
+				// plugins: [
+					// "transform-runtime"//,
 					//'transform-object-assign'
-				]
+				// ]
 			}
 			// loader: 'babel-loader?optional[]=runtime'
 			// loader: 'babel?optional[]=runtime'

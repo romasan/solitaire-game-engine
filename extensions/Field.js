@@ -1,23 +1,24 @@
 'use strict';
 
 // module.exports = function(main, share) {
-import Group     from './addGroup';
-import Deck      from './addDeck';
-import tipsRules from './tipsRules';
+import share     from 'share';
+import event     from 'event';
+import defaults  from 'defaults';
+import common    from 'SolitaireCommon';
 
+import Group     from 'addGroup';
+import Deck      from 'addDeck';
+import Tips      from 'Tips';
+import tipsRules from 'tipsRules';
 
-var Field = function(main, share, data) {
+var _field = null;
+	// _params = {},
+	// _elements = {};
+
+var Field = function(data) {
 
 	// TODO избавиться от share.field и вообще от share ?
 	// console.log('FIELD');	
-	
-	var addDeck = function(data) {
-		return new Deck(main, share, data);
-	};
-
-	var addGroup = function(data) {
-		return new Group(main, share, data);
-	};
 	
 	// if(!data && share.field) {
 	// 	return share.field;
@@ -27,14 +28,14 @@ var Field = function(main, share, data) {
 		return false;
 	}
 
-	main.unlock();
+	common.unlock();
 	
-	if(data && share.field) {
-		share.field.clear();
+	if(data && _field) {
+		_field.clear();
+	} else {
+		share.set('elements', {});
 	}
 	
-	share.field = this;
-
 	var a = null;
 	try {
 		// BABEL BUG
@@ -49,47 +50,64 @@ var Field = function(main, share, data) {
 		console.log(data);
 	}
 
-	// share.homeGroups = typeof a != "undefined" && typeof a.homeGroups != "undefined" ? a.homeGroups : null;
+	this.homeGroups = a.homeGroups;
 	
-	main.event.dispatch('initField', {a : a});
-
-	share.debugLog = a.debugLog && typeof a.debugLog == 'boolean' ? a.debugLog : share.debugLog;
+	share.set(
+		'debugLog', 
+		a.debugLog && typeof a.debugLog == 'boolean' 
+			? a.debugLog 
+			: defaults.debugLog
+	);
 
 	// Tips
 
-	share.showTips            = typeof a.showTips            == 'boolean' ? a.showTips            : share.showTips;
-	share.showTipsDestination = typeof a.showTipsDestination == 'boolean' ? a.showTipsDestination : share.showTipsDestination;
-	share.showTipPriority     = typeof a.showTipPriority     == 'boolean' ? a.showTipPriority     : share.showTipPriority;
+	if(typeof a.showTips == 'boolean' && a.showTips) {
+		Tips.showTips({init : true});
+	} else {
+		Tips.hideTips({init : true});
+	}
 
-	share.autoTips = a.autoTips 
-	? typeof a.autoTips == 'string'
-		? tipsRules[a.autoTips]
+	// console.log('SHOW TIPS:', share.get('showTips'));
+
+	share.set(
+		'showTipsDestination', 
+		typeof a.showTipsDestination == 'boolean' 
+			? a       .showTipsDestination 
+			: defaults.showTipsDestination
+	);
+	share.set(
+		'showTipPriority', 
+		typeof a.showTipPriority == 'boolean' 
+			? a       .showTipPriority 
+			: defaults.showTipPriority
+	);
+
+	var _autoTips = a.autoTips
+		? typeof a.autoTips == 'string'
 			? tipsRules[a.autoTips]
-			: tipsRules[share.default_tipRule]
-		: a.autoTips //function OR object
-	: tipsRules[share.default_tipRule];
+				? a.autoTips// tipsRules[a.autoTips]
+				: defaults.tipRule// tipsRules[defaults.tipRule]
+			: defaults.tipRule// a.autoTips //function OR object
+		: defaults.tipRule//tipsRules[defaults.tipRule]
+	
+	share.set('autoTips', _autoTips);
+	
+	// console.log('set autoTips', _autoTips)
 
 	if(document.location.hash == "#god") {
 		document.body.innerHTML = "<h1>=)</h1>";
 	}
 
-	share.moveDistance = a.moveDistance && typeof a.moveDistance == 'number' ? a.moveDistance : share.default_move_distance;
+	share.set(
+		'moveDistance', 
+		a.moveDistance && typeof a.moveDistance == 'number' 
+			? a.moveDistance 
+			: defaults.moveDistance
+	);
 
 	// check Win
 
-	share.winCheckMethod = (
-		a.winCheck
-	 // && a.winCheck.callback && typeof a.winCheck.callback == 'function'
-	 && a.winCheck.rules
-	) ? typeof a.winCheck.rules == 'string'
-		? share.winCheckMethods[a.winCheck.rules]
-			? share.winCheckMethods[a.winCheck.rules]
-			: share.winCheckMethods['newerWin']
-		: a.winCheck.rules
-		// : typeof a.winCheck.method == 'function'
-		// 	? a.winCheck.method
-		// 	: a.winCheck.method
-	  : share.winCheckMethods['newerWin'];
+	share.set('winCheck', a.winCheck);
 
 	if(a.winCheck && a.winCheck.callback && typeof a.winCheck.callback == 'function') {
 		winCheckCallback = a.winCheck.callback;
@@ -104,36 +122,60 @@ var Field = function(main, share, data) {
 
 	// paraneters and values
 
-	if(a.zoom && typeof a.zoom == 'number') {
-		share.zoom = a.zoom
+	share.set(
+		'zoom', 
+		(a.zoom && typeof a.zoom == 'number') 
+			? a.zoom 
+			: defaults.zoom
+	);
+
+	this.tipsParams = {};
+	for(var tipParamName in defaults.tipsParams) {
+		this.tipsParams[tipParamName] = (typeof a.tipsParams[tipParamName] != "undefined")
+			? a.tipsParams[tipParamName]
+			: defaults.tipsParams[tipParamName]
 	}
 
-	if(a.tipsParams) {
-		share.field.tipsParams = a.tipsParams;
-		// console.log('count: 0, tips params:', share.field.tipsParams);
-	}
-
-	share.can_move_flip = a.can_move_flip && typeof a.can_move_flip == 'boolean' 
+	var _can_move_flip = a.can_move_flip && typeof a.can_move_flip == 'boolean' 
 		? a.can_move_flip 
-		: share.default_can_move_flip;
+		: defaults.canMoveFlip
+	share.set('can_move_flip', _can_move_flip);
 
-	if(a.debugLabels && typeof a.debugLabels == 'boolean') {
-		share.debugLabels = a.debugLabels
-	}
+	share.set(
+		'debugLabels', 
+		(a.debugLabels && typeof a.debugLabels == 'boolean')
+			? a.debugLabels
+			: defaults.debugLabels
+	);
 
-	if(a.groups) for(var groupName in a.groups) {
+	this.Draw = function() {
+		
+		if(!a) return;
+		
+		// console.log('draw all');		
+		
+		if(a.groups) for(var groupName in a.groups) {
 
-		a.groups[groupName].name = groupName;
-		addGroup(a.groups[groupName]);
-	}
-	if(a.decks) for(var e in a.decks) {
-		main.addDeck(a.decks[e]);
+			a.groups[groupName].name = groupName;
+			Group.addGroup(a.groups[groupName]);
+		}
+
+		if(a.decks) for(var e in a.decks) {
+			
+			// main.addDeck(a.decks[e]);
+			Deck.addDeck(a.decks[e]);
+		}
+
+		Tips.checkTips();
+
+		event.dispatch('newGame');
+
 	}
 
 	// checkTips()
 
 	if(a.startZIndex && typeof a.startZIndex == 'number') {
-		share.start_z_index = a.startZIndex;
+		share.set('start_z_index', a.startZIndex);
 	}
 
 	// fill elements in field
@@ -151,72 +193,70 @@ var Field = function(main, share, data) {
 		// }
 	}
 
-	/*if(a.cardLoader && typeof a.cardLoader == 'function') {// && a.cardsSet) {
-		a.cardLoader(a.cardsSet, main);
-	}*/
-
-	this.clear = function() {
-	
-		console.log('clear field', share);
-		
-		for(var i in share.elements) {
-			// console.log(elements[i]);
-			if(share.elements[i].type == 'deck') {
-				share.elements[i].clear();
-				share.elements[i] = null;
-			} else if(share.elements[i].type == 'group') {
-				share.elements[i] = null;
-			}
-		}
-		share.elements = {};
-	};
-
-	this.Redraw = function() {
-		
-		console.log('redraw field');
-
-		var a = null;
-
-		try {
-			// BABEL BUG
-			// a = JSON.parse(JSON.stringify(data));
-			a = Object['assign'] ? Object['assign']({}, data) : JSON.parse(JSON.stringify(data));
-			// a = _.clone(data);
-			// var g =  Object.assign({}, {});
-		} catch(e) {
-			a = data;
-			console.warn('Field.Redraw input params is not JSON, can\'t clone');
-		}
-
-		for(var _groupName in a.groups) {
-
-			// console.log('redraw group:', _groupName);
-
-			var _group = main.Group(_groupName);
-			if(_group) {
-				_group.Redraw(a.groups[_groupName]);
-			}
-		}
-
-		for(var i in a.decks) {
-			
-			// console.log('redraw deck:', a.decks[i].name);
-			
-			var _deck = main.Deck(a.decks[i].name);
-			if(_deck) {
-				_deck.Redraw(a.decks[i]);
-			}
-		}
-	};
-
-	main.event.dispatch('newGame');
-
 };
 
-// Field.prototype.clear
+Field.prototype.clear = function() {
+	
+	console.log('clear field', share);
+	
+	var _elements = share.get('elements');
+	for(var i in _elements) {
+		// console.log(elements[i]);
+		if(_elements[i].type == 'deck') {
+			_elements[i].clear();
+			_elements[i] = null;
+		} else if(share.elements[i].type == 'group') {
+			_elements[i] = null;
+		}
+	}
+	share.set('elements', {});
+};
 
-// Field.prototype.Redraw
+Field.prototype.Redraw = function() {
+		
+	console.log('redraw field');
 
-export default function(main, share, data) {
-	return new Field(main, share, data);
+	var a = null;
+
+	try {
+		// BABEL BUG
+		// a = JSON.parse(JSON.stringify(data));
+		a = Object['assign'] ? Object['assign']({}, data) : JSON.parse(JSON.stringify(data));
+		// a = _.clone(data);
+		// var g =  Object.assign({}, {});
+	} catch(e) {
+		a = data;
+		console.warn('Field.Redraw input params is not JSON, can\'t clone');
+	}
+
+	for(var _groupName in a.groups) {
+
+		// console.log('redraw group:', _groupName);
+
+		var _group = Group.Group(_groupName);
+		if(_group) {
+			_group.Redraw(a.groups[_groupName]);
+		}
+	}
+
+	for(var i in a.decks) {
+		
+		// console.log('redraw deck:', a.decks[i].name);
+		
+		var _deck = Deck.Deck(a.decks[i].name);
+		if(_deck) {
+			_deck.Redraw(a.decks[i]);
+		}
+	}
+};
+
+export default function(data) {
+	
+	if(data && !_field) {
+		_field = new Field(data);
+		event.dispatch('initField', {a : data});
+		_field.Draw();
+	};
+	
+	return _field;
 };

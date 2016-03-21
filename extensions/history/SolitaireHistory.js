@@ -1,23 +1,52 @@
 'use strict';
 
-import forceMove from './forceMove';
+import event     from 'event';
 
-export default function(main, share) {
+import forceMove from 'forceMove';
+import Deck      from 'addDeck';
 
-	forceMove(main, share);
+var _oneStepWay  = {};
+var _undoMethods = {};
+var _redoMethods = {};
 
-	share.undoMethods = {};
-	share.redoMethods = {};
+export default new function() {
+
+	this.reset = function() {
+		_oneStepWay = {};
+	};
+
+	this.add = function(step) {
+		for(var i in step) {
+			_oneStepWay[i] = step[i];
+		}
+	};
+
+	this.get = function() {
+		var _req = _oneStepWay;
+		_oneStepWay = {};
+		return _req;
+	};
+
+	this.addUndoMethods  = function(a) {
+		for(var i in a) {
+			_undoMethods[i] = a[i];
+		}
+	};
 	
-	main.event.listen('undo', function(a) {
-		
-		// console.log('forceMove undo:', share.undoMethods);
+	this.addRedoMethods  = function(a) {
+		for(var i in a) {
+			_redoMethods[i] = a[i];
+		}
+	};
 
+	event.listen('undo', function(a) {
+		
+		// console.log('forceMove undo:', _undoMethods);
 		if(!a) return;
 		
-		for(var i in share.undoMethods) {
+		for(var i in _undoMethods) {
 			// console.log(i);
-			share.undoMethods[i](a);
+			_undoMethods[i](a);
 		}
 		
 		// if(a.flip) {
@@ -30,8 +59,8 @@ export default function(main, share) {
 			 && typeof a.unflip.card.name  == "string"
 			 && typeof a.unflip.card.index != "undefined"
 			) {
-				var _deck = main.Deck(a.unflip.deck),
-					_cards = _deck ? _deck.getCards() : [];
+				var _deck = Deck.Deck(a.unflip.deck),
+					_cards = _deck ? _deck.cards : [];
 				if(_cards[a.unflip.card.index].name == a.unflip.card.name) {
 					_cards[a.unflip.card.index].flip = true;
 				}
@@ -49,7 +78,7 @@ export default function(main, share) {
 		 && typeof a.move.to   != "undefined" 
 		 && typeof a.move.deck != "undefined"
 		) {
-			share.forceMove({
+			forceMove({
 				from : a.move.to,
                 to   : a.move.from,
                 deck : a.move.deck
@@ -59,14 +88,14 @@ export default function(main, share) {
 
 	});
 
-	main.event.listen('redo', function(a) {
+	event.listen('redo', function(a) {
 		
-		// console.log('forceMove redo:', share.redoMethods);
+		// console.log('forceMove redo:', _redoMethods);
 
 		if(!a) return;
 		
-		for(var i in share.redoMethods) {
-			share.redoMethods[i](a);
+		for(var i in _redoMethods) {
+			_redoMethods[i](a);
 		}
 
 		// if(a.flip) {
@@ -79,8 +108,8 @@ export default function(main, share) {
 			 && typeof a.unflip.card.name  == "string"
 			 && typeof a.unflip.card.index != "undefined"
 			) {
-				var _deck = main.Deck(a.unflip.deck),
-					_cards = _deck ? _deck.getCards() : [];
+				var _deck = Deck.Deck(a.unflip.deck),
+					_cards = _deck ? _deck.cards : [];
 				if(_cards[a.unflip.card.index].name == a.unflip.card.name) {
 					_cards[a.unflip.card.index].flip = false;
 				}
@@ -97,7 +126,7 @@ export default function(main, share) {
 		 && typeof a.move.to   != "undefined" 
 		 && typeof a.move.deck != "undefined"
 		) {
-			share.forceMove({
+			forceMove({
 				from : a.move.from,
                 to   : a.move.to,
                 deck : a.move.deck
@@ -105,5 +134,4 @@ export default function(main, share) {
 		}
 
 	});
-
 };
