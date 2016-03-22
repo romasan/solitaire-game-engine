@@ -255,7 +255,9 @@ event.listen('addCardEl', function(e) {
 });
 
 event.listen('moveDragDeck', function(e) {
+	
 	// console.log('moveDragDeck', e);
+	
 	common.curLock();
 	for(var i in e.moveDeck) {
 		var _position = e.destination.padding(e.destination.cards.length - 1 + (i|0));

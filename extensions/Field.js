@@ -18,7 +18,7 @@ var _field = null;
 var Field = function(data) {
 
 	// TODO избавиться от share.field и вообще от share ?
-	// console.log('FIELD');	
+	console.log('FIELD', data, _field);	
 	
 	// if(!data && share.field) {
 	// 	return share.field;
@@ -31,6 +31,9 @@ var Field = function(data) {
 	common.unlock();
 	
 	if(data && _field) {
+		
+		console.log('CLEAR');
+		
 		_field.clear();
 	} else {
 		share.set('elements', {});
@@ -205,7 +208,7 @@ Field.prototype.clear = function() {
 		if(_elements[i].type == 'deck') {
 			_elements[i].clear();
 			_elements[i] = null;
-		} else if(share.elements[i].type == 'group') {
+		} else if(_elements[i].type == 'group') {
 			_elements[i] = null;
 		}
 	}
@@ -251,8 +254,21 @@ Field.prototype.Redraw = function() {
 };
 
 export default function(data) {
+
+	if(data) console.log("Field:export", data, _field);	
 	
+	if(data && _field) {// TODO THIS
+		
+		console.log('RESET', data);
+		
+		_field.clear();
+		_field.Draw(data);
+	}
+
 	if(data && !_field) {
+
+		console.log('NEW');
+		
 		_field = new Field(data);
 		event.dispatch('initField', {a : data});
 		_field.Draw();

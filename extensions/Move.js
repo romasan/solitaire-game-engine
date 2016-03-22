@@ -74,7 +74,7 @@ var Move = function(moveDeck, to, cursorMove) {
 					}
 				}
 
-				event.dispatch('makeStep', share.oneStepWay);
+				event.dispatch('makeStep', History.get());
 				
 				winCheck.winCheck({show : true});
 

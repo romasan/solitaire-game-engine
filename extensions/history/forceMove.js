@@ -5,6 +5,7 @@ import Tips from 'Tips';
 
 export default function(a) {
 
+
 	if(!a.from || !a.to || !a.deck) {
 		return;
 	}
@@ -22,6 +23,8 @@ export default function(a) {
 		return;
 	}
 	
+
+	
 	var _check     = true;
 	var _from_deck = _from.cards;
 	
@@ -30,7 +33,6 @@ export default function(a) {
 		if(i >= _from_deck.length - a.deck.length) {
 			var _id = i - (_from_deck.length|0) + (a.deck.length|0);
 			if(a.deck[_id] && _from_deck[i].name != a.deck[_id]) {
-				console.log(i, _id, _from_deck, _from_deck[i].name, a.deck[_id])
 				_check = false;
 			}
 		}
@@ -42,6 +44,8 @@ export default function(a) {
 	} else {
 		_warn(4);
 	}
+	console.log('>>>');//return;
+	// return;
 
 	_from.Redraw();
 	_to  .Redraw();
@@ -50,6 +54,6 @@ export default function(a) {
 	//	_to.push(_to.getCards)
 	//}
 
-	Tips.checkTips();
+	// Tips.checkTips();
 
 };

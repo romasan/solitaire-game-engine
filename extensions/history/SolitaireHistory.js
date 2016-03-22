@@ -42,6 +42,7 @@ export default new function() {
 	event.listen('undo', function(a) {
 		
 		// console.log('forceMove undo:', _undoMethods);
+		
 		if(!a) return;
 		
 		for(var i in _undoMethods) {

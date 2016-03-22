@@ -14,6 +14,9 @@ export default new function() {
 	};
 
 	this.dispatch = function(name, data) {
+
+		// console.log('dispatch', name, data);
+		
 		if(events[name]) {
 			for(var i in events[name]) {
 				events[name][i](data);
