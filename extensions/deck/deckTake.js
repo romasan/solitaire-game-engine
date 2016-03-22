@@ -8,7 +8,8 @@ import takeRules from 'readyTakeRules';
 
 export default function(cardId) {
 
-	var rulesCorrect = !common.isLock();
+	var rulesCorrect = true;//!common.isLock();
+	// console.log('rulesCorrect', rulesCorrect, common.isLock());
 	
 	if(typeof this.fill == "boolean") {
 		rulesCorrect = rulesCorrect && !this.fill;
@@ -36,6 +37,7 @@ export default function(cardId) {
 			var _name = common.validateCardName(cardName);
 			
 			rulesCorrect = rulesCorrect && _name;
+
 			
 			if(_name) {
 				cardSuit = _name.suit;

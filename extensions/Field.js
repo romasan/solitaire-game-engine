@@ -175,6 +175,8 @@ var Field = function(data) {
 
 		event.dispatch('newGame');
 
+		common.unlock();
+
 	}
 
 	// checkTips()

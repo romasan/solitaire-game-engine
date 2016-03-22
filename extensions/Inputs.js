@@ -47,7 +47,6 @@ event.listen('redo', function() {
 
 var cdown = function(target, x, y) {
 
-
     var _startCursor = share.get('startCursor'),
         _dragDeck    = share.get('dragDeck');
     
@@ -73,6 +72,7 @@ var cdown = function(target, x, y) {
     }
     
     if( target.className.split(' ').indexOf('draggable') >= 0 ) {
+
         
         var _id     = target.id,
             _card   = _id                   ? common.getElementById(_id) : null,
@@ -93,6 +93,7 @@ var cdown = function(target, x, y) {
         
         var _dragDeck = _deck ? _deck.Take(_id) : null;
 
+        console.log('CDOWN >>>', _parent, _deck, _id, _dragDeck);
         // console.log('CDOWN', _id, _deck, _deck.Take(_id));
         // console.log('_dragDeck', _dragDeck);
 		
