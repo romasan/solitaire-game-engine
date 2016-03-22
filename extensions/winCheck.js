@@ -38,7 +38,7 @@ var winCheck = function(params) {
 	}
 
 	if(rulesCorrect) {
-		if(params && params.noCallback == true) return true;
+		if(params && params.noCallback) return true;
 		event.dispatch('win', params);
 		// a.winCheck.callback();
 		return true;

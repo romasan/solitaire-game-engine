@@ -44,7 +44,7 @@ export default function(a) {
 	} else {
 		_warn(4);
 	}
-	console.log('>>>');//return;
+	// console.log('>>>');//return;
 	// return;
 
 	_from.Redraw();

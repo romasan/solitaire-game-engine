@@ -52,7 +52,7 @@ export default {
         //        A     y 90deg
         var _depth  = 1,
         	_radius = index * _depth,
-        	_step   = 180 / 16,
+        	// _step   = 180 / 16,
         	// _card   = defaults.card,
         	_angle  = params.rotate,//_step / 2 + 270;
         	_deg    = Math.PI / 180,

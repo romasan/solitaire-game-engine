@@ -7,7 +7,7 @@ export default function(_a) {
 	concole.log('groupRedraw:', _a);
 
 	var _decks = this.getDecks();
-	var _index = {}
+	// var _index = {}
 
 	if(typeof _a.decks == 'undefined' || typeof _a.decks == 'number') {_a.decks = [];}
 

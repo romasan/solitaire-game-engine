@@ -43,7 +43,7 @@ export default function(cardId) {
 			}
 			
 			rulesCorrect = rulesCorrect && (
-				this.cards[i].flip == false 
+				!this.cards[i].flip
 			 || this.cards[i].flip == defaults.canMoveFlip
 			);
 		}

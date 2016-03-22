@@ -70,7 +70,7 @@ export default function(moveDeck, cursorMove) {
 				if(_in_direction_count == 0) {
 					_min_distance = _autoTips[i].distance;
 				} else {
-					if(_autoTips[i].inDirection == true) {
+					if(_autoTips[i].inDirection) {
 						_min_distance = _autoTips[i].distance;
 						_tip_index = i;
 					}
@@ -82,7 +82,7 @@ export default function(moveDeck, cursorMove) {
 					_min_distance = _autoTips[i].distance;
 					_tip_index = i;
 				} else {
-					if(_autoTips[i].inDirection == true) {
+					if(_autoTips[i].inDirection) {
 						_min_distance = _autoTips[i].distance;
 						_tip_index = i;
 					}

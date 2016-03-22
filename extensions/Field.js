@@ -18,7 +18,7 @@ var _field = null;
 var Field = function(data) {
 
 	// TODO избавиться от share.field и вообще от share ?
-	console.log('FIELD', data, _field);	
+	// console.log('FIELD', data, _field);	
 	
 	// if(!data && share.field) {
 	// 	return share.field;
@@ -32,7 +32,7 @@ var Field = function(data) {
 	
 	if(data && _field) {
 		
-		console.log('CLEAR');
+		// console.log('CLEAR');
 		
 		_field.clear();
 	} else {
@@ -50,7 +50,7 @@ var Field = function(data) {
 		console.warn('Field input params is not JSON, maybe the rules are wrong.');
 		// 'zxczxc';
 		// console.log(JSON.parse(JSON.stringify(data)));
-		console.log(data);
+		// console.log(data);
 	}
 
 	this.homeGroups = a.homeGroups;
@@ -119,7 +119,7 @@ var Field = function(data) {
 	// extension: winCheckMethods
 
 	if(a.saveStep && typeof a.saveStep == 'function') {
-		console.log('a.saveStep', a.saveStep);
+		// console.log('a.saveStep', a.saveStep);
 		saveStepCallback = a.saveStep;
 	}
 
@@ -133,8 +133,10 @@ var Field = function(data) {
 	);
 
 	this.tipsParams = {};
+	
 	for(var tipParamName in defaults.tipsParams) {
-		this.tipsParams[tipParamName] = (typeof a.tipsParams[tipParamName] != "undefined")
+	
+		this.tipsParams[tipParamName] = (a.tipsParams && typeof a.tipsParams[tipParamName] != "undefined")
 			? a.tipsParams[tipParamName]
 			: defaults.tipsParams[tipParamName]
 	}
@@ -200,7 +202,7 @@ var Field = function(data) {
 
 Field.prototype.clear = function() {
 	
-	console.log('clear field', share);
+	// console.log('clear field', share);
 	
 	var _elements = share.get('elements');
 	for(var i in _elements) {
@@ -217,7 +219,7 @@ Field.prototype.clear = function() {
 
 Field.prototype.Redraw = function() {
 		
-	console.log('redraw field');
+	// console.log('redraw field');
 
 	var a = null;
 
@@ -255,11 +257,11 @@ Field.prototype.Redraw = function() {
 
 export default function(data) {
 
-	if(data) console.log("Field:export", data, _field);	
+	// if(data) console.log("Field:export", data, _field);	
 	
 	if(data && _field) {// TODO THIS
 		
-		console.log('RESET', data);
+		// console.log('RESET', data);
 		
 		_field.clear();
 		_field.Draw(data);
@@ -267,7 +269,7 @@ export default function(data) {
 
 	if(data && !_field) {
 
-		console.log('NEW');
+		// console.log('NEW');
 		
 		_field = new Field(data);
 		event.dispatch('initField', {a : data});

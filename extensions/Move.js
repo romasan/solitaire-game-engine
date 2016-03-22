@@ -63,7 +63,7 @@ var Move = function(moveDeck, to, cursorMove) {
 				}});
 
 				var _deck = _deck_departure.cards;
-				if(_deck.length && _deck[_deck.length - 1].flip == true) {
+				if(_deck.length && _deck[_deck.length - 1].flip) {
 					_deck[_deck.length - 1].flip = false;
 					share.oneStepWay.unflip = {
 						deck : _deck_departure.name,

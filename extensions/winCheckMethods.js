@@ -44,7 +44,7 @@ var wcm = {
 		for(var d in a.decks) {
 
 			// console.log('_asc_desk', a.asc_desk ? 'asc' : 'desk', a.asc_desk, d, a.decks[d], _correct, a.decks[d].cards);
-			if(_correct == false) return false;
+			if(!_correct) return false;
 			
 			var _cards = a.decks[d].cards;
 			// console.log('cards:', _cards);
@@ -102,7 +102,7 @@ var wcm = {
 		// console.log('allinone', a, _emptyDecksCount, _decksLength);
 		var _correct = _emptyDecksCount == _decksLength - 1;
 		if(a.filter) {
-			a.decks = _correct ? [a.decks[fillIndex]] : [];
+			a.decks = _correct ? [a.decks[_fillIndex]] : [];
 		}
 		return _correct
 	},
@@ -123,7 +123,6 @@ var wcm = {
 		a.asc_desk = 1;
 		return wcm._asc_desk(a);
 	},
-
 
 	// Composite rules (input arguments)
 	// комбинированное правило

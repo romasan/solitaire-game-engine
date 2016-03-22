@@ -1,7 +1,7 @@
 'use strict';
 
 // const NODE_ENV = process.env.NODE_ENV || 'development';
-// const webpack = require('webpack');
+const webpack = require('webpack');
 const path = require('path');
 
 module.exports = {
@@ -23,7 +23,7 @@ module.exports = {
 	devtool: "source-map",
 	// devtool: NODE_ENV == 'development' ? "cheap-inline-module-source-map" : null,
 
-	// plugins: [
+	plugins: [],
 		// new webpack.EnvironmentPlugin('NODE_ENV', 'USER')
 		
 		// new webpack.DefinePlugin({
@@ -79,12 +79,12 @@ module.exports = {
 
 // if(NODE_ENV == 'production') {
 
-/*module.exports.plugins.push(
+module.exports.plugins.push(
 	new webpack.optimize.UglifyJsPlugin({
 		// warnings:     false,
 		drop_console: true,
 		unsafe:       true
 	})
-);*/
+);
 
 // }

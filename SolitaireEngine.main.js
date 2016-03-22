@@ -25,7 +25,7 @@ exports.winCheck = winCheck.hwinCheck;
 
 exports.init = function(gameConfig) {
 
-	console.log('main:init', gameConfig);
+	// console.log('main:init', gameConfig);
 	
 	Field(gameConfig);
 	exports.Redraw = Field.Redraw;
