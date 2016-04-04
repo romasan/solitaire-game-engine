@@ -1,14 +1,19 @@
 'use strict';
 
-import event      from 'event';
-import defaults   from 'defaults';
+import event     from 'event';
+import defaults  from 'defaults';
 
-import Deck       from 'addDeck';
-import History    from 'SolitaireHistory';
+import Deck      from 'addDeck';
+import Group     from 'addGroup';
+import History   from 'SolitaireHistory';
+import forceMove from 'forceMove';
+// import Tips      from 'Tips';
 
-export default {
+var _actions = {
 	
+	// TODO переделать
 	"twindeck" : function(e) {
+
 		
 		// console.log("twindeck action:", e);
 		if(e.deck_from.iteration == 0) {
@@ -17,7 +22,9 @@ export default {
 
 		var deck_to = Deck.Deck(e.data.to);
 		
-		var moveCardsCount = e.data.count && typeof e.data.count == 'number' ? e.data.count : defaults.actions.twindeck.CardsCount;
+		var moveCardsCount = e.data.count && typeof e.data.count == 'number' 
+			? e.data.count 
+			: defaults.actions.twindeck.CardsCount;
 		
 		// количество оставшихся карт в первой колоде
 		var deckFromCardsCount = e.deck_from.cards.length;
@@ -90,60 +97,101 @@ export default {
 		
 		// ------------------------------
 
-		share.checkTips();
+		// share.checkTips();
 
 		e.deck_from.iteration -= 1;
 
 	},
 
+	"twindeck2" : function(e) {
+		// TODO
+	},
+
 	"dealerdeck" : function(e) {
 		// TODO
-		console.log("dealerdeck", e);
+		var _decks = Group.Group(e.toGroup).decks;
+		
+		if(this.cards.length == 0) return;
+		
+		for(var deckName in _decks) {
+			var _cardName = this.getTopCard().name
+			forceMove({
+				from : this.name,
+				to   : _decks[deckName].name,
+				deck : [_cardName],
+				flip : true
+			}, true);
+			
+			// _decks[deckName].flipCheck();
+			// _decks[deckName].Redraw();
+
+			History.add({move : {
+				from : this.name,
+				to   : _decks[deckName].name,
+				deck : [_cardName],
+				flip : true
+			}});
+		}
+		event.dispatch('makeStep', History.get());
 	}
 };
 
 // ------------------------------------------------------------------------------------------
 
 // History extension
-History.addUndoMethods({twindeck : function(a) {
-	if(a.twindeck) {
+// History.addUndoMethods({twindeck : function(a) {
+// 	if(a.twindeck) {
 		
-		var _deck_from = Deck.Deck(a.twindeck.from),
-			_deck_to   = Deck.Deck(a.twindeck.to);
+// 		var _deck_from = Deck.Deck(a.twindeck.from),
+// 			_deck_to   = Deck.Deck(a.twindeck.to);
 		
-		// TODO
-		// deck_to cards [moveCards] -> deck_from
-		var _moveDeck = _deck_to.Pop(a.twindeck.moveCards.length);
-		if(_moveDeck.length) {
-			_deck_from.Push(_moveDeck);
-		}
+// 		// TODO
+// 		// deck_to cards [moveCards] -> deck_from
+// 		var _moveDeck = _deck_to.Pop(a.twindeck.moveCards.length);
+// 		if(_moveDeck.length) {
+// 			_deck_from.Push(_moveDeck);
+// 		}
 
-		var _twindeck = [];
-		for(var i in a.twindeck.toHide) {
-			if(_deck_from.twindeck.length) {
-				_twindeck.push(
-					_deck_from.twindeck.pop()
-				);
-			}
-		}
-		_twindeck.reverse();
+// 		var _twindeck = [];
+// 		for(var i in a.twindeck.toHide) {
+// 			if(_deck_from.twindeck.length) {
+// 				_twindeck.push(
+// 					_deck_from.twindeck.pop()
+// 				);
+// 			}
+// 		}
+// 		_twindeck.reverse();
 		
-		if(_twindeck.length) {
-			_deck_to.Push(_twindeck);
-		}
+// 		if(_twindeck.length) {
+// 			_deck_to.Push(_twindeck);
+// 		}
 
-		_deck_from.flipCheck();
-		_deck_to  .showCards();
-		_deck_from.Redraw();
-		_deck_to  .Redraw();
+// 		_deck_from.flipCheck();
+// 		_deck_to  .showCards();
+// 		_deck_from.Redraw();
+// 		_deck_to  .Redraw();
 		
-		// console.log('twindeck undo:', a.twindeck, share.deckCardNames(_deck_from.twindeck));
+// 		// console.log('twindeck undo:', a.twindeck, share.deckCardNames(_deck_from.twindeck));
+// 	}
+// }});
+
+// History.addRedoMethods({twindeck : function(a) {
+// 	if(a.twindeck) {
+// 		// TODO
+// 		console.log('twindeck redo:', a.twindeck);
+// 	}
+// }});
+
+var runActions = function(e) {// bind this deck
+	for(var actionName in this.actions) {
+		if(_actions[actionName]) {
+			console.log('run action', this, actionName, this.actions[actionName]);
+			_actions[actionName].call(this, this.actions[actionName]);
+		}
 	}
-}});
+	// Tips.checkTips();
+}
 
-History.addRedoMethods({twindeck : function(a) {
-	if(a.twindeck) {
-		// TODO
-		console.log('twindeck redo:', a.twindeck);
-	}
-}});
+export default {
+	runActions
+}

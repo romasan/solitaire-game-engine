@@ -53,7 +53,7 @@ var Field = function(data) {
 		// console.log(data);
 	}
 
-	this.homeGroups = a.homeGroups;
+	this.homeGroups = a.homeGroups ? a.homeGroups : [];
 	
 	share.set(
 		'debugLog', 
@@ -135,11 +135,23 @@ var Field = function(data) {
 	this.tipsParams = {};
 	
 	for(var tipParamName in defaults.tipsParams) {
-	
 		this.tipsParams[tipParamName] = (a.tipsParams && typeof a.tipsParams[tipParamName] != "undefined")
 			? a.tipsParams[tipParamName]
 			: defaults.tipsParams[tipParamName]
 	}
+
+	this.inputParams = {};
+	for(var inputParamName in defaults.inputParams) {
+		this.inputParams[inputParamName] = (a.inputParams && typeof a.inputParams[inputParamName] != "undefined")
+			? a.inputParams[inputParamName]
+			: defaults.inputParams[inputParamName]
+	}
+
+	// var _animation = typeof a.animation == 'boolean' 
+	// 	? a.animation 
+	// 	: defaults.animation;
+	// this.animation = _animation;
+	// share.set('animation', _animation);
 
 	var _can_move_flip = a.can_move_flip && typeof a.can_move_flip == 'boolean' 
 		? a.can_move_flip 

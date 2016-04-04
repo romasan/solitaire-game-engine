@@ -1,6 +1,6 @@
 <html>
 	<head>
-	<title>SOLITAIRE ENGINE TEST</title>
+		<title>SOLITAIRE ENGINE TEST</title>
 		<link rel="stylesheet" href="./css/SolitaireEngine.css"/>
 		<script language="javascript" src="./js/jquery.min.js"></script>
 		</script>
@@ -144,7 +144,7 @@
 			    }
 			};
 			*/
-
+/*
 			// crescent
 			var gameConfig = {
 			    // "scriptpath"   : "./js/",
@@ -157,7 +157,7 @@
 			    },
 			    "moveDistance" : 10,
 			    "winCheck" : {
-			        /*"callback" : function() {},*/
+			        // "callback" : function() {},
 			        "rules"     : {// "string" OR function(){} OR {object}
 			            "lego" : [
 			                {
@@ -184,7 +184,7 @@
 			    "groups"       : {
 			        
 			        "group_a" : {
-			            "putRules"    : ["ascdescOne", "oneSuit"/*, "notForEmpty"*/],
+			            "putRules"    : ["ascdescOne", "oneSuit"],//, "notForEmpty"],
 			            "showSlot"    : true,
 			            "paddingType" : "radial",
 			            "takeRules"   : ["onlytop"]
@@ -275,10 +275,10 @@
 			    },
 			    "homeGroups" : ["group_b1", "group_b2"]
 			};
-
+*/
 			// uznik
-			/*
-			var start = {x : 100, y : 100};
+			
+			var start = {x : 10, y : 10};
 			var gameConfig = {
 			    // "scriptpath"   : "./js/",
 			    "field"        : "#map",
@@ -355,7 +355,7 @@
 			    ]
 			    // "homeGroups" : ["group_b1", "group_b2"]
 			};
-			*/
+			
 
 
 			SolitaireEngine.event.listen('win', function(e) {
@@ -366,14 +366,14 @@
 			});
 			
 			
-			gameConfig.groups['group_a'].decks = [];
+			/*gameConfig.groups['group_a'].decks = [];
             
             // SolitaireEngine.ready(function(SE) {
-            //              b
+            //             .b
             //       C  ..`:   A = sin(b) * C
             //     ...``   :B  B = cos(b) * C
             // a.``.......+:
-            //        A     y 90deg
+            //        A     c 90deg
             var _step = 180 / 16;
             var _radius = 405;
             var _center = {
@@ -407,7 +407,7 @@
             for(var _i in _decks) {
                 _cards.push(_decks[_i].split(','));
             }
-            gameConfig.groups['group_a'].fill = _cards;
+            gameConfig.groups['group_a'].fill = _cards;*/
             
             gameConfig.showTips = true;
             
@@ -435,6 +435,143 @@
 		    // gameConfig.groups.twindeck.decks[0].fill = ["d4"];
 
 			SolitaireEngine.init(gameConfig);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*
+ * PRISONER SOLITAIRE GENERATOR
+ */
+var shuffle = function(a) {
+    for(var j, x, i = a.length; i; j = Math.floor(Math.random() * i), x = a[--i], a[i] = a[j], a[j] = x) {};
+}
+var gen = function() {
+	var shuffleDeck        = SolitaireEngine.debug.deckGenerator({
+			shuffle   : true,
+			deckCount : 36
+		}),
+		first9             = shuffleDeck.slice(0, 9),
+		remaining          = shuffleDeck.slice(9, 99),
+		first9_describe    = {},
+		remaining_describe = {},
+		winCards           = [],
+		remainingCards     = [],
+		val                = SolitaireEngine.debug.validateCardName,
+		triParts           = [],
+		plus               = [];
+	for(var i in first9) {
+		first9_describe[first9[i]] = val(first9[i]);
+	}
+	for(var i in remaining) {
+		remaining_describe[remaining[i]] = val(remaining[i]);
+	}
+	for(var i in first9_describe) {
+		for(var _i in remaining_describe) {
+			if(
+				!remaining_describe[_i].removed 
+			 && first9_describe[i].rank == remaining_describe[_i].rank
+			) {
+				// exclude duplicates
+				var found = false;
+				for(var __i in winCards) {
+					if(val(winCards[__i]).rank == remaining_describe[_i].rank) found = true;
+				}
+				if(!found) {
+					winCards.push(_i);
+					remaining_describe[_i].removed = true;
+				}
+			}
+		}
+	}
+	for(i in remaining_describe) {
+		if(!remaining_describe[i].removed) {
+			remainingCards.push(i);
+		}
+	}
+
+	// console.log('\n\n\n');
+
+	// console.log('first9',         first9        );
+	// console.log('winCards',       winCards      );
+	// console.log('remainingCards', remainingCards);
+	// console.log(
+	// 	winCards.length, 
+	// 	remainingCards.length, 
+	// 	shuffleDeck.length,
+	// 	winCards.length * 2
+	// );
+
+	while(remainingCards.length) {
+		if(
+			winCards.length
+		) {
+			var a = [];
+			var _a = winCards.pop();
+			a.push(_a);
+			a.push(remainingCards.pop());
+			a.push(remainingCards.pop());
+			shuffle(a);
+			triParts.push(a);
+			// plus.push({tri : a, winCard : _a});
+		} else {
+			var a = [];
+			a.push(remainingCards.pop());
+			a.push(remainingCards.pop());
+			a.push(remainingCards.pop());
+			triParts.push(a);
+			// plus.push({tri : a});
+		}
+	}
+	shuffle(triParts);
+	triParts.unshift(first9);
+	// for(var i in plus) {
+	// 	console.log(plus[i].tri, plus[i].winCard);
+	// }
+	return triParts.join('|');
+	// for(var i in triParts) {
+	// 	console.log(triParts[i]);
+	// }
+}
+
 
 		</script>
 		

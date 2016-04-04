@@ -9,6 +9,7 @@ import Tips     from 'Tips';
 import bestTip  from 'bestTip';
 import History  from 'SolitaireHistory';
 import winCheck from 'winCheck';
+import Field    from 'Field';
 
 var Move = function(moveDeck, to, cursorMove) {
 	
@@ -65,13 +66,13 @@ var Move = function(moveDeck, to, cursorMove) {
 				var _deck = _deck_departure.cards;
 				if(_deck.length && _deck[_deck.length - 1].flip) {
 					_deck[_deck.length - 1].flip = false;
-					share.oneStepWay.unflip = {
+					History.add({unflip : {
 						deck : _deck_departure.name,
 						card : {
 							name  : _deck[_deck.length - 1].name,
 							index : _deck.length - 1
 						}
-					}
+					}});
 				}
 
 				event.dispatch('makeStep', History.get());
@@ -86,8 +87,9 @@ var Move = function(moveDeck, to, cursorMove) {
 
 	// если не кдалось положить карты, вернуть обратно
 	if(!_success && _deck_departure) {
-
-		if(cursorMove.distance >= share.get('moveDistance')) {
+		
+		var _field = Field();
+		if(_field.inputParams.doubleClick && cursorMove.dbclick || cursorMove.distance >= share.get('moveDistance')) {
 
     		var Tip = bestTip(moveDeck, cursorMove);
     		

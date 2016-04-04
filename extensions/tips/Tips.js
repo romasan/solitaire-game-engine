@@ -15,7 +15,8 @@ var _showTips = defaults.showTips;
 var tipTypes = [
 	'tip', 
 	'tipTo', 
-	'tipPriority'
+	'tipPriority',
+	'tipToHome'
 ];
 
 var _tips = [];
@@ -24,7 +25,7 @@ var getTips = function() {
 	return _tips;
 }
 
-var checkTips = function(a) {
+var checkTips = function() {
 
 	// console.log('%cCHECK TIPS', 'background : green');
 
@@ -66,6 +67,8 @@ var checkTips = function(a) {
 		var _field = Field();
 		var _homeGroups = _field.homeGroups;
 
+		// console.log(_tips, _field);
+
 		for(var i in _tips) {
 
 			// TODO инициализировать "hideTipsInDom" в Field.js 
@@ -86,16 +89,26 @@ var checkTips = function(a) {
 			} else {
 
 				event.dispatch('showTip', {
-					el : _tips[i].from.card, 
+					el   : _tips[i].from.card, 
 					type : 'tip'
 				});
+				
 			}
+			
+			if(_homeGroups.indexOf(_tips[i].to.deck.parent) >= 0) {
+				event.dispatch('showTip', {
+					el   : _tips[i].from.card, 
+					type : 'tipToHome'
+				});
+			}
+
 		}
 	}
 
 	// console.log('Tips:', _tips);
 	
 };
+event.listen('makeStep', checkTips);
 
 var showTips = function(a) {
 	_showTips = true;

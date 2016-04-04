@@ -4,6 +4,7 @@ import share    from 'share';
 import defaults from 'defaults';
 
 import Tips     from 'Tips';
+import Field    from 'Field';
 
 export default function(moveDeck, cursorMove) {
 
@@ -24,12 +25,14 @@ export default function(moveDeck, cursorMove) {
 		_tip_index          = 0,
 		_in_direction_count = 0;
 
-	var _homeGroups = share.get('homeGroups');
+	var _field = Field();
+	var _homeGroups = _field.homeGroups;
+	
 	if(_homeGroups) {
 		var _tips = [];
 		for(var i in _homeGroups) {
 			for(var t in _autoTips) {
-				if(_autoTips[t].to.deck.parent() == _homeGroups[i]) {
+				if(_autoTips[t].to.deck.parent == _homeGroups[i]) {
 					_tips.push(_autoTips[t]);
 				}
 			}

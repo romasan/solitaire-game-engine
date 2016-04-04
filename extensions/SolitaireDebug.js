@@ -1,13 +1,15 @@
 'use strict';
 
-import event from 'event';
+import event         from 'event';
+import common        from 'SolitaireCommon';
 
 import deckGenerator from 'deckGenerator';
+// import History       from 'SolitaireHistory';
 
-var debugHistory = new function() {
-	
-	var _history = [],
-		_redo    = [];
+var _history = [],
+	_redo    = [];
+
+var debugHistoryMgr = new function() {
 	
 	this.record = function(data) {
 
@@ -30,19 +32,26 @@ var debugHistory = new function() {
 	}
 };
 
-event.listen('makeStep', debugHistory.record);
 
 // add buttons
-document.addEventListener("DOMContentLoaded", function() {
+var _debugHistory = false;
+var debugHistory = function(a) {
 	
-	$(document.body).append(
+	if(_debugHistory) {
+		return;
+	}
+	_debugHistory = true;
+	
+	event.listen('makeStep', debugHistoryMgr.record);
+	
+	if(a && a.drawButtons) $(document.body).append(
 		$("<div>")
 			.append(
 				$("<span>")
 					.addClass('awesome')
 					.text('UNDO')
 					.click(function() {
-						var _data = debugHistory.undo();
+						var _data = debugHistoryMgr.undo();
 						if(_data) {
 							SolitaireEngine.event.dispatch('undo', _data);
 						}
@@ -52,7 +61,7 @@ document.addEventListener("DOMContentLoaded", function() {
 					.addClass('awesome')
 					.text('REDO')
 					.click(function() {
-						var _data = debugHistory.redo();
+						var _data = debugHistoryMgr.redo();
 						if(_data) {
 							SolitaireEngine.event.dispatch('redo', _data);
 						}
@@ -64,6 +73,11 @@ document.addEventListener("DOMContentLoaded", function() {
 			})
 	);
 
-});
+};
 
-export default {deckGenerator};
+export default {
+	deckGenerator    : deckGenerator,
+	debugHistory     : debugHistory,
+	debugHistoryMgr  : debugHistoryMgr,
+	validateCardName : common.validateCardName
+};

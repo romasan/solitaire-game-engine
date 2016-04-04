@@ -48,7 +48,8 @@ export default {
 
 	theme               : 'default_theme',
 
-	animationTime       : 300,
+	animation           : true,
+	animationTime       : 300,// ms.
 
 	actions : {
 		twindeck : {
@@ -58,6 +59,7 @@ export default {
 
 
 	startZIndex         : 100,
+    topZIndex           : 900,
 
 	canMoveFlip         : false,
 
@@ -65,5 +67,10 @@ export default {
         hideOnEmpty       : false,
         excludeHomeGroups : true
     },
+
+    inputParams : {
+        doubleClick : false
+    }
+
 
 };

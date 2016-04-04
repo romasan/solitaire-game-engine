@@ -86,7 +86,7 @@ export default function(a) {
 	}
 
 	if(_shuffle) {
-		_deck = shuffle(_deck);
+		shuffle(_deck);
 	}
 
 	return _deck;

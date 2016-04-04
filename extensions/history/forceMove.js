@@ -1,10 +1,14 @@
 'use strict';
 
-import Deck from 'addDeck';
-import Tips from 'Tips';
+import event from 'event';
+import share from 'share';
+
+import Deck  from 'addDeck';
+import Tips  from 'Tips';
 
 export default function(a) {
 
+	var _animation = share.get('animation');
 
 	if(!a.from || !a.to || !a.deck) {
 		return;
@@ -39,16 +43,50 @@ export default function(a) {
 	}
 	
 	if(_check) {
+
 		var _pop = _from.Pop(a.deck.length);
+
+		if(a.flip) {
+			for(var i in _pop) {
+				_pop[i].flip = !_pop[i].flip;
+			}
+		}
+
 		_to.Push(_pop);
+
+		if(_animation) {
+			console.log('ANIMATE', _pop)
+			var __pop = [];
+			for(var i in _pop) {
+				__pop.push({
+					card : _pop[i]
+				});
+			}
+			console.log(__pop);
+			// _from.Redraw();
+			// _to  .Redraw();
+			event.dispatch('moveDragDeck', {
+				departure   : _from,
+				destination : _to,
+				moveDeck    : __pop
+			});
+			
+			// event.dispatch('animateMove', {
+			// 	from : _from,
+			// 	to   : _to,
+			// 	deck : _pop
+			// });
+
+		} else {
+			_from.Redraw();
+			_to  .Redraw();
+		}
+
 	} else {
 		_warn(4);
 	}
 	// console.log('>>>');//return;
 	// return;
-
-	_from.Redraw();
-	_to  .Redraw();
 	
 	//for(var i = deck.length;i;i -= 1) {
 	//	_to.push(_to.getCards)

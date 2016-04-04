@@ -17,7 +17,7 @@ import Field           from 'Field';
 import SolitaireCommon from 'SolitaireCommon';
 import winCheck        from 'winCheck';
 
-// import SolitaireDebug  from 'SolitaireDebug';
+import SolitaireDebug  from 'SolitaireDebug';
 
 exports.event    = event;
 exports.options  = defaults;
@@ -31,4 +31,4 @@ exports.init = function(gameConfig) {
 	exports.Redraw = Field.Redraw;
 };
 
-// if(SolitaireDebug) exports.debug = SolitaireDebug;
+if(SolitaireDebug) exports.debug = SolitaireDebug;

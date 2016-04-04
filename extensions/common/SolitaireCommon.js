@@ -19,7 +19,6 @@ import Tips     from 'Tips';
 // 		share.winCheckCallback(e);
 // 	}
 // });
-
 // event.listen('newGame', function(e) {
 // 	Tips.checkTips();
 // });
@@ -121,16 +120,36 @@ var _id = 0,
 	return _id++;
 };
 
+share.set('animation', defaults.animation);
+
+var animationOn = function() {
+	share.set('animation', true);
+}
+
+var animationOff = function() {
+	share.set('animation', false);
+}
+
+event.listen('newGame', function(e) {
+	animationOff();
+});
+
+event.listen('makeStep', function(e) {
+	share.set('animation', defaults.animation);
+});
+
 export default {
-	isLock,
-	lock,
-	unlock,
-	isCurLock,
-	curLock,
-	curUnLock,
-	getElements,
-	getElementById,
+	isLock           ,
+	lock             ,
+	unlock           ,
+	isCurLock        ,
+	curLock          ,
+	curUnLock        ,
+	getElements      ,
+	getElementById   ,
 	getElementsByName,
-	validateCardName,
-	genId
+	validateCardName ,
+	genId            ,
+	animationOn      ,
+	animationOff
 };

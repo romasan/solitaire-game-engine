@@ -25,6 +25,10 @@ var deckConstructor = function(a, _id) {
 
 	this.cards = [];
 	
+	this.getTopCard = function() {
+		return this.cards[this.cards.length - 1];
+	}
+	
 	// parameters
 	
 	this.type = 'deck';
@@ -71,6 +75,7 @@ var deckConstructor = function(a, _id) {
 		checkFlip = flipTypes[flipType];
 
 	this.flipCheck = function() {
+		// console.log('flipCheck', flipType, this.name);
 		for(var i in this.cards) {
 			checkFlip(this.cards[i], i|0, this.cards.length);
 		}
@@ -126,9 +131,13 @@ var deckConstructor = function(a, _id) {
 		return _padding;
 	}
 	
+	this.actions = [];
 	if(a.actions) {
 		// TODO сделать красивее
 		this.actions = a.actions;
+	}
+	this.runActions = function() {
+		deckActions.runActions.call(this);
 	}
 	
 	event.dispatch('addDeckEl', {

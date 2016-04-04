@@ -1,12 +1,13 @@
 'use strict';
 
-import share  from 'share';
-import event  from 'event';
-import common from 'SolitaireCommon';
+import share    from 'share';
+import event    from 'event';
+import defaults from 'defaults';
+import common   from 'SolitaireCommon';
 
-import Deck   from 'addDeck';
-import Tips   from 'Tips';
-import Move   from 'Move';
+import Deck     from 'addDeck';
+import Tips     from 'Tips';
+import Move     from 'Move';
 
 // пусть будет
 Math.sqr = function(i) {
@@ -16,8 +17,6 @@ Math.sqr = function(i) {
 // var drag_el = null;
 share.set('dragDeck',    null);
 share.set('startCursor', null);
-
-var top_z_index = 900;
 
 event.listen('undo', function() {
 	/*share.moveCardToHome(
@@ -58,17 +57,13 @@ var cdown = function(target, x, y) {
         console.warn(e);
     }
 
-    // try{$('.draggable:animated').finish();}catch(e){console.log('Hmmm...', $('.draggable:animated'));}
-
     if(_dragDeck || _startCursor) return;
         
     if( target.className.split(' ').indexOf('slot') >= 0 ) {
         
         var _id   = target.id,
             _deck = common.getElementById(_id);
-        event.dispatch('runDeckActions', {
-            deck : _deck
-        });
+        _deck.runActions();
     }
     
     if( target.className.split(' ').indexOf('draggable') >= 0 ) {
@@ -82,9 +77,7 @@ var cdown = function(target, x, y) {
         
         // console.log('card from deck:', _deck);
         
-        event.dispatch('runDeckActions', {
-            'deck' : _deck
-        });
+        _deck.runActions();
         
         // TODO
         // в данной ситуации обрабатывается только клик по карте, пустые колоды никак не обрабатываются
@@ -93,7 +86,6 @@ var cdown = function(target, x, y) {
         
         var _dragDeck = _deck ? _deck.Take(_id) : null;
 
-        console.log('CDOWN >>>', _parent, _deck, _id, _dragDeck);
         // console.log('CDOWN', _id, _deck, _deck.Take(_id));
         // console.log('_dragDeck', _dragDeck);
 		
@@ -104,8 +96,8 @@ var cdown = function(target, x, y) {
         if(share.get('dragDeck')) {
 
         	share.set('startCursor', {
-            	x  : x,
-            	y  : y
+            	x    : x,
+            	y    : y
 	        });
 
         	// ???
@@ -132,13 +124,16 @@ var cmove = function(x, y) {
     for(var i in _dragDeck) {
     	var _position = _deck.padding(_dragDeck[i].index);
     	var _params = {
-    		left      : (_position.x + (x - _startCursor.x)) + 'px',
-    		top       : (_position.y + (y - _startCursor.y)) + 'px',
+    		'left'    : (_position.x + (x - _startCursor.x)) + 'px',
+    		'top'     : (_position.y + (y - _startCursor.y)) + 'px',
     		// transform : 'rotate(0deg)',
-    		zIndex    : top_z_index + (i|0)
+    		'z-index' : defaults.topZIndex + (i|0)
     	}
     	// Operations with DOM
-    	$(_dragDeck[i].card.domElement).css(_params);
+        for(var paramName in _params) {
+            // console.log(_dragDeck[i].card.domElement);
+            _dragDeck[i].card.domElement[0].style[paramName] = _params[paramName];   
+        }
     }
 
     var cursorMove = {
@@ -166,21 +161,11 @@ var cmove = function(x, y) {
     	cursorMove : cursorMove
     });
 
-    //$('#' + drag_el.id).css({display: 'none'});
-    /*/var _dop = document.elementFromPoint(x, y)
-    if(_dop) {
-    	//console.log('DRAG:', _dop.id);
-    }/*/
-    /*/$('#' + drag_el.id).css({
-        left : ( (x|0) - (drag_el.cursor.x|0) + (drag_el.el.x|0) ) + 'px',
-        top  : ( (y|0) - (drag_el.cursor.y|0) + (drag_el.el.y|0) ) + 'px',
-        display: 'block'
-    });/*/
 }
 
 // -------------------------------------------------------------------------------------------------------------
 
-var cend = function(target, x, y) {
+var cend = function(target, x, y, dbclick) {
 
     var _startCursor = share.get('startCursor'),
     	_dragDeck    = share.get('dragDeck');
@@ -189,30 +174,30 @@ var cend = function(target, x, y) {
 
 	var _deck = common.getElementById(_dragDeck[0].card.parent);
 	var _position = _deck.padding(_dragDeck[0].index);
-
     var cursorMove = {
-    	distance     : Math.sqrt(Math.sqr(x - _startCursor.x) + Math.sqr(y - _startCursor.y)),
-    	direction    : {
-	    	x     : x - _startCursor.x,// (+) rigth / (-) left
-	    	y     : y - _startCursor.y,// (+) down  / (-) up
-	    	right : x > _startCursor.x,
-	    	left  : x < _startCursor.x,
-	    	down  : y > _startCursor.y,
-	    	up    : y < _startCursor.y
-    	},
-    	lastPosition : {
-    		x : x,
-    		y : y
-    	},
-    	deckPosition : {
-    		x : (_position.x + (x - _startCursor.x)),
-    		y : (_position.y + (y - _startCursor.y))
-    	}
+        distance     : Math.sqrt(Math.sqr(x - _startCursor.x) + Math.sqr(y - _startCursor.y)),
+        dbclick      : dbclick,
+        direction    : {
+            x     : x - _startCursor.x,// (+) rigth / (-) left
+            y     : y - _startCursor.y,// (+) down  / (-) up
+            right : x > _startCursor.x,
+            left  : x < _startCursor.x,
+            down  : y > _startCursor.y,
+            up    : y < _startCursor.y
+        },
+        lastPosition : {
+            x : x,
+            y : y
+        },
+        deckPosition : {
+            x : (_position.x + (x - _startCursor.x)),
+            y : (_position.y + (y - _startCursor.y))
+        }
     }
 
-    $(target).hide();
+    target.style.display = 'none';
     var _dop = document.elementFromPoint(x, y);
-    $(target).show();
+    target.style.display = 'block';
     // if(_dop) {
 	Move(_dragDeck, _dop, cursorMove);
     // }
@@ -225,15 +210,18 @@ var cend = function(target, x, y) {
 // -------------------------------------------------------------------------------------------------------------
 
 document.onmousedown = function(e) {
-	if(e.button != 0) return;
-    cdown(e.target, e.clientX, e.clientY)
+    if(e.button != 0) return;
+    cdown(e.target, e.clientX, e.clientY);
 }
 document.onmousemove = function(e) {
-    cmove(e.clientX, e.clientY)
+    cmove(e.clientX, e.clientY);
 }
 document.onmouseup = function(e) {
-	// if(e.button != 0) return;
-    cend(e.target, e.clientX, e.clientY)
+    cend(e.target, e.clientX, e.clientY);
+}
+document.ondblclick = function(e) {
+    cdown(e.target, e.clientX, e.clientY);
+    cend(e.target, e.clientX, e.clientY, true);
 }
 
 document.addEventListener('touchstart', function(e) {
