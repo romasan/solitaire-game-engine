@@ -231,9 +231,9 @@ Field.prototype.clear = function() {
 	share.set('elements', {});
 };
 
-Field.prototype.Redraw = function() {
+Field.prototype.Redraw = function(data) {
 		
-	// console.log('redraw field');
+	console.log('redraw field', data);
 
 	var a = null;
 
@@ -269,7 +269,7 @@ Field.prototype.Redraw = function() {
 	}
 };
 
-export default function(data) {
+var _fieldExport = function(data) {
 
 	// if(data) console.log("Field:export", data, _field);	
 	
@@ -290,5 +290,12 @@ export default function(data) {
 		_field.Draw();
 	};
 	
+	// this = _field
 	return _field;
 };
+
+// _fieldExport.prototype.Redraw = function() {
+// 	_field.Redraw();
+// };
+
+export default _fieldExport;

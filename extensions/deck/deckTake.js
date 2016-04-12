@@ -9,7 +9,8 @@ import takeRules from 'readyTakeRules';
 export default function(cardId) {
 
 	var rulesCorrect = true;//!common.isLock();
-	// console.log('rulesCorrect', rulesCorrect, common.isLock());
+
+	rulesCorrect = rulesCorrect && !this.locked;
 	
 	if(typeof this.fill == "boolean") {
 		rulesCorrect = rulesCorrect && !this.fill;

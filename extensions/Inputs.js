@@ -8,6 +8,7 @@ import common   from 'SolitaireCommon';
 import Deck     from 'addDeck';
 import Tips     from 'Tips';
 import Move     from 'Move';
+import _el      from 'elRender';
 
 // пусть будет
 Math.sqr = function(i) {
@@ -130,10 +131,8 @@ var cmove = function(x, y) {
     		'z-index' : defaults.topZIndex + (i|0)
     	}
     	// Operations with DOM
-        for(var paramName in _params) {
-            // console.log(_dragDeck[i].card.domElement);
-            _dragDeck[i].card.domElement[0].style[paramName] = _params[paramName];   
-        }
+        _el(_dragDeck[i].card.domElement)
+            .css(_params);   
     }
 
     var cursorMove = {
@@ -195,9 +194,9 @@ var cend = function(target, x, y, dbclick) {
         }
     }
 
-    target.style.display = 'none';
+    _el(target).hide();
     var _dop = document.elementFromPoint(x, y);
-    target.style.display = 'block';
+    _el(target).show();
     // if(_dop) {
 	Move(_dragDeck, _dop, cursorMove);
     // }

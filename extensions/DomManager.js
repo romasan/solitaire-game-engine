@@ -7,59 +7,7 @@ import common   from 'SolitaireCommon';
 
 import Field    from 'Field';
 import Tips     from 'Tips';
-
-// ---------------------------------------------------------------------------
-
-var _elConstructor = function(e) {
-	this.el = e;
-};
-
-_elConstructor.prototype.addClass = function(className) {
-	try {
-		var _classes = this.el.className.split(' ');
-		if(_classes.indexOf(className) < 0) {
-			_classes.push(className);
-			this.el.className = _classes.join(' ');
-		}
-	} catch(_e) {
-		console.warn(_e, this.el);
-	}
-	return this;
-};
-
-_elConstructor.prototype.removeClass = function(className) {
-	try {
-		var _classes = this.el.className.split(' ');
-		if(_classes.indexOf(className) >= 0) {
-			var _clone = [];
-			for(var i in _classes) {
-				if(_classes[i] != className) {
-					_clone.push(_classes[i]);
-				}
-			}
-			_classes = _clone;
-			this.el.className = _classes.join(' ');
-		}
-	} catch(_e) {
-		console.warn(_e, this.el);
-	}
-	return this;
-};
-
-var _el = function(e) {
-
-	// if(!e) return;
-
-	if(typeof e == "string") {
-		e = document.querySelector(e);
-	} else if(e instanceof Array) {
-		e = e[0];
-	}
-
-	return new _elConstructor(e);
-};
-
-// ---------------------------------------------------------------------------
+import _el      from 'elRender';
 
 event.listen('initField', function(e) {
 
@@ -92,11 +40,34 @@ event.listen('initField', function(e) {
 	
 	var theme = (e.a.theme && typeof e.a.theme == 'string') ? e.a.theme : defaults.theme;// TODO (theme from config)
 
-	$(domElement)
+	// console.log('>>>>>>>')
+	_el(domElement)
 		.css(_params)
 		.addClass('field')
 		.addClass(theme);
 });
+
+// --------------------------------------------------------------------------------------------------------
+
+event.listen('hideCard', function(e) {
+
+	// console.log('hideCard:', e);
+	if(e && e.domElement) {
+		_el(e.domElement[0])
+			.hide();
+	}
+});
+	
+event.listen('showCard', function(e) {
+
+	// console.log('showCard:', e);
+	if(e && e.domElement) {
+		_el(e.domElement[0])
+			.show();
+	}
+});
+
+// --------------------------------------------------------------------------------------------------------
 
 var applyChangedParameters = function(p, a, deck) {
 	
@@ -133,24 +104,6 @@ var applyChangedParameters = function(p, a, deck) {
 		: 0;
 };
 
-event.listen('hideCard', function(e) {
-
-	// console.log('hideCard:', e);
-	if(e && e.domElement) {
-		// $(e.domElement).hide();
-		e.domElement[0].style.display = 'none';
-	}
-});
-	
-event.listen('showCard', function(e) {
-
-	// console.log('showCard:', e);
-	if(e && e.domElement) {
-		// $(e.domElement).show();
-		e.domElement[0].style.display = 'block';
-	}
-});
-	
 event.listen('addDeckEl', function(e) {
 
 	var _field = Field();
@@ -159,7 +112,9 @@ event.listen('addDeckEl', function(e) {
 
 	applyChangedParameters(e.params, e.a, e.deck);
 
-	e.deck.domElement = $('<div>')[0];
+	e.deck.domElement = 
+		_el('<div>')
+			.getEl();
 	
 	var _params = {
 		left      : share.get('zoom') * e.params.x           + 'px',
@@ -171,7 +126,7 @@ event.listen('addDeckEl', function(e) {
 	
 	_params.display = e.deck.visible ? 'block' : 'none';
 
-	$(e.deck.domElement)
+	_el(e.deck.domElement)
 		.css(_params)
 		.addClass('el')
 		.attr({
@@ -179,18 +134,17 @@ event.listen('addDeckEl', function(e) {
 		});
 
 	// var showSlot = e.a.showSlot && typeof e.a.showSlot == 'boolean' ? e.a.showSlot : defaults.showSlot;
-	// if(showSlot) $(e.deck.domElement).addClass('slot');
 	// console.log('slot', e.a);
 	if(e.a.showSlot) {
-		$(e.deck.domElement)
+		_el(e.deck.domElement)
 			.addClass('slot');
 	}
 	if(e.a.class) {
-		$(e.deck.domElement)
+		_el(e.deck.domElement)
 			.addClass(e.a.class);
 	}
 
-	$(_field.domElement)
+	_el(_field.domElement)
 		.append(e.deck.domElement);
 
 
@@ -203,58 +157,77 @@ event.listen('addDeckEl', function(e) {
 	if(!e.a.label && share.get('debugLabels')) {
 		label = '<span style="color:#65B0FF;">' + e.deck.name + '</span>';
 	}
-
 	if(label) {
-		var _labelElement = $('<div>').addClass('deckLabel')
+		var _labelElement = 
+			_el('<div>')
+				.addClass('deckLabel')
 		// DEBUG, TODO remove next string
-		.attr({"title" : e.deck.getId() + " (" + e.deck.parent + ")"});
-		$(_labelElement)
+				.attr({
+					"title" : e.deck.getId() + " (" + e.deck.parent + ")"
+				})
+				.getEl();
+		_el(_labelElement)
 			.html(label);
-		$(e.deck.domElement)
+		_el(e.deck.domElement)
 			.append(_labelElement);
 		
 	}
 
 });
 
+// --------------------------------------------------------------------------------------------------------
+
 event.listen('showTip', function(e) {
+
 	// console.log('showTip', e);
+	
 	if(e && e.el && e.el.domElement && e.type) {
-		// $(e.el.domElement).addClass(e.type);
-		_el(e.el.domElement[0]).addClass(e.type);
+		_el(e.el.domElement)
+			.addClass(e.type);
 	}
 });
 
 event.listen('hideTips', function(e) {
+	
 	// console.log('hideTips', e);
+	
 	if(e && e.types) {
 		for(var i in e.types) {
 			var typeName = e.types[i];
-			// $('.' + typeName).removeClass(typeName);
-			var _elements = document.getElementsByClassName(typeName);
-			for(var i in _elements) {
-				_el(_elements[i]).removeClass(typeName);
-			}
+			_el('.' + typeName)
+				.removeClass(typeName);
+			// var _elements = document.getElementsByClassName(typeName);
+			// for(var i in _elements) {
+			// 	_el(_elements[i])
+			// 		.removeClass(typeName);
+			// }
 		}
 	} else {
+
 		for(var i in Tips.tipTypes) {
 			var typeName = Tips.tipTypes[i];
-			// $('.' + typeName).removeClass(typeName);
-			var _elements = document.getElementsByClassName(typeName);
-			for(var elNum in _elements) {
-				if(_elements.length == 0) {
-					return;
-				}
-				_el(_elements[elNum]).removeClass(typeName);
-			}
+			_el('.' + typeName)
+				.removeClass(typeName);
+			// var _elements = document.getElementsByClassName(typeName);
+			// for(var elNum in _elements) {
+			// 	if(_elements.length == 0) {
+			// 		return;
+			// 	}
+			// 	_el(_elements[elNum])
+			// 		.removeClass(typeName);
+			// }
 		}
 	}
 });
 
+// --------------------------------------------------------------------------------------------------------
+
 event.listen('removeEl', function(e) {
-	$(e.domElement)
+	_el(e.domElement)
 		.remove();
 })
+
+// --------------------------------------------------------------------------------------------------------
 
 event.listen('redrawDeck', function(e) {
 
@@ -275,49 +248,55 @@ event.listen('redrawDeck', function(e) {
 	
 	_params.display = e.deck.visible ? 'block' : 'none';
 
-	$(e.deck.domElement).css(_params);
+	_el(e.deck.domElement)
+		.css(_params);
 
 	for(var i in e.cards) {
 		var _card_position = e.deck.padding(i);
+		var _zIndex = (e.params.startZIndex|0) + (i|0);
+		// console.log('>>> Z-INDEX:', e.deck.name, _zIndex);
 		var _params = {
 			'left'              : share.get('zoom') * _card_position.x + 'px', 
 			'top'               : share.get('zoom') * _card_position.y + 'px',
-			'z-index'           : e.params.startZIndex + (i|0),
+			'z-index'           : _zIndex,
 		    '-ms-transform'     : 'rotate(' + (e.params.rotate|0) + 'deg)',
 		    '-webkit-transform' : 'rotate(' + (e.params.rotate|0) + 'deg)',
-		    '-webkit-transform' : 'rotate(' + (e.params.rotate|0) + 'deg)',
 		    '-moz-transform'    : 'rotate(' + (e.params.rotate|0) + 'deg)',
-			// transform : 'rotate(' + (e.params.rotate|0) + 'deg)'
+			'transform'         : 'rotate(' + (e.params.rotate|0) + 'deg)'
 		};
 		_params.display = e.deck.visible ? 'block' : 'none';
 
 		// e.deck.checkFlip(e.cards[i], i|0, e.cards.length|0);
 		
 		if(e.cards[i].flip) {
-			// $(e.cards[i].domElement)
-			// 	.addClass('flip');
-			_el(e.cards[i].domElement[0]).addClass('flip');
+			_el(e.cards[i].domElement)
+				.addClass('flip');
 		} else {
-			// $(e.cards[i].domElement)
-			// 	.removeClass('flip');
-			_el(e.cards[i].domElement[0]).removeClass('flip');
+			_el(e.cards[i].domElement)
+				.removeClass('flip');
 		}
-		$(e.cards[i].domElement)
+		_el(e.cards[i].domElement)
 			.css(_params);
-		for(var paramName in _params) {
-			e.cards[i].domElement[0].style[paramName] = _params[paramName];
-		}
+		// for(var paramName in _params) {
+		// 	e.cards[i].domElement[0].style[paramName] = _params[paramName];
+		// }
+		_el(e.cards[i].domElement)
+			.css(_params);
 	}
 
 });
+
+// --------------------------------------------------------------------------------------------------------
 	
 event.listen('addCardEl', function(e) {
 	
 	var _field = Field();
 
-	e.domElement = $('<div>')
-		.addClass('el card draggable')
-		.addClass(e.name);
+	e.domElement = 
+		_el('<div>')
+			.addClass('el card draggable')
+			.addClass(e.name)
+			.getEl();
 	var _params = {
 		width  : share.get('zoom') * defaults.card.width + 'px',
 		height : share.get('zoom') * defaults.card.height + 'px'
@@ -325,14 +304,16 @@ event.listen('addCardEl', function(e) {
 	
 	// console.log('addCardEl', _params,share.get('zoom'));
 	
-	$(e.domElement)
+	_el(e.domElement)
 		.css(_params)
 		.attr({
 			id: e.id
 		});
-	$(_field.domElement)
+	_el(_field.domElement)
 		.append(e.domElement);
 });
+
+// --------------------------------------------------------------------------------------------------------
 
 event.listen('moveDragDeck', function(e) {
 	
@@ -360,9 +341,13 @@ event.listen('moveDragDeck', function(e) {
 
 		
 
-		// var _zIndex = $(this).css('z-index');// <- defaults.topZIndex TODO
-		// console.log(_zIndex);
-		
+		var _zIndex = (defaults.topZIndex|0) + (i|0);
+		// console.log('_zIndex :', _zIndex);
+		_el(e.moveDeck[i].card.domElement)
+			.css({
+				'z-index' : _zIndex
+			});
+
 		$({deg: a, e : e})
 			.animate({deg: b}, {
 				duration: defaults.animationTime,
@@ -370,22 +355,30 @@ event.listen('moveDragDeck', function(e) {
 				$(this).css({
 					'-ms-transform'     : 'rotate(' + now + 'deg)',
 					'-webkit-transform' : 'rotate(' + now + 'deg)',
-					'-webkit-transform' : 'rotate(' + now + 'deg)',
 					'-moz-transform'    : 'rotate(' + now + 'deg)',
 					// transform: 'rotate(' + now + 'deg)',
 				});
 				}.bind(e.moveDeck[i].card.domElement)
 			});
-		$(e.moveDeck[i].card.domElement).animate(_params, defaults.animationTime, function() {
-			e.departure.Redraw();
-			e.destination.Redraw();
-		});
+		$(e.moveDeck[i].card.domElement)
+			.animate(_params, defaults.animationTime, function() {
+				e.departure.Redraw();
+				e.destination.Redraw();
+			});
+		
+		// _el(e.moveDeck[i].card.domElement)
+			// .animate(_params)
+
 	}
-	$('.draggable').promise().done(function(){
-	    common.curUnLock();
-	    event.dispatch('moveDragDeckDone', {deck : e.destination});
-	});
+	$('.draggable')
+		.promise()
+		.done(function(){
+		    common.curUnLock();
+		    event.dispatch('moveDragDeckDone', {deck : e.destination});
+		});
 });
+
+// --------------------------------------------------------------------------------------------------------
 
 event.listen('moveCardToHome', function(e) {
 	//  Move card home
@@ -400,16 +393,22 @@ event.listen('moveCardToHome', function(e) {
     	$(e.moveDeck[i].card.domElement)
     		.animate(_params, defaults.animationTime);
     }
-	$('.draggable').promise().done(function(){
-	    common.curUnLock();
-	});
+	$('.draggable')
+		.promise()
+		.done(function(){
+		    common.curUnLock();
+		});
     
-	$('.draggable').promise().done(function() {
-		if(e.departure) {
-			e.departure.Redraw();
-		}
-	});
+	$('.draggable')
+		.promise()
+		.done(function() {
+			if(e.departure) {
+				e.departure.Redraw();
+			}
+		});
 })
+
+// --------------------------------------------------------------------------------------------------------
 	
 event.listen('moveDragDeckDone', function(e) {
 	
@@ -417,7 +416,7 @@ event.listen('moveDragDeckDone', function(e) {
 	
 	var _deck = e.deck.cards;
 	for(var i in _deck) {
-		// $(_deck[i].domElement).addClass('fill');
-		_el(_deck[i].domElement[0]).addClass('fill')
+		_el(_deck[i].domElement)
+			.addClass('fill')
 	}
 });

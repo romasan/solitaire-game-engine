@@ -66,7 +66,9 @@ export default {
         // console.log('radial:', params, card, index, length, deck);
 	},
 	special : function(params, card, index, length, deck) {
+		
 		var _y = params.y, _x = params.x;
+		
 		for(var i = 0; i < index; i += 1) {
 			_y += deck[i] && deck[i].flip ? params.flip_padding_y : params.padding_y;
 			_x += deck[i] && deck[i].flip ? params.flip_padding_x : params.padding_x;

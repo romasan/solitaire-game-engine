@@ -8,6 +8,7 @@ import Tips  from 'Tips';
 
 export default function(a) {
 
+	
 	var _animation = share.get('animation');
 
 	if(!a.from || !a.to || !a.deck) {
@@ -27,11 +28,10 @@ export default function(a) {
 		return;
 	}
 	
-
-	
 	var _check     = true;
 	var _from_deck = _from.cards;
 	
+
 	for(var i in _from_deck) {
 		
 		if(i >= _from_deck.length - a.deck.length) {
@@ -41,7 +41,7 @@ export default function(a) {
 			}
 		}
 	}
-	
+
 	if(_check) {
 
 		var _pop = _from.Pop(a.deck.length);
@@ -55,16 +55,17 @@ export default function(a) {
 		_to.Push(_pop);
 
 		if(_animation) {
-			console.log('ANIMATE', _pop)
+
 			var __pop = [];
 			for(var i in _pop) {
 				__pop.push({
 					card : _pop[i]
 				});
 			}
-			console.log(__pop);
+
 			// _from.Redraw();
 			// _to  .Redraw();
+
 			event.dispatch('moveDragDeck', {
 				departure   : _from,
 				destination : _to,

@@ -39,6 +39,8 @@ var deckConstructor = function(a, _id) {
 		return id;
 	}
 
+	this.locked = a.locked ? true : false;
+
 	var _parent_el   = Group.Group(a.parent),
 		_parent_name = _parent_el ? _parent_el.name : 'xname',// ???
 		_new_id      = _parent_el ? _parent_el.getDecks().length : id;
@@ -116,15 +118,26 @@ var deckConstructor = function(a, _id) {
 	// ------------- PADDING -------------
 	
 	// порядок карт в колоде
-	var padding = a.paddingType 
-		? (typeof a.paddingType == 'string' && paddingTypes[a.paddingType]) 
-			? paddingTypes[a.paddingType] 
-			: typeof a.paddingType == 'function' 
-				? a.paddingType 
+
+	// console.log('PADDING', this.name, a.paddingType, a.paddingX, a.paddingY);
+	
+	var padding = a.paddingX || a.paddingY
+		? paddingTypes['special'] 
+		: a.paddingType 
+			? (typeof a.paddingType == 'string' && paddingTypes[a.paddingType]) 
+				? paddingTypes[a.paddingType] 
 				: paddingTypes['none']
-		: a.paddingX || a.paddingY 
-			? paddingTypes['special'] 
 			: paddingTypes[defaults.paddingType];
+
+	// var padding = a.paddingType 
+	// 	? (typeof a.paddingType == 'string' && paddingTypes[a.paddingType]) 
+	// 		? paddingTypes[a.paddingType] 
+	// 		: typeof a.paddingType == 'function' 
+	// 			? a.paddingType 
+	// 			: paddingTypes['none']
+	// 	: a.paddingX || a.paddingY 
+	// 		? paddingTypes['special'] 
+	// 		: paddingTypes[defaults.paddingType];
 
 	this.padding = function(index) {
 		var _padding = padding(params, this.cards[index], index, this.cards.length, this.cards);

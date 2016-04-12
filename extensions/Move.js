@@ -2,6 +2,7 @@
 
 import event    from 'event';
 import share    from 'share';
+import defaults from 'defaults';
 import common   from 'SolitaireCommon';
 
 import Deck     from 'addDeck';
@@ -50,6 +51,8 @@ var Move = function(moveDeck, to, cursorMove) {
     			// положили в колоду
     			// без анимации, просто перерисовка обеих колод
     			_deck_destination.Push(_pop);
+
+				share.set('animation', defaults.animation);
 
 				event.dispatch('moveDragDeck', {
 					departure   : _deck_departure,

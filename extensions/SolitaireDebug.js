@@ -4,6 +4,7 @@ import event         from 'event';
 import common        from 'SolitaireCommon';
 
 import deckGenerator from 'deckGenerator';
+import elRender      from 'elRender';
 // import History       from 'SolitaireHistory';
 
 var _history = [],
@@ -79,5 +80,6 @@ export default {
 	deckGenerator    : deckGenerator,
 	debugHistory     : debugHistory,
 	debugHistoryMgr  : debugHistoryMgr,
-	validateCardName : common.validateCardName
+	validateCardName : common.validateCardName,
+	elRender         : elRender
 };

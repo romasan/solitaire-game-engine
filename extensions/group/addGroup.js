@@ -1,13 +1,15 @@
 'use strict';
 
-import event       from 'event';
-import share       from 'share';
-import defaults    from 'defaults';
-import common      from 'SolitaireCommon';
+import event          from 'event';
+import share          from 'share';
+import defaults       from 'defaults';
+import common         from 'SolitaireCommon';
 
-import Deck        from 'addDeck';
-import groupFill   from 'groupFill';
-import groupRedraw from 'groupRedraw';
+import Deck           from 'addDeck';
+import groupFill      from 'groupFill';
+import groupRedraw    from 'groupRedraw';
+import decksGenerator from 'decksGenerator';
+
 
 var groupConstructor = function(a, _id) {
 	
@@ -55,6 +57,7 @@ var groupConstructor = function(a, _id) {
 		putRules     : a.putRules     ? a.putRules     : defaults.putRules     ,
 		fillRule     : a.fillRule     ? a.fillRule     : defaults.fillRule     ,
 		autoHide     : a.autoHide     ? a.autoHide     : defaults.autoHide     ,
+		
 		paddingX     : a.paddingX     ? a.paddingX     : defaults.paddingX     ,
 		paddingY     : a.paddingY     ? a.paddingY     : defaults.paddingY     ,
 		flipPaddingX : a.flipPaddingX ? a.flipPaddingX : defaults.flipPaddingX ,
@@ -179,13 +182,13 @@ groupConstructor.prototype.Fill = function(cardNames) {
 }
 
 groupConstructor.prototype.getDeckById = function(id) {
-	return decks[id];
+	return this.decks[id];
 }
 
 groupConstructor.prototype.getDecksByName = function(name) {
 	var _decks = {};
-	for(var d in decks) {
-		if(decks[d].name == name) {
+	for(var d in this.decks) {
+		if(this.decks[d].name == name) {
 			_decks[d] = decks[d];
 		}
 	}
@@ -195,13 +198,13 @@ groupConstructor.prototype.getDecksByName = function(name) {
 // Get decks from group
 groupConstructor.prototype.getDecks = function(a) {
 	var _decks = [];
-	for(var i in decks) {
+	for(var i in this.decks) {
 		if(a && a.visible) {
-			if(decks[i].visible) {
-				_decks.push(decks[i]);
+			if(this.decks[i].visible) {
+				_decks.push(this.decks[i]);
 			}
 		} else {
-			_decks.push(decks[i]);
+			_decks.push(this.decks[i]);
 		}
 	}
 	return _decks;
@@ -222,19 +225,44 @@ var addGroup = function(a) {
 	var _el_group = new groupConstructor(a, _id);
 
 	if(a.decks) {
+		
 		if(typeof a.decks == 'number') {
-			var _count = a.decks;
-			a.decks = [];
-			for(var deckNum	= 0; deckNum < _count; deckNum += 1) {
-				a.decks.push({
-					name   : _el_group.name + "_deck" + (deckNum + 1)
-				});
-			}
-		}
+			a.decks = {
+				"generator" : {
+					"type"  : "count",
+					"count" : a.decks
+				}
+			};
+		};
+		
+		if(a.decks.generator) {
+			// TODO
+			if(a.decks.generator.type) {
+				if(decksGenerator[a.decks.generator.type]) {
+					a.decks = decksGenerator[a.decks.generator.type].call(_el_group, a.decks.generator);
+				} else {
+					console.warn('Deck generator type "' + a.decks.generator.type + '" not found.');
+					return;
+				}
+			} else {
+				console.warn('Deck generator type is null.');
+				return;
+			};
+		};
+
 		for(var d in a.decks) {
 			_el_group.addDeck(a.decks[d]);
+		};
+	};
+
+	if(a.decksRelations) {
+		
+		for(var i in a.decksRelations) {
+			// TODO
+			console.log('Relation', a.decksRelations[i]);
 		}
-	}
+
+	};
 
 	var _elements = share.get('elements');
 	_elements[_id] = _el_group;

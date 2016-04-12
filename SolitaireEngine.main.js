@@ -1,7 +1,7 @@
 'use strict';
 
 /*
- * Solitaire game engine. v. 0.10.7
+ * Solitaire game engine. v. 0.10.8
  * by Roman Bauer - kotapesic@gmail.com
  * Oct. 2015
  * Webpack version 24 Feb. 2016
@@ -27,8 +27,13 @@ exports.init = function(gameConfig) {
 
 	// console.log('main:init', gameConfig);
 	
-	Field(gameConfig);
-	exports.Redraw = Field.Redraw;
+	var _field = Field(gameConfig);
+
+	// console.log('Field.Redraw', _field.Redraw);
+	
+	exports.Redraw = function(data) {
+		_field.Redraw(data);
+	}
 };
 
 if(SolitaireDebug) exports.debug = SolitaireDebug;

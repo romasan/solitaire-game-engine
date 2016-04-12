@@ -1,6 +1,7 @@
 'use strict';
 
 import event     from 'event';
+import share     from 'share';
 import defaults  from 'defaults';
 
 import Deck      from 'addDeck';
@@ -108,26 +109,31 @@ var _actions = {
 	},
 
 	"dealerdeck" : function(e) {
-		// TODO
-		var _decks = Group.Group(e.toGroup).decks;
+
 		
+		var _decks = Group.Group(e.toGroup).decks;
+
 		if(this.cards.length == 0) return;
 		
-		for(var deckName in _decks) {
+		for(var deckId in _decks) {
+			
+			// console.log('DEALERDECK', deckId, _decks);
+			
 			var _cardName = this.getTopCard().name
 			forceMove({
 				from : this.name,
-				to   : _decks[deckName].name,
+				to   : _decks[deckId].name,
+				// to   : deckId,
 				deck : [_cardName],
 				flip : true
 			}, true);
 			
-			// _decks[deckName].flipCheck();
-			// _decks[deckName].Redraw();
+			// _decks[deckId].flipCheck();
+			// _decks[deckId].Redraw();
 
 			History.add({move : {
 				from : this.name,
-				to   : _decks[deckName].name,
+				to   : _decks[deckId].name,
 				deck : [_cardName],
 				flip : true
 			}});
@@ -183,6 +189,9 @@ var _actions = {
 // }});
 
 var runActions = function(e) {// bind this deck
+
+	share.set('animation', defaults.animation);
+
 	for(var actionName in this.actions) {
 		if(_actions[actionName]) {
 			console.log('run action', this, actionName, this.actions[actionName]);

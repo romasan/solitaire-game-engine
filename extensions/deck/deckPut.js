@@ -12,6 +12,8 @@ export default function(putDeck) {
 	var _deckId         = putDeck[0].card.parent;
 	var _deck_departure = Deck.getDeckById(_deckId);
 
+	rulesCorrect = rulesCorrect && !this.locked;
+
 	// if(typeof putRules == 'function') {
 	// 	rulesCorrect = rulesCorrect && putRules({
 	// 		from    : {

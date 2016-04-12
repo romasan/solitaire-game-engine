@@ -13,8 +13,8 @@ export default {
 	    },
 	    
 	    ranks   : ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', 'j', 'q', 'k'],
-	    ranks36 : ['1', '6', '7', '8', '9', '10', 'j', 'q', 'k'],
-	    indexes : [ 1,   2,   3,   4,   5,   6,   7,   8,   9,   10,   11,  12,  13]
+	    indexes : [ 1,   2,   3,   4,   5,   6,   7,   8,   9,   10,   11,  12,  13],
+	    ranks36 : ['1',                     '6', '7', '8', '9', '10', 'j', 'q', 'k']
 	},
 	
 	zoom                : 1.0,
@@ -30,11 +30,10 @@ export default {
 
 	tipRule             : 'allToAll',
 
-	padding_y           : 20,
-	padding_x           : 20,
-	flip_padding_y      : 5,
-	flip_padding_x      : 20,
-	start_z_index       : 1,
+	padding_y           : 0,
+	padding_x           : 0,
+	flip_padding_y      : 0,//5,
+	flip_padding_x      : 0,//20,
 	move_distance       : 10,
 
 	Tips                : null,
@@ -58,6 +57,7 @@ export default {
 	},
 
 
+	// start_z_index       : 1,
 	startZIndex         : 100,
     topZIndex           : 900,
 
@@ -71,6 +71,5 @@ export default {
     inputParams : {
         doubleClick : false
     }
-
 
 };

@@ -134,9 +134,9 @@ event.listen('newGame', function(e) {
 	animationOff();
 });
 
-event.listen('makeStep', function(e) {
-	share.set('animation', defaults.animation);
-});
+// event.listen('makeStep', function(e) {
+	// share.set('animation', defaults.animation);
+// });
 
 export default {
 	isLock           ,
