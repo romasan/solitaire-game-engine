@@ -179,8 +179,14 @@ var Field = function(data) {
 			: defaults.debugLabels
 	);
 
-	this.Draw = function() {
-		
+	this.Draw = function(data) {
+
+		if(data) {
+			a = Object['assign'] 
+				? Object['assign']({}, data)
+				: JSON.parse(JSON.stringify(data));
+		} 
+
 		if(!a) return;
 		
 		// console.log('draw all');		
@@ -200,8 +206,6 @@ var Field = function(data) {
 		// fill elements in field
 		if(a.fill) {
 			
-			// TODO CURRENT
-
 			var _decks = Deck.getDecks(),
 				_fill  = Object['assign'] 
 					? Object['assign']([], a.fill) 
@@ -295,8 +299,6 @@ var _fieldExport = function(data) {
 	// if(data) console.log("Field:export", data, _field);	
 	
 	if(data && _field) {// TODO THIS
-		
-		// console.log('RESET', data);
 		
 		_field.clear();
 		_field.Draw(data);

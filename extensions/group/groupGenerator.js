@@ -25,7 +25,7 @@ export default {
 	"map" : function(e) {
 		
 		// TODO
-		console.log('MAP GENERATOR', e);
+		// console.log('MAP GENERATOR', e);
 		
 		var _decks = [];
 		
@@ -68,7 +68,7 @@ export default {
 
 		this.placement = {x:0, y:0};
 
-		// console.log('FAN GENERATOR', e);
+		console.log('FAN GENERATOR', e);
         // SolitaireEngine.ready(function(SE) {
         //              b
         //       C  ..`:   A = sin(b) * C

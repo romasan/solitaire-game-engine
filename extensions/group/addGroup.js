@@ -249,6 +249,9 @@ var addGroup = function(a) {
 				console.warn('Deck generator type is null.');
 				return;
 			};
+
+			a.placement = null;
+
 		};
 
 		for(var d in a.decks) {

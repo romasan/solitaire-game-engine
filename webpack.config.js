@@ -40,8 +40,8 @@ module.exports = {
 			// /.*/,
 			'./extensions/'        ,
 			'./extensions/common/' ,
-			'./extensions/deck/'   ,
 			'./extensions/group/'  ,
+			'./extensions/deck/'   ,
 			'./extensions/tips/'   ,
 			'./extensions/history/'
 		],
