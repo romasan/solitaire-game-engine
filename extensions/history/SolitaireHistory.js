@@ -15,7 +15,7 @@ var _redoMethods = {};
 
 var _undo = function(a) {
 
-	console.log('#undo', a);
+	// console.log('#undo', a);
 
 	for(var i in _undoMethods) {
 		// console.log(i);
@@ -63,7 +63,7 @@ var _undo = function(a) {
 
 event.listen('undo', function(_a) {
 
-	console.log('undo', _a);
+	// console.log('undo', _a);
 
 	if(!_a) return;
 

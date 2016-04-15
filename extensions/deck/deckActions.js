@@ -128,7 +128,7 @@ var _actions = {
 				flip : true
 			}, true);
 			
-			// _decks[deckId].flipCheck();
+			_decks[deckId].flipCheck();
 			// _decks[deckId].Redraw();
 
 			History.add({move : {
@@ -138,6 +138,15 @@ var _actions = {
 				flip : true
 			}});
 		}
+		
+		// History.add({
+		// 	"action" : {
+		// 		name     : "dealerdeck",
+		// 		deckName : this.name,
+		// 		params   : e
+		// 	}
+		// });
+		
 		event.dispatch('makeStep', History.get());
 	}
 };

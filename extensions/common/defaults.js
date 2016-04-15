@@ -3,18 +3,20 @@
 export default {
 	
 	card : {
-	    width   : 71,
-	    height  : 96,
+	    width        : 71,
+	    height       : 96,
 
-	    suits   : ['h', 'd', 'c', 's'],
-	    colors  : {
+	    suits        : ['h', 'd', 'c', 's'],
+	    // suitindexes : [ 1,   2,   3,   4 ],
+	    colors       : {
 	    	red   : ['h', 'd'],
 			black : ['c', 's']
 	    },
 	    
-	    ranks   : ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', 'j', 'q', 'k'],
-	    indexes : [ 1,   2,   3,   4,   5,   6,   7,   8,   9,   10,   11,  12,  13],
-	    ranks36 : ['1',                     '6', '7', '8', '9', '10', 'j', 'q', 'k']
+	    ranks        : ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', 'j', 'q', 'k'],
+	    values       : [ 1,   2,   3,   4,   5,   6,   7,   8,   9,   10,   11,  12,  13],
+	    // rankindexes : [ 1,   2,   3,   4,   5,   6,   7,   8,   9,   10,   11,  12,  13],
+	    ranks36      : ['1',                     '6', '7', '8', '9', '10', 'j', 'q', 'k']
 	},
 	
 	zoom                : 1.0,
@@ -45,7 +47,12 @@ export default {
 	debugLabels         : false,
 	debugLog            : false,
 
-	theme               : 'default_theme',
+	theme               : {
+		name          : 'alternative_theme',
+		spriteTexture : true,
+	    textureSuits  : ['d', 'c', 'h', 's']
+	},
+	// theme               : 'default_theme',
 
 	animation           : true,
 	animationTime       : 300,// ms.

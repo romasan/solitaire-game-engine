@@ -16,7 +16,7 @@ export default function(a) {
 	var type        = a && a.type       && typeof a.type       == 'string'                                  ? a.type       : default_type;
 	var _deckCount  = a && a.deckCount  && typeof a.deckCount  == 'number'                                  ? a.deckCount  : 52;
 	var _iterations = a && a.iterations && typeof a.iterations == 'number' && a.iterations < max_iterations ? a.iterations : 1;
-	var _shuffle    = a && a.shuffle    && typeof a.shuffle    == 'boolean'                                 ? a.shuffle    : default_shuffle;
+	var _shuffle    = a && a.shuffle    && typeof a.shuffle    != 'undefuned'                               ? a.shuffle    : default_shuffle;
 
 	var genType = function(_cardsColors, _cardsRanks) {
 		var _deck = [];

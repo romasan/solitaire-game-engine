@@ -53,6 +53,20 @@ var Field = function(data) {
 		// console.log(data);
 	}
 
+	share.set(
+		'spriteTexture', 
+		typeof a.theme == 'object' 
+			? a       .theme.spriteTexture 
+			: defaults.theme.spriteTexture
+	);
+
+	share.set(
+		'textureSuits', 
+		typeof a.theme == 'object' 
+			? a       .theme.textureSuits 
+			: defaults.theme.textureSuits
+	);
+
 	this.homeGroups = a.homeGroups ? a.homeGroups : [];
 	
 	share.set(
@@ -183,6 +197,26 @@ var Field = function(data) {
 			Deck.addDeck(a.decks[e]);
 		}
 
+		// fill elements in field
+		if(a.fill) {
+			
+			// TODO CURRENT
+
+			var _decks = Deck.getDecks(),
+				_fill  = Object['assign'] 
+					? Object['assign']([], a.fill) 
+					: JSON.parse(JSON.stringify(a.fill));
+
+			for(;_fill.length;) {
+				for(var deckId in _decks) {
+					if(_fill.length) {
+						var _card = _fill.shift();
+						_decks[deckId].Fill([_card]);
+					}
+				}
+			}
+		}
+
 		Tips.checkTips();
 
 		event.dispatch('newGame');
@@ -197,20 +231,7 @@ var Field = function(data) {
 		share.set('start_z_index', a.startZIndex);
 	}
 
-	// fill elements in field
-	
-	if(a.fill) {
-		
-		for(var _name in a.fill) {
-			var _elements = this.getElementsByName(_name);
-			for(var i in _elements) {
-				if(['deck', 'group'].indexOf(_elements[i].type) && typeof a.fill[_name] != 'string') {
-					_elements[i].Fill(a.fill[_name]);
-				}
-			}
-		}
-		// }
-	}
+
 
 };
 

@@ -193,6 +193,11 @@ var rpr = {
 
 		var da = rpr._downupranknum(a);
 		return da && Math.abs(da.down - da.up) == 1;
+	},
+
+	summ14     : function(a) {
+		// TODO
+		return false;
 	}
 
 };

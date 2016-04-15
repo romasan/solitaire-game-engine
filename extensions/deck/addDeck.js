@@ -81,6 +81,7 @@ var deckConstructor = function(a, _id) {
 		for(var i in this.cards) {
 			checkFlip(this.cards[i], i|0, this.cards.length);
 		}
+		event.dispatch('redrawDeckFlip', this);
 	}
 	
 	// ------------- PUT -------------
@@ -189,7 +190,10 @@ var deckConstructor = function(a, _id) {
 
 // -------------------------------------------------------------------------------------------------
 
-deckConstructor.prototype.Fill = function(cardNames) {	
+deckConstructor.prototype.Fill = function(cardNames) {
+
+	// console.log('DECK FILL', cardNames);
+	
 	for(var i in cardNames) {
 		this.genCardByName(cardNames[i]);
 	}

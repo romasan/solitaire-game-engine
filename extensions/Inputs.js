@@ -97,8 +97,8 @@ var cdown = function(target, x, y) {
         if(share.get('dragDeck')) {
 
         	share.set('startCursor', {
-            	x    : x,
-            	y    : y
+            	x : x,
+            	y : y
 	        });
 
         	// ???
@@ -125,8 +125,8 @@ var cmove = function(x, y) {
     for(var i in _dragDeck) {
     	var _position = _deck.padding(_dragDeck[i].index);
     	var _params = {
-    		'left'    : (_position.x + (x - _startCursor.x)) + 'px',
-    		'top'     : (_position.y + (y - _startCursor.y)) + 'px',
+    		'left'    : (_position.x * share.get('zoom') + (x - _startCursor.x)) + 'px',
+    		'top'     : (_position.y * share.get('zoom') + (y - _startCursor.y)) + 'px',
     		// transform : 'rotate(0deg)',
     		'z-index' : defaults.topZIndex + (i|0)
     	}

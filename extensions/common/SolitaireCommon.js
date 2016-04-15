@@ -109,6 +109,7 @@ var validateCardName = function(name, nolog) {
 		}
 	} else {
 		console.warn('Warning: validate name:', name, '- incorrect');
+		// throw new Error();
 		return false;
 	}
 };

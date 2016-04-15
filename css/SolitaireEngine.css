@@ -474,14 +474,14 @@ body {
 /* All themes */
 
 .tip:after {
-  content: attr(data-content); /* Ð”Ð¾Ð±Ð°Ð²Ð»ÑÐµÐ¼Ñ‹Ð¹ Ñ‚ÐµÐºÑÑ‚ */ 
-  background-color: #ffff00; /* Ð¦Ð²ÐµÑ‚ Ñ„Ð¾Ð½Ð° */ 
-  opacity: 0.5;
-  font-size: 90%; /* Ð Ð°Ð·Ð¼ÐµÑ€ ÑˆÑ€Ð¸Ñ„Ñ‚Ð° */ 
-  width: 71px;
-  height: 96px;
-  display: block;
-  margin: 0px;
+  content          : attr(data-content);
+  background-color : #ffff00;
+  opacity          : 0.3;
+  font-size        : 90%;
+  width            : 100%;
+  height           : 100%;
+  display          : block;
+  margin           : 0px;
 }
 
 .flip.tip:after {
@@ -492,6 +492,17 @@ body {
 
 .tipTo {
 	 box-shadow: inset 0 0 15px 15px rgba(8, 157, 227, 0.5)!important; 
+}
+
+.tipToHome:after {
+  content: attr(data-content); /* Ð”Ð¾Ð±Ð°Ð²Ð»ÑÐµÐ¼Ñ‹Ð¹ Ñ‚ÐµÐºÑÑ‚ */ 
+  background-color: #ffff00; /* Ð¦Ð²ÐµÑ‚ Ñ„Ð¾Ð½Ð° */ 
+  opacity: 0.5;
+  font-size: 90%; /* Ð Ð°Ð·Ð¼ÐµÑ€ ÑˆÑ€Ð¸Ñ„Ñ‚Ð° */ 
+  width: 71px;
+  height: 96px;
+  display: block;
+  margin: 0px;
 }
 
 .tipPriority {

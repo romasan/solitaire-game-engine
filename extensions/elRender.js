@@ -51,7 +51,9 @@ _elConstructor.prototype.removeClass = function(className) {
 	if(!this.el) return this;
 	
 	var _classes = this.el.className.split(' ');
+	
 	if(this.hasClass(className)) {
+
 		var _clone = [];
 		for(var i in _classes) {
 			if(_classes[i] != className) {
@@ -196,6 +198,10 @@ _elConstructor.prototype.getEl = function() {
 	return this.el;
 };
 
+_elConstructor.prototype.debugTest = function() {
+	return this;
+}
+
 // hasClass +
 // html +
 // remove 0
@@ -218,13 +224,11 @@ var _el = function(e) {
 		try{ 
 			e = e[0];
 		} catch(_e) {
-			throw new Error('777');
+			throw new Error();
 		}
 	} else if(e.el) {
 		e = e.el;
 	}
-
-	// var _animationsStack = [];
 
 	return new _elConstructor(e);
 };
@@ -233,20 +237,30 @@ var _allElConstructor = function(elements) {
 	
 	this.elements = [];
 	
-	// console.log('###', elements);
-	
 	for(var i in elements) {
-		this.elements.push(_el(elements[i]));
+		if(
+			typeof elements[i] != "number"
+		 && typeof elements[i] != "undefined"
+		) {
+			this.elements.push(_el(elements[i]));
+		}
 	}
 };
 
 for(var _protoName in _elConstructor.prototype) {
-	_allElConstructor.prototype[_protoName] = function() {
-		for(var i in this.elements) {
-			this.elements[i][_protoName].call(this.elements[i], arguments);
-		};
-		return this;
-	};
+	_allElConstructor.prototype[_protoName] = 
+		(function(_protoName) {
+
+			return function() {
+
+				
+				for(var i in this.elements) {
+					this.elements[i][_protoName].apply(this.elements[i], arguments);
+				};
+				return this;
+			};
+			
+		}).call(this, _protoName);
 };
 
 var _allEl = function(e) {

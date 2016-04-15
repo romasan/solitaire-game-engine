@@ -38,13 +38,17 @@ event.listen('initField', function(e) {
 	if(e.a.left   && typeof e.a.left   == 'number') { _params.left   = share.get('zoom') * e.a.left   + 'px'; }
 	// if(a.rotate && typeof a.rotate == 'number') _params.transform = 'rotate(' + (a.rotate|0) + 'deg)';
 	
-	var theme = (e.a.theme && typeof e.a.theme == 'string') ? e.a.theme : defaults.theme;// TODO (theme from config)
+	var themeName = 
+		typeof e.a.theme == 'string' 
+			? e.a.theme 
+			: typeof e.a.theme == 'object' && e.a.theme.name
+				? e.a.theme.name
+				: defaults.theme.name;
 
-	// console.log('>>>>>>>')
 	_el(domElement)
 		.css(_params)
 		.addClass('field')
-		.addClass(theme);
+		.addClass(themeName);
 });
 
 // --------------------------------------------------------------------------------------------------------
@@ -196,27 +200,15 @@ event.listen('hideTips', function(e) {
 			var typeName = e.types[i];
 			_el('.' + typeName)
 				.removeClass(typeName);
-			// var _elements = document.getElementsByClassName(typeName);
-			// for(var i in _elements) {
-			// 	_el(_elements[i])
-			// 		.removeClass(typeName);
-			// }
 		}
 	} else {
-
+		
 		for(var i in Tips.tipTypes) {
 			var typeName = Tips.tipTypes[i];
 			_el('.' + typeName)
-				.removeClass(typeName);
-			// var _elements = document.getElementsByClassName(typeName);
-			// for(var elNum in _elements) {
-			// 	if(_elements.length == 0) {
-			// 		return;
-			// 	}
-			// 	_el(_elements[elNum])
-			// 		.removeClass(typeName);
-			// }
+				.removeClass(typeName, 777);
 		}
+
 	}
 });
 
@@ -229,6 +221,25 @@ event.listen('removeEl', function(e) {
 
 // --------------------------------------------------------------------------------------------------------
 
+event.listen('redrawDeckFlip', function(e) {
+	
+	if(!e || !e.cards) return;
+
+	for(var i in e.cards) {
+		var _params = {};
+		
+		if(e.cards[i].flip) {
+			_el(e.cards[i].domElement)
+				.addClass('flip');
+		} else {
+			_el(e.cards[i].domElement)
+				.removeClass('flip');
+		}
+		_el(e.cards[i].domElement)
+			.css(_params);
+	}
+
+});
 event.listen('redrawDeck', function(e) {
 
 	if(e.a) {
@@ -277,11 +288,6 @@ event.listen('redrawDeck', function(e) {
 		}
 		_el(e.cards[i].domElement)
 			.css(_params);
-		// for(var paramName in _params) {
-		// 	e.cards[i].domElement[0].style[paramName] = _params[paramName];
-		// }
-		_el(e.cards[i].domElement)
-			.css(_params);
 	}
 
 });
@@ -291,20 +297,58 @@ event.listen('redrawDeck', function(e) {
 event.listen('addCardEl', function(e) {
 	
 	var _field = Field();
+	
+	var _card = {
+		width  : share.get('zoom') * defaults.card.width,
+		height : share.get('zoom') * defaults.card.height,
+	};
+	_card = {
+		width  : _card.width .toFixed(3) * 1,
+		height : _card.height.toFixed(3) * 1
+	};
+
+	var _params = {
+		"width"               : _card.width  + 'px',
+		"height"              : _card.height + 'px'
+	};
+
+
+	if(share.get('spriteTexture')) {
+		var _vcard = common.validateCardName(e.name),
+		_position = {
+			x : defaults.card.ranks      .indexOf(_vcard.rank),
+			y : share.get('textureSuits').indexOf(_vcard.suit),
+		};
+
+		var _backgroundSize = {
+				width  : defaults.card.ranks.length * _card.width,
+				height : defaults.card.suits.length * _card.height
+			},
+			_backgroundPosition = {
+				x : _position.x * _card.width,
+				y : _position.y * _card.height
+			};
+		_backgroundSize = {
+			width  : _backgroundSize.width .toFixed(3) * 1,
+			height : _backgroundSize.height.toFixed(3) * 1
+		};
+		_backgroundPosition = {
+			x : _backgroundPosition.x.toFixed(3) * 1,
+			y : _backgroundPosition.y.toFixed(3) * 1
+		};
+
+		_params["background-size"]     = _backgroundSize.width + 'px ' + _backgroundSize.height + 'px';
+		_params["background-position"] = _backgroundPosition.x + 'px ' + _backgroundPosition.y  + 'px';
+	}
 
 	e.domElement = 
 		_el('<div>')
-			.addClass('el card draggable')
-			.addClass(e.name)
 			.getEl();
-	var _params = {
-		width  : share.get('zoom') * defaults.card.width + 'px',
-		height : share.get('zoom') * defaults.card.height + 'px'
-	}
-	
-	// console.log('addCardEl', _params,share.get('zoom'));
 	
 	_el(e.domElement)
+		// .addClass(e.name)
+		.addClass('el card draggable')
+		// .css({'background-size' : null})
 		.css(_params)
 		.attr({
 			id: e.id
@@ -387,8 +431,8 @@ event.listen('moveCardToHome', function(e) {
     for(var i in e.moveDeck) {
     	var _position = e.departure.padding(e.moveDeck[i].index);
     	var _params = {
-    		left : _position.x + 'px',
-    		top  : _position.y + 'px'
+    		left : _position.x * share.get('zoom') + 'px',
+    		top  : _position.y * share.get('zoom') + 'px'
     	}
     	$(e.moveDeck[i].card.domElement)
     		.animate(_params, defaults.animationTime);

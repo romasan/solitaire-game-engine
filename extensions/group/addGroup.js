@@ -8,7 +8,7 @@ import common         from 'SolitaireCommon';
 import Deck           from 'addDeck';
 import groupFill      from 'groupFill';
 import groupRedraw    from 'groupRedraw';
-import decksGenerator from 'decksGenerator';
+import decksGenerator from 'groupGenerator';
 
 
 var groupConstructor = function(a, _id) {
@@ -225,6 +225,7 @@ var addGroup = function(a) {
 	var _el_group = new groupConstructor(a, _id);
 
 	if(a.decks) {
+
 		
 		if(typeof a.decks == 'number') {
 			a.decks = {
@@ -236,7 +237,7 @@ var addGroup = function(a) {
 		};
 		
 		if(a.decks.generator) {
-			// TODO
+			
 			if(a.decks.generator.type) {
 				if(decksGenerator[a.decks.generator.type]) {
 					a.decks = decksGenerator[a.decks.generator.type].call(_el_group, a.decks.generator);
