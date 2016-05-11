@@ -4,6 +4,7 @@ var events = {};
 
 export default new function() {
 	
+	// this.on = 
 	this.listen = function(name, callback) {
 		if(typeof name != 'string' || typeof callback != 'function') return;
 		if(events[name]) {
@@ -13,6 +14,7 @@ export default new function() {
 		}
 	};
 
+	// this.do =
 	this.dispatch = function(name, data) {
 
 		// console.log('dispatch', name, data);
@@ -23,5 +25,7 @@ export default new function() {
 			}
 		}
 	};
+
+	// this.one function(name, data) {};
 
 };

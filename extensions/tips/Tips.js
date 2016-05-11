@@ -27,6 +27,8 @@ var getTips = function() {
 
 var checkTips = function() {
 
+	if(share.get('noTips')) { return false; };
+	
 	// console.log('%cCHECK TIPS', 'background : green');
 
 	event.dispatch('hideTips');

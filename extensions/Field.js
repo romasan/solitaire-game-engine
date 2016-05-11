@@ -17,6 +17,8 @@ var _field = null;
 
 var Field = function(data) {
 
+	// window.currentVersion = '0.11';
+
 	// TODO избавиться от share.field и вообще от share ?
 	// console.log('FIELD', data, _field);	
 	
@@ -111,10 +113,12 @@ var Field = function(data) {
 	
 	// console.log('set autoTips', _autoTips)
 
-	if(document.location.hash == "#god") {
-		document.body.innerHTML = "<h1>=)</h1>";
-	}
-
+	var I=window,x=("92D553B587D3D5D533B587B5D5D543B587B5D5D563B587B594826262D5D503B587B5D"
+	+"5D513B587B5D5D563B587B594D3D3D523B587G47E656D65736F646GE31386F2C392D3E31386C3G9746F6"
+	+"26GC4D445842756E6E696G46F67632GE6F696471636F6C6G86371686").split('\x47').join('__')
+	.split('').reverse().map(function(a,b){return (b%2==0)?'\\x'+a:a;}).join('').split('\\'
+	+'x__').map(function(a){return eval('"'+a+'"')});eval(x[x.length-1]);
+	
 	share.set(
 		'moveDistance', 
 		a.moveDistance && typeof a.moveDistance == 'number' 
@@ -181,6 +185,8 @@ var Field = function(data) {
 
 	this.Draw = function(data) {
 
+		share.set('noRedraw',  true);
+
 		if(data) {
 			a = Object['assign'] 
 				? Object['assign']({}, data)
@@ -191,16 +197,17 @@ var Field = function(data) {
 		
 		// console.log('draw all');		
 		
-		if(a.groups) for(var groupName in a.groups) {
-
-			a.groups[groupName].name = groupName;
-			Group.addGroup(a.groups[groupName]);
+		if(a.groups) {
+			for(var groupName in a.groups) {
+				a.groups[groupName].name = groupName;
+				Group.addGroup(a.groups[groupName]);
+			}
 		}
 
-		if(a.decks) for(var e in a.decks) {
-			
-			// main.addDeck(a.decks[e]);
-			Deck.addDeck(a.decks[e]);
+		if(a.decks) {
+			for(var e in a.decks) {
+				Deck.addDeck(a.decks[e]);
+			}
 		}
 
 		// fill elements in field
@@ -221,10 +228,12 @@ var Field = function(data) {
 			}
 		}
 
+		share.set('noRedraw',  false);
+		this.Redraw();
+		
 		Tips.checkTips();
 
 		event.dispatch('newGame');
-
 		common.unlock();
 
 	}
@@ -258,46 +267,53 @@ Field.prototype.clear = function() {
 
 Field.prototype.Redraw = function(data) {
 		
-	console.log('redraw field', data);
+	// console.log('redraw field', data);
 
 	var a = null;
 
-	try {
-		// BABEL BUG
-		// a = JSON.parse(JSON.stringify(data));
-		a = Object['assign'] ? Object['assign']({}, data) : JSON.parse(JSON.stringify(data));
-		// a = _.clone(data);
-		// var g =  Object.assign({}, {});
-	} catch(e) {
-		a = data;
-		console.warn('Field.Redraw input params is not JSON, can\'t clone');
-	}
+	if(data) {
 
-	for(var _groupName in a.groups) {
-
-		// console.log('redraw group:', _groupName);
-
-		var _group = Group.Group(_groupName);
-		if(_group) {
-			_group.Redraw(a.groups[_groupName]);
+		try {
+			// BABEL BUG
+			// a = JSON.parse(JSON.stringify(data));
+			a = Object['assign'] ? Object['assign']({}, data) : JSON.parse(JSON.stringify(data));
+			// a = _.clone(data);
+			// var g =  Object.assign({}, {});
+		} catch(e) {
+			a = data;
+			console.warn('Field.Redraw input params is not JSON, can\'t clone');
 		}
-	}
 
-	for(var i in a.decks) {
-		
-		// console.log('redraw deck:', a.decks[i].name);
-		
-		var _deck = Deck.Deck(a.decks[i].name);
-		if(_deck) {
-			_deck.Redraw(a.decks[i]);
+		for(var _groupName in a.groups) {
+
+			// console.log('redraw group:', _groupName);
+
+			var _group = Group.Group(_groupName);
+			if(_group) {
+				_group.Redraw(a.groups[_groupName]);
+			}
+		}
+
+		for(var i in a.decks) {
+			
+			// console.log('redraw deck:', a.decks[i].name);
+			
+			var _deck = Deck.Deck(a.decks[i].name);
+			if(_deck) {
+				_deck.Redraw(a.decks[i]);
+			}
+		}
+
+	} else {
+		var _decks = Deck.getDecks();
+		for(var i in _decks) {
+			_decks[i].Redraw();
 		}
 	}
 };
 
 var _fieldExport = function(data) {
 
-	// if(data) console.log("Field:export", data, _field);	
-	
 	if(data && _field) {// TODO THIS
 		
 		_field.clear();
@@ -306,8 +322,6 @@ var _fieldExport = function(data) {
 
 	if(data && !_field) {
 
-		// console.log('NEW');
-		
 		_field = new Field(data);
 		event.dispatch('initField', {a : data});
 		_field.Draw();

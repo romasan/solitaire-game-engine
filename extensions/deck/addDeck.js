@@ -26,11 +26,12 @@ var deckConstructor = function(a, _id) {
 	this.cards = [];
 	
 	this.getTopCard = function() {
+
+		if(this.cards.length == 0) { return false; };
 		return this.cards[this.cards.length - 1];
 	}
 	
 	// parameters
-	
 	this.type = 'deck';
 	this.fill = false;
 	var id = _id;
@@ -48,6 +49,7 @@ var deckConstructor = function(a, _id) {
 	this.name = a.name && typeof a.name == 'string' 
 		? a.name 
 		: (_parent_name + '_' + _new_id);
+
 	this.visible = a.visible && typeof a.visible   == 'boolean' ? a.visible : true;// default true
 	this.groupIndex = a.groupIndex && typeof a.groupIndex == 'number' ? a.groupIndex : null;
 
@@ -55,25 +57,27 @@ var deckConstructor = function(a, _id) {
 	this.autoHide = a.autoHide && typeof a.autoHide == 'boolean' ? a.autoHide : defaults.autohide;
 	
 	var params = {};
-	params.startZIndex = a.startZIndex && typeof a.startZIndex == 'number' ? a.startZIndex : defaults.start_z_index;
+	params.startZIndex = a.startZIndex && typeof a.startZIndex == 'number' ? a.startZIndex : defaults.startZIndex;
 	
 	// changed parameters
-	
 	if(typeof a.showSlot == "undefined") {
 		a.showSlot = defaults.showSlot;
 	}
+	
 	// DOM
 	params.x              = 0; 
 	params.y              = 0; 
-	params.rotate = this.rotate = 0; 
-	params.padding_y      = (    a.paddingY && typeof     a.paddingY == 'number') ?     a.paddingY :      defaults.padding_y;
-	params.flip_padding_y = (a.flipPaddingY && typeof a.flipPaddingY == 'number') ? a.flipPaddingY : defaults.flip_padding_y;
-	params.padding_x      = (    a.paddingX && typeof     a.paddingX == 'number') ?     a.paddingX :      defaults.padding_x;
-	params.flip_padding_x = (a.flipPaddingX && typeof a.flipPaddingX == 'number') ? a.flipPaddingX : defaults.flip_padding_x;
+	params.rotate         = this.rotate = 0; 
+	params.padding_y      = (     a.paddingY && typeof     a.paddingY == 'number' ) ?     a.paddingY :      defaults.padding_y;
+	params.flip_padding_y = ( a.flipPaddingY && typeof a.flipPaddingY == 'number' ) ? a.flipPaddingY : defaults.flip_padding_y;
+	params.padding_x      = (     a.paddingX && typeof     a.paddingX == 'number' ) ?     a.paddingX :      defaults.padding_x;
+	params.flip_padding_x = ( a.flipPaddingX && typeof a.flipPaddingX == 'number' ) ? a.flipPaddingX : defaults.flip_padding_x;
 	
 	// ------------- FLIP -------------
 	
-	var flipType = a.flip && typeof a.flip == 'string' ? a.flip : defaults.flip_type,
+	var flipType = a.flip && typeof a.flip == 'string' 
+		? a.flip 
+		: defaults.flip_type,
 		checkFlip = flipTypes[flipType];
 
 	this.flipCheck = function() {
@@ -99,15 +103,12 @@ var deckConstructor = function(a, _id) {
 					: readyPutRules[defaults.putName]
 		: readyPutRules[defaults.putName];
 
-	// console.log('putRules', this.name, this.putRules);
-
 	// ------------- TAKE -------------
 	
 	// можно ли взять карту/стопку
 	this.takeRules = a.takeRules;
 
 	// ------------- FILL -------------
-	
 	
 	var fillRule = (
 		a.fillRule 
@@ -119,9 +120,6 @@ var deckConstructor = function(a, _id) {
 	// ------------- PADDING -------------
 	
 	// порядок карт в колоде
-
-	// console.log('PADDING', this.name, a.paddingType, a.paddingX, a.paddingY);
-	
 	var padding = a.paddingX || a.paddingY
 		? paddingTypes['special'] 
 		: a.paddingType 
@@ -130,29 +128,22 @@ var deckConstructor = function(a, _id) {
 				: paddingTypes['none']
 			: paddingTypes[defaults.paddingType];
 
-	// var padding = a.paddingType 
-	// 	? (typeof a.paddingType == 'string' && paddingTypes[a.paddingType]) 
-	// 		? paddingTypes[a.paddingType] 
-	// 		: typeof a.paddingType == 'function' 
-	// 			? a.paddingType 
-	// 			: paddingTypes['none']
-	// 	: a.paddingX || a.paddingY 
-	// 		? paddingTypes['special'] 
-	// 		: paddingTypes[defaults.paddingType];
-
 	this.padding = function(index) {
 		var _padding = padding(params, this.cards[index], index, this.cards.length, this.cards);
 		return _padding;
 	}
 	
 	this.actions = [];
+
 	if(a.actions) {
-		// TODO сделать красивее
 		this.actions = a.actions;
-	}
-	this.runActions = function() {
-		deckActions.runActions.call(this);
-	}
+		deckActions.addActions.call(this);
+	};
+
+	this.afterStep = a.afterStep;
+
+	// TODO
+	this.relations = [];
 	
 	event.dispatch('addDeckEl', {
 		a     : a, 
@@ -161,8 +152,11 @@ var deckConstructor = function(a, _id) {
 	});
 
 	event.listen('moveDragDeck', function(data) {
-		if(data.destination.name != this.deck.name) return;
+		
+		if(data.destination.name != this.deck.name) { return; }
+		
 		var _deck = data.destination;
+		
 		if(_deck && !this.fill && this.callback({deck : _deck})) {
 			this.deck.fill = true;
 			History.add({fill : {
@@ -175,16 +169,15 @@ var deckConstructor = function(a, _id) {
 		callback : fillRule
 	}));
 
-	this.Redraw = function(_a) {
+	this.Redraw = function(data) {
 		
 		event.dispatch('redrawDeck', {
 			deck   : this,
-			a      : _a,
+			data   : data,
 			params : params,
 			cards  : this.cards
 		});
-		
-	}
+	};
 
 };
 
@@ -192,12 +185,10 @@ var deckConstructor = function(a, _id) {
 
 deckConstructor.prototype.Fill = function(cardNames) {
 
-	// console.log('DECK FILL', cardNames);
-	
 	for(var i in cardNames) {
 		this.genCardByName(cardNames[i]);
 	}
-}
+};
 
 deckConstructor.prototype.clear = function() {
 	for(var i in this.cards) {
@@ -206,14 +197,14 @@ deckConstructor.prototype.clear = function() {
 	}
 	this.cards = [];
 	event.dispatch('removeEl', this);
-}
+};
 
 deckConstructor.prototype.Push = function(deck) {// , parentName) {
 	for(var i in deck) {
 		deck[i].parent = this.getId();
 		this.cards.push(deck[i]);
 	}
-}
+};
 
 deckConstructor.prototype.Pop = function(count, clearParent) {
 		
@@ -237,7 +228,7 @@ deckConstructor.prototype.Pop = function(count, clearParent) {
 	this.Redraw();
 
 	return _deck;
-}
+};
 
 deckConstructor.prototype.Take = function(cardId) {
 	return Take.call(this, cardId);// ??? .call(this, attributes);
@@ -252,19 +243,19 @@ deckConstructor.prototype.Put = function(putDeck) {
 // создать карту
 deckConstructor.prototype.genCardByName = function(name) {
 	return genCardByName.call(this, name);
-}
+};
 
 deckConstructor.prototype.hide = function() {
 	this.visible = false;
 	History.add({hideDeck : this.name});
 	this.Redraw();
-}
+};
 
 deckConstructor.prototype.show = function() {
 	this.visible = false;
 	History.add({showDeck : this.name});
 	this.Redraw();
-}
+};
 
 // deckConstructor.prototype.getCards = function() {
 // 	return this.cards;
@@ -278,25 +269,33 @@ deckConstructor.prototype.getCardsByName = function(cardName) {
 		}
 	}
 	return _cards;
-}
+};
 
 deckConstructor.prototype.Card = function(cardName) {
 	return this.getCardsByName(cardName)[0];
-}
+};
 
 deckConstructor.prototype.hideCards = function() {
 	for(var i in this.cards) {
 		this.cards[i].visible = false;
 		event.dispatch('hideCard', this.cards[i]);
 	}
-}
+};
 
 deckConstructor.prototype.showCards = function() {
 	for(var i in this.cards) {
 		this.cards[i].visible = true;
 		event.dispatch('showCard', this.cards[i]);
 	}
-}
+};
+
+deckConstructor.prototype.getCardsNames = function() {
+	var _cardsNames = [];
+	for(var i in this.cards) {
+		_cardsNames.push(this.cards[i].name);
+	};
+	return _cardsNames;
+};
 
 // deckConstructor.prototype.parent = function(a) {
 // 	if(typeof a == 'string') parent = a;
@@ -318,7 +317,6 @@ var addDeck = function(a) {
 		: JSON.parse(JSON.stringify(a));
 	
 	var _el_deck = new deckConstructor(_a, _id);
-
 
 	// fill deck
 	if(a.fill) {
@@ -370,9 +368,9 @@ var getDecks = function(a) {
 				}
 			} else {
 				_decks[d] = _elements[d];
-			}
-		}
-	}
+			};
+		};
+	};
 	return _decks;
 }
 
@@ -382,29 +380,29 @@ var getDeckById = function(id) {// ID
 	for(var d in _elements) {
 		if(_elements[d].type == 'deck' && d == id) {
 			return _elements[d];
-		}
-	}
+		};
+	};
 	return null;
 }
 
 
-var deckCardNames = function(a) {
-	
+var deckCardNames = function(a) {// Take deck [{card, index}]
+
 	var _deck = [];
 	for(var i in a) {
 		if(a[i].card && a[i].card.name) {
 			_deck.push(a[i].card.name);
 		} else if(a[i].name) {
 			_deck.push(a[i].name);
-		}
-	}
+		};
+	};
 	return _deck;
 }
 
 export default {
-	addDeck,
-	Deck,
-	getDecks,
-	getDeckById,
+	addDeck       ,
+	Deck          ,
+	getDecks      ,
+	getDeckById   ,
 	deckCardNames
 };

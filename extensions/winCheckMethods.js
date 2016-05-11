@@ -1,5 +1,12 @@
 'use strict';
 
+/*
+ * Client-server application for planning biomechanical stimulation
+ * version: 1.0
+ * author: Romasan
+ * date: 05.05.2016
+ */
+
 // import share    from 'share';
 import common   from 'SolitaireCommon';
 import defaults from 'defaults';
@@ -12,7 +19,8 @@ var wcm = {
 
 		// console.log("winCheck:group", a);
 
-		if(!a.filter) return false;
+		if(!a.filter || !a.filterArgs) { return false; }
+
 		var _decks = [];
 		for(var _i in a.decks) {
 			
@@ -21,17 +29,28 @@ var wcm = {
 			// if(a.filterArgs.indexOf(a.decks[_i].parent)) {
 			if(
 				(
-					typeof a.filterArgs  == "string" 
-				 && a.decks[_i].parent == a.filterArgs
+					typeof a.filterArgs == "string" 
+				 && a.decks[_i].parent  == a.filterArgs
 				)
-			 || a.filterArgs.indexOf(a.decks[_i].parent) >= 0
+			 || (
+			 		a.filterArgs.length
+			 	 && a.filterArgs.indexOf(a.decks[_i].parent) >= 0
+			 	)
 			) {
 				_decks.push(a.decks[_i]);
 			}
 		}
+		
 		a.decks = _decks;
 		return _decks.length;
+
 	},
+
+	groups : function(a) {
+		return wcm.group(a);
+	},
+
+	// groups : function() {},
 
 	// Internal use
 
@@ -135,9 +154,9 @@ var wcm = {
 		
 		var _correct = true;
 		
-		
 		// apply filters
 		for(var next in _a.rulesArgs) {
+
 			var _decksClone = {};
 			for(var i in _a.decks) {
 				_decksClone[i] = _a.decks[i];
@@ -156,6 +175,7 @@ var wcm = {
 
 				for(var i in _a.rulesArgs[next].filters) {
 					if(typeof _a.rulesArgs[next].filters[i] == 'string' && wcm[_a.rulesArgs[next].filters[i]]) {
+						a.filterArgs = null;
 						_correct = _correct && wcm[_a.rulesArgs[next].filters[i]](a);
 					} else {
 						// if(typeof _a.rulesArgs[next].filters[i] == 'object') {

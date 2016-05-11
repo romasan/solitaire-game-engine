@@ -57,11 +57,11 @@ export default {
 	animation           : true,
 	animationTime       : 300,// ms.
 
-	actions : {
-		twindeck : {
-			cardCount : 3
-		}
-	},
+	// actions : {
+	// 	twindeck : {
+	// 		cardCount : 3
+	// 	}
+	// },
 
 
 	// start_z_index       : 1,
@@ -69,6 +69,8 @@ export default {
     topZIndex           : 900,
 
 	canMoveFlip         : false,
+
+	afterStep           : false,
 
 	tipsParams   : {
         hideOnEmpty       : false,

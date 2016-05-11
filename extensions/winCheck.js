@@ -8,6 +8,8 @@ import winCheckMethods from 'winCheckMethods';
 import Deck            from 'addDeck';
 
 var winCheck = function(params) {
+
+	// console.log('%cWIN CHECK', 'background : red');
 		
 	var rulesCorrect = true;
 	var _hasMetods = false;
@@ -17,16 +19,13 @@ var winCheck = function(params) {
 	
 	for(var ruleName in _winCheck.rules) {
 		_hasMetods = true;
-
 		
 		if(winCheckMethods[ruleName]) {
 		
-			// console.log('>>', ruleName);
-
-				rulesCorrect = rulesCorrect && winCheckMethods[ruleName]({
-					decks     : Deck.getDecks({visible : true}), 
-					rulesArgs : _winCheck.rules[ruleName]
-				});
+			rulesCorrect = rulesCorrect && winCheckMethods[ruleName]({
+				decks     : Deck.getDecks({visible : true}), 
+				rulesArgs : _winCheck.rules[ruleName]
+			});
 
 		} else {
 			rulesCorrect = rulesCorrect && winCheckMethods['newerWin']();
@@ -38,15 +37,13 @@ var winCheck = function(params) {
 	}
 
 	if(rulesCorrect) {
-		if(params && params.noCallback) return true;
+		if(params && params.noCallback) { return true; }
 		event.dispatch('win', params);
 		// a.winCheck.callback();
 		return true;
 	}
 
 	return false;
-		// return rulesCorrect;
-	// }
 };
 
 var hwinCheck = function(a) {

@@ -51,7 +51,7 @@ var groupConstructor = function(a, _id) {
 	this.parameters = {
 		paddingType  : a.paddingType  ? a.paddingType  : defaults.paddingType  ,
 		flip         : a.flip         ? a.flip         : null                  ,
-		take         : a.take         ? a.take         : null                  ,
+		// take         : a.take         ? a.take         : null               ,// ???
 		showSlot     : a.showSlot     ? a.showSlot     : defaults.showSlot     ,
 		takeRules    : a.takeRules    ? a.takeRules    : defaults.takeRules    ,
 		putRules     : a.putRules     ? a.putRules     : defaults.putRules     ,
@@ -61,9 +61,15 @@ var groupConstructor = function(a, _id) {
 		paddingX     : a.paddingX     ? a.paddingX     : defaults.paddingX     ,
 		paddingY     : a.paddingY     ? a.paddingY     : defaults.paddingY     ,
 		flipPaddingX : a.flipPaddingX ? a.flipPaddingX : defaults.flipPaddingX ,
-		flipPaddingY : a.flipPaddingY ? a.flipPaddingY : defaults.flipPaddingY
+		flipPaddingY : a.flipPaddingY ? a.flipPaddingY : defaults.flipPaddingY ,
+		
+		actions      : a.actions      ? a.actions      : null                  ,
+		
+		afterStep    : (typeof a.afterStep == "boolean" ? a.afterStep : defaults.afterStep)
 	};
 	
+	// console.log('AFTERSTEP#1', this.name, typeof a.afterStep, a.afterStep, defaults.afterStep, this.parameters.afterStep)
+
 	this.deckIndex = [];
 
 };
@@ -154,19 +160,27 @@ groupConstructor.prototype.addDeck = function(a) {
 	}
 
 	// прокидываем некоторые атрибуты всем колодам группы (у атрибутов заданных колоде приоритет выше)
-	if( this.parameters.paddingType  && typeof a.paddingType  == "undefined" ) { a.paddingType  = this.parameters.paddingType;  }
-	if( this.parameters.flip         && typeof a.flip         == "undefined" ) { a.flip         = this.parameters.flip;         }
-	if( this.parameters.take         && typeof a.take         == "undefined" ) { a.take         = this.parameters.take;         }
-	if( this.parameters.showSlot     && typeof a.showSlot     == "undefined" ) { a.showSlot     = this.parameters.showSlot;     }
-	if( this.parameters.takeRules    && typeof a.takeRules    == "undefined" ) { a.takeRules    = this.parameters.takeRules;    }
-	if( this.parameters.putRules     && typeof a.putRules     == "undefined" ) { a.putRules     = this.parameters.putRules;     }
-	if( this.parameters.fillRule     && typeof a.fillRule     == "undefined" ) { a.fillRule     = this.parameters.fillRule;     }
-	if( this.parameters.autoHide     && typeof a.autoHide     == "undefined" ) { a.autoHide     = this.parameters.autoHide;     }
+	if( this.parameters.paddingType  && typeof a.paddingType  == "undefined" ) { a.paddingType  = this.parameters.paddingType;  };
+	if( this.parameters.flip         && typeof a.flip         == "undefined" ) { a.flip         = this.parameters.flip;         };
+	// if( this.parameters.take      && typeof a.take         == "undefined" ) { a.take         = this.parameters.take;         };
+	if( this.parameters.showSlot     && typeof a.showSlot     == "undefined" ) { a.showSlot     = this.parameters.showSlot;     };
+	if( this.parameters.takeRules    && typeof a.takeRules    == "undefined" ) { a.takeRules    = this.parameters.takeRules;    };
+	if( this.parameters.putRules     && typeof a.putRules     == "undefined" ) { a.putRules     = this.parameters.putRules;     };
+	if( this.parameters.fillRule     && typeof a.fillRule     == "undefined" ) { a.fillRule     = this.parameters.fillRule;     };
+	if( this.parameters.autoHide     && typeof a.autoHide     == "undefined" ) { a.autoHide     = this.parameters.autoHide;     };
 	// changed
-	if( this.parameters.paddingX     && typeof a.paddingX     == "undefined" ) { a.paddingX     = this.parameters.paddingX;     }
-	if( this.parameters.paddingY     && typeof a.paddingY     == "undefined" ) { a.paddingY     = this.parameters.paddingY;     }
-	if( this.parameters.flipPaddingX && typeof a.flipPaddingX == "undefined" ) { a.flipPaddingX = this.parameters.flipPaddingX; }
-	if( this.parameters.flipPaddingY && typeof a.flipPaddingY == "undefined" ) { a.flipPaddingY = this.parameters.flipPaddingY; }
+	if( this.parameters.paddingX     && typeof a.paddingX     == "undefined" ) { a.paddingX     = this.parameters.paddingX;     };
+	if( this.parameters.paddingY     && typeof a.paddingY     == "undefined" ) { a.paddingY     = this.parameters.paddingY;     };
+	if( this.parameters.flipPaddingX && typeof a.flipPaddingX == "undefined" ) { a.flipPaddingX = this.parameters.flipPaddingX; };
+	if( this.parameters.flipPaddingY && typeof a.flipPaddingY == "undefined" ) { a.flipPaddingY = this.parameters.flipPaddingY; };
+	
+	if( this.parameters.actions      && typeof a.actions      == "undefined" ) { a.actions      = this.parameters.actions;      };
+	
+	if( typeof a.afterStep == "undefined" ) {
+		a.afterStep = this.parameters.afterStep;
+	};
+
+	// console.log('AFTERSTEP#2', this.name, a.afterStep, this.parameters.afterStep)
 	
 	// console.log('%cGroup:addDeck->', 'background : red', this.name, a);
 
@@ -253,6 +267,9 @@ var addGroup = function(a) {
 			a.placement = null;
 
 		};
+
+		// TODO ADD RELATIONS
+		console.log('BEFORE ADD RELATIONS', a.decks, a.decks.length)
 
 		for(var d in a.decks) {
 			_el_group.addDeck(a.decks[d]);

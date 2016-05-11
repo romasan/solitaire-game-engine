@@ -52,19 +52,16 @@ var cdown = function(target, x, y) {
     
     if(common.isCurLock()) return;
 
-    try {
-        $('.draggable').finish();
-    } catch(e) {
-        console.warn(e);
-    }
-
     if(_dragDeck || _startCursor) return;
         
     if( target.className.split(' ').indexOf('slot') >= 0 ) {
         
         var _id   = target.id,
             _deck = common.getElementById(_id);
-        _deck.runActions();
+        if(_deck) {
+            event.dispatch('click', _deck);
+        }
+        // _deck.runActions();
     }
     
     if( target.className.split(' ').indexOf('draggable') >= 0 ) {
@@ -78,7 +75,10 @@ var cdown = function(target, x, y) {
         
         // console.log('card from deck:', _deck);
         
-        _deck.runActions();
+        if(_deck) {
+            event.dispatch('click', _deck);
+        }
+        // _deck.runActions();
         
         // TODO
         // в данной ситуации обрабатывается только клик по карте, пустые колоды никак не обрабатываются
@@ -104,6 +104,7 @@ var cdown = function(target, x, y) {
         	// ???
 	        Tips.tipsDestination({currentCard : _card});
 	    }
+
     }
 
 }
@@ -113,8 +114,8 @@ var cdown = function(target, x, y) {
 var cmove = function(x, y) {
 
     var _startCursor = share.get('startCursor'),
-    	_dragDeck    = share.get('dragDeck');
-    
+        _dragDeck    = share.get('dragDeck');
+        
     if(!_dragDeck || !_startCursor) return;
 
 	var _distance = _startCursor 
@@ -198,7 +199,14 @@ var cend = function(target, x, y, dbclick) {
     var _dop = document.elementFromPoint(x, y);
     _el(target).show();
     // if(_dop) {
-	Move(_dragDeck, _dop, cursorMove);
+	
+    // Move(_dragDeck, _dop, cursorMove);
+    console.log('>>>>')
+    event.dispatch('Move', {
+        moveDeck   : _dragDeck,
+        to         : _dop,
+        cursorMove : cursorMove
+    })
     // }
 
     share.set('dragDeck',    null);
@@ -211,26 +219,31 @@ var cend = function(target, x, y, dbclick) {
 document.onmousedown = function(e) {
     if(e.button != 0) return;
     cdown(e.target, e.clientX, e.clientY);
-}
+};
+
 document.onmousemove = function(e) {
     cmove(e.clientX, e.clientY);
-}
+};
+
 document.onmouseup = function(e) {
     cend(e.target, e.clientX, e.clientY);
-}
+};
+
 document.ondblclick = function(e) {
     cdown(e.target, e.clientX, e.clientY);
     cend(e.target, e.clientX, e.clientY, true);
-}
+};
 
 document.addEventListener('touchstart', function(e) {
     // e.preventDefault()
     cdown(e.target, e.touches[0].clientX, e.touches[0].clientY)
 }, false);
+
 document.addEventListener('touchmove', function(e) {
 	if(share.startCursor) e.preventDefault();
     cmove(e.touches[0].clientX, e.touches[0].clientY)
 }, false);
+
 document.addEventListener('touchend', function(e) {
     // e.preventDefault()
     cend(e.changedTouches[0].target, e.changedTouches[0].clientX, e.changedTouches[0].clientY);

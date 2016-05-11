@@ -8,25 +8,35 @@ import Tips  from 'Tips';
 
 export default function(a) {
 
+	// console.log('FORCEMOVE', a);
 	
 	var _animation = share.get('animation');
 
+	// console.log('FORCEMOVE', a);//_from, to);
+	
 	if(!a.from || !a.to || !a.deck) {
 		return;
 	}
 
-	if( typeof a.from != 'string' || typeof a.to != 'string') {
-		return;
-	}
+	// if( typeof a.from != 'string' || typeof a.to != 'string') {
+	// 	return;
+	// }
 
 	if(!a.deck.length) return;
 	
-	var _from = Deck.Deck(a.from);
-	var _to   = Deck.Deck(a.to);
+	var _from = typeof a.from == "string"
+		? Deck.Deck(a.from)
+		: a.from;
+	var _to   = typeof a.to   == "string"
+		? Deck.Deck(a.to)
+		: a.to;
 
-	if(!_from || !_to) {
+
+	if(!_from || !_to || _from.type != "deck" || _to.type != "deck") {
 		return;
 	}
+
+	console.log('FORCEMOVE from:', _from.name, 'to:', _to.name, a.deck);
 	
 	var _check     = true;
 	var _from_deck = _from.cards;

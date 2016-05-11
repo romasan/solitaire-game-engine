@@ -77,7 +77,13 @@ export default function(a) {
 			var _cardsSuits = [defaults.card.solors[(Math.random() * defaults.card.solors.length)|0]];
 			return genType(_cardsSuits, _ranks);
 		}
+		
 	}
+	
+	genTypes.hearts   = genTypes.h_only;
+	genTypes.diamonds = genTypes.d_only;
+	genTypes.clubs    = genTypes.c_only;
+	genTypes.spades   = genTypes.s_only;
 	
 	var _deck = [];
 	

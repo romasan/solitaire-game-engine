@@ -13,6 +13,8 @@ import winCheck from 'winCheck';
 import Field    from 'Field';
 
 var Move = function(moveDeck, to, cursorMove) {
+
+	// console.log('MOVE', moveDeck, to);
 	
 	var _deck_destination = null,// to
     	_deck_departure   = null;// from
@@ -24,7 +26,7 @@ var Move = function(moveDeck, to, cursorMove) {
 
 	if(_el) {
 
-		if(_el.type == 'card') {
+		if(_el.type        == 'card') {
     		_deck_destination = common.getElementById(_el.parent)
     	} else if(_el.type == 'deck') {
     		_deck_destination = _el;
@@ -49,7 +51,6 @@ var Move = function(moveDeck, to, cursorMove) {
     		if(_pop) {
     			
     			// положили в колоду
-    			// без анимации, просто перерисовка обеих колод
     			_deck_destination.Push(_pop);
 
 				share.set('animation', defaults.animation);
@@ -57,7 +58,17 @@ var Move = function(moveDeck, to, cursorMove) {
 				event.dispatch('moveDragDeck', {
 					departure   : _deck_departure,
 					destination : _deck_destination,
-					moveDeck    : moveDeck
+					moveDeck    : moveDeck,
+					callback    : function() {
+
+						// console.log('Move:moveEnd');
+						
+						event.dispatch('moveEnd', {
+							from     : _deck_departure,
+							to       : _deck_destination,
+							moveDeck : moveDeck
+						});
+					}
 				});
 
 				History.add({'move' : {
@@ -77,8 +88,14 @@ var Move = function(moveDeck, to, cursorMove) {
 						}
 					}});
 				}
-
-				event.dispatch('makeStep', History.get());
+				
+				// console.log('afterStep:', _deck_destination.afterStep);
+				
+				if(!_deck_destination.afterStep) {
+					// typeof _deck_destination.afterStep == "function"
+					// console.log('Move:makeStep');
+					event.dispatch('makeStep', History.get());
+				};
 				
 				winCheck.winCheck({show : true});
 
@@ -89,40 +106,52 @@ var Move = function(moveDeck, to, cursorMove) {
     }
 
 	// если не кдалось положить карты, вернуть обратно
+	// или положить на лучшее возможное место
 	if(!_success && _deck_departure) {
 		
 		var _field = Field();
-		if(_field.inputParams.doubleClick && cursorMove.dbclick || cursorMove.distance >= share.get('moveDistance')) {
+		if(
+			_field.inputParams.doubleClick
+		 && cursorMove.dbclick
+		 || cursorMove.distance >= share.get('moveDistance')
+		) {
 
     		var Tip = bestTip(moveDeck, cursorMove);
     		
     		if(Tip) {
+    			// console.log('###');
     			Move(moveDeck, Tip.to.deck.domElement, cursorMove);
+    			return;
     		} else {
     			event.dispatch('moveCardToHome', {
     				moveDeck  : moveDeck,
     				departure : _deck_departure
     			});
 	    		// share.moveCardToHome();
-    		}
+    		};
 
 		} else {
 			event.dispatch('moveCardToHome', {
 				moveDeck  : moveDeck,
 				departure : _deck_departure
 			});
-		}
+		};
 
-	}
+	};
 
 	// console.log('_success', _success);
 
 	// if(_success) {
 
 		// afterMove();
-    	Tips.checkTips();
+	Tips.checkTips();
     // }
 
 };
 
-export default Move;
+// console.log('>>>')
+event.listen('Move', function(e) {
+	Move(e.moveDeck, e.to, e.cursorMove);
+});
+
+// export default Move;

@@ -1,11 +1,13 @@
 'use strict';
 
 /*
- * Solitaire game engine. v. 0.10.8
+ * Solitaire game engine
  * by Roman Bauer - kotapesic@gmail.com
  * Oct. 2015
- * Webpack version 24 Feb. 2016
+ * Webpack version Feb. 24 2016
  */
+
+exports.ver = "0.12";
 
 import share           from 'share';
 import event           from 'event';
@@ -36,4 +38,4 @@ exports.init = function(gameConfig) {
 	}
 };
 
-if(SolitaireDebug) exports.debug = SolitaireDebug;
+if(SolitaireDebug) { exports.debug = SolitaireDebug; };

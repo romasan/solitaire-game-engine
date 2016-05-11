@@ -45,34 +45,35 @@ var debugHistory = function(a) {
 	
 	event.listen('makeStep', debugHistoryMgr.record);
 	
-	if(a && a.drawButtons) $(document.body).append(
-		$("<div>")
-			.append(
-				$("<span>")
-					.addClass('awesome')
-					.text('UNDO')
-					.click(function() {
-						var _data = debugHistoryMgr.undo();
-						if(_data) {
-							SolitaireEngine.event.dispatch('undo', _data);
-						}
+	/*if(a && a.drawButtons) elRender(document.body)
+		.append(
+				elRender("<div>")
+					.append(
+						$("<span>")
+							.addClass('awesome')
+							.text('UNDO')
+							.click(function() {
+								var _data = debugHistoryMgr.undo();
+								if(_data) {
+									SolitaireEngine.event.dispatch('undo', _data);
+								}
+							}))
+					.append(
+						$("<span>")
+							.addClass('awesome')
+							.text('REDO')
+							.click(function() {
+								var _data = debugHistoryMgr.redo();
+								if(_data) {
+									SolitaireEngine.event.dispatch('redo', _data);
+								}
+							}))
+					.css({
+						position : 'fixed', 
+						top      : '1px', 
+						left     : '1px'
 					})
-			).append(
-				$("<span>")
-					.addClass('awesome')
-					.text('REDO')
-					.click(function() {
-						var _data = debugHistoryMgr.redo();
-						if(_data) {
-							SolitaireEngine.event.dispatch('redo', _data);
-						}
-					})
-			).css({
-				position : 'fixed', 
-				top      : '1px', 
-				left     : '1px'
-			})
-	);
+	);*/
 
 };
 

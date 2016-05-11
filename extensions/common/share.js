@@ -14,7 +14,10 @@ export default new function() {
 			// if( (data[data]).toString() == "[object Object]" ) {
 			// 	return Object['assign'] ? Object['assign']({}, data[name]) : data[name]
 			// } else {
+			
+			// event.dispatch('shareGet', {name : name, data : data[name]});
 			return data[name];
+			
 			// }
 
 			// } catch(e) {
@@ -27,8 +30,24 @@ export default new function() {
 	};
 
 	this.set = function(name, _data) {
-		// if(data[name]) {
-		data[name] = _data;
+
+		if(typeof name == "string") {
+			
+			data[name] = _data;
+			// event.dispatch('shareSet', {name : _data});
+		
+		} else if(name instanceof Object && typeof _data == "undefined") {
+			
+			for(var _name in name) {
+				data[_name] = name[_name];
+			}
+			// event.dispatch('shareSet', name);
+		
+		} else {
+			
+			console.warn('Error share.set:', name, _data);
+
+		}
 		// }
 	};
 

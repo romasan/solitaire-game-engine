@@ -1,154 +1,28 @@
 'use strict';
 
-import event     from 'event';
-import share     from 'share';
-import defaults  from 'defaults';
+import event          from 'event';
+import share          from 'share';
+import defaults       from 'defaults';
+import common         from 'SolitaireCommon';
 
-import Deck      from 'addDeck';
-import Group     from 'addGroup';
-import History   from 'SolitaireHistory';
-import forceMove from 'forceMove';
-// import Tips      from 'Tips';
+// import Deck           from 'addDeck';
+// import History        from 'SolitaireHistory';
+
+// Actions
+import twindeckAction   from 'twindeckAction';
+import dealerdeckAction from 'dealerdeckAction';
+import kickAction       from 'kickAction';
 
 var _actions = {
 	
-	// TODO переделать
-	"twindeck" : function(e) {
+	"twindeck"   : twindeckAction,
+	"dealerdeck" : dealerdeckAction,
 
-		
-		// console.log("twindeck action:", e);
-		if(e.deck_from.iteration == 0) {
-			return;
-		}
-
-		var deck_to = Deck.Deck(e.data.to);
-		
-		var moveCardsCount = e.data.count && typeof e.data.count == 'number' 
-			? e.data.count 
-			: defaults.actions.twindeck.CardsCount;
-		
-		// количество оставшихся карт в первой колоде
-		var deckFromCardsCount = e.deck_from.cards.length;
-		
-		if(deckFromCardsCount < moveCardsCount) {
-			moveCardsCount = deckFromCardsCount;
-		}
-		
-		// инициализация
-		if(typeof e.deck_from.iteration == 'undefined') {
-			// "-1" - infinity
-			e.deck_from.iteration = -1;
-			e.deck_from.twindeck = [];
-		}
-
-		// количество циклов перелистываний сначало до конца
-		if(e.iterations && e.deck_from.iteration < 0) {
-			e.deck_from.iteration = e.iterations
-		}
-
-		deck_to.hideCards();
-
-		var _deck = deck_to.Pop(deck_to.cards.length);
-
-		// oneStepWay.add('toHide') = Deck.deckCardNames(_deck);
-		
-		_deck.reverse();
-		for(var i in _deck) {
-			e.deck_from.twindeck.unshift(_deck[i]);
-		}
-		
-		// первая колода пуста
-		if(e.deck_from.twindeck && e.deck_from.twindeck.length && deckFromCardsCount == 0 && e.deck_from.iteration != 0) {
-			// e.deck_from.twindeck.reverse();
-			e.deck_from.Push(e.deck_from.twindeck);
-			e.deck_from.twindeck = [];// unshift
-		// перелистывание
-		} else {
-			var _deck = e.deck_from.Pop(moveCardsCount);
-			deck_to.Push(_deck);
-		}
-		
-		e.deck_from.showCards();
-		
-		// ------------ FLIP ------------
-		// var _deck_from = e.deck_from.cards;
-		// var _deck_to = deck_to.cards;
-		
-		e.deck_from.flipCheck();
-		deck_to    .flipCheck();
-		
-		e.deck_from.Redraw();
-		deck_to    .Redraw();
-		
-		// ------------ STEP ------------
-		// Step
-		var _twindeckStep = {
-			from      : e.deck_from.name,
-			to        : deck_to    .name,
-			moveCards : share.deckCardNames(_deck),
-			iteration : (e.deck_from.iteration|0)
-		};
-		
-		// hiddenCards : share.deckCardNames(e.deck_from.twindeck), 
-		// cards       : share.deckCardNames(e.deck_from.cards),
-
-		History.add(_twindeckStep);
-		
-		event.dispatch('makeStep', History.get());
-		
-		// ------------------------------
-
-		// share.checkTips();
-
-		e.deck_from.iteration -= 1;
-
+	"avalanche" : function(e) {// 
+		// listen avalanche
 	},
 
-	"twindeck2" : function(e) {
-		// TODO
-	},
-
-	"dealerdeck" : function(e) {
-
-		
-		var _decks = Group.Group(e.toGroup).decks;
-
-		if(this.cards.length == 0) return;
-		
-		for(var deckId in _decks) {
-			
-			// console.log('DEALERDECK', deckId, _decks);
-			
-			var _cardName = this.getTopCard().name
-			forceMove({
-				from : this.name,
-				to   : _decks[deckId].name,
-				// to   : deckId,
-				deck : [_cardName],
-				flip : true
-			}, true);
-			
-			_decks[deckId].flipCheck();
-			// _decks[deckId].Redraw();
-
-			History.add({move : {
-				from : this.name,
-				to   : _decks[deckId].name,
-				deck : [_cardName],
-				flip : true
-			}});
-		}
-		
-		// History.add({
-		// 	"action" : {
-		// 		name     : "dealerdeck",
-		// 		deckName : this.name,
-		// 		params   : e
-		// 	}
-		// });
-		
-		event.dispatch('makeStep', History.get());
-	}
+	"kick" : kickAction
 };
 
 // ------------------------------------------------------------------------------------------
@@ -197,19 +71,131 @@ var _actions = {
 // 	}
 // }});
 
-var runActions = function(e) {// bind this deck
+var _decksActions  = [],
+	_events = [];
+
+var addActionEvent = function(_event) {
+	
+	// console.log('addActionEvent#1', _event);
+	
+	event.listen(_event, function(data) {
+
+		// console.log(_event, data, _decks);
+
+		for(var i in _decksActions) {
+			if(_decksActions[i].event == _event) {
+				
+				var _actionName = _decksActions[i].action;
+				
+
+				var _canRun = _event == 'click'
+					? data.name == _decksActions[i].deck.name
+					: true;
+				
+				if(_canRun) {
+					
+					// console.log('RUN', _actionName, 'for', _decksActions[i].deck.name, 'on', _event);
+					
+					_actions[_actionName].call(
+						_decksActions[i].deck, 
+						{
+							actionData : _decksActions[i].deck.actions[_actionName],
+							eventData  : data,
+							eventName  : _event
+						}
+					);
+				};
+			}
+			// for(var actionName in _decksActions[i].deck.actions) {
+				// if(_decksActions[i].actions[actionName].event == _event) {
+
+					
+					// if(_actions[actionName]) {
+					
+					// _actions[actionName].call(_decks[i], _decks[i].actions[actionName], e);
+					
+					// }
+				// }
+			// }
+		}
+	});
+
+};
+
+// addActionEvent('click');
+
+var addActions = function() {
+
+	// console.log(this.name, 'add actions:', this);
+
+	for(var actionName in this.actions) {
+
+		if(!this.actions[actionName].event) {
+			this.actions[actionName].event = 'click';
+		}
+
+		if(_actions[actionName]) {
+			
+			_decksActions.push({
+				deck   : this, 
+				event  : this.actions[actionName].event,
+				action : actionName
+			});
+
+			// console.log('add action:', actionName, this.actions[actionName].event, _events.indexOf(this.actions[actionName].event) < 0, _events);
+			if(_events.indexOf(this.actions[actionName].event) < 0) {
+				_events.push(this.actions[actionName].event);
+				addActionEvent(this.actions[actionName].event);
+			}
+		} else {
+			console.warn('Action', actionName, 'for', this.name, 'not found.');
+		};
+
+	}
+	autoRunActions(this.actions);
+};
+
+/*var runActions = function(e) {// bind this deck
 
 	share.set('animation', defaults.animation);
 
 	for(var actionName in this.actions) {
-		if(_actions[actionName]) {
-			console.log('run action', this, actionName, this.actions[actionName]);
-			_actions[actionName].call(this, this.actions[actionName]);
+		if(
+			typeof this.actions[actionName].type == "undefined"
+		 || this.actions[actionName].type && this.actions[actionName].listen == "click" // default action event - click
+		) {
+			if(_actions[actionName]) {
+				// console.log('run action', this, actionName, this.actions[actionName]);
+				_actions[actionName].call(this, this.actions[actionName]);
+			}
+		}
+	}
+	// Tips.checkTips();
+}*/
+
+var autoRunActions = function(data) {// bind this deck
+
+	share.set('animation', defaults.animation);
+
+	for(var actionName in data.actions) {
+		if(data.actions[actionName].autorun) {
+			if(_actions[actionName]) {
+				_actions[actionName].call(
+					data, 
+					{
+						actionData : data.actions[actionName],
+						eventData  : null,
+						eventName  : data.actions[actionName].event
+					}
+				);
+			}
 		}
 	}
 	// Tips.checkTips();
 }
 
 export default {
-	runActions
+	// autoRunActions,
+	// runActions,
+	addActions
 }

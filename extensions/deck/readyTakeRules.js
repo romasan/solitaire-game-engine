@@ -8,7 +8,6 @@ export default {
 	},
 
 	notFirst : function(a) {
-		// console.log('notFirst:', a.cardIndex);
 		return a.cardIndex > 0;
 	},
 
@@ -18,8 +17,6 @@ export default {
 
 	onlytop  : function(a) {
 
-		// console.log("take:onlytop", a.cardIndex == a.deckLength - 1);
-		
 		return a.cardIndex == a.deckLength - 1;
 	},
 	

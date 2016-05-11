@@ -1,12 +1,16 @@
 'use strict';
 
+import defaults from 'defaults';
+
 var _elConstructor = function(e) {
+	
 	this.el = e ? e : null;
+
 };
 
 _elConstructor.prototype.attr = function(attributes) {
 
-	if(!this.el) return this;
+	if(!this.el) { return this; };
 	
 	for(var attrName in attributes) { 
 		this.el[attrName] = attributes[attrName];
@@ -16,7 +20,7 @@ _elConstructor.prototype.attr = function(attributes) {
 
 _elConstructor.prototype.hasClass = function(className) {
 
-	if(!this.el) return this;
+	if(!this.el) { return this; };
 	
 	var _classes = this.el.className.split(' ');
 	return _classes.indexOf(className) >= 0;
@@ -24,7 +28,7 @@ _elConstructor.prototype.hasClass = function(className) {
 
 _elConstructor.prototype.toggleClass = function(className) {
 
-	if(!this.el) return this;
+	if(!this.el) { return this; };
 	
 	if(this.hasClass(className)) {
 		this.removeClass(className);
@@ -36,7 +40,7 @@ _elConstructor.prototype.toggleClass = function(className) {
 
 _elConstructor.prototype.addClass = function(className) {
 
-	if(!this.el) return this;
+	if(!this.el) { return this; };
 	
 	var _classes = this.el.className.split(' ');
 	if(!this.hasClass(className)) {
@@ -48,7 +52,7 @@ _elConstructor.prototype.addClass = function(className) {
 
 _elConstructor.prototype.removeClass = function(className) {
 
-	if(!this.el) return this;
+	if(!this.el) { return this; };
 	
 	var _classes = this.el.className.split(' ');
 	
@@ -68,7 +72,9 @@ _elConstructor.prototype.removeClass = function(className) {
 
 _elConstructor.prototype.css = function(a) {
 
-	if(!this.el) return this;
+	// console.log('CSS', this.el ? true : false, a);
+
+	if(!this.el) { return this; };
 	
 	for(var attrName in a) {
 		try {
@@ -82,21 +88,21 @@ _elConstructor.prototype.css = function(a) {
 
 _elConstructor.prototype.hide = function(a) {
 
-	if(!this.el) return this;
+	if(!this.el) { return this; };
 	
 	return this.css({'display' : 'none'});
 };
 
 _elConstructor.prototype.show = function(a) {
 
-	if(!this.el) return this;
+	if(!this.el) { return this; };
 	
 	return this.css({'display' : 'block'});
 };
 
 _elConstructor.prototype.append = function(el) {
 
-	if(!this.el) return this;
+	if(!this.el) { return this; };
 	
 	if(el.el) {
 		el = el.el;
@@ -107,7 +113,7 @@ _elConstructor.prototype.append = function(el) {
 
 _elConstructor.prototype.html = function(el) {
 
-	if(!this.el) return this;
+	if(!this.el) { return this; };
 	
 	if(typeof el == "undefined") {
 		return this.el.innerHTML;
@@ -123,59 +129,67 @@ _elConstructor.prototype.html = function(el) {
 };
 
 var _animatedElements = 0,
-	_animatedCallback = null;
+	_animatedCallback = function() {};
 
 _elConstructor.prototype.animate = function(params, animationTime, callback) {
 
-	if(!this.el) return this;
+	if(!this.el) { return this; };
 
+	if(typeof animationTime == "undefined") {
+		animationTime = defaults.animationTime;
+	}
 
-		if(typeof animationTime == "undefined") {
-			animationTime = defaults.animationTime;
-		}
+	if(
+		typeof callback      == "undefined" 
+	 && typeof animationTime == "function"
+	) {
+		callback = animationTime;
+		animationTime = defaults.animationTime;
+	}
 
-		if(
-			typeof callback      == "undefined" 
-		 && typeof animationTime == "function"
-		) {
-			callback = animationTime;
-			animationTime = defaults.animationTime;
-		}
+	this.done(callback);
 
-		this.done(callback);
+	_animatedElements += 1;
 
-		_animatedElements += 1;
-		
-		this.css({
-			'transition'          : (animationTime / 1e3) + 's',
-			' -webkit-transition' : (animationTime / 1e3) + 's'
-		});
-		
+	var _animateThread = function(params) {
+		this.el.style.transition = '0.5s';
 		this.css(params);
-		
-		var _transitionend = function() {
-			_animatedElements -= 1;
-			if(_animatedElements <= 0) {
-				_animatedElements = 0;
-				if(typeof _animatedCallback == "function") {
+		this.el.addEventListener("transitionend", function() {
+			if(this.el.style.transition) {
+				
+				_animatedElements -= 1;
+				var _cloneCallback = _animatedCallback;
+				
+				if(_animatedElements == 0) {
 					_animatedCallback.call(this);
-					_animatedCallback = null;
-				}
-			}
-		};
+				};
+				
+				if(_animatedElements == 0 || _cloneCallback == _animatedCallback) {
+					_animatedCallback = function() {};
+				};
+			};
+			this.el.style.transition = null;
+		}.bind(this), false);
+	}
+	// this.el.addEventListener("transitionend", function() {
+	// 	this.style.transition = null;
+	// }, false);
+	
+	// Thread
+	setTimeout(_animateThread.bind(this, params), 0);
 
-		_el.addEventListener("transitionend",       _transitionend, false);
-		_el.addEventListener("webkitTransitionEnd", _transitionend, false);
-		_el.addEventListener("mozTransitionEnd",    _transitionend, false);
-		_el.addEventListener("msTransitionEnd",     _transitionend, false);
-		_el.addEventListener("oTransitionEnd",      _transitionend, false);
+	// this.el.style.left       = params.left;
+	// this.el.style.top        = params.top;
+	// this.el.style.transform  = params.transform;
 
-		return this;
+	//this.css(params);
+
+	return this;
 };
 
 _elConstructor.prototype.done = function(callback) {// ALL
 
-	if(!this.el) return this;
+	if(!this.el) { return this; };
 	
 	if(typeof callback == "function") {
 		_animatedCallback = callback;
@@ -185,7 +199,7 @@ _elConstructor.prototype.done = function(callback) {// ALL
 
 _elConstructor.prototype.remove = function() {
 
-	if(!this.el) return this;
+	if(!this.el) { return this; };
 	
 	this.el.remove();
 
@@ -193,7 +207,7 @@ _elConstructor.prototype.remove = function() {
 
 _elConstructor.prototype.getEl = function() {
 
-	if(!this.el) return this;
+	if(!this.el) { return this; };
 	
 	return this.el;
 };
@@ -265,7 +279,7 @@ for(var _protoName in _elConstructor.prototype) {
 
 var _allEl = function(e) {
 
-	if(!e) return _el(e);
+	if(!e) { return _el(e); };
 
 	if(typeof e == "string") {
 		try {
@@ -273,7 +287,8 @@ var _allEl = function(e) {
 		} catch(_e) {
 			return _el(e);
 		}
-	}
+	};
+
 	if(typeof e.length != "undefined") {
 		if(e.length == 1) {
 			return _el(e[0]);
@@ -284,9 +299,16 @@ var _allEl = function(e) {
 	} else {
 		var __el = _el(e);
 		return __el;
-	}
+	};
 
 	return new _allElConstructor(e);
+};
+
+_allEl.animationsEnd = function(callback) {
+
+	_animatedElements = 0;
+	_animatedCallback.call(this);
+	_animatedCallback = function() {};
 };
 
 export default _allEl;

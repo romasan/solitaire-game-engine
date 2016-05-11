@@ -9,6 +9,12 @@ import Field    from 'Field';
 import Tips     from 'Tips';
 import _el      from 'elRender';
 
+var angleValidate = function(_angle) {
+	if(_angle < 0)   { _angle = 360 + _angle; };
+	if(_angle > 360) { _angle = _angle - 360; };
+	return _angle;
+};
+
 event.listen('initField', function(e) {
 
 	// console.log('initField');
@@ -242,13 +248,18 @@ event.listen('redrawDeckFlip', function(e) {
 });
 event.listen('redrawDeck', function(e) {
 
-	if(e.a) {
-		applyChangedParameters(e.params, e.a, e.deck);
+	// console.log('redrawDeck', share.get('noRedraw'));
+	
+	if(share.get('noRedraw')) { return false; };
+	
 
-		if(e.a.paddingX    ) share.get('padding_x',      e.a.paddingX    );
-		if(e.a.flipPaddingX) share.get('flip_padding_x', e.a.flipPaddingX);
-		if(e.a.paddingY    ) share.get('padding_y',      e.a.paddingY    );
-		if(e.a.flipPaddingY) share.get('flip_padding_y', e.a.flipPaddingY);
+	if(e.data) {
+		applyChangedParameters(e.params, e.data, e.deck);
+
+		if(e.data.paddingX    ) share.get('padding_x',      e.data.paddingX    );
+		if(e.data.flipPaddingX) share.get('flip_padding_x', e.data.flipPaddingX);
+		if(e.data.paddingY    ) share.get('padding_y',      e.data.paddingY    );
+		if(e.data.flipPaddingY) share.get('flip_padding_y', e.data.flipPaddingY);
 	}
 
 	var _params = {
@@ -258,6 +269,8 @@ event.listen('redrawDeck', function(e) {
 	};
 	
 	_params.display = e.deck.visible ? 'block' : 'none';
+
+	// console.log('DECK REDRAW', e.deck.domElement);
 
 	_el(e.deck.domElement)
 		.css(_params);
@@ -361,65 +374,71 @@ event.listen('addCardEl', function(e) {
 
 event.listen('moveDragDeck', function(e) {
 	
-	// console.log('moveDragDeck', e);
+	console.log('moveDragDeck', e);
 	
 	common.curLock();
 	for(var i in e.moveDeck) {
+
 		var _position = e.destination.padding(e.destination.cards.length - 1 + (i|0));
-		             // e.destination.padding(e.moveDeck[i].index);
-		var _params = {
-			left : share.get('zoom') * _position.x + 'px', 
-			top  : share.get('zoom') * _position.y + 'px',
-			// transform : 'rotate(0deg)'
-		};
-		var a = e.departure  .rotate, 
-			b = e.destination.rotate;
-		if(Math.abs(a - b) > 180) {
-			if(a > b) {
-				a = a - 360
-			} else {
-				b = b - 360
-			}
-		};
-		// console.log('rotate', a, b)
 
-		
+		var departureAngle   = angleValidate(e.departure  .rotate), 
+			destinationAngle = angleValidate(e.destination.rotate);
 
-		var _zIndex = (defaults.topZIndex|0) + (i|0);
-		// console.log('_zIndex :', _zIndex);
 		_el(e.moveDeck[i].card.domElement)
 			.css({
-				'z-index' : _zIndex
-			});
+				'transform' : 'rotate(' + departureAngle + 'deg)'
+			})
+		
+		if(departureAngle - destinationAngle > 180) {
+			
+			departureAngle = departureAngle - 360;
+			_el(e.moveDeck[i].card.domElement)
+				.css({
+					'transform' : 'rotate(' + departureAngle + 'deg)'
+				})
+		};
+		
+		if(departureAngle - destinationAngle < -180) {
+			destinationAngle = destinationAngle - 360;
+		}
 
-		$({deg: a, e : e})
-			.animate({deg: b}, {
-				duration: defaults.animationTime,
-				step: function (now) {
-				$(this).css({
-					'-ms-transform'     : 'rotate(' + now + 'deg)',
-					'-webkit-transform' : 'rotate(' + now + 'deg)',
-					'-moz-transform'    : 'rotate(' + now + 'deg)',
-					// transform: 'rotate(' + now + 'deg)',
-				});
-				}.bind(e.moveDeck[i].card.domElement)
-			});
-		$(e.moveDeck[i].card.domElement)
-			.animate(_params, defaults.animationTime, function() {
-				e.departure.Redraw();
-				e.destination.Redraw();
-			});
+		var _params = {
+			'left'              : share.get('zoom') * _position.x + 'px', 
+			'top'               : share.get('zoom') * _position.y + 'px',
+			'transform'         : 'rotate(' + destinationAngle + 'deg)' ,
+			'-ms-transform'     : 'rotate(' + destinationAngle + 'deg)' ,
+			'-webkit-transform' : 'rotate(' + destinationAngle + 'deg)' ,
+			'-moz-transform'    : 'rotate(' + destinationAngle + 'deg)'
+		};
+
+		var _zIndex = (defaults.topZIndex | 0) + (i | 0);
+		// console.log('_zIndex :', _zIndex);
+		_el(e.moveDeck[i].card.domElement)
+			.css({'z-index' : _zIndex})
+			.animate(
+				_params, 
+				function(e) {
+
+					console.log('>>> moveDragDeck:animationEnd')
+					
+					e.departure  .Redraw();
+					e.destination.Redraw();
+				    
+				    common.curUnLock();
+				    
+				    if(typeof e.callback == "function") {
+				    	e.callback();
+				    };
+				    
+				    event.dispatch('moveDragDeckDone', {
+				    	deck : e.destination
+					});
+				}.bind(this, e));
 		
 		// _el(e.moveDeck[i].card.domElement)
 			// .animate(_params)
 
 	}
-	$('.draggable')
-		.promise()
-		.done(function(){
-		    common.curUnLock();
-		    event.dispatch('moveDragDeckDone', {deck : e.destination});
-		});
 });
 
 // --------------------------------------------------------------------------------------------------------
@@ -434,22 +453,17 @@ event.listen('moveCardToHome', function(e) {
     		left : _position.x * share.get('zoom') + 'px',
     		top  : _position.y * share.get('zoom') + 'px'
     	}
-    	$(e.moveDeck[i].card.domElement)
-    		.animate(_params, defaults.animationTime);
+    	_el(e.moveDeck[i].card.domElement)
+    		.animate(
+    			_params, 
+    			function() {
+				    common.curUnLock();
+					if(e.departure) {
+						e.departure.Redraw();
+					}
+				});
     }
-	$('.draggable')
-		.promise()
-		.done(function(){
-		    common.curUnLock();
-		});
     
-	$('.draggable')
-		.promise()
-		.done(function() {
-			if(e.departure) {
-				e.departure.Redraw();
-			}
-		});
 })
 
 // --------------------------------------------------------------------------------------------------------

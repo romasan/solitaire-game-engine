@@ -6,6 +6,7 @@ import share     from 'share';
 import forceMove from 'forceMove';
 import Deck      from 'addDeck';
 import Tips      from 'Tips';
+import elRender  from 'elRender';
 
 var _oneStepWay  = [];
 var _undoMethods = {};
@@ -65,16 +66,24 @@ event.listen('undo', function(_a) {
 
 	// console.log('undo', _a);
 
-	if(!_a) return;
+	if(!_a) { return; };
+
+	elRender.animationsEnd();
 
 	// Обратная совместимость
 	if(_a instanceof Array) {
+
+		_a.reverse();
+		
 		for(var _i in _a) {
 			var a = _a[_i];
 			_undo(a);
 		}
+		
 	} else {
+		
 		_undo(_a);
+		
 	}
 
 	Tips.checkTips();
@@ -159,7 +168,7 @@ export default new function() {
 		// }
 	};
 
-	this.get = function() {
+	this.get = function() {// TODO get without reset (param)
 		var _req = _oneStepWay;
 		this.reset();
 		return _req;

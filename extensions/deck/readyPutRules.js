@@ -8,12 +8,9 @@ var rpr = {
 	// Internal use
 	_downupcards : function(a) {
 
-		// console.log('_downupcards', a);
-		
 		if(a.cards.length == 0) return false;
 		
 		var down = common.validateCardName(a.cards[a.cards.length  - 1].name);
-		// console.log('>>>')
 		var up   = common.validateCardName(a.putDeck[0].card.name);
 		if(!down || !up) return false;
 		return {
@@ -23,7 +20,7 @@ var rpr = {
 	},
 
 	_downupranknum : function(a) {
-		// console.log('#1');
+
 		var du = rpr._downupcards(a);
 		return du ? {
 			down : defaults.card.ranks.indexOf(du.down.rank),
@@ -56,7 +53,6 @@ var rpr = {
 		}
 		
 		return color_A != color_B;
-		// return true;
 	},
 
 	firstAce : function(a) {			
@@ -72,16 +68,14 @@ var rpr = {
 	},
 
 	oneRank : function(a) {
-		// TODO
+
 		if(a.cards.length == 0) return true;
-		// console.log('#2');
 		var du = rpr._downupcards(a);
 		return du && du.up.rank == du.down.rank;
 	},
 	
 	oneSuit : function(a) {
 		if(a.cards.length == 0) return true;
-		// console.log('#3');
 		var du = rpr._downupcards(a);
 		return du && du.up.suit == du.down.suit;
 	},
@@ -152,7 +146,6 @@ var rpr = {
 
 	ascend : function(a) {
 		
-		// пустая стопка - любая карта
 		if(a.cards.length == 0) return true;
 
 		var da = rpr._downupranknum(a);
@@ -161,7 +154,6 @@ var rpr = {
 
 	descent : function(a) {
 		
-		// пустая стопка - любая карта
 		if(a.cards.length == 0) return true;
 
 		var da = rpr._downupranknum(a);
@@ -170,7 +162,6 @@ var rpr = {
 
 	descentOne : function(a) {// one step
 		
-		// пустая стопка - любая карта
 		if(a.cards.length == 0) return true;
 
 		var da = rpr._downupranknum(a);
@@ -179,7 +170,6 @@ var rpr = {
 
 	ascendOne : function(a) {// one step
 		
-		// пустая стопка - любая карта
 		if(a.cards.length == 0) return true;
 
 		var da = rpr._downupranknum(a);
@@ -188,7 +178,6 @@ var rpr = {
 
 	ascdescOne : function(a) {
 		
-		// пустая стопка - любая карта
 		if(a.cards.length == 0) return true;
 
 		var da = rpr._downupranknum(a);
@@ -196,8 +185,11 @@ var rpr = {
 	},
 
 	summ14     : function(a) {
-		// TODO
-		return false;
+
+		if(a.cards.length == 0) return true;
+
+		var du = rpr._downupcards(a);
+		return du.down.value + du.up.value == 14;
 	}
 
 };

@@ -5,6 +5,7 @@ import event    from 'event';
 import defaults from 'defaults';
 
 import Tips     from 'Tips';
+import Field    from 'Field';
 
 // event.listen('makeStep', function(e) {
 // 	// ???
@@ -94,18 +95,23 @@ var validateCardName = function(name, nolog) {
 	
 	var suit  = name.slice(0, 1),
 		rank  = name.slice(1, 3),
-		color = null;
+		color = null,
+		value = defaults.card.values[defaults.card.ranks.indexOf(rank)];
 	for(var colorName in defaults.card.colors) {
 		if(defaults.card.colors[colorName].indexOf(suit) >= 0) {
 			color = colorName;
 		}
 	}
 	
-	if( defaults.card.suits.indexOf(suit) >= 0 && defaults.card.ranks.indexOf(rank) >= 0 ) {
+	if( 
+		defaults.card.suits.indexOf(suit) >= 0
+	 && defaults.card.ranks.indexOf(rank) >= 0
+	) {
 		return {
 			suit  : suit, 
 			rank  : rank,
-			color : color 
+			color : color,
+			value : value
 		}
 	} else {
 		console.warn('Warning: validate name:', name, '- incorrect');
@@ -133,6 +139,23 @@ var animationOff = function() {
 
 event.listen('newGame', function(e) {
 	animationOff();
+});
+
+event.listen('historyReapeater', function(e) {
+	if(e) {
+		share.set('noRedraw', true);
+
+		share.set('noTips', true);
+	} else {
+		share.set('noRedraw', false);
+		var _field = Field();
+		_field.Redraw();
+
+		share.set('noTips', false);
+		Tips.checkTips();
+
+		console.log('historyReapeater: Off');
+	}
 });
 
 // event.listen('makeStep', function(e) {
