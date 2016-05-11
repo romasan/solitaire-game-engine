@@ -5,7 +5,7 @@ const webpack = require('webpack');
 const path    = require('path');
 
 module.exports = {
-	entry: "./SolitaireEngine.main",
+	entry: "./src/main",
 	// context: './extensions/',
 	output: {
 		// filename: "./js/SolitaireEngine.min.js",
@@ -38,14 +38,32 @@ module.exports = {
 		// ],
 		modulesDirectories: [
 			// /.*/,
-			'./extensions/'                  ,
-			'./extensions/common/'           ,
-			'./extensions/group/'            ,
-			'./extensions/group/generators/' ,
-			'./extensions/deck/'             ,
-			'./extensions/deck/actions/'     ,
-			'./extensions/tips/'             ,
-			'./extensions/history/'
+			
+			// './src/*',
+			// './src/*/*'
+			
+			// './extensions/'                  ,
+			// './extensions/common/'           ,
+			// './extensions/group/'            ,
+			// './extensions/group/generators/' ,
+			// './extensions/deck/'             ,
+			// './extensions/deck/actions/'     ,
+			// './extensions/tips/'             ,
+			// './extensions/history/'
+
+			// './*/'  ,
+			// './src/*/'  ,
+			// './src/*/*/',
+			// './src/*/*/*/',
+
+			'./src/'                  ,
+			'./src/common/'           ,
+			'./src/group/'            ,
+			'./src/group/generators/' ,
+			'./src/deck/'             ,
+			'./src/deck/actions/'     ,
+			'./src/tips/'             ,
+			'./src/history/'
 		],
 		extensions: ['', '.js']
 	},
