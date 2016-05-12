@@ -3,8 +3,8 @@
 import share    from 'share';
 import defaults from 'defaults';
 
-import Tips     from 'Tips';
-import Field    from 'Field';
+import Tips     from 'tips';
+import Field    from 'field';
 
 export default function(moveDeck, cursorMove) {
 

@@ -8,7 +8,7 @@
  */
 
 // import share    from 'share';
-import common   from 'SolitaireCommon';
+import common   from 'common';
 import defaults from 'defaults';
 
 var wcm = {

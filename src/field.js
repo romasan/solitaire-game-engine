@@ -4,11 +4,11 @@
 import share     from 'share';
 import event     from 'event';
 import defaults  from 'defaults';
-import common    from 'SolitaireCommon';
+import common    from 'common';
 
 import Group     from 'addGroup';
 import Deck      from 'addDeck';
-import Tips      from 'Tips';
+import Tips      from 'tips';
 import tipsRules from 'tipsRules';
 
 var _field = null;

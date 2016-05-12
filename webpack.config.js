@@ -5,7 +5,7 @@ const webpack = require('webpack');
 const path    = require('path');
 
 module.exports = {
-	entry: "./src/main",
+	entry: "index",
 	// context: './extensions/',
 	output: {
 		// filename: "./js/SolitaireEngine.min.js",

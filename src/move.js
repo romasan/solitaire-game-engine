@@ -3,14 +3,14 @@
 import event    from 'event';
 import share    from 'share';
 import defaults from 'defaults';
-import common   from 'SolitaireCommon';
+import common   from 'common';
 
 import Deck     from 'addDeck';
-import Tips     from 'Tips';
+import Tips     from 'tips';
 import bestTip  from 'bestTip';
-import History  from 'SolitaireHistory';
+import History  from 'history';
 import winCheck from 'winCheck';
-import Field    from 'Field';
+import Field    from 'field';
 
 var Move = function(moveDeck, to, cursorMove) {
 

@@ -3,11 +3,11 @@
 import share    from 'share';
 import event    from 'event';
 import defaults from 'defaults';
-import common   from 'SolitaireCommon';
+import common   from 'common';
 
 import Deck     from 'addDeck';
-import Tips     from 'Tips';
-import Move     from 'Move';
+import Tips     from 'tips';
+import Move     from 'move';
 import _el      from 'elRender';
 
 // пусть будет

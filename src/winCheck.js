@@ -2,7 +2,7 @@
 
 import share           from 'share';
 import event           from 'event';
-import common          from 'SolitaireCommon';
+import common          from 'common';
 
 import winCheckMethods from 'winCheckMethods';
 import Deck            from 'addDeck';

@@ -3,7 +3,7 @@
 import event     from 'event';
 
 import forceMove from 'forceMove';
-import History   from 'SolitaireHistory';
+import History   from 'history';
 
 export default function(data) {
 		

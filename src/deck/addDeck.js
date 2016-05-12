@@ -3,7 +3,7 @@
 import event          from 'event';
 import share          from 'share';
 import defaults       from 'defaults';
-import common         from 'SolitaireCommon';
+import common         from 'common';
 
 import flipTypes      from 'flipTypes';
 import readyPutRules  from 'readyPutRules';
@@ -15,7 +15,7 @@ import Take           from 'deckTake';
 import Put            from 'deckPut';
 import genCardByName  from 'genCardByName';
 import Group          from 'addGroup';
-import History        from 'SolitaireHistory';
+import History        from 'history';
 
 var deckConstructor = function(a, _id) {
 

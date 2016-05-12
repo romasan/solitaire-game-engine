@@ -3,10 +3,10 @@
 import event     from 'event';
 import share     from 'share';
 import defaults  from 'defaults';
-import common    from 'SolitaireCommon';
+import common    from 'common';
 
 import forceMove from 'forceMove';
-import History   from 'SolitaireHistory';
+import History   from 'history';
 
 export default function(data) {// data.actionData, e
 

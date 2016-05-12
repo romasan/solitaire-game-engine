@@ -1,6 +1,6 @@
 'use strict';
 
-import common   from 'SolitaireCommon';
+import common   from 'common';
 import defaults from 'defaults';
 
 var rpr = {

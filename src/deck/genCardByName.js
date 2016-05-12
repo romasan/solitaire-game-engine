@@ -2,7 +2,7 @@
 
 import event  from 'event';
 import share  from 'share';
-import common from 'SolitaireCommon';
+import common from 'common';
 
 export default function(name) {// TODO
 	

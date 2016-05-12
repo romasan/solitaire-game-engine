@@ -1,11 +1,11 @@
 'use strict';
 
 import event         from 'event';
-import common        from 'SolitaireCommon';
+import common        from 'common';
 
 import deckGenerator from 'deckGenerator';
 import elRender      from 'elRender';
-// import History       from 'SolitaireHistory';
+// import History       from 'history';
 
 var _history = [],
 	_redo    = [];

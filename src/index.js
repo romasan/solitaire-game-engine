@@ -13,13 +13,13 @@ import share           from 'share';
 import event           from 'event';
 import defaults        from 'defaults';
 
-import Inputs          from 'Inputs';
-import DomManager      from 'DomManager';
-import Field           from 'Field';
-import SolitaireCommon from 'SolitaireCommon';
+import Inputs          from 'inputs';
+import DomManager      from 'domManager';
+import Field           from 'field';
+import SolitaireCommon from 'common';
 import winCheck        from 'winCheck';
 
-import SolitaireDebug  from 'SolitaireDebug';
+import SolitaireDebug  from 'debug';
 
 exports.event    = event;
 exports.options  = defaults;

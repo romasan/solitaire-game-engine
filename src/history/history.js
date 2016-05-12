@@ -5,7 +5,7 @@ import share     from 'share';
 
 import forceMove from 'forceMove';
 import Deck      from 'addDeck';
-import Tips      from 'Tips';
+import Tips      from 'tips';
 import elRender  from 'elRender';
 
 var _oneStepWay  = [];

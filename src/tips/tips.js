@@ -3,12 +3,12 @@
 import event     from 'event';
 import share     from 'share';
 import defaults  from 'defaults';
-import common    from 'SolitaireCommon';
+import common    from 'common';
 
 import tipsRules from 'tipsRules';
 import bestTip   from 'bestTip';
 import Deck      from 'addDeck';
-import Field     from 'Field';
+import Field     from 'field';
 
 var _showTips = defaults.showTips;
 

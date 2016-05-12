@@ -4,8 +4,8 @@ import share    from 'share';
 import event    from 'event';
 import defaults from 'defaults';
 
-import Tips     from 'Tips';
-import Field    from 'Field';
+import Tips     from 'tips';
+import Field    from 'field';
 
 // event.listen('makeStep', function(e) {
 // 	// ???

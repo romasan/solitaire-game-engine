@@ -4,7 +4,7 @@ import event from 'event';
 import share from 'share';
 
 import Deck  from 'addDeck';
-import Tips  from 'Tips';
+import Tips  from 'tips';
 
 export default function(a) {
 
