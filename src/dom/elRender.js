@@ -129,6 +129,7 @@ _elConstructor.prototype.html = function(el) {
 };
 
 var _animatedElements = 0,
+	_animatedElementsStack = [],
 	_animatedCallback = function() {};
 
 _elConstructor.prototype.animate = function(params, animationTime, callback) {
@@ -150,6 +151,7 @@ _elConstructor.prototype.animate = function(params, animationTime, callback) {
 	this.done(callback);
 
 	_animatedElements += 1;
+	_animatedElementsStack.push(this);
 
 	var _animateThread = function(params) {
 		this.el.style.transition = '0.5s';
@@ -305,6 +307,13 @@ var _allEl = function(e) {
 };
 
 _allEl.animationsEnd = function(callback) {
+
+	console.log('end all animations.');
+
+	for(var i in _animatedElementsStack) {
+		_animatedElementsStack[i].el.style.transition = null;
+	};
+	_animatedElementsStack = [];
 
 	_animatedElements = 0;
 	_animatedCallback.call(this);

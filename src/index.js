@@ -7,8 +7,6 @@
  * Webpack version Feb. 24 2016
  */
 
-exports.ver = "0.12";
-
 import share           from 'share';
 import event           from 'event';
 import defaults        from 'defaults';

@@ -41,16 +41,17 @@ var unlock = function() {
 }
 event.listen('unlock', unlock);
 
-var _curLockState = false;
 var isCurLock = function() {
-	return _curLockState;
+	return share.get('curLockState');
 };
 
 var curLock = function() {
-	share.curLockState = true;
+	console.log('curLock');
+	share.set('curLockState', true);
 }
 var curUnLock = function() {
-	share.curLockState = false;
+	console.log('curUnLock');
+	share.set('curLockState', false);
 }
 
 // getters

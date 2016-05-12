@@ -1,26 +1,19 @@
 'use strict';
 
-import event from 'event';
-import share from 'share';
+import event  from 'event';
+import share  from 'share';
+import common from 'common';
 
-import Deck  from 'addDeck';
-import Tips  from 'tips';
+import Deck   from 'addDeck';
+import Tips   from 'tips';
 
 export default function(a) {
 
-	// console.log('FORCEMOVE', a);
-	
 	var _animation = share.get('animation');
 
-	// console.log('FORCEMOVE', a);//_from, to);
-	
 	if(!a.from || !a.to || !a.deck) {
 		return;
 	}
-
-	// if( typeof a.from != 'string' || typeof a.to != 'string') {
-	// 	return;
-	// }
 
 	if(!a.deck.length) return;
 	
@@ -36,7 +29,7 @@ export default function(a) {
 		return;
 	}
 
-	console.log('FORCEMOVE from:', _from.name, 'to:', _to.name, a.deck);
+	// console.log('FORCEMOVE from:', _from.name, 'to:', _to.name, a.deck);
 	
 	var _check     = true;
 	var _from_deck = _from.cards;
@@ -73,36 +66,21 @@ export default function(a) {
 				});
 			}
 
-			// _from.Redraw();
-			// _to  .Redraw();
-
 			event.dispatch('moveDragDeck', {
 				departure   : _from,
 				destination : _to,
-				moveDeck    : __pop
+				moveDeck    : __pop,
+				// callback : function() {}
 			});
 			
-			// event.dispatch('animateMove', {
-			// 	from : _from,
-			// 	to   : _to,
-			// 	deck : _pop
-			// });
-
 		} else {
 			_from.Redraw();
 			_to  .Redraw();
 		}
 
 	} else {
-		_warn(4);
+		// _warn(4);
+		console.log("_warn(4)");
 	}
-	// console.log('>>>');//return;
-	// return;
-	
-	//for(var i = deck.length;i;i -= 1) {
-	//	_to.push(_to.getCards)
-	//}
-
-	// Tips.checkTips();
 
 };

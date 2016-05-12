@@ -51,7 +51,8 @@ module.exports = {
 			'./src/deck/'             ,
 			'./src/deck/actions/'     ,
 			'./src/tips/'             ,
-			'./src/history/'
+			'./src/history/'          ,
+			'./src/dom/'              ,
 		],
 		extensions: ['', '.js']
 	},

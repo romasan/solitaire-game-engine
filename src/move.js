@@ -14,7 +14,15 @@ import Field    from 'field';
 
 var Move = function(moveDeck, to, cursorMove) {
 
-	// console.log('MOVE', moveDeck, to);
+	console.log('MOVE', moveDeck, to);
+
+	if(
+		!cursorMove.dbclick
+	 && cursorMove.distance == 0
+	 && share.get('moveDistance') > 0
+	) {
+		return false;
+	}
 	
 	var _deck_destination = null,// to
     	_deck_departure   = null;// from
@@ -151,6 +159,9 @@ var Move = function(moveDeck, to, cursorMove) {
 
 // console.log('>>>')
 event.listen('Move', function(e) {
+
+	console.log('Move ->');
+
 	Move(e.moveDeck, e.to, e.cursorMove);
 });
 

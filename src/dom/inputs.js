@@ -19,40 +19,51 @@ Math.sqr = function(i) {
 share.set('dragDeck',    null);
 share.set('startCursor', null);
 
-event.listen('undo', function() {
-	/*share.moveCardToHome(
-		share.dragDeck, 
-		main.getDeckById(share.dragDeck[0].card.parent)
-	);*/
-	if(share.get('dragDeck')) {
-		common.getDeckById(share.dragDeck[0].card.parent).Redraw();
+var _inputUndoRedo = function() {
+    
+    var _dragDeck = share.get('dragDeck');
+	if(
+        _dragDeck 
+     && _dragDeck[0] 
+     && _dragDeck[0].card 
+     && _dragDeck[0].card.parent
+    ) {
+		var _deck = Deck.getDeckById(_dragDeck[0].card.parent)
+        if(_deck) {
+            _deck.Redraw();
+        }
 	}
-	share.set('dragDeck',    null);
+	
+    share.set('dragDeck',    null);
 	share.set('startCursor', null);
+
+    common.curUnLock();
+}
+
+event.listen('undo', function() {
+    _inputUndoRedo();
 });
 
 event.listen('redo', function() {
-	/*share.moveCardToHome(
-		share.dragDeck, 
-		main.getDeckById(share.dragDeck[0].card.parent)
-	);*/
-	if(share.get('dragDeck')) {
-		common.getDeckById(_dragDeck[0].card.parent).Redraw();
-	}
-	share.set('dragDeck',    null);
-	share.set('startCursor', null);
+    _inputUndoRedo();
 });
 
 // -------------------------------------------------------------------------------------------------------------
 
 var cdown = function(target, x, y) {
 
-    var _startCursor = share.get('startCursor'),
-        _dragDeck    = share.get('dragDeck');
-    
-    if(common.isCurLock()) return;
+    console.log('CDOWN', common.isCurLock());
 
-    if(_dragDeck || _startCursor) return;
+    share.set('dragDeck',    null);
+    share.set('startCursor', null);
+    
+    // _el.animationsEnd();
+
+    // var _startCursor = share.get('startCursor'),
+        // _dragDeck    = share.get('dragDeck');
+    // if(_dragDeck || _startCursor) return;
+    
+    if(common.isCurLock()) { return; };
         
     if( target.className.split(' ').indexOf('slot') >= 0 ) {
         
@@ -72,9 +83,6 @@ var cdown = function(target, x, y) {
             _parent = _card && _card.parent ? _card.parent               : null,
             _deck   = _parent               ? Deck.getDeckById(_parent)  : null;
         
-        
-        // console.log('card from deck:', _deck);
-        
         if(_deck) {
             event.dispatch('click', _deck);
         }
@@ -83,17 +91,11 @@ var cdown = function(target, x, y) {
         // TODO
         // в данной ситуации обрабатывается только клик по карте, пустые колоды никак не обрабатываются
         
-        // console.log(_id, _card, _parent, _deck, main.getElements())
-        
         var _dragDeck = _deck ? _deck.Take(_id) : null;
 
-        // console.log('CDOWN', _id, _deck, _deck.Take(_id));
-        // console.log('_dragDeck', _dragDeck);
 		
         share.set('dragDeck', _dragDeck);
 		
-		// console.log(share.dragDeck);
-    
         if(share.get('dragDeck')) {
 
         	share.set('startCursor', {
@@ -176,7 +178,7 @@ var cend = function(target, x, y, dbclick) {
 	var _position = _deck.padding(_dragDeck[0].index);
     var cursorMove = {
         distance     : Math.sqrt(Math.sqr(x - _startCursor.x) + Math.sqr(y - _startCursor.y)),
-        dbclick      : dbclick,
+        dbclick      : !!dbclick,
         direction    : {
             x     : x - _startCursor.x,// (+) rigth / (-) left
             y     : y - _startCursor.y,// (+) down  / (-) up
@@ -201,13 +203,15 @@ var cend = function(target, x, y, dbclick) {
     // if(_dop) {
 	
     // Move(_dragDeck, _dop, cursorMove);
-    console.log('>>>>')
+    console.log('>>>>', dbclick)
     event.dispatch('Move', {
         moveDeck   : _dragDeck,
         to         : _dop,
         cursorMove : cursorMove
     })
     // }
+
+    // event.dispatch('redrawDeckIndexes', _deck);
 
     share.set('dragDeck',    null);
     share.set('startCursor', null);
