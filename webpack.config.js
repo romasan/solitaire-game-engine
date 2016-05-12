@@ -6,7 +6,7 @@ const path    = require('path');
 
 module.exports = {
 	entry: "index",
-	// context: './extensions/',
+	// context: './src/',
 	output: {
 		// filename: "./js/SolitaireEngine.min.js",
 		filename: "./build/SolitaireEngine.js",
@@ -38,18 +38,6 @@ module.exports = {
 		// ],
 		modulesDirectories: [
 			// /.*/,
-			
-			// './src/*',
-			// './src/*/*'
-			
-			// './extensions/'                  ,
-			// './extensions/common/'           ,
-			// './extensions/group/'            ,
-			// './extensions/group/generators/' ,
-			// './extensions/deck/'             ,
-			// './extensions/deck/actions/'     ,
-			// './extensions/tips/'             ,
-			// './extensions/history/'
 
 			// './*/'  ,
 			// './src/*/'  ,
