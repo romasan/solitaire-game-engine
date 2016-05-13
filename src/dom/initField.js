@@ -5,7 +5,7 @@ import event    from 'event';
 import defaults from 'defaults';
 
 import Field    from 'field';
-import _el      from 'elRender';
+import elRender from 'elRender';
 
 event.listen('initField', function(e) {
 
@@ -43,7 +43,7 @@ event.listen('initField', function(e) {
 				? e.a.theme.name
 				: defaults.theme.name;
 
-	_el(domElement)
+	elRender(domElement)
 		.css(_params)
 		.addClass('field')
 		.addClass(themeName);

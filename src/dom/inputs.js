@@ -8,7 +8,7 @@ import common   from 'common';
 import Deck     from 'addDeck';
 import Tips     from 'tips';
 import Move     from 'move';
-import _el      from 'elRender';
+import elRender from 'elRender';
 
 // пусть будет
 Math.sqr = function(i) {
@@ -134,7 +134,7 @@ var cmove = function(x, y) {
     		'z-index' : defaults.topZIndex + (i|0)
     	}
     	// Operations with DOM
-        _el(_dragDeck[i].card.domElement)
+        elRender(_dragDeck[i].card.domElement)
             .css(_params);   
     }
 
@@ -197,9 +197,9 @@ var cend = function(target, x, y, dbclick) {
         }
     }
 
-    _el(target).hide();
+    elRender(target).hide();
     var _dop = document.elementFromPoint(x, y);
-    _el(target).show();
+    elRender(target).show();
     // if(_dop) {
 	
     // Move(_dragDeck, _dop, cursorMove);

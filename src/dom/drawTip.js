@@ -1,15 +1,16 @@
 'use strict';
 
-import event from 'event';
+import event    from 'event';
 
-import _el   from 'elRender';
+import elRender from 'elRender';
+import Tips     from 'tips';
 
 event.listen('showTip', function(e) {
 
 	// console.log('showTip', e);
 	
 	if(e && e.el && e.el.domElement && e.type) {
-		_el(e.el.domElement)
+		elRender(e.el.domElement)
 			.addClass(e.type);
 	}
 });
@@ -21,14 +22,14 @@ event.listen('hideTips', function(e) {
 	if(e && e.types) {
 		for(var i in e.types) {
 			var typeName = e.types[i];
-			_el('.' + typeName)
+			elRender('.' + typeName)
 				.removeClass(typeName);
 		}
 	} else {
 		
 		for(var i in Tips.tipTypes) {
 			var typeName = Tips.tipTypes[i];
-			_el('.' + typeName)
+			elRender('.' + typeName)
 				.removeClass(typeName, 777);
 		}
 

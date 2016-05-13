@@ -5,7 +5,7 @@ import share    from 'share';
 import defaults from 'defaults';
 
 import Field    from 'field';
-import _el      from 'elRender';
+import elRender from 'elRender';
 
 var applyChangedParameters = function(p, a, deck) {
 	
@@ -53,7 +53,7 @@ event.listen('addDeckEl', function(e) {
 	applyChangedParameters(e.params, e.a, e.deck);
 
 	e.deck.domElement = 
-		_el('<div>')
+		elRender('<div>')
 			.getEl();
 	
 	var _params = {
@@ -66,7 +66,7 @@ event.listen('addDeckEl', function(e) {
 	
 	_params.display = e.deck.visible ? 'block' : 'none';
 
-	_el(e.deck.domElement)
+	elRender(e.deck.domElement)
 		.css(_params)
 		.addClass('el')
 		.attr({
@@ -76,15 +76,15 @@ event.listen('addDeckEl', function(e) {
 	// var showSlot = e.a.showSlot && typeof e.a.showSlot == 'boolean' ? e.a.showSlot : defaults.showSlot;
 	// console.log('slot', e.a);
 	if(e.a.showSlot) {
-		_el(e.deck.domElement)
+		elRender(e.deck.domElement)
 			.addClass('slot');
 	}
 	if(e.a.class) {
-		_el(e.deck.domElement)
+		elRender(e.deck.domElement)
 			.addClass(e.a.class);
 	}
 
-	_el(_field.domElement)
+	elRender(_field.domElement)
 		.append(e.deck.domElement);
 
 
@@ -99,16 +99,16 @@ event.listen('addDeckEl', function(e) {
 	}
 	if(label) {
 		var _labelElement = 
-			_el('<div>')
+			elRender('<div>')
 				.addClass('deckLabel')
 		// DEBUG, TODO remove next string
 				.attr({
 					"title" : e.deck.getId() + " (" + e.deck.parent + ")"
 				})
 				.getEl();
-		_el(_labelElement)
+		elRender(_labelElement)
 			.html(label);
-		_el(e.deck.domElement)
+		elRender(e.deck.domElement)
 			.append(_labelElement);
 		
 	}
@@ -125,13 +125,13 @@ event.listen('redrawDeckFlip', function(e) {
 		var _params = {};
 		
 		if(e.cards[i].flip) {
-			_el(e.cards[i].domElement)
+			elRender(e.cards[i].domElement)
 				.addClass('flip');
 		} else {
-			_el(e.cards[i].domElement)
+			elRender(e.cards[i].domElement)
 				.removeClass('flip');
 		}
-		_el(e.cards[i].domElement)
+		elRender(e.cards[i].domElement)
 			.css(_params);
 	}
 
@@ -146,7 +146,7 @@ event.listen('redrawDeckIndexes', function(e) {
 	if(!e || !e.cards) return;
 
 	for(var i in e.cards) {
-		_el(e.cards[i].domElement).css({
+		elRender(e.cards[i].domElement).css({
 			'z-index' : (defaults.startZIndex|0) + (i|0)
 		})
 	}
@@ -180,7 +180,7 @@ event.listen('redrawDeck', function(e) {
 
 	// console.log('DECK REDRAW', e.deck.domElement);
 
-	_el(e.deck.domElement)
+	elRender(e.deck.domElement)
 		.css(_params);
 
 	for(var i in e.cards) {
@@ -201,13 +201,13 @@ event.listen('redrawDeck', function(e) {
 		// e.deck.checkFlip(e.cards[i], i|0, e.cards.length|0);
 		
 		if(e.cards[i].flip) {
-			_el(e.cards[i].domElement)
+			elRender(e.cards[i].domElement)
 				.addClass('flip');
 		} else {
-			_el(e.cards[i].domElement)
+			elRender(e.cards[i].domElement)
 				.removeClass('flip');
 		}
-		_el(e.cards[i].domElement)
+		elRender(e.cards[i].domElement)
 			.css(_params);
 	}
 

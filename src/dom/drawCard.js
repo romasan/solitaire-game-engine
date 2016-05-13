@@ -6,7 +6,7 @@ import defaults from 'defaults';
 import common   from 'common';
 
 import Field    from 'field';
-import _el      from 'elRender';
+import elRender from 'elRender';
 
 event.listen('addCardEl', function(e) {
 	
@@ -56,10 +56,10 @@ event.listen('addCardEl', function(e) {
 	}
 
 	e.domElement = 
-		_el('<div>')
+		elRender('<div>')
 			.getEl();
 	
-	_el(e.domElement)
+	elRender(e.domElement)
 		// .addClass(e.name)
 		.addClass('el card draggable')
 		// .css({'background-size' : null})
@@ -67,7 +67,7 @@ event.listen('addCardEl', function(e) {
 		.attr({
 			id: e.id
 		});
-	_el(_field.domElement)
+	elRender(_field.domElement)
 		.append(e.domElement);
 });
 
@@ -75,7 +75,7 @@ event.listen('hideCard', function(e) {
 
 	// console.log('hideCard:', e);
 	if(e && e.domElement) {
-		_el(e.domElement[0])
+		elRender(e.domElement[0])
 			.hide();
 	}
 });
@@ -84,7 +84,7 @@ event.listen('showCard', function(e) {
 
 	// console.log('showCard:', e);
 	if(e && e.domElement) {
-		_el(e.domElement[0])
+		elRender(e.domElement[0])
 			.show();
 	}
 });
