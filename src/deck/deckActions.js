@@ -1,12 +1,9 @@
 'use strict';
 
-import event          from 'event';
-import share          from 'share';
-import defaults       from 'defaults';
-import common         from 'common';
-
-// import Deck           from 'addDeck';
-// import History        from 'history';
+import event    from 'event';
+import share    from 'share';
+import defaults from 'defaults';
+import common   from 'common';
 
 // Actions
 import twindeckAction   from 'twindeckAction';
@@ -14,15 +11,12 @@ import dealerdeckAction from 'dealerdeckAction';
 import kickAction       from 'kickAction';
 
 var _actions = {
-	
-	"twindeck"   : twindeckAction,
+	"twindeck"   : twindeckAction  ,
 	"dealerdeck" : dealerdeckAction,
-
-	"avalanche" : function(e) {// 
+	"kick"       : kickAction      ,
+	"avalanche"  : function(e) {// 
 		// listen avalanche
-	},
-
-	"kick" : kickAction
+	}
 };
 
 // ------------------------------------------------------------------------------------------
@@ -157,7 +151,7 @@ var addActions = function() {
 
 /*var runActions = function(e) {// bind this deck
 
-	share.set('animation', defaults.animation);
+	common.animationDefault()
 
 	for(var actionName in this.actions) {
 		if(
@@ -175,7 +169,7 @@ var addActions = function() {
 
 var autoRunActions = function(data) {// bind this deck
 
-	share.set('animation', defaults.animation);
+	common.animationDefault();
 
 	for(var actionName in data.actions) {
 		if(data.actions[actionName].autorun) {

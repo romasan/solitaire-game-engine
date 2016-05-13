@@ -95,3 +95,22 @@ event.listen('moveDragDeckDone', function(e) {
 			.addClass('fill')
 	}
 });
+
+// --------------------------------------------------------------------------------------------------------
+
+event.listen('dragDeck', function(e) {
+	// {x, y, _dragDeck, _startCursor, _deck}
+	
+	for(var i in e._dragDeck) {
+    	var _position = e._deck.padding(e._dragDeck[i].index);
+    	var _params = {
+    		'left'    : (_position.x * share.get('zoom') + (e.x - e._startCursor.x)) + 'px',
+    		'top'     : (_position.y * share.get('zoom') + (e.y - e._startCursor.y)) + 'px',
+    		// transform : 'rotate(0deg)',
+    		'z-index' : defaults.topZIndex + (i|0)
+    	}
+    	// Operations with DOM
+        elRender(e._dragDeck[i].card.domElement)
+            .css(_params);   
+    }
+});

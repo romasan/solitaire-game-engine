@@ -5,15 +5,9 @@ import event    from 'event';
 import defaults from 'defaults';
 import common   from 'common';
 
-import Deck     from 'addDeck';
-import Tips     from 'tips';
-import Move     from 'move';
-import elRender from 'elRender';
-
-// пусть будет
-Math.sqr = function(i) {
-	return i * i;
-}
+import Deck from 'addDeck';
+import Tips from 'tips';
+import Move from 'move';
 
 // var drag_el = null;
 share.set('dragDeck',    null);
@@ -51,8 +45,6 @@ event.listen('redo', function() {
 // -------------------------------------------------------------------------------------------------------------
 
 var cdown = function(target, x, y) {
-
-    console.log('CDOWN', common.isCurLock());
 
     share.set('dragDeck',    null);
     share.set('startCursor', null);
@@ -121,22 +113,19 @@ var cmove = function(x, y) {
     if(!_dragDeck || !_startCursor) return;
 
 	var _distance = _startCursor 
-		? Math.sqrt(Math.sqr(x - _startCursor.x) + Math.sqr(y - _startCursor.y)) 
+		? Math.sqrt(common.sqr(x - _startCursor.x) + common.sqr(y - _startCursor.y)) 
 		: 0;
 
 	var _deck = common.getElementById(_dragDeck[0].card.parent);
-    for(var i in _dragDeck) {
-    	var _position = _deck.padding(_dragDeck[i].index);
-    	var _params = {
-    		'left'    : (_position.x * share.get('zoom') + (x - _startCursor.x)) + 'px',
-    		'top'     : (_position.y * share.get('zoom') + (y - _startCursor.y)) + 'px',
-    		// transform : 'rotate(0deg)',
-    		'z-index' : defaults.topZIndex + (i|0)
-    	}
-    	// Operations with DOM
-        elRender(_dragDeck[i].card.domElement)
-            .css(_params);   
-    }
+
+    var _position = _deck.padding(_dragDeck[_dragDeck.length - 1].index);
+    
+    event.dispatch('dragDeck', {
+        x, y        , 
+        _dragDeck   , 
+        _startCursor, 
+        _deck
+    });
 
     var cursorMove = {
     	distance     : _distance,
@@ -177,7 +166,7 @@ var cend = function(target, x, y, dbclick) {
 	var _deck = common.getElementById(_dragDeck[0].card.parent);
 	var _position = _deck.padding(_dragDeck[0].index);
     var cursorMove = {
-        distance     : Math.sqrt(Math.sqr(x - _startCursor.x) + Math.sqr(y - _startCursor.y)),
+        distance     : Math.sqrt(common.sqr(x - _startCursor.x) + common.sqr(y - _startCursor.y)),
         dbclick      : !!dbclick,
         direction    : {
             x     : x - _startCursor.x,// (+) rigth / (-) left
@@ -197,9 +186,9 @@ var cend = function(target, x, y, dbclick) {
         }
     }
 
-    elRender(target).hide();
+    event.dispatch('hideCard', target);
     var _dop = document.elementFromPoint(x, y);
-    elRender(target).show();
+    event.dispatch('showCard', target);
     // if(_dop) {
 	
     // Move(_dragDeck, _dop, cursorMove);

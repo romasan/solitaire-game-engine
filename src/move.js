@@ -21,47 +21,53 @@ var Move = function(moveDeck, to, cursorMove) {
 	 && cursorMove.distance == 0
 	 && share.get('moveDistance') > 0
 	) {
+		// кликнули один раз
+		// чтобы сделать ход нужно переместить карту стопку (moveDistance != 0)
 		return false;
 	}
 	
 	var _deck_destination = null,// to
-    	_deck_departure   = null;// from
-    var _success = true;
+    	_deck_departure   = null,// from
+    	_success          = true;
 
-    _success = _success && to;
+    _success = _success && to;// to - не пустой
 
-    var _el = to && to.id && common.getElementById(to.id);
+    var _el = to && to.id && common.getElementById(to.id);// получаем карту/стопку
 
+	// если положили на карту узнаём из какой она стопки
 	if(_el) {
-
 		if(_el.type        == 'card') {
     		_deck_destination = common.getElementById(_el.parent)
     	} else if(_el.type == 'deck') {
     		_deck_destination = _el;
     	}
     }
-
     _success = _success && _deck_destination;
 	
+	// находим стопку из которой взяли
 	_deck_departure = moveDeck[0].card.parent && common.getElementById(moveDeck[0].card.parent);
     _success = _success && _deck_departure;
 
+    // смотрим не одна и та же ли эта стопка
     if(_deck_destination && _deck_destination.getId() != _deck_departure.getId()) {
 	    
+    	// узнаём можно ли положить карты на папку назначения
     	var _put = _deck_destination.Put(moveDeck);
 	    _success = _success && _put;
     	
-    	if(_put && _deck_departure) {
+    	if(_put) {//} && _deck_departure) {
     		
+    		// если можно положить карты берём их из исходной стопки
     		var _pop = _deck_departure.Pop(moveDeck.length);
 		    _success = _success && _pop;
     		
     		if(_pop) {
     			
-    			// положили в колоду
+    			// ложим карты в колоду назначения
     			_deck_destination.Push(_pop);
 
-				share.set('animation', defaults.animation);
+				// режим анимации по умолчанию
+				common.animationDefault();
 
 				event.dispatch('moveDragDeck', {
 					departure   : _deck_departure,
@@ -110,6 +116,8 @@ var Move = function(moveDeck, to, cursorMove) {
     		}
     	}
     } else {
+    	// карту отпустили на той же стопке
+    	// + минимальное неоходимое расстояние для автохода не пройдено
     	_success = false;
     }
 

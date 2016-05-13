@@ -78,7 +78,7 @@ export default function(data) {// data.actionData, e
 		}
 	};
 	
-	share.set('animation', defaults.animation);
+	common.animationDefault();
 
 	var _makeStep = false;
 

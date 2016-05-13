@@ -49,6 +49,7 @@ export default function(a) {
 
 		var _pop = _from.Pop(a.deck.length);
 
+		// перевернуть карты во время хода
 		if(a.flip) {
 			for(var i in _pop) {
 				_pop[i].flip = !_pop[i].flip;
@@ -80,7 +81,7 @@ export default function(a) {
 
 	} else {
 		// _warn(4);
-		console.log("_warn(4)");
+		console.log("forceMove:Ход невозможен", a);
 	}
 
 };

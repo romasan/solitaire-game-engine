@@ -2,9 +2,10 @@
 
 import share    from 'share';
 import defaults from 'defaults';
+import common   from 'common';
 
-import Tips     from 'tips';
-import Field    from 'field';
+import Tips  from 'tips';
+import Field from 'field';
 
 export default function(moveDeck, cursorMove) {
 
@@ -55,7 +56,7 @@ export default function(moveDeck, cursorMove) {
 				y : _destination_deck_last_card_position.y + (defaults.card.height * share.get('zoom'))
 			}
 			
-			_autoTips[i].distance = Math.sqrt(Math.sqr(center_from.x - center_to.x) + Math.sqr(center_from.y - center_to.y));
+			_autoTips[i].distance = Math.sqrt(common.sqr(center_from.x - center_to.x) + common.sqr(center_from.y - center_to.y));
 			_autoTips[i].inDirection = false;
 			if(
 				(cursorMove.direction.x > 0 && center_to.x > center_from.x)

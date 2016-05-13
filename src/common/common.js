@@ -26,6 +26,10 @@ import Field    from 'field';
 
 // Lock/Unlock
 
+var sqr = function(i) {
+    return i * i;
+};
+
 var _lock = false;
 
 var isLock = function() {
@@ -45,12 +49,13 @@ var isCurLock = function() {
 	return share.get('curLockState');
 };
 
+
 var curLock = function() {
-	console.log('curLock');
+	// console.log('curLock');
 	share.set('curLockState', true);
 }
 var curUnLock = function() {
-	console.log('curUnLock');
+	// console.log('curUnLock');
 	share.set('curLockState', false);
 }
 
@@ -134,28 +139,34 @@ var animationOn = function() {
 	share.set('animation', true);
 }
 
+var animationDefault = function() {
+	share.set('animation', defaults.animation);
+}
+
 var animationOff = function() {
 	share.set('animation', false);
 }
 
 event.listen('newGame', function(e) {
+	// TODO
+	// из-за отключения анимации 
+	// на время восстановления ходов из истории приходится костылять
+	// и везде где нужна анимация ставить common.animationDefault();
+	// надо исправить когда из истории можно будет получить
+	// не только историю ходов
 	animationOff();
 });
 
 event.listen('historyReapeater', function(e) {
 	if(e) {
 		share.set('noRedraw', true);
-
 		share.set('noTips', true);
 	} else {
 		share.set('noRedraw', false);
 		var _field = Field();
 		_field.Redraw();
-
 		share.set('noTips', false);
 		Tips.checkTips();
-
-		console.log('historyReapeater: Off');
 	}
 });
 
@@ -176,5 +187,7 @@ export default {
 	validateCardName ,
 	genId            ,
 	animationOn      ,
-	animationOff
+	animationOff     ,
+	animationDefault ,
+	sqr              
 };

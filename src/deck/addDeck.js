@@ -1,9 +1,9 @@
 'use strict';
 
-import event          from 'event';
-import share          from 'share';
-import defaults       from 'defaults';
-import common         from 'common';
+import event    from 'event';
+import share    from 'share';
+import defaults from 'defaults';
+import common   from 'common';
 
 import flipTypes      from 'flipTypes';
 import readyPutRules  from 'readyPutRules';
@@ -50,14 +50,13 @@ var deckConstructor = function(a, _id) {
 		? a.name 
 		: (_parent_name + '_' + _new_id);
 
-	this.visible = a.visible && typeof a.visible   == 'boolean' ? a.visible : true;// default true
+	this.visible= a.visible && typeof a.visible == 'boolean' ? a.visible : true;// default true
+	
 	this.groupIndex = a.groupIndex && typeof a.groupIndex == 'number' ? a.groupIndex : null;
 
-	this.parent   = a.parent && typeof a.parent == 'string' ? a.parent : 'field';
-	this.autoHide = a.autoHide && typeof a.autoHide == 'boolean' ? a.autoHide : defaults.autohide;
+	this.parent= a.parent && typeof a.parent == 'string'  ? a.parent : 'field';
 	
-	var params = {};
-	params.startZIndex = a.startZIndex && typeof a.startZIndex == 'number' ? a.startZIndex : defaults.startZIndex;
+	this.autoHide = a.autoHide && typeof a.autoHide == 'boolean' ? a.autoHide : defaults.autohide;
 	
 	// changed parameters
 	if(typeof a.showSlot == "undefined") {
@@ -65,13 +64,15 @@ var deckConstructor = function(a, _id) {
 	}
 	
 	// DOM
+	var params = {};
 	params.x              = 0; 
 	params.y              = 0; 
 	params.rotate         = this.rotate = 0; 
-	params.padding_y      = (     a.paddingY && typeof     a.paddingY == 'number' ) ?     a.paddingY :      defaults.padding_y;
+	params.padding_y      = ( a.paddingY     && typeof a.paddingY     == 'number' ) ? a.paddingY     : defaults.padding_y;
 	params.flip_padding_y = ( a.flipPaddingY && typeof a.flipPaddingY == 'number' ) ? a.flipPaddingY : defaults.flip_padding_y;
-	params.padding_x      = (     a.paddingX && typeof     a.paddingX == 'number' ) ?     a.paddingX :      defaults.padding_x;
+	params.padding_x      = ( a.paddingX     && typeof a.paddingX     == 'number' ) ? a.paddingX     : defaults.padding_x;
 	params.flip_padding_x = ( a.flipPaddingX && typeof a.flipPaddingX == 'number' ) ? a.flipPaddingX : defaults.flip_padding_x;
+	params.startZIndex    = ( a.startZIndex  && typeof a.startZIndex  == 'number' ) ? a.startZIndex  : defaults.startZIndex;
 	
 	// ------------- FLIP -------------
 	

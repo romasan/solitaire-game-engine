@@ -13,8 +13,8 @@ import Field     from 'field';
 var _showTips = defaults.showTips;
 
 var tipTypes = [
-	'tip', 
-	'tipTo', 
+	'tip'        , 
+	'tipTo'      , 
 	'tipPriority',
 	'tipToHome'
 ];
@@ -112,6 +112,8 @@ var checkTips = function() {
 };
 event.listen('makeStep', checkTips);
 
+// --------------------------------------------------------
+
 var showTips = function(a) {
 	_showTips = true;
 	if(a && a.init) return;
@@ -125,6 +127,8 @@ var hideTips = function(a) {
 	checkTips();
 };
 event.listen('tipsOFF', hideTips);
+
+// --------------------------------------------------------
 
 var tipsMove = function(a) {
 
@@ -149,6 +153,8 @@ var tipsMove = function(a) {
 	}
 };
 
+// --------------------------------------------------------
+
 var tipsDestination = function(a) {
 
 	if(share.get('showTipsDestination')) {
@@ -170,11 +176,11 @@ var tipsDestination = function(a) {
 };
 
 export default {
-	tipTypes,
-	getTips,
-	checkTips,
-	showTips,
-	hideTips,
-	tipsMove,
+	tipTypes       ,
+	getTips        ,
+	checkTips      ,
+	showTips       ,
+	hideTips       ,
+	tipsMove       ,
 	tipsDestination
 };
