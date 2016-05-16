@@ -6,7 +6,7 @@ import share     from 'share';
 import forceMove from 'forceMove';
 import Deck      from 'addDeck';
 import Tips      from 'tips';
-import elRender  from 'elRender';
+// import elRender  from 'elRender';
 
 var _oneStepWay  = [];
 var _undoMethods = {};
@@ -66,9 +66,10 @@ event.listen('undo', function(_a) {
 
 	// console.log('undo', _a);
 
+	// elRender.animationsEnd();
+	event.dispatch('stopAnimations');
+	
 	if(!_a) { return; };
-
-	elRender.animationsEnd();
 
 	// Обратная совместимость
 	if(_a instanceof Array) {
@@ -136,6 +137,10 @@ var _redo = function(a) {
 event.listen('redo', function(_a) {
 
 	// console.log('redo', _a);
+	
+	// elRender.animationsEnd();
+	event.dispatch('stopAnimations');
+	
 
 	if(!_a) return;
 

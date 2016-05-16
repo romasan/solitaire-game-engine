@@ -12,6 +12,7 @@ import event           from 'event';
 import defaults        from 'defaults';
 
 import Inputs          from 'inputs';
+import Move            from 'move';
 import DomManager      from 'domManager';
 import Field           from 'field';
 import SolitaireCommon from 'common';

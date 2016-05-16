@@ -23,3 +23,7 @@ event.listen('showCard', function(target) {
 event.listen('hideCard', function(target) {
 	elRender(target).hide();
 });
+
+event.listen('stopAnimations', function() {
+	elRender.stopAnimations();
+});

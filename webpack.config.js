@@ -53,6 +53,7 @@ module.exports = {
 			'./src/tips/'             ,
 			'./src/history/'          ,
 			'./src/dom/'              ,
+			'./src/dom/render/'       ,
 		],
 		extensions: ['', '.js']
 	},

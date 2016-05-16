@@ -17,6 +17,11 @@ import genCardByName  from 'genCardByName';
 import Group          from 'addGroup';
 import History        from 'history';
 
+import getDecks      from 'getDecks';
+import getDeckById   from 'getDeckById';
+import deckCardNames from 'deckCardNames';
+import Deck          from 'getDeck';
+
 var deckConstructor = function(a, _id) {
 
 	// console.log("Deck:addDeck", a);
@@ -336,69 +341,6 @@ var addDeck = function(a) {
 
 	return _el_deck;
 };
-
-var Deck = function(name, groupName) {
-	
-	var _decks = common.getElementsByName(name, 'deck');
-	if(groupName && typeof groupName == 'string') {
-		for(var i in _decks) {
-			var _group = common.getElementById(_gecks[i].parent());
-			if(_group && _group.name && _group.name == groupName) {
-				return _decks[i];
-			}
-		}
-		return false;
-	} else {
-		return _decks[0];
-	}
-}
-
-// Get all decks
-
-var getDecks = function(a) {
-
-	// console.log('getDecks', a)
-
-	var _decks = {}
-	var _elements = share.get('elements');
-	for(var d in _elements) {
-		if(_elements[d].type == 'deck') {
-			if(a && a.visible) {
-				if(_elements[d].visible) {
-					_decks[d] = _elements[d];
-				}
-			} else {
-				_decks[d] = _elements[d];
-			};
-		};
-	};
-	return _decks;
-}
-
-var getDeckById = function(id) {// ID
-	
-	var _elements = share.get('elements');
-	for(var d in _elements) {
-		if(_elements[d].type == 'deck' && d == id) {
-			return _elements[d];
-		};
-	};
-	return null;
-}
-
-
-var deckCardNames = function(a) {// Take deck [{card, index}]
-
-	var _deck = [];
-	for(var i in a) {
-		if(a[i].card && a[i].card.name) {
-			_deck.push(a[i].card.name);
-		} else if(a[i].name) {
-			_deck.push(a[i].name);
-		};
-	};
-	return _deck;
-}
 
 export default {
 	addDeck       ,

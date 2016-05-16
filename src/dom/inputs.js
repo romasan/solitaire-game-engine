@@ -7,7 +7,6 @@ import common   from 'common';
 
 import Deck from 'addDeck';
 import Tips from 'tips';
-import Move from 'move';
 
 // var drag_el = null;
 share.set('dragDeck',    null);
@@ -49,8 +48,6 @@ var cdown = function(target, x, y) {
     share.set('dragDeck',    null);
     share.set('startCursor', null);
     
-    // _el.animationsEnd();
-
     // var _startCursor = share.get('startCursor'),
         // _dragDeck    = share.get('dragDeck');
     // if(_dragDeck || _startCursor) return;
