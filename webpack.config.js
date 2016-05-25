@@ -9,7 +9,7 @@ module.exports = {
 	// context: './src/',
 	output: {
 		// filename: "./js/SolitaireEngine.min.js",
-		filename: "./build/SolitaireEngine.js",
+		filename: "./frontend/js/SolitaireEngine.js",
 		library:  "SolitaireEngine"
 	},
 
@@ -44,16 +44,16 @@ module.exports = {
 			// './src/*/*/',
 			// './src/*/*/*/',
 
-			'./src/'                  ,
-			'./src/common/'           ,
-			'./src/group/'            ,
-			'./src/group/generators/' ,
-			'./src/deck/'             ,
-			'./src/deck/actions/'     ,
-			'./src/tips/'             ,
-			'./src/history/'          ,
-			'./src/dom/'              ,
-			'./src/dom/render/'       ,
+			'./sources/'                  ,
+			'./sources/common/'           ,
+			'./sources/group/'            ,
+			'./sources/group/generators/' ,
+			'./sources/deck/'             ,
+			'./sources/deck/actions/'     ,
+			'./sources/tips/'             ,
+			'./sources/history/'          ,
+			'./sources/dom/'              ,
+			'./sources/dom/render/'       ,
 		],
 		extensions: ['', '.js']
 	},
