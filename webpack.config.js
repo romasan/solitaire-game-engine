@@ -8,7 +8,6 @@ module.exports = {
 	entry: "index",
 	// context: './src/',
 	output: {
-		// filename: "./js/SolitaireEngine.min.js",
 		filename: "./frontend/js/SolitaireEngine.js",
 		library:  "SolitaireEngine"
 	},
@@ -98,3 +97,15 @@ module.exports.plugins.push(
 );
 
 // }
+
+// change version with webpack build
+
+var fs = require('fs');
+var _file = './package.json';
+var _json = require(_file);
+
+var _ver = _json.version.split('.');
+_ver[_ver.length - 1] = (_ver[_ver.length - 1]|0) + 1;
+_json.version = _ver.join('.');
+
+fs.writeFile(_file, JSON.stringify(_json, null, 2));
