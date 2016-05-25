@@ -1,9 +1,11 @@
 # Solitaire engine documentation.
-Установака зависимостей:
+** Установака зависимостей: **
 	npm install
-Сборка:
+** Сборка: **
+	npm run build
+или если установлен webpack в корне выполнить:
 	webpack
-Иннициирование и запуск игры:
+** Иннициирование и запуск игры: **
 
 	SolitaireEngine.init(Field);
 ---
@@ -200,7 +202,7 @@
 	Win rules:
 	   lego : Lego //TODO
 ---
-**Описание структур:**
+** Описание структур: **
 	take rules names:
 		"not"      -- ...
 		"notFirst" -- ...
