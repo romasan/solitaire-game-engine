@@ -35,7 +35,7 @@ var debugHistoryMgr = new function() {
 	}
 };
 
-add buttons
+// add buttons
 
 var _debugHistory = false;
 var debugHistory = function(a) {
