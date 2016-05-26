@@ -1,0 +1,33 @@
+* {
+	-webkit-touch-callout : none;
+	-webkit-user-select   : none;
+	-khtml-user-select    : none;
+	-moz-user-select      : none;
+	-ms-user-select       : none;
+	user-select           : none;
+} 
+
+body {
+	backface-visibility: hidden;
+}
+
+.field * {
+	cursor: inherit;
+}
+
+/* Default theme */
+.el {
+	position: absolute;
+}
+
+.card {
+	background-size: 100% 100%;
+	background-position: 0px 0px;
+	/*cursor : move;*/
+}
+
+.slot {
+	background: url('/img/slot1.png'); 
+	background-size: 100% 100%;
+	outline: 1px solid transparent;
+}

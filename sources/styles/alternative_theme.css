@@ -1,31 +1,11 @@
-* {
-	-webkit-touch-callout : none;
-	-webkit-user-select   : none;
-	-khtml-user-select    : none;
-	-moz-user-select      : none;
-	-ms-user-select       : none;
-	user-select           : none;
-} 
-
-body {
-	backface-visibility: hidden;
-}
-.field * {
-	cursor: inherit;
-}
-
-/* Default theme */
-.el {
-	position: absolute;
-}
-
-.card {
-	background-size: 100% 100%;
-	background-position: 0px 0px;
-	/*cursor : move;*/
-}
-
 /* Alternative theme */
+
+.alternative_theme .card  {
+	border: 1px solid #121212;
+	border-radius: 5px;
+	background: url('/solitaire_engine/img/card.svg');
+	background-size: 923px 384px;
+}
 
 .alternative_theme .slot  {
 	background: transparent;

@@ -6,11 +6,7 @@
 	background-size: 923px 384px;
 }
 
-.slot {
-	background: url('../img/slot1.png'); 
-	background-size: 100% 100%;
-	outline: 1px solid transparent;
-}
+
 
 .h1  {
 	background: url('../img/h1.png'); 
