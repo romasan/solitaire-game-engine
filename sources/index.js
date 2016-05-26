@@ -20,7 +20,8 @@ import winCheck        from 'winCheck';
 
 import SolitaireDebug  from 'debug';
 
-import 'index.css';
+import 'common.scss';
+import 'alternative_theme.scss';
 
 exports.event    = event;
 exports.options  = defaults;

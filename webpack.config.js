@@ -41,14 +41,14 @@ module.exports = {
 			presets: ['es2015']
 		}
       },
-      {
-        test: /\.css$/,
-        loader: ExtractTextPlugin.extract('css!')
-      },
       // {
-      //   test: /\.scss$/,
-      //   loader: ExtractTextPlugin.extract('style', 'css!sass')
+      //   test: /\.css$/,
+      //   loader: ExtractTextPlugin.extract('css!')
       // },
+      {
+        test: /\.scss$/,
+        loader: ExtractTextPlugin.extract('style', 'css!sass')
+      },
       {
         test:   /\.(png|jpg|svg|ttf|eot|woff|woff2)$/,
         loader: 'file?name=../img/[name].[ext]'
