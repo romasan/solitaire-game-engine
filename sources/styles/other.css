@@ -1,0 +1,233 @@
+.alternative_theme .card  {
+	/* box-shadow: inset 0 0 0 1px #000000; */
+	border: 1px solid #121212;
+	border-radius: 5px;
+	background: url('../img/card.svg');
+	background-size: 923px 384px;
+}
+
+.slot {
+	background: url('../img/slot1.png'); 
+	background-size: 100% 100%;
+	outline: 1px solid transparent;
+}
+
+.h1  {
+	background: url('../img/h1.png'); 
+}
+
+.h2  {
+	background: url('../img/h2.png'); 
+}
+
+.h3  {
+	background: url('../img/h3.png'); 
+}
+
+.h4  {
+	background: url('../img/h4.png'); 
+}
+
+.h5  {
+	background: url('../img/h5.png'); 
+}
+
+.h6  {
+	background: url('../img/h6.png'); 
+}
+
+.h7  {
+	background: url('../img/h7.png'); 
+}
+
+.h8  {
+	background: url('../img/h8.png'); 
+}
+
+.h9  {
+	background: url('../img/h9.png'); 
+}
+
+.h10 {
+	background: url('../img/h10.png'); 
+}
+
+.hj  {
+	background: url('../img/hj.png'); 
+}
+
+.hq  {
+	background: url('../img/hq.png'); 
+}
+
+.hk  {
+	background: url('../img/hk.png'); 
+}
+
+.d1  {
+	background: url('../img/d1.png'); 
+}
+
+.d2  {
+	background: url('../img/d2.png'); 
+}
+
+.d3  {
+	background: url('../img/d3.png'); 
+}
+
+.d4  {
+	background: url('../img/d4.png'); 
+}
+
+.d5  {
+	background: url('../img/d5.png'); 
+}
+
+.d6  {
+	background: url('../img/d6.png'); 
+}
+
+.d7  {
+	background: url('../img/d7.png'); 
+}
+
+.d8  {
+	background: url('../img/d8.png'); 
+}
+
+.d9  {
+	background: url('../img/d9.png'); 
+}
+
+.d10 {
+	background: url('../img/d10.png'); 
+}
+
+.dj  {
+	background: url('../img/dj.png'); 
+}
+
+.dq  {
+	background: url('../img/dq.png'); 
+}
+
+.dk  {
+	background: url('../img/dk.png'); 
+}
+
+.c1  {
+	background: url('../img/c1.png'); 
+}
+
+.c2  {
+	background: url('../img/c2.png'); 
+}
+
+.c3  {
+	background: url('../img/c3.png'); 
+}
+
+.c4  {
+	background: url('../img/c4.png'); 
+}
+
+.c5  {
+	background: url('../img/c5.png'); 
+}
+
+.c6  {
+	background: url('../img/c6.png'); 
+}
+
+.c7  {
+	background: url('../img/c7.png'); 
+}
+
+.c8  {
+	background: url('../img/c8.png'); 
+}
+
+.c9  {
+	background: url('../img/c9.png'); 
+}
+
+.c10 {
+	background: url('../img/c10.png'); 
+}
+
+.cj  {
+	background: url('../img/cj.png'); 
+}
+
+.cq  {
+	background: url('../img/cq.png'); 
+}
+
+.ck  {
+	background: url('../img/ck.png'); 
+}
+
+.s1  {
+	background: url('../img/s1.png'); 
+}
+
+.s2  {
+	background: url('../img/s2.png'); 
+}
+
+.s3  {
+	background: url('../img/s3.png'); 
+}
+
+.s4  {
+	background: url('../img/s4.png'); 
+}
+
+.s5  {
+	background: url('../img/s5.png'); 
+}
+
+.s6  {
+	background: url('../img/s6.png'); 
+}
+
+.s7  {
+	background: url('../img/s7.png'); 
+}
+
+.s8  {
+	background: url('../img/s8.png'); 
+}
+
+.s9  {
+	background: url('../img/s9.png'); 
+}
+
+.s10 {
+	background: url('../img/s10.png'); 
+}
+
+.sj  {
+	background: url('../img/sj.png'); 
+}
+
+.sq  {
+	background: url('../img/sq.png'); 
+}
+
+.sk {
+ 	background: url('../img/sk.png'); 
+}
+
+.flip {
+    background-image: url('../img/rub1.png')!important;
+}
+
+.hintUp {
+	background: url('../img/up.png');
+}
+
+.hintDown {
+	background: url('../img/down.png');
+}

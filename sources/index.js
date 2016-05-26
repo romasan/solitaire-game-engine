@@ -20,6 +20,8 @@ import winCheck        from 'winCheck';
 
 import SolitaireDebug  from 'debug';
 
+import 'index.css';
+
 exports.event    = event;
 exports.options  = defaults;
 exports.winCheck = winCheck.hwinCheck;
