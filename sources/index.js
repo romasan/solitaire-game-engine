@@ -20,7 +20,10 @@ import winCheck        from 'winCheck';
 
 import SolitaireDebug  from 'debug';
 
+// var _themes = ['default', 'alternative'];
+
 import 'common.scss';
+import 'default_theme.scss';
 import 'alternative_theme.scss';
 
 exports.event    = event;
@@ -29,15 +32,13 @@ exports.winCheck = winCheck.hwinCheck;
 
 exports.init = function(gameConfig) {
 
-	// console.log('main:init', gameConfig);
-	
 	var _field = Field(gameConfig);
 
-	// console.log('Field.Redraw', _field.Redraw);
-	
 	exports.Redraw = function(data) {
 		_field.Redraw(data);
 	}
 };
 
-if(SolitaireDebug) { exports.debug = SolitaireDebug; };
+if(SolitaireDebug) {
+	exports.debug = SolitaireDebug;
+};

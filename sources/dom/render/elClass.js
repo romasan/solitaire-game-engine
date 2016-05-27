@@ -5,8 +5,25 @@ import defaults from 'defaults';
 
 export default class elClass {
 	
-	constructor(e) {
-		this.el = e ? e : null;
+	constructor(query) {
+
+		// this.el = null;
+
+		// if(typeof query == "string") {
+		// 	try {
+		// 		this.el = document.querySelector(e);
+		// 	} catch(e) {}
+		// };
+
+		// if(
+		// 	query
+		//  && typeof query.length != "undefined"
+		//  && query.length != 0
+		// // && typeof query[0] TODO is dom element
+		// ) {
+		// 	this.el = query[0];
+		// }
+
 	}
 	
 	attr(attributes) {
@@ -18,13 +35,13 @@ export default class elClass {
 		return this;
 	}
 
-	hasClass(className) {
+	// hasClass(className) {
 
-		if(!this.el) { return this; };
+	// 	if(!this.el) { return this; };
 	
-		var _classes = this.el.className.split(' ');
-		return _classes.indexOf(className) >= 0;
-	}
+	// 	var _classes = this.el.className.split(' ');
+	// 	return _classes.indexOf(className) >= 0;
+	// }
 
 	toggleClass(className) {
 
@@ -71,16 +88,12 @@ export default class elClass {
 
 	css(a) {
 
-		// console.log('CSS', this.el ? true : false, a);
-
 		if(!this.el) { return this; };
 		
 		for(var attrName in a) {
 			try {
 				this.el.style[attrName] = a[attrName];
-			} catch(e) {
-				// S.log('>>>>>', this.el, e);
-			}
+			} catch(e) {}
 		}
 		return this;
 	}
@@ -186,15 +199,15 @@ export default class elClass {
 		return this;
 	}
 
-	done(callback) {
+	// done(callback) {
 
-		if(!this.el) { return this; };
+	// 	if(!this.el) { return this; };
 	
-		if(typeof callback == "function") {
-			share.set('animatedCallback', callback);
-		};
-		return this;
-	}
+	// 	if(typeof callback == "function") {
+	// 		share.set('animatedCallback', callback);
+	// 	};
+	// 	return this;
+	// }
 
 	remove() {
 		
@@ -203,11 +216,11 @@ export default class elClass {
 		this.el.remove();
 	}
 
-	getEl() {
+	// elements[0] {
 		
-		if(!this.el) { return this; };
+	// 	if(!this.el) { return this; };
 	
-		return this.el;
-	}
+	// 	return this.el;
+	// }
 
 };

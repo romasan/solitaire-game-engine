@@ -50,9 +50,13 @@ module.exports = {
         loader: ExtractTextPlugin.extract('style', 'css!sass')
       },
       {
-        test:   /\.(png|jpg|svg|ttf|eot|woff|woff2)$/,
-        loader: 'file?name=../img/[name].[ext]'
+        test:   /\.(svg|png|jpg|jpeg|eot|ttf|woff|woff2)$/,
+        loader: 'url=loader?limit=10000'
       }
+      // {
+      //   test:   /\.(png|jpg|svg|ttf|eot|woff|woff2)$/,
+      //   loader: 'file?name=../img/[name].[ext]'
+      // }
     ]
   },
   plugins: [
