@@ -4,7 +4,7 @@ import elClass from 'elClass';
 
 export default (e) => {
 
-	if(!e) {
+	/*if(!e) {
 		return new elClass(e);
 	}
 	
@@ -26,5 +26,5 @@ export default (e) => {
 		e = e.el;
 	}
 
-	return new elClass(e);
+	return new elClass(e);*/
 };

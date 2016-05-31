@@ -1,7 +1,6 @@
 'use strict';
 
 import elClass  from 'elClass';
-import _el      from 'el';
 
 export default class allElClass {
 	
@@ -10,102 +9,75 @@ export default class allElClass {
 		this.elements = [];
 
 		for(var i in elements) {
-			if(
-				typeof elements[i] != "number"
-			 && typeof elements[i] != "undefined"
-			) {
-				this.elements.push(_el(elements[i]));
-			}
+			this.elements.push(new elClass(elements[i]));
 		}
 	}
-
-	attr() {
+// --
+	attr(attributes) {
 		for(var i in this.elements) {
-			this.elements[i].attr.apply(this.elements[i], arguments);
+			this.elements[i].attr(attributes)
 		}
 		return this;
 	}
-
-	hasClass() {
-		return this.elements.length ? this.elements[0].hasClass() : null;
-	}
-
-	toggleClass() {
+// --
+	toggleClass(className) {
 		for(var i in this.elements) {
-			this.elements[i].toggleClass.apply(this.elements[i], arguments);
+			this.elements[i].toggleClass(className);
 		}
 		return this;
 	}
-
-	addClass() {
+// --
+	addClass(className) {
 		for(var i in this.elements) {
-			this.elements[i].addClass.apply(this.elements[i], arguments);
+			this.elements[i].addClass(className);
 		}
 		return this;
 	}
-
-	removeClass() {
+// --
+	removeClass(className) {
 		for(var i in this.elements) {
-			this.elements[i].removeClass.apply(this.elements[i], arguments);
+			this.elements[i].removeClass(className);
 		}
 		return this;
 	}
-
-	css() {
+// --
+	css(a) {
 		for(var i in this.elements) {
-			this.elements[i].css.apply(this.elements[i], arguments);
+			this.elements[i].css(a);
 		}
 		return this;
 	}
-
+// --
 	hide() {
 		for(var i in this.elements) {
-			this.elements[i].hide.apply(this.elements[i], arguments);
+			this.elements[i].hide();
 		}
 		return this;
 	}
-
+// --
 	show() {
 		for(var i in this.elements) {
-			this.elements[i].show.apply(this.elements[i], arguments);
+			this.elements[i].show();
 		}
 		return this;
 	}
-
-	append() {
+// --
+	animate(params, animationTime, callback) {
+		let counter = 0;
 		for(var i in this.elements) {
-			this.elements[i].append.apply(this.elements[i], arguments);
+			counter += 1;
+			this.elements[i].animate(params, animationTime, ()=>{
+				counter -= 1;
+				if(!counter) callback();
+			});
 		}
 		return this;
 	}
-
-	html() {
-		for(var i in this.elements) {
-			this.elements[i].html.apply(this.elements[i], arguments);
-		}
-		return this;
-	}
-
-	animate() {
-		for(var i in this.elements) {
-			this.elements[i].animate.apply(this.elements[i], arguments);
-		}
-		return this;
-	}
-
-	done() {
-		this.elements.length ? this.elements[0].done.apply(elements[0], arguments) : null;
-		return this;
-	}
-
+// --
 	remove() {
 		for(var i in this.elements) {
-			this.elements[i].remove.apply(this.elements[i], arguments);
+			this.elements[i].remove();
 		}
 		return this;
-	}
-
-	getEl() {
-		return this.elements.length ? this.elements[0].el : null;
 	}
 }

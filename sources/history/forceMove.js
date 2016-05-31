@@ -4,8 +4,9 @@ import event  from 'event';
 import share  from 'share';
 import common from 'common';
 
-import Deck   from 'addDeck';
-import Tips   from 'tips';
+import Deck     from 'addDeck';
+import Tips     from 'tips';
+import elRender from 'elRender';
 
 export default function(a) {
 
@@ -57,7 +58,7 @@ export default function(a) {
 		}
 
 		_to.Push(_pop);
-
+		
 		if(_animation) {
 
 			var __pop = [];
@@ -78,6 +79,8 @@ export default function(a) {
 			_from.Redraw();
 			_to  .Redraw();
 		}
+
+
 
 	} else {
 		// _warn(4);

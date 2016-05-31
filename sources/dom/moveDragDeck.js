@@ -47,10 +47,7 @@ event.listen('moveDragDeck', function(e) {
 		var _params = {
 			'left'              : share.get('zoom') * _position.x + 'px', 
 			'top'               : share.get('zoom') * _position.y + 'px',
-			'transform'         : 'rotate(' + destinationAngle + 'deg)' ,
-			'-ms-transform'     : 'rotate(' + destinationAngle + 'deg)' ,
-			'-webkit-transform' : 'rotate(' + destinationAngle + 'deg)' ,
-			'-moz-transform'    : 'rotate(' + destinationAngle + 'deg)'
+			'transform'         : 'rotate(' + destinationAngle + 'deg)'
 		};
 
 		var _zIndex = (defaults.topZIndex | 0) + (i | 0);
@@ -61,8 +58,6 @@ event.listen('moveDragDeck', function(e) {
 				_params, 
 				function(e) {
 
-					console.log('>>> moveDragDeck:animationEnd')
-					
 					e.departure  .Redraw();
 					e.destination.Redraw();
 				    
@@ -87,7 +82,9 @@ event.listen('moveDragDeck', function(e) {
 
 event.listen('moveDragDeckDone', function(e) {
 	
-	if(!e.deck.fill) { return; }
+	if(!e.deck.fill) {
+		return;
+	}
 	
 	var _deck = e.deck.cards;
 	for(var i in _deck) {

@@ -6,130 +6,162 @@ import defaults from 'defaults';
 export default class elClass {
 	
 	constructor(e) {
-		this.el = e ? e : null;
-	}
 	
-	attr(attributes) {
-		if(!this.el) { return this; };
-	
-		for(var attrName in attributes) { 
-			this.el[attrName] = attributes[attrName];
-		}
-		return this;
-	}
-
-	hasClass(className) {
-
-		if(!this.el) { return this; };
-	
-		var _classes = this.el.className.split(' ');
-		return _classes.indexOf(className) >= 0;
-	}
-
-	toggleClass(className) {
-
-		if(!this.el) { return this; };
-	
-		if(this.hasClass(className)) {
-			this.removeClass(className);
-		} else {
-			this.addClass(className);
-		}
-	}
-
-	addClass(className) {
-
-		if(!this.el) { return this; };
-	
-		var _classes = this.el.className.split(' ');
-		if(!this.hasClass(className)) {
-			_classes.push(className);
-			this.el.className = _classes.join(' ');
-		}
-		return this;
-	}
-
-	removeClass(className) {
-
-		if(!this.el) { return this; };
-	
-		var _classes = this.el.className.split(' ');
+		this.el = e;
 		
-		if(this.hasClass(className)) {
-
-			var _clone = [];
-			for(var i in _classes) {
-				if(_classes[i] != className) {
-					_clone.push(_classes[i]);
+		if(!e) {
+			// if(window._debug) throw new Error("test");
+			console.warn("elClass: empty arrtibutes;");
+			this.el = null;
+		}
+	}
+// --
+	attr(attributes) {
+		try {
+			for(var attrName in attributes) { 
+				this.el[attrName] = attributes[attrName];
+			}
+			return this;
+		} catch(e) {}
+	}
+// --	
+	hasClass(className) {
+		try {
+	
+			var _classes = this.el.className.split(' ');
+			return _classes.indexOf(className) >= 0;
+		} catch(e) {}
+	}
+// --	
+	toggleClass(className) {
+		try {
+	
+			if(this.hasClass(className)) {
+				this.removeClass(className);
+			} else {
+				this.addClass(className);
+			}
+		} catch(e) {}
+	}
+// --	
+	addClass(className) {
+		try {
+	
+			var _classes = this.el.className.split(' ');
+			if(!this.hasClass(className)) {
+				_classes.push(className);
+				this.el.className = _classes.join(' ');
+			}
+			return this;
+		} catch(e) {}
+	}
+// --	
+	removeClass(className) {
+		try {
+			var _classes = this.el.className.split(' ');
+			
+			if(this.hasClass(className)) {
+	
+				var _clone = [];
+				for(var i in _classes) {
+					if(_classes[i] != className) {
+						_clone.push(_classes[i]);
+					}
+				}
+				_classes = _clone;
+				this.el.className = _classes.join(' ');
+			}
+			return this;
+		} catch(e) {}
+	}
+// --	
+	css(a) {
+		try {
+	
+			// console.log('CSS', this.el ? true : false, a);
+	
+			for(var attrName in a) {
+				try {
+					this.el.style[attrName] = a[attrName];
+				} catch(e) {
+					// S.log('>>>>>', this.el, e);
 				}
 			}
-			_classes = _clone;
-			this.el.className = _classes.join(' ');
-		}
-		return this;
+			return this;
+		} catch(e) {}
 	}
-
-	css(a) {
-
-		// console.log('CSS', this.el ? true : false, a);
-
-		if(!this.el) { return this; };
-		
-		for(var attrName in a) {
-			try {
-				this.el.style[attrName] = a[attrName];
-			} catch(e) {
-				// S.log('>>>>>', this.el, e);
-			}
-		}
-		return this;
-	}
-	
+// --	
 	hide() {
-
-		if(!this.el) { return this; };
-			
-		return this.css({'display' : 'none'});
-	}
+		try {
 	
+			return this.css({'display' : 'none'});
+		} catch(e) {}
+	}
+// --	
 	show() {
-		
-		if(!this.el) { return this; };
+		try {
 			
-		return this.css({'display' : 'block'});
+			return this.css({'display' : 'block'});
+		} catch(e) {}
 	}
-
+// --	
 	append(el) {
-
-		if(!this.el) { return this; };
+		try {
 	
-		if(el.el) {
-			el = el.el;
-		};
-		this.el.appendChild(el);
-		return this;
+			if(el.el) {
+				el = el.el;
+			};
+			this.el.appendChild(el);
+			return this;
+		} catch(e) {}
 	}
-
+// --	
 	html(el) {
-
-		if(!this.el) { return this; };
+		try {
 	
-		if(typeof el == "undefined") {
-			return this.el.innerHTML;
-		};
-		
-		if(el.el) {
-			el = el.el;
-		};
-		
-		this.el.innerHTML = el;
-		
-		return this;
+			if(typeof el == "undefined") {
+				return this.el.innerHTML;
+			};
+			
+			if(el.el) {
+				el = el.el;
+			};
+			
+			this.el.innerHTML = el;
+			
+			return this;
+		} catch(e) {}
 	}
+// --
+	animate(params, animationTime = defaults.animationTime, callback) {
+		typeof animationTime == "function" && (callback = animationTime, animationTime = defaults.animationTime);
+		setTimeout(()=>{
 
-	animate(params, animationTime, callback) {
+			this.css({transition: (animationTime / 1000) + 's'});
+			let counter = 0;
+			for(var attrName in params) {
+				if(this.el.style[attrName] != params[attrName]) {
+					counter += 1;
+				}
+				this.el.style[attrName] = params[attrName];
+			}
+			this.addClass("animated");
+			
+			this.el.addEventListener("transitionend", ()=>{
+				counter -= 1;
 
-		if(!this.el) { return this; };
+				console.log("transitionend:", counter);
+
+				if(!counter) {
+					this.removeClass("animated");
+					this.css({transition: null});
+					callback();
+				}
+			}, false);
+
+		}, 0);
+	}
+	/*animate(params, animationTime, callback) {
 
 		if(typeof animationTime == "undefined") {
 			animationTime = defaults.animationTime;
@@ -184,30 +216,60 @@ export default class elClass {
 		setTimeout(_animateThread.bind(this, params), 0);
 
 		return this;
-	}
+	}*/
 
-	done(callback) {
+	/*done(callback) {
 
-		if(!this.el) { return this; };
-	
 		if(typeof callback == "function") {
 			share.set('animatedCallback', callback);
 		};
+		
+		return this;
+	}*/
+// --	
+	remove() {
+		try {
+			
+			this.el.remove();
+		} catch(e) {}
+	}
+
+	/*getEl() {
+		
+		return this.el;
+	}*/
+
+	/*parent() {
+		return new elClass(this.el.parentNode);
+	}
+	
+	after(html) {
+		console.log(this.el);
+		console.log(this.el.parentNode);
+		console.log(this.el.parentNode.children);
+		var _parentElements = this.el.parentNode.children;
+		var _newChildren = [];
+		for(var i in _parentElements) {
+			console.log(i, _parentElements[i], this.el)
+			_newChildren.push(_parentElements[i]);
+			if(_parentElements[i] == this.el) {
+				_newChildren.push(html);
+			}
+		}
+		this.el.parentNode.children = _newChildren;
 		return this;
 	}
 
-	remove() {
-		
-		if(!this.el) { return this; };
-	
-		this.el.remove();
-	}
-
-	getEl() {
-		
-		if(!this.el) { return this; };
-	
-		return this.el;
-	}
-
+	before(html) {
+		var _parentElements = this.el.parentNode.children;
+		var _newChildren = [];
+		for(var i in _parentElements) {
+			if(_parentElements[i] == this.el) {
+				_newChildren.push(html);
+			}
+			_newChildren.push(_parentElements[i]);
+		}
+		this.el.parentNode.children = _newChildren;
+		return this;
+	}*/
 };

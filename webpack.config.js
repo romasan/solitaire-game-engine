@@ -29,7 +29,8 @@ module.exports = {
 			'./sources/dom/'              ,
 			'./sources/dom/render/'       ,
       './sources/styles/'           ,
-			'./sources/tests/'           
+      './sources/tests/'            ,
+			'./sources/preferences/'      
 		],
 		extensions: ['', '.js']
   },

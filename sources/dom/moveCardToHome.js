@@ -26,7 +26,7 @@ event.listen('moveCardToHome', function(e) {
 				    common.curUnLock();
 					if(e.departure) {
 						e.departure.Redraw();
-					}
+					}                    
 				});
     }
     

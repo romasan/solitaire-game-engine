@@ -14,8 +14,6 @@ import Field    from 'field';
 
 var Move = function(moveDeck, to, cursorMove) {
 
-	console.log('MOVE', moveDeck, to);
-
 	if(
 		!cursorMove.dbclick
 	 && cursorMove.distance == 0
@@ -135,8 +133,8 @@ var Move = function(moveDeck, to, cursorMove) {
     		var Tip = bestTip(moveDeck, cursorMove);
     		
     		if(Tip) {
-    			// console.log('###');
-    			Move(moveDeck, Tip.to.deck.domElement, cursorMove);
+    			console.log('###', Tip);
+    			Move(moveDeck, Tip.to.deck.domElement.el, cursorMove);
     			return;
     		} else {
     			event.dispatch('moveCardToHome', {

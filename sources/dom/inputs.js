@@ -53,6 +53,10 @@ var cdown = function(target, x, y) {
     // if(_dragDeck || _startCursor) return;
     
     if(common.isCurLock()) { return; };
+
+    // if (target.className.split(' ').indexOf('animated') >= 0) {
+    //     return;
+    // }
         
     if( target.className.split(' ').indexOf('slot') >= 0 ) {
         

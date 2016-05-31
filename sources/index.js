@@ -20,6 +20,8 @@ import winCheck        from 'winCheck';
 
 import debug from 'debug';
 
+import drawPreferences from 'drawPreferences';
+
 // var _themes = ['default', 'alternative'];
 
 import 'common.scss';
@@ -31,6 +33,10 @@ exports.options  = defaults;
 exports.winCheck = winCheck.hwinCheck;
 
 exports.init = function(gameConfig) {
+	
+	debug.tests();
+	
+	drawPreferences();
 
 	var _field = Field(gameConfig);
 
@@ -41,7 +47,6 @@ exports.init = function(gameConfig) {
 
 if(debug) {
 
-	debug.tests();
 	
 	exports.debug = debug;
 };
