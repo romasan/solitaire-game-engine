@@ -54,8 +54,8 @@ event.listen('addDeckEl', function(e) {
 
 	e.deck.domElement = 
 		elRender('<div>')
-			.getEl();
-	
+			.elements[0];
+
 	var _params = {
 		left      : share.get('zoom') * e.params.x           + 'px',
 		top       : share.get('zoom') * e.params.y           + 'px',
@@ -105,7 +105,7 @@ event.listen('addDeckEl', function(e) {
 				.attr({
 					"title" : e.deck.getId() + " (" + e.deck.parent + ")"
 				})
-				.getEl();
+				.elements[0];
 		elRender(_labelElement)
 			.html(label);
 		elRender(e.deck.domElement)

@@ -6,10 +6,12 @@ import common        from 'common';
 import deckGenerator from 'deckGenerator';
 import elRender      from 'elRender';
 
-var _history = [],
+import renderTest from 'renderTest';
+
+let _history = [],
 	_redo    = [];
 
-var debugHistoryMgr = new function() {
+let debugHistoryMgr = new function() {
 	
 	this.record = function(data) {
 		_redo = [];
@@ -37,8 +39,8 @@ var debugHistoryMgr = new function() {
 
 // add buttons
 
-var _debugHistory = false;
-var debugHistory = function(a) {
+let _debugHistory = false;
+let debugHistory = (a)=>{
 	
 	if(_debugHistory) {
 		return;
@@ -79,10 +81,15 @@ var debugHistory = function(a) {
 
 };
 
+let tests = ()=>{
+	renderTest();
+}
+
 export default {
-	deckGenerator    : deckGenerator,
-	debugHistory     : debugHistory,
-	debugHistoryMgr  : debugHistoryMgr,
+	deckGenerator,
+	debugHistory,
+	debugHistoryMgr,
 	validateCardName : common.validateCardName,
-	elRender         : elRender
+	elRender,
+	tests
 };

@@ -28,7 +28,8 @@ module.exports = {
 			'./sources/history/'          ,
 			'./sources/dom/'              ,
 			'./sources/dom/render/'       ,
-			'./sources/styles/'       
+      './sources/styles/'           ,
+			'./sources/tests/'           
 		],
 		extensions: ['', '.js']
   },

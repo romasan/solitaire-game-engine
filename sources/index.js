@@ -18,7 +18,7 @@ import Field           from 'field';
 import SolitaireCommon from 'common';
 import winCheck        from 'winCheck';
 
-import SolitaireDebug  from 'debug';
+import debug from 'debug';
 
 // var _themes = ['default', 'alternative'];
 
@@ -39,6 +39,9 @@ exports.init = function(gameConfig) {
 	}
 };
 
-if(SolitaireDebug) {
-	exports.debug = SolitaireDebug;
+if(debug) {
+
+	debug.tests();
+	
+	exports.debug = debug;
 };

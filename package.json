@@ -1,6 +1,6 @@
 {
-  "name": "solitaire-game-engine",
-  "version": "0.12.97",
+  "name": "solitaire-engine",
+  "version": "0.12.114",
   "description": "Solitaire game engine",
   "author": "Roman Bauer",
   "scripts": {

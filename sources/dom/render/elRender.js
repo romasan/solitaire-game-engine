@@ -1,15 +1,58 @@
 'use strict';
 
-import allElementsClass from 'allElementsClass';
+import defaults from 'defaults';
+import share    from 'share';
 
-let allElements = (e)=>{
+import elClass    from 'elClass';
+import allElClass from 'allElClass';
+import _el        from 'el';
 
-	return new allElementsClass(e);
+share.set('animatedElements',      0);
+share.set('animatedElementsStack', []);
+share.set('animatedCallback',      ()=>{});
+
+var _allEl = (e)=>{
+
+	if(!e) { return _el(e); };
+
+	if(typeof e == "string") {
+		try {
+			e = document.querySelectorAll(e);
+		} catch(_e) {
+			return _el(e);
+		}
+	};
+
+	if(typeof e.length != "undefined") {
+		if(e.length == 1) {
+			return _el(e[0]);
+		}
+		if(e.length == 0) {
+			return _el();
+		}
+	} else {
+		var __el = _el(e);
+		return __el;
+	};
+
+	return new allElClass(e);
 };
 
-allElements.stopAnimations = (callback)=>{
+_allEl.stopAnimations = (callback)=>{
 
-	new allElementsClass(".animated").removeClass("animated").css({transition : null});
+	// console.log('end all animations.', _animatedElementsStack);
+
+	var _animatedElementsStack = share.get('animatedElementsStack');
+
+	for(var i in _animatedElementsStack) {
+		_animatedElementsStack[i].el.style.transition = null;
+	};
+	share.set('animatedElementsStack', []);
+
+	share.set('animatedElements', 0);
+	var _animatedCallback = share.get('animatedCallback');
+	_animatedCallback.call(this);
+	share.set('animatedCallback', ()=>{});
 };
 
-export default allElements;
+export default _allEl;

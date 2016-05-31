@@ -5,8 +5,49 @@ import defaults from 'defaults';
 
 export default class elClass {
 	
-	constructor(e) {
-		this.el = e ? e : null;
+	constructor(query) {
+
+		console.log('one:constructor:', query);
+
+		this.el = null;
+
+		if(typeof query == "undefined") {
+
+			console.log("query#1");
+			
+			// nothing ?
+		} else if(typeof query == "string") {
+			try {
+				
+				console.log("query#2");
+				
+				this.el = document.querySelector(e);
+			} catch(e) {
+				
+				console.log("query#3");
+				
+				var _temp = document.createElement('temp');
+				_temp.innerHTML = query;
+				this.el = _temp.children[0];
+			}
+		} else if(
+		 	typeof query.length != "undefined"
+		 && query.length != 0
+		// && typeof query[0] TODO is dom element
+		) {
+			
+			console.log("query#4");
+			
+			this.el = query[0];
+		} else {
+			
+			console.log("query#5");
+			
+			this.el = query;
+		}
+
+		console.log('elClass:constructor:this.el:', this.el);
+
 	}
 	
 	attr(attributes) {
@@ -40,6 +81,8 @@ export default class elClass {
 	addClass(className) {
 
 		if(!this.el) { return this; };
+
+		console.log(this.el, this.el.className);
 	
 		var _classes = this.el.className.split(' ');
 		if(!this.hasClass(className)) {
@@ -50,6 +93,8 @@ export default class elClass {
 	}
 
 	removeClass(className) {
+
+		console.log('removeClass:', this);
 
 		if(!this.el) { return this; };
 	
@@ -71,16 +116,12 @@ export default class elClass {
 
 	css(a) {
 
-		// console.log('CSS', this.el ? true : false, a);
-
 		if(!this.el) { return this; };
 		
 		for(var attrName in a) {
 			try {
 				this.el.style[attrName] = a[attrName];
-			} catch(e) {
-				// S.log('>>>>>', this.el, e);
-			}
+			} catch(e) {}
 		}
 		return this;
 	}
@@ -186,15 +227,15 @@ export default class elClass {
 		return this;
 	}
 
-	done(callback) {
+	// done(callback) {
 
-		if(!this.el) { return this; };
+	// 	if(!this.el) { return this; };
 	
-		if(typeof callback == "function") {
-			share.set('animatedCallback', callback);
-		};
-		return this;
-	}
+	// 	if(typeof callback == "function") {
+	// 		share.set('animatedCallback', callback);
+	// 	};
+	// 	return this;
+	// }
 
 	remove() {
 		
@@ -203,11 +244,11 @@ export default class elClass {
 		this.el.remove();
 	}
 
-	getEl() {
+	// elements[0] {
 		
-		if(!this.el) { return this; };
+	// 	if(!this.el) { return this; };
 	
-		return this.el;
-	}
+	// 	return this.el;
+	// }
 
 };

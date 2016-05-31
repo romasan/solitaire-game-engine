@@ -57,7 +57,7 @@ event.listen('addCardEl', function(e) {
 
 	e.domElement = 
 		elRender('<div>')
-			.getEl();
+			.elements[0];
 	
 	elRender(e.domElement)
 		// .addClass(e.name)
