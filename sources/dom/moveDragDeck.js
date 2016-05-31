@@ -66,7 +66,7 @@ event.listen('moveDragDeck', function(e) {
 				    if(typeof e.callback == "function") {
 				    	e.callback();
 				    };
-				    
+
 				    event.dispatch('moveDragDeckDone', {
 				    	deck : e.destination
 					});

@@ -11,14 +11,14 @@ export default class elClass {
 		
 		if(!e) {
 			// if(window._debug) throw new Error("test");
-			console.warn("elClass: empty arrtibutes;");
+			// console.warn("elClass: empty arrtibutes;");
 			this.el = null;
 		}
 	}
 // --
 	attr(attributes) {
 		try {
-			for(var attrName in attributes) { 
+			for(var attrName in attributes) {
 				this.el[attrName] = attributes[attrName];
 			}
 			return this;
@@ -149,8 +149,6 @@ export default class elClass {
 			
 			this.el.addEventListener("transitionend", ()=>{
 				counter -= 1;
-
-				console.log("transitionend:", counter);
 
 				if(!counter) {
 					this.removeClass("animated");
