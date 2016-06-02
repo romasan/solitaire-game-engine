@@ -26,8 +26,8 @@ event.listen('addCardEl', function(e) {
 		"height"              : _card.height + 'px'
 	};
 
-
-	if(share.get('spriteTexture')) {
+	// TODO Переписать на SASS
+	/*if(share.get('spriteTexture')) {
 		var _vcard = common.validateCardName(e.name),
 		_position = {
 			x : defaults.card.ranks      .indexOf(_vcard.rank),
@@ -53,7 +53,7 @@ event.listen('addCardEl', function(e) {
 
 		_params["background-size"]     = _backgroundSize.width + 'px ' + _backgroundSize.height + 'px';
 		_params["background-position"] = _backgroundPosition.x + 'px ' + _backgroundPosition.y  + 'px';
-	}
+	}*/
 
 	e.domElement = 
 		elRender('<div>')
@@ -61,7 +61,7 @@ event.listen('addCardEl', function(e) {
 	
 	elRender(e.domElement)
 		// .addClass(e.name)
-		.addClass('el card draggable')
+		.addClass('el card draggable ' + e.name)
 		// .css({'background-size' : null})
 		.css(_params)
 		.attr({

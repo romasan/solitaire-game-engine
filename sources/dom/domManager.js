@@ -10,6 +10,7 @@ import drawCard       from 'drawCard';
 import drawTip        from 'drawTip';
 import moveDragDeck   from 'moveDragDeck';
 import moveCardToHome from 'moveCardToHome';
+import fieldThemesSet from 'fieldThemesSet';
 
 event.listen('removeEl', function(e) {
 	elRender(e.domElement)

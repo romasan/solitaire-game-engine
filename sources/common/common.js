@@ -7,6 +7,22 @@ import defaults from 'defaults';
 import Tips     from 'tips';
 import Field    from 'field';
 
+import drawPreferences    from 'drawPreferences';
+import preferencesEvents  from 'preferencesEvents';
+import defaultPreferences from 'defaultPreferences';
+
+
+let onInit = ()=>{
+	drawPreferences();
+	preferencesEvents();
+}
+
+let afterInit = ()=>{
+	defaultPreferences();
+}
+
+// drawPreferences();
+
 // event.listen('makeStep', function(e) {
 // 	// ???
 // 	share.saveStepCallback(e);
@@ -189,5 +205,7 @@ export default {
 	animationOn      ,
 	animationOff     ,
 	animationDefault ,
+	onInit           ,
+	afterInit        ,
 	sqr              
 };

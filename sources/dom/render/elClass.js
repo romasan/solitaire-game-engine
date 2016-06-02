@@ -237,37 +237,55 @@ export default class elClass {
 		return this.el;
 	}*/
 
-	/*parent() {
+	parent() {
 		return new elClass(this.el.parentNode);
 	}
 	
 	after(html) {
-		console.log(this.el);
-		console.log(this.el.parentNode);
-		console.log(this.el.parentNode.children);
-		var _parentElements = this.el.parentNode.children;
-		var _newChildren = [];
-		for(var i in _parentElements) {
-			console.log(i, _parentElements[i], this.el)
-			_newChildren.push(_parentElements[i]);
-			if(_parentElements[i] == this.el) {
-				_newChildren.push(html);
+		try {
+			this.el.parentNode.insertBefore(html, this.el.nextElementSibling);
+			/*if(html.el) html = html.el;
+
+			var _parentElements = this.el.parentNode.children;
+			var _newChildren = [];
+			
+			for(var i in _parentElements) {
+				_newChildren.push(_parentElements[i]);
+				if(_parentElements[i] == this.el) {
+					_newChildren.push(html);
+				}
 			}
-		}
-		this.el.parentNode.children = _newChildren;
+			
+			this.el.parentNode.children = _newChildren;*/
+		} catch(e) {}
 		return this;
 	}
 
 	before(html) {
-		var _parentElements = this.el.parentNode.children;
-		var _newChildren = [];
-		for(var i in _parentElements) {
-			if(_parentElements[i] == this.el) {
-				_newChildren.push(html);
+		try {
+			this.el.parentNode.insertBefore(html, this.el);
+			/*if(html.el) html = html.el;
+
+			var _parentElements = this.el.parentNode.children;
+			var _newChildren = [];
+			
+			for(var i in _parentElements) {
+				if(_parentElements[i] == this.el) {
+					_newChildren.push(html);
+				}
+				_newChildren.push(_parentElements[i]);
 			}
-			_newChildren.push(_parentElements[i]);
-		}
-		this.el.parentNode.children = _newChildren;
+			
+			this.el.parentNode.children = _newChildren;*/
+		} catch(e) {}
 		return this;
-	}*/
+	}
+
+	event(eventName, callback) {
+		this.el.addEventListener(eventName, callback);
+	}
+
+	click(callback) {
+		this.event(callback);
+	}
 };

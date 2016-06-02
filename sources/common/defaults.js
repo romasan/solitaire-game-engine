@@ -52,6 +52,23 @@ export default {
 		spriteTexture : true,
 	    textureSuits  : ['d', 'c', 'h', 's']
 	},
+
+	themes : {
+		face  : [
+			"default_face",
+			"alternative_face"
+		],
+		back  : [
+			"default_back",
+			"alternative_back",
+			"red_back",
+			"blue_back"
+		],
+		empty : [
+			"default_empty",
+			"alternative_empty"
+		]
+	},
 	// theme               : 'default_theme',
 
 	animation           : true,
@@ -79,6 +96,12 @@ export default {
 
     inputParams : {
         doubleClick : false
+    },
+
+    pref : {
+    	face  : 0,
+		back  : 0,
+		empty : 0
     }
 
 };

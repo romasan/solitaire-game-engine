@@ -3,27 +3,39 @@ $img_dir:"/solitaire_engine/img/";
 $cards: ("1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "j", "q", "k");
 $ranks: ("d", "s", "h", "c");
 
-@each $rank in $ranks {
-	@each $card in $cards {
+$theme_name: ".default";
 
-		.#{$rank}#{$card} {
-			background-image: url('#{$img_dir}#{$rank}#{$card}.png');
+#{$theme_name}_face {
+
+	.card {
+		background-size: 100% 100%;
+		background-position: 0px 0px;
+	}
+
+	@each $rank in $ranks {
+		@each $card in $cards {
+
+			.#{$rank}#{$card} {
+				background-image: url('#{$img_dir}#{$rank}#{$card}.png');
+			}
+
 		}
-
 	}
 }
 
-.card {
-	background-size: 100% 100%;
-	background-position: 0px 0px;
+
+#{$theme_name}_back {
+
+	.flip {
+	    background-image: url('#{$img_dir}rub1.png')!important;
+	}
 }
 
-.slot {
-	background: url('#{$img_dir}slot1.png'); 
-	background-size: 100% 100%;
-	outline: 1px solid transparent;
-}
+#{$theme_name}_empty {
 
-.flip {
-    background-image: url('#{$img_dir}rub1.png')!important;
+	.slot {
+		background: url('#{$img_dir}slot1.png'); 
+		background-size: 100% 100%;
+		outline: 1px solid transparent;
+	}
 }
