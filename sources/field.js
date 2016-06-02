@@ -55,19 +55,19 @@ var Field = function(data) {
 		// console.log(data);
 	}
 
-	share.set(
-		'spriteTexture', 
-		typeof a.theme == 'object' 
-			? a       .theme.spriteTexture 
-			: defaults.theme.spriteTexture
-	);
+	// share.set(
+	// 	'spriteTexture', 
+	// 	typeof a.theme == 'object' 
+	// 		? a       .theme.spriteTexture 
+	// 		: defaults.theme.spriteTexture
+	// );
 
-	share.set(
-		'textureSuits', 
-		typeof a.theme == 'object' 
-			? a       .theme.textureSuits 
-			: defaults.theme.textureSuits
-	);
+	// share.set(
+	// 	'textureSuits', 
+	// 	typeof a.theme == 'object' 
+	// 		? a       .theme.textureSuits 
+	// 		: defaults.theme.textureSuits
+	// );
 
 	this.homeGroups = a.homeGroups ? a.homeGroups : [];
 	
@@ -135,7 +135,7 @@ var Field = function(data) {
 		saveStepCallback = a.saveStep;
 	}
 
-	// paraneters and values
+	// parameters and values
 
 	share.set(
 		'zoom', 

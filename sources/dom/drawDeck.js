@@ -57,10 +57,10 @@ event.listen('addDeckEl', function(e) {
 			// .getEl();
 	
 	var _params = {
-		left      : share.get('zoom') * e.params.x           + 'px',
-		top       : share.get('zoom') * e.params.y           + 'px',
-		width     : share.get('zoom') * defaults.card.width  + 'px',
- 		height    : share.get('zoom') * defaults.card.height + 'px',
+		left      : e.params.x           + 'px',
+		top       : e.params.y           + 'px',
+		width     : defaults.card.width  + 'px',
+ 		height    : defaults.card.height + 'px',
 		transform : 'rotate(' + (e.params.rotate|0) + 'deg)'
 	};
 	
@@ -171,8 +171,8 @@ event.listen('redrawDeck', function(e) {
 	}
 
 	var _params = {
-		left      : share.get('zoom') * e.params.x,
-		top       : share.get('zoom') * e.params.y,
+		left      : e.params.x,
+		top       : e.params.y,
 		transform : 'rotate(' + (e.params.rotate|0) + 'deg)'
 	};
 	
@@ -188,8 +188,8 @@ event.listen('redrawDeck', function(e) {
 		var _zIndex = (e.params.startZIndex|0) + (i|0);
 		// console.log('>>> Z-INDEX:', e.deck.name, _zIndex);
 		var _params = {
-			'left'              : share.get('zoom') * _card_position.x + 'px', 
-			'top'               : share.get('zoom') * _card_position.y + 'px',
+			'left'              : _card_position.x + 'px', 
+			'top'               : _card_position.y + 'px',
 			'z-index'           : _zIndex,
 		    '-ms-transform'     : 'rotate(' + (e.params.rotate|0) + 'deg)',
 		    '-webkit-transform' : 'rotate(' + (e.params.rotate|0) + 'deg)',

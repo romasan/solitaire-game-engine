@@ -1,5 +1,7 @@
 'use strict';
 
+import defaults from 'defaults';
+
 export default function(e) {//{count, radus, center}
 
 	this.placement = {

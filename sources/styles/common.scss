@@ -14,7 +14,7 @@ body {
 }
 
 .field * {
-	cursor: inherit;
+	cursor                   : inherit;
 }
 
 .el {
@@ -123,12 +123,16 @@ body {
 
 .red_back {
   .flip {
-    background-image: url('#{$img_dir}b1fv.png');
+    background: url('#{$img_dir}b2fv.png')!important;
+    background-size: 100% 100%!important;
+    border: 0px!important;
   }
 }
 
 .blue_back {
   .flip {
-    background-image: url('#{$img_dir}b2fv.png');
+    background: url('#{$img_dir}b1fv.png')!important;
+    background-size: 100% 100%!important;
+    border: 0px!important;
   }
 }

@@ -21,8 +21,8 @@
 		field - ... элемент страницы, который будет содержать в себе игровое поле
 			тип string/CSS Selector | HTML DOM Element Object
 			по умолчанию "#map"
-		theme - Истользуемая тема оформления
-			тип Theme
+<!-- 		theme - Истользуемая тема оформления
+			тип Theme -->
 		winCheck - ...вила окончания игры
 			тип WinCheck
 		groups - ...
@@ -55,7 +55,7 @@
 			тип boolean
 			по умолчанию true
 ---
-	Theme
+<!-- 	Theme
 	   name - ...
 		   тип string
 		   по умолчанию "alternative_theme"
@@ -64,7 +64,7 @@
 		   по умолчанию true
 	   textureSuits  - ...
 		   тип [string/suit name]
-	       по умолчанию ['d', 'c', 'h', 's']
+	       по умолчанию ['d', 'c', 'h', 's'] -->
 ---
 	WinCheck :
 	   rules - ...

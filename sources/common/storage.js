@@ -1,6 +1,11 @@
 'use strict';
 
 class storage {
+
+	// TODO настройки сохраняются для всех игр,
+	// возможно нужно будет для каждой отдельно,
+	// тогда в конфигурацию нужно будет включить gameId
+
 	constructor() {
 
 		if(!localStorage.hasOwnProperty('SolitaireEngine')) {

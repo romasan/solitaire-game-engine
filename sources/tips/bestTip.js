@@ -46,14 +46,14 @@ export default function(moveDeck, cursorMove) {
 		for(var i in _autoTips) {
 
 			var center_from = {
-				x : cursorMove.deckPosition.x + (defaults.card.width  * share.get('zoom')),
-				y : cursorMove.deckPosition.y + (defaults.card.height * share.get('zoom'))
+				x : cursorMove.deckPosition.x + (defaults.card.width ),
+				y : cursorMove.deckPosition.y + (defaults.card.height)
 			}
 			
 			var _destination_deck_last_card_position = _autoTips[i].to.deck.padding(_autoTips[i].to.deck.cards.length);
 			var center_to = {
-				x : _destination_deck_last_card_position.x + (defaults.card.width  * share.get('zoom')),
-				y : _destination_deck_last_card_position.y + (defaults.card.height * share.get('zoom'))
+				x : _destination_deck_last_card_position.x + (defaults.card.width ),
+				y : _destination_deck_last_card_position.y + (defaults.card.height)
 			}
 			
 			_autoTips[i].distance = Math.sqrt(common.sqr(center_from.x - center_to.x) + common.sqr(center_from.y - center_to.y));

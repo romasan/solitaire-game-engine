@@ -15,7 +15,6 @@ export default {
 	    
 	    ranks        : ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', 'j', 'q', 'k'],
 	    values       : [ 1,   2,   3,   4,   5,   6,   7,   8,   9,   10,   11,  12,  13],
-	    // rankindexes : [ 1,   2,   3,   4,   5,   6,   7,   8,   9,   10,   11,  12,  13],
 	    ranks36      : ['1',                     '6', '7', '8', '9', '10', 'j', 'q', 'k']
 	},
 	
@@ -47,11 +46,11 @@ export default {
 	debugLabels         : false,
 	debugLog            : false,
 
-	theme               : {
-		name          : 'alternative_theme',
-		spriteTexture : true,
-	    textureSuits  : ['d', 'c', 'h', 's']
-	},
+	// theme               : {
+	// 	name          : 'alternative_theme',
+	// 	spriteTexture : true,
+	//     textureSuits  : ['d', 'c', 'h', 's']
+	// },
 
 	themes : {
 		face  : [
@@ -101,7 +100,7 @@ export default {
     pref : {
     	face  : 0,
 		back  : 0,
-		empty : 0
+		empty : 1
     }
 
 };

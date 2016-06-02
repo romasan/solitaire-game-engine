@@ -13,8 +13,8 @@ event.listen('addCardEl', function(e) {
 	var _field = Field();
 	
 	var _card = {
-		width  : share.get('zoom') * defaults.card.width,
-		height : share.get('zoom') * defaults.card.height,
+		width  : defaults.card.width,
+		height : defaults.card.height
 	};
 	_card = {
 		width  : _card.width .toFixed(3) * 1,

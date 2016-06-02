@@ -30,10 +30,13 @@ event.listen('initField', function(e) {
 
 	var _params = {};
 
-	if(e.a.width  && typeof e.a.width  == 'number') { _params.width  = share.get('zoom') * e.a.width  + 'px'; }
-	if(e.a.height && typeof e.a.height == 'number') { _params.height = share.get('zoom') * e.a.height + 'px'; }
-	if(e.a.top    && typeof e.a.top    == 'number') { _params.top    = share.get('zoom') * e.a.top    + 'px'; }
-	if(e.a.left   && typeof e.a.left   == 'number') { _params.left   = share.get('zoom') * e.a.left   + 'px'; }
+	if(e.a.width  && typeof e.a.width  == 'number') { _params.width  = e.a.width  + 'px'; }
+	if(e.a.height && typeof e.a.height == 'number') { _params.height = e.a.height + 'px'; }
+	if(e.a.top    && typeof e.a.top    == 'number') { _params.top    = e.a.top    + 'px'; }
+	if(e.a.left   && typeof e.a.left   == 'number') { _params.left   = e.a.left   + 'px'; }
+
+	var _zoom = share.get('zoom');
+	(_zoom != defaults.zoom || _zoom != 1) && (_params.transform = 'scale(' + _zoom + ')', _params['transform-origin'] = '0 0');
 	// if(a.rotate && typeof a.rotate == 'number') _params.transform = 'rotate(' + (a.rotate|0) + 'deg)';
 	
 	var themeName = 

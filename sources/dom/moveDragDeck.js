@@ -45,8 +45,8 @@ event.listen('moveDragDeck', function(e) {
 		}
 
 		var _params = {
-			'left'              : share.get('zoom') * _position.x + 'px', 
-			'top'               : share.get('zoom') * _position.y + 'px',
+			'left'              : _position.x + 'px', 
+			'top'               : _position.y + 'px',
 			'transform'         : 'rotate(' + destinationAngle + 'deg)'
 		};
 
@@ -101,8 +101,8 @@ event.listen('dragDeck', function(e) {
 	for(var i in e._dragDeck) {
     	var _position = e._deck.padding(e._dragDeck[i].index);
     	var _params = {
-    		'left'    : (_position.x * share.get('zoom') + (e.x - e._startCursor.x)) + 'px',
-    		'top'     : (_position.y * share.get('zoom') + (e.y - e._startCursor.y)) + 'px',
+    		'left'    : (_position.x + (e.x - e._startCursor.x)) + 'px',
+    		'top'     : (_position.y + (e.y - e._startCursor.y)) + 'px',
     		// transform : 'rotate(0deg)',
     		'z-index' : defaults.topZIndex + (i|0)
     	}
