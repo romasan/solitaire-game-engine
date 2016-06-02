@@ -10,6 +10,13 @@ $ranks: ("d", "s", "h", "c");
 
 #{$theme_name}_face {
 
+	.card  {
+		border: 1px solid #121212;
+		border-radius: 5px;
+		background: url('#{$img_dir}card.svg');
+		background-size: length($cards) * $card_width length($ranks) * $card_height;
+	}
+	
 	@each $rank in $ranks {
 		@each $card in $cards {
 			
@@ -19,16 +26,6 @@ $ranks: ("d", "s", "h", "c");
 			
 		}
 	}
-
-	.card  {
-		border: 1px solid #121212;
-		border-radius: 5px;
-		background: url('#{$img_dir}card.svg');
-		background-size: length($cards) * $card_width length($ranks) * $card_height;
-	}
-	
-
-	
 }
 
 #{$theme_name}_back {
