@@ -226,6 +226,7 @@ document.onmouseup = function(e) {
 document.ondblclick = function(e) {
     cdown(e.target, e.clientX, e.clientY);
     cend(e.target, e.clientX, e.clientY, true);
+    common.curUnLock();
 };
 
 document.addEventListener('touchstart', function(e) {
