@@ -53,6 +53,10 @@ export default {
 	// },
 
 	themes : {
+		field : [
+			"default_field",
+			"alternative_field"
+		],
 		face  : [
 			"default_face",
 			"alternative_face"
@@ -98,6 +102,7 @@ export default {
     },
 
     pref : {
+    	field : 0,
     	face  : 0,
 		back  : 0,
 		empty : 1

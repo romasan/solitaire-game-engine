@@ -13,20 +13,19 @@ event.listen('fieldThemesSet', (pref)=>{
 	let fieldDomElement = _field.domElement;
 
 	// Clear old themes
-	for(var i in defaults.themes.face) {
-		let themeName = defaults.themes.face[i];
-		elRender(fieldDomElement).removeClass(themeName);
-	}
-	for(var i in defaults.themes.back) {
-		let themeName = defaults.themes.back[i];
-		elRender(fieldDomElement).removeClass(themeName);
-	}
-	for(var i in defaults.themes.empty) {
-		let themeName = defaults.themes.empty[i];
-		elRender(fieldDomElement).removeClass(themeName);
+
+	for(var prefName in defaults.themes) {
+		for(var i in defaults.themes[prefName]) {
+			let themeName = defaults.themes[prefName][i];
+			elRender(fieldDomElement).removeClass(themeName);
+			
+		}
 	}
 	
 	// Add new themes
+	let fieldClassName = defaults.themes.field[pref.field];
+	elRender(fieldDomElement).addClass(fieldClassName);
+
 	let faceClassName = defaults.themes.face[pref.face];
 	elRender(fieldDomElement).addClass(faceClassName);
 	

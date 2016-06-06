@@ -8,6 +8,11 @@ $card_height : 96px;
 $cards: ("1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "j", "q", "k");
 $ranks: ("d", "s", "h", "c");
 
+#{$theme_name}_field {
+	background: url('#{$img_dir}bg_large1.jpg');
+	background-size: 100% 100%;
+}
+
 #{$theme_name}_face {
 
 	.card  {

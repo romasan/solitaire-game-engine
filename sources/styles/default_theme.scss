@@ -8,6 +8,10 @@ $ranks: ("d", "s", "h", "c");
 
 $theme_name: ".default";
 
+#{$theme_name}_field {
+	background: green;
+}
+
 #{$theme_name}_face {
 
 	.card {

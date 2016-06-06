@@ -10,12 +10,14 @@ let onShowParameters = ()=>{
 	let pref = storage.get('pref');
 	!pref && (pref = defaults.pref);
 	
-	$("#pref_face [value=" + pref.face + "]")
+	$("#pref_field [value=" + (pref.field ? pref.field : defaults.pref.field) + "]")
 		.prop({selected: true});
-	$("#pref_back [value=" + pref.back + "]")
+	$("#pref_face [value=" + (pref.face ? pref.face : defaults.pref.face) + "]")
 		.prop({selected: true});
-	$("#pref_empty [value=" + pref.empty + "]")
+	$("#pref_back [value=" + (pref.back ? pref.back : defaults.pref.back) + "]")
 		.prop({selected: true});
+	// $("#pref_empty [value=" + pref.empty + "]")
+		// .prop({selected: true});
 };
 
 let applyParameters = ()=>{
