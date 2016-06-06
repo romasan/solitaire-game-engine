@@ -4,18 +4,18 @@ const webpack = require("webpack");
 const path = require('path');
 const ExtractTextPlugin = require("extract-text-webpack-plugin");
 
-module.exports = {
+const mode = process.env.MODE;
+
+let config = {
   entry: "index",
   output: {
     path: "./frontend/js/",
     filename: "SolitaireEngine.js",
     library:  "SolitaireEngine"
   },
-  watch: true,
   watchOptions: {
 		aggregateTimeout: 100
 	},
-	devtool: "source-map",
   resolve: {
 		modulesDirectories: [
 			'./sources/'                  ,
@@ -64,22 +64,30 @@ module.exports = {
   plugins: [
   	new ExtractTextPlugin("../css/SolitaireEngine.css", {
   		allChunks: true
-  	}),
-  	new webpack.optimize.UglifyJsPlugin({
-			drop_console: true,
-			unsafe:       true
-		})
+  	})
   ]
 };
 
-let fs = require('fs');
-let _file = './package.json';
-let _json = require(_file);
-let _ver = _json.version.split('.');
-_ver[_ver.length - 1] = (_ver[_ver.length - 1]|0) + 1;
-_json.version = _ver.join('.');
-fs.writeFile(_file, JSON.stringify(_json, null, 2));
+if(mode == 'dev') {
 
+  config.watch = true;
 
+  config.devtool = "source-map";
 
+  let fs = require('fs');
+  let _file = './package.json';
+  let _json = require(_file);
+  let _ver = _json.version.split('.');
+  _ver[_ver.length - 1] = (_ver[_ver.length - 1]|0) + 1;
+  _json.version = _ver.join('.');
+  fs.writeFile(_file, JSON.stringify(_json, null, 2));
+} else {
 
+  config.plugins.push(
+    new webpack.optimize.UglifyJsPlugin({
+      drop_console: true,
+      unsafe:       true
+    }));
+};
+
+module.exports = config;

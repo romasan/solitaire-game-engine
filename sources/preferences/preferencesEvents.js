@@ -10,23 +10,17 @@ let onShowParameters = ()=>{
 	let pref = storage.get('pref');
 	!pref && (pref = defaults.pref);
 	
-	$("#pref_field [value=" + (pref.field ? pref.field : defaults.pref.field) + "]")
-		.prop({selected: true});
-	$("#pref_face [value=" + (pref.face ? pref.face : defaults.pref.face) + "]")
-		.prop({selected: true});
-	$("#pref_back [value=" + (pref.back ? pref.back : defaults.pref.back) + "]")
-		.prop({selected: true});
-	// $("#pref_empty [value=" + pref.empty + "]")
-		// .prop({selected: true});
+	for(var prefName in defaults.themes) {
+		$("#pref_" + prefName + " [value=" + (pref[prefName] ? pref[prefName] : defaults.pref[prefName]) + "]")
+	}
 };
 
 let applyParameters = ()=>{
 	
-	var pref = {
-		face  : $("#pref_face") .val(),
-		back  : $("#pref_back") .val(),
-		empty : $("#pref_empty").val()
-	};
+	var pref = {};
+	for(var prefName in defaults.themes) {
+		pref[prefName] = $("#pref_" + prefName).val();
+	}
 
 	event.dispatch('fieldThemesSet', pref);
 

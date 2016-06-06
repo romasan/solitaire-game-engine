@@ -52,6 +52,13 @@ export default {
 	//     textureSuits  : ['d', 'c', 'h', 's']
 	// },
 
+    pref : {
+    	field : 0,
+    	face  : 0,
+		back  : 0
+		// empty : 1
+    },
+    
 	themes : {
 		field : [
 			"default_field",
@@ -66,12 +73,13 @@ export default {
 			"alternative_back",
 			"red_back",
 			"blue_back"
-		],
-		empty : [
-			"default_empty",
-			"alternative_empty"
 		]
+		// empty : [
+		// 	"default_empty",
+		// 	"alternative_empty"
+		// ]
 	},
+
 	// theme               : 'default_theme',
 
 	animation           : true,
@@ -99,13 +107,6 @@ export default {
 
     inputParams : {
         doubleClick : false
-    },
-
-    pref : {
-    	field : 0,
-    	face  : 0,
-		back  : 0,
-		empty : 1
     }
 
 };

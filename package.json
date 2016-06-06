@@ -1,10 +1,10 @@
 {
   "name": "solitaire-engine",
-  "version": "0.12.184",
+  "version": "0.12.191",
   "description": "Solitaire game engine",
   "author": "Roman Bauer",
   "scripts": {
-    "build": "node ./npm_scripts/build"
+    "build": "node ./node_modules/webpack/bin/webpack.js"
   },
   "dependencies": {
     "webpack": "^1.13.0",

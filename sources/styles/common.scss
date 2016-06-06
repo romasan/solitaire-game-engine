@@ -1,5 +1,8 @@
 $img_dir:"/solitaire_engine/img/";
 
+$card_width  : 71px;
+$card_height : 96px;
+
 * {
 	-webkit-touch-callout : none;
 	-webkit-user-select   : none;
@@ -117,6 +120,14 @@ body {
   display: inline-block;;
   width: 150px;
   line-height: 20px;
+}
+
+.slot  {
+  width: $card_width - 2!important;
+  height: $card_height - 2!important;
+  background: transparent;
+  border: 1px solid #121212;
+  border-radius: 5px;
 }
 
 /* =========================================== */
