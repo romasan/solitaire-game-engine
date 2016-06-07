@@ -12,6 +12,7 @@ let onShowParameters = ()=>{
 	
 	for(var prefName in defaults.themes) {
 		$("#pref_" + prefName + " [value=" + (pref[prefName] ? pref[prefName] : defaults.pref[prefName]) + "]")
+			.prop({selected : true});
 	}
 };
 

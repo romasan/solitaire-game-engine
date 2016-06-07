@@ -3,6 +3,32 @@
 import mapGenerator from "mapGenerator";
 import fanGenerator from "fanGenerator";
 
+// сгенерировать ряд из N карт
+
+// "generator" : {
+//     "type"  : "count"
+//     "count" : 4
+// }    
+
+// сгенерировать группу из матрицы
+
+// "generator" : {
+//     "type"  : "map",
+//     "map" : [
+//         [null, 'B1', null]
+//         ['A2', 'B2', 'C2']
+//         [null, 'B3', null]
+//     ]
+// }
+
+// сгенерировать группу для полумесяца
+
+// "generator" : {
+//     "type"   : "fan",
+//     "count"  : 16,
+//     "radius" : 405
+// }
+
 export default {
 	"count" : function(e) {
 		// console.log('!COUNT GENERATOR', e);

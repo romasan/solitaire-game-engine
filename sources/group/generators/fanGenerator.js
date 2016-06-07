@@ -4,6 +4,16 @@ import defaults from 'defaults';
 
 export default function(e) {//{count, radus, center}
 
+    // {
+    //   type   : "fan",
+    //   count  : int,
+    //   radius : int,
+    //   center : {
+    //     x : int,
+    //     y : int
+    //   }
+    // }
+
 	this.placement = {
         x : 0, 
         y : 0

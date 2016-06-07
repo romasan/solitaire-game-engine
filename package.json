@@ -1,18 +1,17 @@
 {
   "name": "solitaire-engine",
-  "version": "0.12.192",
+  "version": "0.12.203",
   "description": "Solitaire game engine",
   "author": "Roman Bauer",
   "license": "UNLICENSED",
-  "repository" :
-  {
+  "repository": {
     "type": "git",
     "url": "http://git.logic-games.spb.ru/romasan/solitaire_engine.git"
   },
   "scripts": {
     "build": "node ./node_modules/webpack/bin/webpack.js"
   },
-  "dependencies": {
+  "devDependencies": {
     "webpack": "^1.13.0",
     "babel-core": "^6.8.0",
     "babel": "^6.5.2",
