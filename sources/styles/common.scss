@@ -24,6 +24,14 @@ body {
 	position: absolute;
 }
 
+.slot  {
+  width: $card_width - 2!important;
+  height: $card_height - 2!important;
+  background: transparent;
+  border: 1px solid #121212;
+  border-radius: 5px;
+}
+
 .tip:after {
   content          : attr(data-content);
   background-color : #ffff00;
@@ -116,18 +124,10 @@ body {
 	
 }
 
-.cards-style-preferences-label {
+.solitaire-engine-style-preferences-label {
   display: inline-block;;
   width: 150px;
   line-height: 20px;
-}
-
-.slot  {
-  width: $card_width - 2!important;
-  height: $card_height - 2!important;
-  background: transparent;
-  border: 1px solid #121212;
-  border-radius: 5px;
 }
 
 /* =========================================== */

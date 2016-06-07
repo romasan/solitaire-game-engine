@@ -36,5 +36,5 @@ export default ()=>{
 	
 	$("#bbParameters").click(onShowParameters);
 	// $("#gpCommit").click(saveParameters);
-	$(".cards-style-preferences-element").change(applyParameters);
+	$(".solitaire-engine-style-preferences-element").change(applyParameters);
 };
