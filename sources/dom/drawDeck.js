@@ -101,10 +101,9 @@ event.listen('addDeckEl', function(e) {
 		var _labelElement = 
 			elRender('<div>')
 				.addClass('deckLabel')
-		// DEBUG, TODO remove next string
-				.attr({
-					"title" : e.deck.getId() + " (" + e.deck.parent + ")"
-				})
+				// .attr({
+				// 	"title" : e.deck.getId() + " (" + e.deck.parent + ")"
+				// })
 				// .getEl();
 		elRender(_labelElement)
 			.html(label);

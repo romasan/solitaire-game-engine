@@ -9,14 +9,16 @@ import elRender from 'elRender';
 
 event.listen('initField', function(e) {
 
-	// console.log('initField');
 	
-	var domElement = e.a.field ? e.a.field : '#mat';// default;
+	var domElement = e.a.field ? e.a.field : '#map';// default;
 	if(typeof domElement == 'string') {
 		if(domElement.split('.').length == 2) {
 			domElement = document.getElementsByClassName(domElement.split('.')[1])[0];
 		} else if(domElement.split('#').length == 2) {
+			
+			console.log('initField#0', e, domElement.split('#')[1]);
 			domElement = document.getElementById(domElement.split('#')[1]);
+			
 		} else {
 			domElement = document.getElementsByTagName(domElement);
 		}
@@ -24,6 +26,7 @@ event.listen('initField', function(e) {
 			domElement = document.getElementById('mat')
 		}
 	};
+	console.log('initField', e, domElement);
 	// share.field = e.field;
 	var _field = Field();
 	_field.domElement = domElement;
@@ -39,15 +42,15 @@ event.listen('initField', function(e) {
 	(_zoom != defaults.zoom || _zoom != 1) && (_params.transform = 'scale(' + _zoom + ')', _params['transform-origin'] = '0 0');
 	// if(a.rotate && typeof a.rotate == 'number') _params.transform = 'rotate(' + (a.rotate|0) + 'deg)';
 	
-	var themeName = 
-		typeof e.a.theme == 'string' 
-			? e.a.theme 
-			: typeof e.a.theme == 'object' && e.a.theme.name
-				? e.a.theme.name
-				: defaults.theme.name;
+	// var themeName = 
+	// 	typeof e.a.theme == 'string' 
+	// 		? e.a.theme 
+	// 		: typeof e.a.theme == 'object' && e.a.theme.name
+	// 			? e.a.theme.name
+	// 			: defaults.theme.name;
 
 	elRender(domElement)
 		.css(_params)
 		.addClass('field')
-		.addClass(themeName);
+		// .addClass(themeName);
 });

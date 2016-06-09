@@ -258,8 +258,6 @@ var addGroup = function(a) {
 				
 				if(groupGenerator[a.decks.generator.type]) {
 				
-					console.log('>>>', groupGenerator[a.decks.generator.type], '---', _el_group, '---', a, '<<<');
-					
 					a.decks = groupGenerator[a.decks.generator.type].call(_el_group, a.decks.generator);
 				} else {
 					console.warn('Deck generator type "' + a.decks.generator.type + '" not found.');
@@ -282,14 +280,12 @@ var addGroup = function(a) {
 		};
 	};
 
-	if(a.decksRelations) {
-		
-		for(var i in a.decksRelations) {
-			// TODO
-			console.log('Relation', a.decksRelations[i]);
-		}
-
-	};
+	// TODO
+	// if(a.decksRelations) {
+	// 	for(var i in a.decksRelations) {
+	// 		console.log('Relation', a.decksRelations[i]);
+	// 	}
+	// };
 
 	var _elements = share.get('elements');
 	_elements[_id] = _el_group;

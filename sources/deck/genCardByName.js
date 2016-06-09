@@ -6,10 +6,7 @@ import common from 'common';
 
 export default function(name) {// TODO
 	
-	// console.log('genCardByName:', name);
-	
-	var _name   = common.validateCardName(name);// {color, rank}
-	// var _parent = id;
+	var _name = common.validateCardName(name);// {color, rank}
 
 	if(_name) {
 

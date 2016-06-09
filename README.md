@@ -8,26 +8,68 @@
 **Иннициирование и запуск игры:**
 
 	SolitaireEngine.init(Field);
+
+пример:
+
+```
+{
+	winCheck : {
+        rules : ["allInOne"]
+    },
+    decks : [
+        {
+            name: "deck1",
+            position: {
+                x: 100,
+                y: 100
+            },
+            takeRules: ["any"],
+            putRules: ["not"],
+            fill: ["c1", "c2"]
+        },
+        {
+            name: "deck2",
+            position: {
+                x: 200,
+                y: 100
+            },
+            takeRules: ["any"],
+            putRules: ["not"],
+            fill: ["c3", "c4"]
+        },
+        {
+            name: "deck3",
+            position: {
+                x: 300,
+                y: 100
+            },
+            takeRules: ["not"],
+            putRules: ["any"],
+            fill: ["c5", "c6"]
+        },
+    ]
+}
+```
 ---
-	Field - ...N обьект описания пасьянса
-	    zoom - ...
+	Field - JSON обьект описания пасьянса
+	    zoom - масштабирование
 			тип float
 	        по умолчанию 1
-	    moveDistance - ...имальная дистанция при перемещении карты (если растояние меньше карта вернётся на своё место)
+	    moveDistance - мимальная дистанция при перемещении карты (если растояние меньше карта вернётся на своё место)
 			тип Int, (px)
 			по умолчанию 0,
 		inputParams - ...
 			тип InputParams
-		field - ... элемент страницы, который будет содержать в себе игровое поле
+		field - элемент страницы, который будет содержать в себе игровое поле
 			тип string/CSS Selector | HTML DOM Element Object
 			по умолчанию "#map"
 <!-- 		theme - Истользуемая тема оформления
 			тип Theme -->
-		winCheck - ...вила окончания игры
+		winCheck - правила окончания игры
 			тип WinCheck
-		groups - ...
+		groups - группы
 			тип {Group} | GroupGenerator
-		decks - ...сание стопок...
+		decks - стопки
 			тип [Deck]
 		fill - ...
 			тип [string/card name] | [[string/card name]]
@@ -42,12 +84,12 @@
 		tipsParams - ...
 			тип TipsParams
 ---
-	InputParams - ...
+	InputParams - параметры убравления (мышь)
 		doubleClick - ... 
 			тип boolean
 			по умолчанию false
 ---
-	TipsParams - ...
+	TipsParams - параметры подсказок
 		hideOnEmpty - ...
 			тип boolean
 		по умолчанию false
@@ -67,7 +109,7 @@
 	       по умолчанию ['d', 'c', 'h', 's'] -->
 ---
 	WinCheck :
-	   rules - ...
+	   rules - правила выигрыша
 	       тип {Win rules}
 ---
 	Vector2d
@@ -76,8 +118,8 @@
 	   y
 		   тип Int
 ---
-	Group
-	   name - ...
+	Group - группа
+	   name - имя группы
 		   тип string
 	   position - ...
 		   тип Vector2d
@@ -116,7 +158,7 @@
 		   тип [Deck]
 ---
 	Deck
-	   name - ...
+	   name - имя стопки
 		   тип string
 	   position - ...
 		   тип Vector2d

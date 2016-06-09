@@ -1,3 +1,7 @@
+/*
+ * сгенерировать группу из матрицы
+ */
+
 'use strict';
 
 import defaults from "defaults";
@@ -57,7 +61,7 @@ var getBeside = (x, y, mapSize, map, el, type)=>{
 
 	if(typeof el[type] == "string") {
 
-		switch(el) {
+		switch(el[type]) {
 			case 'left':
 				return _exist(x + _beSide.left.x, y + _beSide.left.y, mapSize, map)
 			 		? map[y + _beSide.left.y][x + _beSide.left.x].name
@@ -74,23 +78,23 @@ var getBeside = (x, y, mapSize, map, el, type)=>{
 				return _exist(x + _beSide.down.x, y + _beSide.down.y, mapSize, map)
 			 		? map[y + _beSide.down.y][x + _beSide.down.x].name
 			 		: null;
-			// TODO
-			default: return el.name;
+			default: return el[type].name;
 		}
 	};
 	return null;
 };
 
-export default (e)=>{
+// -------------------------------------------------------------------------------------------------------------------
+
+export default function(e) {
+
+	console.log('MAP GENERATOR', e);
 
 	// {
 	// 	type            : "map",
 	// 	map             : [[string|{name, next, prev}]],
-	// 	aroundRelations : boolean
 	// }
 
-	console.log('MAP GENERATOR:', this);
-	
 	var _decks = [];
 	
 	var _default_placement = {
@@ -114,32 +118,40 @@ export default (e)=>{
 
 	// {name: 'groupName_deck_0_0'}
 	for(var y in e.map) {
-		for(var x in e.map[_y]) {
+		for(var x in e.map[y]) {
 
-			var _el = e.map[y][x];
+			// var _el = e.map[y][x];
 
-			if(typeof _el != "undefined" && typeof _el != "string" && typeof _el.name == "undefined") {
-				el.name = this.name + "_deck_" + x + "_" + y;
+			// console.log('GENERATOR', e.map[y][x], typeof e.map[y][x]);
+
+			if(        e.map[y][x]
+			 && typeof e.map[y][x]      != "undefined"
+			 && typeof e.map[y][x]      != "string"
+			 && typeof e.map[y][x].name == "undefined"
+			) {
+				e.map[y][x].name = this.name + "_deck_" + x + "_" + y;
 			}
 
-			if(typeof _el == "string") {
-				e.map[y][x] = {name: _el};
+			if(typeof e.map[y][x] == "string") {
+				e.map[y][x] = {name: e.map[y][x]};
 			}
+
+			// console.log('>>>', e.map[y][x]);
 		}
 	}
 
 	for(var _y in e.map) {
 		for(var _x in e.map[_y]) {
 
-			var x = _x|0,
-				y = _y|0;
+			var x = _x | 0,
+				y = _y | 0;
 
 			var _el = e.map[y][x];
 			
 			if(_el) {
 				
 				var _deck = {
-					"name"     : e.map[y][x],// (this.name + "_deck" + _index) OR (this.name + '_' + e.map[y][x])
+					"name"     : e.map[y][x].name,// (this.name + "_deck" + _index) OR (this.name + '_' + e.map[y][x])
 					"position" : {
 						"x" : x * ((defaults.card.width  | 0) + (_placement.x | 0)),
 						"y" : y * ((defaults.card.height | 0) + (_placement.y | 0))
@@ -166,8 +178,14 @@ export default (e)=>{
 				}
 				
 				// Next/Previous relations (fourteen fall)
-				var _next = getBeside(x, y, mapSize, map, _el, 'next') && _relations.push({name: 'next', _next});
-				var _prev = getBeside(x, y, mapSize, map, _el, 'prev') && _relations.push({name: 'prev', _next});
+				var _next = getBeside(x, y, mapSize, map, _el, 'next') && (
+					console.log('add relation next', _next), 
+					_relations.push({name: 'next', to: _next})
+				);
+				var _prev = getBeside(x, y, mapSize, map, _el, 'prev') && (
+					console.log('add relation prev', _prev), 
+					_relations.push({name: 'prev', to: _prev})
+				);
 
 				_deck.relations = _relations;
 				
