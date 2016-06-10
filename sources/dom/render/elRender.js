@@ -47,8 +47,6 @@ _allEl.stopAnimations = (callback)=>{
 		.css({transition: '0s'})
 		.removeClass("animated");
 
-	// console.log('end all animations.', _animatedElementsStack);
-
 	/*var _animatedElementsStack = share.get('animatedElementsStack');
 
 	for(var i in _animatedElementsStack) {

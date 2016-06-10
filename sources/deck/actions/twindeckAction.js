@@ -6,11 +6,8 @@
 export default function(e) {
 // TODO переделать
 		
-	console.log('TWINDECK', e);
-
 /*
 	
-	// console.log("twindeck action:", e);
 	if(e.deck_from.iteration == 0) {
 		return;
 	}

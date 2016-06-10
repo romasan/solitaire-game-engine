@@ -69,8 +69,6 @@ class groupClass {
 			afterStep    : (typeof a.afterStep == "boolean" ? a.afterStep : defaults.afterStep)
 		};
 		
-		// console.log('AFTERSTEP#1', this.name, typeof a.afterStep, a.afterStep, defaults.afterStep, this.parameters.afterStep)
-
 		this.deckIndex = [];
 
 	}
@@ -143,7 +141,6 @@ class groupClass {
 			}
 
 		} else {
-			// console.log('РАССТАВКА КОЛОД', this.deckIndex);
 			for(;typeof this.deckIndex[_index] != 'undefined';_index += 1) {};
 			this.deckIndex[_index] = true;
 		}
@@ -181,10 +178,6 @@ class groupClass {
 			a.afterStep = this.parameters.afterStep;
 		};
 
-		// console.log('AFTERSTEP#2', this.name, a.afterStep, this.parameters.afterStep)
-		
-		// console.log('%cGroup:addDeck->', 'background : red', this.name, a);
-
 		var _el = Deck.addDeck(a);
 		
 		this.deckIndex[_index]  = _el.getId();
@@ -202,7 +195,7 @@ class groupClass {
 
 	getDecksByName(name) {
 		var _decks = {};
-		for(var d in this.decks) {
+		for(let d in this.decks) {
 			if(this.decks[d].name == name) {
 				_decks[d] = decks[d];
 			}
@@ -213,7 +206,7 @@ class groupClass {
 	// Get decks from group
 	getDecks(a) {
 		var _decks = [];
-		for(var i in this.decks) {
+		for(let i in this.decks) {
 			if(a && a.visible) {
 				if(this.decks[i].visible) {
 					_decks.push(this.decks[i]);
@@ -275,17 +268,10 @@ var addGroup = function(a) {
 		// TODO ADD RELATIONS
 		console.log('BEFORE ADD RELATIONS', a.decks, a.decks.length)
 
-		for(var d in a.decks) {
+		for(let d in a.decks) {
 			_el_group.addDeck(a.decks[d]);
 		};
 	};
-
-	// TODO
-	// if(a.decksRelations) {
-	// 	for(var i in a.decksRelations) {
-	// 		console.log('Relation', a.decksRelations[i]);
-	// 	}
-	// };
 
 	var _elements = share.get('elements');
 	_elements[_id] = _el_group;

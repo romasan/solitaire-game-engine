@@ -9,14 +9,10 @@ import Deck            from 'addDeck';
 
 var winCheck = function(params) {
 
-	// console.log('%cWIN CHECK', 'background : red');
-		
 	var rulesCorrect = true;
 	var _hasMetods = false;
 	var _winCheck = share.get('winCheck');
 
-	// console.log('winCheck', params, _winCheck);
-	
 	for(var ruleName in _winCheck.rules) {
 		_hasMetods = true;
 		
@@ -39,7 +35,6 @@ var winCheck = function(params) {
 	if(rulesCorrect) {
 		if(params && params.noCallback) { return true; }
 		event.dispatch('win', params);
-		// a.winCheck.callback();
 		return true;
 	}
 
@@ -53,7 +48,6 @@ var hwinCheck = function(a) {
 	if(typeof a.show == 'undefined') {
 		a.show = false;
 	}
-	// console.log('winCheck', a);
 	winCheck(a);
 	// return winCheck({noCallback : true});
 };

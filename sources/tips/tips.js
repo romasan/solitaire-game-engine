@@ -29,8 +29,6 @@ var checkTips = function() {
 
 	if(share.get('noTips')) { return false; };
 	
-	// console.log('%cCHECK TIPS', 'background : green');
-
 	event.dispatch('hideTips');
 
 	var _decks = Deck.getDecks({visible : true});
@@ -69,8 +67,6 @@ var checkTips = function() {
 		var _field = Field();
 		var _homeGroups = _field.homeGroups;
 
-		// console.log(_tips, _field);
-
 		for(var i in _tips) {
 
 			// TODO инициализировать "hideTipsInDom" в Field.js 
@@ -107,8 +103,6 @@ var checkTips = function() {
 		}
 	}
 
-	// console.log('Tips:', _tips);
-	
 };
 event.listen('makeStep', checkTips);
 

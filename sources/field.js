@@ -20,7 +20,6 @@ var Field = function(data) {
 	// window.currentVersion = '0.11';
 
 	// TODO избавиться от share.field и вообще от share ?
-	// console.log('FIELD', data, _field);	
 	
 	// if(!data && share.field) {
 	// 	return share.field;
@@ -33,8 +32,6 @@ var Field = function(data) {
 	common.unlock();
 	
 	if(data && _field) {
-		
-		// console.log('CLEAR');
 		
 		_field.clear();
 	} else {
@@ -50,9 +47,6 @@ var Field = function(data) {
 	} catch(e) {
 		a = data;
 		console.warn('Field input params is not JSON, maybe the rules are wrong.');
-		// 'zxczxc';
-		// console.log(JSON.parse(JSON.stringify(data)));
-		// console.log(data);
 	}
 
 	// share.set(
@@ -86,8 +80,6 @@ var Field = function(data) {
 		Tips.hideTips({init : true});
 	}
 
-	// console.log('SHOW TIPS:', share.get('showTips'));
-
 	share.set(
 		'showTipsDestination', 
 		typeof a.showTipsDestination == 'boolean' 
@@ -111,8 +103,6 @@ var Field = function(data) {
 	
 	share.set('autoTips', _autoTips);
 	
-	// console.log('set autoTips', _autoTips)
-
 	share.set(
 		'moveDistance', 
 		a.moveDistance && typeof a.moveDistance == 'number' 
@@ -131,7 +121,6 @@ var Field = function(data) {
 	// extension: winCheckMethods
 
 	if(a.saveStep && typeof a.saveStep == 'function') {
-		// console.log('a.saveStep', a.saveStep);
 		saveStepCallback = a.saveStep;
 	}
 
@@ -189,8 +178,6 @@ var Field = function(data) {
 
 		if(!a) return;
 		
-		// console.log('draw all');		
-		
 		if(a.groups) {
 			for(var groupName in a.groups) {
 				a.groups[groupName].name = groupName;
@@ -244,11 +231,8 @@ var Field = function(data) {
 
 Field.prototype.clear = function() {
 	
-	// console.log('clear field', share);
-	
 	var _elements = share.get('elements');
 	for(var i in _elements) {
-		// console.log(elements[i]);
 		if(_elements[i].type == 'deck') {
 			_elements[i].clear();
 			_elements[i] = null;
@@ -261,8 +245,6 @@ Field.prototype.clear = function() {
 
 Field.prototype.Redraw = function(data) {
 		
-	// console.log('redraw field', data);
-
 	var a = null;
 
 	if(data) {
@@ -280,8 +262,6 @@ Field.prototype.Redraw = function(data) {
 
 		for(var _groupName in a.groups) {
 
-			// console.log('redraw group:', _groupName);
-
 			var _group = Group.Group(_groupName);
 			if(_group) {
 				_group.Redraw(a.groups[_groupName]);
@@ -289,8 +269,6 @@ Field.prototype.Redraw = function(data) {
 		}
 
 		for(var i in a.decks) {
-			
-			// console.log('redraw deck:', a.decks[i].name);
 			
 			var _deck = Deck.Deck(a.decks[i].name);
 			if(_deck) {

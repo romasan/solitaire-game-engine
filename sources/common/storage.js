@@ -14,7 +14,6 @@ class storage {
 	}
 
 	set(key, data) {
-		// console.log('set', key);
 
 		let _ls = JSON.parse(localStorage.SolitaireEngine);
 		// Object['assign'](_ls, data);

@@ -57,8 +57,6 @@ export default {
 
 		}
 
-		// console.log('%cTIPS', 'color : red; font-size : 30pt; font-weigth : bold;', 'allToAll', a);
-		
 		// each decks
 		for(var deckIndex in a.decks) {
 			var _cards = a.decks[deckIndex].cards;

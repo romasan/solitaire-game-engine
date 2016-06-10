@@ -63,7 +63,6 @@ export default {
             x : params.x + _a,// - _card.width  / 2,
             y : params.y - _b// - _card.height / 2
 		};
-        // console.log('radial:', params, card, index, length, deck);
 	},
 	special : function(params, card, index, length, deck) {
 		
@@ -82,7 +81,6 @@ export default {
 			x : params.x,
 			y : _y
 		};
-		// console.log('vertical:', deck.length, index, _return);
 		return _return;
 	},
 	horizontal: function(params, card, index, length, deck) {
@@ -92,7 +90,6 @@ export default {
 			x : _x,
 			y : params.y
 		};
-		// console.log('horizontal:', deck.length, index, _return);
 		return _return;
 	}
 };

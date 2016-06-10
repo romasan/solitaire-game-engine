@@ -73,8 +73,6 @@ var Move = function(moveDeck, to, cursorMove) {
 					moveDeck    : moveDeck,
 					callback    : function() {
 
-						// console.log('Move:moveEnd');
-						
 						event.dispatch('moveEnd', {
 							from     : _deck_departure,
 							to       : _deck_destination,
@@ -101,11 +99,8 @@ var Move = function(moveDeck, to, cursorMove) {
 					}});
 				}
 				
-				// console.log('afterStep:', _deck_destination.afterStep);
-				
 				if(!_deck_destination.afterStep) {
 					// typeof _deck_destination.afterStep == "function"
-					// console.log('Move:makeStep');
 					event.dispatch('makeStep', History.get());
 				};
 				
@@ -133,7 +128,6 @@ var Move = function(moveDeck, to, cursorMove) {
     		var Tip = bestTip(moveDeck, cursorMove);
     		
     		if(Tip) {
-    			console.log('###', Tip);
     			Move(moveDeck, Tip.to.deck.domElement.el, cursorMove);
     			return;
     		} else {
@@ -153,8 +147,6 @@ var Move = function(moveDeck, to, cursorMove) {
 
 	};
 
-	// console.log('_success', _success);
-
 	// if(_success) {
 
 		// afterMove();
@@ -163,10 +155,7 @@ var Move = function(moveDeck, to, cursorMove) {
 
 };
 
-// console.log('>>>')
 event.listen('Move', function(e) {
-
-	console.log('Move ->');
 
 	Move(e.moveDeck, e.to, e.cursorMove);
 });

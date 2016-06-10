@@ -15,8 +15,6 @@ var angleValidate = function(_angle) {
 
 event.listen('moveDragDeck', function(e) {
 	
-	console.log('moveDragDeck', e);
-	
 	common.curLock();
 
 	for(var i in e.moveDeck) {
@@ -51,7 +49,6 @@ event.listen('moveDragDeck', function(e) {
 		};
 
 		var _zIndex = (defaults.topZIndex | 0) + (i | 0);
-		// console.log('_zIndex :', _zIndex);
 		elRender(e.moveDeck[i].card.domElement)
 			.css({'z-index' : _zIndex})
 			.animate(

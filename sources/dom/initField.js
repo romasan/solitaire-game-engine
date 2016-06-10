@@ -16,7 +16,6 @@ event.listen('initField', function(e) {
 			domElement = document.getElementsByClassName(domElement.split('.')[1])[0];
 		} else if(domElement.split('#').length == 2) {
 			
-			console.log('initField#0', e, domElement.split('#')[1]);
 			domElement = document.getElementById(domElement.split('#')[1]);
 			
 		} else {
@@ -26,7 +25,6 @@ event.listen('initField', function(e) {
 			domElement = document.getElementById('mat')
 		}
 	};
-	console.log('initField', e, domElement);
 	// share.field = e.field;
 	var _field = Field();
 	_field.domElement = domElement;

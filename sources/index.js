@@ -1,12 +1,5 @@
 'use strict';
 
-/*
- * Solitaire game engine
- * by Roman Bauer - kotapesic@gmail.com
- * Oct. 2015
- * Webpack version Feb. 24 2016
- */
-
 import share      from 'share';
 import event      from 'event';
 import defaults   from 'defaults';
@@ -18,10 +11,12 @@ import Field      from 'field';
 import common     from 'common';
 import winCheck   from 'winCheck';
 
-import debug from 'debug';
+// import debug   from 'debug';
 
-// var _themes = ['default', 'alternative'];
-
+// var debug = null;
+// if(dev) {
+// 	debug = require('debug');
+// }
 import 'common.scss';
 import 'default_theme.scss';
 import 'alternative_theme.scss';
@@ -30,27 +25,27 @@ exports.event    = event;
 exports.options  = defaults;
 exports.winCheck = winCheck.hwinCheck;
 
-let firstInit = true;
+var firstInit = true;
 
 exports.init = function(gameConfig) {
-	
+
+
+	event.dispatch('gameInit', {firstInit});
+
 	if(firstInit) {
-		debug.tests();
-		common.onInit();
 		firstInit = false;
-	};
+	}
 
 	var _field = Field(gameConfig);
 
-	common.afterInit();
+	event.dispatch('gameInited');
 
 	exports.Redraw = function(data) {
 		_field.Redraw(data);
 	}
 };
 
-if(debug) {
-
-	
-	exports.debug = debug;
-};
+if(dev) {
+	var debug = require('debug');
+	exports.debug = debug.default;
+}

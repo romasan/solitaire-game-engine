@@ -6,7 +6,6 @@ import common from 'common';
 
 import Deck     from 'addDeck';
 import Tips     from 'tips';
-import elRender from 'elRender';
 
 export default function(a) {
 
@@ -30,8 +29,6 @@ export default function(a) {
 		return;
 	}
 
-	// console.log('FORCEMOVE from:', _from.name, 'to:', _to.name, a.deck);
-	
 	var _check     = true;
 	var _from_deck = _from.cards;
 	
@@ -84,7 +81,7 @@ export default function(a) {
 
 	} else {
 		// _warn(4);
-		console.log("forceMove:Ход невозможен", a);
+		console.warn("forceMove:Ход невозможен", a);
 	}
 
 };

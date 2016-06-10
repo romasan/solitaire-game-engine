@@ -17,14 +17,11 @@ var wcm = {
 	// возвращает колоды определённой группы/групп
 	group : function(a) {
 
-		// console.log("winCheck:group", a);
-
 		if(!a.filter || !a.filterArgs) { return false; }
 
 		var _decks = [];
 		for(var _i in a.decks) {
 			
-			// console.log('group filter:', _i, a.decks[_i].parent, a.filterArgs);
 			// var _parent = a.decks[_i].parent
 			// if(a.filterArgs.indexOf(a.decks[_i].parent)) {
 			if(
@@ -62,16 +59,13 @@ var wcm = {
 		
 		for(var d in a.decks) {
 
-			// console.log('_asc_desk', a.asc_desk ? 'asc' : 'desk', a.asc_desk, d, a.decks[d], _correct, a.decks[d].cards);
 			if(!_correct) return false;
 			
 			var _cards = a.decks[d].cards;
-			// console.log('cards:', _cards);
 			for(var c in _cards) {
 				if(c > 0) {	
 					var down = common.validateCardName(_cards[(c|0) - 1].name),
 						up   = common.validateCardName(_cards[(c|0)].name);
-					// console.log('_asc_desk', down, up, a.asc_desk);	
 					var _cardsRankS = defaults.card.ranks;
 					_correct = _correct && down && up && _cardsRankS.indexOf(down.rank) == (_cardsRankS.indexOf(up.rank) + a.asc_desk);
 					
@@ -105,8 +99,6 @@ var wcm = {
 	// все карты в одной колоде
 	allInOne : function(a) {
 
-		// console.log('check Win, rule/filter - allInOne:', a);
-
 		var _emptyDecksCount = 0,
 			_decksLength     = 0,
 			_fillIndex       = 0;
@@ -118,7 +110,6 @@ var wcm = {
 			}
 			_decksLength += 1;
 		}
-		// console.log('allinone', a, _emptyDecksCount, _decksLength);
 		var _correct = _emptyDecksCount == _decksLength - 1;
 		if(a.filter) {
 			a.decks = _correct ? [a.decks[_fillIndex]] : [];
@@ -130,7 +121,6 @@ var wcm = {
 	// во всех колодах карты по возрастанию
 	allAscend : function(a) {
 
-		// console.log('check Win, rule - allAscending:', a);
 		a.asc_desk = -1;
 		return wcm._asc_desk(a);
 	},
@@ -147,8 +137,6 @@ var wcm = {
 	// комбинированное правило
 		
 	lego : function(_a) {
-		
-		// console.log('LEGO', _a);//a.rulesArgs.filters, a.rulesArgs.rules)
 		
 		if(!_a || !_a.rulesArgs) return false;
 		
@@ -209,7 +197,6 @@ var wcm = {
 					if(wcm[_a.rulesArgs[next].rules[i]]) {
 						_correct = _correct && wcm[_a.rulesArgs[next].rules[i]](a);
 					} else {
-						console.log('#2')
 						_correct = _correct && wcm['newerWin']();
 					}
 				}

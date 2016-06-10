@@ -26,8 +26,6 @@ class deckClass {
 
 	constructor(a, _id) {
 
-		// console.log("Deck:addDeck", a);
-
 		if(!a) return false;
 
 		this.cards = [];
@@ -89,7 +87,6 @@ class deckClass {
 			checkFlip = flipTypes[flipType];
 
 		this.flipCheck = function() {
-			// console.log('flipCheck', flipType, this.name);
 			for(var i in this.cards) {
 				checkFlip(this.cards[i], i|0, this.cards.length);
 			}
@@ -222,7 +219,6 @@ class deckClass {
 		for(;count;count -= 1) {
 			var _pop = this.cards.pop();
 			if(clearParent) _pop.parent = null;
-			// console.log('POP:', _pop)
 			_deck.push(_pop);
 			_deck[_deck.length - 1].parent = null;
 		}
@@ -265,10 +261,6 @@ class deckClass {
 		this.Redraw();
 	}
 
-	// 	getCards() {
-// 	return this.cards;
-// }
-
 	getCardsByName(cardName) {
 		var _cards = [];
 		for(var i in this.cards) {
@@ -305,17 +297,11 @@ class deckClass {
 		return _cardsNames;
 	}
 
-	// parent(a) {
-	// 	if(typeof a == 'string') parent = a;
-	// 	return parent;
-	// }
 }
 
 // ------------------------------------------------------------------------------------------------------------------------------------------
 
 var addDeck = function(a) {
-
-	// console.log('addDeck', a);
 
 	if(!a) return false;
 	

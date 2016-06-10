@@ -4,7 +4,7 @@ const webpack = require("webpack");
 const path = require('path');
 const ExtractTextPlugin = require("extract-text-webpack-plugin");
 
-const mode = process.env.MODE;
+const dev = process.env.MODE == 'dev';
 
 let config = {
   entry: "index",
@@ -18,19 +18,23 @@ let config = {
 	},
   resolve: {
 		modulesDirectories: [
-			'./sources/'                  ,
-			'./sources/common/'           ,
-			'./sources/group/'            ,
-			'./sources/group/generators/' ,
-			'./sources/deck/'             ,
-			'./sources/deck/actions/'     ,
-			'./sources/tips/'             ,
-			'./sources/history/'          ,
-			'./sources/dom/'              ,
-			'./sources/dom/render/'       ,
-      './sources/styles/'           ,
-      './sources/tests/'            ,
-			'./sources/preferences/'      
+			'./sources/'                            ,
+			'./sources/common/'                     ,
+      './sources/debug/'                      ,
+      './sources/debug/games/'                ,
+      './sources/debug/tests/'                ,
+      './sources/deck/'                       ,
+      './sources/deck/actions/'               ,
+      './sources/deck/autosteps/'             ,
+      './sources/dom/'                        ,
+      './sources/dom/render/'                 ,
+      './sources/group/'                      ,
+      './sources/group/generators/'           ,
+      './sources/group/generators/relations/' ,
+      './sources/history/'                    ,
+      './sources/preferences/'                ,
+      './sources/styles/'                     ,
+      './sources/tips/'                       
 		],
 		extensions: ['', '.js']
   },
@@ -64,29 +68,48 @@ let config = {
   plugins: [
   	new ExtractTextPlugin("../css/SolitaireEngine.css", {
   		allChunks: true
-  	})
+  	}),
+    new webpack.DefinePlugin({
+      'dev': dev
+    })
   ]
 };
 
-if(mode == 'dev') {
+let _file = './package.json';
+let _json = require(_file);
+
+if(dev) {
 
   config.watch = true;
-
   config.devtool = "source-map";
 
   let fs = require('fs');
-  let _file = './package.json';
-  let _json = require(_file);
   let _ver = _json.version.split('.');
   _ver[_ver.length - 1] = (_ver[_ver.length - 1]|0) + 1;
   _json.version = _ver.join('.');
   fs.writeFile(_file, JSON.stringify(_json, null, 2));
 } else {
 
+  let preamble = `\
+/* \n\
+ * ${_json.description}\n\
+ * author: ${_json.author} - <${_json.email}>\n\
+ * Version: ${_json.version}\n\
+ * Build date: ${new Date().toUTCString()}\n\
+ * Portyanka version (v. 0.1) Oct. 2015\n\
+ * Webpack version (v. 0.9.6) Feb. 24 2016\n\
+ */\n\
+`;
   config.plugins.push(
     new webpack.optimize.UglifyJsPlugin({
-      drop_console: true,
-      unsafe:       true
+        output: {
+          preamble
+        },
+        compressor: {
+          unsafe       : true,
+          drop_console : true,
+          warnings     : true
+        }
     }));
 };
 

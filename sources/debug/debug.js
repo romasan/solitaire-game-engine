@@ -81,15 +81,19 @@ let debugHistory = (a)=>{
 
 };
 
-let tests = ()=>{
-	renderTest();
+let runTests = ()=>{
+	// renderTest();
 }
+
+event.listen('gameInit', (e)=>{
+	if(!e.firstInit) {return;};
+	runTests();
+})
 
 export default {
 	deckGenerator,
 	debugHistory,
 	debugHistoryMgr,
 	validateCardName : common.validateCardName,
-	elRender,
-	tests
+	elRender
 };

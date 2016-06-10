@@ -9,21 +9,8 @@ export default new function() {
 			// TODO решить наконец проблему, 
 			// почему Object.assign не работает после babel-я
 			
-			// try {
-
-			// if( (data[data]).toString() == "[object Object]" ) {
-			// 	return Object['assign'] ? Object['assign']({}, data[name]) : data[name]
-			// } else {
-			
 			// event.dispatch('shareGet', {name : name, data : data[name]});
 			return data[name];
-			
-			// }
-
-			// } catch(e) {
-			// 	console.log( (data[name]).toString() );
-			// 	console.log('CATCH:', name, data[name]);
-			// }
 		} else {
 			return null;
 		}
@@ -48,7 +35,6 @@ export default new function() {
 			console.warn('Error share.set:', name, _data);
 
 		}
-		// }
 	};
 
 	this.getAll = function() {

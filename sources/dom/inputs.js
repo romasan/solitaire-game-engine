@@ -193,7 +193,6 @@ var cend = function(target, x, y, dbclick) {
     // if(_dop) {
 	
     // Move(_dragDeck, _dop, cursorMove);
-    console.log('>>>>', dbclick)
     event.dispatch('Move', {
         moveDeck   : _dragDeck,
         to         : _dop,

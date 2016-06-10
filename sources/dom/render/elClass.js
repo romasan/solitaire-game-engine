@@ -11,7 +11,6 @@ export default class elClass {
 		
 		if(!e) {
 			// if(window._debug) throw new Error("test");
-			// console.warn("elClass: empty arrtibutes;");
 			this.el = null;
 		}
 	}
@@ -78,14 +77,10 @@ export default class elClass {
 	css(a) {
 		try {
 	
-			// console.log('CSS', this.el ? true : false, a);
-	
 			for(var attrName in a) {
 				try {
 					this.el.style[attrName] = a[attrName];
-				} catch(e) {
-					// S.log('>>>>>', this.el, e);
-				}
+				} catch(e) {}
 			}
 			return this;
 		} catch(e) {}

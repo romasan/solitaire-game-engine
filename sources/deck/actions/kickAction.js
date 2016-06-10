@@ -10,8 +10,6 @@ export default function(data) {
 	// listen move ???
 	if(this.name != data.eventData.to.name) { return false; };
 
-	console.log('KICK');
-
 	// var _toDeck = Deck.Deck(data.actionData.to);
 	// TODO CURRENT
 	var _from = data.eventData.to,

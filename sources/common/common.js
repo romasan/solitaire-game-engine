@@ -12,14 +12,15 @@ import preferencesEvents  from 'preferencesEvents';
 import defaultPreferences from 'defaultPreferences';
 
 
-let onInit = ()=>{
+event.listen('gameInit', (e)=>{
+	if(!e.firstInit) {return;};
 	drawPreferences();
 	preferencesEvents();
-}
+});
 
-let afterInit = ()=>{
+event.listen('gameInited', ()=>{
 	defaultPreferences();
-}
+})
 
 // drawPreferences();
 
@@ -67,11 +68,9 @@ var isCurLock = function() {
 
 
 var curLock = function() {
-	// console.log('curLock');
 	share.set('curLockState', true);
 }
 var curUnLock = function() {
-	// console.log('curUnLock');
 	share.set('curLockState', false);
 }
 
@@ -205,7 +204,5 @@ export default {
 	animationOn      ,
 	animationOff     ,
 	animationDefault ,
-	onInit           ,
-	afterInit        ,
 	sqr              
 };

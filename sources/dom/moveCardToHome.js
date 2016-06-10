@@ -10,8 +10,6 @@ event.listen('moveCardToHome', function(e) {
 
 	//  Move card home
 	
-	console.log('Move card home', e);
-	
 	common.curLock();
     for(var i in e.moveDeck) {
     	var _position = e.departure.padding(e.moveDeck[i].index);

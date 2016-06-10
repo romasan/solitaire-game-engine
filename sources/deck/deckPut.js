@@ -5,8 +5,6 @@ import putRules from 'readyPutRules';
 
 export default function(putDeck) {
 
-	// console.log('PUT', this.name, this.putRules);
-
 	var rulesCorrect = true;
 	
 	var _deckId         = putDeck[0].card.parent;
