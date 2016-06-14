@@ -49,6 +49,6 @@ event.listen('initField', function(e) {
 
 	elRender(domElement)
 		.css(_params)
-		.addClass('field')
+		.addClass('solitaireField')
 		// .addClass(themeName);
 });

@@ -98,7 +98,7 @@ if(dev) {
  * Build date: ${new Date().toUTCString()}\n\
  * Portyanka version (v. 0.1) Oct. 2015\n\
  * Webpack version (v. 0.9.6) Feb. 24 2016\n\
- */\n\
+ */\
 `;
   config.plugins.push(
     new webpack.optimize.UglifyJsPlugin({
