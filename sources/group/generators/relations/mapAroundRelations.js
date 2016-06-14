@@ -23,21 +23,21 @@ const aroundRelations = [
 
 // --
 
-export default (x, y, map, mapSize)=>{
+export default (e)=>{// {x, y, map, mapSize, el, data}
 
 	let _relations = [];
 
 	for(let i in aroundRelations) {
 
 		if(
-			mapRelationsCommon.inMap(x + aroundRelations[i].x, y + aroundRelations[i].y, mapSize)
-		 && map[y + aroundRelations[i].y][x + aroundRelations[i].x]
+			mapRelationsCommon.inMap(e.x + aroundRelations[i].x, e.y + aroundRelations[i].y, e.mapSize)
+		 && e.map[e.y + aroundRelations[i].y][e.x + aroundRelations[i].x]
 		) {
 			_relations.push({
 				name : 'around',
 				type : aroundRelations[i].type,
 				id   : aroundRelations[i].id,
-				to   : map[y + aroundRelations[i].y][x + aroundRelations[i].x].name
+				to   : e.map[e.y + aroundRelations[i].y][e.x + aroundRelations[i].x].name
 			});
 			
 		}
