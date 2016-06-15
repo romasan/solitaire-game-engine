@@ -15,6 +15,8 @@ export default function(data) {
 	var _from = data.eventData.to,
 		_deck = _from.getCardsNames();
 
+	// TODO interval
+
 	forceMove({
 		from : _from,                 //this.name,
 		to   : data.actionData.to,    //_decks[deckId].name,
@@ -34,5 +36,4 @@ export default function(data) {
 	// if(e.after) {
 	// 	_events[e.after].call(this, e);
 	// };
-
 }

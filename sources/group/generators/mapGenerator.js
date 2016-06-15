@@ -95,10 +95,14 @@ export default function(e) {
 				let _relations = [];
 
 				// Around relations
-				_relations = _relations.concat(relationsGenerator.mapAroundRelations(x, y, e.map, _mapSize, _el));
+				_relations = _relations.concat(relationsGenerator.mapAroundRelations({x, y, map: e.map, mapSize: _mapSize, el: _el, data: e}));
 				
+				// TODO
 				// Next/Previous relations (fourteen fall)
-				_relations = _relations.concat(relationsGenerator.mapBesideRelations(x, y, e.map, _mapSize, _el));
+				_relations = _relations.concat(relationsGenerator.mapBesideRelations({x, y, map: e.map, mapSize: _mapSize, el: _el, data: e}));
+				
+				// Fall relations
+				_relations = _relations.concat(relationsGenerator.mapFallRelations({x, y, map: e.map, mapSize: _mapSize, el: _el, data: e}));
 
 				_deck.relations = _relations;
 				

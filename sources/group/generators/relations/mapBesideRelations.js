@@ -2,28 +2,37 @@
 
 import mapRelationsCommon from 'mapRelationsCommon';
 
-var getBeside = (x, y, mapSize, map, el, type)=>{
+let getBeside = (_x, _y, mapSize, map, el, type)=>{
 
 	if(typeof el[type] == "string") {
 
 		switch(el[type]) {
 			case 'left':
-				return mapRelationsCommon.exist(x + mapRelationsCommon.beSide.left.x, y + mapRelationsCommon.beSide.left.y, mapSize, map)
-			 		? map[y + mapRelationsCommon.beSide.left.y][x + mapRelationsCommon.beSide.left.x].name
+				let x = _x + mapRelationsCommon.beSide.left.x,
+					y = _y + mapRelationsCommon.beSide.left.y;
+				return mapRelationsCommon.exist(x, y, mapSize, map)
+			 		? map[y][x].name
 			 		: null;
 			case 'rigth':
-				return mapRelationsCommon.exist(x + mapRelationsCommon.beSide.rigth.x, y + mapRelationsCommon.beSide.rigth.y, mapSize, map)
-			 		? map[y + mapRelationsCommon.beSide.rigth.y][x + mapRelationsCommon.beSide.rigth.x].name
+				let x = _x + mapRelationsCommon.beSide.rigth.x,
+					y = _y + mapRelationsCommon.beSide.rigth.y;
+				return mapRelationsCommon.exist(x, y, mapSize, map)
+			 		? map[y][x].name
 			 		: null;
 			case 'up':
-				return mapRelationsCommon.exist(x + mapRelationsCommon.beSide.up.x, y + mapRelationsCommon.beSide.up.y, mapSize, map)
-			 		? map[y + mapRelationsCommon.beSide.up.y][x + mapRelationsCommon.beSide.up.x].name
+				let x = _x + mapRelationsCommon.beSide.up.x,
+					y = _y + mapRelationsCommon.beSide.up.y;
+				return mapRelationsCommon.exist(x, y, mapSize, map)
+			 		? map[y][x].name
 			 		: null;
 			case 'down':
-				return mapRelationsCommon.exist(x + mapRelationsCommon.beSide.down.x, y + mapRelationsCommon.beSide.down.y, mapSize, map)
-			 		? map[y + mapRelationsCommon.beSide.down.y][x + mapRelationsCommon.beSide.down.x].name
+				let x = _x + mapRelationsCommon.beSide.down.x,
+					y = _y + mapRelationsCommon.beSide.down.y;
+				return mapRelationsCommon.exist(x, y, mapSize, map)
+			 		? map[y][x].name
 			 		: null;
-			default: return el[type].name;
+			default:
+				return null;
 		}
 	};
 	return null;
