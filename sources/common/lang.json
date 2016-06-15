@@ -1,0 +1,34 @@
+'use strict';
+
+export default {
+
+	"ru": {
+		"decor_preferences" : "Настройки оформления",
+		"background"        : "Фон"                 ,
+		"default_field"     : "Классический"        ,
+		"alternative_field" : "Альтернативный"      ,
+		"face"              : "Лицевая сторона"     ,
+		"default_face"      : "Классическая"        ,
+		"alternative_face"  : "Англо-американская"  ,
+		"back"              : "Рубашка"             ,
+		"default_back"      : "Классическая"        ,
+		"alternative_back"  : "Альтернативная"      ,
+		"red_back"          : "Красная"             ,
+		"blue_back"         : "Синяя"               
+	},
+
+	"en": {
+		"decor_preferences" : "Decor preferences"   ,
+		"background"        : "Background"          ,
+		"default_field"     : "Default field"       ,
+		"alternative_field" : "Alternative field"   ,
+		"face"              : "Face"                ,
+		"default_face"      : "Default face"        ,
+		"alternative_face"  : "Alternative face"    ,
+		"back"              : "Back"                ,
+		"default_back"      : "Default back"        ,
+		"alternative_back"  : "Alternative back"    ,
+		"red_back"          : "Red back"            ,
+		"blue_back"         : "Blue back"           
+	}
+}

@@ -60,17 +60,22 @@ export default function(e) {
 	for(var y in e.map) {
 		for(var x in e.map[y]) {
 
-			if(        e.map[y][x]
-			 && typeof e.map[y][x]      != "undefined"
-			 && typeof e.map[y][x]      != "string"
-			 && typeof e.map[y][x].name == "undefined"
+			if(
+				typeof e.map[y][x] == "boolean" && e.map[y][x]
+			 || typeof e.map[y][x] == "number"  && e.map[y][x] > 0
 			) {
-				e.map[y][x].name = this.name + "_deck_" + x + "_" + y;
-			}
+				e.map[y][x] = {};
+			};
 
 			if(typeof e.map[y][x] == "string") {
 				e.map[y][x] = {name: e.map[y][x]};
-			}
+			} else if(
+				e.map[y][x]
+			 && typeof e.map[y][x]      != "undefined"
+			 && typeof e.map[y][x].name != "string"
+			) {
+				e.map[y][x].name = this.name + "_deck_" + x + "_" + y;
+			};
 		}
 	}
 
@@ -94,15 +99,61 @@ export default function(e) {
 				
 				let _relations = [];
 
-				// Around relations
-				_relations = _relations.concat(relationsGenerator.mapAroundRelations({x, y, map: e.map, mapSize: _mapSize, el: _el, data: e}));
+				let _relGenerators = {
+					"around" : "mapAroundRelations",
+					"beside" : "mapBesideRelations",
+					"fall"   : "mapFallRelations"
+				};
+
+				for(let relGenName in _relGenerators) {
+
+					if(e.relations && e.relations[relGenName]) {
+						_relations = _relations.concat(relationsGenerator[_relGenerators[relGenName]]({
+							x, y, 
+							map     : e.map,
+							mapSize : _mapSize,
+							el      : _el,
+							data    : e.relations[relGenName]
+						}));
+					};
+				}
+
+				// // Around relations
+				// // default OFF
+				// if(e.relations && e.relations.around) {
+				// 	_relations = _relations.concat(relationsGenerator.mapAroundRelations({
+				// 		x, y, 
+				// 		map     : e.map,
+				// 		mapSize : _mapSize,
+				// 		el      : _el,
+				// 		data    : null
+				// 	}));
+				// };
 				
-				// TODO
-				// Next/Previous relations (fourteen fall)
-				_relations = _relations.concat(relationsGenerator.mapBesideRelations({x, y, map: e.map, mapSize: _mapSize, el: _el, data: e}));
-				
-				// Fall relations
-				_relations = _relations.concat(relationsGenerator.mapFallRelations({x, y, map: e.map, mapSize: _mapSize, el: _el, data: e}));
+				// // TODO
+				// // Next/Previous relations
+				// // default OFF
+				// if(e.relations && e.relations.beside) {
+				// 	_relations = _relations.concat(relationsGenerator.mapBesideRelations({
+				// 		x, y, 
+				// 		map     : e.map,
+				// 		mapSize : _mapSize,
+				// 		el      : _el,
+				// 		data    : null
+				// 	}));
+				// }
+
+				// // Fall relations
+				// // default OFF
+				// if(e.relations && e.relations.fall) {
+				// 	_relations = _relations.concat(relationsGenerator.mapFallRelations({
+				// 		x, y, 
+				// 		map     : e.map,
+				// 		mapSize : _mapSize,
+				// 		el      : _el,
+				// 		data    : e.relations.fall
+				// 	}));
+				// }
 
 				_deck.relations = _relations;
 				

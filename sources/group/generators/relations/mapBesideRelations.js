@@ -8,25 +8,25 @@ let getBeside = (_x, _y, mapSize, map, el, type)=>{
 
 		switch(el[type]) {
 			case 'left':
-				let x = _x + mapRelationsCommon.beSide.left.x,
+				var x = _x + mapRelationsCommon.beSide.left.x,
 					y = _y + mapRelationsCommon.beSide.left.y;
 				return mapRelationsCommon.exist(x, y, mapSize, map)
 			 		? map[y][x].name
 			 		: null;
 			case 'rigth':
-				let x = _x + mapRelationsCommon.beSide.rigth.x,
+				var x = _x + mapRelationsCommon.beSide.rigth.x,
 					y = _y + mapRelationsCommon.beSide.rigth.y;
 				return mapRelationsCommon.exist(x, y, mapSize, map)
 			 		? map[y][x].name
 			 		: null;
 			case 'up':
-				let x = _x + mapRelationsCommon.beSide.up.x,
+				var x = _x + mapRelationsCommon.beSide.up.x,
 					y = _y + mapRelationsCommon.beSide.up.y;
 				return mapRelationsCommon.exist(x, y, mapSize, map)
 			 		? map[y][x].name
 			 		: null;
 			case 'down':
-				let x = _x + mapRelationsCommon.beSide.down.x,
+				var x = _x + mapRelationsCommon.beSide.down.x,
 					y = _y + mapRelationsCommon.beSide.down.y;
 				return mapRelationsCommon.exist(x, y, mapSize, map)
 			 		? map[y][x].name

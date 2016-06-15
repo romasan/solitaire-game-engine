@@ -26,6 +26,9 @@ class deckClass {
 
 	constructor(a, _id) {
 
+		console.log('addDeck', a, _id);
+		console.log('addDeck:relations', a.relations);
+
 		if(!a) return false;
 
 		this.cards = [];
@@ -101,12 +104,12 @@ class deckClass {
 				: typeof a.putRules == 'string' 
 					? readyPutRules[a.putRules] 
 						? readyPutRules[a.putRules]
-						: readyPutRules[defaults.putName]
+						: readyPutRules[defaults.putRule]
 					// : typeof a.putRules === 'object' 
 					: a.putRules.constructor == Array 
 						? a.putRules
-						: readyPutRules[defaults.putName]
-			: readyPutRules[defaults.putName];
+						: readyPutRules[defaults.putRule]
+			: readyPutRules[defaults.putRule];
 
 		// ------------- TAKE -------------
 		

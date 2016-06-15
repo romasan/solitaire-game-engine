@@ -189,6 +189,8 @@ event.listen('historyReapeater', function(e) {
 	// share.set('animation', defaults.animation);
 // });
 
+share.set('stepType', defaults.stepType);
+
 export default {
 	isLock           ,
 	lock             ,

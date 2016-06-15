@@ -19,13 +19,13 @@ let config = {
   resolve: {
 		modulesDirectories: [
 			'./sources/'                            ,
-			'./sources/common/'                     ,
+      './sources/autosteps/'                  ,
+      './sources/common/'                     ,
       './sources/debug/'                      ,
       './sources/debug/games/'                ,
       './sources/debug/tests/'                ,
       './sources/deck/'                       ,
       './sources/deck/actions/'               ,
-      './sources/deck/autosteps/'             ,
       './sources/dom/'                        ,
       './sources/dom/render/'                 ,
       './sources/group/'                      ,
@@ -93,11 +93,11 @@ if(dev) {
   let preamble = `\
 /* \n\
  * ${_json.description}\n\
- * author: ${_json.author} - <${_json.email}>\n\
+ * Author: ${_json.author} - <${_json.email}>\n\
  * Version: ${_json.version}\n\
- * Build date: ${new Date().toUTCString()}\n\
- * Portyanka version (v. 0.1) Oct. 2015\n\
- * Webpack version (v. 0.9.6) Feb. 24 2016\n\
+ * Build time: ${new Date().toUTCString()}\n\
+ * Portyanka version (v. 0.1) Oct 2015\n\
+ * Webpack version (v. 0.9.6) Feb 24 2016\n\
  */\
 `;
   config.plugins.push(

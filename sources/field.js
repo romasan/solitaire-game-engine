@@ -64,13 +64,6 @@ var Field = function(data) {
 	// );
 
 	this.homeGroups = a.homeGroups ? a.homeGroups : [];
-	
-	share.set(
-		'debugLog', 
-		a.debugLog && typeof a.debugLog == 'boolean' 
-			? a.debugLog 
-			: defaults.debugLog
-	);
 
 	// Tips
 
