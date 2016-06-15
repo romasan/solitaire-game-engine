@@ -269,12 +269,18 @@ var addGroup = function(a) {
 		console.log('BEFORE ADD RELATIONS', a.decks, a.decks.length)
 
 		for(let to in a.decks) {
+
 			for(let relId in a.decks[to].relations) {
-				let _relation = a.decks[to].relations[relId];
+
+				let _relation = Object['assign']({}, a.decks[to].relations[relId]};
+
 				for(let from in a.decks) {
-					_relation.to = null;
-					_relation.from = a.decks[from].name;
-					a.decks[from].relations.push(_relation)
+					
+					if(a.decks[from].name == _relation.to) {
+						_relation.to = null;
+						_relation.from = a.decks[from].name;
+						a.decks[from].relations.push(_relation)
+					}
 				}
 			}
 		}
