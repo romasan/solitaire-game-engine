@@ -197,6 +197,8 @@ let deckInGroups = (deck, groups)=>{
 
 share.set('stepType', defaults.stepType);
 
+share.set('lang', defaults.lang);
+
 export default {
 	isLock           ,
 	lock             ,

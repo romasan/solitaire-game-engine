@@ -16,7 +16,6 @@ class storage {
 	set(key, data) {
 
 		let _ls = JSON.parse(localStorage.SolitaireEngine);
-		// Object['assign'](_ls, data);
 		_ls[key] = data;
 		localStorage.SolitaireEngine = JSON.stringify(_ls);
 	}

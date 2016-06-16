@@ -1,5 +1,8 @@
 'use strict';
 
+import share    from 'share';
+import defaults from 'defaults';
+
 import Field    from 'field';
 import Deck     from 'addDeck';
 import putRules from 'readyPutRules';

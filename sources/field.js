@@ -9,7 +9,6 @@ import common    from 'common';
 import Group        from 'addGroup';
 import Deck         from 'addDeck';
 import Tips         from 'tips';
-import tipsRules    from 'tipsRules';
 import addAutoSteps from 'addAutoSteps';
 
 var _field = null;
@@ -35,10 +34,7 @@ var Field = function(data) {
 	
 	var a = null;
 	try {
-		// BABEL BUG
-		// a = JSON.parse(JSON.stringify(data));
-		a = Object['assign'] ? Object['assign']({}, data) : JSON.parse(JSON.stringify(data));
-		// a = _.clone(data);
+		a = Object.assign({}, data);
 	} catch(e) {
 		a = data;
 		console.warn('Field input params is not JSON, maybe the rules are wrong.');
@@ -66,16 +62,6 @@ var Field = function(data) {
 			? a       .showTipPriority 
 			: defaults.showTipPriority
 	);
-
-	var _autoTips = a.autoTips
-		? typeof a.autoTips == 'string'
-			? tipsRules[a.autoTips]
-				? a.autoTips       // tipsRules[a.autoTips]
-				: defaults.tipRule // tipsRules[defaults.tipRule]
-			: defaults.tipRule     // a.autoTips //function OR object
-		: defaults.tipRule         //tipsRules[defaults.tipRule]
-	
-	share.set('autoTips', _autoTips);
 	
 	share.set(
 		'moveDistance', 
@@ -142,6 +128,10 @@ var Field = function(data) {
 		this.autoSteps = addAutoSteps(a.autoSteps);
 	}
 
+	if(typeof a.lang == "string") {
+		share.set('lang', a.lang);
+	};
+
 // --
 
 	this.Draw = function(data) {
@@ -149,9 +139,7 @@ var Field = function(data) {
 		share.set('noRedraw',  true);
 
 		if(data) {
-			a = Object['assign'] 
-				? Object['assign']({}, data)
-				: JSON.parse(JSON.stringify(data));
+			a = Object.assign({}, data);
 		} 
 
 		if(!a) return;
@@ -173,9 +161,7 @@ var Field = function(data) {
 		if(a.fill) {
 			
 			var _decks = Deck.getDecks(),
-				_fill  = Object['assign'] 
-					? Object['assign']([], a.fill) 
-					: JSON.parse(JSON.stringify(a.fill));
+				_fill  = Object.assign([], a.fill);
 
 			for(;_fill.length;) {
 				for(var deckId in _decks) {
@@ -219,11 +205,7 @@ Field.prototype.Redraw = function(data) {
 	if(data) {
 
 		try {
-			// BABEL BUG
-			// a = JSON.parse(JSON.stringify(data));
-			a = Object['assign'] ? Object['assign']({}, data) : JSON.parse(JSON.stringify(data));
-			// a = _.clone(data);
-			// var g =  Object.assign({}, {});
+			a = Object.assign({}, data);
 		} catch(e) {
 			a = data;
 			console.warn('Field.Redraw input params is not JSON, can\'t clone');

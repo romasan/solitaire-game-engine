@@ -310,9 +310,7 @@ var addDeck = function(a) {
 	
 	var _id = 'deck_' + common.genId();
 	
-	var _a = Object['assign'] 
-		? Object['assign']({}, a) 
-		: JSON.parse(JSON.stringify(a));
+	var _a = Object.assign({}, a);
 	
 	var _el_deck = new deckClass(_a, _id);
 

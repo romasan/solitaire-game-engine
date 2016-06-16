@@ -18,20 +18,23 @@ export default function(data) {
 	// TODO interval
 
 	forceMove({
-		from : _from,                 //this.name,
-		to   : data.actionData.to,    //_decks[deckId].name,
-		deck : _deck, //[_cardName],
-		flip : true                              //true
+		from : _from,             // this.name,
+		to   : data.actionData.to,// _decks[deckId].name,
+		deck : _deck,             // [_cardName],
+		flip : true               // true
 	});
 
 	// event.dispatch('historyAdd', {});
-	History.add({'move' : {
-		from : _from.name,
-		to   : data.actionData.to,
-		deck : _deck,
-		flip : true
-	}});
+	History.add({
+		"move" : {
+			from : _from.name,
+			to   : data.actionData.to,
+			deck : _deck,
+			flip : true
+		}
+	});
 
+	// завершить ход (записать в историю)
 	event.dispatch('makeStep', History.get());
 
 	// if(e.after) {

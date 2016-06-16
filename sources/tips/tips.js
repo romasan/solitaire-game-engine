@@ -5,10 +5,10 @@ import share     from 'share';
 import defaults  from 'defaults';
 import common    from 'common';
 
-import tipsRules from 'tipsRules';
-import bestTip   from 'bestTip';
-import Deck      from 'addDeck';
-import Field     from 'field';
+import allToAll from 'allToAll';
+import bestTip  from 'bestTip';
+import Deck     from 'addDeck';
+import Field    from 'field';
 
 var _showTips = defaults.showTips;
 
@@ -33,33 +33,9 @@ var checkTips = function() {
 
 	var _decks = Deck.getDecks({visible : true});
 	
-	var _autoTipsName = share.get('autoTips');
-	var _autoTips = tipsRules[_autoTipsName];
-	
-	if(typeof _autoTips == 'function') {
-		_tips = _autoTips({
-			decks : _decks
-		});
-	} else {
-		for(i in share.autoTips) {
-			if(typeof share.autoTips[i] == 'function') {
-				_tips = _tips.concat(
-					autoTips[i]({
-						decks : _decks
-					})
-				);
-			} else {
-				if(tipsRules[i]) {
-					_tips = _tips.concat(
-						tipsRules[i]({
-							decks : _decks,
-							rules : share.autoTips[i]
-						})
-					);
-				}
-			}
-		}
-	}
+	_tips = allToAll({
+		decks : _decks
+	});
 
 	// var _showTips = share.get('showTips')
 	if(_showTips) {

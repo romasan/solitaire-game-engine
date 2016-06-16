@@ -42,7 +42,6 @@ export default {
 
 // Tips ----------------------------------------------------------------------------------
 
-	tipRule             : 'allToAll',
 	showTips            : true,
 	showTipsDestination : false,
 	showTipPriority     : false,
@@ -57,16 +56,19 @@ export default {
 
 	zoom                : 1.0,
 
+	lang                : "en",
+
 	animation           : true,
 	animationTime       : 300,// ms.
 
     inputParams : {
         doubleClick : false
     },
+
 // Group
 
-	flip                : null,
-	actions             : null,
+	flip                : null,// param for deck
+	actions             : null,// param for deck
 
 // Deck ----------------------------------------------------------------------------------
 
