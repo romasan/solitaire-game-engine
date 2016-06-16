@@ -79,7 +79,3 @@ let _ver = _json.version.split('.');
 _ver[_ver.length - 1] = (_ver[_ver.length - 1]|0) + 1;
 _json.version = _ver.join('.');
 fs.writeFile(_file, JSON.stringify(_json, null, 2));
-
-
-
-
