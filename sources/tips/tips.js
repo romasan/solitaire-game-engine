@@ -104,6 +104,7 @@ var checkTips = function() {
 	}
 
 };
+
 event.listen('makeStep', checkTips);
 
 // --------------------------------------------------------

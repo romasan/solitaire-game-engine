@@ -10,6 +10,22 @@ import groupFill      from 'groupFill';
 import groupRedraw    from 'groupRedraw';
 import groupGenerator from 'groupGenerator';
 
+const params = {
+	"paddingType"  : {type: "any"    },
+	"flip"         : {type: "any"    },
+	"showSlot"     : {type: "any"    },
+	"takeRules"    : {type: "any"    },
+	"putRules"     : {type: "any"    },
+	"fillRule"     : {type: "any"    },
+	"autoHide"     : {type: "any"    },
+	"paddingX"     : {type: "any"    },
+	"paddingY"     : {type: "any"    },
+	"flipPaddingX" : {type: "any"    },
+	"flipPaddingY" : {type: "any"    },
+	"actions"      : {type: "any"    },
+	"afterStep"    : {type: "boolean"}
+};
+
 class groupClass {
 	
 	constructor(a, _id) {
@@ -49,24 +65,13 @@ class groupClass {
 		this.decks = {};
 		
 		// сохраняем атрибуты чтобы прокинуть их колодам
-		this.parameters = {
-			paddingType  : a.paddingType  ? a.paddingType  : defaults.paddingType  ,
-			flip         : a.flip         ? a.flip         : null                  ,
-			// take         : a.take         ? a.take         : null               ,// ???
-			showSlot     : a.showSlot     ? a.showSlot     : defaults.showSlot     ,
-			takeRules    : a.takeRules    ? a.takeRules    : defaults.takeRules    ,
-			putRules     : a.putRules     ? a.putRules     : defaults.putRules     ,
-			fillRule     : a.fillRule     ? a.fillRule     : defaults.fillRule     ,
-			autoHide     : a.autoHide     ? a.autoHide     : defaults.autoHide     ,
-			
-			paddingX     : a.paddingX     ? a.paddingX     : defaults.paddingX     ,
-			paddingY     : a.paddingY     ? a.paddingY     : defaults.paddingY     ,
-			flipPaddingX : a.flipPaddingX ? a.flipPaddingX : defaults.flipPaddingX ,
-			flipPaddingY : a.flipPaddingY ? a.flipPaddingY : defaults.flipPaddingY ,
-			
-			actions      : a.actions      ? a.actions      : null                  ,
-			
-			afterStep    : (typeof a.afterStep == "boolean" ? a.afterStep : defaults.afterStep)
+		this.parameters = {};
+		for(let paramName in params) {
+			if(params[paramName].type == "any") {
+				this.parameters[paramName] = a[paramName] ? a[paramName] : defaults[paramName];
+			} else if(params[paramName].type == "boolean") {
+				this.parameters[paramName] = typeof a[paramName] == "boolean" ? a[paramName] : defaults[paramName];
+			}
 		};
 		
 		this.deckIndex = [];
@@ -79,6 +84,7 @@ class groupClass {
 	addDeck(a) {
 
 		if(!a) return;
+		
 		if(!a.position) {
 			a.position = {
 				'x' : 0, 
@@ -87,7 +93,6 @@ class groupClass {
 		}
 
 		// сортировка элементов в группе по заданному индексу и порядку добавления
-
 		
 		// if(!a.position.x) { a.position.x = 0; }
 		// if(!a.position.y) { a.position.y = 0; }
@@ -157,25 +162,26 @@ class groupClass {
 			}
 		}
 
+		console.log('ADD DECK', this.parameters, params);
 		// прокидываем некоторые атрибуты всем колодам группы (у атрибутов заданных колоде приоритет выше)
-		if( this.parameters.paddingType  && typeof a.paddingType  == "undefined" ) { a.paddingType  = this.parameters.paddingType;  };
-		if( this.parameters.flip         && typeof a.flip         == "undefined" ) { a.flip         = this.parameters.flip;         };
-		// if( this.parameters.take      && typeof a.take         == "undefined" ) { a.take         = this.parameters.take;         };
-		if( this.parameters.showSlot     && typeof a.showSlot     == "undefined" ) { a.showSlot     = this.parameters.showSlot;     };
-		if( this.parameters.takeRules    && typeof a.takeRules    == "undefined" ) { a.takeRules    = this.parameters.takeRules;    };
-		if( this.parameters.putRules     && typeof a.putRules     == "undefined" ) { a.putRules     = this.parameters.putRules;     };
-		if( this.parameters.fillRule     && typeof a.fillRule     == "undefined" ) { a.fillRule     = this.parameters.fillRule;     };
-		if( this.parameters.autoHide     && typeof a.autoHide     == "undefined" ) { a.autoHide     = this.parameters.autoHide;     };
-		// changed
-		if( this.parameters.paddingX     && typeof a.paddingX     == "undefined" ) { a.paddingX     = this.parameters.paddingX;     };
-		if( this.parameters.paddingY     && typeof a.paddingY     == "undefined" ) { a.paddingY     = this.parameters.paddingY;     };
-		if( this.parameters.flipPaddingX && typeof a.flipPaddingX == "undefined" ) { a.flipPaddingX = this.parameters.flipPaddingX; };
-		if( this.parameters.flipPaddingY && typeof a.flipPaddingY == "undefined" ) { a.flipPaddingY = this.parameters.flipPaddingY; };
-		
-		if( this.parameters.actions      && typeof a.actions      == "undefined" ) { a.actions      = this.parameters.actions;      };
-		
-		if( typeof a.afterStep == "undefined" ) {
-			a.afterStep = this.parameters.afterStep;
+
+		for(let paramName in params) {
+			
+			if(params[paramName].type == "any") {
+				if(
+					this.parameters[paramName]
+				 && typeof a[paramName] == "undefined"
+				) {
+					a[paramName] = this.parameters[paramName];
+				};
+			} else if(params[paramName].type == "boolean") {
+				if(
+					typeof this.parameters[paramName] != "undefined"
+				 && typeof a[paramName] == "undefined"
+				) {
+					a[paramName] = this.parameters[paramName];
+				}				
+			}
 		};
 
 		var _el = Deck.addDeck(a);
@@ -265,14 +271,13 @@ var addGroup = function(a) {
 
 		};
 
-		// TODO ADD RELATIONS
-		console.log('BEFORE ADD RELATIONS', a.decks, a.decks.length)
-
+		// relations TO <-> FROM
+		// if( a.backRelations ) TODO
 		for(let to in a.decks) {
 
 			for(let relId in a.decks[to].relations) {
 
-				let _relation = Object['assign']({}, a.decks[to].relations[relId]};
+				let _relation = Object.assign({}, a.decks[to].relations[relId]);
 
 				for(let from in a.decks) {
 					

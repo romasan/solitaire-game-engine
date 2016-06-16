@@ -2,12 +2,30 @@
 
 import share    from 'share';
 import defaults from 'defaults';
+import event    from 'event';
+
+import autoStep from 'autoStep';
 
 // Fall auto step
 
-// can step
-// auto step
-// manual step
+export default class fallAutoStep extends autoStep {
 
-// share.set('stepType', 'fall');
-// share.set('stepType', defaults.stepType);
+	// init
+	constructor(params) {
+
+		super(params);
+
+		// event.listen('fallAutoStepCheck', this.check);
+	}
+
+	// start() {}
+
+	check() {
+		// share.set('stepType', 'fall');
+		// share.set('stepType', defaults.stepType);
+	}
+
+	auto() {}
+
+	manual() {}
+}

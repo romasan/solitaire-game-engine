@@ -63,6 +63,10 @@ export default {
     inputParams : {
         doubleClick : false
     },
+// Group
+
+	flip                : null,
+	actions             : null,
 
 // Deck ----------------------------------------------------------------------------------
 

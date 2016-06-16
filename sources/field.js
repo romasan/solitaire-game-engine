@@ -6,24 +6,19 @@ import event     from 'event';
 import defaults  from 'defaults';
 import common    from 'common';
 
-import Group     from 'addGroup';
-import Deck      from 'addDeck';
-import Tips      from 'tips';
-import tipsRules from 'tipsRules';
+import Group        from 'addGroup';
+import Deck         from 'addDeck';
+import Tips         from 'tips';
+import tipsRules    from 'tipsRules';
+import addAutoSteps from 'addAutoSteps';
 
 var _field = null;
 	// _params = {},
 	// _elements = {};
 
+// TODO
+// class Field {}
 var Field = function(data) {
-
-	// window.currentVersion = '0.11';
-
-	// TODO избавиться от share.field и вообще от share ?
-	
-	// if(!data && share.field) {
-	// 	return share.field;
-	// }
 
 	if(!data) {
 		return false;
@@ -48,20 +43,6 @@ var Field = function(data) {
 		a = data;
 		console.warn('Field input params is not JSON, maybe the rules are wrong.');
 	}
-
-	// share.set(
-	// 	'spriteTexture', 
-	// 	typeof a.theme == 'object' 
-	// 		? a       .theme.spriteTexture 
-	// 		: defaults.theme.spriteTexture
-	// );
-
-	// share.set(
-	// 	'textureSuits', 
-	// 	typeof a.theme == 'object' 
-	// 		? a       .theme.textureSuits 
-	// 		: defaults.theme.textureSuits
-	// );
 
 	this.homeGroups = a.homeGroups ? a.homeGroups : [];
 
@@ -141,12 +122,6 @@ var Field = function(data) {
 			: defaults.inputParams[inputParamName]
 	}
 
-	// var _animation = typeof a.animation == 'boolean' 
-	// 	? a.animation 
-	// 	: defaults.animation;
-	// this.animation = _animation;
-	// share.set('animation', _animation);
-
 	var _can_move_flip = a.can_move_flip && typeof a.can_move_flip == 'boolean' 
 		? a.can_move_flip 
 		: defaults.canMoveFlip
@@ -158,6 +133,16 @@ var Field = function(data) {
 			? a.debugLabels
 			: defaults.debugLabels
 	);
+
+	if(a.startZIndex && typeof a.startZIndex == 'number') {
+		share.set('start_z_index', a.startZIndex);
+	}
+
+	if(a.autoSteps) {
+		addAutoSteps(a.autoSteps);
+	}
+
+// --
 
 	this.Draw = function(data) {
 
@@ -211,15 +196,6 @@ var Field = function(data) {
 		common.unlock();
 
 	}
-
-	// checkTips()
-
-	if(a.startZIndex && typeof a.startZIndex == 'number') {
-		share.set('start_z_index', a.startZIndex);
-	}
-
-
-
 };
 
 Field.prototype.clear = function() {

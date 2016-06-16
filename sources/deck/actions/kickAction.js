@@ -24,6 +24,7 @@ export default function(data) {
 		flip : true                              //true
 	});
 
+	// event.dispatch('historyAdd', {});
 	History.add({'move' : {
 		from : _from.name,
 		to   : data.actionData.to,
