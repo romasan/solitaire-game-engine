@@ -1,0 +1,52 @@
+$img_dir:"/solitaire_engine/img/";
+
+$card_width  : 71px;
+$card_height : 96px;
+
+$cards: ("1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "j", "q", "k");
+$ranks: ("d", "s", "h", "c");
+
+$theme_name: ".default";
+
+#{$theme_name}_face {
+
+	.card {
+		background-size: 100% 100%;
+		background-position: 0px 0px;
+	}
+
+	@each $rank in $ranks {
+		@each $card in $cards {
+
+			.#{$rank}#{$card} {
+				background-image: url('#{$img_dir}#{$rank}#{$card}.png');
+			}
+
+		}
+	}
+}
+
+
+#{$theme_name}_back {
+
+	.flip {
+	    background: #4086cc!important;
+		background: -moz-linear-gradient(-45deg,  #4086cc 0%, #f0f5fb 100%)!important;
+		background: -webkit-linear-gradient(-45deg,  #4086cc 0%,#f0f5fb 100%)!important;
+		background: linear-gradient(135deg,  #4086cc 0%,#f0f5fb 100%)!important;
+		filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#4086cc', endColorstr='#f0f5fb',GradientType=1 )!important;
+		border: 1px solid #000000;
+		border-radius: 3px;
+	}
+}
+
+#{$theme_name}_empty {
+
+	.slot {
+		width: $card_width - 2;
+		height: $card_height - 2;
+		background: url('#{$img_dir}slot.png'); 
+		background-size: 100% 100%;
+		outline: 1px solid transparent;
+	}
+}
