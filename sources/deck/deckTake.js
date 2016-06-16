@@ -9,7 +9,7 @@ import takeRules from 'readyTakeRules';
 export default function(cardId) {
 
 	// Нестандартный ход (autosteps)
-	if(share.get('stepType') != defaults.stepType) {return false;};
+	// if(share.get('stepType') != defaults.stepType) {return false;};
 
 	var rulesCorrect = true;//!common.isLock();
 

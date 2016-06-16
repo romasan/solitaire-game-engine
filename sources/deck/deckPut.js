@@ -1,9 +1,18 @@
 'use strict';
 
+import Field    from 'field';
 import Deck     from 'addDeck';
 import putRules from 'readyPutRules';
 
 export default function(putDeck) {
+
+	// Нестандартный ход (autosteps)
+	let _stepType = share.get('stepType');
+	if(_stepType != defaults.stepType) {
+
+		let _field = Field();
+		return _field.autoSteps[_stepType].manual(putDeck)
+	};
 
 	var rulesCorrect = true;
 	

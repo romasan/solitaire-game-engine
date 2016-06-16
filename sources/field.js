@@ -139,7 +139,7 @@ var Field = function(data) {
 	}
 
 	if(a.autoSteps) {
-		addAutoSteps(a.autoSteps);
+		this.autoSteps = addAutoSteps(a.autoSteps);
 	}
 
 // --

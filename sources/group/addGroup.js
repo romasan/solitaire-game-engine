@@ -229,6 +229,16 @@ class groupClass {
 		groupRedraw.call(this, _a);
 	}
 
+	hasDeck(deckName) {
+		let has = false;
+		for(let deckId in decks) {
+			if(decks[deckId].name == deckName) {
+				has = true;
+			}
+		}
+		return has;
+	}
+
 }
 
 // -----------------------------------------------------------------------------------------------------------------------

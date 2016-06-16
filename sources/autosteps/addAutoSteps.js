@@ -8,9 +8,14 @@ const autosteps = {
 
 export default (autoSteps)=>{
 	
+	let _autosteps = {};
+
 	for(let autoStepName in autoSteps) {
 		if(autosteps[autoStepName]) {
-			new autosteps[autoStepName](autoSteps[autoStepName]);
+			let _autostep = new autosteps[autoStepName](autoSteps[autoStepName]);
+			_autosteps[_autostep.stepType] = _autostep;
 		}
 	};
+
+	return _autosteps;
 };

@@ -185,6 +185,12 @@ event.listen('historyReapeater', function(e) {
 	}
 });
 
+let deckInGroups = (deck, groups)=>{
+	for(let groupName in groups) {
+		Group.Group(groupName).hasDeck();
+	}
+}
+
 // event.listen('makeStep', function(e) {
 	// share.set('animation', defaults.animation);
 // });
@@ -206,5 +212,6 @@ export default {
 	animationOn      ,
 	animationOff     ,
 	animationDefault ,
+	deckInGroups     ,
 	sqr              
 };
