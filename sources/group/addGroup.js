@@ -309,6 +309,7 @@ var addGroup = function(a) {
 	
 	// fill group
 	if(a && a.fill) {
+
 		var _checkFillDeck = a.fill.length;
 		if(_checkFillDeck) {
 			_el_group.Fill(a.fill);

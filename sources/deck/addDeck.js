@@ -197,6 +197,8 @@ class deckClass {
 
 	Fill(cardNames) {
 
+		console.log('Deck:Fill', cardNames);
+
 		for(var i in cardNames) {
 			this.genCardByName(cardNames[i]);
 		}
@@ -304,13 +306,31 @@ class deckClass {
 		return _cardsNames;
 	}
 
-	getRelationsByName(relationName) {
+	getRelationsByName(relationName, filter) {
 
 		let _relations = [];
 
 		for(let i in this.relations) {
 			if(this.relations[i].name == relationName) {
-				_relations.push(this.relations[i]);
+
+				if(filter) {
+
+					let _checked = 0, _count = 0;
+
+					for(let attr in filter) {
+						_count += 1;
+						if(this.relations[i][attr] == filter[attr]) {
+							_checked += 1;
+						}
+					}
+
+					if(_checked == _count) {
+						_relations.push(this.relations[i]);
+					}
+				} else {
+
+					_relations.push(this.relations[i]);
+				}
 			}
 		}
 

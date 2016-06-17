@@ -105,55 +105,21 @@ export default function(e) {
 					"fall"   : "mapFallRelations"
 				};
 
-				for(let relGenName in _relGenerators) {
+				if(e.relations) {
 
-					if(e.relations && e.relations[relGenName]) {
-						_relations = _relations.concat(relationsGenerator[_relGenerators[relGenName]]({
-							x, y, 
-							map     : e.map,
-							mapSize : _mapSize,
-							el      : _el,
-							data    : e.relations[relGenName]
-						}));
+					for(let relGenName in _relGenerators) {
+
+						if(e.relations[relGenName]) {
+							_relations = _relations.concat(relationsGenerator[_relGenerators[relGenName]]({
+								x, y, 
+								map     : e.map,
+								mapSize : _mapSize,
+								el      : _el,
+								data    : e.relations[relGenName]
+							}));
+						};
 					};
-				}
-
-				// // Around relations
-				// // default OFF
-				// if(e.relations && e.relations.around) {
-				// 	_relations = _relations.concat(relationsGenerator.mapAroundRelations({
-				// 		x, y, 
-				// 		map     : e.map,
-				// 		mapSize : _mapSize,
-				// 		el      : _el,
-				// 		data    : null
-				// 	}));
-				// };
-				
-				// // TODO
-				// // Next/Previous relations
-				// // default OFF
-				// if(e.relations && e.relations.beside) {
-				// 	_relations = _relations.concat(relationsGenerator.mapBesideRelations({
-				// 		x, y, 
-				// 		map     : e.map,
-				// 		mapSize : _mapSize,
-				// 		el      : _el,
-				// 		data    : null
-				// 	}));
-				// }
-
-				// // Fall relations
-				// // default OFF
-				// if(e.relations && e.relations.fall) {
-				// 	_relations = _relations.concat(relationsGenerator.mapFallRelations({
-				// 		x, y, 
-				// 		map     : e.map,
-				// 		mapSize : _mapSize,
-				// 		el      : _el,
-				// 		data    : e.relations.fall
-				// 	}));
-				// }
+				};
 
 				_deck.relations = _relations;
 				

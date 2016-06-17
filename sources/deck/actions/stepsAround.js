@@ -2,6 +2,8 @@
 
 export default function(data) {// {actionData, eventData, eventName}
 
+	console.log('stepsAround', data);
+
 	// data.actionData.run // make step(one) | run action
 	// data.actionData.dispatch
 	

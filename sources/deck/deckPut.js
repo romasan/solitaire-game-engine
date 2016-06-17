@@ -9,6 +9,7 @@ import putRules from 'readyPutRules';
 
 export default function(putDeck) {
 
+
 	// Нестандартный ход (autosteps)
 	let _stepType = share.get('stepType');
 	if(_stepType != defaults.stepType) {
@@ -26,22 +27,26 @@ export default function(putDeck) {
 
 	for(var ruleIndex in this.putRules) {
 		
-		var ruleName = this.putRules[ruleIndex];
+		if(rulesCorrect) {
 
-		if(putRules[ruleName]) {
-			rulesCorrect = rulesCorrect && putRules[ruleName]({
-				from      : {
-					deckId : _deckId, 
-					deck   : _deck_departure
-				}, 
-				putDeck   : putDeck,
-				cards     : this.cards,
-				rulesArgs : putRules[ruleName]
-			});
+			var ruleName = this.putRules[ruleIndex];
 
-		} else {
-			console.warn('putRule:', ruleName, 'not exists');
-			rulesCorrect = false;
+			if(putRules[ruleName]) {
+
+				rulesCorrect = rulesCorrect && putRules[ruleName]({
+					from      : {
+						deckId : _deckId, 
+						deck   : _deck_departure
+					}, 
+					putDeck   : putDeck,
+					cards     : this.cards,
+					rulesArgs : putRules[ruleName]
+				});
+
+			} else {
+				console.warn('putRule:', ruleName, 'not exists');
+				rulesCorrect = false;
+			}
 		}
 	}
 
