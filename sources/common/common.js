@@ -6,11 +6,11 @@ import defaults from 'defaults';
 
 import Tips     from 'tips';
 import Field    from 'field';
+import History  from 'history';
 
 import drawPreferences    from 'drawPreferences';
 import preferencesEvents  from 'preferencesEvents';
 import defaultPreferences from 'defaultPreferences';
-
 
 event.listen('gameInit', (e)=>{
 	if(!e.firstInit) {return;};
@@ -20,7 +20,11 @@ event.listen('gameInit', (e)=>{
 
 event.listen('gameInited', ()=>{
 	defaultPreferences();
-})
+});
+
+event.listen("finalStep", ()=>{
+	event.dispatch("makeStep", History.get());
+});
 
 // drawPreferences();
 
@@ -197,7 +201,7 @@ let deckInGroups = (deck, groups)=>{
 
 share.set('stepType', defaults.stepType);
 
-share.set('lang', defaults.lang);
+// share.set('lang', defaults.lang);
 
 export default {
 	isLock           ,

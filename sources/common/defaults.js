@@ -11,9 +11,9 @@ export default {
 	// },
 
     pref : {
-    	field : 0,
-    	face  : 1,
-		back  : 0
+    	field : "default_field",    // 0
+    	face  : "alternative_face", // 1
+		back  : "default_back"      // 0
 		// empty : 1
     },
 
@@ -56,7 +56,7 @@ export default {
 
 	zoom                : 1.0,
 
-	lang                : "en",
+	locale              : "ru",
 
 	animation           : true,
 	animationTime       : 300,// ms.

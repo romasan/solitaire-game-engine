@@ -23,7 +23,8 @@ event.listen('fieldThemesSet', (pref)=>{
 		}
 		
 		// Add new themes
-		let className = defaults.themes[prefName][pref[prefName]];
+		// let className = defaults.themes[prefName][pref[prefName]];
+		let className = pref[prefName];
 		elRender(fieldDomElement).addClass(className);
 		
 	}

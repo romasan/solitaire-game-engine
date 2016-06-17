@@ -1,8 +1,8 @@
 #solitaire-engine-style-preferences
-	%h4=@lang.title_decor_preferences
+	%h4=@locale.title_preferences
 	- @preferences.each do |pref|
 		%div
-			%span.solitaire-engine-style-preferences-label #{pref.title}
-			%select{:id => "#{pref.prefId}", :class => "solitaire-engine-style-preferences-element"}
+			%span.solitaire-engine-style-preferences-label=pref.title
+			%select{:id => pref.prefId, :class => "solitaire-engine-style-preferences-element"}
 				- pref.options.each do |option|
-					%option{:value => "#{option.value}"}=option.label
+					%option{:value => option.value}=option.label

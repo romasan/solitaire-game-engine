@@ -1,19 +1,27 @@
 'use strict';
 
 import fallAutoStep from 'fallAutoStep';
+// import A         from 'A';
+// import B         from 'B';
+// import C         from 'C';
 
 const autosteps = {
-	fallAutoStep
+	fallAutoStep,
+//  A,
+//  B,
+//  C
 };
 
-export default (autoSteps)=>{
+export default (autoStepsParams)=>{
 	
 	let _autosteps = {};
 
-	for(let autoStepName in autoSteps) {
+	for(let autoStepName in autoStepsParams) {
 		if(autosteps[autoStepName]) {
-			let _autostep = new autosteps[autoStepName](autoSteps[autoStepName]);
-			_autosteps[_autostep.stepType] = _autostep;
+			let _autostep = new autosteps[autoStepName](autoStepsParams[autoStepName]);
+			_autosteps[autoStepName] = _autostep;
+		} else {
+			console.warn(`Autostep '${autoStepName}' is not exist.`);
 		}
 	};
 

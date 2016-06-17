@@ -1,32 +1,33 @@
 'use strict';
 
-import share from 'share';
+// import share from 'share';
+import defaults from 'defaults';
 
 // import elRender from 'elRender';
 
 export default ()=>{
 
 
-	// let _lang = require('lang.json')[share.get('lang')];
+	// let _locale = require('json!locales.json')[defaults.locale];
 	
-	// let Tpl = require("./preferncesTemplate.hamlc");
+	// let Tpl = require("./preferncesTemplate.hamlc");//
 	
 	// let _values = {
-	// 	lang: _lang,
+	// 	locale: _locale,
 	// 	preferences: []
 	// };
 
 	// for(let propName in defaults.themes) {
 		
 	// 	let _pref = {
-	// 		title   : _lang["title_" + propName],
+	// 		title   : _locale["label_" + propName],
 	// 		options : []
 	// 	};
 		
 	// 	for(let i in defaults.themes[propName]) {
 	// 		_pref.options.push({
 	// 			value : defaults.themes[propName][i],
-	// 			label : _lang[defaults.themes[propName][i]]
+	// 			label : _locale[defaults.themes[propName][i]]
 	// 		});
 	// 	}
 

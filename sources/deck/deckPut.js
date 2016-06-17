@@ -14,7 +14,7 @@ export default function(putDeck) {
 	if(_stepType != defaults.stepType) {
 
 		let _field = Field();
-		return _field.autoSteps[_stepType].manual(putDeck)
+		return _field.autoSteps[_stepType].putCheck(putDeck);
 	};
 
 	var rulesCorrect = true;

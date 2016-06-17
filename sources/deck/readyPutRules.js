@@ -3,6 +3,8 @@
 import common   from 'common';
 import defaults from 'defaults';
 
+// import Deck from 'addDeck';
+
 var rpr = {
 			
 	// Internal use
@@ -184,12 +186,30 @@ var rpr = {
 		return da && Math.abs(da.down - da.up) == 1;
 	},
 
-	summ14     : function(a) {
+	sum14     : function(a) {
 
 		if(a.cards.length == 0) return true;
 
 		var du = rpr._downupcards(a);
 		return du.down.value + du.up.value == 14;
+	},
+
+	// TODO rules with params
+
+	around: (a)=>{// {from, putDeck, cards}
+
+		if(a.cards.length == 0) return true;
+
+		let _around = a.from.deck.getRelationsByName('around');
+
+		console.log('readyPytRules:around', a, _around);
+
+		return false;		
+	},
+
+	aroundSum14 : (a)=>{
+
+		return rpr.sum14(a) && rpr.around(a);
 	}
 
 };

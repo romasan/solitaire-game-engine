@@ -9,14 +9,13 @@ import common   from 'common';
 import twindeckAction   from 'twindeckAction';
 import dealerdeckAction from 'dealerdeckAction';
 import kickAction       from 'kickAction';
+import stepsAround      from 'stepsAround';
 
 var _actions = {
-	"twindeck"   : twindeckAction  ,
-	"dealerdeck" : dealerdeckAction,
-	"kick"       : kickAction      ,
-	"avalanche"  : function(e) {// 
-		// listen avalanche
-	}
+	"twindeck"    : twindeckAction  ,
+	"dealerdeck"  : dealerdeckAction,
+	"kick"        : kickAction      ,
+	"stepsAround" : stepsAround     
 };
 
 // ------------------------------------------------------------------------------------------

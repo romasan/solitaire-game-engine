@@ -26,9 +26,6 @@ class deckClass {
 
 	constructor(a, _id) {
 
-		console.log('addDeck', a, _id);
-		console.log('addDeck:relations', a.relations);
-
 		if(!a) return false;
 
 		this.cards = [];
@@ -57,7 +54,7 @@ class deckClass {
 		this.name = a.name && typeof a.name == 'string' 
 			? a.name 
 			: (_parent_name + '_' + _new_id);
-
+		
 		this.visible= a.visible && typeof a.visible == 'boolean' ? a.visible : true;// default true
 		
 		this.groupIndex = a.groupIndex && typeof a.groupIndex == 'number' ? a.groupIndex : null;
@@ -150,8 +147,15 @@ class deckClass {
 
 		this.afterStep = a.afterStep;
 
-		// TODO
-		this.relations = [];
+		// ------------ RELATIONS ------------
+
+		if(a.relations) {
+			this.relations = a.relations;
+		} else {
+			this.relations = [];
+		};
+
+		// --
 		
 		event.dispatch('addDeckEl', {
 			a     : a, 
@@ -298,6 +302,19 @@ class deckClass {
 			_cardsNames.push(this.cards[i].name);
 		};
 		return _cardsNames;
+	}
+
+	getRelationsByName(relationName) {
+
+		let _relations = [];
+
+		for(let i in this.relations) {
+			if(this.relations[i].name == relationName) {
+				_relations.push(this.relations[i]);
+			}
+		}
+
+		return _relations;
 	}
 
 }

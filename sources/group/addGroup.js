@@ -162,9 +162,7 @@ class groupClass {
 			}
 		}
 
-		console.log('ADD DECK', this.parameters, params);
 		// прокидываем некоторые атрибуты всем колодам группы (у атрибутов заданных колоде приоритет выше)
-
 		for(let paramName in params) {
 			
 			if(params[paramName].type == "any") {
@@ -293,7 +291,7 @@ var addGroup = function(a) {
 					
 					if(a.decks[from].name == _relation.to) {
 						_relation.to = null;
-						_relation.from = a.decks[from].name;
+						_relation.from = a.decks[to].name;
 						a.decks[from].relations.push(_relation)
 					}
 				}

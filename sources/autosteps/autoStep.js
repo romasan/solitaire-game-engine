@@ -22,7 +22,10 @@ export default class {
 
 		this.autoStep = params.autoStep;
 
-		if(!params.autoStep && params.click) {
+		if(
+			!params.autoStep
+		 && params.click
+		) {
 
 			// TODO move
 			event.listen('click', (deck)=>{

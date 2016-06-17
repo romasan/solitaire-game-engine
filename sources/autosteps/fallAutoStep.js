@@ -49,10 +49,18 @@ export default class fallAutoStep extends autoStep {
 	// manual если autostep = false
 	// если click = true, вручную отрабатываем перемещения карт возвращаем false
 	// если click = false то отрабатывается move а здесь проверка возможен ли ход
-	manual() {//by move
+	manual(putDeck) {//by move
+
 		
 		// empty
 		// check fall
-		this.check()
+		// this.check();
+	}
+
+	putCheck(putDeck) {
+		
+		console.log('fallAutoStep:putCheck', putDeck);
+		
+		return false;
 	}
 }

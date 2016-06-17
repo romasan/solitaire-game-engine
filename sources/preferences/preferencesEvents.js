@@ -11,8 +11,9 @@ let onShowParameters = ()=>{
 	!pref && (pref = defaults.pref);
 	
 	for(var prefName in defaults.themes) {
-		$("#pref_" + prefName + " [value=" + (pref[prefName] ? pref[prefName] : defaults.pref[prefName]) + "]")
-			.prop({selected : true});
+		let _pref = pref[prefName] ? pref[prefName] : defaults.pref[prefName];
+		$(`#pref_${prefName} [value='${_pref}']`)
+			.prop({selected: true});
 	}
 };
 
@@ -20,7 +21,7 @@ let applyParameters = ()=>{
 	
 	var pref = {};
 	for(var prefName in defaults.themes) {
-		pref[prefName] = $("#pref_" + prefName).val();
+		pref[prefName] = $(`#pref_${prefName}`).val();
 	}
 
 	event.dispatch('fieldThemesSet', pref);
@@ -35,7 +36,21 @@ let saveParameters = (pref)=>{
 
 export default ()=>{
 	
+	// TODO переделать без jQuery
+
 	$("#bbParameters").click(onShowParameters);
+	// event.dispatch('addDomEvent', {
+	// 	"event"    : "click"
+	// 	"element"  : "#bbParameters",
+	// 	"callback" : onShowParameters
+	// });
+	
 	// $("#gpCommit").click(saveParameters);
+	
 	$(".solitaire-engine-style-preferences-element").change(applyParameters);
+	// event.dispatch('addDomEvent', {
+	// 	"event"    : "change"
+	// 	"element"  : ".solitaire-engine-style-preferences-element",
+	// 	"callback" : applyParameters
+	// });
 };

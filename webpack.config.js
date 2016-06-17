@@ -68,9 +68,14 @@ let config = {
       //   loader: 'file?name=../img/[name].[ext]'
       // }
 
+      {
+        test: /\.hamlc$/,
+        loader: "hamlc-loader"
+      }
+
       // {
       //   test: /\.hamlc$/,
-      //   loader: "hamlc-loader"
+      //   loader: "haml-loader"
       // }
     ]
   },

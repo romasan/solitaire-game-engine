@@ -1,6 +1,6 @@
 {
   "name": "solitaire-engine",
-  "version": "0.12.264",
+  "version": "0.12.279",
   "description": "Solitaire game engine",
   "author": "Roman Bauer",
   "email": "kotapesic@gmail.com",
@@ -23,8 +23,6 @@
     "sass-loader": "^3.2.0",
     "node-sass": "^3.7.0",
     "extract-text-webpack-plugin": "^1.0.1",
-    "html-loader": "^0.4.3",
-    "json-loader": "*",
-    "hamlc-loader": "*"
+    "html-loader": "^0.4.3"
   }
 }
