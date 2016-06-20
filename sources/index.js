@@ -1,9 +1,11 @@
 'use strict';
 
+// common
 import share      from 'share';
 import event      from 'event';
 import defaults   from 'defaults';
 
+// init
 import Inputs     from 'inputs';
 import Move       from 'move';
 import domManager from 'domManager';
@@ -17,6 +19,8 @@ import winCheck   from 'winCheck';
 // if(dev) {
 // 	debug = require('debug');
 // }
+
+// styles DOM
 import 'common.scss';
 import 'default_theme.scss';
 import 'alternative_theme.scss';
@@ -28,7 +32,6 @@ exports.winCheck = winCheck.hwinCheck;
 var firstInit = true;
 
 exports.init = function(gameConfig) {
-
 
 	event.dispatch('gameInit', {firstInit});
 
@@ -45,6 +48,7 @@ exports.init = function(gameConfig) {
 	}
 };
 
+// dev <-- process.env.MODE == 'dev'
 if(dev) {
 	var debug = require('debug');
 	exports.debug = debug.default;

@@ -26,8 +26,10 @@ var getTips = function() {
 }
 
 var checkTips = function() {
+	
+	console.log('check tips');
 
-	if(share.get('noTips')) { return false; };
+	if(share.get('noTips')) { return false; }
 	
 	event.dispatch('hideTips');
 
@@ -48,15 +50,15 @@ var checkTips = function() {
 			// TODO инициализировать "hideTipsInDom" в Field.js 
 			if(
 				(
-			 	_tips[i].to.count == 0 
-			 && _field.tipsParams.hideOnEmpty
-			 	)
-			 || (
-			 	_field.tipsParams.excludeHomeGroups
-			 && _homeGroups
-			 && _homeGroups.length
+			 	_tips[i].to.count === 0       &&
+				_field.tipsParams.hideOnEmpty
+			 	) ||
+				(
+			 	_field.tipsParams.excludeHomeGroups &&
+				_homeGroups                         &&
+				_homeGroups.length                  &&
 			 
-			 && _homeGroups.indexOf(_tips[i].from.deck.parent) >= 0
+				_homeGroups.indexOf(_tips[i].from.deck.parent) >= 0
 			 	)
 			) {
 				// ?#$%&!
@@ -107,19 +109,23 @@ var tipsMove = function(a) {
 
 	event.dispatch('hideTips', {types : ['tipPriority']});
 
-	if( share.showTipPriority 
-	 && a 
-	 && a.moveDeck 
-	 && a.cursorMove 
-	 && a.cursorMove.distance 
-	 && a.cursorMove.distance >= share.moveDistance
+	if(
+		share.showTipPriority                       &&
+		a                                           &&
+		a.moveDeck                                  &&
+		a.cursorMove                                &&
+		a.cursorMove.distance                       &&
+		a.cursorMove.distance >= share.moveDistance
 	) {
 
 		var Tip = bestTip(a.moveDeck, a.cursorMove);
 
 		if(Tip) {
 
-			event.dispatch('showTip', {el : Tip.to.deck, type : 'tipPriority'});
+			event.dispatch('showTip', {
+				el   : Tip.to.deck,
+				type : 'tipPriority'
+			});
 		}
 	}
 };
@@ -146,6 +152,19 @@ var tipsDestination = function(a) {
 	}
 };
 
+let fromTo = (_from, _to)=>{
+	
+	for(let i in _tips) {
+		if(
+			_tips[i].from.deck.name == _from &&
+			_tips[i].to.deck.name   == _to
+		) {
+			return true;
+		}
+	}
+	return false;
+};
+
 export default {
 	tipTypes       ,
 	getTips        ,
@@ -153,5 +172,6 @@ export default {
 	showTips       ,
 	hideTips       ,
 	tipsMove       ,
+	fromTo         ,
 	tipsDestination
 };

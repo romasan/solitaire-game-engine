@@ -165,7 +165,8 @@ var cend = function(target, x, y, dbclick) {
     if(!_dragDeck || !_startCursor) return;
 
 	var _deck = common.getElementById(_dragDeck[0].card.parent);
-	var _position = _deck.padding(_dragDeck[0].index);
+	
+    var _position = _deck.padding(_dragDeck[0].index);
     var cursorMove = {
         distance     : Math.sqrt(common.sqr(x - _startCursor.x) + common.sqr(y - _startCursor.y)),
         dbclick      : !!dbclick,

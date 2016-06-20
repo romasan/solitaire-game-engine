@@ -1,5 +1,7 @@
 'use strict';
 
+import defaults from 'defaults';
+
 import elClass  from 'elClass';
 
 export default class allElClass {
@@ -62,8 +64,14 @@ export default class allElClass {
 		return this;
 	}
 // --
-	animate(params, animationTime, callback) {
+	animate(params, animationTime, callback, animationName) {
+		
+		typeof animationTime == "undefined" && (animationTime = defaults.animationTime);
+		typeof animationTime == "function"  && (callback = animationTime, animationTime = defaults.animationTime);
+		typeof callback      == "string"    && (animationName = callback, callback = null);
+
 		let counter = 0;
+		
 		for(var i in this.elements) {
 			counter += 1;
 			this.elements[i].animate(params, animationTime, ()=>{

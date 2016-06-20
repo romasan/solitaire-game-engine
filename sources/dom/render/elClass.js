@@ -1,5 +1,6 @@
 'use strict';
 
+import event    from 'event';
 import share    from 'share';
 import defaults from 'defaults';
 
@@ -128,8 +129,12 @@ export default class elClass {
 		} catch(e) {}
 	}
 // --
-	animate(params, animationTime = defaults.animationTime, callback) {
-		typeof animationTime == "function" && (callback = animationTime, animationTime = defaults.animationTime);
+	animate(params, animationTime, callback, animationName) {
+		
+		typeof animationTime == "undefined" && (animationTime = defaults.animationTime);
+		typeof animationTime == "function"  && (callback = animationTime, animationTime = defaults.animationTime);
+		typeof callback      == "string"    && (animationName = callback, callback = null);
+		
 		setTimeout(()=>{
 
 			this.css({transition: (animationTime / 1000) + 's'});
@@ -149,7 +154,10 @@ export default class elClass {
 					this.removeClass("animated");
 					this.css({transition: null});
 					callback();
+					event.dispatch('allAnimationsEnd', animationName);
 				}
+
+				event.dispatch('animationEnd', this);
 			}, false);
 
 		}, 0);

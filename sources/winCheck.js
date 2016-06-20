@@ -11,7 +11,9 @@ var winCheck = function(params) {
 
 	var rulesCorrect = true;
 	var _hasMetods = false;
-	var _winCheck = share.get('winCheck');
+	var _winCheck = share.get('winCheck');// _field.winCheck
+	
+	console.log('winCheck', params, _winCheck);
 
 	for(var ruleName in _winCheck.rules) {
 		_hasMetods = true;
@@ -24,16 +26,19 @@ var winCheck = function(params) {
 			});
 
 		} else {
-			rulesCorrect = rulesCorrect && winCheckMethods['newerWin']();
+			rulesCorrect = rulesCorrect && winCheckMethods.newerWin();
 		}
 	}
 	
 	if(!_hasMetods) {
-		rulesCorrect = rulesCorrect && winCheckMethods['newerWin']();
+		rulesCorrect = rulesCorrect && winCheckMethods.newerWin();
 	}
 
 	if(rulesCorrect) {
+		
 		if(params && params.noCallback) { return true; }
+		
+		// show you win message
 		event.dispatch('win', params);
 		return true;
 	}
@@ -41,13 +46,17 @@ var winCheck = function(params) {
 	return false;
 };
 
+// hidden check
 var hwinCheck = function(a) {
+	
 	if(!a) {
 		a = {};
 	}
+	
 	if(typeof a.show == 'undefined') {
 		a.show = false;
 	}
+	
 	winCheck(a);
 	// return winCheck({noCallback : true});
 };

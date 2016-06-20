@@ -23,7 +23,7 @@ export default (autoStepsParams)=>{
 		} else {
 			console.warn(`Autostep '${autoStepName}' is not exist.`);
 		}
-	};
+	}
 
 	return _autosteps;
 };

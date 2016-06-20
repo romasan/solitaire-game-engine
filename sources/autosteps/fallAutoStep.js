@@ -7,19 +7,20 @@ import event    from 'event';
 import autoStep from 'autoStep';
 
 // Fall auto step
-const stepType = 'fall',
-	  click    = false;
+const _stepType = 'fall',
+	  	_click    = false;
 
 export default class fallAutoStep extends autoStep {
 
 	// init
 	constructor(params) {
 
-		if(!params){
+		if(!params) {
 			params = {};
-		};
-		params.stepType = stepType;
-		params.click    = click;
+		}
+		
+		params._stepType = _stepType;
+		params._click    = _click;
 
 		super(params);
 
@@ -31,7 +32,7 @@ export default class fallAutoStep extends autoStep {
 		if(this.autoStep) {
 			this.auto();
 		} else {
-			share.set('stepType', stepType);
+			share.set('stepType', _stepType);
 		}
 
 	}

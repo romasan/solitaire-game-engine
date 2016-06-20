@@ -19,13 +19,18 @@ event.listen('moveCardToHome', function(e) {
     	}
     	elRender(e.moveDeck[i].card.domElement)
     		.animate(
-    			_params, 
-    			function() {
+    			
+					_params, 
+    			
+					()=>{
 				    common.curUnLock();
-					if(e.departure) {
-						e.departure.Redraw();
-					}                    
-				});
+						if(e.departure) {
+							e.departure.Redraw();
+						}                    
+					},
+					
+					'moveCardToHomeAnimation'
+				);
     }
     
 });

@@ -201,6 +201,11 @@ let deckInGroups = (deck, groups)=>{
 
 share.set('stepType', defaults.stepType);
 
+let clearInput = ()=>{
+    share.set('dragDeck',    null);
+    share.set('startCursor', null);
+}
+
 // share.set('lang', defaults.lang);
 
 export default {
@@ -219,5 +224,6 @@ export default {
 	animationOff     ,
 	animationDefault ,
 	deckInGroups     ,
+	clearInput       ,
 	sqr              
 };

@@ -10,13 +10,15 @@ import putRules from 'readyPutRules';
 export default function(putDeck) {
 
 
-	// Нестандартный ход (autosteps)
 	let _stepType = share.get('stepType');
 	if(_stepType != defaults.stepType) {
-
+		
+		// Нестандартный ход (autosteps)
 		let _field = Field();
-		return _field.autoSteps[_stepType].putCheck(putDeck);
-	};
+		return _field.autoSteps && _field.autoSteps[_stepType]
+			? _field.autoSteps[_stepType].putCheck(putDeck)
+			: false;
+	}
 
 	var rulesCorrect = true;
 	

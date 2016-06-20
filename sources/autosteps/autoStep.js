@@ -1,8 +1,8 @@
 'use strict';
 
 import event  from 'event';
+import share  from 'share';
 import common from 'common';
-
 
 export default class {
 	
@@ -20,22 +20,22 @@ export default class {
 			this.dispatch = params.dispatch;
 		}
 
-		this.autoStep = params.autoStep;
+		this.autoStep = params._autoStep;
 
 		if(
-			!params.autoStep
-		 && params.click
+			!params.autoStep &&
+			params.click
 		) {
 
 			// TODO move
 			event.listen('click', (deck)=>{
 				if(
-					share.get('stepType') == params.stepType
-				 && common.deckInGroups(deck, this.groups)
+					share.get('stepType') == params._stepType &&
+					common.deckInGroups(deck, this.groups)
 				) {
 						this.manual(deck);
-				};
+				}
 			});
-		};
+		}
 	}
-};
+}
