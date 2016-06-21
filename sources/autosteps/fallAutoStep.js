@@ -56,6 +56,10 @@ export default class fallAutoStep extends autoStep {
 		// empty
 		// check fall
 		// this.check();
+
+		console.log('fallAutoStep:manual');
+
+		return false;
 	}
 
 	putCheck(putDeck) {

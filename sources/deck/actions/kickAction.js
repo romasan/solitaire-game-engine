@@ -1,37 +1,50 @@
 'use strict';
 
-import event     from 'event';
+import event  from 'event';
+import common from 'common';
 
 import forceMove from 'forceMove';
 import History   from 'history';
+import Deck      from 'addDeck';
 
 export default function(data) {
-			
-	// listen move ???
+	
 	if(
 		typeof data.eventData.to == "string" &&
-		this.name != data.eventData.to       ||
+		this.name != data.eventData.to
+	) {
+		return false;
+	}
+	
+	if(
+		typeof data.eventData.to != "string" &&
 		this.name != data.eventData.to.name
 	) {
-		console.log('kickAction OFF', data, this.name);
 		return false;
-	} else {
-		console.log('kickAction OK', data, this.name);
 	}
+
+	common.animationDefault();
+	
+	console.log('KICK', data.eventData);
 
 	// var _toDeck = Deck.Deck(data.actionData.to);
 	// TODO CURRENT
-	var _from = data.eventData.to,
+	let _from = typeof data.eventData.to == "string"
+			? Deck.Deck(data.eventData.to)
+			: data.eventData.to,
 		_deck = _from.getCardsNames();
-
+	
 	// TODO interval
-
-	forceMove({
-		from : _from,             // this.name,
+	let forceMoveParams = {
+		from : _from,             // deck
 		to   : data.actionData.to,// _decks[deckId].name,
 		deck : _deck,             // [_cardName],
 		flip : true               // true
-	});
+	};
+	if(typeof data.eventData.callback == "function") {
+		forceMoveParams.callback = data.eventData.callback;
+	}
+	forceMove(forceMoveParams);
 
 	// event.dispatch('historyAdd', {});
 	History.add({

@@ -32,7 +32,7 @@ class deckClass {
 		
 		this.getTopCard = function() {
 
-			if(this.cards.length == 0) { return false; };
+			if(this.cards.length === 0) { return false; }
 			return this.cards[this.cards.length - 1];
 		}
 		
@@ -126,11 +126,11 @@ class deckClass {
 		
 		// порядок карт в колоде
 		var padding = a.paddingX || a.paddingY
-			? paddingTypes['special'] 
+			? paddingTypes.special 
 			: a.paddingType 
 				? (typeof a.paddingType == 'string' && paddingTypes[a.paddingType]) 
 					? paddingTypes[a.paddingType] 
-					: paddingTypes['none']
+					: paddingTypes.none
 				: paddingTypes[defaults.paddingType];
 
 		this.padding = function(index) {
@@ -143,7 +143,7 @@ class deckClass {
 		if(a.actions) {
 			this.actions = a.actions;
 			deckActions.addActions.call(this);
-		};
+		}
 
 		this.afterStep = a.afterStep;
 
@@ -153,7 +153,7 @@ class deckClass {
 			this.relations = a.relations;
 		} else {
 			this.relations = [];
-		};
+		}
 
 		// --
 		
@@ -234,7 +234,7 @@ class deckClass {
 		_deck.reverse();
 
 		// что делать если вынули все карты
-		if(this.autoHide && this.cards.length == 0) {
+		if(this.autoHide && this.cards.length === 0) {
 			this.hide();
 		}
 		
@@ -302,7 +302,7 @@ class deckClass {
 		var _cardsNames = [];
 		for(var i in this.cards) {
 			_cardsNames.push(this.cards[i].name);
-		};
+		}
 		return _cardsNames;
 	}
 

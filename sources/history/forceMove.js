@@ -9,7 +9,9 @@ import Tips     from 'tips';
 
 export default function(a) {
 
-	var _animation = share.get('animation');
+	// var _animation = share.get('animation');
+	
+	console.log('forceMove');
 
 	if(!a.from || !a.to || !a.deck) {
 		return;
@@ -33,7 +35,7 @@ export default function(a) {
 	var _from_deck = _from.cards;
 	
 
-	for(var i in _from_deck) {
+	for(let i in _from_deck) {
 		
 		if(i >= _from_deck.length - a.deck.length) {
 			var _id = i - (_from_deck.length|0) + (a.deck.length|0);
@@ -49,33 +51,36 @@ export default function(a) {
 
 		// перевернуть карты во время хода
 		if(a.flip) {
-			for(var i in _pop) {
+			for(let i in _pop) {
 				_pop[i].flip = !_pop[i].flip;
 			}
 		}
 
 		_to.Push(_pop);
 		
-		if(_animation) {
+		// if(_animation) {
 
-			var __pop = [];
-			for(var i in _pop) {
-				__pop.push({
-					card : _pop[i]
-				});
-			}
-
-			event.dispatch('moveDragDeck', {
-				departure   : _from,
-				destination : _to,
-				moveDeck    : __pop,
-				// callback : function() {}
+		var __pop = [];
+		for(var i in _pop) {
+			__pop.push({
+				card : _pop[i]
 			});
-			
-		} else {
-			_from.Redraw();
-			_to  .Redraw();
 		}
+
+		let moveDragDeckParams = {
+			departure   : _from,
+			destination : _to,
+			moveDeck    : __pop
+		};
+		if(typeof a.callback == "function") {
+			moveDragDeckParams.callback = a.callback;
+		}
+		event.dispatch('moveDragDeck', moveDragDeckParams);
+			
+		// } else {
+		// 	_from.Redraw();
+		// 	_to  .Redraw();
+		// }
 
 
 
@@ -83,5 +88,4 @@ export default function(a) {
 		// _warn(4);
 		console.warn("forceMove:Ход невозможен", a);
 	}
-
-};
+}

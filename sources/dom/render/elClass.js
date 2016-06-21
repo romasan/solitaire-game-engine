@@ -130,6 +130,9 @@ export default class elClass {
 	}
 // --
 	animate(params, animationTime, callback, animationName) {
+
+		var _animation = share.get('animation');
+		console.log('animate', _animation);
 		
 		typeof animationTime == "undefined" && (animationTime = defaults.animationTime);
 		typeof animationTime == "function"  && (callback = animationTime, animationTime = defaults.animationTime);
