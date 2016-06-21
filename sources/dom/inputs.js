@@ -159,10 +159,13 @@ var cmove = function(x, y) {
 
 var cend = function(target, x, y, dbclick) {
 
+
     var _startCursor = share.get('startCursor'),
-    	_dragDeck    = share.get('dragDeck');
+        _dragDeck    = share.get('dragDeck');
     
     if(!_dragDeck || !_startCursor) return;
+
+    console.log('CEND');
 
 	var _deck = common.getElementById(_dragDeck[0].card.parent);
 	

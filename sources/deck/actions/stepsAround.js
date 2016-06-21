@@ -35,11 +35,14 @@ export default function(data) {// {actionData, eventData, eventName}
 				_runStack.push(_relations[i]);
 			}
 		}
-
+		let _counter = _runStack.length;
 		for(let i in _runStack) {
 			let _data = Object.assign({}, _relations[i]);
 			_data.callback = ()=>{
-				console.log('--- .:|:. ---');
+				_counter -= 1;
+				if(_counter === 0) {
+					console.log('--- .:|:. ---');
+				}
 			}
 			event.dispatch(data.actionData.run, _data);
 		}
