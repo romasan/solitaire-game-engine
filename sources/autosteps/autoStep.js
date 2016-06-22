@@ -5,7 +5,7 @@ import share  from 'share';
 import common from 'common';
 
 export default class {
-	
+
 	constructor(params) {
 
 		if(typeof params.groups != "undefined") {
@@ -15,7 +15,7 @@ export default class {
 		if(typeof params.event == "string") {
 			event.listen(params.event, this.start);
 		}
-		
+
 		if(typeof params.dispatch == "string") {
 			this.dispatch = params.dispatch;
 		}
@@ -33,9 +33,27 @@ export default class {
 					share.get('stepType') == params._stepType &&
 					common.deckInGroups(deck, this.groups)
 				) {
-						this.manual(deck);
+					this.manual(deck);
 				}
 			});
 		}
+
+		if(!params.autoStep) {
+			console.log(">>>#1");
+			event.listen('moveEnd', (data)=>{
+				console.log(">>>#2");
+				this.check(data);
+			});
+		}
+
 	}
+
+	start() {}
+	
+	check() {}
+	
+	auto() {}
+	
+	manual(data) {}
+	
 }

@@ -22,8 +22,8 @@ const params = {
 	"paddingY"     : {type: "any"    },
 	"flipPaddingX" : {type: "any"    },
 	"flipPaddingY" : {type: "any"    },
-	"actions"      : {type: "any"    },
-	"afterStep"    : {type: "boolean"}
+	"actions"      : {type: "any"    }
+//  "afterStep"    : {type: "boolean"}
 };
 
 class groupClass {

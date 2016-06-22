@@ -13,8 +13,6 @@ var winCheck = function(params) {
 	var _hasMetods = false;
 	var _winCheck = share.get('winCheck');// _field.winCheck
 	
-	console.log('winCheck', params, _winCheck);
-
 	for(var ruleName in _winCheck.rules) {
 		_hasMetods = true;
 		
@@ -40,6 +38,9 @@ var winCheck = function(params) {
 		
 		// show you win message
 		event.dispatch('win', params);
+
+		console.log('--- W I N ---');
+
 		return true;
 	}
 

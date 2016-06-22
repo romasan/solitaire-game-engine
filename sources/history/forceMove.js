@@ -11,8 +11,6 @@ export default function(a) {
 
 	// var _animation = share.get('animation');
 	
-	console.log('forceMove');
-
 	if(!a.from || !a.to || !a.deck) {
 		return;
 	}

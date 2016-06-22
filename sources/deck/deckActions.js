@@ -6,15 +6,15 @@ import defaults from 'defaults';
 import common   from 'common';
 
 // Actions
-import twindeckAction   from 'twindeckAction';
-import dealerdeckAction from 'dealerdeckAction';
-import kickAction       from 'kickAction';
-import stepsAround      from 'stepsAround';
+import twindeck    from 'twindeckAction';
+import dealerdeck  from 'dealerdeckAction';
+import kickAction  from 'kickAction';
+import stepsAround from 'stepsAroundAction';
 
 var _actions = {
-	"twindeck"    : twindeckAction  ,
-	"dealerdeck"  : dealerdeckAction,
-	"kick"        : kickAction      ,
+	"twindeck"    : twindeck   ,
+	"dealerdeck"  : dealerdeck ,
+	"kick"        : kickAction ,
 	"stepsAround" : stepsAround     
 };
 

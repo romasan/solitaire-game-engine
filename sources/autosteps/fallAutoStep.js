@@ -5,10 +5,14 @@ import defaults from 'defaults';
 import event    from 'event';
 
 import autoStep from 'autoStep';
+import Deck     from 'addDeck';
+import Tips     from 'tips';
 
 // Fall auto step
-const _stepType = 'fall',
-	  	_click    = false;
+const _stepType = 'fallAutoStep',// название для хода (заменяет стандартный ход) для deckPut важно чтобы было равно названию автохода
+      _click    = false;         // false - использовать стандартный ход
+                                 // true  - действие по клику (по стопке из наблюдаемых групп)
+                                 // по умолчанию false
 
 export default class fallAutoStep extends autoStep {
 
@@ -18,7 +22,7 @@ export default class fallAutoStep extends autoStep {
 		if(!params) {
 			params = {};
 		}
-		
+
 		params._stepType = _stepType;
 		params._click    = _click;
 
@@ -28,44 +32,76 @@ export default class fallAutoStep extends autoStep {
 	}
 
 	start() {
-		
+
+		super.start();
+		console.log('fallAutoStep:start', this);
+
 		if(this.autoStep) {
 			this.auto();
 		} else {
 			share.set('stepType', _stepType);
 		}
 
+		// Tips.checkTips();
+		this.check();
 	}
 
+	// есть ли ещё ходы этого типа
 	check() {
-		// if (_cant_fall) {
-		// 	share.set('stepType', defaults.stepType);
-		// }
+
+		super.check();
+		console.log('--- fallAutoStep:check ---');
+
+		Tips.checkTips();
+
+		let _tips = Tips.getTips();
+
+		if(_tips.length === 0) {
+			share.set('stepType', defaults.stepType);
+			Tips.checkTips();
+		}
 	}
 
 	auto() {
-		// fall lines
+
+		super.auto();
+		console.log('fallAutoStep:auto');
+		// fall lines auto
+
+		// get groups
+			// get fall directions ???
+			// get decks
+			// get fall relations
+
+		// OR getTips + random ???
+
+		// share.set('stepType', defaults.stepType);
 	}
 
 	// manual если autostep = false
 	// если click = true, вручную отрабатываем перемещения карт возвращаем false
 	// если click = false то отрабатывается move а здесь проверка возможен ли ход
-	manual(putDeck) {//by move
+	manual(data) {
 
+		super.manual();
 		
 		// empty
 		// check fall
 		// this.check();
+		let _from = Deck.getDeckById(data.putDeck[0].card.parent),
+		    _to   = data.to;
 
-		console.log('fallAutoStep:manual');
+		let _relations = _from.getRelationsByName('fall', {from: null});
 
-		return false;
-	}
+		for(let i in _relations) {
+			if(
+				_relations[i].to == _to.name &&
+				_to.cardsCount() === 0
+			) {
+				return true;
+			}
+		}
 
-	putCheck(putDeck) {
-		
-		console.log('fallAutoStep:putCheck', putDeck);
-		
 		return false;
 	}
 }

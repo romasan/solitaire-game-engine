@@ -25,8 +25,6 @@ export default function(data) {
 
 	common.animationDefault();
 	
-	console.log('KICK', data.eventData);
-
 	// var _toDeck = Deck.Deck(data.actionData.to);
 	// TODO CURRENT
 	let _from = typeof data.eventData.to == "string"

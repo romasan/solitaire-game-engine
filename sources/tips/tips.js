@@ -26,15 +26,15 @@ var getTips = function() {
 }
 
 var checkTips = function() {
-	
+
 	console.log('check tips');
 
 	if(share.get('noTips')) { return false; }
-	
+
 	event.dispatch('hideTips');
 
 	var _decks = Deck.getDecks({visible : true});
-	
+
 	_tips = allToAll({
 		decks : _decks
 	});
@@ -50,16 +50,15 @@ var checkTips = function() {
 			// TODO инициализировать "hideTipsInDom" в Field.js 
 			if(
 				(
-			 	_tips[i].to.count === 0       &&
-				_field.tipsParams.hideOnEmpty
-			 	) ||
+					_tips[i].to.count === 0                             &&
+					_field.tipsParams.hideOnEmpty
+				)                                                     ||
 				(
-			 	_field.tipsParams.excludeHomeGroups &&
-				_homeGroups                         &&
-				_homeGroups.length                  &&
-			 
-				_homeGroups.indexOf(_tips[i].from.deck.parent) >= 0
-			 	)
+					_field.tipsParams.excludeHomeGroups                 &&
+					_homeGroups                                         &&
+					_homeGroups.length                                  &&
+					_homeGroups.indexOf(_tips[i].from.deck.parent) >= 0
+				)
 			) {
 				// ?#$%&!
 			} else {

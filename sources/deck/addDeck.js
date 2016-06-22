@@ -145,7 +145,7 @@ class deckClass {
 			deckActions.addActions.call(this);
 		}
 
-		this.afterStep = a.afterStep;
+		// this.afterStep = a.afterStep;
 
 		// ------------ RELATIONS ------------
 
@@ -304,6 +304,10 @@ class deckClass {
 			_cardsNames.push(this.cards[i].name);
 		}
 		return _cardsNames;
+	}
+
+	cardsCount() {
+		return this.cards.length;
 	}
 
 	getRelationsByName(relationName, filter) {

@@ -3,7 +3,7 @@
 var data = {};
 
 export default new function() {
-	
+
 	this.get = function(name) {
 		if(typeof data[name] != "undefined") {
 			// TODO решить наконец проблему, 
@@ -16,11 +16,17 @@ export default new function() {
 		}
 	};
 
-	this.set = function(name, _data) {
+	this.set = function(name, _data, forceClone) {
 
 		if(typeof name == "string") {
 			
-			data[name] = _data;
+			if(
+				typeof forceClone == "boolean" && forceClone
+			) {
+				data[name] = Object.assign({}, _data);
+			} else {
+				data[name] = _data;
+			}
 			// event.dispatch('shareSet', {name : _data});
 		
 		} else if(name instanceof Object && typeof _data == "undefined") {

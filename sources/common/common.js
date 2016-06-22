@@ -13,17 +13,22 @@ import preferencesEvents  from 'preferencesEvents';
 import defaultPreferences from 'defaultPreferences';
 
 event.listen('gameInit', (e)=>{
+	
 	if(!e.firstInit) {return;};
 	drawPreferences();
 	preferencesEvents();
 });
 
 event.listen('gameInited', ()=>{
+	
 	defaultPreferences();
 });
 
 event.listen("finalStep", ()=>{
+	
+	share.set('stepType', defaults.stepType);
 	event.dispatch("makeStep", History.get());
+	// Tips.checkTips();
 });
 
 // drawPreferences();
@@ -72,9 +77,16 @@ var isCurLock = function() {
 
 
 var curLock = function() {
+	// !window.debug_i && (window.debug_i = 0);
+	// window.debug_i += 1;
+	// console.log('>>> curLock', window.debug_i);
+	// if(window.debug_i == 2) {
+	// 	throw new Error('z');
+	// }
 	share.set('curLockState', true);
 }
 var curUnLock = function() {
+	// console.log('>>> curUnLock');
 	share.set('curLockState', false);
 }
 
@@ -201,10 +213,11 @@ let deckInGroups = (deck, groups)=>{
 
 share.set('stepType', defaults.stepType);
 
-let clearInput = ()=>{
-    share.set('dragDeck',    null);
-    share.set('startCursor', null);
-}
+// let clearInput = ()=>{
+//     share.set('dragDeck',    null);
+//     share.set('startCursor', null);
+// 		console.log('clearInput');
+// }
 
 // share.set('lang', defaults.lang);
 
@@ -224,6 +237,5 @@ export default {
 	animationOff     ,
 	animationDefault ,
 	deckInGroups     ,
-	clearInput       ,
 	sqr              
 };
