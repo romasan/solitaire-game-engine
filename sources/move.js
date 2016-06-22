@@ -48,8 +48,8 @@ var Move = function(moveDeck, to, cursorMove) {
 	if(
 		!cursorMove.dbclick           &&
 		cursorMove.distance === 0     &&
-		share.get('moveDistance') > 0
-//	_stepType == defaults.stepType
+		share.get('moveDistance') > 0 &&
+		_stepType == defaults.stepType
 	) {
 		// кликнули один раз
 		// чтобы сделать ход нужно переместить карту стопку (moveDistance != 0)

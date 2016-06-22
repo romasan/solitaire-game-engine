@@ -13,47 +13,50 @@ export default class {
 		}
 		
 		if(typeof params.event == "string") {
-			event.listen(params.event, this.start);
+			this.event = params.event;
 		}
 
 		if(typeof params.dispatch == "string") {
 			this.dispatch = params.dispatch;
 		}
 
-		this.autoStep = params._autoStep;
-
-		if(
-			!params.autoStep &&
-			params.click
-		) {
-
-			// TODO move
-			event.listen('click', (deck)=>{
-				if(
-					share.get('stepType') == params._stepType &&
-					common.deckInGroups(deck, this.groups)
-				) {
-					this.manual(deck);
-				}
-			});
+		if(typeof params.autoStep == "boolean") {
+			this.autoStep = params.autoStep;
 		}
-
-		if(!params.autoStep) {
-			console.log(">>>#1");
-			event.listen('moveEnd', (data)=>{
-				console.log(">>>#2");
-				this.check(data);
-			});
-		}
-
 	}
 
-	start() {}
-	
-	check() {}
-	
-	auto() {}
-	
-	manual(data) {}
-	
+	start() {
+		
+		share.set('stepType', this.stepType);
+
+		if(this.autoStep) {
+			this.auto();
+		} else {
+			this.check();
+		}
+	}
+
+	end() {
+
+		if(this.dispatch) {
+			event.dispatch(this.dispatch);
+		}
+	}
+
+	init(stepType) {
+
+		this.stepType = stepType;
+
+		if(this.event) {
+			event.listen(this.event, ()=>{
+				this.start();
+			});
+		}
+		
+		if(!this.autoStep) {
+			event.listen('moveEnd', ()=>{
+				this.check();
+			});
+		}
+	}
 }
