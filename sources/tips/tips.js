@@ -37,6 +37,15 @@ var checkTips = function() {
 		decks : _decks
 	});
 
+	if(
+		_tips.length === 0                         &&
+		share.get('stepType') == defaults.stepType
+	) {
+		
+		event.dispatch('noTips');
+		console.log('GAME OVER, tips count: 0')
+	}
+
 	// var _showTips = share.get('showTips')
 	if(_showTips) {
 

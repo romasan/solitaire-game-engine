@@ -39,7 +39,7 @@ var winCheck = function(params) {
 		// show you win message
 		event.dispatch('win', params);
 
-		console.log('--- W I N ---');
+		console.log('WIN');
 
 		return true;
 	}
