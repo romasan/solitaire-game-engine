@@ -27,6 +27,10 @@ export default function(data) {// {actionData, eventData, eventName}
 	let _relations = this.getRelationsByName('around', {from: null});
 	let _tips = Tips.getTips();
 
+	if(typeof data.actionData.action == "string") {
+	
+	}
+
 	if(typeof data.actionData.run == "string") {
 
 		let _central = typeof data.actionData.central == "boolean" ? data.actionData.central : true;

@@ -9,6 +9,8 @@ import Deck      from 'addDeck';
 
 export default function(data) {
 	
+	console.log(this);
+
 	if(
 		typeof data.eventData.to == "string" &&
 		this.name != data.eventData.to

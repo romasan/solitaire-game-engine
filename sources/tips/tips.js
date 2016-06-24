@@ -111,7 +111,7 @@ event.listen('tipsOFF', hideTips);
 
 var tipsMove = function(a) {
 
-	if(!share.showTipPriority) return;
+	if(!share.get('showTipPriority')) { return; }
 
 	event.dispatch('hideTips', {types : ['tipPriority']});
 
