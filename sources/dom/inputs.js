@@ -206,41 +206,43 @@ var cend = function(target, x, y, dbclick) {
 }
 
 // -------------------------------------------------------------------------------------------------------------
+try {
 
-document.onmousedown = function(e) {
-	if(e.button != 0) return;
-	cdown(e.target, e.clientX, e.clientY);
-};
+	document.onmousedown = function(e) {
+		if(e.button !== 0) { return; }
+		cdown(e.target, e.clientX, e.clientY);
+	};
 
-document.onmousemove = function(e) {
-	cmove(e.clientX, e.clientY);
-};
+	document.onmousemove = function(e) {
+		cmove(e.clientX, e.clientY);
+	};
 
-document.onmouseup = function(e) {
-	cend(e.target, e.clientX, e.clientY);
-};
+	document.onmouseup = function(e) {
+		cend(e.target, e.clientX, e.clientY);
+	};
 
-document.ondblclick = function(e) {
-	cdown(e.target, e.clientX, e.clientY);
-	cend(e.target, e.clientX, e.clientY, true);
-	common.curUnLock();
-};
+	document.ondblclick = function(e) {
+		cdown(e.target, e.clientX, e.clientY);
+		cend(e.target, e.clientX, e.clientY, true);
+		common.curUnLock();
+	};
 
-document.addEventListener('touchstart', function(e) {
-	// e.preventDefault()
-	cdown(e.target, e.touches[0].clientX, e.touches[0].clientY)
-}, false);
+	document.addEventListener('touchstart', function(e) {
+		// e.preventDefault()
+		cdown(e.target, e.touches[0].clientX, e.touches[0].clientY)
+	}, false);
 
-document.addEventListener('touchmove', function(e) {
+	document.addEventListener('touchmove', function(e) {
 
-	if(share.startCursor) {
-		e.preventDefault();
-	}
+		if(share.startCursor) {
+			e.preventDefault();
+		}
 
-	cmove(e.touches[0].clientX, e.touches[0].clientY)
-}, false);
+		cmove(e.touches[0].clientX, e.touches[0].clientY)
+	}, false);
 
-document.addEventListener('touchend', function(e) {
-	// e.preventDefault()
-	cend(e.changedTouches[0].target, e.changedTouches[0].clientX, e.changedTouches[0].clientY);
-}, false);
+	document.addEventListener('touchend', function(e) {
+		// e.preventDefault()
+		cend(e.changedTouches[0].target, e.changedTouches[0].clientX, e.changedTouches[0].clientY);
+	}, false);
+} catch(e) {}

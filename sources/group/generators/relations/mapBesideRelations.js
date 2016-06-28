@@ -1,6 +1,6 @@
 'use strict';
 
-import mapRelationsCommon from 'mapRelationsCommon';
+import mapCommon from 'mapCommon';
 
 let getBeside = (_x, _y, mapSize, map, el, type)=>{
 
@@ -8,27 +8,27 @@ let getBeside = (_x, _y, mapSize, map, el, type)=>{
 
 		switch(el[type]) {
 			case 'left':
-				var x = _x + mapRelationsCommon.beSide.left.x,
-					y = _y + mapRelationsCommon.beSide.left.y;
-				return mapRelationsCommon.exist(x, y, mapSize, map)
+				var x = _x + mapCommon.beSide.left.x,
+					y = _y + mapCommon.beSide.left.y;
+				return mapCommon.exist(x, y, mapSize, map)
 			 		? map[y][x].name
 			 		: null;
 			case 'rigth':
-				var x = _x + mapRelationsCommon.beSide.rigth.x,
-					y = _y + mapRelationsCommon.beSide.rigth.y;
-				return mapRelationsCommon.exist(x, y, mapSize, map)
+				var x = _x + mapCommon.beSide.rigth.x,
+					y = _y + mapCommon.beSide.rigth.y;
+				return mapCommon.exist(x, y, mapSize, map)
 			 		? map[y][x].name
 			 		: null;
 			case 'up':
-				var x = _x + mapRelationsCommon.beSide.up.x,
-					y = _y + mapRelationsCommon.beSide.up.y;
-				return mapRelationsCommon.exist(x, y, mapSize, map)
+				var x = _x + mapCommon.beSide.up.x,
+					y = _y + mapCommon.beSide.up.y;
+				return mapCommon.exist(x, y, mapSize, map)
 			 		? map[y][x].name
 			 		: null;
 			case 'down':
-				var x = _x + mapRelationsCommon.beSide.down.x,
-					y = _y + mapRelationsCommon.beSide.down.y;
-				return mapRelationsCommon.exist(x, y, mapSize, map)
+				var x = _x + mapCommon.beSide.down.x,
+					y = _y + mapCommon.beSide.down.y;
+				return mapCommon.exist(x, y, mapSize, map)
 			 		? map[y][x].name
 			 		: null;
 			default:

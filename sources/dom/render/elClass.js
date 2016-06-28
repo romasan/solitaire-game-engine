@@ -106,7 +106,7 @@ export default class elClass {
 	
 			if(el.el) {
 				el = el.el;
-			};
+			}
 			this.el.appendChild(el);
 			return this;
 		} catch(e) {}
@@ -117,11 +117,11 @@ export default class elClass {
 	
 			if(typeof el == "undefined") {
 				return this.el.innerHTML;
-			};
+			}
 			
 			if(el.el) {
 				el = el.el;
-			};
+			}
 			
 			this.el.innerHTML = el;
 			
@@ -131,58 +131,60 @@ export default class elClass {
 // --
 	animate(params, animationTime, callback, animationName) {
 
-		var _animation = share.get('animation');
-		
-		typeof animationTime == "undefined" && (animationTime = defaults.animationTime);
-		typeof animationTime == "function"  && (callback = animationTime, animationTime = defaults.animationTime);
-		typeof callback      == "string"    && (animationName = callback, callback = null);
-		
-		// Thread
-		setTimeout(()=>{
+		try {
+			var _animation = share.get('animation');
 
-			if(_animation) {
-				this.css({transition: (animationTime / 1000) + 's'});
-			}
-			
-			let counter = 0;
-			for(var attrName in params) {
-				if(this.el.style[attrName] != params[attrName]) {
-					counter += 1;
+			typeof animationTime == "undefined" && (animationTime = defaults.animationTime);
+			typeof animationTime == "function"  && (callback = animationTime, animationTime = defaults.animationTime);
+			typeof callback      == "string"    && (animationName = callback, callback = null);
+
+			// Thread
+			setTimeout(()=>{
+
+				if(_animation) {
+					this.css({transition: (animationTime / 1000) + 's'});
 				}
-				this.el.style[attrName] = params[attrName];
-			}
-			
-			if(_animation) {
-				
-				this.addClass("animated");
 
-				this.el.addEventListener("transitionend", ()=>{
-					counter -= 1;
+				let counter = 0;
+				for(var attrName in params) {
+					if(this.el.style[attrName] != params[attrName]) {
+						counter += 1;
+					}
+					this.el.style[attrName] = params[attrName];
+				}
+
+				if(_animation) {
+
+					this.addClass("animated");
+
+					this.el.addEventListener("transitionend", ()=>{
+						counter -= 1;
+
+						// event.dispatch('animationEnd', this);
+
+						if(!counter) {
+
+							this.removeClass("animated");
+							this.css({transition: null});
+							if(typeof callback == "function") {
+								callback();
+							}
+							event.dispatch('allAnimationsEnd', animationName);
+						}
+
+					}, false);
+				} else {
 
 					// event.dispatch('animationEnd', this);
-					
-					if(!counter) {
-					
-						this.removeClass("animated");
-						this.css({transition: null});
-						if(typeof callback == "function") {
-							callback();
-						}
-						event.dispatch('allAnimationsEnd', animationName);
+
+					if(typeof callback == "function") {
+						callback();
 					}
 
-				}, false);
-			} else {
-
-				// event.dispatch('animationEnd', this);
-				
-				if(typeof callback == "function") {
-					callback();
+					event.dispatch('allAnimationsEnd', animationName);
 				}
-
-				event.dispatch('allAnimationsEnd', animationName);
-			}
-		}, 0);
+			}, 0);
+		} catch(e) {}
 	}
 	/*animate(params, animationTime, callback) {
 
@@ -313,4 +315,4 @@ export default class elClass {
 	click(callback) {
 		this.event(callback);
 	}
-};
+}

@@ -145,10 +145,11 @@ var validateCardName = function(name, nolog) {
 	 && defaults.card.ranks.indexOf(rank) >= 0
 	) {
 		return {
-			suit  : suit, 
-			rank  : rank,
-			color : color,
-			value : value
+			suit , 
+			rank ,
+			color,
+			value,
+			name 
 		}
 	} else {
 		console.warn('Warning: validate name:', name, '- incorrect');

@@ -18,27 +18,30 @@ var _allEl = (e)=>{
 
 	if(!e) {
 		throw new Error("elRender:empty arguments");
-	};
-
+	}
+	
 	if(typeof e == "string") {
+
+		try {
+			if(e[0] == "#") {
+				let _element = document.getElementById(e.slice(1, Infinity));
+				return new elClass(_element);
+			} else if(e[0] == ".") {
+				let _elements = document.getElementsByClassName(e.slice(1, Infinity));
+				return new allElClass(_elements);
+			} else if(e[0] == "<") {
+				let _temp = document.createElement('temp');
+				_temp.innerHTML = e;
+				let _element = _temp.children[0];
+				return new elClass(_element);
+			}
+		} catch(e) {}
 		
-		if(e[0] == "#") {
-			var _element = document.getElementById(e.slice(1, Infinity));
-			return new elClass(_element);
-		} else if(e[0] == ".") {
-			var _elements = document.getElementsByClassName(e.slice(1, Infinity));
-			return new allElClass(_elements);
-		} else if(e[0] == "<") {
-			var _temp = document.createElement('temp');
-			_temp.innerHTML = e;
-			var _element = _temp.children[0];
-			return new elClass(_element);
-		}
 	} else if(e.el || e.elements) {
 		return e;
 	} else {
 		return new elClass(e);
-	};
+	}
 };
 
 _allEl.stopAnimations = (callback)=>{

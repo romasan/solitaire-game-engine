@@ -7,20 +7,7 @@
 import defaults from "defaults";
 
 import relationsGenerator from "relationsGenerator";
-
-let mapSize = (map)=>{
-	
-	let _mapSize = {
-		width  : map[0].length,//MAX LENGTH
-		height : map   .length
-	};
-	
-	map.forEach(function(e) {
-		_mapSize.width = Math.max(_mapSize.width, e.length);
-	});
-
-	return _mapSize;
-};
+import mapCommon          from "mapCommon";
 
 // var getName = (el)=>{
 // 	return typeof el == "string" ? el : typeof el != "undefined" && typeof el.name == "string" ? el.name : null;
@@ -54,7 +41,7 @@ export default function(e) {
 
 	var _index = 1;
 
-	var _mapSize = mapSize(e.map);
+	var _mapSize = mapCommon.mapSize(e.map);
 
 	// {name: 'groupName_deck_0_0'}
 	for(var y in e.map) {

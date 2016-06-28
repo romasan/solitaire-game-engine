@@ -1,6 +1,6 @@
 'use strict';
 
-import mapRelationsCommon from 'mapRelationsCommon';
+import mapCommon from 'mapCommon';
 
 // map froup generator fall relations
 
@@ -37,9 +37,9 @@ export default (e)=>{// {x, y, map, mapSize, el, data}
 	for(let i in _directions) {
 		switch(_directions[i]) {
 			case 'left' :
-				var x = (e.x|0) + mapRelationsCommon.beSide.left.x,
-					y = (e.y|0) + mapRelationsCommon.beSide.left.y;
-				if(mapRelationsCommon.exist(x, y, e.mapSize, e.map)) {
+				var x = (e.x|0) + mapCommon.beSide.left.x,
+					y = (e.y|0) + mapCommon.beSide.left.y;
+				if(mapCommon.exist(x, y, e.mapSize, e.map)) {
 					_relations.push({
 						name      : 'fall',
 						direction : 'left',
@@ -48,9 +48,9 @@ export default (e)=>{// {x, y, map, mapSize, el, data}
 				}
 				break;
 			case 'right':
-				var x = (e.x|0) + mapRelationsCommon.beSide.right.x,
-					y = (e.y|0) + mapRelationsCommon.beSide.right.y;
-				if(mapRelationsCommon.exist(x, y, e.mapSize, e.map)) {
+				var x = (e.x|0) + mapCommon.beSide.right.x,
+					y = (e.y|0) + mapCommon.beSide.right.y;
+				if(mapCommon.exist(x, y, e.mapSize, e.map)) {
 					_relations.push({
 						name      : 'fall',
 						direction : 'right',
@@ -59,9 +59,9 @@ export default (e)=>{// {x, y, map, mapSize, el, data}
 				}
 				break;
 			case 'up'   :
-				var x = (e.x|0) + mapRelationsCommon.beSide.up.x,
-					y = (e.y|0) + mapRelationsCommon.beSide.up.y;
-				if(mapRelationsCommon.exist(x, y, e.mapSize, e.map)) {
+				var x = (e.x|0) + mapCommon.beSide.up.x,
+					y = (e.y|0) + mapCommon.beSide.up.y;
+				if(mapCommon.exist(x, y, e.mapSize, e.map)) {
 					_relations.push({
 						name      : 'fall',
 						direction : 'up',
@@ -70,9 +70,9 @@ export default (e)=>{// {x, y, map, mapSize, el, data}
 				}
 				break;
 			case 'down' :
-				var x = (e.x|0) + mapRelationsCommon.beSide.down.x,
-					y = (e.y|0) + mapRelationsCommon.beSide.down.y;
-				if(mapRelationsCommon.exist(x, y, e.mapSize, e.map)) {
+				var x = (e.x|0) + mapCommon.beSide.down.x,
+					y = (e.y|0) + mapCommon.beSide.down.y;
+				if(mapCommon.exist(x, y, e.mapSize, e.map)) {
 					_relations.push({
 						name      : 'fall',
 						direction : 'down',

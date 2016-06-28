@@ -1,10 +1,13 @@
 'use strict';
 
-import event         from 'event';
-import common        from 'common';
+import event    from 'event';
+import common   from 'common';
+import defaults from 'defaults';
 
 import deckGenerator from 'deckGenerator';
 import elRender      from 'elRender';
+
+import mapCommon from 'mapCommon';
 
 import renderTest from 'renderTest';
 
@@ -95,5 +98,9 @@ export default {
 	debugHistory,
 	debugHistoryMgr,
 	validateCardName : common.validateCardName,
-	elRender
+	elRender,
+	defaults,
+	groupGenerators : {
+		mapCommon
+	}
 };
