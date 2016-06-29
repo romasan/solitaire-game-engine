@@ -17,8 +17,6 @@ let endAction = ()=>{
 
 export default function(data) {// {actionData, eventData, eventName}
 
-console.log('stepsAround');
-
 	let _stepType = share.get('stepType');
 	if(_stepType != defaults.stepType) { return; };
 
@@ -33,6 +31,9 @@ console.log('stepsAround');
 	
 	}
 
+	// выполняется для всех вокруг
+	// ход не делается
+	// вместо хода выполняется едействие для текущей стопки (если _central, по умолчанию true)
 	if(typeof data.actionData.run == "string") {
 
 		let _central = typeof data.actionData.central == "boolean" ? data.actionData.central : true;
@@ -83,8 +84,20 @@ console.log('stepsAround');
 			_data.callback = _callback;
 			event.dispatch(data.actionData.run, _data);
 		}
-	} else {
 
+	// выполняется после хода 
+	} else {
+		
 		endAction();
+		
+		if(data.actionData.dispatch) {
+			
+			event.dispatch(data.actionData.dispatch, data.eventData);
+			
+			// event.dispatch(data.actionData.dispatch, {
+			// 	to: data.eventData[0].move.to
+			// });
+		}
+
 	}
 };

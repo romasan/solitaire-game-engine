@@ -33,6 +33,11 @@ export default class fallAutoStep extends autoStep {
 		}
 	}
 
+	// start() {
+	// 	super.start();
+	// 	console.log('FALL AUTO STEP');
+	// }
+
 	auto() {
 
 		console.log('fallAutoStep:auto');

@@ -81,7 +81,6 @@ var cdown = function(target, x, y) {
 			event.dispatch('click', _deck);
 		}
 		
-		console.log('click', common.isCurLock());
 		// _deck.runActions();
 
 		// TODO
@@ -156,6 +155,8 @@ var cmove = function(x, y) {
 // -------------------------------------------------------------------------------------------------------------
 
 var cend = function(target, x, y, dbclick) {
+
+	console.log('cend', share.get('stepType'));
 
 	if(common.isCurLock()) { return; }
 

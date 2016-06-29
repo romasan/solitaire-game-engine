@@ -75,6 +75,8 @@ var Field = function(data) {
 		Tips.hideTips({init : true});
 	}
 
+	share.set('stepType', defaults.stepType);
+
 	share.set(
 		'showTipsDestination', 
 		typeof a.showTipsDestination == 'boolean' 
