@@ -46,6 +46,7 @@ event.listen('redo', function() {
 
 var cdown = function(target, x, y) {
 
+
 	share.set('dragDeck',    null);
 	share.set('startCursor', null);
 
@@ -80,6 +81,7 @@ var cdown = function(target, x, y) {
 			event.dispatch('click', _deck);
 		}
 		
+		console.log('click', common.isCurLock());
 		// _deck.runActions();
 
 		// TODO

@@ -17,6 +17,8 @@ let endAction = ()=>{
 
 export default function(data) {// {actionData, eventData, eventName}
 
+console.log('stepsAround');
+
 	let _stepType = share.get('stepType');
 	if(_stepType != defaults.stepType) { return; };
 

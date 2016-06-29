@@ -57,7 +57,11 @@ export default class elClass {
 	}
 // --	
 	removeClass(className) {
+
+		if(!this.el || !this.el.className) return this;
+		
 		try {
+
 			var _classes = this.el.className.split(' ');
 			
 			if(this.hasClass(className)) {
@@ -76,6 +80,9 @@ export default class elClass {
 	}
 // --	
 	css(a) {
+
+		if(!this.el) return this;
+
 		try {
 	
 			for(var attrName in a) {

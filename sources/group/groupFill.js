@@ -69,7 +69,7 @@ export default function(cardNames) {
 	 	for(var i in cardNames) {
 	 		if(i < deckIndex.length) {
 
-	 			console.log('fillDeck', deckIndex[i].name, cardNames[i]);
+	 			// console.log('fillDeck', deckIndex[i].name, cardNames[i]);
 
 	 			this.decks[deckIndex[i]].Fill(cardNames[i]);
 	 		};
