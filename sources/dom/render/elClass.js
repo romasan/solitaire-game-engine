@@ -1,5 +1,6 @@
 'use strict';
 
+import event    from 'event';
 import share    from 'share';
 import defaults from 'defaults';
 
@@ -11,7 +12,6 @@ export default class elClass {
 		
 		if(!e) {
 			// if(window._debug) throw new Error("test");
-			// console.warn("elClass: empty arrtibutes;");
 			this.el = null;
 		}
 	}
@@ -57,7 +57,11 @@ export default class elClass {
 	}
 // --	
 	removeClass(className) {
+
+		if(!this.el || !this.el.className) return this;
+		
 		try {
+
 			var _classes = this.el.className.split(' ');
 			
 			if(this.hasClass(className)) {
@@ -76,16 +80,15 @@ export default class elClass {
 	}
 // --	
 	css(a) {
+
+		if(!this.el) return this;
+
 		try {
-	
-			// console.log('CSS', this.el ? true : false, a);
 	
 			for(var attrName in a) {
 				try {
 					this.el.style[attrName] = a[attrName];
-				} catch(e) {
-					// S.log('>>>>>', this.el, e);
-				}
+				} catch(e) {}
 			}
 			return this;
 		} catch(e) {}
@@ -110,7 +113,7 @@ export default class elClass {
 	
 			if(el.el) {
 				el = el.el;
-			};
+			}
 			this.el.appendChild(el);
 			return this;
 		} catch(e) {}
@@ -121,11 +124,11 @@ export default class elClass {
 	
 			if(typeof el == "undefined") {
 				return this.el.innerHTML;
-			};
+			}
 			
 			if(el.el) {
 				el = el.el;
-			};
+			}
 			
 			this.el.innerHTML = el;
 			
@@ -133,31 +136,62 @@ export default class elClass {
 		} catch(e) {}
 	}
 // --
-	animate(params, animationTime = defaults.animationTime, callback) {
-		typeof animationTime == "function" && (callback = animationTime, animationTime = defaults.animationTime);
-		setTimeout(()=>{
+	animate(params, animationTime, callback, animationName) {
 
-			this.css({transition: (animationTime / 1000) + 's'});
-			let counter = 0;
-			for(var attrName in params) {
-				if(this.el.style[attrName] != params[attrName]) {
-					counter += 1;
+		try {
+			var _animation = share.get('animation');
+
+			typeof animationTime == "undefined" && (animationTime = defaults.animationTime);
+			typeof animationTime == "function"  && (callback = animationTime, animationTime = defaults.animationTime);
+			typeof callback      == "string"    && (animationName = callback, callback = null);
+
+			// Thread
+			setTimeout(()=>{
+
+				if(_animation) {
+					this.css({transition: (animationTime / 1000) + 's'});
 				}
-				this.el.style[attrName] = params[attrName];
-			}
-			this.addClass("animated");
-			
-			this.el.addEventListener("transitionend", ()=>{
-				counter -= 1;
 
-				if(!counter) {
-					this.removeClass("animated");
-					this.css({transition: null});
-					callback();
+				let counter = 0;
+				for(var attrName in params) {
+					if(this.el.style[attrName] != params[attrName]) {
+						counter += 1;
+					}
+					this.el.style[attrName] = params[attrName];
 				}
-			}, false);
 
-		}, 0);
+				if(_animation) {
+
+					this.addClass("animated");
+
+					this.el.addEventListener("transitionend", ()=>{
+						counter -= 1;
+
+						// event.dispatch('animationEnd', this);
+
+						if(!counter) {
+
+							this.removeClass("animated");
+							this.css({transition: null});
+							if(typeof callback == "function") {
+								callback();
+							}
+							event.dispatch('allAnimationsEnd', animationName);
+						}
+
+					}, false);
+				} else {
+
+					// event.dispatch('animationEnd', this);
+
+					if(typeof callback == "function") {
+						callback();
+					}
+
+					event.dispatch('allAnimationsEnd', animationName);
+				}
+			}, 0);
+		} catch(e) {}
 	}
 	/*animate(params, animationTime, callback) {
 
@@ -288,4 +322,4 @@ export default class elClass {
 	click(callback) {
 		this.event(callback);
 	}
-};
+}

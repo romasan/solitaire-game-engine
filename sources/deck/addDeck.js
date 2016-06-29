@@ -20,309 +20,340 @@ import History        from 'history';
 import getDecks      from 'getDecks';
 import getDeckById   from 'getDeckById';
 import deckCardNames from 'deckCardNames';
-import Deck          from 'getDeck';
+import getDeck       from 'getDeck';
 
-var deckConstructor = function(a, _id) {
+class deckClass {
 
-	// console.log("Deck:addDeck", a);
+	constructor(a, _id) {
 
-	if(!a) return false;
+		if(!a) return false;
 
-	this.cards = [];
-	
-	this.getTopCard = function() {
+		this.cards = [];
+		
+		this.getTopCard = function() {
 
-		if(this.cards.length == 0) { return false; };
-		return this.cards[this.cards.length - 1];
-	}
-	
-	// parameters
-	this.type = 'deck';
-	this.fill = false;
-	var id = _id;
-
-	this.getId = function() {
-		return id;
-	}
-
-	this.locked = a.locked ? true : false;
-
-	var _parent_el   = Group.Group(a.parent),
-		_parent_name = _parent_el ? _parent_el.name : 'xname',// ???
-		_new_id      = _parent_el ? _parent_el.getDecks().length : id;
-	
-	this.name = a.name && typeof a.name == 'string' 
-		? a.name 
-		: (_parent_name + '_' + _new_id);
-
-	this.visible= a.visible && typeof a.visible == 'boolean' ? a.visible : true;// default true
-	
-	this.groupIndex = a.groupIndex && typeof a.groupIndex == 'number' ? a.groupIndex : null;
-
-	this.parent= a.parent && typeof a.parent == 'string'  ? a.parent : 'field';
-	
-	this.autoHide = a.autoHide && typeof a.autoHide == 'boolean' ? a.autoHide : defaults.autohide;
-	
-	// changed parameters
-	if(typeof a.showSlot == "undefined") {
-		a.showSlot = defaults.showSlot;
-	}
-	
-	// DOM
-	var params = {};
-	params.x              = 0; 
-	params.y              = 0; 
-	params.rotate         = this.rotate = 0; 
-	params.padding_y      = ( a.paddingY     && typeof a.paddingY     == 'number' ) ? a.paddingY     : defaults.padding_y;
-	params.flip_padding_y = ( a.flipPaddingY && typeof a.flipPaddingY == 'number' ) ? a.flipPaddingY : defaults.flip_padding_y;
-	params.padding_x      = ( a.paddingX     && typeof a.paddingX     == 'number' ) ? a.paddingX     : defaults.padding_x;
-	params.flip_padding_x = ( a.flipPaddingX && typeof a.flipPaddingX == 'number' ) ? a.flipPaddingX : defaults.flip_padding_x;
-	params.startZIndex    = ( a.startZIndex  && typeof a.startZIndex  == 'number' ) ? a.startZIndex  : defaults.startZIndex;
-	
-	// ------------- FLIP -------------
-	
-	var flipType = a.flip && typeof a.flip == 'string' 
-		? a.flip 
-		: defaults.flip_type,
-		checkFlip = flipTypes[flipType];
-
-	this.flipCheck = function() {
-		// console.log('flipCheck', flipType, this.name);
-		for(var i in this.cards) {
-			checkFlip(this.cards[i], i|0, this.cards.length);
+			if(this.cards.length === 0) { return false; }
+			return this.cards[this.cards.length - 1];
 		}
-		event.dispatch('redrawDeckFlip', this);
-	}
-	
-	// ------------- PUT -------------
-
-	this.putRules = a.putRules 
-		? typeof a.putRules == 'function' 
-			? a.putRules
-			: typeof a.putRules == 'string' 
-				? readyPutRules[a.putRules] 
-					? readyPutRules[a.putRules]
-					: readyPutRules[defaults.putName]
-				// : typeof a.putRules === 'object' 
-				: a.putRules.constructor == Array 
-					? a.putRules
-					: readyPutRules[defaults.putName]
-		: readyPutRules[defaults.putName];
-
-	// ------------- TAKE -------------
-	
-	// можно ли взять карту/стопку
-	this.takeRules = a.takeRules;
-
-	// ------------- FILL -------------
-	
-	var fillRule = (
-		a.fillRule 
-	 && typeof a.fillRule == "string" 
-	 && typeof fillRules[a.fillRule] == "function"
-	) ? fillRules[a.fillRule]
-	  : fillRules['not'];
-	
-	// ------------- PADDING -------------
-	
-	// порядок карт в колоде
-	var padding = a.paddingX || a.paddingY
-		? paddingTypes['special'] 
-		: a.paddingType 
-			? (typeof a.paddingType == 'string' && paddingTypes[a.paddingType]) 
-				? paddingTypes[a.paddingType] 
-				: paddingTypes['none']
-			: paddingTypes[defaults.paddingType];
-
-	this.padding = function(index) {
-		var _padding = padding(params, this.cards[index], index, this.cards.length, this.cards);
-		return _padding;
-	}
-	
-	this.actions = [];
-
-	if(a.actions) {
-		this.actions = a.actions;
-		deckActions.addActions.call(this);
-	};
-
-	this.afterStep = a.afterStep;
-
-	// TODO
-	this.relations = [];
-	
-	event.dispatch('addDeckEl', {
-		a     : a, 
-		deck  : this,
-		params: params
-	});
-
-	event.listen('moveDragDeck', function(data) {
 		
-		if(data.destination.name != this.deck.name) { return; }
-		
-		var _deck = data.destination;
-		
-		if(_deck && !this.fill && this.callback({deck : _deck})) {
-			this.deck.fill = true;
-			History.add({fill : {
-				deck : this.deck.name
-			}});
-			// event.dispatch('fillDeck', {deck : this.deck});
+		// parameters
+		this.type = 'deck';
+		this.fill = false;
+		var id = _id;
+
+		this.getId = function() {
+			return id;
 		}
-	}.bind({
-		deck     : this, 
-		callback : fillRule
-	}));
 
-	this.Redraw = function(data) {
+		this.locked = a.locked ? true : false;
+
+		var _parent_el   = Group.Group(a.parent),
+			_parent_name = _parent_el ? _parent_el.name : 'xname',// ???
+			_new_id      = _parent_el ? _parent_el.getDecks().length : id;
 		
-		event.dispatch('redrawDeck', {
-			deck   : this,
-			data   : data,
-			params : params,
-			cards  : this.cards
+		this.name = a.name && typeof a.name == 'string' 
+			? a.name 
+			: (_parent_name + '_' + _new_id);
+		
+		this.visible= a.visible && typeof a.visible == 'boolean' ? a.visible : true;// default true
+		
+		this.groupIndex = a.groupIndex && typeof a.groupIndex == 'number' ? a.groupIndex : null;
+
+		this.parent= a.parent && typeof a.parent == 'string'  ? a.parent : 'field';
+		
+		this.autoHide = a.autoHide && typeof a.autoHide == 'boolean' ? a.autoHide : defaults.autohide;
+		
+		// changed parameters
+		if(typeof a.showSlot == "undefined") {
+			a.showSlot = defaults.showSlot;
+		}
+		
+		// DOM
+		var params = {};
+		params.x              = 0; 
+		params.y              = 0; 
+		params.rotate         = this.rotate = 0; 
+		params.padding_y      = ( a.paddingY     && typeof a.paddingY     == 'number' ) ? a.paddingY     : defaults.padding_y;
+		params.flip_padding_y = ( a.flipPaddingY && typeof a.flipPaddingY == 'number' ) ? a.flipPaddingY : defaults.flip_padding_y;
+		params.padding_x      = ( a.paddingX     && typeof a.paddingX     == 'number' ) ? a.paddingX     : defaults.padding_x;
+		params.flip_padding_x = ( a.flipPaddingX && typeof a.flipPaddingX == 'number' ) ? a.flipPaddingX : defaults.flip_padding_x;
+		params.startZIndex    = ( a.startZIndex  && typeof a.startZIndex  == 'number' ) ? a.startZIndex  : defaults.startZIndex;
+		
+		// ------------- FLIP -------------
+		
+		var flipType = a.flip && typeof a.flip == 'string' 
+			? a.flip 
+			: defaults.flip_type,
+			checkFlip = flipTypes[flipType];
+
+		this.flipCheck = function() {
+			for(var i in this.cards) {
+				checkFlip(this.cards[i], i|0, this.cards.length);
+			}
+			event.dispatch('redrawDeckFlip', this);
+		}
+		
+		// ------------- PUT -------------
+
+		this.putRules = a.putRules 
+			? typeof a.putRules == 'function' 
+				? a.putRules
+				: typeof a.putRules == 'string' 
+					? readyPutRules[a.putRules] 
+						? readyPutRules[a.putRules]
+						: readyPutRules[defaults.putRule]
+					// : typeof a.putRules === 'object' 
+					: a.putRules.constructor == Array 
+						? a.putRules
+						: readyPutRules[defaults.putRule]
+			: readyPutRules[defaults.putRule];
+
+		// ------------- TAKE -------------
+		
+		// можно ли взять карту/стопку
+		this.takeRules = a.takeRules;
+
+		// ------------- FILL -------------
+		
+		var fillRule = (
+			a.fillRule 
+		 && typeof a.fillRule == "string" 
+		 && typeof fillRules[a.fillRule] == "function"
+		) ? fillRules[a.fillRule]
+		  : fillRules['not'];
+		
+		// ------------- PADDING -------------
+		
+		// порядок карт в колоде
+		var padding = a.paddingX || a.paddingY
+			? paddingTypes.special 
+			: a.paddingType 
+				? (typeof a.paddingType == 'string' && paddingTypes[a.paddingType]) 
+					? paddingTypes[a.paddingType] 
+					: paddingTypes.none
+				: paddingTypes[defaults.paddingType];
+
+		this.padding = function(index) {
+			var _padding = padding(params, this.cards[index], index, this.cards.length, this.cards);
+			return _padding;
+		}
+		
+		this.actions = [];
+
+		if(a.actions) {
+			this.actions = a.actions;
+			deckActions.addActions.call(this);
+		}
+
+		// this.afterStep = a.afterStep;
+
+		// ------------ RELATIONS ------------
+
+		if(a.relations) {
+			this.relations = a.relations;
+		} else {
+			this.relations = [];
+		}
+
+		// --
+		
+		event.dispatch('addDeckEl', {
+			a     : a, 
+			deck  : this,
+			params: params
 		});
-	};
 
-};
+		event.listen('moveDragDeck', function(data) {
+			
+			if(data.destination.name != this.deck.name) { return; }
+			
+			var _deck = data.destination;
+			
+			if(_deck && !this.fill && this.callback({deck : _deck})) {
+				this.deck.fill = true;
+				History.add({fill : {
+					deck : this.deck.name
+				}});
+				// event.dispatch('fillDeck', {deck : this.deck});
+			}
+		}.bind({
+			deck     : this, 
+			callback : fillRule
+		}));
+
+		this.Redraw = function(data) {
+			
+			event.dispatch('redrawDeck', {
+				deck   : this,
+				data   : data,
+				params : params,
+				cards  : this.cards
+			});
+		};
+
+	}
 
 // -------------------------------------------------------------------------------------------------
 
-deckConstructor.prototype.Fill = function(cardNames) {
+	Fill(cardNames) {
 
-	for(var i in cardNames) {
-		this.genCardByName(cardNames[i]);
+		console.log('Deck:Fill', cardNames);
+
+		for(var i in cardNames) {
+			this.genCardByName(cardNames[i]);
+		}
 	}
-};
 
-deckConstructor.prototype.clear = function() {
-	for(var i in this.cards) {
-		event.dispatch('removeEl', this.cards[i]);
-		this.cards[i] = null;
+	clear() {
+		for(var i in this.cards) {
+			event.dispatch('removeEl', this.cards[i]);
+			this.cards[i] = null;
+		}
+		this.cards = [];
+		event.dispatch('removeEl', this);
 	}
-	this.cards = [];
-	event.dispatch('removeEl', this);
-};
 
-deckConstructor.prototype.Push = function(deck) {// , parentName) {
-	for(var i in deck) {
-		deck[i].parent = this.getId();
-		this.cards.push(deck[i]);
+	Push(deck) {// , parentName) {
+		for(var i in deck) {
+			deck[i].parent = this.getId();
+			this.cards.push(deck[i]);
+		}
 	}
-};
 
-deckConstructor.prototype.Pop = function(count, clearParent) {
+	Pop(count, clearParent) {
+			
+		if(this.cards.length < count) return false;
+
+		var _deck = [];
+		for(;count;count -= 1) {
+			var _pop = this.cards.pop();
+			if(clearParent) _pop.parent = null;
+			_deck.push(_pop);
+			_deck[_deck.length - 1].parent = null;
+		}
+		_deck.reverse();
+
+		// что делать если вынули все карты
+		if(this.autoHide && this.cards.length === 0) {
+			this.hide();
+		}
 		
-	if(this.cards.length < count) return false;
+		this.Redraw();
 
-	var _deck = [];
-	for(;count;count -= 1) {
-		var _pop = this.cards.pop();
-		if(clearParent) _pop.parent = null;
-		// console.log('POP:', _pop)
-		_deck.push(_pop);
-		_deck[_deck.length - 1].parent = null;
+		return _deck;
 	}
-	_deck.reverse();
 
-	// что делать если вынули все карты
-	if(this.autoHide && this.cards.length == 0) {
-		this.hide();
+	Take(cardId) {
+		return Take.call(this, cardId);// ??? .call(this, attributes);
 	}
-	
-	this.Redraw();
-
-	return _deck;
-};
-
-deckConstructor.prototype.Take = function(cardId) {
-	return Take.call(this, cardId);// ??? .call(this, attributes);
-};
 
 // проверяем, можем ли положить стопку/карту
 // возвращает true, если согласно правилам сюда можно положить карту
-deckConstructor.prototype.Put = function(putDeck) {
-	return Put.call(this, putDeck);//(deckConstructor);
-};
+	Put(putDeck) {
+		return Put.call(this, putDeck);//(deckConstructor);
+	}
 
 // создать карту
-deckConstructor.prototype.genCardByName = function(name) {
-	return genCardByName.call(this, name);
-};
+	genCardByName(name) {
+		return genCardByName.call(this, name);
+	}
 
-deckConstructor.prototype.hide = function() {
-	this.visible = false;
-	History.add({hideDeck : this.name});
-	this.Redraw();
-};
+	hide() {
+		this.visible = false;
+		History.add({hideDeck : this.name});
+		this.Redraw();
+	}
 
-deckConstructor.prototype.show = function() {
-	this.visible = false;
-	History.add({showDeck : this.name});
-	this.Redraw();
-};
+	show() {
+		this.visible = false;
+		History.add({showDeck : this.name});
+		this.Redraw();
+	}
 
-// deckConstructor.prototype.getCards = function() {
-// 	return this.cards;
-// }
+	getCardsByName(cardName) {
+		var _cards = [];
+		for(var i in this.cards) {
+			if(this.cards[i].name == cardName) {
+				_cards.push(this.cards[i]);
+			}
+		}
+		return _cards;
+	}
 
-deckConstructor.prototype.getCardsByName = function(cardName) {
-	var _cards = [];
-	for(var i in this.cards) {
-		if(this.cards[i].name == cardName) {
-			_cards.push(this.cards[i]);
+	Card(cardName) {
+		return this.getCardsByName(cardName)[0];
+	}
+
+	hideCards() {
+		for(var i in this.cards) {
+			this.cards[i].visible = false;
+			event.dispatch('hideCard', this.cards[i]);
 		}
 	}
-	return _cards;
-};
 
-deckConstructor.prototype.Card = function(cardName) {
-	return this.getCardsByName(cardName)[0];
-};
-
-deckConstructor.prototype.hideCards = function() {
-	for(var i in this.cards) {
-		this.cards[i].visible = false;
-		event.dispatch('hideCard', this.cards[i]);
+	showCards() {
+		for(var i in this.cards) {
+			this.cards[i].visible = true;
+			event.dispatch('showCard', this.cards[i]);
+		}
 	}
-};
 
-deckConstructor.prototype.showCards = function() {
-	for(var i in this.cards) {
-		this.cards[i].visible = true;
-		event.dispatch('showCard', this.cards[i]);
+	getCardsNames() {
+		var _cardsNames = [];
+		for(var i in this.cards) {
+			_cardsNames.push(this.cards[i].name);
+		}
+		return _cardsNames;
 	}
-};
 
-deckConstructor.prototype.getCardsNames = function() {
-	var _cardsNames = [];
-	for(var i in this.cards) {
-		_cardsNames.push(this.cards[i].name);
-	};
-	return _cardsNames;
-};
+	cardsCount() {
+		return this.cards.length;
+	}
 
-// deckConstructor.prototype.parent = function(a) {
-// 	if(typeof a == 'string') parent = a;
-// 	return parent;
-// }
+	getRelationsByName(relationName, filter) {
+
+		let _relations = [];
+
+		for(let i in this.relations) {
+			if(this.relations[i].name == relationName) {
+
+				if(filter) {
+
+					let _checked = 0, _count = 0;
+
+					for(let attr in filter) {
+						_count += 1;
+						if(this.relations[i][attr] == filter[attr]) {
+							_checked += 1;
+						}
+					}
+
+					if(_checked == _count) {
+						_relations.push(this.relations[i]);
+					}
+				} else {
+
+					_relations.push(this.relations[i]);
+				}
+			}
+		}
+
+		return _relations;
+	}
+
+}
 
 // ------------------------------------------------------------------------------------------------------------------------------------------
 
 var addDeck = function(a) {
 
-	// console.log('addDeck', a);
-
 	if(!a) return false;
 	
 	var _id = 'deck_' + common.genId();
 	
-	var _a = Object['assign'] 
-		? Object['assign']({}, a) 
-		: JSON.parse(JSON.stringify(a));
+	var _a = Object.assign({}, a);
 	
-	var _el_deck = new deckConstructor(_a, _id);
+	var _el_deck = new deckClass(_a, _id);
 
 	// fill deck
 	if(a.fill) {
@@ -344,7 +375,7 @@ var addDeck = function(a) {
 
 export default {
 	addDeck       ,
-	Deck          ,
+	Deck : getDeck,
 	getDecks      ,
 	getDeckById   ,
 	deckCardNames

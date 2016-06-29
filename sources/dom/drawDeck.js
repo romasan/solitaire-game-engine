@@ -9,8 +9,6 @@ import elRender from 'elRender';
 
 var applyChangedParameters = function(p, a, deck) {
 	
-	// console.log('applyChangedParameters', a);
-	
 	p.x = a.position && a.position.x && typeof a.position.x == 'number'  ? a.position.x : 0,
 	p.y = a.position && a.position.y && typeof a.position.y == 'number'  ? a.position.y : 0;
 	p.x = a.parentPosition && a.parentPosition.x ? p.x + a.parentPosition.x : p.x;
@@ -48,8 +46,6 @@ event.listen('addDeckEl', function(e) {
 
 	var _field = Field();
 	
-	// console.log('addDeckEl', e);
-
 	applyChangedParameters(e.params, e.a, e.deck);
 
 	e.deck.domElement = 
@@ -74,7 +70,6 @@ event.listen('addDeckEl', function(e) {
 		});
 
 	// var showSlot = e.a.showSlot && typeof e.a.showSlot == 'boolean' ? e.a.showSlot : defaults.showSlot;
-	// console.log('slot', e.a);
 	if(e.a.showSlot) {
 		elRender(e.deck.domElement)
 			.addClass('slot');
@@ -92,19 +87,16 @@ event.listen('addDeckEl', function(e) {
 		
 	var label = e.a.label && typeof e.a.label == 'string' ? e.a.label : null;
 	
-	// console.log('debugLabels -->', share.get('debugLabels'));
-
-	if(!e.a.label && share.get('debugLabels')) {
+	if(dev && !e.a.label && share.get('debugLabels')) {
 		label = '<span style="color:#65B0FF;">' + e.deck.name + '</span>';
 	}
 	if(label) {
 		var _labelElement = 
 			elRender('<div>')
 				.addClass('deckLabel')
-		// DEBUG, TODO remove next string
-				.attr({
-					"title" : e.deck.getId() + " (" + e.deck.parent + ")"
-				})
+				// .attr({
+				// 	"title" : e.deck.getId() + " (" + e.deck.parent + ")"
+				// })
 				// .getEl();
 		elRender(_labelElement)
 			.html(label);
@@ -141,8 +133,6 @@ event.listen('redrawDeckFlip', function(e) {
 
 event.listen('redrawDeckIndexes', function(e) {
 	
-	console.log('redrawDeckPaddings:', e);
-	
 	if(!e || !e.cards) return;
 
 	for(var i in e.cards) {
@@ -156,8 +146,6 @@ event.listen('redrawDeckIndexes', function(e) {
 
 event.listen('redrawDeck', function(e) {
 
-	// console.log('redrawDeck', share.get('noRedraw'));
-	
 	if(share.get('noRedraw')) { return false; };
 	
 
@@ -178,15 +166,12 @@ event.listen('redrawDeck', function(e) {
 	
 	_params.display = e.deck.visible ? 'block' : 'none';
 
-	// console.log('DECK REDRAW', e.deck.domElement);
-
 	elRender(e.deck.domElement)
 		.css(_params);
 
 	for(var i in e.cards) {
 		var _card_position = e.deck.padding(i);
 		var _zIndex = (e.params.startZIndex|0) + (i|0);
-		// console.log('>>> Z-INDEX:', e.deck.name, _zIndex);
 		var _params = {
 			'left'              : _card_position.x + 'px', 
 			'top'               : _card_position.y + 'px',

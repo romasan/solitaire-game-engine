@@ -14,8 +14,6 @@ export default function(data) {// data.actionData, e
 	// click is for me (default)
 	// if(this.name != data.actionData.name) { return; };
 	
-	// console.log("dealerdeck", this, data.actionData, data.actionData);
-
 	if(this.cards.length == 0) { return; }
 
 	var _decks = [];
@@ -36,7 +34,6 @@ export default function(data) {// data.actionData, e
 		if(typeof data.actionData.to == "string") {
 			
 			var _elements = common.getElementsByName(data.actionData.to);
-			// console.log('>>>', _elements);
 			for(var i in _elements) {
 
 				if(_elements[i].type == "group") {

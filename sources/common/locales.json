@@ -1,0 +1,30 @@
+{
+	"ru": {
+		"title_preferences" : "Настройки оформления",
+		"label_field"       : "Фон"                 ,
+		"default_field"     : "Классический"        ,
+		"alternative_field" : "Альтернативный"      ,
+		"label_face"        : "Лицевая сторона"     ,
+		"default_face"      : "Классическая"        ,
+		"alternative_face"  : "Англо-американская"  ,
+		"label_back"        : "Рубашка"             ,
+		"default_back"      : "Классическая"        ,
+		"alternative_back"  : "Альтернативная"      ,
+		"red_back"          : "Красная"             ,
+		"blue_back"         : "Синяя"               
+	},
+	"en": {
+		"title_preferences" : "Decor preferences"   ,
+		"label_field"       : "Background"          ,
+		"default_field"     : "Default field"       ,
+		"alternative_field" : "Alternative field"   ,
+		"label_face"        : "Face"                ,
+		"default_face"      : "Default face"        ,
+		"alternative_face"  : "Alternative face"    ,
+		"label_back"        : "Back"                ,
+		"default_back"      : "Default back"        ,
+		"alternative_back"  : "Alternative back"    ,
+		"red_back"          : "Red back"            ,
+		"blue_back"         : "Blue back"           
+	}
+}

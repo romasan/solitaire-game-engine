@@ -10,21 +10,19 @@ let onShowParameters = ()=>{
 	let pref = storage.get('pref');
 	!pref && (pref = defaults.pref);
 	
-	$("#pref_face [value=" + pref.face + "]")
-		.prop({selected: true});
-	$("#pref_back [value=" + pref.back + "]")
-		.prop({selected: true});
-	$("#pref_empty [value=" + pref.empty + "]")
-		.prop({selected: true});
+	for(var prefName in defaults.themes) {
+		let _pref = pref[prefName] ? pref[prefName] : defaults.pref[prefName];
+		$(`#pref_${prefName} [value='${_pref}']`)
+			.prop({selected: true});
+	}
 };
 
 let applyParameters = ()=>{
 	
-	var pref = {
-		face  : $("#pref_face") .val(),
-		back  : $("#pref_back") .val(),
-		empty : $("#pref_empty").val()
-	};
+	var pref = {};
+	for(var prefName in defaults.themes) {
+		pref[prefName] = $(`#pref_${prefName}`).val();
+	}
 
 	event.dispatch('fieldThemesSet', pref);
 
@@ -38,7 +36,21 @@ let saveParameters = (pref)=>{
 
 export default ()=>{
 	
+	// TODO переделать без jQuery
+
 	$("#bbParameters").click(onShowParameters);
+	// event.dispatch('addDomEvent', {
+	// 	"event"    : "click"
+	// 	"element"  : "#bbParameters",
+	// 	"callback" : onShowParameters
+	// });
+	
 	// $("#gpCommit").click(saveParameters);
-	$(".cards-style-preferences-element").change(applyParameters);
+	
+	$(".solitaire-engine-style-preferences-element").change(applyParameters);
+	// event.dispatch('addDomEvent', {
+	// 	"event"    : "change"
+	// 	"element"  : ".solitaire-engine-style-preferences-element",
+	// 	"callback" : applyParameters
+	// });
 };

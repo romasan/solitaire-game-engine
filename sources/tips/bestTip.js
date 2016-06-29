@@ -10,6 +10,8 @@ import Field from 'field';
 export default function(moveDeck, cursorMove) {
 
 	var _autoTips = [];
+	
+	// выбрать подсказки для стопки из кторорой взяли карты
 	var _tips = Tips.getTips();
 	for(i in _tips) {
 		if(_tips[i].from.card.id == moveDeck[0].card.id) {
@@ -26,6 +28,7 @@ export default function(moveDeck, cursorMove) {
 		_tip_index          = 0,
 		_in_direction_count = 0;
 
+	// Приоритет для homeGroups
 	var _field = Field();
 	var _homeGroups = _field.homeGroups;
 	
@@ -41,6 +44,7 @@ export default function(moveDeck, cursorMove) {
 		if(_tips.length) _autoTips = _tips;
 	}
 
+	// вариантов несколько
 	if(_autoTips.length >= 2) {
 
 		for(var i in _autoTips) {

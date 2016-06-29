@@ -8,6 +8,9 @@ import takeRules from 'readyTakeRules';
 
 export default function(cardId) {
 
+	// Нестандартный ход (autosteps)
+	// if(share.get('stepType') != defaults.stepType) {return false;};
+
 	var rulesCorrect = true;//!common.isLock();
 
 	rulesCorrect = rulesCorrect && !this.locked;
@@ -17,7 +20,6 @@ export default function(cardId) {
 	}
 
 	// берём карту/стопку
-	// console.log('Take', cardId);
 
 	var cardIndex  = -1;
 	var cardName   = null; 
@@ -63,26 +65,17 @@ export default function(cardId) {
 		cardIndex  : cardIndex, 
 		deckLength : deckLength
 	}
-	// if(typeof takeRules == 'function') {
-		// rulesCorrect = rulesCorrect && takeRules(_attrs);
-		// TODO
-		// лучше обрабатывать строку если правило одно и не нужен массив
-	// } else if(typeof takeRules == 'string') {
-	// } else {
+
 	for(var ruleIndex in this.takeRules) {
 		var ruleName = this.takeRules[ruleIndex];
-
-		// console.log(this.takeRules);
 		
 		if(takeRules[ruleName]) {
 			rulesCorrect = rulesCorrect && takeRules[ruleName](_attrs);
-		} else {// if(typeof takeRules[ruleIndex] == 'function') {
-			// rulesCorrect = rulesCorrect && takeRules[ruleIndex](_attrs);
-			console.log('Incorrect take rule:', ruleName);
+		} else {
+			console.warn('Incorrect take rule:', ruleName);
 			rulesCorrect = false;
 		}
 	}
-	// }
 	
 	// возвращает массив ID карт которые можно будет перетащить
 	// записывает их как активные

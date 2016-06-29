@@ -8,26 +8,68 @@
 **Иннициирование и запуск игры:**
 
 	SolitaireEngine.init(Field);
+
+пример:
+
+```
+SolitaireEngine.init({
+	winCheck : {
+        rules : ["allInOne"]
+    },
+    decks : [
+        {
+            name: "deck1",
+            position: {
+                x: 100,
+                y: 100
+            },
+            takeRules: ["any"],
+            putRules: ["not"],
+            fill: ["c1", "c2"]
+        },
+        {
+            name: "deck2",
+            position: {
+                x: 200,
+                y: 100
+            },
+            takeRules: ["any"],
+            putRules: ["not"],
+            fill: ["c3", "c4"]
+        },
+        {
+            name: "deck3",
+            position: {
+                x: 300,
+                y: 100
+            },
+            takeRules: ["not"],
+            putRules: ["any"],
+            fill: ["c5", "c6"]
+        },
+    ]
+});
+```
 ---
-	Field - ...N обьект описания пасьянса
-	    zoom - ...
+	Field - JSON обьект описания пасьянса
+	    zoom - масштабирование
 			тип float
 	        по умолчанию 1
-	    moveDistance - ...имальная дистанция при перемещении карты (если растояние меньше карта вернётся на своё место)
+	    moveDistance - мимальная дистанция при перемещении карты (если растояние меньше карта вернётся на своё место)
 			тип Int, (px)
 			по умолчанию 0,
 		inputParams - ...
 			тип InputParams
-		field - ... элемент страницы, который будет содержать в себе игровое поле
+		field - элемент страницы, который будет содержать в себе игровое поле
 			тип string/CSS Selector | HTML DOM Element Object
 			по умолчанию "#map"
 <!-- 		theme - Истользуемая тема оформления
 			тип Theme -->
-		winCheck - ...вила окончания игры
+		winCheck - правила окончания игры
 			тип WinCheck
-		groups - ...
+		groups - группы
 			тип {Group} | GroupGenerator
-		decks - ...сание стопок...
+		decks - стопки
 			тип [Deck]
 		fill - ...
 			тип [string/card name] | [[string/card name]]
@@ -42,12 +84,12 @@
 		tipsParams - ...
 			тип TipsParams
 ---
-	InputParams - ...
+	InputParams - параметры убравления (мышь)
 		doubleClick - ... 
 			тип boolean
 			по умолчанию false
 ---
-	TipsParams - ...
+	TipsParams - параметры подсказок
 		hideOnEmpty - ...
 			тип boolean
 		по умолчанию false
@@ -67,7 +109,7 @@
 	       по умолчанию ['d', 'c', 'h', 's'] -->
 ---
 	WinCheck :
-	   rules - ...
+	   rules - правила выигрыша
 	       тип {Win rules}
 ---
 	Vector2d
@@ -76,8 +118,8 @@
 	   y
 		   тип Int
 ---
-	Group
-	   name - ...
+	Group - группа
+	   name - имя группы
 		   тип string
 	   position - ...
 		   тип Vector2d
@@ -116,91 +158,101 @@
 		   тип [Deck]
 ---
 	Deck
-	   name - ...
-		   тип string
-	   position - ...
-		   тип Vector2d
-	       по умолчанию {x : 0, y : 0}
-	   paddingType - ...
-		   тип string/padding type
-	       по умолчанию "none"
-	   paddingX - ...
-		   тип Int
-	   paddingY - ...
-		   тип Int
-	   flipPaddingX - ...
-		   тип Int
-	   flipPaddingY - ...
-		   тип Int
-	   flip - ...
-		   тип string/flip type name
-	   showSlot - ...
-		   тип boolean
-	       по умолчанию true
-	   takeRules - ...
-		   тип [string/take rule name]
-	   putRules - ...
-		   тип string/put rule name | [string/put rule name]
-		   по умолчанию "any"
-	   fillRule - ...
-		   тип [string/card name]
-	   autoHide - ...
-		   тип boolean
-		   по умолчанию false
-	   afterStep - ...
-		   тип boolean
-		   по умолчанию false
-	   actions - ...
-		   тип {Action}
-	   locked - ...
-		   тип boolean
-		   по умолчанию false
-	   parent - ...
-		   тип string/group name
-	   visible - ...
-		   тип boolean
-		   по умолчанию true
-	   groupIndex - ...
-	       тип Int
-	   stertZIndex - ...
+		name - имя стопки
+			тип string
+		position - ...
+			тип Vector2d
+			по умолчанию {x : 0, y : 0}
+		paddingType - ...
+			тип string/padding type
+			по умолчанию "none"
+		paddingX - ...
+			тип Int
+		paddingY - ...
+			тип Int
+		flipPaddingX - ...
+			тип Int
+		flipPaddingY - ...
+			тип Int
+		flip - ...
+			тип string/flip type name
+		showSlot - ...
+			тип boolean
+			по умолчанию true
+		takeRules - ...
+			тип [string/take rule name]
+			putRules - ...
+			тип string/put rule name | [string/put rule name]
+			по умолчанию "any"
+		fillRule - ...
+			тип [string/card name]
+			autoHide - ...
+			тип boolean
+			по умолчанию false
+		afterStep - ...
+			тип boolean
+			по умолчанию false
+		actions - ...
+			тип {Action}
+			locked - ...
+			тип boolean
+			по умолчанию false
+		parent - ...
+			тип string/group name
+		visible - ...
+			тип boolean
+			по умолчанию true
+		groupIndex - ...
+			тип Int
+		stertZIndex - ...
 			тип Int
 			по умолчанию 100
 		fill - ...
 			тип [string/card name] | [[string/card name]]
+		relations - связи с другими стопками
+			тип [Relation]
+---
+	Relation - связь с другими стопками
+		_См. deck relations._
 ---
 	GroupGenerator - ...
-	   generator :
+		generator :
 			type - ...
-			   тип string/generator name
-		   _-- values --_
-			_См. group generators._
+				тип string/generator name
+			_-- values --_
+				_См. group generators._
+---
+	deck relations:
+		around - ...
+		beside - ...
+		fall   - ...
 ---
 	group generators:
 		count - ...
-	       _-- values --_
-	       count - ...
-		      	тип Int
+			_-- values --_
+			count - ...
+				тип Int
 		map   - ...
-	       _-- values --_
-	       map - ...
-		       тип [[string/card name | null]]
-		   aroundRelations - ...
-		       тип boolean
-		       по умолчанию false
+		_-- values --_
+			map - ...
+				тип [[string/card name | null]]
+			aroundRelations - ...
+				тип boolean
+				по умолчанию false
 		fan   - ...
-	       _-- values --_
-	       count - ...
-	           тип Int
-	           по умолчанию 3
-	       radius - ...
-	           тип Int
-	           по умолчанию 100
-	       center - ...
-	           тип Vector2d
-	           по умолчанию {x : 0, y : 0}
+			_-- values --_
+			count - ...
+				тип Int
+				по умолчанию 3
+			radius - ...
+				тип Int
+				по умолчанию 100
+			center - ...
+				тип Vector2d
+				по умолчанию {x : 0, y : 0}
 ---
 	Win rules:
-	   lego : Lego //TODO
+		lego : Lego //TODO
 ---
 **Описание структур:**
 	take rules names:

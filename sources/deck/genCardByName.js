@@ -5,12 +5,9 @@ import share  from 'share';
 import common from 'common';
 
 export default function(name) {// TODO
-	
-	// console.log('genCardByName:', name);
-	
-	var _name   = common.validateCardName(name);// {color, rank}
-	// var _parent = id;
 
+	var _name = common.validateCardName(name);// {color, rank}
+	
 	if(_name) {
 
 		var _id = 'card_' + common.genId(),
@@ -24,7 +21,7 @@ export default function(name) {// TODO
 				flip    : false
 			}
 		_card.parent = this.getId();
-
+		
 		event.dispatch('addCardEl', _card);
 		
 		var _elements = share.get('elements');

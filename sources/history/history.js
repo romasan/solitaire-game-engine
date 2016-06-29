@@ -16,10 +16,7 @@ var _redoMethods = {};
 
 var _undo = function(a) {
 
-	// console.log('#undo', a);
-
 	for(var i in _undoMethods) {
-		// console.log(i);
 		_undoMethods[i](a);
 	}
 	
@@ -64,8 +61,6 @@ var _undo = function(a) {
 
 event.listen('undo', function(_a) {
 
-	// console.log('undo', _a);
-
 	// elRender.animationsEnd();
 	event.dispatch('stopAnimations');
 	
@@ -94,8 +89,6 @@ event.listen('undo', function(_a) {
 // ---------------------------------------- REDO ----------------------------------------
 
 var _redo = function(a) {
-
-	// console.log('#redo', a);
 
 	for(var i in _redoMethods) {
 		_redoMethods[i](a);
@@ -136,8 +129,6 @@ var _redo = function(a) {
 
 event.listen('redo', function(_a) {
 
-	// console.log('redo', _a);
-	
 	// elRender.animationsEnd();
 	event.dispatch('stopAnimations');
 	
@@ -167,7 +158,6 @@ export default new function() {
 
 	this.add = function(step) {
 
-		// console.log('History add:', step);
 		// for(var i in step) {
 		_oneStepWay.push(step);
 		// }

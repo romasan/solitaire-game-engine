@@ -6,13 +6,13 @@ import share    from 'share';
 
 import elRender from 'elRender';
 
+// Move card to home
 event.listen('moveCardToHome', function(e) {
 
-	//  Move card home
-	
-	console.log('Move card home', e);
-	
-	common.curLock();
+	if(share.get('lastCursorMove').distance > 0) {
+		common.curLock();
+	}
+
     for(var i in e.moveDeck) {
     	var _position = e.departure.padding(e.moveDeck[i].index);
     	var _params = {
@@ -21,13 +21,20 @@ event.listen('moveCardToHome', function(e) {
     	}
     	elRender(e.moveDeck[i].card.domElement)
     		.animate(
-    			_params, 
-    			function() {
-				    common.curUnLock();
-					if(e.departure) {
-						e.departure.Redraw();
-					}                    
-				});
+    			
+					_params, 
+    			
+					()=>{
+					    
+					    common.curUnLock();
+						
+						if(e.departure) {
+							e.departure.Redraw();
+						}                    
+					},
+					
+					'moveCardToHomeAnimation'
+				);
     }
     
 });

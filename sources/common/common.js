@@ -6,20 +6,30 @@ import defaults from 'defaults';
 
 import Tips     from 'tips';
 import Field    from 'field';
+import History  from 'history';
 
 import drawPreferences    from 'drawPreferences';
 import preferencesEvents  from 'preferencesEvents';
 import defaultPreferences from 'defaultPreferences';
 
-
-let onInit = ()=>{
+event.listen('gameInit', (e)=>{
+	
+	if(!e.firstInit) {return;};
 	drawPreferences();
 	preferencesEvents();
-}
+});
 
-let afterInit = ()=>{
+event.listen('gameInited', ()=>{
+	
 	defaultPreferences();
-}
+});
+
+event.listen("finalStep", ()=>{
+	
+	share.set('stepType', defaults.stepType);
+	event.dispatch("makeStep", History.get());
+	// Tips.checkTips();
+});
 
 // drawPreferences();
 
@@ -67,11 +77,16 @@ var isCurLock = function() {
 
 
 var curLock = function() {
-	// console.log('curLock');
+	// !window.debug_i && (window.debug_i = 0);
+	// window.debug_i += 1;
+	// console.log('>>> curLock', window.debug_i);
+	// if(window.debug_i == 2) {
+	// 	throw new Error('z');
+	// }
 	share.set('curLockState', true);
 }
 var curUnLock = function() {
-	// console.log('curUnLock');
+	// console.log('>>> curUnLock');
 	share.set('curLockState', false);
 }
 
@@ -130,10 +145,11 @@ var validateCardName = function(name, nolog) {
 	 && defaults.card.ranks.indexOf(rank) >= 0
 	) {
 		return {
-			suit  : suit, 
-			rank  : rank,
-			color : color,
-			value : value
+			suit , 
+			rank ,
+			color,
+			value,
+			name 
 		}
 	} else {
 		console.warn('Warning: validate name:', name, '- incorrect');
@@ -186,9 +202,25 @@ event.listen('historyReapeater', function(e) {
 	}
 });
 
+let deckInGroups = (deck, groups)=>{
+	for(let groupName in groups) {
+		Group.Group(groupName).hasDeck();
+	}
+}
+
 // event.listen('makeStep', function(e) {
 	// share.set('animation', defaults.animation);
 // });
+
+share.set('stepType', defaults.stepType);
+
+// let clearInput = ()=>{
+//     share.set('dragDeck',    null);
+//     share.set('startCursor', null);
+// 		console.log('clearInput');
+// }
+
+// share.set('lang', defaults.lang);
 
 export default {
 	isLock           ,
@@ -205,7 +237,6 @@ export default {
 	animationOn      ,
 	animationOff     ,
 	animationDefault ,
-	onInit           ,
-	afterInit        ,
+	deckInGroups     ,
 	sqr              
 };

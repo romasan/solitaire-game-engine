@@ -1,45 +1,42 @@
 'use strict';
 
-var data = {};
 
-export default new function() {
+// export default new function() {
+class shareClass {
 	
-	this.get = function(name) {
-		if(typeof data[name] != "undefined") {
+	constructor() {
+		this.data = {};
+	}
+
+	get(name) {
+		if(typeof this.data[name] != "undefined") {
 			// TODO решить наконец проблему, 
 			// почему Object.assign не работает после babel-я
 			
-			// try {
-
-			// if( (data[data]).toString() == "[object Object]" ) {
-			// 	return Object['assign'] ? Object['assign']({}, data[name]) : data[name]
-			// } else {
-			
 			// event.dispatch('shareGet', {name : name, data : data[name]});
-			return data[name];
-			
-			// }
-
-			// } catch(e) {
-			// 	console.log( (data[name]).toString() );
-			// 	console.log('CATCH:', name, data[name]);
-			// }
+			return this.data[name];
 		} else {
 			return null;
 		}
-	};
+	}
 
-	this.set = function(name, _data) {
+	set(name, _data, forceClone) {
 
 		if(typeof name == "string") {
 			
-			data[name] = _data;
+			if(
+				typeof forceClone == "boolean" && forceClone
+			) {
+				this.data[name] = Object.assign({}, _data);
+			} else {
+				this.data[name] = _data;
+			}
 			// event.dispatch('shareSet', {name : _data});
 		
 		} else if(name instanceof Object && typeof _data == "undefined") {
 			
 			for(var _name in name) {
-				data[_name] = name[_name];
+				this.data[_name] = name[_name];
 			}
 			// event.dispatch('shareSet', name);
 		
@@ -48,11 +45,11 @@ export default new function() {
 			console.warn('Error share.set:', name, _data);
 
 		}
-		// }
-	};
-
-	this.getAll = function() {
-		return data;
 	}
 
-};
+	getAll() {
+		return this.data;
+	}
+}
+
+export default new shareClass();

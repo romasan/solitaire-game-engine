@@ -7,29 +7,38 @@ class storage {
 	// тогда в конфигурацию нужно будет включить gameId
 
 	constructor() {
-
-		if(!localStorage.hasOwnProperty('SolitaireEngine')) {
-			localStorage.SolitaireEngine = "{}";
-		}
+		
+		try {
+			if(!localStorage.hasOwnProperty('SolitaireEngine')) {
+				localStorage.SolitaireEngine = "{}";
+			}
+		} catch(e) {}
 	}
 
 	set(key, data) {
-		// console.log('set', key);
 
-		let _ls = JSON.parse(localStorage.SolitaireEngine);
-		// Object['assign'](_ls, data);
-		_ls[key] = data;
-		localStorage.SolitaireEngine = JSON.stringify(_ls);
+		try {
+			let _ls = JSON.parse(localStorage.SolitaireEngine);
+			_ls[key] = data;
+			localStorage.SolitaireEngine = JSON.stringify(_ls);
+		} catch(e) {}
 	}
 	
 	get(key) {
 
-		let _ls = JSON.parse(localStorage.SolitaireEngine);
-		return _ls[key];
+		try {
+			let _ls = JSON.parse(localStorage.SolitaireEngine);
+			return _ls[key];
+		} catch(e) {
+			return null;
+		}
 	}
 	
 	clear() {
-		localStorage.SolitaireEngine = "{}";
+		
+		try {
+			localStorage.SolitaireEngine = "{}";
+		} catch(e) {}
 	}
 }
 

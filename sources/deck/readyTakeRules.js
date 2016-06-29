@@ -18,17 +18,15 @@ export default {
 	onlytop  : function(a) {
 
 		return a.cardIndex == a.deckLength - 1;
-	},
+	}
 	
 	// TODO rules
 	
-	ask : function(a) {
-		console.log(a);
-		return true;
-	},
+	// ask : function(a) {
+	// 	return true;
+	// },
 
-	desc : function(a) {
-		console.log(a);
-		return true;
-	}
+	// desc : function(a) {
+	// 	return true;
+	// }
 };

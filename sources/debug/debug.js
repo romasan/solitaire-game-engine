@@ -1,10 +1,13 @@
 'use strict';
 
-import event         from 'event';
-import common        from 'common';
+import event    from 'event';
+import common   from 'common';
+import defaults from 'defaults';
 
 import deckGenerator from 'deckGenerator';
 import elRender      from 'elRender';
+
+import mapCommon from 'mapCommon';
 
 import renderTest from 'renderTest';
 
@@ -81,9 +84,14 @@ let debugHistory = (a)=>{
 
 };
 
-let tests = ()=>{
-	renderTest();
+let runTests = ()=>{
+	// renderTest();
 }
+
+event.listen('gameInit', (e)=>{
+	if(!e.firstInit) {return;};
+	runTests();
+})
 
 export default {
 	deckGenerator,
@@ -91,5 +99,8 @@ export default {
 	debugHistoryMgr,
 	validateCardName : common.validateCardName,
 	elRender,
-	tests
+	defaults,
+	groupGenerators : {
+		mapCommon
+	}
 };
