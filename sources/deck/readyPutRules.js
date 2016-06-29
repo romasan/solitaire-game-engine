@@ -246,7 +246,7 @@ var rpr = {
 		let _parent = Deck.getDeckById(a.cards[0].parent);
 		
 		for(let i in _around) {
-			
+
 			if(_around[i].to == _parent.name) {
 				return true;
 			}

@@ -37,6 +37,8 @@ var checkTips = function() {
 		decks : _decks
 	});
 
+	console.log(_tips.length);
+
 	if(
 		_tips.length === 0                         &&
 		share.get('stepType') == defaults.stepType

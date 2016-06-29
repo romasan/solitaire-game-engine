@@ -44,8 +44,8 @@ export default function(putDeck) {
 							deck   : _deck_departure
 						}, 
 						putDeck   : putDeck,
-						cards     : this.cards,
-						rulesArgs : putRules[ruleName]
+						cards     : this.cards//,
+						// rulesArgs : putRules[ruleName]
 					});
 
 				} else {
