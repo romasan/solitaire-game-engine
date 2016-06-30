@@ -12,8 +12,8 @@ let onShowParameters = ()=>{
 	
 	for(var prefName in defaults.themes) {
 		let _pref = pref[prefName] ? pref[prefName] : defaults.pref[prefName];
-		$(`input[name='pref_${prefName}'] [value='${_pref}']`)
-			.prop({selected: true});
+		$(`input[name='pref_${prefName}'][value='${_pref}']`)
+			.prop({checked: true});
 	}
 };
 
@@ -21,7 +21,8 @@ let applyParameters = ()=>{
 	
 	var pref = {};
 	for(var prefName in defaults.themes) {
-		pref[prefName] = $(`imput[name='pref_${prefName}']`).val();
+		console.log(`input[name='pref_${prefName}']:checked`, $(`input[name='pref_${prefName}']:checked`).val())
+		pref[prefName] = $(`input[name='pref_${prefName}']:checked`).val();
 	}
 
 	event.dispatch('fieldThemesSet', pref);
@@ -47,7 +48,7 @@ export default ()=>{
 	
 	// $("#gpCommit").click(saveParameters);
 	
-	$(".solitaire-engine-style-preferences-element").change(applyParameters);
+	$("#solitaire-engine-style-preferences input").change(applyParameters);
 	// event.dispatch('addDomEvent', {
 	// 	"event"    : "change"
 	// 	"element"  : ".solitaire-engine-style-preferences-element",

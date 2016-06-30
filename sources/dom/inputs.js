@@ -156,8 +156,6 @@ var cmove = function(x, y) {
 
 var cend = function(target, x, y, dbclick) {
 
-	console.log('cend', share.get('stepType'));
-
 	if(common.isCurLock()) { return; }
 
 	var _startCursor = share.get('startCursor'),
