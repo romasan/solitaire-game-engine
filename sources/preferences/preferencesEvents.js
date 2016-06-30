@@ -21,7 +21,6 @@ let applyParameters = ()=>{
 	
 	var pref = {};
 	for(var prefName in defaults.themes) {
-		console.log(`input[name='pref_${prefName}']:checked`, $(`input[name='pref_${prefName}']:checked`).val())
 		pref[prefName] = $(`input[name='pref_${prefName}']:checked`).val();
 	}
 
