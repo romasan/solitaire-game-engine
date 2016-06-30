@@ -12,7 +12,7 @@ let onShowParameters = ()=>{
 	
 	for(var prefName in defaults.themes) {
 		let _pref = pref[prefName] ? pref[prefName] : defaults.pref[prefName];
-		$(`#pref_${prefName} [value='${_pref}']`)
+		$(`input[name='pref_${prefName}'] [value='${_pref}']`)
 			.prop({selected: true});
 	}
 };
@@ -21,7 +21,7 @@ let applyParameters = ()=>{
 	
 	var pref = {};
 	for(var prefName in defaults.themes) {
-		pref[prefName] = $(`#pref_${prefName}`).val();
+		pref[prefName] = $(`imput[name='pref_${prefName}']`).val();
 	}
 
 	event.dispatch('fieldThemesSet', pref);
