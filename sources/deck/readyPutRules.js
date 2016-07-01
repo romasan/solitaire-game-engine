@@ -49,6 +49,15 @@ var rpr = {
 	 	return true;
 	},
 
+	_prev: (a)=>{
+
+		console.log(a);
+
+		return null;
+	},
+
+	_next: (a)=>{},
+
 	// Rules
 
 	striped: (a)=>{
@@ -83,6 +92,11 @@ var rpr = {
 	notForEmpty: (a)=>{
 		
 		return a.cards.length;
+	},
+
+	onlyEmpty: (a)=>{
+
+		return a.cards.length === 0;
 	},
 
 	oneRank: (a)=>{

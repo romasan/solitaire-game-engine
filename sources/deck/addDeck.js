@@ -197,8 +197,6 @@ class deckClass {
 
 	Fill(cardNames) {
 
-		console.log('Deck:Fill', cardNames);
-
 		for(var i in cardNames) {
 			this.genCardByName(cardNames[i]);
 		}

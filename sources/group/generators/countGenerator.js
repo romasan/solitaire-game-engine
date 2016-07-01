@@ -10,10 +10,6 @@ export default function(e) {
     //   type   : "count",
     //   count  : int,
     // }
-    
-    // TODO
-    // direction : string(up|down|right|left) default right
-    // new generator 'line'?
 
 	var _count = e.count;
 	var _decks = [];
