@@ -216,9 +216,7 @@ class deckClass {
 			for(let ruleName in this.fillRules) {
 
 				if(fillRules[ruleName]) {
-					notFill = notFill && !fillRules[ruleName]({
-						deck: this
-					});
+					notFill = notFill && !fillRules[ruleName](this);
 				}
 			}
 			

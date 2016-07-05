@@ -2,11 +2,12 @@
 
 import defaults from 'defaults';
 
-// import getBeside from 'getBeside';
+import Deck      from 'addDeck';
+import getBeside from 'getBeside';
 
 let fr = {
 
-	deckLength: (a)=> {
+	deckLength: (e)=>{
 		
 		return defaults.card.ranks.length <= a.deck.cards.length;
 	},
@@ -27,16 +28,20 @@ let fr = {
 	// TODO
 	// нужно вводить правила с параметрами
 	// или унифицировать для разных генераторов
-	prevDesc: (a)=>{
+	prevDesc: (e)=>{
 
-		// let _prev = a.deck.getRelationByName('beside', {type: 'prev', from: null});
-		// let _check = true;
+		let _check = true;
+		let _prev = getBeside(a.to).prev;
+		let _topCard = e.getTopCard();
 
-		// for(;_prev && _check;) {
+		for(;_prev && _check;) {
 			
-		// 	let _beside = getBeside(a);
-		// 	_prev = _beside.prev;
-		// }
+			let _deck = Deck.Deck(_prev);
+			
+			_topCard = _deck.getTopCard();
+			// _check = _check && _deck.fill;
+			_prev = getBeside(_deck).prev;
+		}
 	}
 	
 	// lineAllNextDesc: (a)=>{},
