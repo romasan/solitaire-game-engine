@@ -115,12 +115,22 @@ class deckClass {
 
 		// ------------- FILL -------------
 		
-		var fillRule = (
-			a.fillRule 
-		 && typeof a.fillRule == "string" 
-		 && typeof fillRules[a.fillRule] == "function"
-		) ? fillRules[a.fillRule]
-		  : fillRules['not'];
+		// var fillRule = (
+		// 	a.fillRule 
+		//  && typeof a.fillRule == "string" 
+		//  && typeof fillRules[a.fillRule] == "function"
+		// ) ? fillRules[a.fillRule]
+		//   : fillRules['not'];
+
+		this.fillRules = null;
+
+		if(a.fillRule && !a.fillRules) {
+			a.fillRules = [a.fillRule];
+		}
+
+		if(a.fillRules) {
+			this.fillRules = a.fillRules;
+		}
 		
 		// ------------- PADDING -------------
 		
@@ -163,23 +173,25 @@ class deckClass {
 			params: params
 		});
 
-		event.listen('moveDragDeck', function(data) {
+		let _callback = (data)=>{
+
+			if(data.destination.name != this.name) { return; }
+
+			console.log('_callback', this.checkFill, this.fillRules);
+
+			// this.checkFill();
 			
-			if(data.destination.name != this.deck.name) { return; }
+			// var _deck = data.destination;
 			
-			var _deck = data.destination;
-			
-			if(_deck && !this.fill && this.callback({deck : _deck})) {
-				this.deck.fill = true;
-				History.add({fill : {
-					deck : this.deck.name
-				}});
-				// event.dispatch('fillDeck', {deck : this.deck});
-			}
-		}.bind({
-			deck     : this, 
-			callback : fillRule
-		}));
+			// if(_deck && !this.fill && this.callback({deck : _deck})) {
+			// 	this.deck.fill = true;
+			// 	History.add({fill : {
+			// 		deck : this.deck.name
+			// 	}});
+			// 	// event.dispatch('fillDeck', {deck : this.deck});
+			// }
+		};
+		event.listen('moveDragDeck', _callback);
 
 		this.Redraw = function(data) {
 			
@@ -194,6 +206,25 @@ class deckClass {
 	}
 
 // -------------------------------------------------------------------------------------------------
+
+	checkFill() {
+
+		if(!this.fill) {
+
+			let notFill = true;
+			
+			for(let ruleName in this.fillRules) {
+
+				if(fillRules[ruleName]) {
+					notFill = notFill && !fillRules[ruleName]({
+						deck: this
+					});
+				}
+			}
+			
+			this.fill = !notFill;
+		}
+	}
 
 	Fill(cardNames) {
 
