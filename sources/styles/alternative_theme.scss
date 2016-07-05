@@ -17,7 +17,7 @@ $ranks: ("d", "s", "h", "c");
 
 	.card  {
 		border: 1px solid #121212;
-		border-radius: 5px;
+		border-radius: 3px;
 		background: url('#{$img_dir}card.svg');
 		background-size: length($cards) * $card_width length($ranks) * $card_height;
 	}

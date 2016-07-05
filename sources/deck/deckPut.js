@@ -30,23 +30,34 @@ export default function(putDeck) {
 			: false;
 	} else {
 
+		let _link = null;// deckName
+		let _deck = this;
+
 		for(var ruleIndex in this.putRules) {
 			
 			if(rulesCorrect) {
+
+				if(_link) {
+					_deck = Deck.Deck(_link);
+				}
 
 				var ruleName = this.putRules[ruleIndex];
 
 				if(putRules[ruleName]) {
 
-					rulesCorrect = rulesCorrect && putRules[ruleName]({
-						from      : {
+					let _param = {
+						from    : {
 							deckId : _deckId, 
 							deck   : _deck_departure
 						}, 
-						putDeck   : putDeck,
-						cards     : this.cards//,
+						putDeck,
+						cards   : _deck.cards,
+						to      : _deck,
+						link    : _link
 						// rulesArgs : putRules[ruleName]
-					});
+					};
+					rulesCorrect = rulesCorrect && putRules[ruleName](_param);
+					_link = _param.link;
 
 				} else {
 					console.warn('putRule:', ruleName, 'not exists');

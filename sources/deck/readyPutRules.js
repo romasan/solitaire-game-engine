@@ -9,6 +9,44 @@ var rpr = {
 			
 	// Internal use
 
+	// srec filters
+
+	linePrev: (a)=>{
+
+		let prev = a.to.getRelationsByName('beside', {
+			from: null,
+			type: "prev"
+		})[0];
+
+		if(prev) {
+			
+			a.link = prev.to;
+			
+			return true;
+		}
+
+		return false;
+	},
+
+	lineNext: (a)=>{
+		
+		let next = a.to.getRelationsByName('beside', {
+			from: null,
+			type: "next"
+		})[0];
+
+		if(next) {
+			
+			a.link = next.to;
+
+			return true;
+		}
+
+		return false;
+	},
+
+	//
+
 	_downupcards: (a)=>{
 
 		if(a.cards.length == 0) return false;
@@ -48,15 +86,6 @@ var rpr = {
 	 	
 	 	return true;
 	},
-
-	_prev: (a)=>{
-
-		console.log(a);
-
-		return null;
-	},
-
-	_next: (a)=>{},
 
 	// Rules
 
@@ -223,7 +252,7 @@ var rpr = {
 	},
 
 	ascendOne: (a)=>{// one step
-		
+
 		if(a.cards.length == 0) return true;
 
 		let da = rpr._downupranknum(a);

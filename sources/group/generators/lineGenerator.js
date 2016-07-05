@@ -27,7 +27,29 @@ export default function(e) {
 		let _deck = {
 			name : _deckName
 		};
+
+		_decks.push(_deck);
+	}
+
+	if(e.first) {
 		
+		let _deck = _decks[0];
+		
+		for(let propName in e.first) {
+			_deck[propName] = e.first[propName];
+		}
+	}
+
+	if(e.last) {
+
+		let _deck = _decks[_decks.length - 1];
+		
+		for(let propName in e.first) {
+			_deck[propName] = e.first[propName];
+		}
+	}
+
+	for(let deckIndex in _decks) {
 		//  ---------------------------------------------------------
 		let _relations = [];
 
@@ -43,40 +65,17 @@ export default function(e) {
 				if(e.relations[relGenName]) {
 					_relations = _relations.concat(relationsGenerator[_relGenerators[relGenName]]({
 						deckIndex,
-						count: _count,
-						data		: e.relations[relGenName]
+						count     : _count,
+						decks     : _decks,
+						data      : e.relations[relGenName]
 					}));
 				};
 			};
 		};
 
-		_deck.relations = _relations;
+		_decks[deckIndex].relations = _relations;
 		//  ---------------------------------------------------------
-
-		if(e.first) {
-			
-			for(let propName in e.first) {
-
-				_deck[propName] = e.first[propName];
-			}
-
-			// if(e.first.takeRules) {
-			// 	_deck.takeRules = e.first.takeRules;
-			// }
-
-			// if(e.first.putRules) {
-			// 	_deck.putRules = e.first.putRules;
-			// }
-		}
-
-		if(e.last) {}
-
-		_deck.relations = _relations;
-		
-		_decks.push(_deck);
 	}
-
-	let _relations = [];
 
 	return _decks;
 }
