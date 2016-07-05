@@ -3,19 +3,19 @@
 export default {
 				
 	// SimpleRules
-	not      : function(a) {
+	not      : (a)=>{
 		return false;
 	},
 
-	notFirst : function(a) {
+	notFirst : (a)=>{
 		return a.cardIndex > 0;
 	},
 
-	any      : function(a) {
+	any      : (a)=>{
 		return true;
 	},
 
-	onlytop  : function(a) {
+	onlytop  : (a)=>{
 
 		return a.cardIndex == a.deckLength - 1;
 	}

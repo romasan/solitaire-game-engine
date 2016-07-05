@@ -147,7 +147,6 @@ event.listen('redrawDeckIndexes', function(e) {
 event.listen('redrawDeck', function(e) {
 
 	if(share.get('noRedraw')) { return false; };
-	
 
 	if(e.data) {
 		applyChangedParameters(e.params, e.data, e.deck);

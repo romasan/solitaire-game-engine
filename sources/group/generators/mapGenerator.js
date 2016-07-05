@@ -20,6 +20,16 @@ export default function(e) {
 	// {
 	// 	type            : "map",
 	// 	map             : [[string|{name, next, prev}]],
+	// 	relations       : {
+	// 		around : true,
+	// 		beside : ???,
+	// 		fall   : {
+	// 			directories : [
+	// 				"down",
+	// 				"right"
+	// 			]
+	// 		}
+	// 	}
 	// }
 
 	var _decks = [];
@@ -84,6 +94,7 @@ export default function(e) {
 					},
 				}
 				
+				//  ---------------------------------------------------------
 				let _relations = [];
 
 				let _relGenerators = {
@@ -109,6 +120,7 @@ export default function(e) {
 				};
 
 				_deck.relations = _relations;
+				//  ---------------------------------------------------------
 				
 				_decks.push(_deck);
 				_index += 1;

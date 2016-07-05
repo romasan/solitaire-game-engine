@@ -30,9 +30,9 @@ export default {
 		],
 		back  : [
 			"default_back",
-			"alternative_back",
-			"red_back",
-			"blue_back"
+			"alternative_back"//,
+			// "red_back",
+			// "blue_back"
 		]
 		// empty : [
 		// 	"default_empty",

@@ -129,15 +129,21 @@ body {
 #solitaire-engine-style-preferences {
   margin: 15px 0px 20px 0px;
 }
+#solitaire-engine-style-preferences label {
+  display: block;
+}
 
 #solitaire-engine-style-preferences>h4 {
   margin: 20px 0px 20px 0px;
 }
 
 .solitaire-engine-style-preferences-label {
-  display: inline-block;;
+  display: inline-block;
   width: 150px;
   line-height: 20px;
+  font-weight: bold;
+  padding-top: 3px;
+  padding-bottom: 3px;
 }
 
 /* =========================================== */
