@@ -177,9 +177,9 @@ class deckClass {
 
 			if(data.destination.name != this.name) { return; }
 
-			console.log('_callback', this.checkFill, this.fillRules);
+			// console.log('_callback', this.checkFill, this.fillRules);
 
-			// this.checkFill();
+			this.checkFill();
 			
 			// var _deck = data.destination;
 			
