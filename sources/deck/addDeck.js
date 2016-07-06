@@ -177,9 +177,9 @@ class deckClass {
 
 			if(data.destination.name != this.name) { return; }
 
-			console.log('_callback', this.checkFill, this.fillRules);
+			// console.log('_callback', this.checkFill, this.fillRules);
 
-			// this.checkFill();
+			this.checkFill();
 			
 			// var _deck = data.destination;
 			
@@ -216,9 +216,7 @@ class deckClass {
 			for(let ruleName in this.fillRules) {
 
 				if(fillRules[ruleName]) {
-					notFill = notFill && !fillRules[ruleName]({
-						deck: this
-					});
+					notFill = notFill && !fillRules[ruleName](this);
 				}
 			}
 			

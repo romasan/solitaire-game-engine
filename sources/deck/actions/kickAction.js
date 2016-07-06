@@ -11,10 +11,12 @@ import Deck      from 'addDeck';
 
 export default function(data) {
 
+
+	
 	if(share.get('stepType') != defaults.stepType) {
+		// console.log('#no_kick 1');
 		return false;
 	}
-
 
 	let _name = null;
 	if(
@@ -22,7 +24,16 @@ export default function(data) {
 		data.eventData[0].move                       &&
 		typeof data.eventData[0].move.to == "string"
 	) {
+		
 		_name = data.eventData[0].move.to;
+		
+		// if(
+		// 	data.eventData[0].move.to == data.actionData.to &&
+		// 	data.eventData[1]                               &&
+		// 	typeof data.eventData[1].move.to == "string"
+		// ) {
+		// 	_name = data.eventData[1].move.to;
+		// }
 	}
 	
 	if(
@@ -41,9 +52,12 @@ export default function(data) {
 	}
 
 	if(_name != this.name) {
+		// console.log('#no_kick 2', _name, this.name, data);
 		return false;
 	}
 	
+	// console.log('#kick -----------------------------------------');
+
 	// console.log('KICK', data);
 
 	// if(
@@ -73,9 +87,11 @@ export default function(data) {
 		deck : _deck             ,// [_cardName],
 		flip : true               // true
 	};
+	
 	if(typeof data.eventData.callback == "function") {
 		forceMoveParams.callback = data.eventData.callback;
 	}
+	
 	forceMove(forceMoveParams);
 
 	// event.dispatch('historyAdd', {});
@@ -87,6 +103,8 @@ export default function(data) {
 			flip : true
 		}
 	});
+
+	// event.dispatch('makeStep', History.get());
 
 	if(data.actionData.dispatch) {
 		event.dispatch(data.actionData.dispatch);

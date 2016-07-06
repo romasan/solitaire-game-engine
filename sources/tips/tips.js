@@ -158,6 +158,18 @@ var tipsDestination = function(a) {
 	}
 };
 
+let checkFrom = (_from)=>{
+
+	for(let i in _tips) {
+		if(
+			_tips[i].from.deck.name == _from
+		) {
+			return true;
+		}
+	}
+	return false;
+};
+
 let fromTo = (_from, _to)=>{
 	
 	for(let i in _tips) {
@@ -178,6 +190,8 @@ export default {
 	showTips       ,
 	hideTips       ,
 	tipsMove       ,
+//  tiprFrom       ,// TODO
+	checkFrom      ,
 	fromTo         ,
 	tipsDestination
 };

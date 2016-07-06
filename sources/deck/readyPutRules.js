@@ -3,7 +3,8 @@
 import common   from 'common';
 import defaults from 'defaults';
 
-import Deck from 'addDeck';
+import Deck      from 'addDeck';
+import getBeside from 'getBeside';
 
 var rpr = {
 			
@@ -13,10 +14,7 @@ var rpr = {
 
 	linePrev: (a)=>{
 
-		let prev = a.to.getRelationsByName('beside', {
-			from: null,
-			type: "prev"
-		})[0];
+		let prev = getBeside(a.to).prev;
 
 		if(prev) {
 			
@@ -30,10 +28,7 @@ var rpr = {
 
 	lineNext: (a)=>{
 		
-		let next = a.to.getRelationsByName('beside', {
-			from: null,
-			type: "next"
-		})[0];
+		let next = getBeside(a.to).next;
 
 		if(next) {
 			

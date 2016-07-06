@@ -1,5 +1,6 @@
 'use strict';
 
+import share    from 'share';
 import event    from 'event';
 import common   from 'common';
 import defaults from 'defaults';
@@ -94,12 +95,13 @@ event.listen('gameInit', (e)=>{
 })
 
 export default {
-	deckGenerator,
-	debugHistory,
-	debugHistoryMgr,
+	share                                     ,
+	deckGenerator                             ,
+	debugHistory                              ,
+	debugHistoryMgr                           ,
 	validateCardName : common.validateCardName,
-	elRender,
-	defaults,
+	elRender                                  ,
+	defaults                                  ,
 	groupGenerators : {
 		mapCommon
 	}
