@@ -24,9 +24,10 @@ event.listen('gameInited', ()=>{
 	defaultPreferences();
 });
 
-event.listen("finalStep", ()=>{
-	
+event.listen("finalStep", (e)=>{
+
 	share.set('stepType', defaults.stepType);
+	if(e == "boolean" && !e) { return; }
 	event.dispatch("makeStep", History.get());
 	// Tips.checkTips();
 });

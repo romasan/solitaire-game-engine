@@ -10,11 +10,16 @@ import History   from 'history';
 
 export default function(data) {// data.actionData, e
 
+	console.log('>>>', data.actionData.dispatch);
+
 	// listen click
 	// click is for me (default)
 	// if(this.name != data.actionData.name) { return; };
 	
-	if(this.cards.length == 0) { return; }
+	if(this.cards.length == 0) {
+		event.dispatch('makeStep', History.get());
+		return;
+	}
 
 	var _decks = [];
 
@@ -127,5 +132,10 @@ export default function(data) {// data.actionData, e
 	if(_makeStep) {
 		event.dispatch('makeStep', History.get());
 	};
+
+	if(data.actionData.dispatch) {
+
+		event.dispatch(data.actionData.dispatch, !_makeStep);
+	}
 
 }
