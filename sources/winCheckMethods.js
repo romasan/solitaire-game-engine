@@ -241,12 +241,7 @@ var wcm = {
 		}
 
 		return _correct;
-	},
-	
-	// для обратной совместимости
-	// lego: function(a) {
-	// 	wcm.constructor(a);
-	// }
+	}
 }
 
 export default wcm;

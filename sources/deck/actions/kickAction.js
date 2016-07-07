@@ -11,9 +11,6 @@ import Deck      from 'addDeck';
 
 export default function(data) {
 	
-	console.log('debug time #2:', new Date().getTime() - window._debug_time);
-	window._debug_time = new Date().getTime();
-	
 	if(share.get('stepType') != defaults.stepType) {
 		// console.log('#no_kick 1');
 		return false;
@@ -48,8 +45,6 @@ export default function(data) {
 		return false;
 	}
 
-	console.log('debug time:', new Date().getTime() - window._debug_time);
-	
 	// console.log('#kick -----------------------------------------');
 
 	// console.log('KICK', data);
