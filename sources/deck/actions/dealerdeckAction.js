@@ -10,8 +10,6 @@ import History   from 'history';
 
 export default function(data) {// data.actionData, e
 
-	console.log('>>>', data.actionData.dispatch);
-
 	// listen click
 	// click is for me (default)
 	// if(this.name != data.actionData.name) { return; };

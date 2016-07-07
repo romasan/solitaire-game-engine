@@ -16,6 +16,9 @@ var Move = function(moveDeck, to, cursorMove) {
 
 	common.animationDefault();
 
+	console.log('debug time #0', new Date().getTime() - window._debug_time);
+	window._debug_time = new Date().getTime();
+
 	let _deck_destination = null,// to
 		// находим стопку из которой взяли
 		_deck_departure   = moveDeck[0].card.parent && common.getElementById(moveDeck[0].card.parent),// from
@@ -132,6 +135,11 @@ var Move = function(moveDeck, to, cursorMove) {
 						// !_deck_destination.afterStep   &&
 						_stepType == defaults.stepType
 					) {
+					
+						console.log('debug time #1', new Date().getTime() - window._debug_time);
+						
+						window._debug_time = new Date().getTime();
+
 						event.dispatch('makeStep', History.get());
 					}
 

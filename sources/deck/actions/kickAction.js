@@ -10,8 +10,9 @@ import History   from 'history';
 import Deck      from 'addDeck';
 
 export default function(data) {
-
-
+	
+	console.log('debug time #2:', new Date().getTime() - window._debug_time);
+	window._debug_time = new Date().getTime();
 	
 	if(share.get('stepType') != defaults.stepType) {
 		// console.log('#no_kick 1');
@@ -24,16 +25,7 @@ export default function(data) {
 		data.eventData[0].move                       &&
 		typeof data.eventData[0].move.to == "string"
 	) {
-		
 		_name = data.eventData[0].move.to;
-		
-		// if(
-		// 	data.eventData[0].move.to == data.actionData.to &&
-		// 	data.eventData[1]                               &&
-		// 	typeof data.eventData[1].move.to == "string"
-		// ) {
-		// 	_name = data.eventData[1].move.to;
-		// }
 	}
 	
 	if(
@@ -55,6 +47,8 @@ export default function(data) {
 		// console.log('#no_kick 2', _name, this.name, data);
 		return false;
 	}
+
+	console.log('debug time:', new Date().getTime() - window._debug_time);
 	
 	// console.log('#kick -----------------------------------------');
 

@@ -18,10 +18,12 @@ var winCheck = function(params) {
 		
 		if(winCheckMethods[ruleName]) {
 		
-			rulesCorrect = rulesCorrect && winCheckMethods[ruleName]({
+			let _result = winCheckMethods[ruleName]({
 				decks     : Deck.getDecks({visible : true}), 
 				rulesArgs : _winCheck.rules[ruleName]
 			});
+			
+			rulesCorrect = rulesCorrect && _result;
 
 		} else {
 			rulesCorrect = rulesCorrect && winCheckMethods.newerWin();
@@ -31,6 +33,8 @@ var winCheck = function(params) {
 	if(!_hasMetods) {
 		rulesCorrect = rulesCorrect && winCheckMethods.newerWin();
 	}
+
+	console.log('winCheck', rulesCorrect);
 
 	if(rulesCorrect) {
 		

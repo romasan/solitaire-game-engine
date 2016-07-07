@@ -156,6 +156,8 @@ var cmove = function(x, y) {
 
 var cend = function(target, x, y, dbclick) {
 
+	window._debug_time = new Date().getTime();
+
 	if(common.isCurLock()) { return; }
 
 	var _startCursor = share.get('startCursor'),

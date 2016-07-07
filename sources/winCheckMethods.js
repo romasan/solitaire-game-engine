@@ -77,7 +77,7 @@ var wcm = {
 
 	_asc_desk : function(a) {
 
-		if(!a || a.asc_desk == null || typeof a.asc_desk != 'number') return false;
+		if(!a || typeof a.asc_desk != 'number') { return false; }
 
 		var _correct = true;
 		
@@ -97,6 +97,9 @@ var wcm = {
 			}
 
 		}
+
+		console.log('asc_desk', a.asc_desk, _correct);
+
 		return _correct;
 	},
 
@@ -130,6 +133,7 @@ var wcm = {
 		var _emptyDecksCount = 0,
 			_decksLength     = 0,
 			_fillIndex       = 0;
+		
 		for(var i in a.decks) {
 			if(a.decks[i].cards.length === 0) {
 				_emptyDecksCount += 1;
@@ -138,10 +142,13 @@ var wcm = {
 			}
 			_decksLength += 1;
 		}
+		
 		var _correct = _emptyDecksCount == _decksLength - 1;
+		
 		if(a.filter) {
 			a.decks = _correct ? [a.decks[_fillIndex]] : [];
 		}
+
 		return _correct
 	},
 
@@ -164,7 +171,7 @@ var wcm = {
 	// Composite rules (input arguments)
 	// комбинированное правило
 		
-	constructor : function(_a) {
+	lego : function(_a) {
 		
 		if(!_a || !_a.rulesArgs) return false;
 		
@@ -237,9 +244,9 @@ var wcm = {
 	},
 	
 	// для обратной совместимости
-	lego: function(a) {
-		wcm.constructor(a);
-	}
+	// lego: function(a) {
+	// 	wcm.constructor(a);
+	// }
 }
 
 export default wcm;
