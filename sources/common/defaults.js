@@ -59,7 +59,7 @@ export default {
 	locale              : "ru",
 
 	animation           : true,
-	animationTime       : 300,// ms.
+	animationTime       : 600,// ms.
 
     inputParams : {
         doubleClick : false

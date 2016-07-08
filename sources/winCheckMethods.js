@@ -40,8 +40,8 @@ var wcm = {
 		}
 		
 		a.decks = _decks;
-		return _decks.length;
 
+		return _decks.length;
 	},
 
 	groups : function(a) {
@@ -56,8 +56,8 @@ var wcm = {
 
 		for(let _i in a.decks) {
 			if(
-				typeof a.filterArgs == "string"  &&
-				a.decks[_i].name == a.filterArgs ||
+				typeof a.filterArgs == "string"             &&
+				a.decks[_i].name == a.filterArgs            ||
 				a.filterArgs.indexOf(a.decks[_i].name) >= 0
 			) {
 				_decks.push(a.decks[_i]);
@@ -71,7 +71,23 @@ var wcm = {
 	decks: function(a) {
 		return wcm.deck(a);
 	},
-	// groups : function() {},
+
+	// Tag filters
+
+	firstEmpty: function(a) {
+
+		let _decks = [];
+		
+		for(let _i in a.decks) {
+			if(a.decks[_i].tags.indexOf('last') >= 0) {
+				_decks.push(a.decks[_i]);
+			}
+		}
+
+		a.decks = _decks;
+
+		return _decks.length;
+	},
 
 	// Internal use
 
@@ -115,9 +131,11 @@ var wcm = {
 	allEmpty : function(a) {
 
 		var _correct = true;
+		
 		for(var _i in a.decks) {
 			_correct = _correct && a.decks[_i].cards.length === 0;
 		}
+		
 		return _correct;
 	},
 	
