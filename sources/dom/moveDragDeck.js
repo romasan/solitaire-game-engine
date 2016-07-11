@@ -61,7 +61,9 @@ event.listen('moveDragDeck', function(e) {
 				    common.curUnLock();
 				    
 				    if(typeof e.callback == "function") {
+				    	console.log('---', e.callback);
 				    	e.callback();
+				    	console.log('#---');
 				    };
 
 				    event.dispatch('moveDragDeckDone', {

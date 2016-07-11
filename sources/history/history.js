@@ -8,17 +8,16 @@ import Deck      from 'addDeck';
 import Tips      from 'tips';
 // import elRender  from 'elRender';
 
-var _oneStepWay  = [];
-var _undoMethods = {};
-var _redoMethods = {};
+// var _undoMethods = {};
+// var _redoMethods = {};
 
 // ---------------------------------------- UNDO ----------------------------------------
 
 var _undo = function(a) {
 
-	for(var i in _undoMethods) {
-		_undoMethods[i](a);
-	}
+	// for(var i in _undoMethods) {
+	// 	_undoMethods[i](a);
+	// }
 	
 	// if(a.flip) {
 	// };
@@ -90,9 +89,9 @@ event.listen('undo', function(_a) {
 
 var _redo = function(a) {
 
-	for(var i in _redoMethods) {
-		_redoMethods[i](a);
-	}
+	// for(var i in _redoMethods) {
+	// 	_redoMethods[i](a);
+	// }
 
 	// if(a.flip) {
 	// };
@@ -150,35 +149,50 @@ event.listen('redo', function(_a) {
 
 });
 
-export default new function() {
+// ----------------------------------------------
 
-	this.reset = function() {
-		_oneStepWay = [];
-	};
+class history {
 
-	this.add = function(step) {
+	constructor() {
+		
+		this.steps = [];
+	}
+
+	reset() {
+		this.steps = [];
+	}
+
+	add(step) {
 
 		// for(var i in step) {
-		_oneStepWay.push(step);
+		this.steps.push(step);
 		// }
-	};
+	}
 
-	this.get = function() {// TODO get without reset (param)
-		var _req = _oneStepWay;
+	get() {// TODO get without reset (param)
+		var _req = this.steps;
 		this.reset();
 		return _req;
-	};
+	}
 
-	this.addUndoMethods  = function(a) {
-		for(var i in a) {
-			_undoMethods[i] = a[i];
-		}
-	};
+	count() {
+
+		this.steps.length;
+	}
+
+	// addUndoMethods(a) {
+	// 	for(var i in a) {
+	// 		_undoMethods[i] = a[i];
+	// 	}
+	// }
 	
-	this.addRedoMethods  = function(a) {
-		for(var i in a) {
-			_redoMethods[i] = a[i];
-		}
-	};
+	// addRedoMethods(a) {
+	// 	for(var i in a) {
+	// 		_redoMethods[i] = a[i];
+	// 	}
+	// }
+}
 
-};
+let _history = new history();
+
+export default _history;

@@ -8,9 +8,8 @@ import getBeside from 'getBeside';
 
 var rpr = {
 			
-	// Internal use
 
-	// srec filters
+	// Realtions filters
 
 	linePrev: (a)=>{
 
@@ -40,7 +39,7 @@ var rpr = {
 		return false;
 	},
 
-	//
+	// Internal use
 
 	_downupcards: (a)=>{
 

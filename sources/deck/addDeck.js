@@ -166,7 +166,11 @@ class deckClass {
 		}
 
 		// --
+
+		this.tags = a.tags ? a.tags : [];
 		
+		// --
+
 		event.dispatch('addDeckEl', {
 			a     : a, 
 			deck  : this,
@@ -366,6 +370,17 @@ class deckClass {
 		}
 
 		return _relations;
+	}
+
+	hasTag(tagName) {
+
+		for(let i in this.tags) {
+			if(this.tags[i] == tagName) {
+				return true;
+			}
+		}
+
+		return false;
 	}
 
 }

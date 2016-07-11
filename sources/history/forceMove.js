@@ -70,9 +70,11 @@ export default function(a) {
 			destination : _to,
 			moveDeck    : __pop
 		};
+		
 		if(typeof a.callback == "function") {
 			moveDragDeckParams.callback = a.callback;
 		}
+		
 		event.dispatch('moveDragDeck', moveDragDeckParams);
 			
 		// } else {

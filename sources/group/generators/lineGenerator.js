@@ -40,6 +40,8 @@ export default function(e) {
 		}
 	}
 
+	_decks[0].tag = 'first';
+
 	if(e.last) {
 
 		let _deck = _decks[_decks.length - 1];
@@ -48,6 +50,8 @@ export default function(e) {
 			_deck[propName] = e.first[propName];
 		}
 	}
+
+	_decks[_decks.length - 1].tag = 'last';
 
 	for(let deckIndex in _decks) {
 		//  ---------------------------------------------------------

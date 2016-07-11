@@ -46,7 +46,6 @@ event.listen('redo', function() {
 
 var cdown = function(target, x, y) {
 
-
 	share.set('dragDeck',    null);
 	share.set('startCursor', null);
 

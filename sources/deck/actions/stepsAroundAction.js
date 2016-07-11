@@ -13,6 +13,10 @@ let endAction = ()=>{
 	share.set('stepType', defaults.stepType);
 	common.curUnLock();
 	// Tips.checkTips();
+
+	if(data.actionData.dispatch) {
+		event.dispatch(data.actionData.dispatch, data.eventData);
+	}
 };
 
 export default function(data) {// {actionData, eventData, eventName}
@@ -57,10 +61,7 @@ export default function(data) {// {actionData, eventData, eventName}
 			if(_counter === 0) {
 				
 				endAction();
-				
-				if(data.actionData.dispatch) {
-					event.dispatch(data.actionData.dispatch, data.eventData);
-				}
+				// event.dispatch(data.actionData.dispatch)
 			}
 		}
 		
@@ -88,16 +89,11 @@ export default function(data) {// {actionData, eventData, eventName}
 	// выполняется после хода 
 	} else {
 		
-		endAction();
-		
-		if(data.actionData.dispatch) {
-			
-			event.dispatch(data.actionData.dispatch, data.eventData);
-			
-			// event.dispatch(data.actionData.dispatch, {
-			// 	to: data.eventData[0].move.to
-			// });
-		}
+		// TODO CURRENT
+		event.listen('makeStep', ()=>{
 
+			endAction();
+		})
+		// event.dispatch(data.actionData.dispatch)
 	}
 };
