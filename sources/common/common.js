@@ -80,14 +80,14 @@ var isCurLock = function() {
 var curLock = function() {
 	// !window.debug_i && (window.debug_i = 0);
 	// window.debug_i += 1;
-	// console.log('>>> curLock', window.debug_i);
+	console.log('curLock');
 	// if(window.debug_i == 2) {
 	// 	throw new Error('z');
 	// }
 	share.set('curLockState', true);
 }
 var curUnLock = function() {
-	// console.log('>>> curUnLock');
+	console.log('curUnLock');
 	share.set('curLockState', false);
 }
 
