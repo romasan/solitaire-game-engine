@@ -15,7 +15,11 @@ export default function(data) {// data.actionData, e
 	// if(this.name != data.actionData.name) { return; };
 	
 	if(this.cards.length == 0) {
-		event.dispatch('makeStep', History.get());
+		
+		if(History.count()) {
+			event.dispatch('makeStep', History.get());
+		}
+		
 		return;
 	}
 
@@ -40,8 +44,10 @@ export default function(data) {// data.actionData, e
 			for(var i in _elements) {
 
 				if(_elements[i].type == "group") {
+					
 					// _decks = _decks.concat(Group.Group(data.actionData.to).decks);
 					// var __decks = Group.Group(data.actionData.to).decks;
+					
 					for(var deckIndex in _elements[i].decks) {
 						_decks.push(_elements[i].decks[deckIndex]);
 					}

@@ -4,13 +4,11 @@ import event  from 'event';
 import share  from 'share';
 import common from 'common';
 
-import Deck     from 'addDeck';
-import Tips     from 'tips';
+import Deck from 'addDeck';
+import Tips from 'tips';
 
 export default function(a) {
 
-	// var _animation = share.get('animation');
-	
 	if(!a.from || !a.to || !a.deck) {
 		return;
 	}
@@ -24,14 +22,12 @@ export default function(a) {
 		? Deck.Deck(a.to)
 		: a.to;
 
-
 	if(!_from || !_to || _from.type != "deck" || _to.type != "deck") {
 		return;
 	}
 
 	var _check     = true;
 	var _from_deck = _from.cards;
-	
 
 	for(let i in _from_deck) {
 		
@@ -56,10 +52,8 @@ export default function(a) {
 
 		_to.Push(_pop);
 		
-		// if(_animation) {
-
 		var __pop = [];
-		for(var i in _pop) {
+		for(let i in _pop) {
 			__pop.push({
 				card : _pop[i]
 			});
@@ -76,14 +70,6 @@ export default function(a) {
 		}
 		
 		event.dispatch('moveDragDeck', moveDragDeckParams);
-			
-		// } else {
-		// 	_from.Redraw();
-		// 	_to  .Redraw();
-		// }
-
-
-
 	} else {
 		// _warn(4);
 		console.warn("forceMove:Ход невозможен", a);

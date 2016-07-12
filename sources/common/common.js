@@ -28,7 +28,7 @@ event.listen("finalStep", (e)=>{
 
 	share.set('stepType', defaults.stepType);
 	if(e == "boolean" && !e) { return; }
-	event.dispatch("makeStep", History.get());
+	event.dispatch('makeStep', History.get());
 	// Tips.checkTips();
 });
 

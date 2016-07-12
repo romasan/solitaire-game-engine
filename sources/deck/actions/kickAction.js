@@ -74,6 +74,7 @@ export default function(data) {
 		to   : data.actionData.to,// _decks[deckId].name,
 		deck : _deck             ,// [_cardName],
 		flip : true               // true
+		// callback: ()=>{}
 	};
 	
 	if(typeof data.eventData.callback == "function") {
