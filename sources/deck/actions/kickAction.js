@@ -93,8 +93,6 @@ export default function(data) {
 		}
 	});
 
-	// event.dispatch('makeStep', History.get());
-
 	if(data.actionData.dispatch) {
 		event.dispatch(data.actionData.dispatch);
 	}

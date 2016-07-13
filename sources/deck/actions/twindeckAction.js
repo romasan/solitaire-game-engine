@@ -7,7 +7,6 @@ export default function(e) {
 // TODO переделать
 		
 /*
-	
 	if(e.deck_from.iteration == 0) {
 		return;
 	}
@@ -62,6 +61,7 @@ export default function(e) {
 	e.deck_from.showCards();
 	
 	// ------------ FLIP ------------
+
 	// var _deck_from = e.deck_from.cards;
 	// var _deck_to = deck_to.cards;
 	
@@ -72,6 +72,7 @@ export default function(e) {
 	deck_to    .Redraw();
 	
 	// ------------ STEP ------------
+
 	// Step
 	var _twindeckStep = {
 		from      : e.deck_from.name,
@@ -92,6 +93,5 @@ export default function(e) {
 	// share.checkTips();
 
 	e.deck_from.iteration -= 1;
-
 */
 }

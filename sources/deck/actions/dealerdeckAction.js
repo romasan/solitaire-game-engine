@@ -134,7 +134,10 @@ export default function(data) {// data.actionData, e
 	// });
 	
 	if(_makeStep) {
-		event.dispatch('makeStep', History.get());
+		
+		if(History.count()) {
+			event.dispatch('makeStep', History.get());
+		}
 	};
 
 	if(data.actionData.dispatch) {

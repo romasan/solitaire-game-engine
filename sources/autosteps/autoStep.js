@@ -27,7 +27,6 @@ export default class {
 
 	start() {
 		
-		console.log('>>>');
 		share.set('stepType', this.stepType);
 
 		if(this.autoStep) {

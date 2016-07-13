@@ -169,15 +169,24 @@ class history {
 		// }
 	}
 
-	get() {// TODO get without reset (param)
+	// get steps and reset
+	get(reset=true) {
+
 		var _req = this.steps;
-		this.reset();
+		
+		if(reset) {
+			this.reset();
+		}
+
 		return _req;
 	}
 
-	count() {
+	log() {
+		console.log(this.steps);
+	}
 
-		this.steps.length;
+	count() {
+		return this.steps.length;
 	}
 
 	// addUndoMethods(a) {

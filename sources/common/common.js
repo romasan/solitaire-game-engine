@@ -28,7 +28,9 @@ event.listen("finalStep", (e)=>{
 
 	share.set('stepType', defaults.stepType);
 	if(e == "boolean" && !e) { return; }
-	event.dispatch('makeStep', History.get());
+	if(History.count()) {
+		event.dispatch('makeStep', History.get());
+	}
 	// Tips.checkTips();
 });
 
@@ -80,14 +82,16 @@ var isCurLock = function() {
 var curLock = function() {
 	// !window.debug_i && (window.debug_i = 0);
 	// window.debug_i += 1;
-	console.log('curLock');
+	
+	// console.log('curLock');
+	
 	// if(window.debug_i == 2) {
 	// 	throw new Error('z');
 	// }
 	share.set('curLockState', true);
 }
 var curUnLock = function() {
-	console.log('curUnLock');
+	// console.log('curUnLock');
 	share.set('curLockState', false);
 }
 

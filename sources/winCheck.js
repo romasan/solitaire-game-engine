@@ -34,8 +34,6 @@ var winCheck = function(params) {
 		rulesCorrect = rulesCorrect && winCheckMethods.newerWin();
 	}
 
-	console.log('winCheck', rulesCorrect);
-
 	if(rulesCorrect) {
 		
 		if(params && params.noCallback) { return true; }

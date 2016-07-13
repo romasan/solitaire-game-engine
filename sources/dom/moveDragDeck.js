@@ -55,9 +55,9 @@ event.listen('moveDragDeck', (e)=>{
 			.css({'z-index' : _zIndex})
 			.animate(
 				_params, 
-				(e)=>{
+				function(e) {
 
-					e.departure	.Redraw();
+					e.departure	 .Redraw();
 					e.destination.Redraw();
 
 					common.curUnLock();
@@ -69,7 +69,7 @@ event.listen('moveDragDeck', (e)=>{
 					event.dispatch('moveDragDeckDone', {
 						deck : e.destination
 					});
-				}//.bind(this, e)
+				}.bind(null, e)
 			);
 
 		// elRender(e.moveDeck[i].card.domElement)

@@ -131,9 +131,10 @@ var Move = function(moveDeck, to, cursorMove) {
 					if(
 						// !_deck_destination.afterStep   &&
 						_stepType == defaults.stepType
-					) {
-					
-						event.dispatch('makeStep', History.get());
+					) {					
+						if(History.count()) {
+							event.dispatch('makeStep', History.get());
+						}
 					}
 
 					winCheck.winCheck({show : true});
