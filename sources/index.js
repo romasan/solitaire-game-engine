@@ -8,10 +8,12 @@ import defaults   from 'defaults';
 // init
 import Inputs     from 'inputs';
 import Move       from 'move';
+import forceMove  from 'forceMove';
 import domManager from 'domManager';
 import Field      from 'field';
 import common     from 'common';
 import winCheck   from 'winCheck';
+import History    from 'history';
 
 // import debug   from 'debug';
 

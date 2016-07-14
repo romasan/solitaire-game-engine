@@ -8,7 +8,6 @@ import common   from 'common';
 import Deck     from 'addDeck';
 import Tips     from 'tips';
 import bestTip  from 'bestTip';
-import History  from 'history';
 import winCheck from 'winCheck';
 import Field    from 'field';
 
@@ -95,49 +94,52 @@ var Move = function(moveDeck, to, cursorMove) {
 					// режим анимации по умолчанию
 					common.animationDefault();
 
-					History.add({'move' : {
-						from : _deck_departure  .name,
-						to   : _deck_destination.name,
-						deck : Deck.deckCardNames(moveDeck)
-					}});
+					event.dispatch('addStep', {
+						'move' : {
+							from : _deck_departure  .name,
+							to   : _deck_destination.name,
+							deck : Deck.deckCardNames(moveDeck)
+						}
+					})
 
 					var _deck = _deck_departure.cards;
 					if(_deck.length && _deck[_deck.length - 1].flip) {
+						
 						_deck[_deck.length - 1].flip = false;
-						History.add({unflip : {
+						
+						event.dispatch('addStep', {
 							deck : _deck_departure.name,
 							card : {
 								name  : _deck[_deck.length - 1].name,
 								index : _deck.length - 1
 							}
-						}});
+						});
 					}
 
 					event.dispatch('moveDragDeck', {
+						
 						departure   : _deck_departure,
 						destination : _deck_destination,
 						moveDeck    : moveDeck,
-						callback    : function() {
+						
+						callback    : ()=>{
+
+							// записать ход (если он не составной)
+							// if(_stepType == defaults.stepType) {				
+								event.dispatch('saveSteps');
+							// }
 
 							event.dispatch('moveEnd', {
 								from     : _deck_departure,
 								to       : _deck_destination,
 								moveDeck : moveDeck
 							});
+
+							Tips.checkTips();
+
+							winCheck.winCheck({show : true});
 						}
 					});
-
-					// записать ход (если он не составной)
-					if(
-						// !_deck_destination.afterStep   &&
-						_stepType == defaults.stepType
-					) {					
-						if(History.count()) {
-							event.dispatch('makeStep', History.get());
-						}
-					}
-
-					winCheck.winCheck({show : true});
 				}
 			}
 		} else {
@@ -180,11 +182,9 @@ var Move = function(moveDeck, to, cursorMove) {
 
 	// if(_success) {
 	// afterMove();
-	Tips.checkTips();
 	// }
 };
 
 event.listen('Move', function(e) {
-
 	Move(e.moveDeck, e.to, e.cursorMove);
 });

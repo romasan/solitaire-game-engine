@@ -170,7 +170,7 @@ class history {
 	}
 
 	// get steps and reset
-	get(reset=true) {
+	get(reset = true) {
 
 		var _req = this.steps;
 		
@@ -203,5 +203,15 @@ class history {
 }
 
 let _history = new history();
+
+event.listen('addStep', (e)=>{
+	_history.add(e)
+});
+
+event.listen('saveSteps', ()=>{
+
+	// save steps to client history
+	event.dispatch('makeStep', _history.get());
+});
 
 export default _history;

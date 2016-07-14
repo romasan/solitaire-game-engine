@@ -7,7 +7,7 @@ import common from 'common';
 import Deck from 'addDeck';
 import Tips from 'tips';
 
-export default function(a) {
+let forceMove = function(a) {
 
 	if(!a.from || !a.to || !a.deck) {
 		return;
@@ -74,4 +74,10 @@ export default function(a) {
 		// _warn(4);
 		console.warn("forceMove:Ход невозможен", a);
 	}
-}
+};
+
+event.listen('forceMove', (e)=>{
+	forceMove(e);
+});
+
+export default forceMove;

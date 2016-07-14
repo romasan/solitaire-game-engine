@@ -5,42 +5,40 @@ import share    from 'share';
 import common   from 'common';
 import defaults from 'defaults';
 
-import forceMove from 'forceMove';
-import History   from 'history';
-import Deck      from 'addDeck';
-
 export default function(data) {
+
+	alert(7);
 	
 	if(share.get('stepType') != defaults.stepType) {
 		// console.log('#no_kick 1');
 		return false;
 	}
 
-	let _name = null;
-	if(
-		data.eventData[0]                            &&
-		data.eventData[0].move                       &&
-		typeof data.eventData[0].move.to == "string"
-	) {
-		_name = data.eventData[0].move.to;
-	}
+	// let _name = null;
+	// if(
+	// 	data.eventData[0]                            &&
+	// 	data.eventData[0].move                       &&
+	// 	typeof data.eventData[0].move.to == "string"
+	// ) {
+	// 	_name = data.eventData[0].move.to;
+	// }
 	
-	if(
-		data.eventData.to                    &&
-		typeof data.eventData.to == "string"
-	) {
-		_name = data.eventData.to;
-	}
+	// if(
+	// 	data.eventData.to                    &&
+	// 	typeof data.eventData.to == "string"
+	// ) {
+	// 	_name = data.eventData.to;
+	// }
 	
-	if(
-		data.eventData.to                         &&
-		typeof data.eventData.to != "string"      &&
-		typeof data.eventData.to.name == "string"
-	) {
-		_name = data.eventData.to.name;
-	}
+	// if(
+	// 	data.eventData.to                         &&
+	// 	typeof data.eventData.to != "string"      &&
+	// 	typeof data.eventData.to.name == "string"
+	// ) {
+	// 	_name = data.eventData.to.name;
+	// }
 
-	if(_name != this.name) {
+	if(data.eventData.to.name != this.name) {
 		// console.log('#no_kick 2', _name, this.name, data);
 		return false;
 	}
@@ -65,37 +63,40 @@ export default function(data) {
 	// 		? Deck.Deck(_name)
 	// 		: data.eventData.to
 	
-	let _from = Deck.Deck(_name)     ,
+	let _from = data.eventData.from, //Deck.Deck(_name),
 		_deck = _from.getCardsNames();
+
+	let _callback = ()=>{
+
+		event.dispatch('addStep', {
+			"move" : {
+				from : _from.name,
+				to   : data.actionData.to,
+				deck : _deck,
+				flip : true
+			}
+		});
+
+		event.dispatch('saveSteps');
+
+		if(data.actionData.dispatch) {
+			event.dispatch(data.actionData.dispatch);
+		}
+	}
 	
+
 	// TODO interval
 	let forceMoveParams = {
-		from : _from             ,// deck
-		to   : data.actionData.to,// _decks[deckId].name,
-		deck : _deck             ,// [_cardName],
-		flip : true               // true
-		// callback: ()=>{}
+		from     : _from             ,// deck
+		to       : data.actionData.to,// _decks[deckId].name,
+		deck     : _deck             ,// [_cardName],
+		flip     : true              ,// true
+		callback : _callback
 	};
 	
-	if(typeof data.eventData.callback == "function") {
-		forceMoveParams.callback = data.eventData.callback;
-	}
+	// forceMove(forceMoveParams);
+	event.dispatch('forceMove', forceMoveParams);
 	
-	forceMove(forceMoveParams);
-
-	// event.dispatch('historyAdd', {});
-	History.add({
-		"move" : {
-			from : _from.name,
-			to   : data.actionData.to,
-			deck : _deck,
-			flip : true
-		}
-	});
-
-	if(data.actionData.dispatch) {
-		event.dispatch(data.actionData.dispatch);
-	}
 
 	// if(e.after) {
 	// 	_events[e.after].call(this, e);

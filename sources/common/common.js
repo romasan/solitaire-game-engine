@@ -14,44 +14,18 @@ import defaultPreferences from 'defaultPreferences';
 
 event.listen('gameInit', (e)=>{
 	
-	if(!e.firstInit) {return;};
+	if(!e.firstInit) { return; };
 	drawPreferences();
 	preferencesEvents();
 });
 
 event.listen('gameInited', ()=>{
-	
 	defaultPreferences();
 });
 
-event.listen("finalStep", (e)=>{
-
-	share.set('stepType', defaults.stepType);
-	if(e == "boolean" && !e) { return; }
-	if(History.count()) {
-		event.dispatch('makeStep', History.get());
-	}
-	// Tips.checkTips();
+event.listen("saveSteps", ()=>{
+	share.set('stepType', defaults.stepType);	
 });
-
-// drawPreferences();
-
-// event.listen('makeStep', function(e) {
-// 	// ???
-// 	share.saveStepCallback(e);
-	
-// 	share.set('oneStepWay', {});
-// });
-
-// event.listen('win', function(e) {
-// 	if(e && e.show) {
-// 		//  ????
-// 		share.winCheckCallback(e);
-// 	}
-// });
-// event.listen('newGame', function(e) {
-// 	Tips.checkTips();
-// });
 
 // Lock/Unlock
 
@@ -59,11 +33,14 @@ var sqr = function(i) {
     return i * i;
 };
 
+// --
+
 var _lock = false;
 
 var isLock = function() {
 	return _lock;
 };
+
 var lock = function() {
 	_lock = true;
 }
@@ -74,10 +51,11 @@ var unlock = function() {
 }
 event.listen('unlock', unlock);
 
+// --
+
 var isCurLock = function() {
 	return share.get('curLockState');
 };
-
 
 var curLock = function() {
 	// !window.debug_i && (window.debug_i = 0);
@@ -89,7 +67,8 @@ var curLock = function() {
 	// 	throw new Error('z');
 	// }
 	share.set('curLockState', true);
-}
+};
+
 var curUnLock = function() {
 	// console.log('curUnLock');
 	share.set('curLockState', false);
@@ -170,6 +149,8 @@ var _id = 0,
 	return _id++;
 };
 
+// --
+
 share.set('animation', defaults.animation);
 
 var animationOn = function() {
@@ -194,6 +175,8 @@ event.listen('newGame', function(e) {
 	animationOff();
 });
 
+// --
+
 event.listen('historyReapeater', function(e) {
 	if(e) {
 		share.set('noRedraw', true);
@@ -206,6 +189,8 @@ event.listen('historyReapeater', function(e) {
 		Tips.checkTips();
 	}
 });
+
+// --
 
 let deckInGroups = (deck, groups)=>{
 	for(let groupName in groups) {

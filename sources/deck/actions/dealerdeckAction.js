@@ -6,7 +6,6 @@ import defaults  from 'defaults';
 import common    from 'common';
 
 import forceMove from 'forceMove';
-import History   from 'history';
 
 export default function(data) {// data.actionData, e
 
@@ -15,11 +14,6 @@ export default function(data) {// data.actionData, e
 	// if(this.name != data.actionData.name) { return; };
 	
 	if(this.cards.length == 0) {
-		
-		if(History.count()) {
-			event.dispatch('makeStep', History.get());
-		}
-		
 		return;
 	}
 
@@ -114,30 +108,23 @@ export default function(data) {// data.actionData, e
 			_decks[deckId].flipCheck();
 			// _decks[deckId].Redraw();
 
-			History.add({move : {
+			event.dispatch('addStep', {
 				from : this.name,
 				to   : _decks[deckId].name,
 				deck : [_cardName],
 				flip : true
-			}});
+			});
 
 		};
 
 	};
 	
-	// History.add({
-	// 	"action" : {
-	// 		name     : "dealerdeck",
-	// 		deckName : this.name,
-	// 		params   : data.actionData
-	// 	}
-	// });
-	
 	if(_makeStep) {
 		
-		if(History.count()) {
-			event.dispatch('makeStep', History.get());
-		}
+		event.dispatch('saveSteps');
+		// if(History.count()) {
+		// 	event.dispatch('makeStep', History.get());
+		// }
 	};
 
 	if(data.actionData.dispatch) {
