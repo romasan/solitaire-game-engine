@@ -12,6 +12,10 @@ export default function(data) {
 		return false;
 	}
 
+	if(data.eventData.stepType != defaults.stepType) {
+		return false;
+	}
+
 	// if(share.get('prevStepType') != defaults.stepType) {
 	// 	return false;
 	// }

@@ -28,6 +28,14 @@ event.listen('change:stepType', ()=>{
 	share.set('prevStepType', share.get('stepType'));
 });
 
+event.listen('moveEnd', function(e) {
+	Tips.checkTips();
+});
+
+event.listen('actionBreak', function(e) {
+	Tips.checkTips();
+});
+
 // event.listen("saveSteps", ()=>{
 // 	share.set('stepType', defaults.stepType);	
 // });

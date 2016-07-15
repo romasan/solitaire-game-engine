@@ -20,6 +20,8 @@ export default function(data) {// data.actionData, e
 	if(this.cards.length == 0) {
 
 		share.set('stepType', defaults.stepType);
+
+		event.dispatch('actionBreak');
 		
 		return;
 	}
