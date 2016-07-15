@@ -8,6 +8,8 @@ import defaults from 'defaults';
 import Tips from 'tips';
 import Deck from 'addDeck';
 
+let stepType = 'stepsAround';
+
 let endAction = ()=>{
 
 	share.set('stepType', defaults.stepType);
@@ -24,7 +26,7 @@ export default function(data) {// {actionData, eventData, eventName}
 	let _stepType = share.get('stepType');
 	if(_stepType != defaults.stepType) { return; };
 
-	share.set('stepType', 'stepsAround');
+	share.set('stepType', stepType);
 	// stop Drag'n'Drop
 	common.curLock();
 	
@@ -89,11 +91,14 @@ export default function(data) {// {actionData, eventData, eventName}
 	// выполняется после хода 
 	} else {
 		
-		// TODO CURRENT
-		event.listen('makeStep', ()=>{
+		let _callback = ()=>{
 
-			endAction();
-		})
+			if(share.get('stepType') == stepType) {
+				endAction();
+			}
+		};
+		
+		event.listen('makeStep', _callback)
 		// event.dispatch(data.actionData.dispatch)
 	}
 };

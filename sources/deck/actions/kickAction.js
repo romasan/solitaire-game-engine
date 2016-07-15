@@ -6,13 +6,15 @@ import common   from 'common';
 import defaults from 'defaults';
 
 export default function(data) {
-
-	alert(7);
 	
 	if(share.get('stepType') != defaults.stepType) {
 		// console.log('#no_kick 1');
 		return false;
 	}
+
+	// if(share.get('prevStepType') != defaults.stepType) {
+	// 	return false;
+	// }
 
 	// let _name = null;
 	// if(
@@ -39,13 +41,12 @@ export default function(data) {
 	// }
 
 	if(data.eventData.to.name != this.name) {
-		// console.log('#no_kick 2', _name, this.name, data);
 		return false;
 	}
 
 	// console.log('#kick -----------------------------------------');
 
-	// console.log('KICK', data);
+	console.log('KICK', data, share.get('prevStepType'));
 
 	// if(
 	// 	data.eventData[0]                         &&
@@ -63,8 +64,8 @@ export default function(data) {
 	// 		? Deck.Deck(_name)
 	// 		: data.eventData.to
 	
-	let _from = data.eventData.from, //Deck.Deck(_name),
-		_deck = _from.getCardsNames();
+	let _from = data.eventData.to, //Deck.Deck(_name),
+	    _deck = _from.getCardsNames();
 
 	let _callback = ()=>{
 

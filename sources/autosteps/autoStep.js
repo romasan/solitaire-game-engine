@@ -1,8 +1,9 @@
 'use strict';
 
-import event  from 'event';
-import share  from 'share';
-import common from 'common';
+import event    from 'event';
+import share    from 'share';
+import common   from 'common';
+import defaults from 'defaults';
 
 export default class {
 
@@ -42,7 +43,11 @@ export default class {
 	end() {
 
 		if(this.dispatch) {
-			event.dispatch(this.dispatch);
+			event.dispatch(this.dispatch, {callback: ()=>{
+				share.set('stepType', defaults.stepType);
+			}});
+		} else {
+			// share.set('stepType', defaults.stepType);
 		}
 	}
 
@@ -57,7 +62,11 @@ export default class {
 		}
 		
 		if(!this.autoStep) {
+
 			event.listen('moveEnd', ()=>{
+
+				if(share.get('stepType') != this.stepType) { return; }
+				
 				this.check();
 			});
 		}

@@ -7,13 +7,20 @@ import common    from 'common';
 
 import forceMove from 'forceMove';
 
+let stepType = 'dealerdeckStepType';
+
 export default function(data) {// data.actionData, e
 
 	// listen click
 	// click is for me (default)
 	// if(this.name != data.actionData.name) { return; };
 	
+	share.set('stepType', stepType);
+	
 	if(this.cards.length == 0) {
+
+		share.set('stepType', defaults.stepType);
+		
 		return;
 	}
 
@@ -130,6 +137,9 @@ export default function(data) {// data.actionData, e
 	if(data.actionData.dispatch) {
 
 		event.dispatch(data.actionData.dispatch, !_makeStep);
+	} else {
+		
+		share.set('stepType', defaults.stepType);
 	}
 
 }

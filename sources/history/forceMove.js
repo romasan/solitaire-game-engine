@@ -9,16 +9,19 @@ import Tips from 'tips';
 
 let forceMove = function(a) {
 
+	console.log('forceMove', a);
+
 	if(!a.from || !a.to || !a.deck) {
 		return;
 	}
 
 	if(!a.deck.length) return;
 	
-	var _from = typeof a.from == "string"
+	let _from = typeof a.from == "string"
 		? Deck.Deck(a.from)
 		: a.from;
-	var _to   = typeof a.to   == "string"
+
+	let _to   = typeof a.to   == "string"
 		? Deck.Deck(a.to)
 		: a.to;
 
@@ -26,13 +29,15 @@ let forceMove = function(a) {
 		return;
 	}
 
-	var _check     = true;
-	var _from_deck = _from.cards;
+	let _check     = true;
+	let _from_deck = _from.cards;
 
 	for(let i in _from_deck) {
 		
 		if(i >= _from_deck.length - a.deck.length) {
-			var _id = i - (_from_deck.length|0) + (a.deck.length|0);
+			
+			let _id = i - (_from_deck.length|0) + (a.deck.length|0);
+			
 			if(a.deck[_id] && _from_deck[i].name != a.deck[_id]) {
 				_check = false;
 			}
@@ -41,7 +46,7 @@ let forceMove = function(a) {
 
 	if(_check) {
 
-		var _pop = _from.Pop(a.deck.length);
+		let _pop = _from.Pop(a.deck.length);
 
 		// перевернуть карты во время хода
 		if(a.flip) {
@@ -52,7 +57,7 @@ let forceMove = function(a) {
 
 		_to.Push(_pop);
 		
-		var __pop = [];
+		let __pop = [];
 		for(let i in _pop) {
 			__pop.push({
 				card : _pop[i]

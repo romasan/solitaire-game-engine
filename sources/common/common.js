@@ -23,9 +23,14 @@ event.listen('gameInited', ()=>{
 	defaultPreferences();
 });
 
-event.listen("saveSteps", ()=>{
-	share.set('stepType', defaults.stepType);	
+share.set('prevStepType', defaults.stepType);
+event.listen('change:stepType', ()=>{
+	share.set('prevStepType', share.get('stepType'));
 });
+
+// event.listen("saveSteps", ()=>{
+// 	share.set('stepType', defaults.stepType);	
+// });
 
 // Lock/Unlock
 

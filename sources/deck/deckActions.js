@@ -24,7 +24,7 @@ var _decksActions  = [],
 	_events = [];
 
 var addActionEvent = function(_event) {
-	
+
 	event.listen(_event, function(data) {
 
 		for(var i in _decksActions) {
