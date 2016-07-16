@@ -9,7 +9,7 @@ import Tips from 'tips';
 
 let forceMove = function(a) {
 
-	console.log('forceMove', a);
+	// console.log('forceMove', a);
 
 	if(!a.from || !a.to || !a.deck) {
 		return;

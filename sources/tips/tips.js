@@ -90,6 +90,7 @@ var checkTips = function() {
 };
 
 event.listen('makeStep', checkTips);
+event.listen('checkTips', checkTips);
 
 // --------------------------------------------------------
 

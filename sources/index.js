@@ -14,6 +14,7 @@ import Field      from 'field';
 import common     from 'common';
 import winCheck   from 'winCheck';
 import History    from 'history';
+import Tips       from 'tips';
 
 // import debug   from 'debug';
 

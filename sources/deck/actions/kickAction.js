@@ -50,7 +50,7 @@ export default function(data) {
 
 	// console.log('#kick -----------------------------------------');
 
-	console.log('KICK', data, share.get('prevStepType'));
+	// console.log('KICK', data, share.get('prevStepType'));
 
 	// if(
 	// 	data.eventData[0]                         &&
