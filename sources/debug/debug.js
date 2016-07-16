@@ -7,8 +7,8 @@ import defaults from 'defaults';
 
 import deckGenerator from 'deckGenerator';
 import elRender      from 'elRender';
-
-import mapCommon from 'mapCommon';
+import mapCommon     from 'mapCommon';
+import history       from 'history';
 
 import renderTest from 'renderTest';
 
@@ -104,5 +104,6 @@ export default {
 	defaults                                  ,
 	groupGenerators : {
 		mapCommon
-	}
+	},
+	history
 };

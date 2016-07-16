@@ -26,8 +26,6 @@ export default class fallAutoStep extends autoStep {
 
 		if(_tips.length === 0) {
 
-			share.set('stepType', defaults.stepType);
-
 			this.end();
 			// Tips.checkTips();
 		}
@@ -50,7 +48,6 @@ export default class fallAutoStep extends autoStep {
 
 		// OR getTips + random ???
 
-		// share.set('stepType', defaults.stepType);
 	}
 
 	// manual если autostep = false

@@ -59,7 +59,7 @@ var checkTips = function() {
 				(
 					_tips[i].to.count === 0                             &&
 					_field.tipsParams.hideOnEmpty
-				)                                                     ||
+				)                                                       ||
 				(
 					_field.tipsParams.excludeHomeGroups                 &&
 					_homeGroups                                         &&
@@ -90,6 +90,7 @@ var checkTips = function() {
 };
 
 event.listen('makeStep', checkTips);
+event.listen('checkTips', checkTips);
 
 // --------------------------------------------------------
 

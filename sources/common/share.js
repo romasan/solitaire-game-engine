@@ -1,9 +1,11 @@
 'use strict';
 
+import event    from 'event';
+import defaults from 'defaults';
 
 // export default new function() {
 class shareClass {
-	
+
 	constructor() {
 		this.data = {};
 	}
@@ -23,25 +25,41 @@ class shareClass {
 	set(name, _data, forceClone) {
 
 		if(typeof name == "string") {
-			
+
 			if(
 				typeof forceClone == "boolean" && forceClone
 			) {
+
 				this.data[name] = Object.assign({}, _data);
+
 			} else {
+				
+				event.dispatch('change:' + name);
+
 				this.data[name] = _data;
+
+				event.dispatch('changed:' + name);
+
+				// debug
+				// if(name == 'stepType') {
+				// 	console.log('-- set stepType:', _data);
+				// 	if(_data == defaults.stepType && window.z) {
+				// 		throw new Error('x');
+				// 	}
+				// }
+
 			}
 			// event.dispatch('shareSet', {name : _data});
 		
 		} else if(name instanceof Object && typeof _data == "undefined") {
-			
+
 			for(var _name in name) {
 				this.data[_name] = name[_name];
 			}
 			// event.dispatch('shareSet', name);
-		
+
 		} else {
-			
+
 			console.warn('Error share.set:', name, _data);
 
 		}

@@ -179,6 +179,9 @@ class deckClass {
 
 		let _callback = (data)=>{
 
+			// TODO
+			// проверять fill только для тех стопок котрые участвовали в Action
+			
 			if(data.destination.name != this.name) { return; }
 
 			// console.log('_callback', this.checkFill, this.fillRules);
