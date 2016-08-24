@@ -13,6 +13,8 @@ import preferencesEvents  from 'preferencesEvents';
 import defaultPreferences from 'defaultPreferences';
 
 event.listen('gameInit', (e)=>{
+
+	share.set('stepType', defaults.stepType);
 	
 	if(!e.firstInit) { return; };
 	drawPreferences();

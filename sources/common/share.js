@@ -40,14 +40,6 @@ class shareClass {
 
 				event.dispatch('changed:' + name);
 
-				// debug
-				// if(name == 'stepType') {
-				// 	console.log('-- set stepType:', _data);
-				// 	if(_data == defaults.stepType && window.z) {
-				// 		throw new Error('x');
-				// 	}
-				// }
-
 			}
 			// event.dispatch('shareSet', {name : _data});
 		

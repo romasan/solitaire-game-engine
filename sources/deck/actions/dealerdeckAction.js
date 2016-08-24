@@ -139,10 +139,13 @@ export default function(data) {// data.actionData, e
 			// _decks[deckId].Redraw();
 
 			event.dispatch('addStep', {
-				from : this.name,
-				to   : _decks[deckId].name,
-				deck : [_cardName],
-				flip : true
+				'move' : {
+					from : this.name,
+					to   : _decks[deckId].name,
+					deck : [_cardName],
+					flip : true,
+					stepType : share.get('stepType')
+				}
 			});
 
 		};

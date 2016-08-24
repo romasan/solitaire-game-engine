@@ -12,6 +12,17 @@ import history       from 'history';
 
 import renderTest from 'renderTest';
 
+// event.listen('addStep', (e) => {
+// 	console.log('* Добавили данные для истории:', e.move ? e.move.stepType : 'none', e);
+// 	if(e.move && !e.move.stepType) {
+// 		throw new Error('debug');
+// 	}
+// });
+
+// event.listen('makeStep', (e) => {
+// 	console.log('# Отправили данные на сохранение в историю:', e);
+// }
+
 let _history = [],
 	_redo    = [];
 
