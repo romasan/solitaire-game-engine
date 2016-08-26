@@ -7,22 +7,22 @@ import defaults from 'defaults';
 class shareClass {
 
 	constructor() {
-		this.data = {};
+		this._data = {};
 	}
 
 	get(name) {
-		if(typeof this.data[name] != "undefined") {
+		if(typeof this._data[name] != "undefined") {
 			// TODO решить наконец проблему, 
 			// почему Object.assign не работает после babel-я
 			
-			// event.dispatch('shareGet', {name : name, data : data[name]});
-			return this.data[name];
+			event.dispatch('shareGet:' + name, this._data[name]);
+			return this._data[name];
 		} else {
 			return null;
 		}
 	}
 
-	set(name, _data, forceClone) {
+	set(name, data, forceClone) {
 
 		if(typeof name == "string") {
 
@@ -30,35 +30,38 @@ class shareClass {
 				typeof forceClone == "boolean" && forceClone
 			) {
 
-				this.data[name] = Object.assign({}, _data);
+				this._data[name] = Object.assign({}, data);
 
 			} else {
 				
-				event.dispatch('change:' + name);
+				event.dispatch('shareChange:' + name, {
+					from: this._data[name],
+					to: data
+				});
 
-				this.data[name] = _data;
+				this._data[name] = data;
 
-				event.dispatch('changed:' + name);
+				event.dispatch('shareSet:' + name, data);
 
 			}
 			// event.dispatch('shareSet', {name : _data});
 		
-		} else if(name instanceof Object && typeof _data == "undefined") {
+		} else if(name instanceof Object && typeof data == "undefined") {
 
 			for(var _name in name) {
-				this.data[_name] = name[_name];
+				this._data[_name] = name[_name];
 			}
 			// event.dispatch('shareSet', name);
 
 		} else {
 
-			console.warn('Error share.set:', name, _data);
+			console.warn('Error share.set:', name, data);
 
 		}
 	}
 
 	getAll() {
-		return this.data;
+		return this._data;
 	}
 }
 

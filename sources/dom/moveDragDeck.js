@@ -19,9 +19,8 @@ event.listen('moveDragDeck', (e)=>{
 
 	common.curLock();
 
+	let _lastIndex = e.moveDeck.length - 1;
 	for(let i in e.moveDeck) {
-
-
 
 		let _position = e.destination.padding(e.destination.cards.length - 1 + (i | 0));
 
@@ -53,25 +52,28 @@ event.listen('moveDragDeck', (e)=>{
 		};
 
 		let _zIndex = (defaults.topZIndex | 0) + (i | 0);
+
+		let _callback = function(e, _last) {
+
+			e.departure	 .Redraw();
+			e.destination.Redraw();
+
+			common.curUnLock();
+
+			if(_last && typeof e.callback == "function") {
+				e.callback();
+			}
+
+			event.dispatch('moveDragDeckDone', {
+				deck : e.destination
+			});
+		}.bind(null, e, i == _lastIndex);
+
 		elRender(e.moveDeck[i].card.domElement)
 			.css({'z-index' : _zIndex})
 			.animate(
 				_params, 
-				function(e) {
-
-					e.departure	 .Redraw();
-					e.destination.Redraw();
-
-					common.curUnLock();
-
-					if(typeof e.callback == "function") {
-						e.callback();
-					}
-
-					event.dispatch('moveDragDeckDone', {
-						deck : e.destination
-					});
-				}.bind(null, e)
+				_callback
 			);
 
 		// elRender(e.moveDeck[i].card.domElement)
