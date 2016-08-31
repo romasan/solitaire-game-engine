@@ -94,7 +94,7 @@ var config = {
 			dev
 		}),
 
-		new function(a) {
+		new function() {
 			this.apply = function(e) {
 			  e.plugin('done', function() {
 			    if(dev) {
@@ -110,7 +110,7 @@ var config = {
 			};
 		},
 
-		new WebpackNotifierPlugin({alwaysNotify: dev, wait: false})
+		new WebpackNotifierPlugin({alwaysNotify: dev})
 	]
 };
 
