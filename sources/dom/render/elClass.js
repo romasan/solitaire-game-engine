@@ -155,33 +155,22 @@ export default class elClass {
 				let counter = 0;
 
 				let reType = (e) => {// crutch
+
 					let _e = e + '';
+
 					let _px = _e.split('px')
 					if(_px.length == 2) {
-						return (_e[0] | 0) + 'px'
-						console.log('###', e, _e);
+						return (_px[0] | 0) + 'px'
 					}
+					
 					return e;
 				};
 
 				for(var attrName in params) {
-
-					console.log('animation_counter:', 
-						
-						attrName, 
-						
-						reType(this.el.style[attrName]), 
-						reType(params[attrName]), 
-						reType(this.el.style[attrName]) != reType(params[attrName]),
-						
-						this.el.style[attrName], 
-						params[attrName], 
-						this.el.style[attrName] != params[attrName]
-					)
 					
 					if(
-						this.el.style[attrName] != params[attrName]
-						// reType(this.el.style[attrName]) != reType(params[attrName])
+						// this.el.style[attrName] != params[attrName]
+						reType(this.el.style[attrName]) != reType(params[attrName])
 					) {
 						counter += 1;
 					}
@@ -195,8 +184,6 @@ export default class elClass {
 					this.el.addEventListener("transitionend", ()=>{
 						
 						counter -= 1;
-
-						console.log('animation counter', counter, typeof callback, !counter);
 
 						// event.dispatch('animationEnd', this);
 

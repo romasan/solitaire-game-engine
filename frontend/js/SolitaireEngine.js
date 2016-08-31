@@ -6764,8 +6764,6 @@ var SolitaireEngine =
 		value: true
 	});
 	
-	var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
-	
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 	
 	var _event = __webpack_require__(2);
@@ -6971,24 +6969,24 @@ var SolitaireEngine =
 	
 						var reType = function reType(e) {
 							// crutch
+	
 							var _e = e + '';
+	
 							var _px = _e.split('px');
 							if (_px.length == 2) {
-								return (_e[0] | 0) + 'px';
-								console.log('###', e, _e);
+								return (_px[0] | 0) + 'px';
 							}
+	
 							return e;
 						};
 	
 						for (var attrName in params) {
 	
-							console.log('animation_counter:', attrName, reType(_this.el.style[attrName]), reType(params[attrName]), reType(_this.el.style[attrName]) != reType(params[attrName]), _this.el.style[attrName], params[attrName], _this.el.style[attrName] != params[attrName]);
-	
-							if (_this.el.style[attrName] != params[attrName]
-							// reType(this.el.style[attrName]) != reType(params[attrName])
-							) {
-									counter += 1;
-								}
+							if (
+							// this.el.style[attrName] != params[attrName]
+							reType(_this.el.style[attrName]) != reType(params[attrName])) {
+								counter += 1;
+							}
 							_this.el.style[attrName] = params[attrName];
 						}
 	
@@ -6999,8 +6997,6 @@ var SolitaireEngine =
 							_this.el.addEventListener("transitionend", function () {
 	
 								counter -= 1;
-	
-								console.log('animation counter', counter, typeof callback === 'undefined' ? 'undefined' : _typeof(callback), !counter);
 	
 								// event.dispatch('animationEnd', this);
 	
@@ -7762,8 +7758,6 @@ var SolitaireEngine =
 
 	'use strict';
 	
-	var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
-	
 	var _event = __webpack_require__(2);
 	
 	var _event2 = _interopRequireDefault(_event);
@@ -7785,8 +7779,6 @@ var SolitaireEngine =
 	// Move card to home
 	_event2.default.listen('moveCardToHome', function (e) {
 	
-		console.log('moveCardToHome');
-	
 		if (_share2.default.get('lastCursorMove').distance > 0) {
 			_common2.default.curLock();
 		}
@@ -7807,7 +7799,6 @@ var SolitaireEngine =
 					e.departure.Redraw();
 				}
 	
-				console.log('>>> callback', _typeof(e.callback));
 				if (typeof e.callback == "function") {
 					e.callback();
 				}

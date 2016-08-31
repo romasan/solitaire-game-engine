@@ -9,8 +9,6 @@ import elRender from 'elRender';
 // Move card to home
 event.listen('moveCardToHome', function(e) {
 
-	console.log('moveCardToHome');
-
 	if(share.get('lastCursorMove').distance > 0) {
 		common.curLock();
 	}
@@ -36,7 +34,6 @@ event.listen('moveCardToHome', function(e) {
 							e.departure.Redraw();
 						}
 
-						console.log('>>> callback', typeof e.callback);
 						if(typeof e.callback == "function") {
 							e.callback();
 						}
