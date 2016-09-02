@@ -12,7 +12,7 @@ export default function(data) {
 		return false;
 	}
 
-	if(data.eventData.stepType != defaults.stepType) {
+	if(data.eventData.stepType != defaults.stepType) {// ??? TODO проверить нужно ли это
 		return false;
 	}
 
