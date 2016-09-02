@@ -44,7 +44,7 @@ export default function(data) {
 	// 	_name = data.eventData.to.name;
 	// }
 
-	if(data.eventData.to.name != this.name) {
+	if(data.eventData.to.name != this.name) {// data.eventData.to - куда мы перетащили карты
 		return false;
 	}
 

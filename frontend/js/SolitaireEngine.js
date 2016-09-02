@@ -3444,16 +3444,23 @@ var SolitaireEngine =
 	
 	exports.default = function (data) {
 		// data.actionData, e
+		// default data.actionData.onlyEmpty - false
+		// default data.actionData.from      - this.name
 	
 		// listen click
 		// click is for me (default)
 		// if(this.name != data.actionData.name) { return; };
+		if (!data.eventData || this.name != data.eventData.name) {
+			return;
+		};
 	
 		// меняем тип хода
 		_share2.default.set('stepType', stepType);
 	
+		var dealDeck = typeof data.actionData.from == "string" ? Deck.Deck(data.actionData.from) : this;
+	
 		// смотрим остались ли карты
-		if (this.cards.length == 0) {
+		if (dealDeck.cards.length == 0) {
 	
 			_share2.default.set('stepType', _defaults2.default.stepType);
 	
@@ -3541,7 +3548,7 @@ var SolitaireEngine =
 		for (var deckId in _decks) {
 	
 			// берём верхнюю карту
-			var _card = this.getTopCard();
+			var _card = dealDeck.getTopCard();
 	
 			// флаг что такой ход возможен
 			var _canStep = data.actionData.onlyEmpty ? _decks[deckId].cards.length == 0 : true;
@@ -3557,7 +3564,7 @@ var SolitaireEngine =
 				};
 	
 				(0, _forceMove2.default)({
-					from: this.name,
+					from: dealDeck.name,
 					to: _decks[deckId].name,
 					deck: [_cardName],
 					flip: true,
@@ -3569,7 +3576,7 @@ var SolitaireEngine =
 	
 				_event2.default.dispatch('addStep', {
 					'move': {
-						from: this.name,
+						from: dealDeck.name,
 						to: _decks[deckId].name,
 						deck: [_cardName],
 						flip: true,
@@ -3785,6 +3792,7 @@ var SolitaireEngine =
 		// }
 	
 		if (data.eventData.to.name != this.name) {
+			// data.eventData.to - куда мы перетащили карты
 			return false;
 		}
 	
