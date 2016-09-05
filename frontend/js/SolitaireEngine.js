@@ -3237,18 +3237,23 @@ var SolitaireEngine =
 	
 	var _stepsAroundAction2 = _interopRequireDefault(_stepsAroundAction);
 	
+	var _changeStepTypeAction = __webpack_require__(73);
+	
+	var _changeStepTypeAction2 = _interopRequireDefault(_changeStepTypeAction);
+	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
-	// Actions
 	var _actions = {
 		"twindeck": _twindeckAction2.default,
 		"dealerdeck": _dealerdeckAction2.default,
 		"kick": _kickAction2.default,
-		"stepsAround": _stepsAroundAction2.default
+		"stepsAround": _stepsAroundAction2.default,
+		"changeStepType": _changeStepTypeAction2.default
 	};
 	
 	// ------------------------------------------------------------------------------------------
 	
+	// Actions
 	var _decksActions = [],
 	    _events = [];
 	
@@ -3444,8 +3449,14 @@ var SolitaireEngine =
 	
 	exports.default = function (data) {
 		// data.actionData, e
+	
 		// default data.actionData.onlyEmpty - false
 		// default data.actionData.from      - this.name
+		// default data.actionData.stepType  - NULL
+	
+		if (typeof data.actionData.stepType == "string" && data.actionData.stepType != _share2.default.get('stepType')) {
+			return;
+		}
 	
 		// listen click
 		// click is for me (default)
@@ -3587,8 +3598,6 @@ var SolitaireEngine =
 		};
 	
 		if (_makeStep) {
-	
-			console.log('-------------------------------------#');
 	
 			// сохраняем если паздача удалась
 			_event2.default.dispatch('saveSteps');
@@ -8329,6 +8338,49 @@ var SolitaireEngine =
 	 		_el_8
 	 	);*/
 	};
+
+/***/ },
+/* 73 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+		value: true
+	});
+	
+	exports.default = function (data) {
+	
+		if (data.eventData.to.name != this.name) {
+			return false;
+		}
+	
+		if (typeof data.actionData.to != "string") {
+			return;
+		} else {
+			_share2.default.set('stepType', data.actionData.to);
+		}
+	};
+	
+	var _event = __webpack_require__(2);
+	
+	var _event2 = _interopRequireDefault(_event);
+	
+	var _share = __webpack_require__(1);
+	
+	var _share2 = _interopRequireDefault(_share);
+	
+	var _defaults = __webpack_require__(3);
+	
+	var _defaults2 = _interopRequireDefault(_defaults);
+	
+	var _common = __webpack_require__(5);
+	
+	var _common2 = _interopRequireDefault(_common);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	;
 
 /***/ }
 /******/ ]);

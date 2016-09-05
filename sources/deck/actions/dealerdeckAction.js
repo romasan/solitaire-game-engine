@@ -10,8 +10,17 @@ import forceMove from 'forceMove';
 let stepType = 'dealerdeckStepType';
 
 export default function(data) {// data.actionData, e
+
 // default data.actionData.onlyEmpty - false
 // default data.actionData.from      - this.name
+// default data.actionData.stepType  - NULL
+
+	if(
+		typeof data.actionData.stepType == "string" &&
+		data.actionData.stepType != share.get('stepType')
+	) {
+		return;
+	}
 
 	// listen click
 	// click is for me (default)
@@ -166,8 +175,6 @@ export default function(data) {// data.actionData, e
 	
 	if(_makeStep) {
 
-		console.log('-------------------------------------#');
-		
 		// сохраняем если паздача удалась
 		event.dispatch('saveSteps');
 		// event.dispatch('checkTips');
