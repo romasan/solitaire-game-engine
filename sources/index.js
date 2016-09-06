@@ -6,15 +6,16 @@ import event      from 'event';
 import defaults   from 'defaults';
 
 // init
-import Inputs     from 'inputs';
-import Move       from 'move';
-import forceMove  from 'forceMove';
-import domManager from 'domManager';
-import Field      from 'field';
-import common     from 'common';
-import winCheck   from 'winCheck';
-import History    from 'history';
-import Tips       from 'tips';
+import Inputs        from 'inputs';
+import Move          from 'move';
+import forceMove     from 'forceMove';
+import domManager    from 'domManager';
+import Field         from 'field';
+import common        from 'common';
+import winCheck      from 'winCheck';
+import History       from 'history';
+import Tips          from 'tips';
+import deckGenerator from 'deckGenerator';
 
 // import debug   from 'debug';
 
@@ -28,9 +29,10 @@ import 'common.scss';
 import 'default_theme.scss';
 import 'alternative_theme.scss';
 
-exports.event    = event;
-exports.options  = defaults;
-exports.winCheck = winCheck.hwinCheck;
+exports.event     = event;
+exports.options   = defaults;
+exports.winCheck  = winCheck.hwinCheck;
+exports.generator = deckGenerator;
 
 var firstInit = true;
 

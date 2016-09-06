@@ -4,10 +4,15 @@ const webpack = require("webpack");
 const path = require('path');
 const ExtractTextPlugin = require("extract-text-webpack-plugin");
 
+var WebpackNotifierPlugin = require('webpack-notifier');
+
 const gen = process.env.MODE == 'gen';
 const dev = process.env.MODE == 'dev' || gen;
 
 console.log('MODE:', process.env.MODE ? process.env.MODE : 'prod');
+
+let _file = './package.json';
+let _json = require(_file);
 
 var config = {
 	entry: "index",
@@ -87,12 +92,27 @@ var config = {
 
 		new webpack.DefinePlugin({
 			dev
-		})
+		}),
+
+		new function() {
+			this.apply = function(e) {
+			  e.plugin('done', function() {
+			    if(dev) {
+
+	    			let fs = require('fs');
+					let _ver = _json.version.split('.');
+					_ver[_ver.length - 1] = (_ver[_ver.length - 1]|0) + 1;
+					_json.version = _ver.join('.');
+					fs.writeFile(_file, JSON.stringify(_json, null, 2));
+
+			    }
+			  });
+			};
+		},
+
+		new WebpackNotifierPlugin({alwaysNotify: dev})
 	]
 };
-
-let _file = './package.json';
-let _json = require(_file);
 
 if(dev) {
 
@@ -105,11 +125,6 @@ if(dev) {
 		};
 		config.devtool = "source-map";
 
-		let fs = require('fs');
-		let _ver = _json.version.split('.');
-		_ver[_ver.length - 1] = (_ver[_ver.length - 1]|0) + 1;
-		_json.version = _ver.join('.');
-		fs.writeFile(_file, JSON.stringify(_json, null, 2));
 	}
 
 } else {

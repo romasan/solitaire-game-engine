@@ -112,9 +112,11 @@ var cmove = function(x, y) {
 
 	if(!_dragDeck || !_startCursor) return;
 
-	var _distance = _startCursor 
+	let _distance = _startCursor 
 		? Math.sqrt(common.sqr(x - _startCursor.x) + common.sqr(y - _startCursor.y)) 
 		: 0;
+	// console.clear();
+	console.log(x - _startCursor.x, y - _startCursor.y);
 
 	var _deck = common.getElementById(_dragDeck[0].card.parent);
 
@@ -165,8 +167,10 @@ var cend = function(target, x, y, dbclick) {
 	var _deck = common.getElementById(_dragDeck[0].card.parent);
 
 	var _position = _deck.padding(_dragDeck[0].index);
+	let _distance = Math.sqrt(common.sqr(x - _startCursor.x) + common.sqr(y - _startCursor.y));
+	console.log('>>> distance:', _distance, x - _startCursor.x, y - _startCursor.y);
 	var cursorMove = {
-		distance     : Math.sqrt(common.sqr(x - _startCursor.x) + common.sqr(y - _startCursor.y)),
+		distance     : _distance,
 		dbclick      : !!dbclick,
 		direction    : {
 			x     : x - _startCursor.x,// (+) rigth / (-) left

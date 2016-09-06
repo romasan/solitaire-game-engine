@@ -1,3 +1,3 @@
 #!/bin/sh
 MODE=gen npm run build
-echo "\nmodule.exports = SolitaireEngine" >> ./frontend/js/SolitaireEngine.js
+echo "\ntry{module.exports = SolitaireEngine;}catch(e){}" >> ./frontend/js/SolitaireEngine.js

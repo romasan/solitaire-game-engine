@@ -153,8 +153,25 @@ export default class elClass {
 				}
 
 				let counter = 0;
+
+				let reType = (e) => {// crutch
+
+					let _e = e + '';
+
+					let _px = _e.split('px')
+					if(_px.length == 2) {
+						return (_px[0] | 0) + 'px'
+					}
+					
+					return e;
+				};
+
 				for(var attrName in params) {
-					if(this.el.style[attrName] != params[attrName]) {
+					
+					if(
+						// this.el.style[attrName] != params[attrName]
+						reType(this.el.style[attrName]) != reType(params[attrName])
+					) {
 						counter += 1;
 					}
 					this.el.style[attrName] = params[attrName];
@@ -165,6 +182,7 @@ export default class elClass {
 					this.addClass("animated");
 
 					this.el.addEventListener("transitionend", ()=>{
+						
 						counter -= 1;
 
 						// event.dispatch('animationEnd', this);
@@ -173,9 +191,11 @@ export default class elClass {
 
 							this.removeClass("animated");
 							this.css({transition: null});
+							
 							if(typeof callback == "function") {
 								callback();
 							}
+							
 							event.dispatch('allAnimationsEnd', animationName);
 						}
 
@@ -193,71 +213,6 @@ export default class elClass {
 			}, 0);
 		} catch(e) {}
 	}
-	/*animate(params, animationTime, callback) {
-
-		if(typeof animationTime == "undefined") {
-			animationTime = defaults.animationTime;
-		}
-
-		if(
-			typeof callback      == "undefined" 
-		 && typeof animationTime == "function"
-		) {
-			callback = animationTime;
-			animationTime = defaults.animationTime;
-		}
-
-		this.done(callback);
-
-		var _animatedElements = share.get('animatedElements');
-		var _animatedElementsStack = share.get('animatedElementsStack');
-		_animatedElements += 1;
-		_animatedElementsStack.push(this);
-		share.set('animatedElements', _animatedElements);
-		share.set('animatedElementsStack', _animatedElementsStack);
-
-		var _animateThread = function(params) {
-			this.el.style.transition = '0.5s';
-			this.css(params);
-			this.el.addEventListener("transitionend", function() {
-				if(this.el.style.transition) {
-					
-					var _animatedElements = share.get('animatedElements');
-					_animatedElements -= 1;
-					share.set('animatedElements', _animatedElements);
-					
-					var _animatedCallback = share.get('animatedCallback');
-					var _cloneCallback = _animatedCallback;
-					
-					if(share.get('animatedElements') == 0) {
-						_animatedCallback.call(this);
-					};
-					
-					if(
-						share.get('animatedElements') == 0
-					 || _cloneCallback == share.get('animatedCallback')
-					) {
-						_animatedCallback = function() {};
-					};
-				};
-				this.el.style.transition = null;
-			}.bind(this), false);
-		}
-		
-		// Thread
-		setTimeout(_animateThread.bind(this, params), 0);
-
-		return this;
-	}*/
-
-	/*done(callback) {
-
-		if(typeof callback == "function") {
-			share.set('animatedCallback', callback);
-		};
-		
-		return this;
-	}*/
 // --	
 	remove() {
 		try {

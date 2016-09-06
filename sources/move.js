@@ -39,7 +39,8 @@ var Move = function(moveDeck, to, cursorMove) {
 
 		event.dispatch('moveCardToHome', {
 			moveDeck  : moveDeck,
-			departure : _deck_departure
+			departure : _deck_departure,
+			stepType  : share.get('stepType')
 		});
 		return;
 	}
@@ -98,23 +99,25 @@ var Move = function(moveDeck, to, cursorMove) {
 						'move' : {
 							from : _deck_departure  .name,
 							to   : _deck_destination.name,
-							deck : Deck.deckCardNames(moveDeck)
+							deck : Deck.deckCardNames(moveDeck),
+							stepType : share.get('stepType')
 						}
 					})
+					event.dispatch('saveSteps');
 
-					var _deck = _deck_departure.cards;
-					if(_deck.length && _deck[_deck.length - 1].flip) {
+					// var _deck = _deck_departure.cards;
+					// if(_deck.length && _deck[_deck.length - 1].flip) {
 						
-						_deck[_deck.length - 1].flip = false;
+					// 	_deck[_deck.length - 1].flip = false;
 						
-						event.dispatch('addStep', {
-							deck : _deck_departure.name,
-							card : {
-								name  : _deck[_deck.length - 1].name,
-								index : _deck.length - 1
-							}
-						});
-					}
+					// 	event.dispatch('addStep', {
+					// 		deck : _deck_departure.name,
+					// 		card : {
+					// 			name  : _deck[_deck.length - 1].name,
+					// 			index : _deck.length - 1
+					// 		}
+					// 	});
+					// }
 
 					event.dispatch('moveDragDeck', {
 						
@@ -126,14 +129,12 @@ var Move = function(moveDeck, to, cursorMove) {
 
 							// записать ход (если он не составной)
 							// if(_stepType == defaults.stepType) {				
-								event.dispatch('saveSteps');
 							// }
 
 							event.dispatch('moveEnd', {
 								from     : _deck_departure,
 								to       : _deck_destination,
-								moveDeck : moveDeck,
-								stepType : share.get('stepType')
+								moveDeck : moveDeck
 							});
 
 							Tips.checkTips();

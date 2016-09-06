@@ -11,15 +11,36 @@ let stepType = 'dealerdeckStepType';
 
 export default function(data) {// data.actionData, e
 
+// default data.actionData.onlyEmpty - false
+// default data.actionData.from      - this.name
+// default data.actionData.stepType  - NULL
+
+	if(
+		typeof data.actionData.stepType == "string" &&
+		data.actionData.stepType != share.get('stepType')
+	) {
+		return;
+	}
+
 	// listen click
 	// click is for me (default)
 	// if(this.name != data.actionData.name) { return; };
+	if(
+		!data.eventData ||
+		this.name != data.eventData.name
+	) {
+		return;
+	};
 	
 	// меняем тип хода
 	share.set('stepType', stepType);
+
+	let dealDeck = typeof data.actionData.from == "string"
+		? Deck.Deck(data.actionData.from)
+		: this
 	
 	// смотрим остались ли карты
-	if(this.cards.length == 0) {
+	if(dealDeck.cards.length == 0) {
 
 		share.set('stepType', defaults.stepType);
 
@@ -110,7 +131,7 @@ export default function(data) {// data.actionData, e
 	for(var deckId in _decks) {
 		
 		// берём верхнюю карту
-		var _card = this.getTopCard();
+		var _card = dealDeck.getTopCard();
 
 		// флаг что такой ход возможен
 		var _canStep = data.actionData.onlyEmpty
@@ -128,7 +149,7 @@ export default function(data) {// data.actionData, e
 			};
 
 			forceMove({
-				from : this.name,
+				from : dealDeck.name,
 				to   : _decks[deckId].name,
 				deck : [_cardName],
 				flip : true,
@@ -139,10 +160,13 @@ export default function(data) {// data.actionData, e
 			// _decks[deckId].Redraw();
 
 			event.dispatch('addStep', {
-				from : this.name,
-				to   : _decks[deckId].name,
-				deck : [_cardName],
-				flip : true
+				'move' : {
+					from : dealDeck.name,
+					to   : _decks[deckId].name,
+					deck : [_cardName],
+					flip : true,
+					stepType : share.get('stepType')
+				}
 			});
 
 		};
@@ -151,8 +175,6 @@ export default function(data) {// data.actionData, e
 	
 	if(_makeStep) {
 
-		console.log('-------------------------------------#');
-		
 		// сохраняем если паздача удалась
 		event.dispatch('saveSteps');
 		// event.dispatch('checkTips');

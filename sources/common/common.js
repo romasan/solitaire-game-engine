@@ -12,7 +12,19 @@ import drawPreferences    from 'drawPreferences';
 import preferencesEvents  from 'preferencesEvents';
 import defaultPreferences from 'defaultPreferences';
 
+// event.listen('shareChange:stepType', (e) => {
+// 	console.log('%cshareChange:stepType', 'background-color: green;color: white;', e);
+// });
+
+// event.listen('shareChange:curLockState', (e) => {
+// 	console.log('%cshareChange:curLockState', 'background-color: blue;color: white;', e);
+// });
+
 event.listen('gameInit', (e)=>{
+
+	share.set('stepType', defaults.stepType);
+
+	curUnLock();
 	
 	if(!e.firstInit) { return; };
 	drawPreferences();

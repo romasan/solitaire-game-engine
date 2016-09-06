@@ -12,7 +12,7 @@ export default function(data) {
 		return false;
 	}
 
-	if(data.eventData.stepType != defaults.stepType) {
+	if(data.eventData.stepType != defaults.stepType) {// ??? TODO проверить нужно ли это
 		return false;
 	}
 
@@ -44,7 +44,7 @@ export default function(data) {
 	// 	_name = data.eventData.to.name;
 	// }
 
-	if(data.eventData.to.name != this.name) {
+	if(data.eventData.to.name != this.name) {// data.eventData.to - куда мы перетащили карты
 		return false;
 	}
 

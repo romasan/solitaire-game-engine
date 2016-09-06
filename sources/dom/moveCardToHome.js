@@ -1,8 +1,8 @@
 'use strict';
 
-import event		from 'event';
-import common	 from 'common';
-import share		from 'share';
+import event  from 'event';
+import common from 'common';
+import share  from 'share';
 
 import elRender from 'elRender';
 

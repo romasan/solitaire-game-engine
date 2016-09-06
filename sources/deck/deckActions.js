@@ -6,16 +6,18 @@ import defaults from 'defaults';
 import common   from 'common';
 
 // Actions
-import twindeck    from 'twindeckAction';
-import dealerdeck  from 'dealerdeckAction';
-import kickAction  from 'kickAction';
-import stepsAround from 'stepsAroundAction';
+import twindeck       from 'twindeckAction';
+import dealerdeck     from 'dealerdeckAction';
+import kickAction     from 'kickAction';
+import stepsAround    from 'stepsAroundAction';
+import changeStepType from 'changeStepTypeAction';
 
 var _actions = {
-	"twindeck"    : twindeck   ,
-	"dealerdeck"  : dealerdeck ,
-	"kick"        : kickAction ,
-	"stepsAround" : stepsAround     
+	"twindeck"       : twindeck      ,
+	"dealerdeck"     : dealerdeck    ,
+	"kick"           : kickAction    ,
+	"stepsAround"    : stepsAround   ,
+	"changeStepType" : changeStepType
 };
 
 // ------------------------------------------------------------------------------------------
