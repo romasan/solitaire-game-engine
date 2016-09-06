@@ -11,19 +11,23 @@ import dealerdeck     from 'dealerdeckAction';
 import kickAction     from 'kickAction';
 import stepsAround    from 'stepsAroundAction';
 import changeStepType from 'changeStepTypeAction';
+import lock           from 'lockAction';
+import unlock         from 'unlockAction';
 
 var _actions = {
 	"twindeck"       : twindeck      ,
 	"dealerdeck"     : dealerdeck    ,
 	"kick"           : kickAction    ,
 	"stepsAround"    : stepsAround   ,
-	"changeStepType" : changeStepType
+	"changeStepType" : changeStepType,
+	"lock"           : lock          ,
+	"unlock"         : unlock
 };
 
 // ------------------------------------------------------------------------------------------
 
 var _decksActions  = [],
-	_events = [];
+    _events = [];
 
 var addActionEvent = function(_event) {
 
@@ -36,8 +40,8 @@ var addActionEvent = function(_event) {
 				
 
 				var _canRun = _event == 'click'
-					? data.name == _decksActions[i].deck.name
-					: true;
+				    ? data.to.name == _decksActions[i].deck.name
+				    : true;
 				
 				if(_canRun) {
 					
@@ -60,6 +64,7 @@ var addActions = function() {
 
 	for(var actionName in this.actions) {
 
+		// если не описано событие выполнять по клику
 		if(!this.actions[actionName].event) {
 			this.actions[actionName].event = 'click';
 		}
