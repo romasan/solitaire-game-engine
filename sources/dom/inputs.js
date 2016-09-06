@@ -64,7 +64,9 @@ var cdown = function(target, x, y) {
 		var _id   = target.id,
 		_deck = common.getElementById(_id);
 		if(_deck) {
-			event.dispatch('click', _deck);
+			event.dispatch('click', {
+				to: _deck
+			});
 		}
 		// _deck.runActions();
 	}
@@ -77,7 +79,9 @@ var cdown = function(target, x, y) {
 		    _deck   = _parent               ? Deck.getDeckById(_parent)  : null;
 
 		if(_deck) {
-			event.dispatch('click', _deck);
+			event.dispatch('click', {
+				to: _deck
+			});
 		}
 		
 		// _deck.runActions();
@@ -115,8 +119,8 @@ var cmove = function(x, y) {
 	let _distance = _startCursor 
 		? Math.sqrt(common.sqr(x - _startCursor.x) + common.sqr(y - _startCursor.y)) 
 		: 0;
-	// console.clear();
-	console.log(x - _startCursor.x, y - _startCursor.y);
+
+	// console.log(x - _startCursor.x, y - _startCursor.y);
 
 	var _deck = common.getElementById(_dragDeck[0].card.parent);
 

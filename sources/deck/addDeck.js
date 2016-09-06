@@ -45,8 +45,6 @@ class deckClass {
 			return id;
 		}
 
-		this.locked = a.locked ? true : false;
-
 		var _parent_el   = Group.Group(a.parent),
 			_parent_name = _parent_el ? _parent_el.name : 'xname',// ???
 			_new_id      = _parent_el ? _parent_el.getDecks().length : id;
@@ -55,11 +53,13 @@ class deckClass {
 			? a.name 
 			: (_parent_name + '_' + _new_id);
 		
-		this.visible= a.visible && typeof a.visible == 'boolean' ? a.visible : true;// default true
+		this.locked = a.locked ? true : false;
+		
+		this.visible = a.visible && typeof a.visible == 'boolean' ? a.visible : true;// default true
 		
 		this.groupIndex = a.groupIndex && typeof a.groupIndex == 'number' ? a.groupIndex : null;
 
-		this.parent= a.parent && typeof a.parent == 'string'  ? a.parent : 'field';
+		this.parent = a.parent && typeof a.parent == 'string'  ? a.parent : 'field';
 		
 		this.autoHide = a.autoHide && typeof a.autoHide == 'boolean' ? a.autoHide : defaults.autohide;
 		
@@ -214,6 +214,16 @@ class deckClass {
 
 // -------------------------------------------------------------------------------------------------
 
+	lock() {
+		
+		this.locked = true;
+	}
+
+	unlock() {
+
+		this.locked = false;
+	}
+	
 	checkFill() {
 
 		if(!this.fill) {

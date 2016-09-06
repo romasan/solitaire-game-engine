@@ -27,7 +27,8 @@ export default function(data) {// data.actionData, e
 	// if(this.name != data.actionData.name) { return; };
 	if(
 		!data.eventData ||
-		this.name != data.eventData.name
+		this.name != data.eventData.to.name
+
 	) {
 		return;
 	};
