@@ -60,43 +60,52 @@ var sqr = function(i) {
 
 // --
 
-var _lock = false;
+// var _lock = false;
 
-var isLock = function() {
-	return _lock;
-};
+// var isLock = function() {
+// 	return _lock;
+// };
 
-var lock = function() {
-	_lock = true;
-}
-event.listen('lock', lock);
+// var lock = function() {
+// 	_lock = true;
+// }
+// event.listen('lock', lock);
 
-var unlock = function() {
-	lock = false;
-}
-event.listen('unlock', unlock);
+// var unlock = function() {
+// 	lock = false;
+// }
+// event.listen('unlock', unlock);
 
 // --
+
+let _inputStack = [];
 
 var isCurLock = function() {
 	return share.get('curLockState');
 };
 
 var curLock = function() {
-	// !window.debug_i && (window.debug_i = 0);
-	// window.debug_i += 1;
-	
-	// console.log('curLock');
-	
-	// if(window.debug_i == 2) {
-	// 	throw new Error('z');
-	// }
 	share.set('curLockState', true);
 };
 
 var curUnLock = function() {
-	// console.log('curUnLock');
+	
 	share.set('curLockState', false);
+	
+	for(let i in _inputStack) {
+		if(typeof _inputStack[i] == "function") {
+			_inputStack[i]();
+		}
+	}
+	_inputStack = [];
+}
+
+let input = (callback) => {
+	if(!isCurLock()) {
+		callback();
+	} else {
+		_inputStack.push(callback);
+	}
 }
 
 // getters
@@ -238,9 +247,9 @@ share.set('stepType', defaults.stepType);
 // share.set('lang', defaults.lang);
 
 export default {
-	isLock           ,
-	lock             ,
-	unlock           ,
+//	isLock           ,
+//	lock             ,
+//	unlock           ,
 	isCurLock        ,
 	curLock          ,
 	curUnLock        ,
