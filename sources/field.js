@@ -24,7 +24,7 @@ var Field = function(data) {
 		return false;
 	}
 
-	common.unlock();
+	// common.unlock();
 	
 	if(data && _field) {
 		
@@ -182,7 +182,7 @@ var Field = function(data) {
 		Tips.checkTips();
 
 		event.dispatch('newGame');
-		common.unlock();
+		// common.unlock();
 
 	}
 };

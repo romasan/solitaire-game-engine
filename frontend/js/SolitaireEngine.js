@@ -1450,7 +1450,7 @@ var SolitaireEngine =
 			return false;
 		}
 	
-		_common2.default.unlock();
+		// common.unlock();
 	
 		if (data && _field) {
 	
@@ -1577,7 +1577,7 @@ var SolitaireEngine =
 			_tips2.default.checkTips();
 	
 			_event2.default.dispatch('newGame');
-			_common2.default.unlock();
+			// common.unlock();
 		};
 	};
 	
