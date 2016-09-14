@@ -14,6 +14,7 @@ export default function(data) {// data.actionData, e
 // default data.actionData.onlyEmpty - false
 // default data.actionData.from      - this.name
 // default data.actionData.stepType  - NULL
+	console.log('dealerDeckAction', this, data);
 
 	if(
 		typeof data.actionData.stepType == "string" &&
@@ -25,10 +26,17 @@ export default function(data) {// data.actionData, e
 	// listen click
 	// click is for me (default)
 	// if(this.name != data.actionData.name) { return; };
-	if(
-		!data.eventData ||
-		this.name != data.eventData.to.name
+	
+	// if(
+	// 	!data.eventData ||
+	// 	this.name != data.eventData.to.name
+	// ) {
+	// 	return;
+	// };
 
+	if(
+		!data.actionData.to                  &&
+		this.name != data.actionData.to.name
 	) {
 		return;
 	};

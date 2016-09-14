@@ -43,9 +43,12 @@ export default class {
 	end() {
 
 		if(this.dispatch) {
-			event.dispatch(this.dispatch, {callback: ()=>{
-				share.set('stepType', defaults.stepType);
-			}});
+			event.dispatch(this.dispatch, {
+				stepType: share.get('stepType'),
+				callback: ()=>{
+					share.set('stepType', defaults.stepType);
+				}
+			});
 		} else {
 			// share.set('stepType', defaults.stepType);
 		}

@@ -3489,6 +3489,7 @@ var SolitaireEngine =
 		// default data.actionData.onlyEmpty - false
 		// default data.actionData.from      - this.name
 		// default data.actionData.stepType  - NULL
+		console.log('dealerDeckAction', this, data);
 	
 		if (typeof data.actionData.stepType == "string" && data.actionData.stepType != _share2.default.get('stepType')) {
 			return;
@@ -3497,7 +3498,15 @@ var SolitaireEngine =
 		// listen click
 		// click is for me (default)
 		// if(this.name != data.actionData.name) { return; };
-		if (!data.eventData || this.name != data.eventData.to.name) {
+	
+		// if(
+		// 	!data.eventData ||
+		// 	this.name != data.eventData.to.name
+		// ) {
+		// 	return;
+		// };
+	
+		if (!data.actionData.to && this.name != data.actionData.to.name) {
 			return;
 		};
 	
@@ -3799,11 +3808,10 @@ var SolitaireEngine =
 	exports.default = function (data) {
 	
 		if (_share2.default.get('stepType') != _defaults2.default.stepType) {
-			// console.log('#no_kick 1');
 			return false;
 		}
 	
-		if (data.eventData.stepType != _defaults2.default.stepType) {
+		if (typeof data.eventData.stepType == "string" && data.eventData.stepType != _defaults2.default.stepType) {
 			// ??? TODO проверить нужно ли это
 			return false;
 		}
@@ -3841,9 +3849,7 @@ var SolitaireEngine =
 			return false;
 		}
 	
-		// console.log('#kick -----------------------------------------');
-	
-		// console.log('KICK', data, share.get('prevStepType'));
+		console.log('#KICK', data.eventData, _share2.default.get('stepType'), '#');
 	
 		// if(
 		// 	data.eventData[0]                         &&
@@ -5895,7 +5901,7 @@ var SolitaireEngine =
 			key: 'auto',
 			value: function auto() {
 	
-				console.log('-- fallAutoStep:auto', _share2.default.get('curLockState'));
+				console.log('-- fallAutoStep:auto, curLockState -', _share2.default.get('curLockState'));
 				// fall lines auto
 	
 				// get groups
@@ -6010,9 +6016,12 @@ var SolitaireEngine =
 			value: function end() {
 	
 				if (this.dispatch) {
-					_event2.default.dispatch(this.dispatch, { callback: function callback() {
+					_event2.default.dispatch(this.dispatch, {
+						stepType: _share2.default.get('stepType'),
+						callback: function callback() {
 							_share2.default.set('stepType', _defaults2.default.stepType);
-						} });
+						}
+					});
 				} else {
 					// share.set('stepType', defaults.stepType);
 				}
