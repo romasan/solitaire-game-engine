@@ -48,10 +48,6 @@ event.listen('actionBreak', function(e) {
 	Tips.checkTips();
 });
 
-// event.listen("saveSteps", ()=>{
-// 	share.set('stepType', defaults.stepType);	
-// });
-
 // Lock/Unlock
 
 var sqr = function(i) {

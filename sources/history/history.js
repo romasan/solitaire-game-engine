@@ -41,6 +41,19 @@ var _undo = function(a) {
 	// 	// TODO
 	// };
 
+	// LOCK
+	if(
+		typeof a.lock != "undefined"
+	) {
+		Deck.Deck(a.lock).unlock();
+	}
+
+	if(
+		typeof a.unlock != "undefined"
+	) {
+		Deck.Deck(a.unlock).lock();
+	}
+
 	// MOVE
 	if(
 		typeof a.move      != "undefined" 
@@ -115,6 +128,20 @@ var _redo = function(a) {
 	// 	// TODO
 	// };
 
+	// LOCK
+	if(
+		typeof a.lock != "undefined"
+	) {
+		Deck.Deck(a.lock).lock();
+	}
+
+	if(
+		typeof a.unlock != "undefined"
+	) {
+		Deck.Deck(a.unlock).unlock();
+	}
+
+	// MOVE
 	if(
 		typeof a.move      != "undefined" 
 	 && typeof a.move.from != "undefined" 
