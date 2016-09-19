@@ -43,7 +43,7 @@ var checkTips = function() {
 	) {
 		
 		event.dispatch('noTips');
-		console.log('GAME OVER (Подсказок больше нет)');
+		console.log('No possible moves.');
 	}
 
 	// var _showTips = share.get('showTips')

@@ -157,8 +157,6 @@ class deckClass {
 			deckActions.addActions.call(this);
 		}
 
-		// this.afterStep = a.afterStep;
-
 		// ------------ RELATIONS ------------
 
 		if(a.relations) {

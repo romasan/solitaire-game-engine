@@ -23,9 +23,7 @@ const params = {
 	"flipPaddingX" : {type: "any"    },
 	"flipPaddingY" : {type: "any"    },
 	"actions"      : {type: "any"    },
-
-        "save"         : {type: "boolean", default: true}
-//  "afterStep"    : {type: "boolean"}
+	"save"         : {type: "boolean", default: true}
 };
 
 class groupClass {
