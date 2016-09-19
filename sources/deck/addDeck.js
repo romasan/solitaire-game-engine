@@ -54,6 +54,8 @@ class deckClass {
 			: (_parent_name + '_' + _new_id);
 		
 		this.locked = a.locked ? true : false;
+
+		this.save = a.save ? true : false;
 		
 		this.visible = a.visible && typeof a.visible == 'boolean' ? a.visible : true;// default true
 		

@@ -1713,7 +1713,9 @@ var SolitaireEngine =
 		"paddingY": { type: "any" },
 		"flipPaddingX": { type: "any" },
 		"flipPaddingY": { type: "any" },
-		"actions": { type: "any" }
+		"actions": { type: "any" },
+	
+		"save": { type: "boolean", default: true }
 		//  "afterStep"    : {type: "boolean"}
 	};
 	
@@ -1749,7 +1751,8 @@ var SolitaireEngine =
 				if (params[paramName].type == "any") {
 					this.parameters[paramName] = a[paramName] ? a[paramName] : _defaults2.default[paramName];
 				} else if (params[paramName].type == "boolean") {
-					this.parameters[paramName] = typeof a[paramName] == "boolean" ? a[paramName] : _defaults2.default[paramName];
+					this.parameters[paramName] = typeof a[paramName] == "boolean" ? a[paramName] : params[paramName].default;
+					// this.parameters[paramName] = typeof a[paramName] == "boolean" ? a[paramName] : defaults[paramName];
 				}
 			};
 	
@@ -1846,9 +1849,12 @@ var SolitaireEngine =
 							a[paramName] = this.parameters[paramName];
 						};
 					} else if (params[paramName].type == "boolean") {
-						if (typeof this.parameters[paramName] != "undefined" && typeof a[paramName] == "undefined") {
-							a[paramName] = this.parameters[paramName];
-						}
+						// if(
+						//	typeof this.parameters[paramName] != "undefined" &&
+						//	typeof a[paramName] == "undefined"
+						// ) {
+						a[paramName] = this.parameters[paramName];
+						// }			
 					}
 				};
 	
@@ -2138,6 +2144,8 @@ var SolitaireEngine =
 			this.name = a.name && typeof a.name == 'string' ? a.name : _parent_name + '_' + _new_id;
 	
 			this.locked = a.locked ? true : false;
+	
+			this.save = a.save ? true : false;
 	
 			this.visible = a.visible && typeof a.visible == 'boolean' ? a.visible : true; // default true
 	
@@ -4097,6 +4105,11 @@ var SolitaireEngine =
 			sources = [data.source];
 		}
 	
+		var _step = {};
+		_step[method] = sources;
+		_event2.default.dispatch('addStep', _step);
+		_event2.default.dispatch('saveSteps');
+	
 		for (var _i in sources) {
 	
 			var current = _common2.default.getElementsByName(sources[_i])[0];
@@ -4437,6 +4450,10 @@ var SolitaireEngine =
 	
 	var _share2 = _interopRequireDefault(_share);
 	
+	var _common = __webpack_require__(5);
+	
+	var _common2 = _interopRequireDefault(_common);
+	
 	var _forceMove = __webpack_require__(21);
 	
 	var _forceMove2 = _interopRequireDefault(_forceMove);
@@ -4490,11 +4507,24 @@ var SolitaireEngine =
 	
 		// LOCK
 		if (typeof a.lock != "undefined") {
-			_addDeck2.default.Deck(a.lock).unlock();
+			// Deck.Deck(a.lock).unlock();
+			// TODO сделать также в оставшихся местах
+			for (var i in a.lock) {
+				var _elements = _common2.default.getElementsByName(a.lock[i]);
+				for (var elNum in _elements) {
+					_elements[elNum].unlock();
+				}
+			}
 		}
 	
 		if (typeof a.unlock != "undefined") {
-			_addDeck2.default.Deck(a.unlock).lock();
+			// Deck.Deck(a.unlock).lock();
+			for (var _i2 in a.lock) {
+				var _elements2 = _common2.default.getElementsByName(a.lock[_i2]);
+				for (var _elNum in _elements2) {
+					_elements2[_elNum].lock();
+				}
+			}
 		}
 	
 		// MOVE
@@ -4566,11 +4596,23 @@ var SolitaireEngine =
 	
 		// LOCK
 		if (typeof a.lock != "undefined") {
-			_addDeck2.default.Deck(a.lock).lock();
+			// Deck.Deck(a.lock).lock();
+			for (var i in a.lock) {
+				var _elements = _common2.default.getElementsByName(a.lock[i]);
+				for (var elNum in _elements) {
+					_elements[elNum].lock();
+				}
+			}
 		}
 	
 		if (typeof a.unlock != "undefined") {
-			_addDeck2.default.Deck(a.unlock).unlock();
+			// Deck.Deck(a.unlock).unlock();
+			for (var _i3 in a.unlock) {
+				var _elements3 = _common2.default.getElementsByName(a.lock[_i3]);
+				for (var _elNum2 in _elements3) {
+					_elements3[_elNum2].unlock();
+				}
+			}
 		}
 	
 		// MOVE
@@ -6348,7 +6390,10 @@ var SolitaireEngine =
 							stepType: _share2.default.get('stepType')
 						}
 					});
-					_event2.default.dispatch('saveSteps');
+	
+					if (_deck_destination.save) {
+						_event2.default.dispatch('saveSteps');
+					}
 	
 					// var _deck = _deck_departure.cards;
 					// if(_deck.length && _deck[_deck.length - 1].flip) {
