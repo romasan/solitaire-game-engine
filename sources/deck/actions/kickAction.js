@@ -8,11 +8,14 @@ import defaults from 'defaults';
 export default function(data) {
 	
 	if(share.get('stepType') != defaults.stepType) {
-		// console.log('#no_kick 1');
 		return false;
 	}
 
-	if(data.eventData.stepType != defaults.stepType) {// ??? TODO проверить нужно ли это
+	if(
+		typeof data.eventData.stepType == "string"   &&
+		data.eventData.stepType != defaults.stepType
+	) {
+		// ??? TODO проверить нужно ли это
 		return false;
 	}
 
@@ -48,9 +51,7 @@ export default function(data) {
 		return false;
 	}
 
-	// console.log('#kick -----------------------------------------');
-
-	// console.log('KICK', data, share.get('prevStepType'));
+	console.log('#KICK', data.eventData, share.get('stepType'), '#');
 
 	// if(
 	// 	data.eventData[0]                         &&

@@ -132,12 +132,9 @@ if(dev) {
 	let preamble = `\
 /*
  * ${_json.description}\n\
- *
- * Author            : ${_json.author} - <${_json.email}>
- * Version           : ${_json.version}
- * Build time        : ${new Date().toUTCString()}
- * Portyanka version : (v. 0.1.0) Oct 2015
- * Webpack version   : (v. 0.9.6) Feb 24 2016
+ * Author     : ${_json.author} - <${_json.email}>
+ * Version    : ${_json.version}
+ * Build time : ${new Date().toUTCString()}
  */`;
 // * License           : ${_json.license}
 	config.plugins.push(

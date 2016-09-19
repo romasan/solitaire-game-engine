@@ -38,7 +38,7 @@ export default class fallAutoStep extends autoStep {
 
 	auto() {
 
-		console.log('-- fallAutoStep:auto', share.get('curLockState'));
+		console.log('-- fallAutoStep:auto, curLockState -', share.get('curLockState'));
 		// fall lines auto
 
 		// get groups

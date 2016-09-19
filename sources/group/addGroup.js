@@ -22,7 +22,9 @@ const params = {
 	"paddingY"     : {type: "any"    },
 	"flipPaddingX" : {type: "any"    },
 	"flipPaddingY" : {type: "any"    },
-	"actions"      : {type: "any"    }
+	"actions"      : {type: "any"    },
+
+        "save"         : {type: "boolean", default: true}
 //  "afterStep"    : {type: "boolean"}
 };
 
@@ -70,7 +72,8 @@ class groupClass {
 			if(params[paramName].type == "any") {
 				this.parameters[paramName] = a[paramName] ? a[paramName] : defaults[paramName];
 			} else if(params[paramName].type == "boolean") {
-				this.parameters[paramName] = typeof a[paramName] == "boolean" ? a[paramName] : defaults[paramName];
+				this.parameters[paramName] = typeof a[paramName] == "boolean" ? a[paramName] : params[paramName].default;
+				// this.parameters[paramName] = typeof a[paramName] == "boolean" ? a[paramName] : defaults[paramName];
 			}
 		};
 		
@@ -167,18 +170,18 @@ class groupClass {
 			
 			if(params[paramName].type == "any") {
 				if(
-					this.parameters[paramName]
-				 && typeof a[paramName] == "undefined"
+					this.parameters[paramName]        &&
+					typeof a[paramName] == "undefined"
 				) {
 					a[paramName] = this.parameters[paramName];
 				};
 			} else if(params[paramName].type == "boolean") {
-				if(
-					typeof this.parameters[paramName] != "undefined"
-				 && typeof a[paramName] == "undefined"
-				) {
-					a[paramName] = this.parameters[paramName];
-				}				
+				// if(
+				//	typeof this.parameters[paramName] != "undefined" &&
+				//	typeof a[paramName] == "undefined"
+				// ) {
+				a[paramName] = this.parameters[paramName];
+				// }			
 			}
 		};
 

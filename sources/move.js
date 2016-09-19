@@ -16,9 +16,9 @@ var Move = function(moveDeck, to, cursorMove) {
 	common.animationDefault();
 
 	let _deck_destination = null,// to
-		// находим стопку из которой взяли
-		_deck_departure   = moveDeck[0].card.parent && common.getElementById(moveDeck[0].card.parent),// from
-		_success          = true;
+	    // находим стопку из которой взяли
+	    _deck_departure   = moveDeck[0].card.parent && common.getElementById(moveDeck[0].card.parent),// from
+	    _success          = true;
 
 	let _field = Field();
 
@@ -103,7 +103,10 @@ var Move = function(moveDeck, to, cursorMove) {
 							stepType : share.get('stepType')
 						}
 					})
-					event.dispatch('saveSteps');
+					
+					if(_deck_destination.save) {
+						event.dispatch('saveSteps');
+					}
 
 					// var _deck = _deck_departure.cards;
 					// if(_deck.length && _deck[_deck.length - 1].flip) {
