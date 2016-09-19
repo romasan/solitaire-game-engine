@@ -1042,7 +1042,7 @@ var SolitaireEngine =
 		if (_tips.length === 0 && _share2.default.get('stepType') == _defaults2.default.stepType) {
 	
 			_event2.default.dispatch('noTips');
-			console.log('GAME OVER (Подсказок больше нет)');
+			console.log('No possible moves.');
 		}
 	
 		// var _showTips = share.get('showTips')
@@ -4101,10 +4101,14 @@ var SolitaireEngine =
 			sources = [data.source];
 		}
 	
-		var _step = {};
-		_step[method] = sources;
-		_event2.default.dispatch('addStep', _step);
-		_event2.default.dispatch('saveSteps');
+		console.log(method, 'common', data, me);
+	
+		if (data.save) {
+			var _step = {};
+			_step[method] = sources;
+			_event2.default.dispatch('addStep', _step);
+			_event2.default.dispatch('saveSteps');
+		}
 	
 		for (var _i in sources) {
 	

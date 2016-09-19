@@ -23,10 +23,14 @@ export default (data, method, me) => {
 		sources = [data.source];
 	}
 	
-	let _step = {};
-	_step[method] = sources;
-	event.dispatch('addStep', _step);
-	event.dispatch('saveSteps');
+	console.log(method, 'common', data, me);
+
+	if(data.save) {
+		let _step = {};
+		_step[method] = sources;
+		event.dispatch('addStep', _step);
+		event.dispatch('saveSteps');
+	}
 
 	for(let i in sources) {
 
