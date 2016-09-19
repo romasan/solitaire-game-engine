@@ -34,9 +34,11 @@ export default function(data) {// data.actionData, e
 	// 	return;
 	// };
 
+	// console.log('dealerDeckAction', this, data);
+
 	if(
-		!data.actionData.to                  &&
-		this.name != data.actionData.to.name
+		!data.eventData.to                  &&
+		this.name != data.eventData.to.name
 	) {
 		return;
 	};

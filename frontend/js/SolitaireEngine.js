@@ -372,8 +372,6 @@ var SolitaireEngine =
 		startZIndex: 100,
 		topZIndex: 900,
 	
-		// afterStep           : false,// Ждать действия после элементарного хода
-	
 		// Card ----------------------------------------------------------------------------------
 	
 		card: {
@@ -1714,9 +1712,7 @@ var SolitaireEngine =
 		"flipPaddingX": { type: "any" },
 		"flipPaddingY": { type: "any" },
 		"actions": { type: "any" },
-	
 		"save": { type: "boolean", default: true }
-		//  "afterStep"    : {type: "boolean"}
 	};
 	
 	var groupClass = function () {
@@ -2229,8 +2225,6 @@ var SolitaireEngine =
 				this.actions = a.actions;
 				_deckActions2.default.addActions.call(this);
 			}
-	
-			// this.afterStep = a.afterStep;
 	
 			// ------------ RELATIONS ------------
 	
@@ -3423,7 +3417,9 @@ var SolitaireEngine =
 		// 	return;
 		// };
 	
-		if (!data.actionData.to && this.name != data.actionData.to.name) {
+		// console.log('dealerDeckAction', this, data);
+	
+		if (!data.eventData.to && this.name != data.eventData.to.name) {
 			return;
 		};
 	
