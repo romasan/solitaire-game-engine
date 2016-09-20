@@ -292,6 +292,8 @@ var SolitaireEngine =
 			key: 'dispatch',
 			value: function dispatch(name, data) {
 	
+				console.log('dispatch', name);
+	
 				if (this._events[name]) {
 					for (var i in this._events[name]) {
 						this._events[name][i](data);
