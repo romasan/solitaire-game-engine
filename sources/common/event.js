@@ -1,29 +1,59 @@
 'use strict';
 
-var events = {};
+// var events = {};
 
-export default new function() {
+class Event {
+// export default new function() {
 	
+	constructor() {
+		this._events = {};
+	}
 	// this.on = 
-	this.listen = function(name, callback) {
+
+	listen(name, callback) {
 		if(typeof name != 'string' || typeof callback != 'function') return;
-		if(events[name]) {
-			events[name].push(callback);
+		if(this._events[name]) {
+			this._events[name].push(callback);
 		} else {
-			events[name] = [callback];
+			this._events[name] = [callback];
 		}
-	};
+	}
 
 	// this.do =
-	this.dispatch = function(name, data) {
+	dispatch(name, data) {
 
-		if(events[name]) {
-			for(var i in events[name]) {
-				events[name][i](data);
+		if(this._events[name]) {
+			for(var i in this._events[name]) {
+				this._events[name][i](data);
 			}
 		}
-	};
+	}
 
 	// this.one function(name, data) {};
 
 };
+
+class EventManager extends Event {
+
+	constructor() {
+		
+		super();
+
+		this.global = new Event();
+	}
+
+	dispatch(name, data) {
+		
+		super.dispatch(name, data);
+
+		this.global.dispatch(name, data);
+	}
+
+	clear() {
+		this._events = {};
+	}
+}
+
+let _eventManager = new EventManager();
+
+export default _eventManager;

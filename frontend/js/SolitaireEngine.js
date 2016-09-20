@@ -109,7 +109,7 @@ var SolitaireEngine =
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
-	exports.event = _event2.default;
+	exports.event = _event2.default.global;
 	
 	// import debug   from 'debug';
 	
@@ -130,6 +130,8 @@ var SolitaireEngine =
 	var firstInit = true;
 	
 	exports.init = function (gameConfig) {
+	
+		// event.clear();
 	
 		_event2.default.dispatch('gameInit', { firstInit: firstInit });
 	
@@ -247,35 +249,98 @@ var SolitaireEngine =
 
 	'use strict';
 	
+	// var events = {};
+	
 	Object.defineProperty(exports, "__esModule", {
 		value: true
 	});
-	var events = {};
 	
-	exports.default = new function () {
+	var _get = function get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
 	
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+	
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	var Event = function () {
+		// export default new function() {
+	
+		function Event() {
+			_classCallCheck(this, Event);
+	
+			this._events = {};
+		}
 		// this.on = 
-		this.listen = function (name, callback) {
-			if (typeof name != 'string' || typeof callback != 'function') return;
-			if (events[name]) {
-				events[name].push(callback);
-			} else {
-				events[name] = [callback];
-			}
-		};
 	
-		// this.do =
-		this.dispatch = function (name, data) {
-	
-			if (events[name]) {
-				for (var i in events[name]) {
-					events[name][i](data);
+		_createClass(Event, [{
+			key: 'listen',
+			value: function listen(name, callback) {
+				if (typeof name != 'string' || typeof callback != 'function') return;
+				if (this._events[name]) {
+					this._events[name].push(callback);
+				} else {
+					this._events[name] = [callback];
 				}
 			}
-		};
 	
-		// this.one function(name, data) {};
+			// this.do =
+	
+		}, {
+			key: 'dispatch',
+			value: function dispatch(name, data) {
+	
+				if (this._events[name]) {
+					for (var i in this._events[name]) {
+						this._events[name][i](data);
+					}
+				}
+			}
+	
+			// this.one function(name, data) {};
+	
+		}]);
+	
+		return Event;
 	}();
+	
+	;
+	
+	var EventManager = function (_Event) {
+		_inherits(EventManager, _Event);
+	
+		function EventManager() {
+			_classCallCheck(this, EventManager);
+	
+			var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(EventManager).call(this));
+	
+			_this.global = new Event();
+			return _this;
+		}
+	
+		_createClass(EventManager, [{
+			key: 'dispatch',
+			value: function dispatch(name, data) {
+	
+				_get(Object.getPrototypeOf(EventManager.prototype), 'dispatch', this).call(this, name, data);
+	
+				this.global.dispatch(name, data);
+			}
+		}, {
+			key: 'clear',
+			value: function clear() {
+				this._events = {};
+			}
+		}]);
+	
+		return EventManager;
+	}(Event);
+	
+	var _eventManager = new EventManager();
+	
+	exports.default = _eventManager;
 
 /***/ },
 /* 3 */

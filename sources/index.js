@@ -29,7 +29,7 @@ import 'common.scss';
 import 'default_theme.scss';
 import 'alternative_theme.scss';
 
-exports.event     = event;
+exports.event     = event.global;
 exports.options   = defaults;
 exports.winCheck  = winCheck.hwinCheck;
 exports.generator = deckGenerator;
@@ -37,6 +37,8 @@ exports.generator = deckGenerator;
 var firstInit = true;
 
 exports.init = function(gameConfig) {
+
+	// event.clear();
 
 	event.dispatch('gameInit', {firstInit});
 
