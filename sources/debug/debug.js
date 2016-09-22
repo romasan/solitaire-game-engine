@@ -96,14 +96,14 @@ let debugHistory = (a)=>{
 
 };
 
-let runTests = ()=>{
-	// renderTest();
-}
+// let runTests = ()=>{
+// 	// renderTest();
+// }
 
-event.listen('gameInit', (e)=>{
-	if(!e.firstInit) {return;};
-	runTests();
-})
+// event.listen('gameInit', (e)=>{
+// 	if(!e.firstInit) {return;};
+// 	runTests();
+// })
 
 export default {
 	share                                     ,

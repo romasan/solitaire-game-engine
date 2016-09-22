@@ -16,8 +16,6 @@ var _field = null;
 	// _params = {},
 	// _elements = {};
 
-// TODO
-// class Field {}
 var Field = function(data) {
 
 	if(!data) {
@@ -262,3 +260,17 @@ var _fieldExport = function(data) {
 // };
 
 export default _fieldExport;
+
+// class Field {
+// 	constructor() {
+
+// 	}
+
+// 	create(data) {
+
+// 	}
+
+// 	clear() {
+		
+// 	}
+// }

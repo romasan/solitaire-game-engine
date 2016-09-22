@@ -109,7 +109,7 @@ var SolitaireEngine =
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
-	exports.event = _event2.default.global;
+	exports.event = _event2.default;
 	
 	// import debug   from 'debug';
 	
@@ -131,13 +131,18 @@ var SolitaireEngine =
 	
 	exports.init = function (gameConfig) {
 	
-		// event.clear();
+		// event.log();
 	
 		_event2.default.dispatch('gameInit', { firstInit: firstInit });
 	
 		if (firstInit) {
 			firstInit = false;
 		}
+	
+		_event2.default.clearByTag('new_game');
+		_event2.default.setTag('new_game');
+	
+		console.log('***************************');
 	
 		var _field = (0, _field3.default)(gameConfig);
 	
@@ -255,13 +260,7 @@ var SolitaireEngine =
 		value: true
 	});
 	
-	var _get = function get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
-	
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-	
-	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-	
-	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 	
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 	
@@ -272,34 +271,119 @@ var SolitaireEngine =
 			_classCallCheck(this, Event);
 	
 			this._events = {};
+			this._tag = 'global';
 		}
 		// this.on = 
 	
+		// this._events = {};
+	
+		// this.listen = function(name, callback) {
+	
+	
 		_createClass(Event, [{
 			key: 'listen',
-			value: function listen(name, callback) {
-				if (typeof name != 'string' || typeof callback != 'function') return;
-				if (this._events[name]) {
-					this._events[name].push(callback);
+			value: function listen(eventName, callback) {
+	
+				console.log('event:', eventName, 'tag:', this._tag);
+	
+				if (typeof eventName != 'string' || typeof callback != 'function') {
+					return;
+				}
+	
+				if (this._events[eventName]) {
+					this._events[eventName].push({
+						tag: this._tag,
+						callback: callback
+					});
 				} else {
-					this._events[name] = [callback];
+					this._events[eventName] = [{
+						tag: this._tag,
+						callback: callback
+					}];
 				}
 			}
 	
 			// this.do =
+			// this.dispatch = function(name, data) {
 	
 		}, {
 			key: 'dispatch',
-			value: function dispatch(name, data) {
+			value: function dispatch(eventName, data) {
 	
-				console.log('dispatch', name);
+				// if(
+				// 	this._tag == 'new_game'                 &&
+				// 	eventName.search('share') < 0
+				// 	// eventName != 'shareGet:startCursor'     &&
+				// 	// eventName != 'shareGet:dragDeck'        &&
+				// 	// eventName != 'shareGet:curLockState'    &&
+				// 	// eventName != 'shareGet:elements'        &&
+				// 	// eventName != 'shareGet:stepType'        &&
+				// 	// eventName != 'checkTips'                &&
+				// 	// eventName != 'hideTips'                 &&
+				// 	// eventName != 'redrawDeckFlip'           &&
+				// 	// eventName != 'shareGet:animation'       &&
+				// 	// eventName != 'shareSet:curLockState'    &&
+				// 	// eventName != 'shareChange:curLockState' &&
+				// 	// eventName != 'redrawDeck'               &&
+				// 	// eventName != 'shareGet:noRedraw'        &&
+				// 	// eventName != 'showTip'                  &&
+				// 	// eventName != 'moveDragDeckDone'         &&
+				// 	// eventName != 'allAnimationsEnd'         &&
+				// 	// eventName != 'makeStep'                 &&
+				// 	// eventName != 'moveDragDeck'             &&
+				// 	// eventName != 'addStep'                  &&
+				// 	// eventName != 'saveSteps'                &&
+				// 	// eventName != 'shareChange:animation'    &&
+				// 	// eventName != 'shareSet:animation'       &&
+				// 	// eventName != 'shareChange:stepType'     &&
+				// 	// eventName != 'shareSet:stepType'
+				// ) {
+				// 	console.log('dispatch:', eventName);
+				// }
 	
-				if (this._events[name]) {
-					for (var i in this._events[name]) {
-						this._events[name][i](data);
+				if (this._events[eventName]) {
+					for (var i in this._events[eventName]) {
+						if (this._events[eventName][i]) {
+							this._events[eventName][i].callback(data);
+						}
 					}
 				}
 			}
+	
+			// this.clear = function() {
+	
+		}, {
+			key: 'clear',
+			value: function clear() {
+				this._events = {};
+			}
+		}, {
+			key: 'setTag',
+			value: function setTag(tag) {
+				this._tag = tag;
+			}
+		}, {
+			key: 'clearByTag',
+			value: function clearByTag(tag) {
+				for (var eventName in this._events) {
+					for (var i in this._events[eventName]) {
+						if (this._events[eventName][i] && this._events[eventName][i].tag == tag) {
+							this._events[eventName][i] = null;
+						}
+					}
+				}
+			}
+		}, {
+			key: 'log',
+			value: function log() {}
+	
+			// this.log = function() {
+			// 	var _index = [];
+			// 	for(let index in this._events) {
+			// 		_index.push(index);
+			// 	}
+			// 	console.log(_index);
+			// }
 	
 			// this.one function(name, data) {};
 	
@@ -310,39 +394,32 @@ var SolitaireEngine =
 	
 	;
 	
-	var EventManager = function (_Event) {
-		_inherits(EventManager, _Event);
+	// class EventManager extends Event {
 	
-		function EventManager() {
-			_classCallCheck(this, EventManager);
+	// 	constructor() {
 	
-			var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(EventManager).call(this));
+	// 		super();
 	
-			_this.global = new Event();
-			return _this;
-		}
+	// 		this.global = new Event();
 	
-		_createClass(EventManager, [{
-			key: 'dispatch',
-			value: function dispatch(name, data) {
+	// 		// this.global.listen = (name, data) => {
+	// 		// 	this.listen(name, data)
+	// 		// }
+	// 	}
 	
-				_get(Object.getPrototypeOf(EventManager.prototype), 'dispatch', this).call(this, name, data);
+	// 	dispatch(name, data) {
 	
-				this.global.dispatch(name, data);
-			}
-		}, {
-			key: 'clear',
-			value: function clear() {
-				this._events = {};
-			}
-		}]);
+	// 		super.dispatch(name, data);
 	
-		return EventManager;
-	}(Event);
+	// 		this.global.dispatch(name, data);
+	// 	}
 	
-	var _eventManager = new EventManager();
+	// }
 	
-	exports.default = _eventManager;
+	// let _eventManager = new EventManager();
+	
+	// export default _eventManager;
+	exports.default = new Event();
 
 /***/ },
 /* 3 */
@@ -1503,8 +1580,6 @@ var SolitaireEngine =
 	// _params = {},
 	// _elements = {};
 	
-	// TODO
-	// class Field {}
 	var Field = function Field(data) {
 	
 		if (!data) {
@@ -1717,6 +1792,20 @@ var SolitaireEngine =
 	// };
 	
 	exports.default = _fieldExport;
+	
+	// class Field {
+	// 	constructor() {
+	
+	// 	}
+	
+	// 	create(data) {
+	
+	// 	}
+	
+	// 	clear() {
+	
+	// 	}
+	// }
 
 /***/ },
 /* 10 */
@@ -8389,16 +8478,14 @@ var SolitaireEngine =
 		}));
 	};
 	
-	var runTests = function runTests() {
-		// renderTest();
-	};
+	// let runTests = ()=>{
+	// 	// renderTest();
+	// }
 	
-	_event2.default.listen('gameInit', function (e) {
-		if (!e.firstInit) {
-			return;
-		};
-		runTests();
-	});
+	// event.listen('gameInit', (e)=>{
+	// 	if(!e.firstInit) {return;};
+	// 	runTests();
+	// })
 	
 	exports.default = {
 		share: _share2.default,

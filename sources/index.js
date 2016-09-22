@@ -29,7 +29,7 @@ import 'common.scss';
 import 'default_theme.scss';
 import 'alternative_theme.scss';
 
-exports.event     = event.global;
+exports.event     = event;
 exports.options   = defaults;
 exports.winCheck  = winCheck.hwinCheck;
 exports.generator = deckGenerator;
@@ -38,13 +38,18 @@ var firstInit = true;
 
 exports.init = function(gameConfig) {
 
-	// event.clear();
+	// event.log();
 
 	event.dispatch('gameInit', {firstInit});
 
 	if(firstInit) {
 		firstInit = false;
 	}
+	
+	event.clearByTag('new_game');
+	event.setTag('new_game');
+
+	console.log('***************************');
 
 	var _field = Field(gameConfig);
 
