@@ -46,17 +46,17 @@ exports.init = function(gameConfig) {
 		firstInit = false;
 	}
 	
-	event.clearByTag('new_game');
-	event.setTag('new_game');
+	// event.clearByTag('new_game');
+	// event.setTag('new_game');
 
 	console.log('***************************');
 
-	var _field = Field(gameConfig);
+	Field.create(gameConfig);
 
 	event.dispatch('gameInited');
 
 	exports.Redraw = function(data) {
-		_field.Redraw(data);
+		Field.Redraw(data);
 	}
 };
 

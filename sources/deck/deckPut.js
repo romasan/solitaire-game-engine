@@ -21,9 +21,8 @@ export default function(putDeck) {
 	if(_stepType != defaults.stepType) {
 
 		// Нестандартный ход (autosteps)
-		let _field = Field();
-		rulesCorrect = rulesCorrect && _field.autoSteps && _field.autoSteps[_stepType]
-			? _field.autoSteps[_stepType].manual({
+		rulesCorrect = rulesCorrect && Field.autoSteps && Field.autoSteps[_stepType]
+			? Field.autoSteps[_stepType].manual({
 				putDeck,
 				to: this
 			})
