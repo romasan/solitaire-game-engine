@@ -46,11 +46,12 @@ exports.init = function(gameConfig) {
 		firstInit = false;
 	}
 	
-	// event.clearByTag('new_game');
-	// event.setTag('new_game');
+	event.clearByTag('new_game');
+	event.setTag('new_game');
 
-	console.log('***************************');
+	// console.log('***************************');
 
+	Field.clear();
 	Field.create(gameConfig);
 
 	event.dispatch('gameInited');

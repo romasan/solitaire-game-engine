@@ -16,7 +16,7 @@ class Event {
 	// this.listen = function(name, callback) {
 	listen(eventName, callback) {
 
-		console.log('event:', eventName, 'tag:', this._tag);
+		console.log('listen:', eventName, 'tag:', this._tag);
 		
 		if(
 			typeof eventName != 'string'       ||
@@ -143,4 +143,8 @@ class Event {
 // let _eventManager = new EventManager();
 
 // export default _eventManager;
+
+// let _event = new Event();
+// _event.listen = console.log;
+// export default _event;
 export default new Event();

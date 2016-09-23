@@ -225,6 +225,8 @@ class history {
 	// get steps and reset
 	get(reset = true) {
 
+		console.log('%cHISTORY RESET:', 'background:green;', reset);
+
 		var _req = this.steps;
 		
 		if(reset) {

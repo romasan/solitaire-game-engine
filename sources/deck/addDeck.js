@@ -26,6 +26,8 @@ class deckClass {
 
 	constructor(a, _id) {
 
+		// console.log('%cADD DECK', 'background: orange;');
+
 		if(!a) return false;
 
 		this.cards = [];
@@ -177,6 +179,7 @@ class deckClass {
 			params: params
 		});
 
+		// Подписывается на перетаскивание стопки/карты
 		let _callback = (data)=>{
 
 			// TODO
@@ -200,6 +203,7 @@ class deckClass {
 		};
 		event.listen('moveDragDeck', _callback);
 
+		// перерисовка стопки
 		this.Redraw = function(data) {
 			
 			event.dispatch('redrawDeck', {
