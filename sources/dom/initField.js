@@ -9,7 +9,6 @@ import elRender from 'elRender';
 
 event.listen('initField', function(data) {
 
-	console.log('### INIT FIELD')	;
 	var domElement = data.field ? data.field : '#map';// default;
 	if(typeof domElement == 'string') {
 		if(domElement.split('.').length == 2) {

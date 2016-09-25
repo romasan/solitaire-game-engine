@@ -50,6 +50,7 @@ class Field {
 			? a       .showTipsDestination 
 			: defaults.showTipsDestination
 		);
+		
 		share.set(
 			'showTipPriority', 
 			typeof a.showTipPriority == 'boolean' 
@@ -93,10 +94,9 @@ class Field {
 			this.autoSteps = addAutoSteps(a.autoSteps);
 		}
 
-		// Отрисовка элементов
-
 		event.dispatch('initField', a);
 
+		// Отрисовка элементов
 		if(a.groups) {
 			for(var groupName in a.groups) {
 				a.groups[groupName].name = groupName;

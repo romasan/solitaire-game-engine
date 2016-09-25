@@ -274,18 +274,12 @@ var SolitaireEngine =
 			this._events = {};
 			this._tag = 'global';
 		}
-		// this.on = 
-	
-		// this._events = {};
-	
-		// this.listen = function(name, callback) {
-	
 	
 		_createClass(Event, [{
 			key: 'listen',
 			value: function listen(eventName, callback) {
 	
-				console.log('listen:', eventName, 'tag:', this._tag);
+				// console.log('listen:', eventName, 'tag:', this._tag);
 	
 				if (typeof eventName != 'string' || typeof callback != 'function') {
 					return;
@@ -305,42 +299,10 @@ var SolitaireEngine =
 			}
 	
 			// this.do =
-			// this.dispatch = function(name, data) {
 	
 		}, {
 			key: 'dispatch',
 			value: function dispatch(eventName, data) {
-	
-				// if(
-				// 	this._tag == 'new_game'                 &&
-				// 	eventName.search('share') < 0
-				// 	// eventName != 'shareGet:startCursor'     &&
-				// 	// eventName != 'shareGet:dragDeck'        &&
-				// 	// eventName != 'shareGet:curLockState'    &&
-				// 	// eventName != 'shareGet:elements'        &&
-				// 	// eventName != 'shareGet:stepType'        &&
-				// 	// eventName != 'checkTips'                &&
-				// 	// eventName != 'hideTips'                 &&
-				// 	// eventName != 'redrawDeckFlip'           &&
-				// 	// eventName != 'shareGet:animation'       &&
-				// 	// eventName != 'shareSet:curLockState'    &&
-				// 	// eventName != 'shareChange:curLockState' &&
-				// 	// eventName != 'redrawDeck'               &&
-				// 	// eventName != 'shareGet:noRedraw'        &&
-				// 	// eventName != 'showTip'                  &&
-				// 	// eventName != 'moveDragDeckDone'         &&
-				// 	// eventName != 'allAnimationsEnd'         &&
-				// 	// eventName != 'makeStep'                 &&
-				// 	// eventName != 'moveDragDeck'             &&
-				// 	// eventName != 'addStep'                  &&
-				// 	// eventName != 'saveSteps'                &&
-				// 	// eventName != 'shareChange:animation'    &&
-				// 	// eventName != 'shareSet:animation'       &&
-				// 	// eventName != 'shareChange:stepType'     &&
-				// 	// eventName != 'shareSet:stepType'
-				// ) {
-				// 	console.log('dispatch:', eventName);
-				// }
 	
 				if (this._events[eventName]) {
 					for (var i in this._events[eventName]) {
@@ -350,9 +312,6 @@ var SolitaireEngine =
 					}
 				}
 			}
-	
-			// this.clear = function() {
-	
 		}, {
 			key: 'clear',
 			value: function clear() {
@@ -377,49 +336,12 @@ var SolitaireEngine =
 		}, {
 			key: 'log',
 			value: function log() {}
-	
-			// this.log = function() {
-			// 	var _index = [];
-			// 	for(let index in this._events) {
-			// 		_index.push(index);
-			// 	}
-			// 	console.log(_index);
-			// }
-	
-			// this.one function(name, data) {};
-	
 		}]);
 	
 		return Event;
 	}();
 	
 	;
-	
-	// class EventManager extends Event {
-	
-	// 	constructor() {
-	
-	// 		super();
-	
-	// 		this.global = new Event();
-	
-	// 		// this.global.listen = (name, data) => {
-	// 		// 	this.listen(name, data)
-	// 		// }
-	// 	}
-	
-	// 	dispatch(name, data) {
-	
-	// 		super.dispatch(name, data);
-	
-	// 		this.global.dispatch(name, data);
-	// 	}
-	
-	// }
-	
-	// let _eventManager = new EventManager();
-	
-	// export default _eventManager;
 	
 	// let _event = new Event();
 	// _event.listen = console.log;
@@ -1617,6 +1539,7 @@ var SolitaireEngine =
 	
 				// Альтернативные подсказки
 				_share2.default.set('showTipsDestination', typeof a.showTipsDestination == 'boolean' ? a.showTipsDestination : _defaults2.default.showTipsDestination);
+	
 				_share2.default.set('showTipPriority', typeof a.showTipPriority == 'boolean' ? a.showTipPriority : _defaults2.default.showTipPriority);
 	
 				// условие выигрыша
@@ -1646,10 +1569,9 @@ var SolitaireEngine =
 					this.autoSteps = (0, _addAutoSteps2.default)(a.autoSteps);
 				}
 	
-				// Отрисовка элементов
-	
 				_event2.default.dispatch('initField', a);
 	
+				// Отрисовка элементов
 				if (a.groups) {
 					for (var groupName in a.groups) {
 						a.groups[groupName].name = groupName;
@@ -1870,7 +1792,9 @@ var SolitaireEngine =
 				// if(!a.position.x) { a.position.x = 0; }
 				// if(!a.position.y) { a.position.y = 0; }
 	
-				if (!a.parent) a.parent = this.name;
+				if (!a.parent) {
+					a.parent = this.name;
+				}
 	
 				a.parentPosition = {
 					x: this.position.x,
@@ -2314,7 +2238,6 @@ var SolitaireEngine =
 			};
 	
 			this.actions = [];
-	
 			if (a.actions) {
 				this.actions = a.actions;
 				_deckActions2.default.addActions.call(this);
@@ -2602,7 +2525,6 @@ var SolitaireEngine =
 		var _id = 'deck_' + _common2.default.genId();
 	
 		var _a = Object.assign({}, a);
-	
 		var _el_deck = new deckClass(_a, _id);
 	
 		// fill deck
@@ -3386,6 +3308,10 @@ var SolitaireEngine =
 	var _decksActions = [],
 	    _events = [];
 	
+	_event3.default.listen('initField', function () {
+		_events = [];
+	});
+	
 	var addActionEvent = function addActionEvent(_event) {
 	
 		_event3.default.listen(_event, function (data) {
@@ -3412,6 +3338,8 @@ var SolitaireEngine =
 	
 	var addActions = function addActions() {
 	
+		console.log('--------------------- /// ---------------------');
+	
 		for (var actionName in this.actions) {
 	
 			// если не описано событие выполнять по клику
@@ -3420,14 +3348,16 @@ var SolitaireEngine =
 			}
 	
 			if (_actions[actionName]) {
-	
 				_decksActions.push({
 					deck: this,
 					event: this.actions[actionName].event,
 					action: actionName
 				});
 	
+				console.log('%cДО СЮДА ДОТОПАЛИ', 'background: yellow;', this, _events.indexOf(this.actions[actionName].event) < 0);
+	
 				if (_events.indexOf(this.actions[actionName].event) < 0) {
+					// КОПАТЬ ТУТ
 					_events.push(this.actions[actionName].event);
 					addActionEvent(this.actions[actionName].event);
 				}
@@ -7594,7 +7524,6 @@ var SolitaireEngine =
 	
 	_event2.default.listen('initField', function (data) {
 	
-		console.log('### INIT FIELD');
 		var domElement = data.field ? data.field : '#map'; // default;
 		if (typeof domElement == 'string') {
 			if (domElement.split('.').length == 2) {

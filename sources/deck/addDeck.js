@@ -153,7 +153,6 @@ class deckClass {
 		}
 		
 		this.actions = [];
-
 		if(a.actions) {
 			this.actions = a.actions;
 			deckActions.addActions.call(this);
@@ -411,7 +410,6 @@ var addDeck = function(a) {
 	var _id = 'deck_' + common.genId();
 	
 	var _a = Object.assign({}, a);
-	
 	var _el_deck = new deckClass(_a, _id);
 
 	// fill deck

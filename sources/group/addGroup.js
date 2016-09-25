@@ -98,7 +98,9 @@ class groupClass {
 		// if(!a.position.x) { a.position.x = 0; }
 		// if(!a.position.y) { a.position.y = 0; }
 
-		if(!a.parent) a.parent = this.name;
+		if(!a.parent) {
+			a.parent = this.name;
+		}
 		
 		a.parentPosition = {
 			x : this.position.x, 
