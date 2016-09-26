@@ -52,6 +52,9 @@ export default function(data) {
 	}
 
 	console.log('#KICK', data.eventData, share.get('stepType'), '#');
+	if(window.debug_kick) {
+		throw new Error();
+	}
 
 	// if(
 	// 	data.eventData[0]                         &&
@@ -76,10 +79,11 @@ export default function(data) {
 
 		event.dispatch('addStep', {
 			"move" : {
-				from : _from.name,
-				to   : data.actionData.to,
-				deck : _deck,
-				flip : true
+				from     : _from.name,
+				to       : data.actionData.to,
+				deck     : _deck,
+				flip     : true,
+				stepType : share.get('stepType')
 			}
 		});
 

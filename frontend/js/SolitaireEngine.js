@@ -3794,6 +3794,9 @@ var SolitaireEngine =
 		}
 	
 		console.log('#KICK', data.eventData, _share2.default.get('stepType'), '#');
+		if (window.debug_kick) {
+			throw new Error();
+		}
 	
 		// if(
 		// 	data.eventData[0]                         &&
@@ -3822,7 +3825,8 @@ var SolitaireEngine =
 					from: _from.name,
 					to: data.actionData.to,
 					deck: _deck,
-					flip: true
+					flip: true,
+					stepType: _share2.default.get('stepType')
 				}
 			});
 	
