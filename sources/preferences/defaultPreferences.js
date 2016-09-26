@@ -10,5 +10,11 @@ export default ()=>{
 	let pref = storage.get('pref');
 	!pref && (pref = defaults.pref);
 
+	for(let prefName in pref) {
+		if(defaults.themes[prefName].indexOf(pref[prefName]) < 0) {
+			pref[prefName] = defaults.pref[prefName];
+		}
+	}
+
 	event.dispatch('fieldThemesSet', pref);
 }

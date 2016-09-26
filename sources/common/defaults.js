@@ -12,8 +12,8 @@ export default {
 
     pref : {
     	field : "default_field",    // 0
-    	face  : "alternative_face", // 1
-			back  : "default_back"      // 0
+    	face  : "default_face", // 1
+		back  : "default_back"      // 0
 	 // empty : 1
     },
 
@@ -25,8 +25,8 @@ export default {
 			"alternative_field"
 		],
 		face  : [
-			"default_face",
-			"alternative_face"
+			"default_face"
+			// "alternative_face"
 		],
 		back  : [
 			"default_back",
