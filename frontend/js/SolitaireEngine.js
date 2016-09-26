@@ -5871,7 +5871,7 @@ var SolitaireEngine =
 		function fallAutoStep(params) {
 			_classCallCheck(this, fallAutoStep);
 	
-			return _possibleConstructorReturn(this, Object.getPrototypeOf(fallAutoStep).call(this, params));
+			return _possibleConstructorReturn(this, (fallAutoStep.__proto__ || Object.getPrototypeOf(fallAutoStep)).call(this, params));
 	
 			// event.listen('fallAutoStepCheck', this.check);
 		}
