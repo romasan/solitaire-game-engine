@@ -14,6 +14,7 @@ export default function(data) {// data.actionData, e
 // default data.actionData.onlyEmpty - false
 // default data.actionData.from      - this.name
 // default data.actionData.stepType  - NULL
+	console.log('dealerdeckAction:', this.name, data);
 
 	if(
 		typeof data.actionData.stepType == "string" &&
@@ -35,12 +36,12 @@ export default function(data) {// data.actionData, e
 
 	// console.log('dealerDeckAction', this, data);
 
-	if(
-		!data.eventData.to                  &&
-		this.name != data.eventData.to.name
-	) {
-		return;
-	};
+	// if(
+	// 	!data.eventData.to                  &&
+	// 	this.name != data.eventData.to.name
+	// ) {
+	// 	return;
+	// };
 	
 	// меняем тип хода
 	share.set('stepType', stepType);

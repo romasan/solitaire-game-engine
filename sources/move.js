@@ -22,6 +22,17 @@ var Move = function(moveDeck, to, cursorMove) {
 
 	let _stepType = share.get('stepType');
 
+	if(
+		!cursorMove.dbclick           &&
+		cursorMove.distance === 0     &&
+		share.get('moveDistance') > 0 &&
+		_stepType == defaults.stepType
+	) {
+		// кликнули один раз
+		// чтобы сделать ход нужно переместить карту стопку (moveDistance != 0)
+		return false;
+	}
+
 	// выйти если не стандартный ход
 	if(
 		_stepType != defaults.stepType &&
@@ -40,17 +51,6 @@ var Move = function(moveDeck, to, cursorMove) {
 			stepType  : share.get('stepType')
 		});
 		return;
-	}
-
-	if(
-		!cursorMove.dbclick           &&
-		cursorMove.distance === 0     &&
-		share.get('moveDistance') > 0 &&
-		_stepType == defaults.stepType
-	) {
-		// кликнули один раз
-		// чтобы сделать ход нужно переместить карту стопку (moveDistance != 0)
-		return false;
 	}
 
 	_success = _success && to;// to - не пустой

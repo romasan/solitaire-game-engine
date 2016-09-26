@@ -662,7 +662,8 @@ var SolitaireEngine =
 	
 		var _position = _deck.padding(_dragDeck[0].index);
 		var _distance = Math.sqrt(_common2.default.sqr(x - _startCursor.x) + _common2.default.sqr(y - _startCursor.y));
-		console.log('>>> distance:', _distance, x - _startCursor.x, y - _startCursor.y);
+		// console.log('>>> distance:', _distance, x - _startCursor.x, y - _startCursor.y);
+	
 		var cursorMove = {
 			distance: _distance,
 			dbclick: !!dbclick,
@@ -1541,6 +1542,8 @@ var SolitaireEngine =
 				_share2.default.set('showTipsDestination', typeof a.showTipsDestination == 'boolean' ? a.showTipsDestination : _defaults2.default.showTipsDestination);
 	
 				_share2.default.set('showTipPriority', typeof a.showTipPriority == 'boolean' ? a.showTipPriority : _defaults2.default.showTipPriority);
+	
+				_share2.default.set('moveDistance', a.moveDistance && typeof a.moveDistance == 'number' ? a.moveDistance : _defaults2.default.moveDistance);
 	
 				// условие выигрыша
 				_share2.default.set('winCheck', a.winCheck);
@@ -3425,6 +3428,7 @@ var SolitaireEngine =
 		// default data.actionData.onlyEmpty - false
 		// default data.actionData.from      - this.name
 		// default data.actionData.stepType  - NULL
+		console.log('dealerdeckAction:', this.name, data);
 	
 		if (typeof data.actionData.stepType == "string" && data.actionData.stepType != _share2.default.get('stepType')) {
 			return;
@@ -3443,9 +3447,12 @@ var SolitaireEngine =
 	
 		// console.log('dealerDeckAction', this, data);
 	
-		if (!data.eventData.to && this.name != data.eventData.to.name) {
-			return;
-		};
+		// if(
+		// 	!data.eventData.to                  &&
+		// 	this.name != data.eventData.to.name
+		// ) {
+		// 	return;
+		// };
 	
 		// меняем тип хода
 		_share2.default.set('stepType', stepType);
@@ -6340,6 +6347,12 @@ var SolitaireEngine =
 	
 		var _stepType = _share2.default.get('stepType');
 	
+		if (!cursorMove.dbclick && cursorMove.distance === 0 && _share2.default.get('moveDistance') > 0 && _stepType == _defaults2.default.stepType) {
+			// кликнули один раз
+			// чтобы сделать ход нужно переместить карту стопку (moveDistance != 0)
+			return false;
+		}
+	
 		// выйти если не стандартный ход
 		if (_stepType != _defaults2.default.stepType && (_field2.default.autoSteps && !_field2.default.autoSteps[_stepType] || !_field2.default.autoSteps)) {
 	
@@ -6351,12 +6364,6 @@ var SolitaireEngine =
 				stepType: _share2.default.get('stepType')
 			});
 			return;
-		}
-	
-		if (!cursorMove.dbclick && cursorMove.distance === 0 && _share2.default.get('moveDistance') > 0 && _stepType == _defaults2.default.stepType) {
-			// кликнули один раз
-			// чтобы сделать ход нужно переместить карту стопку (moveDistance != 0)
-			return false;
 		}
 	
 		_success = _success && to; // to - не пустой
