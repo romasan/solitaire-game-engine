@@ -30,6 +30,7 @@ var _decksActions  = [],
     _events = [];
 
 event.listen('initField', () => {
+	_decksActions = [];
 	_events = [];
 })
 
@@ -66,8 +67,6 @@ var addActionEvent = function(_event) {
 
 var addActions = function() {
 
-	console.log('--------------------- /// ---------------------');
-
 	for(var actionName in this.actions) {
 
 		// если не описано событие выполнять по клику
@@ -81,8 +80,6 @@ var addActions = function() {
 				event  : this.actions[actionName].event,
 				action : actionName
 			});
-
-			console.log('%cДО СЮДА ДОТОПАЛИ', 'background: yellow;', this, _events.indexOf(this.actions[actionName].event) < 0);
 
 			if(_events.indexOf(this.actions[actionName].event) < 0) {
 				// КОПАТЬ ТУТ

@@ -279,7 +279,7 @@ var SolitaireEngine =
 			key: 'listen',
 			value: function listen(eventName, callback) {
 	
-				// console.log('listen:', eventName, 'tag:', this._tag);
+				// console.log('listen: (tag:', this._tag + ')', eventName);
 	
 				if (typeof eventName != 'string' || typeof callback != 'function') {
 					return;
@@ -1569,6 +1569,8 @@ var SolitaireEngine =
 					this.autoSteps = (0, _addAutoSteps2.default)(a.autoSteps);
 				}
 	
+				// NOTE: на событие подписан deckActions
+				// если ставить позже отрисовки элементов, переделать
 				_event2.default.dispatch('initField', a);
 	
 				// Отрисовка элементов
@@ -3309,6 +3311,7 @@ var SolitaireEngine =
 	    _events = [];
 	
 	_event3.default.listen('initField', function () {
+		_decksActions = [];
 		_events = [];
 	});
 	
@@ -3338,8 +3341,6 @@ var SolitaireEngine =
 	
 	var addActions = function addActions() {
 	
-		console.log('--------------------- /// ---------------------');
-	
 		for (var actionName in this.actions) {
 	
 			// если не описано событие выполнять по клику
@@ -3353,8 +3354,6 @@ var SolitaireEngine =
 					event: this.actions[actionName].event,
 					action: actionName
 				});
-	
-				console.log('%cДО СЮДА ДОТОПАЛИ', 'background: yellow;', this, _events.indexOf(this.actions[actionName].event) < 0);
 	
 				if (_events.indexOf(this.actions[actionName].event) < 0) {
 					// КОПАТЬ ТУТ
@@ -3426,7 +3425,6 @@ var SolitaireEngine =
 		// default data.actionData.onlyEmpty - false
 		// default data.actionData.from      - this.name
 		// default data.actionData.stepType  - NULL
-		console.log('dealerDeckAction', this, data);
 	
 		if (typeof data.actionData.stepType == "string" && data.actionData.stepType != _share2.default.get('stepType')) {
 			return;
@@ -4127,8 +4125,6 @@ var SolitaireEngine =
 			sources = [data.source];
 		}
 	
-		console.log(method, 'common', data, me);
-	
 		if (data.save) {
 			var _step = {};
 			_step[method] = sources;
@@ -4697,8 +4693,6 @@ var SolitaireEngine =
 			value: function get() {
 				var reset = arguments.length <= 0 || arguments[0] === undefined ? true : arguments[0];
 	
-	
-				console.log('%cHISTORY RESET:', 'background:green;', reset);
 	
 				var _req = this.steps;
 	

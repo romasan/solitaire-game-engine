@@ -12,7 +12,7 @@ class Event {
 
 	listen(eventName, callback) {
 
-		// console.log('listen:', eventName, 'tag:', this._tag);
+		// console.log('listen: (tag:', this._tag + ')', eventName);
 		
 		if(
 			typeof eventName != 'string'       ||

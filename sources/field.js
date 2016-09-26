@@ -94,6 +94,8 @@ class Field {
 			this.autoSteps = addAutoSteps(a.autoSteps);
 		}
 
+		// NOTE: на событие подписан deckActions
+		// если ставить позже отрисовки элементов, переделать
 		event.dispatch('initField', a);
 
 		// Отрисовка элементов

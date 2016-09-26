@@ -14,7 +14,6 @@ export default function(data) {// data.actionData, e
 // default data.actionData.onlyEmpty - false
 // default data.actionData.from      - this.name
 // default data.actionData.stepType  - NULL
-	console.log('dealerDeckAction', this, data);
 
 	if(
 		typeof data.actionData.stepType == "string" &&
