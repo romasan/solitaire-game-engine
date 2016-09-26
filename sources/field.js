@@ -58,6 +58,13 @@ class Field {
 				: defaults.showTipPriority
 		);
 
+		share.set(
+			'moveDistance', 
+			a.moveDistance && typeof a.moveDistance == 'number' 
+				? a.moveDistance 
+				: defaults.moveDistance
+		);
+
 		// условие выигрыша
 		share.set('winCheck', a.winCheck);
 
