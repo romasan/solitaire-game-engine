@@ -49,8 +49,7 @@ var checkTips = function() {
 	// var _showTips = share.get('showTips')
 	if(_showTips) {
 
-		var _field = Field();
-		var _homeGroups = _field.homeGroups;
+		var _homeGroups = Field.homeGroups;
 
 		for(var i in _tips) {
 
@@ -58,10 +57,10 @@ var checkTips = function() {
 			if(
 				(
 					_tips[i].to.count === 0                             &&
-					_field.tipsParams.hideOnEmpty
+					Field.tipsParams.hideOnEmpty
 				)                                                       ||
 				(
-					_field.tipsParams.excludeHomeGroups                 &&
+					Field.tipsParams.excludeHomeGroups                 &&
 					_homeGroups                                         &&
 					_homeGroups.length                                  &&
 					_homeGroups.indexOf(_tips[i].from.deck.parent) >= 0

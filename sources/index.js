@@ -38,18 +38,26 @@ var firstInit = true;
 
 exports.init = function(gameConfig) {
 
+	// event.log();
+
 	event.dispatch('gameInit', {firstInit});
 
 	if(firstInit) {
 		firstInit = false;
 	}
+	
+	event.clearByTag('new_game');
+	event.setTag('new_game');
 
-	var _field = Field(gameConfig);
+	// console.log('***************************');
+
+	Field.clear();
+	Field.create(gameConfig);
 
 	event.dispatch('gameInited');
 
 	exports.Redraw = function(data) {
-		_field.Redraw(data);
+		Field.Redraw(data);
 	}
 };
 

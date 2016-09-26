@@ -26,6 +26,8 @@ class deckClass {
 
 	constructor(a, _id) {
 
+		// console.log('%cADD DECK', 'background: orange;');
+
 		if(!a) return false;
 
 		this.cards = [];
@@ -151,7 +153,6 @@ class deckClass {
 		}
 		
 		this.actions = [];
-
 		if(a.actions) {
 			this.actions = a.actions;
 			deckActions.addActions.call(this);
@@ -177,6 +178,7 @@ class deckClass {
 			params: params
 		});
 
+		// Подписывается на перетаскивание стопки/карты
 		let _callback = (data)=>{
 
 			// TODO
@@ -200,6 +202,7 @@ class deckClass {
 		};
 		event.listen('moveDragDeck', _callback);
 
+		// перерисовка стопки
 		this.Redraw = function(data) {
 			
 			event.dispatch('redrawDeck', {
@@ -407,7 +410,6 @@ var addDeck = function(a) {
 	var _id = 'deck_' + common.genId();
 	
 	var _a = Object.assign({}, a);
-	
 	var _el_deck = new deckClass(_a, _id);
 
 	// fill deck

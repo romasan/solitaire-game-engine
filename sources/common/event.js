@@ -1,29 +1,76 @@
 'use strict';
 
-var events = {};
+// var events = {};
 
-export default new function() {
+class Event {
+// export default new function() {
 	
-	// this.on = 
-	this.listen = function(name, callback) {
-		if(typeof name != 'string' || typeof callback != 'function') return;
-		if(events[name]) {
-			events[name].push(callback);
-		} else {
-			events[name] = [callback];
+	constructor() {
+		this._events = {};
+		this._tag = 'global';
+	}
+
+	listen(eventName, callback) {
+
+		// console.log('listen: (tag:', this._tag + ')', eventName);
+		
+		if(
+			typeof eventName != 'string'       ||
+			typeof callback != 'function'
+		) {
+			return;
 		}
-	};
+
+		if(this._events[eventName]) {
+			this._events[eventName].push({
+				tag: this._tag,
+				callback
+			});
+		} else {
+			this._events[eventName] = [{
+				tag: this._tag,
+				callback
+			}];
+		}
+	}
 
 	// this.do =
-	this.dispatch = function(name, data) {
+	dispatch(eventName, data) {
 
-		if(events[name]) {
-			for(var i in events[name]) {
-				events[name][i](data);
+		if(this._events[eventName]) {
+			for(let i in this._events[eventName]) {
+				if(this._events[eventName][i]) {
+					this._events[eventName][i].callback(data);
+				}
 			}
 		}
-	};
+	}
 
-	// this.one function(name, data) {};
+	clear() {
+		this._events = {};
+	}
 
+	setTag(tag) {
+		this._tag = tag;
+	}
+
+	clearByTag(tag) {
+		for(let eventName in this._events) {
+			for(let i in this._events[eventName]) {
+				if(
+					this._events[eventName][i]            &&
+					this._events[eventName][i].tag == tag
+				) {
+					this._events[eventName][i] = null;
+				}
+			}
+		}
+	}
+
+	log() {}
 };
+
+// let _event = new Event();
+// _event.listen = console.log;
+// export default _event;
+export default new Event();

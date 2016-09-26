@@ -29,6 +29,11 @@ var _actions = {
 var _decksActions  = [],
     _events = [];
 
+event.listen('initField', () => {
+	_decksActions = [];
+	_events = [];
+})
+
 var addActionEvent = function(_event) {
 
 	event.listen(_event, function(data) {
@@ -70,7 +75,6 @@ var addActions = function() {
 		}
 
 		if(_actions[actionName]) {
-			
 			_decksActions.push({
 				deck   : this, 
 				event  : this.actions[actionName].event,
@@ -78,6 +82,7 @@ var addActions = function() {
 			});
 
 			if(_events.indexOf(this.actions[actionName].event) < 0) {
+				// КОПАТЬ ТУТ
 				_events.push(this.actions[actionName].event);
 				addActionEvent(this.actions[actionName].event);
 			}

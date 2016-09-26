@@ -8,9 +8,7 @@ import elRender from 'elRender';
 
 event.listen('fieldThemesSet', (pref)=>{
 	
-	var _field = Field();
-	
-	let fieldDomElement = _field.domElement;
+	let fieldDomElement = Field.domElement;
 
 
 	for(var prefName in defaults.themes) {

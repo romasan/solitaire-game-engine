@@ -20,18 +20,15 @@ var Move = function(moveDeck, to, cursorMove) {
 	    _deck_departure   = moveDeck[0].card.parent && common.getElementById(moveDeck[0].card.parent),// from
 	    _success          = true;
 
-	let _field = Field();
-
 	let _stepType = share.get('stepType');
 
 	// выйти если не стандартный ход
 	if(
-		// var _field = Field();
 		_stepType != defaults.stepType &&
 		(
-			_field.autoSteps             &&
-			!_field.autoSteps[_stepType] ||
-			!_field.autoSteps
+			Field.autoSteps             &&
+			!Field.autoSteps[_stepType] ||
+			!Field.autoSteps
 		)
 	) {
 
@@ -159,7 +156,7 @@ var Move = function(moveDeck, to, cursorMove) {
 
 		// достаточно ли перетащили (если клика не достаточно и не двойной клик)
 		if(
-			_field.inputParams.doubleClick                   &&
+			Field.inputParams.doubleClick                   &&
 			cursorMove.dbclick                               ||
 			cursorMove.distance >= share.get('moveDistance')
 		) {

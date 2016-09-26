@@ -3,53 +3,11 @@
 	npm install
 **Сборка:**
 	npm run build
-или если установлен webpack в корне выполнить:
-	webpack
 **Иннициирование и запуск игры:**
 
 	SolitaireEngine.init(Field);
 
-пример:
-
-```
-SolitaireEngine.init({
-	winCheck : {
-        rules : ["allInOne"]
-    },
-    decks : [
-        {
-            name: "deck1",
-            position: {
-                x: 100,
-                y: 100
-            },
-            takeRules: ["any"],
-            putRules: ["not"],
-            fill: ["c1", "c2"]
-        },
-        {
-            name: "deck2",
-            position: {
-                x: 200,
-                y: 100
-            },
-            takeRules: ["any"],
-            putRules: ["not"],
-            fill: ["c3", "c4"]
-        },
-        {
-            name: "deck3",
-            position: {
-                x: 300,
-                y: 100
-            },
-            takeRules: ["not"],
-            putRules: ["any"],
-            fill: ["c5", "c6"]
-        },
-    ]
-});
-```
+<!-- Примеры: -->
 ---
 	Field - JSON обьект описания пасьянса
 	    zoom - масштабирование
@@ -63,8 +21,6 @@ SolitaireEngine.init({
 		field - элемент страницы, который будет содержать в себе игровое поле
 			тип string/CSS Selector | HTML DOM Element Object
 			по умолчанию "#map"
-<!-- 		theme - Истользуемая тема оформления
-			тип Theme -->
 		winCheck - правила окончания игры
 			тип WinCheck
 		groups - группы
@@ -96,17 +52,6 @@ SolitaireEngine.init({
 		excludeHomeGroups - ...
 			тип boolean
 			по умолчанию true
----
-<!-- 	Theme
-	   name - ...
-		   тип string
-		   по умолчанию "alternative_theme"
-	   spriteTexture - ...
-		   тип boolean
-		   по умолчанию true
-	   textureSuits  - ...
-		   тип [string/suit name]
-	       по умолчанию ['d', 'c', 'h', 's'] -->
 ---
 	WinCheck :
 	   rules - правила выигрыша

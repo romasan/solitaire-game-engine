@@ -44,8 +44,6 @@ var applyChangedParameters = function(p, a, deck) {
 
 event.listen('addDeckEl', function(e) {
 
-	var _field = Field();
-	
 	applyChangedParameters(e.params, e.a, e.deck);
 
 	e.deck.domElement = 
@@ -79,7 +77,7 @@ event.listen('addDeckEl', function(e) {
 			.addClass(e.a.class);
 	}
 
-	elRender(_field.domElement)
+	elRender(Field.domElement)
 		.append(e.deck.domElement);
 
 

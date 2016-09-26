@@ -29,8 +29,7 @@ export default function(moveDeck, cursorMove) {
 		_in_direction_count = 0;
 
 	// Приоритет для homeGroups
-	var _field = Field();
-	var _homeGroups = _field.homeGroups;
+	var _homeGroups = Field.homeGroups;
 	
 	if(_homeGroups) {
 		var _tips = [];

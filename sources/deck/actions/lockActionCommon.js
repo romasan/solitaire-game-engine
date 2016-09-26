@@ -23,8 +23,6 @@ export default (data, method, me) => {
 		sources = [data.source];
 	}
 	
-	console.log(method, 'common', data, me);
-
 	if(data.save) {
 		let _step = {};
 		_step[method] = sources;

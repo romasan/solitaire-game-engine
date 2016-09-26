@@ -10,8 +10,6 @@ import elRender from 'elRender';
 
 event.listen('addCardEl', function(e) {
 	
-	var _field = Field();
-	
 	var _card = {
 		width  : defaults.card.width,
 		height : defaults.card.height
@@ -38,7 +36,7 @@ event.listen('addCardEl', function(e) {
 		.attr({
 			id: e.id
 		});
-	elRender(_field.domElement)
+	elRender(Field.domElement)
 		.append(e.domElement);
 });
 

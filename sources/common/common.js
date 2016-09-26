@@ -213,8 +213,7 @@ event.listen('historyReapeater', function(e) {
 		share.set('noTips', true);
 	} else {
 		share.set('noRedraw', false);
-		var _field = Field();
-		_field.Redraw();
+		Field.Redraw();
 		share.set('noTips', false);
 		Tips.checkTips();
 	}
