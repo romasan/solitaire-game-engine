@@ -369,7 +369,7 @@ var SolitaireEngine =
 	
 		pref: {
 			field: "default_field", // 0
-			face: "default_face", // 1
+			face: "alternative_face", // 1
 			back: "default_back" // 0
 			// empty : 1
 		},
