@@ -25,8 +25,8 @@ export default {
 			"alternative_field"
 		],
 		face  : [
-			"default_face"
-			// "alternative_face"
+			"default_face",
+			"alternative_face"
 		],
 		back  : [
 			"default_back",

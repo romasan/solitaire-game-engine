@@ -304,7 +304,8 @@ body {
 .alternative_face .card {
   border: 1px solid #121212;
   border-radius: 3px;
-  background: url("/solitaire_engine/img/card.svg");
+  /* background: url('/solitaire_engine/img/card.svg'); */
+  background: url("/solitaire_engine/img/card.png");
   background-size: 923px 384px; }
 
 .alternative_face .d1 {
