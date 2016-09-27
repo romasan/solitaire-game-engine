@@ -7316,7 +7316,8 @@ var SolitaireEngine =
 			value: function remove() {
 				try {
 	
-					this.el.remove();
+					// this.el.remove();
+					this.el.parentNode.removeChild(this.el);
 				} catch (e) {}
 			}
 	
@@ -7519,7 +7520,8 @@ var SolitaireEngine =
 			key: 'remove',
 			value: function remove() {
 				for (var i in this.elements) {
-					this.elements[i].remove();
+					// this.elements[i].remove();
+					this.elements[i].parentNode.removeChild(this.elements[i]);
 				}
 				return this;
 			}

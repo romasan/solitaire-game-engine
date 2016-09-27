@@ -217,7 +217,8 @@ export default class elClass {
 	remove() {
 		try {
 			
-			this.el.remove();
+			// this.el.remove();
+			this.el.parentNode.removeChild(this.el);
 		} catch(e) {}
 	}
 
