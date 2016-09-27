@@ -84,7 +84,8 @@ export default class allElClass {
 // --
 	remove() {
 		for(var i in this.elements) {
-			this.elements[i].remove();
+			// this.elements[i].remove();
+			this.elements[i].parentNode.removeChild(this.elements[i]);
 		}
 		return this;
 	}

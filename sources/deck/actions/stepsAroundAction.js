@@ -83,7 +83,13 @@ export default function(data) {// {actionData, eventData, eventName}
 
 		for(let i in _runStack) {
 			
-			let _data = Object.assign({}, _runStack[i]);
+			let _data = null;
+			try {
+				_data = Object.assign({}, _runStack[i]);
+			} catch(e) {
+				_data = _runStack[i];
+			}
+			
 			_data.callback = _callback;
 			event.dispatch(data.actionData.run, _data);
 		}

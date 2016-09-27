@@ -121,8 +121,13 @@ class Field {
 
 		if(a.fill) {
 			
-			var _decks = Deck.getDecks(),
-				_fill  = Object.assign([], a.fill);
+			let _decks = Deck.getDecks();
+			let _fill  = null;
+			try {
+				_fill = Object.assign([], a.fill);
+			} catch(e) {
+				_fill = a.fill;
+			}
 
 			for(;_fill.length;) {
 				for(var deckId in _decks) {

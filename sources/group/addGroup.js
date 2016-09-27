@@ -288,7 +288,12 @@ var addGroup = function(a) {
 
 			for(let relId in a.decks[to].relations) {
 
-				let _relation = Object.assign({}, a.decks[to].relations[relId]);
+				let _relation = null;
+				try {
+					_relation = Object.assign({}, a.decks[to].relations[relId]);
+				} catch(e) {
+					_relation = a.decks[to].relations[relId];
+				}
 
 				for(let from in a.decks) {
 					
