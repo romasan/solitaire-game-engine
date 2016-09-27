@@ -212,8 +212,11 @@ var SolitaireEngine =
 				if (typeof name == "string") {
 	
 					if (typeof forceClone == "boolean" && forceClone) {
-	
-						this._data[name] = Object.assign({}, data);
+						try {
+							this._data[name] = Object.assign({}, data);
+						} catch (e) {
+							this._data[name] = data;
+						}
 					} else {
 	
 						_event2.default.dispatch('shareChange:' + name, {
@@ -1592,8 +1595,13 @@ var SolitaireEngine =
 	
 				if (a.fill) {
 	
-					var _decks = _addDeck2.default.getDecks(),
-					    _fill = Object.assign([], a.fill);
+					var _decks = _addDeck2.default.getDecks();
+					var _fill = null;
+					try {
+						_fill = Object.assign([], a.fill);
+					} catch (e) {
+						_fill = a.fill;
+					}
 	
 					for (; _fill.length;) {
 						for (var deckId in _decks) {
@@ -1991,7 +1999,12 @@ var SolitaireEngine =
 	
 				for (var relId in a.decks[to].relations) {
 	
-					var _relation = Object.assign({}, a.decks[to].relations[relId]);
+					var _relation = null;
+					try {
+						_relation = Object.assign({}, a.decks[to].relations[relId]);
+					} catch (e) {
+						_relation = a.decks[to].relations[relId];
+					}
 	
 					for (var from in a.decks) {
 	
@@ -2529,7 +2542,13 @@ var SolitaireEngine =
 	
 		var _id = 'deck_' + _common2.default.genId();
 	
-		var _a = Object.assign({}, a);
+		var _a = null;
+		try {
+			_a = Object.assign({}, a);
+		} catch (e) {
+			_a = a;
+		}
+	
 		var _el_deck = new deckClass(_a, _id);
 	
 		// fill deck
@@ -3945,7 +3964,13 @@ var SolitaireEngine =
 	
 				for (var _i in _runStack) {
 	
-					var _data = Object.assign({}, _runStack[_i]);
+					var _data = null;
+					try {
+						_data = Object.assign({}, _runStack[_i]);
+					} catch (e) {
+						_data = _runStack[_i];
+					}
+	
 					_data.callback = _callback;
 					_event2.default.dispatch(data.actionData.run, _data);
 				}

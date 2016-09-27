@@ -29,8 +29,11 @@ class shareClass {
 			if(
 				typeof forceClone == "boolean" && forceClone
 			) {
-
-				this._data[name] = Object.assign({}, data);
+				try {
+					this._data[name] = Object.assign({}, data);
+				} catch(e) {
+					this._data[name] = data;
+				}
 
 			} else {
 				

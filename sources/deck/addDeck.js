@@ -407,21 +407,27 @@ var addDeck = function(a) {
 
 	if(!a) return false;
 	
-	var _id = 'deck_' + common.genId();
+	let _id = 'deck_' + common.genId();
 	
-	var _a = Object.assign({}, a);
-	var _el_deck = new deckClass(_a, _id);
+	let _a = null;
+	try {
+		_a = Object.assign({}, a);
+	} catch(e) {
+		_a = a;
+	}
+	
+	let _el_deck = new deckClass(_a, _id);
 
 	// fill deck
 	if(a.fill) {
-		for(var i in a.fill) {
+		for(let i in a.fill) {
 			if(typeof a.fill[i] == 'string') {
 				_el_deck.genCardByName(a.fill[i]);
 			}
 		}
 	}
 	
-	var _elements = share.get('elements');
+	let _elements = share.get('elements');
 
 	_elements[_id] = _el_deck;
 	
