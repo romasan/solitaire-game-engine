@@ -172,10 +172,10 @@ export default function(data) {// data.actionData, e
 
 			event.dispatch('addStep', {
 				'move' : {
-					from : dealDeck.name,
-					to   : _decks[deckId].name,
-					deck : [_cardName],
-					flip : true,
+					from     : dealDeck.name,
+					to       : _decks[deckId].name,
+					deck     : [_cardName],
+					flip     : true,
 					stepType : share.get('stepType')
 				}
 			});
