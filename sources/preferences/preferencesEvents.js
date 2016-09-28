@@ -11,7 +11,11 @@ let onShowParameters = ()=>{
 	!pref && (pref = defaults.pref);
 	
 	for(var prefName in defaults.themes) {
-		let _pref = pref[prefName] ? pref[prefName] : defaults.pref[prefName];
+		
+
+
+		let _pref = pref[prefName] && defaults.themes[prefName].indexOf(pref[prefName]) >= 0 ? pref[prefName] : defaults.pref[prefName];
+
 		$(`input[name='pref_${prefName}'][value='${_pref}']`)
 			.prop({checked: true});
 	}

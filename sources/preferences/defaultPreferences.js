@@ -11,8 +11,13 @@ export default ()=>{
 	!pref && (pref = defaults.pref);
 
 	for(let prefName in pref) {
-		if(defaults.themes[prefName].indexOf(pref[prefName]) < 0) {
-			pref[prefName] = defaults.pref[prefName];
+		
+		if(defaults.themes[prefName]) {
+
+			if(defaults.themes[prefName].indexOf(pref[prefName]) < 0) {
+				pref[prefName] = defaults.pref[prefName];
+			}
+
 		}
 	}
 

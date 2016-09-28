@@ -1,5 +1,4 @@
 # Solitaire engine documentation.
-<!-- test -->
 **Установака зависимостей:**
 	npm install
 **Сборка:**
