@@ -1,0 +1,37 @@
+{
+    "winCheck" : {
+        "rules" : ["allInOne"]
+    },
+    "decks" : [
+        {
+            "name": "deck1",
+            "position": {
+                "x": 100,
+                "y": 100
+            },
+            "takeRules": ["any"],
+            "putRules": ["not"],
+            "fill": ["c1", "c2"]
+        },
+        {
+            "name": "deck2",
+            "position": {
+                "x": 200,
+                "y": 100
+            },
+            "takeRules": ["any"],
+            "putRules": ["not"],
+            "fill": ["c3", "c4"]
+        },
+        {
+            "name": "deck3",
+            "position": {
+                "x": 300,
+                "y": 100
+            },
+            "takeRules": ["not"],
+            "putRules": ["any"],
+            "fill": ["c5", "c6"]
+        }
+    ]
+};

@@ -1,40 +1,114 @@
 'use strict';
 
-import event     from 'event';
-
-import forceMove from 'forceMove';
-import History   from 'history';
+import event    from 'event';
+import share    from 'share';
+import common   from 'common';
+import defaults from 'defaults';
 
 export default function(data) {
-		
-	// listen move ???
-	if(this.name != data.eventData.to.name) { return false; };
+	
+	if(share.get('stepType') != defaults.stepType) {
+		return false;
+	}
 
-	console.log('KICK');
+	if(
+		typeof data.eventData.stepType == "string"   &&
+		data.eventData.stepType != defaults.stepType
+	) {
+		// ??? TODO проверить нужно ли это
+		return false;
+	}
 
+	// if(share.get('prevStepType') != defaults.stepType) {
+	// 	return false;
+	// }
+
+	// let _name = null;
+	// if(
+	// 	data.eventData[0]                            &&
+	// 	data.eventData[0].move                       &&
+	// 	typeof data.eventData[0].move.to == "string"
+	// ) {
+	// 	_name = data.eventData[0].move.to;
+	// }
+	
+	// if(
+	// 	data.eventData.to                    &&
+	// 	typeof data.eventData.to == "string"
+	// ) {
+	// 	_name = data.eventData.to;
+	// }
+	
+	// if(
+	// 	data.eventData.to                         &&
+	// 	typeof data.eventData.to != "string"      &&
+	// 	typeof data.eventData.to.name == "string"
+	// ) {
+	// 	_name = data.eventData.to.name;
+	// }
+
+	if(data.eventData.to.name != this.name) {// data.eventData.to - куда мы перетащили карты
+		return false;
+	}
+
+	console.log('#KICK', data.eventData, share.get('stepType'), '#');
+	if(window.debug_kick) {
+		throw new Error();
+	}
+
+	// if(
+	// 	data.eventData[0]                         &&
+	// 	typeof data.eventData[0].name == "string" &&
+	// 	data.eventData[0].name != this.name
+	// ) {
+	// 	return false;
+	// }
+
+	common.animationDefault();
+	
 	// var _toDeck = Deck.Deck(data.actionData.to);
-	// TODO CURRENT
-	var _from = data.eventData.to,
-		_deck = _from.getCardsNames();
+	
+	// let _from = typeof data.eventData.to == "string"
+	// 		? Deck.Deck(_name)
+	// 		: data.eventData.to
+	
+	let _from = data.eventData.to, //Deck.Deck(_name),
+	    _deck = _from.getCardsNames();
 
-	forceMove({
-		from : _from,                 //this.name,
-		to   : data.actionData.to,    //_decks[deckId].name,
-		deck : _deck, //[_cardName],
-		flip : true                              //true
-	});
+	let _callback = ()=>{
 
-	History.add({'move' : {
-		from : _from.name,
-		to   : data.actionData.to,
-		deck : _deck,
-		flip : true
-	}});
+		event.dispatch('addStep', {
+			"move" : {
+				from     : _from.name,
+				to       : data.actionData.to,
+				deck     : _deck,
+				flip     : true,
+				stepType : share.get('stepType')
+			}
+		});
 
-	event.dispatch('makeStep', History.get());
+		event.dispatch('saveSteps');
+
+		if(data.actionData.dispatch) {
+			event.dispatch(data.actionData.dispatch);
+		}
+	}
+	
+
+	// TODO interval
+	let forceMoveParams = {
+		from     : _from             ,// deck
+		to       : data.actionData.to,// _decks[deckId].name,
+		deck     : _deck             ,// [_cardName],
+		flip     : true              ,// true
+		callback : _callback
+	};
+	
+	// forceMove(forceMoveParams);
+	event.dispatch('forceMove', forceMoveParams);
+	
 
 	// if(e.after) {
 	// 	_events[e.after].call(this, e);
 	// };
-
 }

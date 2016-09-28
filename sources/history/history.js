@@ -2,26 +2,23 @@
 
 import event     from 'event';
 import share     from 'share';
+import common    from 'common';
 
 import forceMove from 'forceMove';
 import Deck      from 'addDeck';
 import Tips      from 'tips';
 // import elRender  from 'elRender';
 
-var _oneStepWay  = [];
-var _undoMethods = {};
-var _redoMethods = {};
+// var _undoMethods = {};
+// var _redoMethods = {};
 
 // ---------------------------------------- UNDO ----------------------------------------
 
 var _undo = function(a) {
 
-	// console.log('#undo', a);
-
-	for(var i in _undoMethods) {
-		// console.log(i);
-		_undoMethods[i](a);
-	}
+	// for(var i in _undoMethods) {
+	// 	_undoMethods[i](a);
+	// }
 	
 	// if(a.flip) {
 	// };
@@ -45,6 +42,32 @@ var _undo = function(a) {
 	// 	// TODO
 	// };
 
+	// LOCK
+	if(
+		typeof a.lock != "undefined"
+	) {
+		// Deck.Deck(a.lock).unlock();
+		// TODO сделать также в оставшихся местах
+		for(let i in a.lock) {
+			let _elements = common.getElementsByName(a.lock[i]);
+			for(let elNum in _elements) {
+				_elements[elNum].unlock();
+			}
+		}
+	}
+
+	if(
+		typeof a.unlock != "undefined"
+	) {
+		// Deck.Deck(a.unlock).lock();
+		for(let i in a.lock) {
+			let _elements = common.getElementsByName(a.lock[i]);
+			for(let elNum in _elements) {
+				_elements[elNum].lock();
+			}
+		}
+	}
+
 	// MOVE
 	if(
 		typeof a.move      != "undefined" 
@@ -63,8 +86,6 @@ var _undo = function(a) {
 };
 
 event.listen('undo', function(_a) {
-
-	// console.log('undo', _a);
 
 	// elRender.animationsEnd();
 	event.dispatch('stopAnimations');
@@ -95,11 +116,9 @@ event.listen('undo', function(_a) {
 
 var _redo = function(a) {
 
-	// console.log('#redo', a);
-
-	for(var i in _redoMethods) {
-		_redoMethods[i](a);
-	}
+	// for(var i in _redoMethods) {
+	// 	_redoMethods[i](a);
+	// }
 
 	// if(a.flip) {
 	// };
@@ -123,6 +142,32 @@ var _redo = function(a) {
 	// 	// TODO
 	// };
 
+	// LOCK
+	if(
+		typeof a.lock != "undefined"
+	) {
+		// Deck.Deck(a.lock).lock();
+		for(let i in a.lock) {
+			let _elements = common.getElementsByName(a.lock[i]);
+			for(let elNum in _elements) {
+				_elements[elNum].lock();
+			}
+		}
+	}
+
+	if(
+		typeof a.unlock != "undefined"
+	) {
+		// Deck.Deck(a.unlock).unlock();
+		for(let i in a.unlock) {
+			let _elements = common.getElementsByName(a.lock[i]);
+			for(let elNum in _elements) {
+				_elements[elNum].unlock();
+			}
+		}
+	}
+
+	// MOVE
 	if(
 		typeof a.move      != "undefined" 
 	 && typeof a.move.from != "undefined" 
@@ -136,8 +181,6 @@ var _redo = function(a) {
 
 event.listen('redo', function(_a) {
 
-	// console.log('redo', _a);
-	
 	// elRender.animationsEnd();
 	event.dispatch('stopAnimations');
 	
@@ -159,36 +202,69 @@ event.listen('redo', function(_a) {
 
 });
 
-export default new function() {
+// ----------------------------------------------
 
-	this.reset = function() {
-		_oneStepWay = [];
-	};
+class history {
 
-	this.add = function(step) {
+	constructor() {
+		
+		this.steps = [];
+	}
 
-		// console.log('History add:', step);
+	reset() {
+		this.steps = [];
+	}
+
+	add(step) {
+
 		// for(var i in step) {
-		_oneStepWay.push(step);
+		this.steps.push(step);
 		// }
-	};
+	}
 
-	this.get = function() {// TODO get without reset (param)
-		var _req = _oneStepWay;
-		this.reset();
+	// get steps and reset
+	get(reset = true) {
+
+		var _req = this.steps;
+		
+		if(reset) {
+			this.reset();
+		}
+
 		return _req;
-	};
+	}
 
-	this.addUndoMethods  = function(a) {
-		for(var i in a) {
-			_undoMethods[i] = a[i];
-		}
-	};
+	log() {
+		console.log(this.steps);
+	}
+
+	count() {
+		return this.steps.length;
+	}
+
+	// addUndoMethods(a) {
+	// 	for(var i in a) {
+	// 		_undoMethods[i] = a[i];
+	// 	}
+	// }
 	
-	this.addRedoMethods  = function(a) {
-		for(var i in a) {
-			_redoMethods[i] = a[i];
-		}
-	};
+	// addRedoMethods(a) {
+	// 	for(var i in a) {
+	// 		_redoMethods[i] = a[i];
+	// 	}
+	// }
+}
 
-};
+let _history = new history();
+
+event.listen('addStep', (e)=>{
+	_history.add(e)
+});
+
+event.listen('saveSteps', ()=>{
+
+	// save steps to client history
+	event.dispatch('makeStep', _history.get());
+});
+
+export default _history;

@@ -7,16 +7,16 @@ import defaults from 'defaults';
 import Field    from 'field';
 import elRender from 'elRender';
 
-event.listen('initField', function(e) {
+event.listen('initField', function(data) {
 
-	// console.log('initField');
-	
-	var domElement = e.a.field ? e.a.field : '#mat';// default;
+	var domElement = data.field ? data.field : '#map';// default;
 	if(typeof domElement == 'string') {
 		if(domElement.split('.').length == 2) {
 			domElement = document.getElementsByClassName(domElement.split('.')[1])[0];
 		} else if(domElement.split('#').length == 2) {
+			
 			domElement = document.getElementById(domElement.split('#')[1]);
+			
 		} else {
 			domElement = document.getElementsByTagName(domElement);
 		}
@@ -25,29 +25,28 @@ event.listen('initField', function(e) {
 		}
 	};
 	// share.field = e.field;
-	var _field = Field();
-	_field.domElement = domElement;
+	Field.domElement = domElement;
 
 	var _params = {};
 
-	if(e.a.width  && typeof e.a.width  == 'number') { _params.width  = e.a.width  + 'px'; }
-	if(e.a.height && typeof e.a.height == 'number') { _params.height = e.a.height + 'px'; }
-	if(e.a.top    && typeof e.a.top    == 'number') { _params.top    = e.a.top    + 'px'; }
-	if(e.a.left   && typeof e.a.left   == 'number') { _params.left   = e.a.left   + 'px'; }
+	if(data.width  && typeof data.width  == 'number') { _params.width  = data.width  + 'px'; }
+	if(data.height && typeof data.height == 'number') { _params.height = data.height + 'px'; }
+	if(data.top    && typeof data.top    == 'number') { _params.top    = data.top    + 'px'; }
+	if(data.left   && typeof data.left   == 'number') { _params.left   = data.left   + 'px'; }
 
 	var _zoom = share.get('zoom');
 	(_zoom != defaults.zoom || _zoom != 1) && (_params.transform = 'scale(' + _zoom + ')', _params['transform-origin'] = '0 0');
 	// if(a.rotate && typeof a.rotate == 'number') _params.transform = 'rotate(' + (a.rotate|0) + 'deg)';
 	
-	var themeName = 
-		typeof e.a.theme == 'string' 
-			? e.a.theme 
-			: typeof e.a.theme == 'object' && e.a.theme.name
-				? e.a.theme.name
-				: defaults.theme.name;
+	// var themeName = 
+	// 	typeof data.theme == 'string' 
+	// 		? data.theme 
+	// 		: typeof data.theme == 'object' && data.theme.name
+	// 			? data.theme.name
+	// 			: defaults.theme.name;
 
 	elRender(domElement)
 		.css(_params)
-		.addClass('field')
-		.addClass(themeName);
+		.addClass('solitaireField')
+		// .addClass(themeName);
 });

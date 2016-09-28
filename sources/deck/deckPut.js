@@ -1,11 +1,15 @@
 'use strict';
 
+import share    from 'share';
+import defaults from 'defaults';
+
+import Field    from 'field';
 import Deck     from 'addDeck';
 import putRules from 'readyPutRules';
 
 export default function(putDeck) {
 
-	// console.log('PUT', this.name, this.putRules);
+	let _stepType = share.get('stepType');
 
 	var rulesCorrect = true;
 	
@@ -14,24 +18,51 @@ export default function(putDeck) {
 
 	rulesCorrect = rulesCorrect && !this.locked;
 
-	for(var ruleIndex in this.putRules) {
-		
-		var ruleName = this.putRules[ruleIndex];
+	if(_stepType != defaults.stepType) {
 
-		if(putRules[ruleName]) {
-			rulesCorrect = rulesCorrect && putRules[ruleName]({
-				from      : {
-					deckId : _deckId, 
-					deck   : _deck_departure
-				}, 
-				putDeck   : putDeck,
-				cards     : this.cards,
-				rulesArgs : putRules[ruleName]
-			});
+		// Нестандартный ход (autosteps)
+		rulesCorrect = rulesCorrect && Field.autoSteps && Field.autoSteps[_stepType]
+			? Field.autoSteps[_stepType].manual({
+				putDeck,
+				to: this
+			})
+			: false;
+	} else {
 
-		} else {
-			console.warn('putRule:', ruleName, 'not exists');
-			rulesCorrect = false;
+		let _link = null;// deckName
+		let _deck = this;
+
+		for(var ruleIndex in this.putRules) {
+			
+			if(rulesCorrect) {
+
+				if(_link) {
+					_deck = Deck.Deck(_link);
+				}
+
+				var ruleName = this.putRules[ruleIndex];
+
+				if(putRules[ruleName]) {
+
+					let _param = {
+						from    : {
+							deckId : _deckId, 
+							deck   : _deck_departure
+						}, 
+						putDeck,
+						cards   : _deck.cards,
+						to      : _deck,
+						link    : _link
+						// rulesArgs : putRules[ruleName]
+					};
+					rulesCorrect = rulesCorrect && putRules[ruleName](_param);
+					_link = _param.link;
+
+				} else {
+					console.warn('putRule:', ruleName, 'not exists');
+					rulesCorrect = false;
+				}
+			}
 		}
 	}
 

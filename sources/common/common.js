@@ -6,39 +6,47 @@ import defaults from 'defaults';
 
 import Tips     from 'tips';
 import Field    from 'field';
+import History  from 'history';
 
 import drawPreferences    from 'drawPreferences';
 import preferencesEvents  from 'preferencesEvents';
 import defaultPreferences from 'defaultPreferences';
 
+// event.listen('shareChange:stepType', (e) => {
+// 	console.log('%cshareChange:stepType', 'background-color: green;color: white;', e);
+// });
 
-let onInit = ()=>{
+// event.listen('shareChange:curLockState', (e) => {
+// 	console.log('%cshareChange:curLockState', 'background-color: blue;color: white;', e);
+// });
+
+event.listen('gameInit', (e)=>{
+
+	share.set('stepType', defaults.stepType);
+
+	curUnLock();
+	
+	if(!e.firstInit) { return; };
 	drawPreferences();
 	preferencesEvents();
-}
+});
 
-let afterInit = ()=>{
+event.listen('gameInited', ()=>{
 	defaultPreferences();
-}
+});
 
-// drawPreferences();
+share.set('prevStepType', defaults.stepType);
+event.listen('change:stepType', ()=>{
+	share.set('prevStepType', share.get('stepType'));
+});
 
-// event.listen('makeStep', function(e) {
-// 	// ???
-// 	share.saveStepCallback(e);
-	
-// 	share.set('oneStepWay', {});
-// });
+event.listen('moveEnd', function(e) {
+	Tips.checkTips();
+});
 
-// event.listen('win', function(e) {
-// 	if(e && e.show) {
-// 		//  ????
-// 		share.winCheckCallback(e);
-// 	}
-// });
-// event.listen('newGame', function(e) {
-// 	Tips.checkTips();
-// });
+event.listen('actionBreak', function(e) {
+	Tips.checkTips();
+});
 
 // Lock/Unlock
 
@@ -46,33 +54,54 @@ var sqr = function(i) {
     return i * i;
 };
 
-var _lock = false;
+// --
 
-var isLock = function() {
-	return _lock;
-};
-var lock = function() {
-	_lock = true;
-}
-event.listen('lock', lock);
+// var _lock = false;
 
-var unlock = function() {
-	lock = false;
-}
-event.listen('unlock', unlock);
+// var isLock = function() {
+// 	return _lock;
+// };
+
+// var lock = function() {
+// 	_lock = true;
+// }
+// event.listen('lock', lock);
+
+// var unlock = function() {
+// 	lock = false;
+// }
+// event.listen('unlock', unlock);
+
+// --
+
+let _inputStack = [];
 
 var isCurLock = function() {
 	return share.get('curLockState');
 };
 
-
 var curLock = function() {
-	// console.log('curLock');
 	share.set('curLockState', true);
-}
+};
+
 var curUnLock = function() {
-	// console.log('curUnLock');
+	
 	share.set('curLockState', false);
+	
+	for(let i in _inputStack) {
+		if(typeof _inputStack[i] == "function") {
+			_inputStack[i]();
+		}
+	}
+	_inputStack = [];
+}
+
+let input = (callback) => {
+	if(!isCurLock()) {
+		callback();
+	} else {
+		_inputStack.push(callback);
+	}
 }
 
 // getters
@@ -130,10 +159,11 @@ var validateCardName = function(name, nolog) {
 	 && defaults.card.ranks.indexOf(rank) >= 0
 	) {
 		return {
-			suit  : suit, 
-			rank  : rank,
-			color : color,
-			value : value
+			suit , 
+			rank ,
+			color,
+			value,
+			name 
 		}
 	} else {
 		console.warn('Warning: validate name:', name, '- incorrect');
@@ -148,6 +178,8 @@ var _id = 0,
 	genId = function() {
 	return _id++;
 };
+
+// --
 
 share.set('animation', defaults.animation);
 
@@ -173,27 +205,46 @@ event.listen('newGame', function(e) {
 	animationOff();
 });
 
+// --
+
 event.listen('historyReapeater', function(e) {
 	if(e) {
 		share.set('noRedraw', true);
 		share.set('noTips', true);
 	} else {
 		share.set('noRedraw', false);
-		var _field = Field();
-		_field.Redraw();
+		Field.Redraw();
 		share.set('noTips', false);
 		Tips.checkTips();
 	}
 });
 
+// --
+
+let deckInGroups = (deck, groups)=>{
+	for(let groupName in groups) {
+		Group.Group(groupName).hasDeck();
+	}
+}
+
 // event.listen('makeStep', function(e) {
 	// share.set('animation', defaults.animation);
 // });
 
+share.set('stepType', defaults.stepType);
+
+// let clearInput = ()=>{
+//     share.set('dragDeck',    null);
+//     share.set('startCursor', null);
+// 		console.log('clearInput');
+// }
+
+// share.set('lang', defaults.lang);
+
 export default {
-	isLock           ,
-	lock             ,
-	unlock           ,
+//	isLock           ,
+//	lock             ,
+//	unlock           ,
 	isCurLock        ,
 	curLock          ,
 	curUnLock        ,
@@ -205,7 +256,6 @@ export default {
 	animationOn      ,
 	animationOff     ,
 	animationDefault ,
-	onInit           ,
-	afterInit        ,
+	deckInGroups     ,
 	sqr              
 };

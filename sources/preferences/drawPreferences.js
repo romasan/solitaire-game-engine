@@ -1,34 +1,47 @@
 'use strict';
 
+// import share from 'share';
+import defaults from 'defaults';
+
 // import elRender from 'elRender';
 
 export default ()=>{
 
-let _html = require('html!./preferncesTemplate.html');
 
-	// console.log(
-	// 	"html",
-	// 	_html
-	// );
-	// console.log(
-	// 	"#gpCommit",
-	// 	elRender("#gpCommit")
-	// );
-	// console.log(
-	// 	"PARENT:",
-	// 	elRender("#gpCommit")
-	// 		.parent()
-	// );
+	// let _locale = require('json!locales.json')[defaults.locale];
+	
+	// let Tpl = require("./preferncesTemplate.hamlc");//
+	
+	// let _values = {
+	// 	locale: _locale,
+	// 	preferences: []
+	// };
 
-	// elRender("#gpCommit")
-	// 	.parent()
-	// 	.before(_html);
+	// for(let propName in defaults.themes) {
+		
+	// 	let _pref = {
+	// 		title   : _locale["label_" + propName],
+	// 		options : []
+	// 	};
+		
+	// 	for(let i in defaults.themes[propName]) {
+	// 		_pref.options.push({
+	// 			value : defaults.themes[propName][i],
+	// 			label : _locale[defaults.themes[propName][i]]
+	// 		});
+	// 	}
+
+	// 	_values.preferences.push(_pref);
+	// };
+
+	// let _html = Tpl(_values);
+
+// --
+	
+	let _html = require('html!./preferncesTemplate.html');
+
 	$("#gpCommit")
 		.parent()
 		.before(_html);
 
-	// console.log("test")
 };
-
-// preload preferences
-// clicks (apply changes)

@@ -1,5 +1,8 @@
 $img_dir:"/solitaire_engine/img/";
 
+$card_width  : 71px;
+$card_height : 96px;
+
 * {
 	-webkit-touch-callout : none;
 	-webkit-user-select   : none;
@@ -13,12 +16,22 @@ body {
 	backface-visibility: hidden;
 }
 
-.field * {
-	cursor                   : inherit;
+.solitaireField {}
+
+.solitaireField * {
+	cursor: inherit;
 }
 
 .el {
 	position: absolute;
+}
+
+.slot  {
+  width: $card_width - 2!important;
+  height: $card_height - 2!important;
+  background: transparent;
+  border: 1px solid #121212;
+  border-radius: 5px;
 }
 
 .tip:after {
@@ -113,10 +126,24 @@ body {
 	
 }
 
-.cards-style-preferences-label {
-  display: inline-block;;
+#solitaire-engine-style-preferences {
+  margin: 15px 0px 20px 0px;
+}
+#solitaire-engine-style-preferences label {
+  display: block;
+}
+
+#solitaire-engine-style-preferences>h4 {
+  margin: 20px 0px 20px 0px;
+}
+
+.solitaire-engine-style-preferences-label {
+  display: inline-block;
   width: 150px;
   line-height: 20px;
+  font-weight: bold;
+  padding-top: 3px;
+  padding-bottom: 3px;
 }
 
 /* =========================================== */

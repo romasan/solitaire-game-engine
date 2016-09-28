@@ -9,51 +9,57 @@ import Deck            from 'addDeck';
 
 var winCheck = function(params) {
 
-	// console.log('%cWIN CHECK', 'background : red');
-		
 	var rulesCorrect = true;
 	var _hasMetods = false;
-	var _winCheck = share.get('winCheck');
-
-	// console.log('winCheck', params, _winCheck);
+	var _winCheck = share.get('winCheck');// _field.winCheck
 	
 	for(var ruleName in _winCheck.rules) {
 		_hasMetods = true;
 		
 		if(winCheckMethods[ruleName]) {
 		
-			rulesCorrect = rulesCorrect && winCheckMethods[ruleName]({
+			let _result = winCheckMethods[ruleName]({
 				decks     : Deck.getDecks({visible : true}), 
 				rulesArgs : _winCheck.rules[ruleName]
 			});
+			
+			rulesCorrect = rulesCorrect && _result;
 
 		} else {
-			rulesCorrect = rulesCorrect && winCheckMethods['newerWin']();
+			rulesCorrect = rulesCorrect && winCheckMethods.newerWin();
 		}
 	}
 	
 	if(!_hasMetods) {
-		rulesCorrect = rulesCorrect && winCheckMethods['newerWin']();
+		rulesCorrect = rulesCorrect && winCheckMethods.newerWin();
 	}
 
 	if(rulesCorrect) {
+		
 		if(params && params.noCallback) { return true; }
+		
+		// show you win message
 		event.dispatch('win', params);
-		// a.winCheck.callback();
+
+		console.log('WIN');
+
 		return true;
 	}
 
 	return false;
 };
 
+// hidden check
 var hwinCheck = function(a) {
+	
 	if(!a) {
 		a = {};
 	}
+	
 	if(typeof a.show == 'undefined') {
 		a.show = false;
 	}
-	// console.log('winCheck', a);
+	
 	winCheck(a);
 	// return winCheck({noCallback : true});
 };

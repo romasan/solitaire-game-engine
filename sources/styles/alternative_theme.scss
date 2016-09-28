@@ -8,12 +8,18 @@ $card_height : 96px;
 $cards: ("1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "j", "q", "k");
 $ranks: ("d", "s", "h", "c");
 
+#{$theme_name}_field {
+	background: url('#{$img_dir}bg_large1.jpg')!important;
+	background-size: 100% 100%!important;
+}
+
 #{$theme_name}_face {
 
 	.card  {
 		border: 1px solid #121212;
-		border-radius: 5px;
-		background: url('#{$img_dir}card.svg');
+		border-radius: 3px;
+		/* background: url('#{$img_dir}card.svg'); */
+		background: url('#{$img_dir}card.png');
 		background-size: length($cards) * $card_width length($ranks) * $card_height;
 	}
 	
@@ -34,14 +40,5 @@ $ranks: ("d", "s", "h", "c");
 	    background-image: url('#{$img_dir}rub.png')!important;
 	    background-size: 100% 100%!important;
 	    border: 0px!important;
-	}
-}
-
-#{$theme_name}_empty {
-
-	.slot  {
-		background: transparent;
-		border: 1px solid #121212;
-		border-radius: 5px;
 	}
 }

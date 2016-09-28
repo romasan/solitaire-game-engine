@@ -1,12 +1,27 @@
 'use strict';
 
-import event         from 'event';
-import common        from 'common';
+import share    from 'share';
+import event    from 'event';
+import common   from 'common';
+import defaults from 'defaults';
 
 import deckGenerator from 'deckGenerator';
 import elRender      from 'elRender';
+import mapCommon     from 'mapCommon';
+import history       from 'history';
 
 import renderTest from 'renderTest';
+
+// event.listen('addStep', (e) => {
+// 	console.log('* Добавили данные для истории:', e.move ? e.move.stepType : 'none', e);
+// 	if(e.move && !e.move.stepType) {
+// 		throw new Error('debug');
+// 	}
+// });
+
+// event.listen('makeStep', (e) => {
+// 	console.log('# Отправили данные на сохранение в историю:', e);
+// }
 
 let _history = [],
 	_redo    = [];
@@ -81,15 +96,25 @@ let debugHistory = (a)=>{
 
 };
 
-let tests = ()=>{
-	renderTest();
-}
+// let runTests = ()=>{
+// 	// renderTest();
+// }
+
+// event.listen('gameInit', (e)=>{
+// 	if(!e.firstInit) {return;};
+// 	runTests();
+// })
 
 export default {
-	deckGenerator,
-	debugHistory,
-	debugHistoryMgr,
+	share                                     ,
+	deckGenerator                             ,
+	debugHistory                              ,
+	debugHistoryMgr                           ,
 	validateCardName : common.validateCardName,
-	elRender,
-	tests
+	elRender                                  ,
+	defaults                                  ,
+	groupGenerators : {
+		mapCommon
+	},
+	history
 };

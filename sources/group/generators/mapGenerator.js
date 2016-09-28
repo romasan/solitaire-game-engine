@@ -1,16 +1,37 @@
+/*
+ * сгенерировать группу из матрицы
+ */
+
 'use strict';
 
 import defaults from "defaults";
 
-var inMap = function(x, y, mapSize) {
-	return x >= 0 && y >= 0 && x < mapSize.width && y < mapSize.height;
-};
+import relationsGenerator from "relationsGenerator";
+import mapCommon          from "mapCommon";
+
+// var getName = (el)=>{
+// 	return typeof el == "string" ? el : typeof el != "undefined" && typeof el.name == "string" ? el.name : null;
+// };
+
+// -------------------------------------------------------------------------------------------------------------------
 
 export default function(e) {
-	
-	// TODO
-	// console.log('MAP GENERATOR', e);
-	
+
+	// {
+	// 	type            : "map",
+	// 	map             : [[string|{name, next, prev}]],
+	// 	relations       : {
+	// 		around : true,
+	// 		beside : ???,
+	// 		fall   : {
+	// 			directories : [
+	// 				"down",
+	// 				"right"
+	// 			]
+	// 		}
+	// 	}
+	// }
+
 	var _decks = [];
 	
 	var _default_placement = {
@@ -30,60 +51,82 @@ export default function(e) {
 
 	var _index = 1;
 
-	var _mapSize = {
-		width  : e.map[0].length,//MAX LENGTH
-		height : e.map   .length
-	}
-	e.map.forEach(function(e) {
-		_mapSize.width = Math.max(_mapSize.width, e.length);
-	});
-	
+	var _mapSize = mapCommon.mapSize(e.map);
+
+	// {name: 'groupName_deck_0_0'}
 	for(var y in e.map) {
 		for(var x in e.map[y]) {
-			if(e.map[y][x]) {
+
+			if(
+				typeof e.map[y][x] == "boolean" && e.map[y][x]
+			 || typeof e.map[y][x] == "number"  && e.map[y][x] > 0
+			) {
+				e.map[y][x] = {};
+			};
+
+			if(typeof e.map[y][x] == "string") {
+				e.map[y][x] = {name: e.map[y][x]};
+			} else if(
+				e.map[y][x]
+			 && typeof e.map[y][x]      != "undefined"
+			 && typeof e.map[y][x].name != "string"
+			) {
+				e.map[y][x].name = this.name + "_deck_" + x + "_" + y;
+			};
+		}
+	}
+
+	for(var _y in e.map) {
+		for(var _x in e.map[_y]) {
+
+			var x = _x | 0,
+				y = _y | 0;
+
+			var _el = e.map[y][x];
+			
+			if(_el) {
 				
-				var _deck = {
-					"name"     : e.map[y][x],// (this.name + "_deck" + _index) OR (this.name + '_' + e.map[y][x])
+				let _deck = {
+					"name"     : e.map[y][x].name,// (this.name + "_deck" + _index) OR (this.name + '_' + e.map[y][x])
 					"position" : {
-						"x" : x * ((defaults.card.width|0)  + (_placement.x|0)),
-						"y" : y * ((defaults.card.height|0) + (_placement.y|0))
+						"x" : x * ((defaults.card.width  | 0) + (_placement.x | 0)),
+						"y" : y * ((defaults.card.height | 0) + (_placement.y | 0))
 					},
 				}
 				
-				if(e.aroundRealtions) {// default false
+				//  ---------------------------------------------------------
+				let _relations = [];
 
-					// CLT TOP CRT ... CORN SIDE CORN
-					// LFT  *  RGT ... SIDE      SIDE
-					// CLB BTM CRB ... CORN SIDE CORN
+				let _relGenerators = {
+					"around" : "mapAroundRelations",
+					"beside" : "mapBesideRelations",
+					"fall"   : "mapFallRelations"
+				};
 
-					var _relations = [];
+				if(e.relations) {
 
-					// SYS: name, from (type???)
+					for(let relGenName in _relGenerators) {
 
-					if( inMap(y - 1, x - 1, _mapSize) && e.map[y - 1] && e.map[y - 1][x - 1] ) { _relations.push({ name : 'around', type : 'corn', id : 'clt', to : e.map[y - 1][x - 1] }); };
-					if( inMap(y - 1, x    , _mapSize) && e.map[y - 1] && e.map[y - 1][x]     ) { _relations.push({ name : 'around', type : 'side', id : 'top', to : e.map[y - 1][x]     }); };
-					if( inMap(y - 1, x + 1, _mapSize) && e.map[y - 1] && e.map[y - 1][x + 1] ) { _relations.push({ name : 'around', type : 'corn', id : 'crt', to : e.map[y - 1][x + 1] }); };
-					
-					if( inMap(y    , x - 1, _mapSize) && e.map[y]     && e.map[y][x - 1]     ) { _relations.push({ name : 'around', type : 'side', id : 'lft', to : e.map[y][x - 1]     }); };
-					if( inMap(y    , x + 1, _mapSize) && e.map[y]     && e.map[y][x + 1]     ) { _relations.push({ name : 'around', type : 'side', id : 'rgt', to : e.map[y][x + 1]     }); };
-					
-					if( inMap(y + 1, x - 1, _mapSize) && e.map[y + 1] && e.map[y + 1][x - 1] ) { _relations.push({ name : 'around', type : 'corn', id : 'clb', to : e.map[y + 1][x - 1] }); };
-					if( inMap(y + 1, x    , _mapSize) && e.map[y + 1] && e.map[y + 1][x]     ) { _relations.push({ name : 'around', type : 'side', id : 'btm', to : e.map[y + 1][x]     }); };
-					if( inMap(y + 1, x + 1, _mapSize) && e.map[y + 1] && e.map[y + 1][x + 1] ) { _relations.push({ name : 'around', type : 'corn', id : 'crb', to : e.map[y + 1][x + 1] }); };
+						if(e.relations[relGenName]) {
+							_relations = _relations.concat(relationsGenerator[_relGenerators[relGenName]]({
+								x, y, 
+								map     : e.map,
+								mapSize : _mapSize,
+								el      : _el,
+								data    : e.relations[relGenName]
+							}));
+						};
+					};
+				};
 
-					_deck.relations = _relations;
-				}
+				_deck.relations = _relations;
+				//  ---------------------------------------------------------
 				
 				_decks.push(_deck);
 				_index += 1;
 			}
 		}
 	}
-
-
-	// -----------------------------
-
-	// if(e.generateDeckRelations) {}
 
 	return _decks;
 };

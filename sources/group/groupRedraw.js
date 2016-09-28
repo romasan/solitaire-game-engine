@@ -4,8 +4,6 @@ import defaults from 'defaults';
 
 export default function(_a) {
 
-	// console.log('groupRedraw:', _a);
-
 	var _decks = this.getDecks();
 	// var _index = {}
 

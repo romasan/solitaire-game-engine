@@ -4,8 +4,6 @@ import share from 'share';
 
 export default function(a) {
 
-	// console.log('getDecks', a)
-
 	var _decks = {}
 	var _elements = share.get('elements');
 	for(var d in _elements) {

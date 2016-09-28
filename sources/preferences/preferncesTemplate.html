@@ -1,26 +1,58 @@
-<div style="margin: 15px 0px 20px 0px;" id="cards-style-preferences">
-    <h4 style="margin: 20px 0px 20px 0px;">Настройки оформления</h4>
+<div id="solitaire-engine-style-preferences">
+    <h4>Настройки оформления</h4>
     <div>
-	    <span class="cards-style-preferences-label">Лицевая сторона:</span>
-	    <select id="pref_face" class="cards-style-preferences-element">
-	        <option value=0>Классическая</option>
-	        <option value=1>Англо-американская</option>
-	    </select>
+	    <span class="solitaire-engine-style-preferences-label">Фон:</span>
+	    <!-- <select id="pref_field" class="solitaire-engine-style-preferences-element"> -->
+        <label>
+        	<input type="radio" name="pref_field" value="default_field">
+        	Классический
+    	</label>
+        <label>
+        	<input type="radio" name="pref_field" value="alternative_field">
+        	Альтернативный
+    	</label>
+	    <!-- </select> -->
+	</div>
+	<div>
+	    <span class="solitaire-engine-style-preferences-label">Лицевая сторона:</span>
+	    <!-- <select id="pref_face" class="solitaire-engine-style-preferences-element"> -->
+        <label>
+        	<input type="radio" name="pref_face" value="default_face">
+        	Классическая
+    	</label>
+        <label>
+        	<input type="radio" name="pref_face" value="alternative_face">
+        	Англо-американская
+    	</label>
+	    <!-- </select> -->
 	</div>
     <div>
-	    <span class="cards-style-preferences-label">Рубашка:</span>
-	    <select id="pref_back" class="cards-style-preferences-element">
-	        <option value=0>Классическая</option>
-	        <option value=1>Альтернативная</option>
-	        <option value=2>Красная</option>
-	        <option value=3>Синяя</option>
-	    </select>
+	    <span class="solitaire-engine-style-preferences-label">Рубашка:</span>
+	    <!-- <select id="pref_back" class="solitaire-engine-style-preferences-element"> -->
+        <label>
+        	<input type="radio" name="pref_back" value="default_back">
+        	Классическая
+    	</label>
+        <label>
+        	<input type="radio" name="pref_back" value="alternative_back">
+        	Альтернативная
+    	</label>
+        <!-- <label>
+        	<input type="radio" name="pref_back" value="red_back">
+        	Красная
+    	</label>
+        <label>
+        	<input type="radio" name="pref_back" value="blue_back">
+        	Синяя
+    	</label> -->
+	    <!-- </select> -->
 	</div>
-    <div>
-	    <span class="cards-style-preferences-label">Пустая ячейка:</span>
-	    <select id="pref_empty" class="cards-style-preferences-element">
+    <!-- <div>
+	    <span class="solitaire-engine-style-preferences-label">Пустая ячейка:</span>
+	    <select id="pref_empty" class="solitaire-engine-style-preferences-element">
 	        <option value=0>Классическая</option>
 	        <option value=1>С обводкой</option>
 	    </select>
-	</div>
+	</div> -->
+
 </div>
