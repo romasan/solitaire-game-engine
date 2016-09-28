@@ -6317,8 +6317,12 @@ var SolitaireEngine =
 		!pref && (pref = _defaults2.default.pref);
 	
 		for (var prefName in pref) {
-			if (_defaults2.default.themes[prefName].indexOf(pref[prefName]) < 0) {
-				pref[prefName] = _defaults2.default.pref[prefName];
+	
+			if (_defaults2.default.themes[prefName]) {
+	
+				if (_defaults2.default.themes[prefName].indexOf(pref[prefName]) < 0) {
+					pref[prefName] = _defaults2.default.pref[prefName];
+				}
 			}
 		}
 	
