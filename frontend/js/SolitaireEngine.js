@@ -6178,7 +6178,9 @@ var SolitaireEngine =
 		!pref && (pref = _defaults2.default.pref);
 	
 		for (var prefName in _defaults2.default.themes) {
-			var _pref = pref[prefName] ? pref[prefName] : _defaults2.default.pref[prefName];
+	
+			var _pref = pref[prefName] && _defaults2.default.themes[prefName].indexOf(pref[prefName]) >= 0 ? pref[prefName] : _defaults2.default.pref[prefName];
+	
 			$('input[name=\'pref_' + prefName + '\'][value=\'' + _pref + '\']').prop({ checked: true });
 		}
 	};
