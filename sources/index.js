@@ -50,8 +50,6 @@ exports.init = function(gameConfig) {
 	event.clearByTag('new_game');
 	event.setTag('new_game');
 
-	// console.log('***************************');
-
 	Field.clear();
 	Field.create(gameConfig);
 

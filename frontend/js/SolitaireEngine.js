@@ -126,7 +126,7 @@ var SolitaireEngine =
 	exports.options = _defaults2.default;
 	exports.winCheck = _winCheck2.default.hwinCheck;
 	exports.generator = _deckGenerator2.default;
-	exports.version = (9091491447).toString().split(9).slice(1).map(function (e) {
+	exports.version = (9091491471).toString().split(9).slice(1).map(function (e) {
 		return parseInt(e, 8);
 	}).join('.');
 	
@@ -144,8 +144,6 @@ var SolitaireEngine =
 	
 		_event2.default.clearByTag('new_game');
 		_event2.default.setTag('new_game');
-	
-		// console.log('***************************');
 	
 		_field2.default.clear();
 		_field2.default.create(gameConfig);
@@ -3350,6 +3348,8 @@ var SolitaireEngine =
 					var _actionName = _decksActions[i].action;
 	
 					var _canRun = _event == 'click' ? data.to.name == _decksActions[i].deck.name : true;
+					// data._stepType = data.stepType;
+					// data.stepType = share.get('stepType');
 	
 					if (_canRun) {
 	
@@ -3450,7 +3450,8 @@ var SolitaireEngine =
 		// default data.actionData.onlyEmpty - false
 		// default data.actionData.from      - this.name
 		// default data.actionData.stepType  - NULL
-		console.log('dealerdeckAction:', this.name, data);
+	
+		// console.log('dealerdeckAction:', this.name, data);
 	
 		if (typeof data.actionData.stepType == "string" && data.actionData.stepType != _share2.default.get('stepType')) {
 			return;
@@ -3582,6 +3583,8 @@ var SolitaireEngine =
 				var _cardName = _card.name;
 	
 				var _callback = function _callback() {
+	
+					console.log('--------- deal:move');
 					_event2.default.dispatch('checkTips');
 				};
 	
@@ -3816,9 +3819,11 @@ var SolitaireEngine =
 		}
 	
 		console.log('#KICK', data.eventData, _share2.default.get('stepType'), '#');
-		if (window.debug_kick) {
-			throw new Error();
-		}
+		// if(window.debug_kick) {
+		// 	console.log('data.eventData.stepType:', data);
+		// 	throw new Error();
+		// }
+		window.debug_kick = 1;
 	
 		// if(
 		// 	data.eventData[0]                         &&
@@ -6492,7 +6497,8 @@ var SolitaireEngine =
 							_event2.default.dispatch('moveEnd', {
 								from: _deck_departure,
 								to: _deck_destination,
-								moveDeck: moveDeck
+								moveDeck: moveDeck,
+								stepType: _share2.default.get('stepType')
 							});
 	
 							_tips2.default.checkTips();

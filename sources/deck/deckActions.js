@@ -47,6 +47,8 @@ var addActionEvent = function(_event) {
 				var _canRun = _event == 'click'
 				    ? data.to.name == _decksActions[i].deck.name
 				    : true;
+				// data._stepType = data.stepType;
+				// data.stepType = share.get('stepType');
 				
 				if(_canRun) {
 					

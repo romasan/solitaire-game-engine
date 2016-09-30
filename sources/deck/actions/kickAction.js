@@ -52,9 +52,11 @@ export default function(data) {
 	}
 
 	console.log('#KICK', data.eventData, share.get('stepType'), '#');
-	if(window.debug_kick) {
-		throw new Error();
-	}
+	// if(window.debug_kick) {
+	// 	console.log('data.eventData.stepType:', data);
+	// 	throw new Error();
+	// }
+	window.debug_kick = 1;
 
 	// if(
 	// 	data.eventData[0]                         &&

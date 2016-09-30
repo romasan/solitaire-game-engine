@@ -134,7 +134,8 @@ var Move = function(moveDeck, to, cursorMove) {
 							event.dispatch('moveEnd', {
 								from     : _deck_departure,
 								to       : _deck_destination,
-								moveDeck : moveDeck
+								moveDeck : moveDeck,
+								stepType : share.get('stepType')
 							});
 
 							Tips.checkTips();
