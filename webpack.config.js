@@ -14,6 +14,8 @@ console.log('MODE:', process.env.MODE ? process.env.MODE : 'prod');
 let _file = './package.json';
 let _json = require(_file);
 
+let version = parseInt('9' + _json.version.split('.').map((e)=>{return parseInt(e).toString(8);}).join(9));
+
 var config = {
 	entry: "index",
 	output: {
@@ -23,6 +25,7 @@ var config = {
 	},
 	resolve: {
 		modulesDirectories: [
+			// tree
 			'./sources/'                           ,
 			'./sources/autosteps/'                 ,
 			'./sources/common/'                    ,
@@ -45,7 +48,7 @@ var config = {
 	},
 	module: {
 		loaders: [
-		{
+			{
 				test:	 /\.js$/,
 				loader: 'babel',
 				query: {
@@ -63,11 +66,16 @@ var config = {
 				loader: ExtractTextPlugin.extract('style', 'css!sass')
 			},
 			
-			{
-				test:	 /\.(svg|png|jpg|jpeg|eot|ttf|woff|woff2)$/,
-				loader: 'url=loader?limit=10000'
-			},
+			// {
+			// 	test:	 /\.(svg|png|jpg|jpeg|eot|ttf|woff|woff2)$/,
+			// 	loader: 'url=loader?limit=10000'
+			// },
 
+			// {
+			// 	test: /\.(png|jpg)$/,
+			// 	loader: 'url-loader?limit=1048576'
+			// },
+			
 			// {
 			//	 test:	 /\.(png|jpg|svg|ttf|eot|woff|woff2)$/,
 			//	 loader: 'file?name=../img/[name].[ext]'
@@ -91,22 +99,24 @@ var config = {
 		}),
 
 		new webpack.DefinePlugin({
-			dev
+			dev,
+			version
 		}),
 
 		new function() {
 			this.apply = function(e) {
-			  e.plugin('done', function() {
-			    if(dev) {
+				e.plugin('done', function() {
+					if(dev) {
 
-	    			let fs = require('fs');
-					let _ver = _json.version.split('.');
-					_ver[_ver.length - 1] = (_ver[_ver.length - 1]|0) + 1;
-					_json.version = _ver.join('.');
-					fs.writeFile(_file, JSON.stringify(_json, null, 2));
+						let fs = require('fs');
+						let _ver = _json.version.split('.');
+						_ver[_ver.length - 1] = (_ver[_ver.length - 1]|0) + 1;
+						_json.version = _ver.join('.');
+						// version = parseInt('9' + _json.version.split('.').map((e)=>{return parseInt(e).toString(8);}).join(9));
+						fs.writeFile(_file, JSON.stringify(_json, null, 2));
 
-			    }
-			  });
+					}
+				});
 			};
 		},
 
@@ -116,15 +126,14 @@ var config = {
 
 if(dev) {
 
-	if(gen) {
-		// config.target = "node";
-	} else {
+	if(!gen) {
+	
 		config.watch = true;
 		config.watchOptions = {
 			aggregateTimeout: 100
 		};
+	
 		config.devtool = "source-map";
-
 	}
 
 } else {
@@ -136,18 +145,18 @@ if(dev) {
  * Version    : ${_json.version}
  * Build time : ${new Date().toUTCString()}
  */`;
-// * License           : ${_json.license}
 	config.plugins.push(
 		new webpack.optimize.UglifyJsPlugin({
-				output: {
-					preamble
-				},
-				compressor: {
-					unsafe			 : true,
-					drop_console : true,
-					warnings		 : true
-				}
-		}));
+			output: {
+				preamble
+			},
+			compressor: {
+				unsafe       : true,
+				drop_console : true,
+				warnings     : true
+			}
+		})
+	);
 };
 
 module.exports = config;

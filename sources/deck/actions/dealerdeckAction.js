@@ -14,7 +14,8 @@ export default function(data) {// data.actionData, e
 // default data.actionData.onlyEmpty - false
 // default data.actionData.from      - this.name
 // default data.actionData.stepType  - NULL
-	console.log('dealerdeckAction:', this.name, data);
+	
+	// console.log('dealerdeckAction:', this.name, data);
 
 	if(
 		typeof data.actionData.stepType == "string" &&
@@ -156,6 +157,8 @@ export default function(data) {// data.actionData, e
 			var _cardName = _card.name;
 			
 			let _callback = ()=>{
+
+				console.log('--------- deal:move');
 				event.dispatch('checkTips');
 			};
 
@@ -196,7 +199,7 @@ export default function(data) {// data.actionData, e
 	};
 
 	if(data.actionData.dispatch) {
-
+		
 		event.dispatch(data.actionData.dispatch, !_makeStep);
 	} else {
 		// сохраняем если ничего не вызываем

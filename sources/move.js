@@ -131,10 +131,12 @@ var Move = function(moveDeck, to, cursorMove) {
 							// if(_stepType == defaults.stepType) {				
 							// }
 
+							event.dispatch('moveEnd:' + share.get('stepType'));
 							event.dispatch('moveEnd', {
 								from     : _deck_departure,
 								to       : _deck_destination,
-								moveDeck : moveDeck
+								moveDeck : moveDeck,
+								stepType : share.get('stepType')
 							});
 
 							Tips.checkTips();

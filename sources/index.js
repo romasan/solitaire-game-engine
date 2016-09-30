@@ -33,8 +33,9 @@ exports.event     = event;
 exports.options   = defaults;
 exports.winCheck  = winCheck.hwinCheck;
 exports.generator = deckGenerator;
+exports.version   = version.toString().split(9).slice(1).map((e)=>{return parseInt(e, 8);}).join('.');
 
-var firstInit = true;
+let firstInit = true;
 
 exports.init = function(gameConfig) {
 
@@ -49,8 +50,6 @@ exports.init = function(gameConfig) {
 	event.clearByTag('new_game');
 	event.setTag('new_game');
 
-	// console.log('***************************');
-
 	Field.clear();
 	Field.create(gameConfig);
 
@@ -63,6 +62,6 @@ exports.init = function(gameConfig) {
 
 // dev <-- process.env.MODE == 'dev'
 if(dev) {
-	var debug = require('debug');
+	let debug = require('debug');
 	exports.debug = debug.default;
 }
