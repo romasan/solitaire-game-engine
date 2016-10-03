@@ -126,7 +126,7 @@ var SolitaireEngine =
 	exports.options = _defaults2.default;
 	exports.winCheck = _winCheck2.default.hwinCheck;
 	exports.generator = _deckGenerator2.default;
-	exports.version = (9091491500).toString().split(9).slice(1).map(function (e) {
+	exports.version = (9091491514).toString().split(9).slice(1).map(function (e) {
 		return parseInt(e, 8);
 	}).join('.');
 	
@@ -1508,6 +1508,15 @@ var SolitaireEngine =
 	
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 	
+	// Model
+	// let values = {
+	// 	"homeGroups": {
+	// 		"type": ["array", "string"],
+	// 		"value": [],
+	// 		"dest": "array"
+	// 	}
+	// }
+	
 	var Field = function () {
 		function Field() {
 			_classCallCheck(this, Field);
@@ -1554,6 +1563,19 @@ var SolitaireEngine =
 	
 				// масштаб отображения
 				_share2.default.set('zoom', a.zoom && typeof a.zoom == 'number' ? a.zoom : _defaults2.default.zoom);
+	
+				// Настройки игры
+				if (a.preferences) {
+					var _preferences = {};
+					for (var prefName in a.preferences) {
+						if (typeof prefName == "string") {
+							_preferences[prefName] = a.preferences[prefName];
+						}
+					}
+					_share2.default.set('gamePreferences', _preferences);
+				} else {
+					_share2.default.set('gamePreferences', {});
+				}
 	
 				// параметры отображения подсказок
 				for (var tipParamName in _defaults2.default.tipsParams) {
@@ -3488,6 +3510,7 @@ var SolitaireEngine =
 			_share2.default.set('stepType', _defaults2.default.stepType);
 	
 			_event2.default.dispatch('actionBreak');
+			_event2.default.dispatch('dealEnd');
 	
 			return;
 		}
@@ -3584,7 +3607,6 @@ var SolitaireEngine =
 	
 				var _callback = function _callback() {
 	
-					console.log('--------- deal:move');
 					_event2.default.dispatch('checkTips');
 				};
 	
@@ -3599,6 +3621,7 @@ var SolitaireEngine =
 				_decks[deckId].flipCheck();
 				// _decks[deckId].Redraw();
 	
+				_event2.default.dispatch('dealEnd');
 				_event2.default.dispatch('addStep', {
 					'move': {
 						from: dealDeck.name,
@@ -3751,6 +3774,7 @@ var SolitaireEngine =
 				moveDragDeckParams.callback = a.callback;
 			}
 	
+			// event.dispatch('moveEnd:' + share.get('stepType'));
 			_event2.default.dispatch('moveDragDeck', moveDragDeckParams);
 		} else {
 			// _warn(4);
@@ -6148,6 +6172,8 @@ var SolitaireEngine =
 		var _html = __webpack_require__(53);
 	
 		$("#gpCommit").parent().before(_html);
+	
+		// gamePreferences.draw();
 	};
 
 /***/ },
