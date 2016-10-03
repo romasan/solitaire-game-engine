@@ -74,6 +74,7 @@ let forceMove = function(a) {// {from, to, deck, <flip>, <callback>}
 			moveDragDeckParams.callback = a.callback;
 		}
 		
+		// event.dispatch('moveEnd:' + share.get('stepType'));
 		event.dispatch('moveDragDeck', moveDragDeckParams);
 	} else {
 		// _warn(4);

@@ -11,6 +11,15 @@ import Deck         from 'addDeck';
 import Tips         from 'tips';
 import addAutoSteps from 'addAutoSteps';
 
+// Model
+// let values = {
+// 	"homeGroups": {
+// 		"type": ["array", "string"],
+// 		"value": [],
+// 		"dest": "array"
+// 	}
+// }
+
 class Field {
 
 	constructor() {
@@ -75,6 +84,19 @@ class Field {
 				? a.zoom 
 				: defaults.zoom
 		);
+
+		// Настройки игры
+		if(a.preferences) {
+			let _preferences = {};
+			for(let prefName in a.preferences) {
+				if(typeof prefName == "string") {
+					_preferences[prefName] = a.preferences[prefName];
+				}
+			}
+			share.set('gamePreferences', _preferences);
+		} else {
+			share.set('gamePreferences', {});
+		}
 
 		// параметры отображения подсказок
 		for(var tipParamName in defaults.tipsParams) {

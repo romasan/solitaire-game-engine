@@ -44,4 +44,6 @@ export default ()=>{
 		.parent()
 		.before(_html);
 
+	// gamePreferences.draw();
+
 };

@@ -57,6 +57,7 @@ export default function(data) {// data.actionData, e
 		share.set('stepType', defaults.stepType);
 
 		event.dispatch('actionBreak');
+		event.dispatch('dealEnd');
 		
 		return;
 	}
@@ -158,7 +159,6 @@ export default function(data) {// data.actionData, e
 			
 			let _callback = ()=>{
 
-				console.log('--------- deal:move');
 				event.dispatch('checkTips');
 			};
 
@@ -173,6 +173,7 @@ export default function(data) {// data.actionData, e
 			_decks[deckId].flipCheck();
 			// _decks[deckId].Redraw();
 
+			event.dispatch('dealEnd');
 			event.dispatch('addStep', {
 				'move' : {
 					from     : dealDeck.name,
