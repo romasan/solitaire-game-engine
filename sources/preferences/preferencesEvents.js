@@ -3,7 +3,8 @@
 import event    from 'event';
 import defaults from 'defaults';
 
-import storage from 'storage';
+import storage         from 'storage';
+import gamePreferences from 'gamePreferences';
 
 let onShowParameters = ()=>{
 
@@ -17,6 +18,8 @@ let onShowParameters = ()=>{
 		$(`input[name='pref_${prefName}'][value='${_pref}']`)
 			.prop({checked: true});
 	}
+
+	gamePreferences.show(pref);
 };
 
 let applyParameters = ()=>{
@@ -28,7 +31,10 @@ let applyParameters = ()=>{
 
 	event.dispatch('fieldThemesSet', pref);
 
+	gamePreferences.get(pref);
+	
 	saveParameters(pref);
+
 };
 
 let saveParameters = (pref)=>{

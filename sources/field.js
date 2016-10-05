@@ -89,6 +89,7 @@ class Field {
 		if(a.preferences) {
 			let _preferences = {};
 			for(let prefName in a.preferences) {
+				console.log('###', prefName, typeof prefName);
 				if(typeof prefName == "string") {
 					_preferences[prefName] = a.preferences[prefName];
 				}
