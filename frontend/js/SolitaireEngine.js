@@ -101,6 +101,10 @@ var SolitaireEngine =
 	
 	var _deckGenerator2 = _interopRequireDefault(_deckGenerator);
 	
+	var _storage = __webpack_require__(55);
+	
+	var _storage2 = _interopRequireDefault(_storage);
+	
 	__webpack_require__(73);
 	
 	__webpack_require__(74);
@@ -109,32 +113,25 @@ var SolitaireEngine =
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
+	// init
 	exports.event = _event2.default;
 	
-	// import debug   from 'debug';
-	
-	// var debug = null;
-	// if(dev) {
-	// 	debug = require('debug');
-	// }
-	
 	// styles DOM
-	
-	
-	// init
 	
 	exports.options = _defaults2.default;
 	exports.winCheck = _winCheck2.default.hwinCheck;
 	exports.generator = _deckGenerator2.default;
-	exports.version = (9091491517).toString().split(9).slice(1).map(function (e) {
+	exports.getPreferences = function () {
+		var _pref = _storage2.default.get('pref');
+		// let _preferecnes = share.get('gamePreferences');
+	};
+	exports.version = (9091491610).toString().split(9).slice(1).map(function (e) {
 		return parseInt(e, 8);
 	}).join('.');
 	
 	var firstInit = true;
 	
 	exports.init = function (gameConfig) {
-	
-		// event.log();
 	
 		_event2.default.dispatch('gameInit', { firstInit: firstInit });
 	
@@ -155,7 +152,6 @@ var SolitaireEngine =
 		};
 	};
 	
-	// dev <-- process.env.MODE == 'dev'
 	if (true) {
 		var debug = __webpack_require__(76);
 		exports.debug = debug.default;
@@ -789,7 +785,7 @@ var SolitaireEngine =
 	
 	var _drawPreferences2 = _interopRequireDefault(_drawPreferences);
 	
-	var _preferencesEvents = __webpack_require__(55);
+	var _preferencesEvents = __webpack_require__(54);
 	
 	var _preferencesEvents2 = _interopRequireDefault(_preferencesEvents);
 	
@@ -816,6 +812,7 @@ var SolitaireEngine =
 		if (!e.firstInit) {
 			return;
 		};
+	
 		(0, _drawPreferences2.default)();
 		(0, _preferencesEvents2.default)();
 	});
@@ -6174,7 +6171,7 @@ var SolitaireEngine =
 	
 		// --
 	
-		var _html = __webpack_require__(54);
+		var _html = __webpack_require__(53);
 	
 		$("#gpCommit").parent().before(_html);
 	
@@ -6183,101 +6180,12 @@ var SolitaireEngine =
 
 /***/ },
 /* 53 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	Object.defineProperty(exports, "__esModule", {
-		value: true
-	});
-	
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-	
-	var _share = __webpack_require__(1);
-	
-	var _share2 = _interopRequireDefault(_share);
-	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-	
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-	
-	var gamePreferences = function () {
-		function gamePreferences() {
-			_classCallCheck(this, gamePreferences);
-	
-			this.append = false;
-		}
-	
-		_createClass(gamePreferences, [{
-			key: 'draw',
-			value: function draw() {
-	
-				if (this.append) {
-					return;
-				}
-	
-				var _preferences = _share2.default.get('gamePreferences');
-	
-				console.log('gamePreferences', _preferences);
-	
-				for (var prefName in _preferences) {
-	
-					var _label = $('<div>').append($('<span>').addClass('solitaire-engine-style-preferences-label').html(_preferences[prefName].title));
-	
-					for (var i in _preferences[prefName].values) {
-						$(_label).append($('<label>').append($('<input>').prop({
-							type: 'radio',
-							name: 'gamePref_' + prefName,
-							values: _preferences[prefName][i].value
-						})).append(_preferences[prefName][i].title));
-					}
-	
-					$('#gamePreferences').append(_label);
-				}
-	
-				this.append = true;
-			}
-		}, {
-			key: 'show',
-			value: function show(pref) {
-	
-				this.draw();
-	
-				var _preferences = _share2.default.get('gamePreferences');
-	
-				for (var prefName in _preferences) {
-					if (pref && pref[prefName]) {
-						$('input[name=\'gamePref_' + prefName + '\'][value=\'' + pref[prefName] + '\']').prop({ checked: true });
-					} else {
-						$('input[name=\'gamePref_' + prefName + '\'][value=\'' + _preferences[prefName].value + '\']').prop({ checked: true });
-					}
-				}
-			}
-		}, {
-			key: 'get',
-			value: function get(pref) {
-	
-				var _preferences = _share2.default.get('gamePreferences');
-	
-				for (var prefName in _preferences) {
-					pref[prefName] = $('input[name=\'gamePref_' + prefName + '\']:checked').val();
-				}
-			}
-		}]);
-	
-		return gamePreferences;
-	}();
-	
-	exports.default = new gamePreferences();
-
-/***/ },
-/* 54 */
 /***/ function(module, exports) {
 
 	module.exports = "<div id=\"solitaire-engine-style-preferences\">\n    <h4>Настройки оформления</h4>\n    <div>\n\t    <span class=\"solitaire-engine-style-preferences-label\">Фон:</span>\n\t    <!-- <select id=\"pref_field\" class=\"solitaire-engine-style-preferences-element\"> -->\n        <label>\n        \t<input type=\"radio\" name=\"pref_field\" value=\"default_field\">\n        \tКлассический\n    \t</label>\n        <label>\n        \t<input type=\"radio\" name=\"pref_field\" value=\"alternative_field\">\n        \tАльтернативный\n    \t</label>\n\t    <!-- </select> -->\n\t</div>\n\t<div>\n\t    <span class=\"solitaire-engine-style-preferences-label\">Лицевая сторона:</span>\n\t    <!-- <select id=\"pref_face\" class=\"solitaire-engine-style-preferences-element\"> -->\n        <label>\n        \t<input type=\"radio\" name=\"pref_face\" value=\"default_face\">\n        \tКлассическая\n    \t</label>\n        <label>\n        \t<input type=\"radio\" name=\"pref_face\" value=\"alternative_face\">\n        \tАнгло-американская\n    \t</label>\n\t    <!-- </select> -->\n\t</div>\n    <div>\n\t    <span class=\"solitaire-engine-style-preferences-label\">Рубашка:</span>\n\t    <!-- <select id=\"pref_back\" class=\"solitaire-engine-style-preferences-element\"> -->\n        <label>\n        \t<input type=\"radio\" name=\"pref_back\" value=\"default_back\">\n        \tКлассическая\n    \t</label>\n        <label>\n        \t<input type=\"radio\" name=\"pref_back\" value=\"alternative_back\">\n        \tАльтернативная\n    \t</label>\n        <!-- <label>\n        \t<input type=\"radio\" name=\"pref_back\" value=\"red_back\">\n        \tКрасная\n    \t</label>\n        <label>\n        \t<input type=\"radio\" name=\"pref_back\" value=\"blue_back\">\n        \tСиняя\n    \t</label> -->\n\t    <!-- </select> -->\n\t</div>\n    <div id=\"gamePreferences\"></div>\n    <!-- <div>\n\t    <span class=\"solitaire-engine-style-preferences-label\">Пустая ячейка:</span>\n\t    <select id=\"pref_empty\" class=\"solitaire-engine-style-preferences-element\">\n\t        <option value=0>Классическая</option>\n\t        <option value=1>С обводкой</option>\n\t    </select>\n\t</div> -->\n\n</div>";
 
 /***/ },
-/* 55 */
+/* 54 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -6294,11 +6202,11 @@ var SolitaireEngine =
 	
 	var _defaults2 = _interopRequireDefault(_defaults);
 	
-	var _storage = __webpack_require__(56);
+	var _storage = __webpack_require__(55);
 	
 	var _storage2 = _interopRequireDefault(_storage);
 	
-	var _gamePreferences = __webpack_require__(53);
+	var _gamePreferences = __webpack_require__(56);
 	
 	var _gamePreferences2 = _interopRequireDefault(_gamePreferences);
 	
@@ -6330,6 +6238,7 @@ var SolitaireEngine =
 	
 		_gamePreferences2.default.get(pref);
 	
+		_event2.default.dispatch('changeGameParameters', pref);
 		saveParameters(pref);
 	};
 	
@@ -6351,7 +6260,9 @@ var SolitaireEngine =
 	
 		// $("#gpCommit").click(saveParameters);
 	
-		$("#solitaire-engine-style-preferences input").change(applyParameters);
+		$('#parametersPanel').on('change', 'input', applyParameters);
+		// $("#solitaire-engine-style-preferences input").change(applyParameters);
+	
 		// event.dispatch('addDomEvent', {
 		// 	"event"    : "change"
 		// 	"element"  : ".solitaire-engine-style-preferences-element",
@@ -6360,7 +6271,7 @@ var SolitaireEngine =
 	};
 
 /***/ },
-/* 56 */
+/* 55 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -6426,6 +6337,92 @@ var SolitaireEngine =
 	exports.default = new storage();
 
 /***/ },
+/* 56 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+		value: true
+	});
+	
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	
+	var _share = __webpack_require__(1);
+	
+	var _share2 = _interopRequireDefault(_share);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	var gamePreferences = function () {
+		function gamePreferences() {
+			_classCallCheck(this, gamePreferences);
+	
+			this.exist = false;
+		}
+	
+		_createClass(gamePreferences, [{
+			key: 'draw',
+			value: function draw() {
+	
+				if (this.exist) {
+					return;
+				}
+	
+				var _preferences = _share2.default.get('gamePreferences');
+	
+				for (var prefName in _preferences) {
+	
+					var _label = $('<div>').append($('<span>').addClass('solitaire-engine-style-preferences-label').html(_preferences[prefName].title));
+	
+					for (var i in _preferences[prefName].options) {
+						$(_label).append($('<label>').append($('<input>').prop({
+							type: 'radio',
+							name: 'gamePref_' + prefName,
+							value: _preferences[prefName].options[i].value
+						})).append(_preferences[prefName].options[i].title));
+					}
+					$('#gamePreferences').append(_label);
+				}
+	
+				this.exist = true;
+			}
+		}, {
+			key: 'show',
+			value: function show(pref) {
+	
+				this.draw();
+	
+				var _preferences = _share2.default.get('gamePreferences');
+	
+				for (var prefName in _preferences) {
+					if (pref && pref[prefName]) {
+						$('input[name=\'gamePref_' + prefName + '\'][value=\'' + pref[prefName] + '\']').prop({ checked: true });
+					} else {
+						$('input[name=\'gamePref_' + prefName + '\'][value=\'' + _preferences[prefName].value + '\']').prop({ checked: true });
+					}
+				}
+			}
+		}, {
+			key: 'get',
+			value: function get(pref) {
+	
+				var _preferences = _share2.default.get('gamePreferences');
+	
+				for (var prefName in _preferences) {
+					pref[prefName] = $('input[name=\'gamePref_' + prefName + '\']:checked').val();
+				}
+			}
+		}]);
+	
+		return gamePreferences;
+	}();
+	
+	exports.default = new gamePreferences();
+
+/***/ },
 /* 57 */
 /***/ function(module, exports, __webpack_require__) {
 
@@ -6443,7 +6440,7 @@ var SolitaireEngine =
 	
 	var _defaults2 = _interopRequireDefault(_defaults);
 	
-	var _storage = __webpack_require__(56);
+	var _storage = __webpack_require__(55);
 	
 	var _storage2 = _interopRequireDefault(_storage);
 	

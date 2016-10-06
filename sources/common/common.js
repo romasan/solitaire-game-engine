@@ -26,7 +26,10 @@ event.listen('gameInit', (e)=>{
 
 	curUnLock();
 	
-	if(!e.firstInit) { return; };
+	if(!e.firstInit) {
+		return;
+	};
+	
 	drawPreferences();
 	preferencesEvents();
 });

@@ -5,18 +5,16 @@ import share from 'share';
 class gamePreferences {
 
 	constructor() {
-		this.append = false;
+		this.exist = false;
 	}
 
 	draw() {
 		
-		if(this.append) {
+		if(this.exist) {
 			return;
 		}
 		
 		let _preferences = share.get('gamePreferences');
-		
-		console.log('gamePreferences', _preferences);
 		
 		for(let prefName in _preferences) {
 			
@@ -26,27 +24,25 @@ class gamePreferences {
 					.html(_preferences[prefName].title)
 			);
 
-			for(let i in _preferences[prefName].values) {
+			for(let i in _preferences[prefName].options) {
 				$(_label).append(
 					$('<label>')
 						.append(
 							$('<input>').prop({
-								type   : 'radio',
-								name   : 'gamePref_' + prefName,
-								values : _preferences[prefName][i].value
+								type  : 'radio',
+								name  : 'gamePref_' + prefName,
+								value : _preferences[prefName].options[i].value
 							})
 						)
 						.append(
-							_preferences[prefName][i].title
+							_preferences[prefName].options[i].title
 						)
 				)
 			}
-
-			
 			$('#gamePreferences').append(_label)
 		}
 
-		this.append = true;
+		this.exist = true;
 	}
 
 	show(pref) {

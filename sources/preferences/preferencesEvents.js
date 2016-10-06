@@ -10,7 +10,7 @@ let onShowParameters = ()=>{
 
 	let pref = storage.get('pref');
 	!pref && (pref = defaults.pref);
-	
+
 	for(var prefName in defaults.themes) {
 
 		let _pref = pref[prefName] && defaults.themes[prefName].indexOf(pref[prefName]) >= 0 ? pref[prefName] : defaults.pref[prefName];
@@ -32,9 +32,9 @@ let applyParameters = ()=>{
 	event.dispatch('fieldThemesSet', pref);
 
 	gamePreferences.get(pref);
-	
-	saveParameters(pref);
 
+	event.dispatch('changeGameParameters', pref);
+	saveParameters(pref);
 };
 
 let saveParameters = (pref)=>{
@@ -55,7 +55,9 @@ export default ()=>{
 	
 	// $("#gpCommit").click(saveParameters);
 	
-	$("#solitaire-engine-style-preferences input").change(applyParameters);
+	$('#parametersPanel').on('change', 'input', applyParameters);
+	// $("#solitaire-engine-style-preferences input").change(applyParameters);
+	
 	// event.dispatch('addDomEvent', {
 	// 	"event"    : "change"
 	// 	"element"  : ".solitaire-engine-style-preferences-element",
