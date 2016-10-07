@@ -114,36 +114,47 @@ var SolitaireEngine =
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
 	// init
-	exports.event = _event2.default;
+	var preloadCallback = null;
 	
 	// styles DOM
 	
+	var firstInit = true;
+	
+	exports.event = _event2.default;
 	exports.options = _defaults2.default;
 	exports.winCheck = _winCheck2.default.hwinCheck;
 	exports.generator = _deckGenerator2.default;
-	exports.getPreferences = function () {
-		var _pref = _storage2.default.get('pref');
-		// let _preferecnes = share.get('gamePreferences');
-	};
-	exports.version = (9091491610).toString().split(9).slice(1).map(function (e) {
+	exports.version = (9091491613).toString().split(9).slice(1).map(function (e) {
 		return parseInt(e, 8);
 	}).join('.');
+	exports.onload = function (f) {
+		preloadCallback = f;
+	};
 	
-	var firstInit = true;
+	// exports.getPreferences = () => {
+	// 	let _pref = storage.get('pref');
+	// };
 	
 	exports.init = function (gameConfig) {
 	
 		_event2.default.dispatch('gameInit', { firstInit: firstInit });
-	
-		if (firstInit) {
-			firstInit = false;
-		}
 	
 		_event2.default.clearByTag('new_game');
 		_event2.default.setTag('new_game');
 	
 		_field2.default.clear();
 		_field2.default.create(gameConfig);
+	
+		if (firstInit) {
+	
+			firstInit = false;
+	
+			if (typeof preloadCallback == "function") {
+				preloadCallback(function (e) {
+					return _share2.default.get('gamePreferences');
+				});
+			}
+		}
 	
 		_event2.default.dispatch('gameInited');
 	
@@ -1503,6 +1514,10 @@ var SolitaireEngine =
 	
 	var _addAutoSteps2 = _interopRequireDefault(_addAutoSteps);
 	
+	var _storage = __webpack_require__(55);
+	
+	var _storage2 = _interopRequireDefault(_storage);
+	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -1565,11 +1580,12 @@ var SolitaireEngine =
 	
 				// Настройки игры
 				if (a.preferences) {
+					var _pref = _storage2.default.get('pref');
 					var _preferences = {};
 					for (var prefName in a.preferences) {
 						console.log('###', prefName, typeof prefName === 'undefined' ? 'undefined' : _typeof(prefName));
 						if (typeof prefName == "string") {
-							_preferences[prefName] = a.preferences[prefName];
+							_preferences[prefName] = _pref && _pref[prefName] ? _pref[prefName] : a.preferences[prefName];
 						}
 					}
 					_share2.default.set('gamePreferences', _preferences);

@@ -1,12 +1,12 @@
 'use strict';
 
-import event    from 'event';
-import defaults from 'defaults';
+import event           from 'event';
+import defaults        from 'defaults';
 
 import storage         from 'storage';
 import gamePreferences from 'gamePreferences';
 
-let onShowParameters = ()=>{
+let onShowParameters = () => {
 
 	let pref = storage.get('pref');
 	!pref && (pref = defaults.pref);
@@ -22,7 +22,7 @@ let onShowParameters = ()=>{
 	gamePreferences.show(pref);
 };
 
-let applyParameters = ()=>{
+let applyParameters = () => {
 	
 	var pref = {};
 	for(var prefName in defaults.themes) {
@@ -37,7 +37,7 @@ let applyParameters = ()=>{
 	saveParameters(pref);
 };
 
-let saveParameters = (pref)=>{
+let saveParameters = (pref) => {
 
 	storage.set('pref', pref);
 };

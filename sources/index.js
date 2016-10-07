@@ -23,31 +23,41 @@ import 'common.scss';
 import 'default_theme.scss';
 import 'alternative_theme.scss';
 
+let preloadCallback = null;
+let firstInit = true;
+
 exports.event          = event;
 exports.options        = defaults;
 exports.winCheck       = winCheck.hwinCheck;
 exports.generator      = deckGenerator;
-exports.getPreferences = () => {
-	let _pref = storage.get('pref');
-	// let _preferecnes = share.get('gamePreferences');
-};
 exports.version        = version.toString().split(9).slice(1).map(e => parseInt(e, 8)).join('.');
+exports.onload         = (f) => {
+	preloadCallback = f;
+}
 
-let firstInit = true;
+// exports.getPreferences = () => {
+// 	let _pref = storage.get('pref');
+// };
 
 exports.init = function(gameConfig) {
 
 	event.dispatch('gameInit', {firstInit});
 
-	if(firstInit) {
-		firstInit = false;
-	}
 	
 	event.clearByTag('new_game');
 	event.setTag('new_game');
 
 	Field.clear();
 	Field.create(gameConfig);
+	
+	if(firstInit) {
+		
+		firstInit = false;
+		
+		if(typeof preloadCallback == "function") {
+			preloadCallback(e => share.get('gamePreferences'));
+		}
+	}
 
 	event.dispatch('gameInited');
 
