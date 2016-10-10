@@ -20,7 +20,8 @@ class storage {
 		try {
 			let _ls = JSON.parse(localStorage.SolitaireEngine);
 			_ls[key] = data;
-			localStorage.SolitaireEngine = JSON.stringify(_ls);
+			let _data = JSON.stringify(_ls);
+			localStorage.SolitaireEngine = _data;
 		} catch(e) {}
 	}
 	

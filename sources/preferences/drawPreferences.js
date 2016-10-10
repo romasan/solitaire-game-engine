@@ -1,7 +1,8 @@
 'use strict';
 
 // import share from 'share';
-import defaults from 'defaults';
+import defaults        from 'defaults';
+// import gamePreferences from 'gamePreferences';
 
 // import elRender from 'elRender';
 

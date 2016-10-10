@@ -10,6 +10,7 @@ import Group        from 'addGroup';
 import Deck         from 'addDeck';
 import Tips         from 'tips';
 import addAutoSteps from 'addAutoSteps';
+import storage      from 'storage';
 
 // Model
 // let values = {
@@ -87,13 +88,17 @@ class Field {
 
 		// Настройки игры
 		if(a.preferences) {
-			let _preferences = {};
+			let _pref = storage.get('pref'),
+			    _preferences = {},
+			    _prefData    = {};
 			for(let prefName in a.preferences) {
 				if(typeof prefName == "string") {
 					_preferences[prefName] = a.preferences[prefName];
+					_prefData[prefName] = _pref && typeof _pref[prefName] != "undefined" ? _pref[prefName] : a.preferences[prefName].value;
 				}
 			}
 			share.set('gamePreferences', _preferences);
+			share.set('gamePreferencesData', _prefData);
 		} else {
 			share.set('gamePreferences', {});
 		}
