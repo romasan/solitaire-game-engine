@@ -51,7 +51,6 @@ export default function(data) {
 		return false;
 	}
 
-	console.log('#KICK', data.eventData, share.get('stepType'), '#');
 	// if(window.debug_kick) {
 	// 	console.log('data.eventData.stepType:', data);
 	// 	throw new Error();

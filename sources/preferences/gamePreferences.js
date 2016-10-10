@@ -12,8 +12,8 @@ class gamePreferences {
 		
 		if(this.exist) {
 			return;
-		}
-		
+		}		
+
 		let _preferences = share.get('gamePreferences');
 		
 		for(let prefName in _preferences) {
@@ -52,11 +52,12 @@ class gamePreferences {
 		let _preferences = share.get('gamePreferences');
 
 		for(let prefName in _preferences) {
-			if(pref && pref[prefName]) {
-				$(`input[name='gamePref_${prefName}'][value='${pref[prefName]}']`)
+			if(pref && typeof pref[prefName] != "undefined") {
+				$(`input[name='gamePref_${prefName}'][value='${(pref[prefName]).toString()}']`)
 					.prop({checked: true});
 			} else {
-				$(`input[name='gamePref_${prefName}'][value='${_preferences[prefName].value}']`)
+				console.log('2>', `input[name='gamePref_${prefName}'][value='${(_preferences[prefName].value).toString()}']`);
+				$(`input[name='gamePref_${prefName}'][value='${(_preferences[prefName].value).toString()}']`)
 					.prop({checked: true});
 			}
 		}
@@ -67,7 +68,10 @@ class gamePreferences {
 		let _preferences = share.get('gamePreferences');
 
 		for(let prefName in _preferences) {
-			pref[prefName] = $(`input[name='gamePref_${prefName}']:checked`).val();
+
+			let _value = $(`input[name='gamePref_${prefName}']:checked`).val();
+			_value = _value == "true" ? true : _value == "false" ? false : _value;
+			pref[prefName] = _value;
 		}
 	}
 }

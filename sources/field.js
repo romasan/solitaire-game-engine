@@ -88,15 +88,17 @@ class Field {
 
 		// Настройки игры
 		if(a.preferences) {
-			let _pref = storage.get('pref');
-			let _preferences = {};
+			let _pref = storage.get('pref'),
+			    _preferences = {},
+			    _prefData    = {};
 			for(let prefName in a.preferences) {
-				console.log('###', prefName, typeof prefName);
 				if(typeof prefName == "string") {
-					_preferences[prefName] = _pref && _pref[prefName] ? _pref[prefName] : a.preferences[prefName];
+					_preferences[prefName] = a.preferences[prefName];
+					_prefData[prefName] = _pref && typeof _pref[prefName] != "undefined" ? _pref[prefName] : a.preferences[prefName].value;
 				}
 			}
 			share.set('gamePreferences', _preferences);
+			share.set('gamePreferencesData', _prefData);
 		} else {
 			share.set('gamePreferences', {});
 		}

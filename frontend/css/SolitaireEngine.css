@@ -126,6 +126,9 @@ body {
   background: url("/solitaire_engine/img/b1fv.png") !important;
   background-size: 100% 100% !important;
   border: 0px !important; }
+
+#gamePreferences span {
+  width: 100%; }
 .default_field {
   background: green; }
 

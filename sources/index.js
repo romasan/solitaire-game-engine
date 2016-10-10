@@ -23,17 +23,22 @@ import 'common.scss';
 import 'default_theme.scss';
 import 'alternative_theme.scss';
 
-let preloadCallback = null;
-let firstInit = true;
+let preloadCallback = null,
+    firstInit       = true;
 
-exports.event          = event;
-exports.options        = defaults;
-exports.winCheck       = winCheck.hwinCheck;
-exports.generator      = deckGenerator;
-exports.version        = version.toString().split(9).slice(1).map(e => parseInt(e, 8)).join('.');
-exports.onload         = (f) => {
+exports.event     = event;
+exports.options   = defaults;
+exports.winCheck  = winCheck.hwinCheck;
+exports.generator = deckGenerator;
+exports.version   = version.toString().split(9).slice(1).map(e => parseInt(e, 8)).join('.');
+
+exports.onload = (f) => {
 	preloadCallback = f;
-}
+};
+
+exports.onChangePreferences = (f) => {
+	share.set('changePreferencesCallback', f);
+};
 
 // exports.getPreferences = () => {
 // 	let _pref = storage.get('pref');
@@ -55,7 +60,14 @@ exports.init = function(gameConfig) {
 		firstInit = false;
 		
 		if(typeof preloadCallback == "function") {
-			preloadCallback(e => share.get('gamePreferences'));
+			let _data = share.get('gamePreferencesData');
+			preloadCallback(_data);
+		}
+
+		let changePreferencesCallback = share.get('changePreferencesCallback');
+		if(typeof changePreferencesCallback == "function") {
+			let _data = share.get('gamePreferencesData');
+			changePreferencesCallback(_data);
 		}
 	}
 
