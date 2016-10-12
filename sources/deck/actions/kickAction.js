@@ -80,11 +80,12 @@ export default function(data) {
 
 		event.dispatch('addStep', {
 			"move" : {
-				from     : _from.name,
-				to       : data.actionData.to,
-				deck     : _deck,
-				flip     : true,
-				stepType : share.get('stepType')
+				from         : _from.name,
+				to           : data.actionData.to,
+				deck         : _deck,
+				flip         : true,
+				stepType     : share.get('stepType'),
+				prevStepType : share.get('prevStepType')
 			}
 		});
 

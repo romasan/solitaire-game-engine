@@ -45,7 +45,7 @@ export default class {
 		if(this.dispatch) {
 			event.dispatch(this.dispatch, {
 				stepType: share.get('stepType'),
-				callback: ()=>{
+				callback: () => {
 					share.set('stepType', defaults.stepType);
 				}
 			});
@@ -59,14 +59,14 @@ export default class {
 		this.stepType = stepType;
 
 		if(this.event) {
-			event.listen(this.event, ()=>{
+			event.listen(this.event, () => {
 				this.start();
 			});
 		}
 		
 		if(!this.autoStep) {
 
-			event.listen('moveEnd', ()=>{
+			event.listen('moveEnd', () => {
 
 				if(share.get('stepType') != this.stepType) { return; }
 				

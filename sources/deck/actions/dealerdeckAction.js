@@ -18,7 +18,7 @@ export default function(data) {// data.actionData, e
 	// console.log('dealerdeckAction:', this.name, data);
 
 	if(
-		typeof data.actionData.stepType == "string" &&
+		typeof data.actionData.stepType == "string"       &&
 		data.actionData.stepType != share.get('stepType')
 	) {
 		return;
@@ -176,11 +176,12 @@ export default function(data) {// data.actionData, e
 			event.dispatch('dealEnd');
 			event.dispatch('addStep', {
 				'move' : {
-					from     : dealDeck.name,
-					to       : _decks[deckId].name,
-					deck     : [_cardName],
-					flip     : true,
-					stepType : share.get('stepType')
+					from         : dealDeck.name,
+					to           : _decks[deckId].name,
+					deck         : [_cardName],
+					flip         : true,
+					stepType     : share.get('stepType'),
+					prevStepType : share.get('prevStepType')
 				}
 			});
 

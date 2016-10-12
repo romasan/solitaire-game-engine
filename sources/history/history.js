@@ -75,6 +75,14 @@ var _undo = function(a) {
 	 && typeof a.move.to   != "undefined" 
 	 && typeof a.move.deck != "undefined"
 	) {
+
+		if(typeof a.move.prevStepType == "string") {
+
+			console.log('#prevStepType', a.move.prevStepType, common.isCurLock());
+			
+			share.set('stepType', a.move.prevStepType);
+		}
+
 		forceMove({
 			from : a.move.to,// from <=> to
 			to   : a.move.from,

@@ -46,8 +46,8 @@ var Move = function(moveDeck, to, cursorMove) {
 		let _deck_departure = moveDeck[0].card.parent && common.getElementById(moveDeck[0].card.parent);
 
 		event.dispatch('moveCardToHome', {
-			moveDeck  : moveDeck,
-			departure : _deck_departure,
+			moveDeck  : moveDeck             ,
+			departure : _deck_departure      ,
 			stepType  : share.get('stepType')
 		});
 		return;
@@ -92,12 +92,16 @@ var Move = function(moveDeck, to, cursorMove) {
 					// режим анимации по умолчанию
 					common.animationDefault();
 
+					let _stepType     = share.get('stepType'),
+					    _prevStepType = share.get('prevStepType');
+					
 					event.dispatch('addStep', {
 						'move' : {
-							from : _deck_departure  .name,
-							to   : _deck_destination.name,
-							deck : Deck.deckCardNames(moveDeck),
-							stepType : share.get('stepType')
+							from         : _deck_departure  .name      ,
+							to           : _deck_destination.name      ,
+							deck         : Deck.deckCardNames(moveDeck),
+							stepType     : _stepType                   ,
+							prevStepType : _prevStepType
 						}
 					})
 					
@@ -121,11 +125,11 @@ var Move = function(moveDeck, to, cursorMove) {
 
 					event.dispatch('moveDragDeck', {
 						
-						departure   : _deck_departure,
+						departure   : _deck_departure  ,
 						destination : _deck_destination,
-						moveDeck    : moveDeck,
+						moveDeck    : moveDeck         ,
 						
-						callback    : ()=>{
+						callback    : () => {
 
 							// записать ход (если он не составной)
 							// if(_stepType == defaults.stepType) {				
@@ -133,10 +137,11 @@ var Move = function(moveDeck, to, cursorMove) {
 
 							event.dispatch('moveEnd:' + share.get('stepType'));
 							event.dispatch('moveEnd', {
-								from     : _deck_departure,
-								to       : _deck_destination,
-								moveDeck : moveDeck,
+								from     : _deck_departure      ,
+								to       : _deck_destination    ,
+								moveDeck : moveDeck             ,
 								stepType : share.get('stepType')
+								// prevStepType : share.get('prevStepType')
 							});
 
 							Tips.checkTips();
@@ -158,7 +163,7 @@ var Move = function(moveDeck, to, cursorMove) {
 
 		// достаточно ли перетащили (если клика не достаточно и не двойной клик)
 		if(
-			Field.inputParams.doubleClick                   &&
+			Field.inputParams.doubleClick                    &&
 			cursorMove.dbclick                               ||
 			cursorMove.distance >= share.get('moveDistance')
 		) {
@@ -169,7 +174,7 @@ var Move = function(moveDeck, to, cursorMove) {
 					return;
 				} else {
 					event.dispatch('moveCardToHome', {
-						moveDeck  : moveDeck,
+						moveDeck  : moveDeck       ,
 						departure : _deck_departure
 					});
 					// share.moveCardToHome();
@@ -177,7 +182,7 @@ var Move = function(moveDeck, to, cursorMove) {
 
 		} else {
 			event.dispatch('moveCardToHome', {
-				moveDeck  : moveDeck,
+				moveDeck  : moveDeck       ,
 				departure : _deck_departure
 			});
 		}

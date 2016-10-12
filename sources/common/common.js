@@ -39,7 +39,7 @@ event.listen('gameInited', ()=>{
 });
 
 share.set('prevStepType', defaults.stepType);
-event.listen('change:stepType', ()=>{
+event.listen('shareChange:stepType', ()=>{
 	share.set('prevStepType', share.get('stepType'));
 });
 
