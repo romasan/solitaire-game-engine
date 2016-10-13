@@ -1,0 +1,142 @@
+<html>
+<head>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+	<script src="../frontend/js/SolitaireEngine.js"></script>
+	<script>
+		'use strict';
+		class History {
+			constructor() {
+				this._hist = [];
+				this._redo = [];
+				$('#steps').html(0);
+			}
+			add(e) {
+				this._redo = [];
+				this._hist.push(e);
+				this.draw();
+			}
+			undo() {
+				let e = this._hist.pop();
+				if(e) this._redo.push(e);
+				this.draw();
+				return e;
+			}
+			redo() {
+				let e = this._redo.pop();
+				if(e) this._hist.push(e);
+				this.draw();
+				return e;	
+			}
+			clear() {
+				this._hist = [];
+				this._redo = [];
+				this.draw();
+			}
+			draw() {
+				$('#steps').html(this._hist.length);
+			}
+		};
+		let history = new History();
+		let showHints = true;
+		window.controller = {
+			getShowPossibleMoves: () => {
+				return showHints;
+			},
+			gm: {
+				logAction: (e) => {
+					history.add(e);
+				}
+			}
+		};
+	</script>
+	<script src="../../fourteen/js/fourteen-game.js"></script>
+	<script>
+		$(document).ready(() => {
+
+			let GAME = new matGame();
+			
+			$('#b_undo').click(() => {
+				let e = history.undo();
+				console.log('undo', e);
+				GAME.undoMove(e);
+			});
+
+			$('#b_redo').click(() => {
+				let e = history.redo();
+				console.log('redo', e);
+				GAME.redoMove(e);
+			});
+
+			let gameIndex = 1;
+
+			$('#b_newgame').click(() => {
+				history.clear();
+				gameIndex = 1 + (Math.random() * 3e4) | 0;
+				console.log('newgame', gameIndex);
+				$.getJSON(`../../fourteen/games/${gameIndex}.json`, (e) => {
+					GAME.__startGame(JSON.stringify(e));
+				});
+				$('#gameIndex').html(gameIndex);
+			});
+
+			$('#b_restart').click(() => {
+				history.clear();
+				console.log('restart');
+				$.getJSON(`../../fourteen/games/${gameIndex}.json`, (e) => {
+					GAME.__startGame(JSON.stringify(e));
+				});
+				$('#gameIndex').html(gameIndex);
+			});
+
+			$('#b_hints').click(() => {
+				showHints = !showHints;
+				GAME.setFindTurn(showHints);
+				console.log('hints', showHints);
+			});
+
+			gameIndex = 1 + (Math.random() * 3e4) | 0;
+			console.log('newgame', gameIndex);
+			$.getJSON(`../../fourteen/games/${gameIndex}.json`, (e) => {
+				GAME.__startGame(JSON.stringify(e));
+			});
+			$('#steps').html(0);
+			$('#gameIndex').html(gameIndex);
+
+		});
+
+		// GAME.__startGame(deck);
+	</script>
+	<style>
+		#map {
+			background: green;
+			width: 900px;
+			height: 1000px;
+			margin-top: 10px;
+		}
+		.btn {
+			background: #c0c0c0;
+			padding: 7px;
+			font-weight: bold;
+			border: 2px solid black;
+			border-radius: 5px;
+			cursor: pointer;
+		}
+	</style>
+	<link rel="stylesheet" href="../frontend/css/SolitaireEngine.css">
+</head>
+<body>
+	<div>
+		<span class="btn" id="b_undo">UNDO</span>
+		<span class="btn" id="b_redo">REDO</span>
+		<span class="btn" id="b_newgame">NEW GAME</span>
+		<span class="btn" id="b_restart">RESTART</span>
+		<span class="btn" id="b_hints">HINTS</span>
+
+		<span>Game:</span>
+		<span id="gameIndex">...</span>
+		<span>Steps:</span>
+		<span id="steps">...</span>
+	</div>
+	<div id="map"></div>
+</body>
+</html>
