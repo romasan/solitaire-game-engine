@@ -55,17 +55,13 @@ class deckClass {
 			? a.name 
 			: (_parent_name + '_' + _new_id);
 		
-		this.locked = a.locked ? true : false;
-
-		this.save = a.save ? true : false;
-		
-		this.visible = a.visible && typeof a.visible == 'boolean' ? a.visible : true;// default true
-		
-		this.groupIndex = a.groupIndex && typeof a.groupIndex == 'number' ? a.groupIndex : null;
-
-		this.parent = a.parent && typeof a.parent == 'string'  ? a.parent : 'field';
-		
-		this.autoHide = a.autoHide && typeof a.autoHide == 'boolean' ? a.autoHide : defaults.autohide;
+		this.locked     = a.locked   ? true : false;
+		this.save       = a.save     ? true : false;
+		this.longStep   = a.longStep ? true : false;
+		this.visible    = a.visible    && typeof a.visible    == 'boolean' ? a.visible    : true;// default true
+		this.groupIndex = a.groupIndex && typeof a.groupIndex == 'number'  ? a.groupIndex : null;
+		this.parent     = a.parent     && typeof a.parent     == 'string'  ? a.parent     : 'field';
+		this.autoHide   = a.autoHide   && typeof a.autoHide   == 'boolean' ? a.autoHide   : defaults.autohide;
 		
 		// changed parameters
 		if(typeof a.showSlot == "undefined") {

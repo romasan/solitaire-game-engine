@@ -11,19 +11,20 @@ import groupRedraw    from 'groupRedraw';
 import groupGenerator from 'groupGenerator';
 
 const params = {
-	"paddingType"  : {type: "any"    },
-	"flip"         : {type: "any"    },
-	"showSlot"     : {type: "any"    },
-	"takeRules"    : {type: "any"    },
-	"putRules"     : {type: "any"    },
-	"fillRule"     : {type: "any"    },
-	"autoHide"     : {type: "any"    },
-	"paddingX"     : {type: "any"    },
-	"paddingY"     : {type: "any"    },
-	"flipPaddingX" : {type: "any"    },
-	"flipPaddingY" : {type: "any"    },
-	"actions"      : {type: "any"    },
-	"save"         : {type: "boolean", default: true}
+	"paddingType"  : {type : "any"}                     ,
+	"flip"         : {type : "any"}                     ,
+	"showSlot"     : {type : "any"}                     ,
+	"takeRules"    : {type : "any"}                     ,
+	"putRules"     : {type : "any"}                     ,
+	"fillRule"     : {type : "any"}                     ,
+	"autoHide"     : {type : "any"}                     ,
+	"paddingX"     : {type : "any"}                     ,
+	"paddingY"     : {type : "any"}                     ,
+	"flipPaddingX" : {type : "any"}                     ,
+	"flipPaddingY" : {type : "any"}                     ,
+	"actions"      : {type : "any"}                     ,
+	"save"         : {type : "boolean", default : true} ,
+	"longStep"     : {type : "boolean", default : false}
 };
 
 class groupClass {

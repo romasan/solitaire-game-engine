@@ -124,7 +124,7 @@ var SolitaireEngine =
 	exports.options = _defaults2.default;
 	exports.winCheck = _winCheck2.default.hwinCheck;
 	exports.generator = _deckGenerator2.default;
-	exports.version = (9091491677).toString().split(9).slice(1).map(function (e) {
+	exports.version = (9091491700).toString().split(9).slice(1).map(function (e) {
 		return parseInt(e, 8);
 	}).join('.');
 	
@@ -1788,7 +1788,8 @@ var SolitaireEngine =
 		"flipPaddingX": { type: "any" },
 		"flipPaddingY": { type: "any" },
 		"actions": { type: "any" },
-		"save": { type: "boolean", default: true }
+		"save": { type: "boolean", default: true },
+		"longStep": { type: "boolean", default: false }
 	};
 	
 	var groupClass = function () {
@@ -2225,15 +2226,11 @@ var SolitaireEngine =
 			this.name = a.name && typeof a.name == 'string' ? a.name : _parent_name + '_' + _new_id;
 	
 			this.locked = a.locked ? true : false;
-	
 			this.save = a.save ? true : false;
-	
+			this.longStep = a.longStep ? true : false;
 			this.visible = a.visible && typeof a.visible == 'boolean' ? a.visible : true; // default true
-	
 			this.groupIndex = a.groupIndex && typeof a.groupIndex == 'number' ? a.groupIndex : null;
-	
 			this.parent = a.parent && typeof a.parent == 'string' ? a.parent : 'field';
-	
 			this.autoHide = a.autoHide && typeof a.autoHide == 'boolean' ? a.autoHide : _defaults2.default.autohide;
 	
 			// changed parameters

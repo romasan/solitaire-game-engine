@@ -107,6 +107,9 @@
 		// GAME.__startGame(deck);
 	</script>
 	<style>
+		body {
+			font-family: Roboto;
+		}
 		#map {
 			background: green;
 			width: 900px;
@@ -114,15 +117,21 @@
 			margin-top: 10px;
 		}
 		.btn {
-			background: #c0c0c0;
+			background: #dddddd;
 			padding: 7px;
 			font-weight: bold;
-			border: 2px solid black;
-			border-radius: 5px;
+			border: 1px solid #d1d1d1;
 			cursor: pointer;
+			box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
 		}
 	</style>
+	<link href='http://fonts.googleapis.com/css?family=Roboto:400,100,‌​100italic,300,300ita‌​lic,400italic,500,50‌​0italic,700,700itali‌​c,900italic,900' rel='stylesheet' type='text/css'>
 	<link rel="stylesheet" href="../frontend/css/SolitaireEngine.css">
+	<style>
+		.alternative_face .card {
+			background-image: url('../frontend/img/card.png')!important;
+		}
+	</style>
 </head>
 <body>
 	<div>
@@ -133,7 +142,7 @@
 		<span class="btn" id="b_hints">HINTS</span>
 
 		<span>Game:</span>
-		<span id="gameIndex">...</span>
+		<span id="gameIndex">...</span><span>;</span>
 		<span>Steps:</span>
 		<span id="steps">...</span>
 	</div>
