@@ -43,12 +43,16 @@ var rpr = {
 
 	_downupcards: (a)=>{
 
-		if(a.cards.length == 0) return false;
+		if(a.cards.length == 0) {
+			return false;
+		}
 		
 		let down = common.validateCardName(a.cards[a.cards.length  - 1].name);
 		let up   = common.validateCardName(a.putDeck[0].card.name);
 		
-		if(!down || !up) return false;
+		if(!down || !up) {
+			return false;
+		}
 		
 		return {
 			up   : up,
@@ -85,7 +89,9 @@ var rpr = {
 
 	striped: (a)=>{
 		
-		if(a.cards.length == 0) return true;
+		if(a.cards.length == 0) {
+			return true;
+		}
 
 		let color_A   = common.validateCardName(a.cards[a.cards.length - 1].name).color,
 			color_B   = null,
@@ -124,7 +130,9 @@ var rpr = {
 
 	oneRank: (a)=>{
 
-		if(a.cards.length == 0) return true;
+		if(a.cards.length == 0) {
+			return true;
+		}
 		
 		let du = rpr._downupcards(a);
 		
@@ -133,7 +141,9 @@ var rpr = {
 	
 	oneSuit: (a)=>{
 		
-		if(a.cards.length == 0) return true;
+		if(a.cards.length == 0) {
+			return true;
+		}
 		
 		let du = rpr._downupcards(a);
 		
@@ -152,7 +162,9 @@ var rpr = {
 
 	ascendDeck: (a)=>{//ascend deck by step
 		
-		if(a.putDeck.length == 1) return true;
+		if(a.putDeck.length == 1) {
+			return true;
+		}
 		
 		let ruleCorrect = true;
 		
@@ -176,7 +188,9 @@ var rpr = {
 
 	descendDeck: (a)=>{//ascend deck by step
 		
-		if(a.putDeck.length == 1) return true;
+		if(a.putDeck.length == 1) {
+			return true;
+		}
 		
 		let ruleCorrect = true;
 		
@@ -200,7 +214,9 @@ var rpr = {
 	
 	oneRankDeck: (a)=>{
 		
-		if(a.putDeck.length == 1) return true;
+		if(a.putDeck.length == 1) {
+			return true;
+		}
 		
 		let ruleCorrect = true;
 
@@ -220,7 +236,9 @@ var rpr = {
 
 	ascend: (a)=>{
 		
-		if(a.cards.length == 0) return true;
+		if(a.cards.length == 0) {
+			return true;
+		}
 
 		let da = rpr._downupranknum(a);
 
@@ -229,7 +247,9 @@ var rpr = {
 
 	descent: (a)=>{
 		
-		if(a.cards.length == 0) return true;
+		if(a.cards.length == 0) {
+			return true;
+		}
 
 		let da = rpr._downupranknum(a);
 
@@ -238,7 +258,9 @@ var rpr = {
 
 	descentOne: (a)=>{// one step
 		
-		if(a.cards.length == 0) return true;
+		if(a.cards.length == 0) {
+			return true;
+		}
 
 		let da = rpr._downupranknum(a);
 
@@ -247,7 +269,9 @@ var rpr = {
 
 	ascendOne: (a)=>{// one step
 
-		if(a.cards.length == 0) return true;
+		if(a.cards.length == 0) {
+			return true;
+		}
 
 		let da = rpr._downupranknum(a);
 
@@ -256,7 +280,9 @@ var rpr = {
 
 	ascdescOne: (a)=>{
 		
-		if(a.cards.length == 0) return true;
+		if(a.cards.length == 0) {
+			return true;
+		}
 
 		let da = rpr._downupranknum(a);
 
@@ -265,7 +291,9 @@ var rpr = {
 
 	sum14: (a)=>{
 
-		if(a.cards.length == 0) return true;
+		if(a.cards.length == 0) {
+			return true;
+		}
 
 		let du = rpr._downupcards(a);
 		let _sum = du.down.value + du.up.value;
@@ -277,7 +305,9 @@ var rpr = {
 
 	around: (a)=>{// {from, putDeck, cards}
 
-		if(a.cards.length == 0) return true;
+		if(a.cards.length == 0) {
+			return true;
+		}
 
 		let _around = a.from.deck.getRelationsByName('around', {from: null});
 		let _parent = Deck.getDeckById(a.cards[0].parent);

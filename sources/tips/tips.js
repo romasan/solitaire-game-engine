@@ -5,33 +5,35 @@ import share     from 'share';
 import defaults  from 'defaults';
 import common    from 'common';
 
-import allToAll from 'allToAll';
-import bestTip  from 'bestTip';
-import Deck     from 'addDeck';
-import Field    from 'field';
+import allToAll  from 'allToAll';
+import bestTip   from 'bestTip';
+import Deck      from 'addDeck';
+import Field     from 'field';
 
-var _showTips = defaults.showTips;
+let _showTips = defaults.showTips;
 
-var tipTypes = [
+let tipTypes = [
 	'tip'        , 
 	'tipTo'      , 
 	'tipPriority',
 	'tipToHome'
 ];
 
-var _tips = [];
+let _tips = [];
 
-var getTips = function() {
+let getTips = () => {
 	return _tips;
 }
 
-var checkTips = function() {
+let checkTips = () => {
 
-	if(share.get('noTips')) { return false; }
+	if(share.get('noTips')) {
+		return false;
+	}
 
 	event.dispatch('hideTips');
 
-	var _decks = Deck.getDecks({visible : true});
+	let _decks = Deck.getDecks({visible : true});
 
 	_tips = allToAll({
 		decks : _decks
@@ -49,9 +51,9 @@ var checkTips = function() {
 	// var _showTips = share.get('showTips')
 	if(_showTips) {
 
-		var _homeGroups = Field.homeGroups;
+		let _homeGroups = Field.homeGroups;
 
-		for(var i in _tips) {
+		for(let i in _tips) {
 
 			// TODO инициализировать "hideTipsInDom" в Field.js 
 			if(
@@ -93,25 +95,37 @@ event.listen('checkTips', checkTips);
 
 // --------------------------------------------------------
 
-var showTips = function(a) {
+let showTips = (a) => {
+	
 	_showTips = true;
-	if(a && a.init) return;
+	
+	if(a && a.init) {
+		return;
+	}
+	
 	checkTips();
 };
 event.listen('tipsON', showTips);
 
-var hideTips = function(a) {
+let hideTips = (a) => {
+	
 	_showTips = false;
-	if(a && a.init) return;
+	
+	if(a && a.init) {
+		return;
+	}
+	
 	checkTips();
 };
 event.listen('tipsOFF', hideTips);
 
 // --------------------------------------------------------
 
-var tipsMove = function(a) {
+let tipsMove = (a) => {
 
-	if(!share.get('showTipPriority')) { return; }
+	if(!share.get('showTipPriority')) {
+		return;
+	}
 
 	event.dispatch('hideTips', {types : ['tipPriority']});
 
@@ -124,7 +138,7 @@ var tipsMove = function(a) {
 		a.cursorMove.distance >= share.moveDistance
 	) {
 
-		var Tip = bestTip(a.moveDeck, a.cursorMove);
+		let Tip = bestTip(a.moveDeck, a.cursorMove);
 
 		if(Tip) {
 
@@ -138,14 +152,14 @@ var tipsMove = function(a) {
 
 // --------------------------------------------------------
 
-var tipsDestination = function(a) {
+let tipsDestination = (a) => {
 
 	if(share.get('showTipsDestination')) {
 
 		event.dispatch('hideTips');
 		
 		if(a && a.currentCard && a.currentCard.id) {
-			for(var i in _tips) {
+			for(let i in _tips) {
 				if(_tips[i].from.card.id == a.currentCard.id) {					
 					
 					event.dispatch('showTip', {
@@ -158,7 +172,7 @@ var tipsDestination = function(a) {
 	}
 };
 
-let checkFrom = (_from)=>{
+let checkFrom = (_from) => {
 
 	for(let i in _tips) {
 		if(
@@ -167,10 +181,11 @@ let checkFrom = (_from)=>{
 			return true;
 		}
 	}
+	
 	return false;
 };
 
-let fromTo = (_from, _to)=>{
+let fromTo = (_from, _to) => {
 	
 	for(let i in _tips) {
 		if(
@@ -180,6 +195,7 @@ let fromTo = (_from, _to)=>{
 			return true;
 		}
 	}
+	
 	return false;
 };
 
@@ -190,7 +206,6 @@ export default {
 	showTips       ,
 	hideTips       ,
 	tipsMove       ,
-//  tiprFrom       ,// TODO
 	checkFrom      ,
 	fromTo         ,
 	tipsDestination

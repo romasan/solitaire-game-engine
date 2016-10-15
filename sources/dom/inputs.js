@@ -49,15 +49,9 @@ var cdown = function(target, x, y) {
 	share.set('dragDeck',    null);
 	share.set('startCursor', null);
 
-	// var _startCursor = share.get('startCursor'),
-	//     _dragDeck    = share.get('dragDeck');
-	// if(_dragDeck || _startCursor) return;
-
-	if(common.isCurLock()) { return; }
-
-	// if (target.className.split(' ').indexOf('animated') >= 0) {
-	//     return;
-	// }
+	if(common.isCurLock()) {
+		return; 
+	}
 
 	if( target.className.split(' ').indexOf('slot') >= 0 ) {
 
@@ -68,7 +62,6 @@ var cdown = function(target, x, y) {
 				to: _deck
 			});
 		}
-		// _deck.runActions();
 	}
 
 	if( target.className.split(' ').indexOf('draggable') >= 0 ) {
@@ -97,8 +90,11 @@ var cdown = function(target, x, y) {
 
 			share.set('startCursor', {x, y});
 
-			// ???
-			Tips.tipsDestination({currentCard : _card});
+			// TODO посмотреть, возможно в некоторых пасьянсах включить опционально
+			// на пример в "четырнадцать" пока тащишь карту, довольно много подсвечиваемых карт
+			// P.S.: лучше не убирать остальные подсказки просто выделить лучший ход
+			// посказка куда будет лететь карта
+			// Tips.tipsDestination({currentCard : _card});
 		}
 
 	}
@@ -109,12 +105,16 @@ var cdown = function(target, x, y) {
 
 var cmove = function(x, y) {
 
-	if(common.isCurLock()) { return; }
+	if(common.isCurLock()) {
+		return;
+	}
 	
 	var _startCursor = share.get('startCursor'),
 	    _dragDeck    = share.get('dragDeck');
 
-	if(!_dragDeck || !_startCursor) return;
+	if(!_dragDeck || !_startCursor) {
+		return;
+	}
 
 	let _distance = _startCursor 
 		? Math.sqrt(common.sqr(x - _startCursor.x) + common.sqr(y - _startCursor.y)) 
@@ -161,12 +161,16 @@ var cmove = function(x, y) {
 
 var cend = function(target, x, y, dbclick) {
 
-	if(common.isCurLock()) { return; }
+	if(common.isCurLock()) {
+		return;
+	}
 
 	var _startCursor = share.get('startCursor'),
 	    _dragDeck    = share.get('dragDeck');
 
-	if(!_dragDeck || !_startCursor) return;
+	if(!_dragDeck || !_startCursor) {
+		return;
+	}
 
 	var _deck = common.getElementById(_dragDeck[0].card.parent);
 
@@ -218,7 +222,11 @@ var cend = function(target, x, y, dbclick) {
 try {
 
 	document.onmousedown = function(e) {
-		if(e.button !== 0) { return; }
+		
+		if(e.button !== 0) {
+			return;
+		}
+		
 		cdown(e.target, e.clientX, e.clientY);
 	};
 

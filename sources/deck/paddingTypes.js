@@ -22,46 +22,39 @@ export default {
 			return {x : x, y : y};
 		}
 	},
-	twindeck_typeA : function(params, card, index, length, deck) {
+	// twindeck_typeA : function(params, card, index, length, deck) {
 
-		var twindeck_max_cards       = 24,
-			twindeck_deck_length     = 3;
+	// 	var twindeck_max_cards       = 24,
+	// 		twindeck_deck_length     = 3;
 		
-		var _padding = {
-			x : 2,
-			y : 1
-		}
+	// 	var _padding = {
+	// 		x : 2,
+	// 		y : 1
+	// 	}
 
-		var _depth = (length / twindeck_max_cards * twindeck_deck_length)|0;
-		if(_depth >= twindeck_deck_length) _depth = twindeck_deck_length - 1;
+	// 	var _depth = (length / twindeck_max_cards * twindeck_deck_length)|0;
+	// 	if(_depth >= twindeck_deck_length) _depth = twindeck_deck_length - 1;
 
-		var _plus = index - (length - _depth - 1);
-		if(_plus < 0) _plus = 0;
+	// 	var _plus = index - (length - _depth - 1);
+	// 	if(_plus < 0) _plus = 0;
 
-		return {
-			x : params.x + _padding.x * _plus, 
-			y : params.y + _padding.y * _plus
-		};
-	},
+	// 	return {
+	// 		x : params.x + _padding.x * _plus, 
+	// 		y : params.y + _padding.y * _plus
+	// 	};
+	// },
 	radial : function(params, card, index, length, deck) {
 
-        //              b
-        //       C  ..`:   A = sin(b) * C
-        //     ...``   :B  B = cos(b) * C
-        // a.``.......+:
-        //        A     y 90deg
-        var _depth  = 1,
-        	_radius = index * _depth,
-        	// _step   = 180 / 16,
-        	// _card   = defaults.card,
-        	_angle  = params.rotate,//_step / 2 + 270;
-        	_deg    = Math.PI / 180,
-        	_a      = Math.sin(_angle * _deg) * _radius,
-        	_b      = Math.cos(_angle * _deg) * _radius;
-        // if(_angle > 360) _angle -= 360;
+		let _depth  = 1                                ,
+		    _radius = index * _depth                   ,
+		    _angle  = params.rotate                    ,
+		    _deg    = Math.PI / 180                    ,
+		    _a      = Math.sin(_angle * _deg) * _radius,
+		    _b      = Math.cos(_angle * _deg) * _radius;
+
 		return {
-            x : params.x + _a,// - _card.width  / 2,
-            y : params.y - _b// - _card.height / 2
+            x : params.x + _a,
+            y : params.y - _b
 		};
 	},
 	special : function(params, card, index, length, deck) {

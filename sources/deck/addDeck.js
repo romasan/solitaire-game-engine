@@ -28,13 +28,18 @@ class deckClass {
 
 		// console.log('%cADD DECK', 'background: orange;');
 
-		if(!a) return false;
+		if(!a) {
+			return false;
+		}
 
 		this.cards = [];
 		
 		this.getTopCard = function() {
 
-			if(this.cards.length === 0) { return false; }
+			if(this.cards.length === 0) {
+				return false;
+			}
+			
 			return this.cards[this.cards.length - 1];
 		}
 		
@@ -175,12 +180,14 @@ class deckClass {
 		});
 
 		// Подписывается на перетаскивание стопки/карты
-		let _callback = (data)=>{
+		let _callback = (data) => {
 
 			// TODO
 			// проверять fill только для тех стопок котрые участвовали в Action
 			
-			if(data.destination.name != this.name) { return; }
+			if(data.destination.name != this.name) {
+				return;
+			}
 
 			// console.log('_callback', this.checkFill, this.fillRules);
 
@@ -265,7 +272,9 @@ class deckClass {
 
 	Pop(count, clearParent) {
 			
-		if(this.cards.length < count) return false;
+		if(this.cards.length < count) {
+			return false;
+		}
 
 		var _deck = [];
 		for(;count;count -= 1) {
@@ -401,7 +410,9 @@ class deckClass {
 
 var addDeck = function(a) {
 
-	if(!a) return false;
+	if(!a) {
+		return false;
+	}
 	
 	let _id = 'deck_' + common.genId();
 	

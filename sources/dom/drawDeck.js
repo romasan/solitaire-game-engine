@@ -8,14 +8,14 @@ import Field    from 'field';
 import elRender from 'elRender';
 
 var applyChangedParameters = function(p, a, deck) {
-	
+
 	p.x = a.position && a.position.x && typeof a.position.x == 'number'  ? a.position.x : 0,
 	p.y = a.position && a.position.y && typeof a.position.y == 'number'  ? a.position.y : 0;
 	p.x = a.parentPosition && a.parentPosition.x ? p.x + a.parentPosition.x : p.x;
 	p.y = a.parentPosition && a.parentPosition.y ? p.y + a.parentPosition.y : p.y;
-	
+
 	deck.rotate = p.rotate = a.rotate && typeof a.rotate == 'number' ? a.rotate : 0;
-	
+
 	// у padding_x, padding_y приоритет выше чем paddingType
 
 	p.padding_y = a.paddingY          && typeof a.paddingY     == 'number' 
@@ -49,12 +49,12 @@ event.listen('addDeckEl', function(e) {
 	e.deck.domElement = 
 		elRender('<div>')
 			// .getEl();
-	
-	var _params = {
+
+	let _params = {
 		left      : e.params.x           + 'px',
 		top       : e.params.y           + 'px',
 		width     : defaults.card.width  + 'px',
- 		height    : defaults.card.height + 'px',
+		height    : defaults.card.height + 'px',
 		transform : 'rotate(' + (e.params.rotate|0) + 'deg)'
 	};
 	
@@ -80,16 +80,15 @@ event.listen('addDeckEl', function(e) {
 	elRender(Field.domElement)
 		.append(e.deck.domElement);
 
-
 	// add label
 		
-	var label = e.a.label && typeof e.a.label == 'string' ? e.a.label : null;
+	let label = e.a.label && typeof e.a.label == 'string' ? e.a.label : null;
 	
 	if(dev && !e.a.label && share.get('debugLabels')) {
 		label = '<span style="color:#65B0FF;">' + e.deck.name + '</span>';
 	}
 	if(label) {
-		var _labelElement = 
+		let _labelElement = 
 			elRender('<div>')
 				.addClass('deckLabel')
 				// .attr({
@@ -109,10 +108,12 @@ event.listen('addDeckEl', function(e) {
 
 event.listen('redrawDeckFlip', function(e) {
 	
-	if(!e || !e.cards) return;
+	if(!e || !e.cards) {
+		return;
+	}
 
-	for(var i in e.cards) {
-		var _params = {};
+	for(let i in e.cards) {
+		let _params = {};
 		
 		if(e.cards[i].flip) {
 			elRender(e.cards[i].domElement)
@@ -131,7 +132,9 @@ event.listen('redrawDeckFlip', function(e) {
 
 event.listen('redrawDeckIndexes', function(e) {
 	
-	if(!e || !e.cards) return;
+	if(!e || !e.cards) {
+		return;
+	}
 
 	for(var i in e.cards) {
 		elRender(e.cards[i].domElement).css({
@@ -144,15 +147,28 @@ event.listen('redrawDeckIndexes', function(e) {
 
 event.listen('redrawDeck', function(e) {
 
-	if(share.get('noRedraw')) { return false; };
+	if(share.get('noRedraw')) {
+		return false;
+	}
 
 	if(e.data) {
 		applyChangedParameters(e.params, e.data, e.deck);
 
-		if(e.data.paddingX    ) share.get('padding_x',      e.data.paddingX    );
-		if(e.data.flipPaddingX) share.get('flip_padding_x', e.data.flipPaddingX);
-		if(e.data.paddingY    ) share.get('padding_y',      e.data.paddingY    );
-		if(e.data.flipPaddingY) share.get('flip_padding_y', e.data.flipPaddingY);
+		if(e.data.paddingX    ) {
+			share.get('padding_x',      e.data.paddingX);
+		}
+
+		if(e.data.flipPaddingX) {
+			share.get('flip_padding_x', e.data.flipPaddingX);
+		}
+
+		if(e.data.paddingY    ) {
+			share.get('padding_y',      e.data.paddingY);
+		}
+
+		if(e.data.flipPaddingY) {
+			share.get('flip_padding_y', e.data.flipPaddingY);
+		}
 	}
 
 	var _params = {
@@ -173,9 +189,9 @@ event.listen('redrawDeck', function(e) {
 			'left'              : _card_position.x + 'px', 
 			'top'               : _card_position.y + 'px',
 			'z-index'           : _zIndex,
-		    '-ms-transform'     : 'rotate(' + (e.params.rotate|0) + 'deg)',
-		    '-webkit-transform' : 'rotate(' + (e.params.rotate|0) + 'deg)',
-		    '-moz-transform'    : 'rotate(' + (e.params.rotate|0) + 'deg)',
+			'-ms-transform'     : 'rotate(' + (e.params.rotate|0) + 'deg)',
+			'-webkit-transform' : 'rotate(' + (e.params.rotate|0) + 'deg)',
+			'-moz-transform'    : 'rotate(' + (e.params.rotate|0) + 'deg)',
 			'transform'         : 'rotate(' + (e.params.rotate|0) + 'deg)'
 		};
 		_params.display = e.deck.visible ? 'block' : 'none';

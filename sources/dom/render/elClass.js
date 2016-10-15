@@ -58,7 +58,9 @@ export default class elClass {
 // --	
 	removeClass(className) {
 
-		if(!this.el || !this.el.className) return this;
+		if(!this.el || !this.el.className) {
+			return this;
+		}
 		
 		try {
 
@@ -81,7 +83,9 @@ export default class elClass {
 // --	
 	css(a) {
 
-		if(!this.el) return this;
+		if(!this.el) {
+			return this;
+		}
 
 		try {
 	
@@ -114,7 +118,9 @@ export default class elClass {
 			if(el.el) {
 				el = el.el;
 			}
+			
 			this.el.appendChild(el);
+			
 			return this;
 		} catch(e) {}
 	}

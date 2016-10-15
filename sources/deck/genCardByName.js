@@ -4,7 +4,7 @@ import event  from 'event';
 import share  from 'share';
 import common from 'common';
 
-export default function(name) {// TODO
+export default function(name) {// TODO ???
 
 	var _name = common.validateCardName(name);// {color, rank}
 	

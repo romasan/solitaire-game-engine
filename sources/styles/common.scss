@@ -1,19 +1,25 @@
 $img_dir:"/solitaire_engine/img/";
 
-$card_width  : 71px;
-$card_height : 96px;
+$card_width : 71px;
+$card_height: 96px;
 
 * {
-	-webkit-touch-callout : none;
-	-webkit-user-select   : none;
-	-khtml-user-select    : none;
-	-moz-user-select      : none;
-	-ms-user-select       : none;
-	user-select           : none;
+	-webkit-touch-callout: none;
+	-webkit-user-select  : none;
+	-khtml-user-select   : none;
+	-moz-user-select     : none;
+	-ms-user-select      : none;
+	user-select          : none;
 } 
 
 body {
 	backface-visibility: hidden;
+}
+
+.ninja {
+	color             : black;
+	visibility        : hidden;
+	animation-duration: 0.00001s;
 }
 
 .solitaireField {}
@@ -27,77 +33,77 @@ body {
 }
 
 .slot  {
-  width: $card_width - 2!important;
-  height: $card_height - 2!important;
-  background: transparent;
-  border: 1px solid #121212;
-  border-radius: 5px;
+	width        : $card_width - 2!important;
+	height       : $card_height - 2!important;
+	background   : transparent;
+	border       : 1px solid #121212;
+	border-radius: 5px;
 }
 
 .tip:after {
-  content          : attr(data-content);
-  background-color : #ffff00;
-  opacity          : 0.3;
-  font-size        : 90%;
-  width            : 100%;
-  height           : 100%;
-  display          : block;
-  margin           : 0px;
+	content         : attr(data-content);
+	background-color: #ffff00;
+	opacity         : 0.3;
+	font-size       : 90%;
+	width           : 100%;
+	height          : 100%;
+	display         : block;
+	margin          : 0px;
 }
 
 .flip.tip:after {
-	width: 0px!important;
+	width : 0px!important;
 	height: 0px!important;
 }
 
 .tipTo {
-	 box-shadow: inset 0 0 15px 15px rgba(8, 157, 227, 0.5)!important; 
+	box-shadow: inset 0 0 15px 15px rgba(8, 157, 227, 0.5)!important; 
 }
 
 .tipToHome:after {
-  content: attr(data-content);
-  background-color: #ffff00;
-  opacity: 0.5;
-  font-size: 90%;
-  width: 71px;
-  height: 96px;
-  display: block;
-  margin: 0px;
+	content         : attr(data-content);
+	background-color: #ffff00;
+	opacity         : 0.5;
+	font-size       : 90%;
+	width           : 71px;
+	height          : 96px;
+	display         : block;
+	margin          : 0px;
 }
 
 .tipPriority {
-	 box-shadow: inset 0 0 15px 15px rgba(255, 153, 0, 0.5)!important; 
+	box-shadow: inset 0 0 15px 15px rgba(255, 153, 0, 0.5)!important; 
 }
 
 .fill:after {
-	content          : attr(data-content);
-	background-color : #909090;
-	opacity          : 0.5;
-	font-size        : 90%;
-	width            : 71px;
-	height           : 96px;
-	display          : block;
-	margin           : 0px;	
+	content         : attr(data-content);
+	background-color: #909090;
+	opacity         : 0.5;
+	font-size       : 90%;
+	width           : 71px;
+	height          : 96px;
+	display         : block;
+	margin          : 0px;	
 }
 
 .deckLabel {
-    font-family: Verdana;
-    display: inline-block;
-    font-size: 8pt;
-    margin-top: -18px;
-    font-weight: bold;
-    text-shadow: #000 -1px -1px 0, #000 -1px 1px 0, #000 1px -1px 0, #000 1px 1px 0;
-    color: #fff;
-    min-width: 62px;
-    z-index: 99;
-    text-align: center;
-    padding: 2px 4px;
-    border-radius: 5px;
-    background: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAACXBIWXMAAAsTAAALEwEAmpwYAAAAIGNIUk0AAHolAACAgwAA+f8AAIDpAAB1MAAA6mAAADqYAAAXb5JfxUYAAAAeSURBVHjaYmRgYPBgIAIwMRAJRhVSRyEAAAD//wMAg84AXJamdKUAAAAASUVORK5CYII=');
-    z-index: 999!important;
-    position: absolute;
-    top : static;
-    left : 0px;
+	font-family  : Verdana;
+	display      : inline-block;
+	font-size    : 8pt;
+	margin-top   : -18px;
+	font-weight  : bold;
+	text-shadow  : #000 -1px -1px 0, #000 -1px 1px 0, #000 1px -1px 0, #000 1px 1px 0;
+	color        : #fff;
+	min-width    : 62px;
+	z-index      : 99;
+	text-align   : center;
+	padding      : 2px 4px;
+	border-radius: 5px;
+	background   : url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAACXBIWXMAAAsTAAALEwEAmpwYAAAAIGNIUk0AAHolAACAgwAA+f8AAIDpAAB1MmAAADqYAAAXb5JfxUYAAAAeSURBVHjaYmRgYPBgIAIwMRAJRhVSRyEAAAD//wMAg84AXJamdKUAAAAASUVORK5CYII=');
+	z-index      : 999!important;
+	position     : absolute;
+	top          : static;
+	left         : 0px;
 }
 
 .hintUp {
@@ -109,61 +115,57 @@ body {
 }
 
 .hintUp, .hintDown {
-	background-size: 80% 80%;
+	background-size    : 80% 80%;
 	background-position: center -5px;
-	background-repeat: no-repeat; 
+	background-repeat  : no-repeat; 
 }
 
 .hintUp>.deckLabel, .hintDown>.deckLabel {
-	background: transparent;
-	font-size: 14pt;
+	background : transparent;
+	font-size  : 14pt;
 	text-shadow: none;
-	bottom: 0px;
-	opacity: 0.9;
-}
-
-.animated {
-	
+	bottom     : 0px;
+	opacity    : 0.9;
 }
 
 #solitaire-engine-style-preferences {
-  margin: 15px 0px 20px 0px;
+	margin: 15px 0px 20px 0px;
 }
 #solitaire-engine-style-preferences label {
-  display: block;
+	display: block;
 }
 
 #solitaire-engine-style-preferences>h4 {
-  margin: 20px 0px 20px 0px;
+	margin: 20px 0px 20px 0px;
 }
 
 .solitaire-engine-style-preferences-label {
-  display: inline-block;
-  width: 150px;
-  line-height: 20px;
-  font-weight: bold;
-  padding-top: 3px;
-  padding-bottom: 3px;
+	display       : inline-block;
+	width         : 150px;
+	line-height   : 20px;
+	font-weight   : bold;
+	padding-top   : 3px;
+	padding-bottom: 3px;
 }
 
 /* =========================================== */
 
 .red_back {
-  .flip {
-    background: url('#{$img_dir}b2fv.png')!important;
-    background-size: 100% 100%!important;
-    border: 0px!important;
-  }
+	.flip {
+		background     : url('#{$img_dir}b2fv.png')!important;
+		background-size: 100% 100%!important;
+		border         : 0px!important;
+	}
 }
 
 .blue_back {
-  .flip {
-    background: url('#{$img_dir}b1fv.png')!important;
-    background-size: 100% 100%!important;
-    border: 0px!important;
-  }
+	.flip {
+		background     : url('#{$img_dir}b1fv.png')!important;
+		background-size: 100% 100%!important;
+		border         : 0px!important;
+	}
 }
 
 #gamePreferences span {
-  width: 100%;
+	width: 100%;
 }

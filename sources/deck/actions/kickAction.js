@@ -19,61 +19,13 @@ export default function(data) {
 		return false;
 	}
 
-	// if(share.get('prevStepType') != defaults.stepType) {
-	// 	return false;
-	// }
-
-	// let _name = null;
-	// if(
-	// 	data.eventData[0]                            &&
-	// 	data.eventData[0].move                       &&
-	// 	typeof data.eventData[0].move.to == "string"
-	// ) {
-	// 	_name = data.eventData[0].move.to;
-	// }
-	
-	// if(
-	// 	data.eventData.to                    &&
-	// 	typeof data.eventData.to == "string"
-	// ) {
-	// 	_name = data.eventData.to;
-	// }
-	
-	// if(
-	// 	data.eventData.to                         &&
-	// 	typeof data.eventData.to != "string"      &&
-	// 	typeof data.eventData.to.name == "string"
-	// ) {
-	// 	_name = data.eventData.to.name;
-	// }
-
-	if(data.eventData.to.name != this.name) {// data.eventData.to - куда мы перетащили карты
+	if(data.eventData.to.name != this.name) {// стопка назначения = текущая
 		return false;
 	}
 
-	// if(window.debug_kick) {
-	// 	console.log('data.eventData.stepType:', data);
-	// 	throw new Error();
-	// }
-	window.debug_kick = 1;
-
-	// if(
-	// 	data.eventData[0]                         &&
-	// 	typeof data.eventData[0].name == "string" &&
-	// 	data.eventData[0].name != this.name
-	// ) {
-	// 	return false;
-	// }
-
 	common.animationDefault();
 	
-	// var _toDeck = Deck.Deck(data.actionData.to);
-	
-	// let _from = typeof data.eventData.to == "string"
-	// 		? Deck.Deck(_name)
-	// 		: data.eventData.to
-	
-	let _from = data.eventData.to, //Deck.Deck(_name),
+	let _from = data.eventData.to    ,
 	    _deck = _from.getCardsNames();
 
 	let _callback = ()=>{
@@ -98,6 +50,8 @@ export default function(data) {
 	
 
 	// TODO interval
+	// лучше/красивее раздавать карты по одной
+	
 	let forceMoveParams = {
 		from     : _from             ,// deck
 		to       : data.actionData.to,// _decks[deckId].name,
@@ -105,12 +59,5 @@ export default function(data) {
 		flip     : true              ,// true
 		callback : _callback
 	};
-	
-	// forceMove(forceMoveParams);
 	event.dispatch('forceMove', forceMoveParams);
-	
-
-	// if(e.after) {
-	// 	_events[e.after].call(this, e);
-	// };
 }

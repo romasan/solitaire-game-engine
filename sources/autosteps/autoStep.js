@@ -68,7 +68,9 @@ export default class {
 
 			event.listen('moveEnd', () => {
 
-				if(share.get('stepType') != this.stepType) { return; }
+				if(share.get('stepType') != this.stepType) {
+					return;
+				}
 				
 				this.check();
 			});
