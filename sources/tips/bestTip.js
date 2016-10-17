@@ -9,11 +9,11 @@ import Field from 'field';
 
 export default function(moveDeck, cursorMove) {
 
-	var _autoTips = [];
+	let _autoTips = [];
 
 	// выбрать подсказки для стопки из кторорой взяли карты
-	var _tips = Tips.getTips();
-	for(i in _tips) {
+	let _tips = Tips.getTips();
+	for(let i in _tips) {
 		if(_tips[i].from.card.id == moveDeck[0].card.id) {
 			_autoTips.push(_tips[i]);
 		}
@@ -24,37 +24,43 @@ export default function(moveDeck, cursorMove) {
 	}
 
 	// move card to closest deck of a possible move
-	var _min_distance       = -1,
-		_tip_index          = 0,
-		_in_direction_count = 0;
+	let _tip_index          = 0 ,
+		_in_direction_count = 0 ,
+		_min_distance       = -1;
 
 	// Приоритет для homeGroups
-	var _homeGroups = Field.homeGroups;
-	
+	let _homeGroups = Field.homeGroups;
 	if(_homeGroups) {
-		var _tips = [];
-		for(var i in _homeGroups) {
-			for(var t in _autoTips) {
+		
+		let _tips = [];
+		
+		for(let i in _homeGroups) {
+			for(let t in _autoTips) {
 				if(_autoTips[t].to.deck.parent == _homeGroups[i]) {
 					_tips.push(_autoTips[t]);
 				}
 			}
 		}
-		if(_tips.length) _autoTips = _tips;
+
+		// есть подсказки ведущие в homeGroups
+		if(_tips.length) {
+			_autoTips = _tips;
+		}
 	}
 
 	// вариантов несколько
-	if(_autoTips.length >= 2) {
+	if(_autoTips.length > 1) {
 
-		for(var i in _autoTips) {
+		for(let i in _autoTips) {
 
-			var center_from = {
+			// правый нижний край ???
+			let center_from = {
 				x : cursorMove.deckPosition.x + (defaults.card.width ),
 				y : cursorMove.deckPosition.y + (defaults.card.height)
 			}
 
-			var _destination_deck_last_card_position = _autoTips[i].to.deck.padding(_autoTips[i].to.deck.cards.length);
-			var center_to = {
+			let _destination_deck_last_card_position = _autoTips[i].to.deck.padding(_autoTips[i].to.deck.cards.length);
+			let center_to = {
 				x : _destination_deck_last_card_position.x + (defaults.card.width ),
 				y : _destination_deck_last_card_position.y + (defaults.card.height)
 			}
@@ -71,7 +77,7 @@ export default function(moveDeck, cursorMove) {
 
 		}
 
-		for(var i in _autoTips) {
+		for(let i in _autoTips) {
 
 			if(_min_distance == '-1') {
 				if(_in_direction_count == 0) {

@@ -97,8 +97,7 @@ var Move = function(moveDeck, to, cursorMove) {//
 				// TODO вынести из логики
 				common.animationDefault();
 
-				let _stepType     = share.get('stepType'),
-				    _prevStepType = share.get('prevStepType');
+				let _stepType = share.get('stepType');
 
 				// if(
 				// 	_stepType == 'default'     &&
@@ -109,11 +108,10 @@ var Move = function(moveDeck, to, cursorMove) {//
 
 				event.dispatch('addStep', {
 					'move' : {
-						from         : _deck_departure  .name      ,
-						to           : _deck_destination.name      ,
-						deck         : Deck.deckCardNames(moveDeck),
-						stepType     : _stepType                   ,
-						prevStepType : _prevStepType
+						from     : _deck_departure  .name      ,
+						to       : _deck_destination.name      ,
+						deck     : Deck.deckCardNames(moveDeck),
+						stepType : _stepType                    // undo step type
 					}
 				})
 				
@@ -134,7 +132,10 @@ var Move = function(moveDeck, to, cursorMove) {//
 							from     : _deck_departure      ,
 							to       : _deck_destination    ,
 							moveDeck : moveDeck             ,
-							stepType : share.get('stepType')
+							stepType : {
+								undo: share.get('stepType'),
+								redo: share.get('stepType')
+							}
 						});
 
 						Tips.checkTips();

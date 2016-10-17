@@ -38,10 +38,10 @@ event.listen('gameInited', ()=>{
 	defaultPreferences();
 });
 
-share.set('prevStepType', defaults.stepType);
-event.listen('shareChange:stepType', ()=>{
-	share.set('prevStepType', share.get('stepType'));
-});
+// share.set('prevStepType', defaults.stepType);
+// event.listen('shareChange:stepType', (e) => {
+// 	share.set('prevStepType', e.from);
+// });
 
 event.listen('moveEnd', function(e) {
 	Tips.checkTips();

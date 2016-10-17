@@ -124,7 +124,7 @@ var SolitaireEngine =
 	exports.options = _defaults2.default;
 	exports.winCheck = _winCheck2.default.hwinCheck;
 	exports.generator = _deckGenerator2.default;
-	exports.version = (9091491726).toString().split(9).slice(1).map(function (e) {
+	exports.version = (9091491766).toString().split(9).slice(1).map(function (e) {
 		return parseInt(e, 8);
 	}).join('.');
 	
@@ -827,10 +827,10 @@ var SolitaireEngine =
 		(0, _defaultPreferences2.default)();
 	});
 	
-	_share2.default.set('prevStepType', _defaults2.default.stepType);
-	_event2.default.listen('shareChange:stepType', function () {
-		_share2.default.set('prevStepType', _share2.default.get('stepType'));
-	});
+	// share.set('prevStepType', defaults.stepType);
+	// event.listen('shareChange:stepType', (e) => {
+	// 	share.set('prevStepType', e.from);
+	// });
 	
 	_event2.default.listen('moveEnd', function (e) {
 		_tips2.default.checkTips();
@@ -1363,8 +1363,8 @@ var SolitaireEngine =
 		var _autoTips = [];
 	
 		// выбрать подсказки для стопки из кторорой взяли карты
-		var _tips = _tips3.default.getTips();
-		for (i in _tips) {
+		var _tips = _tips4.default.getTips();
+		for (var i in _tips) {
 			if (_tips[i].from.card.id == moveDeck[0].card.id) {
 				_autoTips.push(_tips[i]);
 			}
@@ -1375,70 +1375,76 @@ var SolitaireEngine =
 		}
 	
 		// move card to closest deck of a possible move
-		var _min_distance = -1,
-		    _tip_index = 0,
-		    _in_direction_count = 0;
+		var _tip_index = 0,
+		    _in_direction_count = 0,
+		    _min_distance = -1;
 	
 		// Приоритет для homeGroups
 		var _homeGroups = _field2.default.homeGroups;
-	
 		if (_homeGroups) {
-			var _tips = [];
-			for (var i in _homeGroups) {
+	
+			var _tips2 = [];
+	
+			for (var _i in _homeGroups) {
 				for (var t in _autoTips) {
-					if (_autoTips[t].to.deck.parent == _homeGroups[i]) {
-						_tips.push(_autoTips[t]);
+					if (_autoTips[t].to.deck.parent == _homeGroups[_i]) {
+						_tips2.push(_autoTips[t]);
 					}
 				}
 			}
-			if (_tips.length) _autoTips = _tips;
+	
+			// есть подсказки ведущие в homeGroups
+			if (_tips2.length) {
+				_autoTips = _tips2;
+			}
 		}
 	
 		// вариантов несколько
-		if (_autoTips.length >= 2) {
+		if (_autoTips.length > 1) {
 	
-			for (var i in _autoTips) {
+			for (var _i2 in _autoTips) {
 	
+				// правый нижний край ???
 				var center_from = {
 					x: cursorMove.deckPosition.x + _defaults2.default.card.width,
 					y: cursorMove.deckPosition.y + _defaults2.default.card.height
 				};
 	
-				var _destination_deck_last_card_position = _autoTips[i].to.deck.padding(_autoTips[i].to.deck.cards.length);
+				var _destination_deck_last_card_position = _autoTips[_i2].to.deck.padding(_autoTips[_i2].to.deck.cards.length);
 				var center_to = {
 					x: _destination_deck_last_card_position.x + _defaults2.default.card.width,
 					y: _destination_deck_last_card_position.y + _defaults2.default.card.height
 				};
 	
-				_autoTips[i].distance = Math.sqrt(_common2.default.sqr(center_from.x - center_to.x) + _common2.default.sqr(center_from.y - center_to.y));
-				_autoTips[i].inDirection = false;
+				_autoTips[_i2].distance = Math.sqrt(_common2.default.sqr(center_from.x - center_to.x) + _common2.default.sqr(center_from.y - center_to.y));
+				_autoTips[_i2].inDirection = false;
 				if (cursorMove.direction.x > 0 && center_to.x > center_from.x || cursorMove.direction.x < 0 && center_to.x < center_from.x) {
-					_autoTips[i].inDirection = true;
+					_autoTips[_i2].inDirection = true;
 					_in_direction_count += 1;
 				}
 			}
 	
-			for (var i in _autoTips) {
+			for (var _i3 in _autoTips) {
 	
 				if (_min_distance == '-1') {
 					if (_in_direction_count == 0) {
-						_min_distance = _autoTips[i].distance;
+						_min_distance = _autoTips[_i3].distance;
 					} else {
-						if (_autoTips[i].inDirection) {
-							_min_distance = _autoTips[i].distance;
-							_tip_index = i;
+						if (_autoTips[_i3].inDirection) {
+							_min_distance = _autoTips[_i3].distance;
+							_tip_index = _i3;
 						}
 					}
 				}
 	
-				if (_autoTips[i].distance < _min_distance) {
+				if (_autoTips[_i3].distance < _min_distance) {
 					if (_in_direction_count == 0) {
-						_min_distance = _autoTips[i].distance;
-						_tip_index = i;
+						_min_distance = _autoTips[_i3].distance;
+						_tip_index = _i3;
 					} else {
-						if (_autoTips[i].inDirection) {
-							_min_distance = _autoTips[i].distance;
-							_tip_index = i;
+						if (_autoTips[_i3].inDirection) {
+							_min_distance = _autoTips[_i3].distance;
+							_tip_index = _i3;
 						}
 					}
 				}
@@ -1460,9 +1466,9 @@ var SolitaireEngine =
 	
 	var _common2 = _interopRequireDefault(_common);
 	
-	var _tips2 = __webpack_require__(6);
+	var _tips3 = __webpack_require__(6);
 	
-	var _tips3 = _interopRequireDefault(_tips2);
+	var _tips4 = _interopRequireDefault(_tips3);
 	
 	var _field = __webpack_require__(9);
 	
@@ -3648,14 +3654,18 @@ var SolitaireEngine =
 				// _decks[deckId].Redraw();
 	
 				_event2.default.dispatch('dealEnd');
+	
+				console.log('>#>', _share2.default.get('stepType'));
 				_event2.default.dispatch('addStep', {
 					'move': {
 						from: dealDeck.name,
 						to: _decks[deckId].name,
 						deck: [_cardName],
 						flip: true,
-						stepType: _share2.default.get('stepType'),
-						prevStepType: _share2.default.get('prevStepType')
+						stepType: {
+							undo: _share2.default.get('stepType'),
+							redo: data.actionData.dispatch ? _share2.default.get('stepType') : _defaults2.default.stepType
+						}
 					}
 				});
 			};
@@ -3825,19 +3835,22 @@ var SolitaireEngine =
 	
 	exports.default = function (data) {
 	
+		// если тип хода не стандартный не выполнять кик
 		if (_share2.default.get('stepType') != _defaults2.default.stepType) {
 			return false;
 		}
 	
+		// TODO спорный момент
 		if (typeof data.eventData.stepType == "string" && data.eventData.stepType != _defaults2.default.stepType) {
-			// ??? TODO проверить нужно ли это
 			return false;
 		}
 	
+		// стопка назначения = текущая
 		if (data.eventData.to.name != this.name) {
-			// стопка назначения = текущая
 			return false;
 		}
+	
+		_share2.default.set('stepType', stepType);
 	
 		_common2.default.animationDefault();
 	
@@ -3852,10 +3865,14 @@ var SolitaireEngine =
 					to: data.actionData.to,
 					deck: _deck,
 					flip: true,
-					stepType: _share2.default.get('stepType'),
-					prevStepType: _share2.default.get('prevStepType')
+					stepType: {
+						undo: _share2.default.get('stepType'),
+						redo: data.actionData.dispatch ? _share2.default.get('stepType') : _defaults2.default.stepType
+					}
 				}
 			});
+	
+			_share2.default.set('stepType', _defaults2.default.stepType);
 	
 			_event2.default.dispatch('saveSteps');
 	
@@ -3868,10 +3885,10 @@ var SolitaireEngine =
 		// лучше/красивее раздавать карты по одной
 	
 		var forceMoveParams = {
-			from: _from, // deck
-			to: data.actionData.to, // _decks[deckId].name,
-			deck: _deck, // [_cardName],
-			flip: true, // true
+			from: _from,
+			to: data.actionData.to,
+			deck: _deck,
+			flip: true,
 			callback: _callback
 		};
 		_event2.default.dispatch('forceMove', forceMoveParams);
@@ -3892,8 +3909,10 @@ var SolitaireEngine =
 	var _defaults = __webpack_require__(3);
 	
 	var _defaults2 = _interopRequireDefault(_defaults);
-
+	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	var stepType = 'kickStepType';
 
 /***/ },
 /* 23 */
@@ -4549,22 +4568,9 @@ var SolitaireEngine =
 		// };
 	
 		// if(a.unflip) {
-		// 	if(
-		// 		typeof a.unflip.deck       == "string"
-		// 	 && typeof a.unflip.card       != "undefined"
-		// 	 && typeof a.unflip.card.name  == "string"
-		// 	 && typeof a.unflip.card.index != "undefined"
-		// 	) {
-		// 		var _deck = Deck.Deck(a.unflip.deck),
-		// 			_cards = _deck ? _deck.cards : [];
-		// 		if(_cards[a.unflip.card.index].name == a.unflip.card.name) {
-		// 			_cards[a.unflip.card.index].flip = true;
-		// 		}
-		// 	}
 		// };
 	
 		// if(a.fill) {
-		// 	// TODO
 		// };
 	
 		// LOCK
@@ -4589,16 +4595,13 @@ var SolitaireEngine =
 		// MOVE
 		if (typeof a.move != "undefined" && typeof a.move.from != "undefined" && typeof a.move.to != "undefined" && typeof a.move.deck != "undefined") {
 	
-			if (typeof a.move.prevStepType == "string") {
-	
-				console.log('#prevStepType', a.move.prevStepType, _common2.default.isCurLock());
-	
-				_share2.default.set('stepType', a.move.prevStepType);
+			if (a.move.stepType && a.move.stepType.undo) {
+				_share2.default.set('stepType', a.move.stepType.undo);
 			}
 	
 			(0, _forceMove2.default)({
-				from: a.move.to, // from <=> to
-				to: a.move.from,
+				from: a.move.to, // from ->
+				to: a.move.from, //      <- to
 				deck: a.move.deck,
 				flip: a.move.flip
 			});
@@ -4642,21 +4645,6 @@ var SolitaireEngine =
 		// if(a.flip) {
 		// };
 	
-		// if(a.unflip) {
-		// 	if(
-		// 		typeof a.unflip.deck       == "string"
-		// 	 && typeof a.unflip.card       != "undefined"
-		// 	 && typeof a.unflip.card.name  == "string"
-		// 	 && typeof a.unflip.card.index != "undefined"
-		// 	) {
-		// 		var _deck = Deck.Deck(a.unflip.deck),
-		// 			_cards = _deck ? _deck.cards : [];
-		// 		if(_cards[a.unflip.card.index].name == a.unflip.card.name) {
-		// 			_cards[a.unflip.card.index].flip = false;
-		// 		}
-		// 	}
-		// };
-	
 		// if(a.fill) {
 		// 	// TODO
 		// };
@@ -4682,6 +4670,11 @@ var SolitaireEngine =
 	
 		// MOVE
 		if (typeof a.move != "undefined" && typeof a.move.from != "undefined" && typeof a.move.to != "undefined" && typeof a.move.deck != "undefined") {
+	
+			if (a.move.stepType && a.move.stepType.redo) {
+				_share2.default.set('stepType', a.move.stepType.redo);
+			}
+	
 			(0, _forceMove2.default)(a.move);
 		}
 	};
@@ -6589,8 +6582,7 @@ var SolitaireEngine =
 					// TODO вынести из логики
 					_common2.default.animationDefault();
 	
-					var _stepType2 = _share2.default.get('stepType'),
-					    _prevStepType = _share2.default.get('prevStepType');
+					var _stepType2 = _share2.default.get('stepType');
 	
 					// if(
 					// 	_stepType == 'default'     &&
@@ -6604,8 +6596,7 @@ var SolitaireEngine =
 							from: _deck_departure.name,
 							to: _deck_destination.name,
 							deck: _addDeck2.default.deckCardNames(moveDeck),
-							stepType: _stepType2,
-							prevStepType: _prevStepType
+							stepType: _stepType2 // undo step type
 						}
 					});
 	
@@ -6626,7 +6617,10 @@ var SolitaireEngine =
 								from: _deck_departure,
 								to: _deck_destination,
 								moveDeck: moveDeck,
-								stepType: _share2.default.get('stepType')
+								stepType: {
+									undo: _share2.default.get('stepType'),
+									redo: _share2.default.get('stepType')
+								}
 							});
 	
 							_tips2.default.checkTips();

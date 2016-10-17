@@ -5,30 +5,36 @@ import share    from 'share';
 import common   from 'common';
 import defaults from 'defaults';
 
+const stepType = 'kickStepType';
+
 export default function(data) {
 	
+	// если тип хода не стандартный не выполнять кик
 	if(share.get('stepType') != defaults.stepType) {
 		return false;
 	}
 
+	// TODO спорный момент
 	if(
 		typeof data.eventData.stepType == "string"   &&
 		data.eventData.stepType != defaults.stepType
 	) {
-		// ??? TODO проверить нужно ли это
 		return false;
 	}
 
-	if(data.eventData.to.name != this.name) {// стопка назначения = текущая
+	// стопка назначения = текущая
+	if(data.eventData.to.name != this.name) {
 		return false;
 	}
+
+	share.set('stepType', stepType);
 
 	common.animationDefault();
 	
 	let _from = data.eventData.to    ,
 	    _deck = _from.getCardsNames();
 
-	let _callback = ()=>{
+	let _callback = () => {
 
 		event.dispatch('addStep', {
 			"move" : {
@@ -36,10 +42,14 @@ export default function(data) {
 				to           : data.actionData.to,
 				deck         : _deck,
 				flip         : true,
-				stepType     : share.get('stepType'),
-				prevStepType : share.get('prevStepType')
+				stepType     : {
+					undo: share.get('stepType'),
+					redo: data.actionData.dispatch ? share.get('stepType') : defaults.stepType
+				}
 			}
 		});
+
+		share.set('stepType', defaults.stepType);
 
 		event.dispatch('saveSteps');
 
@@ -53,10 +63,10 @@ export default function(data) {
 	// лучше/красивее раздавать карты по одной
 	
 	let forceMoveParams = {
-		from     : _from             ,// deck
-		to       : data.actionData.to,// _decks[deckId].name,
-		deck     : _deck             ,// [_cardName],
-		flip     : true              ,// true
+		from     : _from             ,
+		to       : data.actionData.to,
+		deck     : _deck             ,
+		flip     : true              ,
 		callback : _callback
 	};
 	event.dispatch('forceMove', forceMoveParams);

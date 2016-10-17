@@ -24,22 +24,9 @@ var _undo = function(a) {
 	// };
 	
 	// if(a.unflip) {
-	// 	if(
-	// 		typeof a.unflip.deck       == "string"
-	// 	 && typeof a.unflip.card       != "undefined"
-	// 	 && typeof a.unflip.card.name  == "string"
-	// 	 && typeof a.unflip.card.index != "undefined"
-	// 	) {
-	// 		var _deck = Deck.Deck(a.unflip.deck),
-	// 			_cards = _deck ? _deck.cards : [];
-	// 		if(_cards[a.unflip.card.index].name == a.unflip.card.name) {
-	// 			_cards[a.unflip.card.index].flip = true;
-	// 		}
-	// 	}
 	// };
 	
 	// if(a.fill) {
-	// 	// TODO
 	// };
 
 	// LOCK
@@ -73,16 +60,13 @@ var _undo = function(a) {
 	 && typeof a.move.deck != "undefined"
 	) {
 
-		if(typeof a.move.prevStepType == "string") {
-
-			console.log('#prevStepType', a.move.prevStepType, common.isCurLock());
-			
-			share.set('stepType', a.move.prevStepType);
+		if(a.move.stepType && a.move.stepType.undo) {
+			share.set('stepType', a.move.stepType.undo);
 		}
 
 		forceMove({
-			from : a.move.to,// from <=> to
-			to   : a.move.from,
+			from : a.move.to,   // from ->
+			to   : a.move.from, //      <- to
 			deck : a.move.deck,
 			flip : a.move.flip
 		});
@@ -130,21 +114,6 @@ var _redo = function(a) {
 	// if(a.flip) {
 	// };
 	
-	// if(a.unflip) {
-	// 	if(
-	// 		typeof a.unflip.deck       == "string"
-	// 	 && typeof a.unflip.card       != "undefined"
-	// 	 && typeof a.unflip.card.name  == "string"
-	// 	 && typeof a.unflip.card.index != "undefined"
-	// 	) {
-	// 		var _deck = Deck.Deck(a.unflip.deck),
-	// 			_cards = _deck ? _deck.cards : [];
-	// 		if(_cards[a.unflip.card.index].name == a.unflip.card.name) {
-	// 			_cards[a.unflip.card.index].flip = false;
-	// 		}
-	// 	}
-	// };
-	
 	// if(a.fill) {
 	// 	// TODO
 	// };
@@ -179,6 +148,11 @@ var _redo = function(a) {
 	 && typeof a.move.to   != "undefined" 
 	 && typeof a.move.deck != "undefined"
 	) {
+
+		if(a.move.stepType && a.move.stepType.redo) {
+			share.set('stepType', a.move.stepType.redo);
+		}
+
 		forceMove(a.move);
 	}
 

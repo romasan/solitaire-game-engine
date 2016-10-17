@@ -7,7 +7,7 @@ import common    from 'common';
 
 import forceMove from 'forceMove';
 
-let stepType = 'dealerdeckStepType';
+const stepType = 'dealerdeckStepType';
 
 export default function(data) {// data.actionData, e
 
@@ -148,14 +148,18 @@ export default function(data) {// data.actionData, e
 			// _decks[deckId].Redraw();
 
 			event.dispatch('dealEnd');
+
+			console.log('>#>', share.get('stepType'))
 			event.dispatch('addStep', {
 				'move' : {
 					from         : dealDeck.name,
 					to           : _decks[deckId].name,
 					deck         : [_cardName],
 					flip         : true,
-					stepType     : share.get('stepType'),
-					prevStepType : share.get('prevStepType')
+					stepType     : {
+						undo: share.get('stepType'),
+						redo: data.actionData.dispatch ? share.get('stepType') : defaults.stepType
+					}
 				}
 			});
 
