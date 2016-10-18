@@ -175,7 +175,6 @@ export default function(data) {// data.actionData, e
 
 			event.dispatch('dealEnd');
 
-			console.log('>#>', share.get('stepType'))
 			event.dispatch('addStep', {
 				'move' : {
 					from         : dealDeck.name,
@@ -185,7 +184,8 @@ export default function(data) {// data.actionData, e
 					stepType     : {
 						undo: share.get('stepType'),
 						redo: data.actionData.dispatch ? share.get('stepType') : defaults.stepType
-					}
+					},
+					context: "dealerdeckAction"
 				}
 			});
 

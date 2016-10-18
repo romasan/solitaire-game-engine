@@ -8,6 +8,10 @@ import Tips  from 'tips';
 import Field from 'field';
 
 export default function(moveDeck, cursorMove) {
+	
+	// TODO 
+	// Пустая ячейка должна иметь наименьший приоритет
+	// при выборе ближайшей карты, расстояние считать не от курсора, а от центров карт
 
 	var _autoTips = [];
 	

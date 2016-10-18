@@ -124,7 +124,7 @@ var SolitaireEngine =
 	exports.options = _defaults2.default;
 	exports.winCheck = _winCheck2.default.hwinCheck;
 	exports.generator = _deckGenerator2.default;
-	exports.version = (9091491701).toString().split(9).slice(1).map(function (e) {
+	exports.version = (9091491703).toString().split(9).slice(1).map(function (e) {
 		return parseInt(e, 8);
 	}).join('.');
 	
@@ -1363,6 +1363,10 @@ var SolitaireEngine =
 	});
 	
 	exports.default = function (moveDeck, cursorMove) {
+	
+		// TODO 
+		// Пустая ячейка должна иметь наименьший приоритет
+		// при выборе ближайшей карты, расстояние считать не от курсора, а от центров карт
 	
 		var _autoTips = [];
 	
@@ -3652,7 +3656,6 @@ var SolitaireEngine =
 	
 				_event2.default.dispatch('dealEnd');
 	
-				console.log('>#>', _share2.default.get('stepType'));
 				_event2.default.dispatch('addStep', {
 					'move': {
 						from: dealDeck.name,
@@ -3662,7 +3665,8 @@ var SolitaireEngine =
 						stepType: {
 							undo: _share2.default.get('stepType'),
 							redo: data.actionData.dispatch ? _share2.default.get('stepType') : _defaults2.default.stepType
-						}
+						},
+						context: "dealerdeckAction"
 					}
 				});
 			};
@@ -3912,9 +3916,10 @@ var SolitaireEngine =
 					deck: _deck,
 					flip: true,
 					stepType: {
-						undo: _share2.default.get('stepType'),
-						redo: data.actionData.dispatch ? _share2.default.get('stepType') : _defaults2.default.stepType
-					}
+						undo: stepType, // share.get('stepType'),
+						redo: stepTypedata.actionData.dispatch ? _share2.default.get('stepType') : _defaults2.default.stepType
+					},
+					context: "kickAction"
 				}
 			});
 	
@@ -4647,8 +4652,13 @@ var SolitaireEngine =
 		// MOVE
 		if (typeof a.move != "undefined" && typeof a.move.from != "undefined" && typeof a.move.to != "undefined" && typeof a.move.deck != "undefined") {
 	
-			if (a.move.stepType && a.move.stepType.undo) {
-				_share2.default.set('stepType', a.move.stepType.undo);
+			if (a.move.stepType) {
+				if (typeof a.move.stepType == "string") {
+					_share2.default.set('stepType', a.move.stepType);
+				}
+				if (typeof a.move.stepType.undo == "string") {
+					_share2.default.set('stepType', a.move.stepType.undo);
+				}
 			}
 	
 			(0, _forceMove2.default)({
@@ -4725,8 +4735,13 @@ var SolitaireEngine =
 		// MOVE
 		if (typeof a.move != "undefined" && typeof a.move.from != "undefined" && typeof a.move.to != "undefined" && typeof a.move.deck != "undefined") {
 	
-			if (a.move.stepType && a.move.stepType.redo) {
-				_share2.default.set('stepType', a.move.stepType.redo);
+			if (a.move.stepType) {
+				if (typeof a.move.stepType == "string") {
+					_share2.default.set('stepType', a.move.stepType);
+				}
+				if (typeof a.move.stepType.redo == "string") {
+					_share2.default.set('stepType', a.move.stepType.redo);
+				}
 			}
 	
 			(0, _forceMove2.default)(a.move);
@@ -6626,8 +6641,7 @@ var SolitaireEngine =
 							from: _deck_departure.name,
 							to: _deck_destination.name,
 							deck: _addDeck2.default.deckCardNames(moveDeck),
-							stepType: _stepType2,
-							prevStepType: _prevStepType
+							stepType: _stepType2
 						}
 					});
 	
@@ -6667,7 +6681,6 @@ var SolitaireEngine =
 								to: _deck_destination,
 								moveDeck: moveDeck,
 								stepType: _share2.default.get('stepType')
-								// prevStepType : share.get('prevStepType')
 							});
 	
 							_tips2.default.checkTips();

@@ -63,8 +63,13 @@ var _undo = function(a) {
 	 && typeof a.move.deck != "undefined"
 	) {
 
-		if(a.move.stepType && a.move.stepType.undo) {
-			share.set('stepType', a.move.stepType.undo);
+		if(a.move.stepType) {
+			if(typeof a.move.stepType == "string") {
+				share.set('stepType', a.move.stepType);
+			}
+			if(typeof a.move.stepType.undo == "string") {
+				share.set('stepType', a.move.stepType.undo);
+			}
 		}
 
 		forceMove({
@@ -152,8 +157,13 @@ var _redo = function(a) {
 	 && typeof a.move.deck != "undefined"
 	) {
 
-		if(a.move.stepType && a.move.stepType.redo) {
-			share.set('stepType', a.move.stepType.redo);
+		if(a.move.stepType) {
+			if(typeof a.move.stepType == "string") {
+				share.set('stepType', a.move.stepType);
+			}
+			if(typeof a.move.stepType.redo == "string") {
+				share.set('stepType', a.move.stepType.redo);
+			}
 		}
 
 		forceMove(a.move);

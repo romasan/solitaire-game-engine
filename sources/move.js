@@ -99,8 +99,7 @@ var Move = function(moveDeck, to, cursorMove) {
 							from         : _deck_departure  .name      ,
 							to           : _deck_destination.name      ,
 							deck         : Deck.deckCardNames(moveDeck),
-							stepType     : _stepType                   ,
-							prevStepType : _prevStepType
+							stepType     : _stepType
 						}
 					})
 					
@@ -140,7 +139,6 @@ var Move = function(moveDeck, to, cursorMove) {
 								to       : _deck_destination    ,
 								moveDeck : moveDeck             ,
 								stepType : share.get('stepType')
-								// prevStepType : share.get('prevStepType')
 							});
 
 							Tips.checkTips();

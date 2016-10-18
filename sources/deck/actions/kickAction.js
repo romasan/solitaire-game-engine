@@ -88,9 +88,10 @@ export default function(data) {
 				deck         : _deck,
 				flip         : true,
 				stepType     : {
-					undo: share.get('stepType'),
-					redo: data.actionData.dispatch ? share.get('stepType') : defaults.stepType
-				}
+					undo: stepType,// share.get('stepType'),
+					redo: stepTypedata.actionData.dispatch ? share.get('stepType') : defaults.stepType
+				},
+				context: "kickAction"
 			}
 		});
 
