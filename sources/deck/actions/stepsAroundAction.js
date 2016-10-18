@@ -24,10 +24,7 @@ let endAction = ()=>{
 export default function(data) {// {actionData, eventData, eventName}
 
 	let _stepType = share.get('stepType');
-	
-	if(_stepType != defaults.stepType) {
-		return;
-	}
+	if(_stepType != defaults.stepType) { return; };
 
 	share.set('stepType', stepType);
 	// stop Drag'n'Drop

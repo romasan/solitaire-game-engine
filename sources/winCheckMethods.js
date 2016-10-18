@@ -18,9 +18,7 @@ var wcm = {
 	// возвращает колоды определённой группы/групп
 	group : function(a) {
 
-		if(!a.filter || !a.filterArgs) {
-			return false;
-		}
+		if(!a.filter || !a.filterArgs) { return false; }
 
 		var _decks = [];
 		for(let _i in a.decks) {
@@ -52,9 +50,7 @@ var wcm = {
 
 	deck: function(a) {
 		
-		if(!a.filter || !a.filterArgs) {
-			return false;
-		}
+		if(!a.filter || !a.filterArgs) { return false; }
 		
 		let _decks = [];
 
@@ -97,17 +93,13 @@ var wcm = {
 
 	_asc_desk : function(a) {
 
-		if(!a || typeof a.asc_desk != 'number') {
-			return false;
-		}
+		if(!a || typeof a.asc_desk != 'number') { return false; }
 
 		var _correct = true;
 		
 		for(var d in a.decks) {
 
-			if(!_correct) {
-				return false;
-			}
+			if(!_correct) return false;
 			
 			var _cards = a.decks[d].cards;
 			for(var c in _cards) {
@@ -199,9 +191,7 @@ var wcm = {
 		
 	lego : function(_a) {
 		
-		if(!_a || !_a.rulesArgs) {
-			return false;
-		}
+		if(!_a || !_a.rulesArgs) return false;
 		
 		var _correct = true;
 		

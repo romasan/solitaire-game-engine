@@ -23,6 +23,26 @@ export default function(data) {// data.actionData, e
 	) {
 		return;
 	}
+
+	// listen click
+	// click is for me (default)
+	// if(this.name != data.actionData.name) { return; };
+	
+	// if(
+	// 	!data.eventData ||
+	// 	this.name != data.eventData.to.name
+	// ) {
+	// 	return;
+	// };
+
+	// console.log('dealerDeckAction', this, data);
+
+	// if(
+	// 	!data.eventData.to                  &&
+	// 	this.name != data.eventData.to.name
+	// ) {
+	// 	return;
+	// };
 	
 	// меняем тип хода
 	share.set('stepType', stepType);
@@ -49,7 +69,13 @@ export default function(data) {// data.actionData, e
 	if(data.actionData.toGroup && !data.actionData.to) {
 		
 		data.actionData.to = data.actionData.toGroup;
-
+		
+		// _decks = _decks.concat(Group.Group(e.toGroup).decks);
+		
+		// var __decks = Group.Group(data.actionData.toGroup).decks;
+		// for(var deckIndex in __decks) {
+		// 	_decks.push(__decks[deckIndex]);
+		// }
 	};
 
 	// есть куда раздать
@@ -171,6 +197,10 @@ export default function(data) {// data.actionData, e
 
 		// сохраняем если паздача удалась
 		event.dispatch('saveSteps');
+		// event.dispatch('checkTips');
+		// if(History.count()) {
+		// 	event.dispatch('makeStep', History.get());
+		// }
 
 	};
 

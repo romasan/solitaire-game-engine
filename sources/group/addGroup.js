@@ -85,9 +85,7 @@ class groupClass {
 	// Add deck to group
 	addDeck(a) {
 
-		if(!a) {
-			return;
-		}
+		if(!a) return;
 		
 		if(!a.position) {
 			a.position = {
@@ -249,10 +247,7 @@ class groupClass {
 
 var addGroup = function(a) {
 
-	if(!a) {
-		return false;
-	}
-	
+	if(!a) return false;
 	var _id = 'group_' + common.genId();
 	
 	var _el_group = new groupClass(a, _id);
@@ -289,6 +284,7 @@ var addGroup = function(a) {
 		};
 
 		// relations TO <-> FROM
+		// if( a.backRelations ) TODO
 		for(let to in a.decks) {
 
 			for(let relId in a.decks[to].relations) {

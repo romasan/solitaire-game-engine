@@ -65,6 +65,7 @@ export default function(e) {
 
 			for(let relGenName in _relGenerators) {
 
+				// TODO
 				if(e.relations[relGenName]) {
 					_relations = _relations.concat(relationsGenerator[_relGenerators[relGenName]]({
 						deckIndex,

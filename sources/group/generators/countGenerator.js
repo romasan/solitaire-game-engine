@@ -6,10 +6,10 @@
 
 export default function(e) {
 	
-	// {
-	//   type   : "count",
-	//   count  : int,
-	// }
+    // {
+    //   type   : "count",
+    //   count  : int,
+    // }
 
 	var _count = e.count;
 	var _decks = [];

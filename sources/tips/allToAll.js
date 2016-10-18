@@ -1,26 +1,26 @@
 'use strict';
 
-export default (a) => {
+export default (a)=>{
 
 	let _moves = [];
-
+	
 // 4)
 
 	// если получилось положить карты (с текущими правилами) записываем как возможный ход
-	let put = (deckIndex_2, deckIndex, cardIndex, _cards) => {
-
+	let put = (deckIndex_2, deckIndex, cardIndex, _cards)=>{
+		
 		var _cards_to = a.decks[deckIndex_2].cards,
-		    _card_to  = _cards_to.length ? _cards_to[_cards_to.length - 1] : null;
-
+			_card_to  = _cards_to.length ? _cards_to[_cards_to.length - 1] : null;
+		
 		_moves.push({
-
+			
 			from : {
 				deck     : a.decks[deckIndex],
 				card     : _cards[cardIndex] ,// firstCard of moved deck
 				count    : _cards.length
 				// deckName : a.decks[deckIndex].name
 			},
-
+			
 			to : {
 				deck     : a.decks[deckIndex_2],
 				lastCard : _card_to,
@@ -33,7 +33,7 @@ export default (a) => {
 // 3) ^
 
 	// пробегаем все остальные колоды и пробуем положить на них то что взяли
-	let decksToPut = (_cards, _take, deckIndex, cardIndex) => {
+	let decksToPut = (_cards, _take, deckIndex, cardIndex)=>{
 
 		for(var deckIndex_2 in a.decks) {
 
@@ -51,7 +51,7 @@ export default (a) => {
 
 	// выбираем карты из колоды
 	// патаемся взять карту
-	let cardsInTakeDeck = (_cards, deckIndex) => {
+	let cardsInTakeDeck = (_cards, deckIndex)=>{
 
 		for(let cardIndex in _cards) {
 

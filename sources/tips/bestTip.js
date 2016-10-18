@@ -9,8 +9,8 @@ import Field from 'field';
 
 export default function(moveDeck, cursorMove) {
 
-	let _autoTips = [];
-
+	var _autoTips = [];
+	
 	// выбрать подсказки для стопки из кторорой взяли карты
 	let _tips = Tips.getTips();
 	for(let i in _tips) {
@@ -18,7 +18,7 @@ export default function(moveDeck, cursorMove) {
 			_autoTips.push(_tips[i]);
 		}
 	}
-
+	
 	if(_autoTips.length == 0) {
 		return false;
 	}
@@ -58,13 +58,13 @@ export default function(moveDeck, cursorMove) {
 				x : cursorMove.deckPosition.x + (defaults.card.width ),
 				y : cursorMove.deckPosition.y + (defaults.card.height)
 			}
-
-			let _destination_deck_last_card_position = _autoTips[i].to.deck.padding(_autoTips[i].to.deck.cards.length);
-			let center_to = {
+			
+			var _destination_deck_last_card_position = _autoTips[i].to.deck.padding(_autoTips[i].to.deck.cards.length);
+			var center_to = {
 				x : _destination_deck_last_card_position.x + (defaults.card.width ),
 				y : _destination_deck_last_card_position.y + (defaults.card.height)
 			}
-
+			
 			_autoTips[i].distance = Math.sqrt(common.sqr(center_from.x - center_to.x) + common.sqr(center_from.y - center_to.y));
 			_autoTips[i].inDirection = false;
 			if(
@@ -72,9 +72,9 @@ export default function(moveDeck, cursorMove) {
 			 || (cursorMove.direction.x < 0 && center_to.x < center_from.x)
 			) {
 				_autoTips[i].inDirection = true;
-				_in_direction_count += 1;
+    			_in_direction_count += 1;
 			}
-
+			
 		}
 
 		for(let i in _autoTips) {
@@ -89,7 +89,7 @@ export default function(moveDeck, cursorMove) {
 					}
 				}
 			}
-
+			
 			if(_autoTips[i].distance < _min_distance) {
 				if(_in_direction_count == 0) {
 					_min_distance = _autoTips[i].distance;

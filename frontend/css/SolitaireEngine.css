@@ -9,11 +9,6 @@
 body {
   backface-visibility: hidden; }
 
-.ninja {
-  color: black;
-  visibility: hidden;
-  animation-duration: 0.00001s; }
-
 .solitaireField * {
   cursor: inherit; }
 
@@ -80,7 +75,7 @@ body {
   text-align: center;
   padding: 2px 4px;
   border-radius: 5px;
-  background: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAACXBIWXMAAAsTAAALEwEAmpwYAAAAIGNIUk0AAHolAACAgwAA+f8AAIDpAAB1MmAAADqYAAAXb5JfxUYAAAAeSURBVHjaYmRgYPBgIAIwMRAJRhVSRyEAAAD//wMAg84AXJamdKUAAAAASUVORK5CYII=");
+  background: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAACXBIWXMAAAsTAAALEwEAmpwYAAAAIGNIUk0AAHolAACAgwAA+f8AAIDpAAB1MAAA6mAAADqYAAAXb5JfxUYAAAAeSURBVHjaYmRgYPBgIAIwMRAJRhVSRyEAAAD//wMAg84AXJamdKUAAAAASUVORK5CYII=");
   z-index: 999 !important;
   position: absolute;
   top: static;

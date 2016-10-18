@@ -36,9 +36,7 @@ var winCheck = function(params) {
 
 	if(rulesCorrect) {
 		
-		if(params && params.noCallback) {
-			return true;
-		}
+		if(params && params.noCallback) { return true; }
 		
 		// show you win message
 		event.dispatch('win', params);

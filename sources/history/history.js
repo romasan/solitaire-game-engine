@@ -33,6 +33,8 @@ var _undo = function(a) {
 	if(
 		typeof a.lock != "undefined"
 	) {
+		// Deck.Deck(a.lock).unlock();
+		// TODO сделать также в оставшихся местах
 		for(let i in a.lock) {
 			let _elements = common.getElementsByName(a.lock[i]);
 			for(let elNum in _elements) {
@@ -44,6 +46,7 @@ var _undo = function(a) {
 	if(
 		typeof a.unlock != "undefined"
 	) {
+		// Deck.Deck(a.unlock).lock();
 		for(let i in a.lock) {
 			let _elements = common.getElementsByName(a.lock[i]);
 			for(let elNum in _elements) {
@@ -79,9 +82,7 @@ event.listen('undo', function(_a) {
 	// elRender.animationsEnd();
 	event.dispatch('stopAnimations');
 	
-	if(!_a) {
-		return;
-	};
+	if(!_a) { return; };
 
 	// Обратная совместимость
 	if(_a instanceof Array) {
@@ -122,6 +123,7 @@ var _redo = function(a) {
 	if(
 		typeof a.lock != "undefined"
 	) {
+		// Deck.Deck(a.lock).lock();
 		for(let i in a.lock) {
 			let _elements = common.getElementsByName(a.lock[i]);
 			for(let elNum in _elements) {
@@ -133,6 +135,7 @@ var _redo = function(a) {
 	if(
 		typeof a.unlock != "undefined"
 	) {
+		// Deck.Deck(a.unlock).unlock();
 		for(let i in a.unlock) {
 			let _elements = common.getElementsByName(a.lock[i]);
 			for(let elNum in _elements) {
@@ -164,9 +167,7 @@ event.listen('redo', function(_a) {
 	event.dispatch('stopAnimations');
 	
 
-	if(!_a) {
-		return;
-	}
+	if(!_a) return;
 
 	// Обратная совместимость
 	if(_a instanceof Array) {
