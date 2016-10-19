@@ -81,26 +81,47 @@ export default function(data) {
 
 	let _callback = () => {
 
-		event.dispatch('addStep', {
-			"move" : {
-				from         : _from.name,
-				to           : data.actionData.to,
-				deck         : _deck,
-				flip         : true,
-				stepType     : {
-					undo: stepType,// share.get('stepType'),
-					redo: stepTypedata.actionData.dispatch ? share.get('stepType') : defaults.stepType
-				},
-				context: "kickAction"
-			}
-		});
+		console.log('KICK END>>>', data.actionData.dispatch);
+
+		let _addStep = (e) => {
+
+			event.dispatch('addStep', {
+				"move" : {
+					from     : _from.name,
+					to       : data.actionData.to,
+					deck     : _deck,
+					flip     : true,
+					stepType : {
+						undo: e.undo,//stepType,// share.get('stepType'),
+						redo: e.redo//data.actionData.dispatch ? share.get('stepType') : defaults.stepType
+					},
+					context  : "kickAction"
+				}
+			});
+		};		
 
 		share.set('stepType', defaults.stepType);
 
-		event.dispatch('saveSteps');
-
 		if(data.actionData.dispatch) {
-			event.dispatch(data.actionData.dispatch);
+			event.dispatch(data.actionData.dispatch, {
+				before: (e) => {
+					
+					_addStep({
+						undo: stepType,
+						redo: e.stepType	
+					});
+
+					event.dispatch('saveSteps');
+				}
+			});
+		} else {
+			
+			_addStep({
+				undo: stepType,// share.get('stepType'),
+				redo: data.actionData.dispatch ? share.get('stepType') : defaults.stepType
+			})
+			
+			event.dispatch('saveSteps');
 		}
 	}
 	
@@ -116,7 +137,6 @@ export default function(data) {
 	
 	// forceMove(forceMoveParams);
 	event.dispatch('forceMove', forceMoveParams);
-	
 
 	// if(e.after) {
 	// 	_events[e.after].call(this, e);

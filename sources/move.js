@@ -15,9 +15,8 @@ var Move = function(moveDeck, to, cursorMove) {
 
 	common.animationDefault();
 
-	let _deck_destination = null,// to
-	    // находим стопку из которой взяли
-	    _deck_departure   = moveDeck[0].card.parent && common.getElementById(moveDeck[0].card.parent),// from
+	let _deck_departure   = moveDeck[0].card.parent && common.getElementById(moveDeck[0].card.parent),// стопка из которой взяли
+	    _deck_destination = null,                                                                     // в которую положили
 	    _success          = true;
 
 	let _stepType = share.get('stepType');
@@ -91,15 +90,24 @@ var Move = function(moveDeck, to, cursorMove) {
 					// режим анимации по умолчанию
 					common.animationDefault();
 
-					let _stepType     = share.get('stepType'),
-					    _prevStepType = share.get('prevStepType');
+					let _stepType = share.get('stepType');
+
+					let _checkMoveEnd = false;
+					for(let _actionName in _deck_destination.actions) {
+						if(_deck_destination.actions[_actionName].event == "moveEnd") {
+							_checkMoveEnd = true;
+						}
+					}
 					
 					event.dispatch('addStep', {
 						'move' : {
 							from         : _deck_departure  .name      ,
 							to           : _deck_destination.name      ,
 							deck         : Deck.deckCardNames(moveDeck),
-							stepType     : _stepType
+							stepType : {
+								undo: _stepType,
+								redo: _checkMoveEnd ? "specialStepType" : _stepType
+							}
 						}
 					})
 					
@@ -139,6 +147,7 @@ var Move = function(moveDeck, to, cursorMove) {
 								to       : _deck_destination    ,
 								moveDeck : moveDeck             ,
 								stepType : share.get('stepType')
+								
 							});
 
 							Tips.checkTips();

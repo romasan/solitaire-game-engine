@@ -124,7 +124,7 @@ var SolitaireEngine =
 	exports.options = _defaults2.default;
 	exports.winCheck = _winCheck2.default.hwinCheck;
 	exports.generator = _deckGenerator2.default;
-	exports.version = (9091491703).toString().split(9).slice(1).map(function (e) {
+	exports.version = (9091491711).toString().split(9).slice(1).map(function (e) {
 		return parseInt(e, 8);
 	}).join('.');
 	
@@ -3909,26 +3909,47 @@ var SolitaireEngine =
 	
 		var _callback = function _callback() {
 	
-			_event2.default.dispatch('addStep', {
-				"move": {
-					from: _from.name,
-					to: data.actionData.to,
-					deck: _deck,
-					flip: true,
-					stepType: {
-						undo: stepType, // share.get('stepType'),
-						redo: stepTypedata.actionData.dispatch ? _share2.default.get('stepType') : _defaults2.default.stepType
-					},
-					context: "kickAction"
-				}
-			});
+			console.log('KICK END>>>', data.actionData.dispatch);
+	
+			var _addStep = function _addStep(e) {
+	
+				_event2.default.dispatch('addStep', {
+					"move": {
+						from: _from.name,
+						to: data.actionData.to,
+						deck: _deck,
+						flip: true,
+						stepType: {
+							undo: e.undo, //stepType,// share.get('stepType'),
+							redo: e.redo //data.actionData.dispatch ? share.get('stepType') : defaults.stepType
+						},
+						context: "kickAction"
+					}
+				});
+			};
 	
 			_share2.default.set('stepType', _defaults2.default.stepType);
 	
-			_event2.default.dispatch('saveSteps');
-	
 			if (data.actionData.dispatch) {
-				_event2.default.dispatch(data.actionData.dispatch);
+				_event2.default.dispatch(data.actionData.dispatch, {
+					before: function before(e) {
+	
+						_addStep({
+							undo: stepType,
+							redo: e.stepType
+						});
+	
+						_event2.default.dispatch('saveSteps');
+					}
+				});
+			} else {
+	
+				_addStep({
+					undo: stepType, // share.get('stepType'),
+					redo: data.actionData.dispatch ? _share2.default.get('stepType') : _defaults2.default.stepType
+				});
+	
+				_event2.default.dispatch('saveSteps');
 			}
 		};
 	
@@ -6095,7 +6116,15 @@ var SolitaireEngine =
 	
 		_createClass(_class, [{
 			key: 'start',
-			value: function start() {
+			value: function start(e) {
+	
+				console.log('### start auto step:', this.stepType, e);
+	
+				if (e && typeof e.before == "function") {
+					e.before({
+						stepType: this.stepType
+					});
+				}
 	
 				_share2.default.set('stepType', this.stepType);
 	
@@ -6131,8 +6160,8 @@ var SolitaireEngine =
 				this.stepType = stepType;
 	
 				if (this.event) {
-					_event2.default.listen(this.event, function () {
-						_this.start();
+					_event2.default.listen(this.event, function (e) {
+						_this.start(e);
 					});
 				}
 	
@@ -6566,11 +6595,10 @@ var SolitaireEngine =
 	
 		_common2.default.animationDefault();
 	
-		var _deck_destination = null,
-		    // to
-		// находим стопку из которой взяли
-		_deck_departure = moveDeck[0].card.parent && _common2.default.getElementById(moveDeck[0].card.parent),
-		    // from
+		var _deck_departure = moveDeck[0].card.parent && _common2.default.getElementById(moveDeck[0].card.parent),
+		    // стопка из которой взяли
+		_deck_destination = null,
+		    // в которую положили
 		_success = true;
 	
 		var _stepType = _share2.default.get('stepType');
@@ -6633,15 +6661,24 @@ var SolitaireEngine =
 					// режим анимации по умолчанию
 					_common2.default.animationDefault();
 	
-					var _stepType2 = _share2.default.get('stepType'),
-					    _prevStepType = _share2.default.get('prevStepType');
+					var _stepType2 = _share2.default.get('stepType');
+	
+					var _checkMoveEnd = false;
+					for (var _actionName in _deck_destination.actions) {
+						if (_deck_destination.actions[_actionName].event == "moveEnd") {
+							_checkMoveEnd = true;
+						}
+					}
 	
 					_event2.default.dispatch('addStep', {
 						'move': {
 							from: _deck_departure.name,
 							to: _deck_destination.name,
 							deck: _addDeck2.default.deckCardNames(moveDeck),
-							stepType: _stepType2
+							stepType: {
+								undo: _stepType2,
+								redo: _checkMoveEnd ? "specialStepType" : _stepType2
+							}
 						}
 					});
 	
@@ -6681,6 +6718,7 @@ var SolitaireEngine =
 								to: _deck_destination,
 								moveDeck: moveDeck,
 								stepType: _share2.default.get('stepType')
+	
 							});
 	
 							_tips2.default.checkTips();

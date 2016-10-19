@@ -26,7 +26,15 @@ export default class {
 		}
 	}
 
-	start() {
+	start(e) {
+
+		console.log('### start auto step:', this.stepType, e);
+
+		if(e && typeof e.before == "function") {
+			e.before({
+				stepType: this.stepType
+			});
+		}
 		
 		share.set('stepType', this.stepType);
 
@@ -59,8 +67,8 @@ export default class {
 		this.stepType = stepType;
 
 		if(this.event) {
-			event.listen(this.event, () => {
-				this.start();
+			event.listen(this.event, (e) => {
+				this.start(e);
 			});
 		}
 		
