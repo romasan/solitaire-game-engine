@@ -98,6 +98,9 @@ var Move = function(moveDeck, to, cursorMove) {
 							_checkMoveEnd = true;
 						}
 					}
+
+
+					console.log('Events (moveEnd):', event.getEventsByName("moveEnd"));
 					
 					event.dispatch('addStep', {
 						'move' : {

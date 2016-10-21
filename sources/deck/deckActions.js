@@ -36,34 +36,50 @@ event.listen('initField', () => {
 
 var addActionEvent = function(_event) {
 
-	event.listen(_event, function(data) {
+	event.listen(
 
-		for(var i in _decksActions) {
-			if(_decksActions[i].event == _event) {
-				
-				var _actionName = _decksActions[i].action;
-				
+		// event name
+		_event, 
+		
+		// callback
+		(data) => {
 
-				var _canRun = _event == 'click'
-				    ? data.to.name == _decksActions[i].deck.name
-				    : true;
-				// data._stepType = data.stepType;
-				// data.stepType = share.get('stepType');
-				
-				if(_canRun) {
+			for(var i in _decksActions) {
+				if(_decksActions[i].event == _event) {
 					
-					_actions[_actionName].call(
-						_decksActions[i].deck, 
-						{
-							actionData : _decksActions[i].deck.actions[_actionName],
-							eventData  : data,
-							eventName  : _event
-						}
-					);
-				};
+					var _actionName = _decksActions[i].action;
+
+					var _canRun = _event == 'click'
+					    ? data.to.name == _decksActions[i].deck.name
+					    : true;
+					// data._stepType = data.stepType;
+					// data.stepType = share.get('stepType');
+					
+					if(_canRun) {
+						
+						_actions[_actionName].call(
+							_decksActions[i].deck, 
+							{
+								actionData : _decksActions[i].deck.actions[_actionName],
+								eventData  : data,
+								eventName  : _event
+							}
+						);
+					};
+				}
 			}
-		}
-	});
+		},
+
+		// context
+		// _decksActions.indexOf(_event) >= 0 ? _decksActions[_decksActions.indexOf(_event)] : null
+		(()=>{
+			for(let actionName in _decksActions) {
+				// TODO
+				// ??? _events
+			}
+			return;
+		})
+	);
 
 };
 

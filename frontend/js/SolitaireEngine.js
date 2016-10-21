@@ -124,7 +124,7 @@ var SolitaireEngine =
 	exports.options = _defaults2.default;
 	exports.winCheck = _winCheck2.default.hwinCheck;
 	exports.generator = _deckGenerator2.default;
-	exports.version = (9091491711).toString().split(9).slice(1).map(function (e) {
+	exports.version = (9091491744).toString().split(9).slice(1).map(function (e) {
 		return parseInt(e, 8);
 	}).join('.');
 	
@@ -298,17 +298,18 @@ var SolitaireEngine =
 	
 		_createClass(Event, [{
 			key: 'listen',
-			value: function listen(eventName, callback) {
+			value: function listen(eventName, callback, context) {
 	
 				// console.log('listen: (tag:', this._tag + ')', eventName);
 	
-				if (typeof eventName != 'string' || typeof callback != 'function') {
+				if (typeof callback != 'function' || typeof eventName != 'string') {
 					return;
 				}
 	
 				if (this._events[eventName]) {
 					this._events[eventName].push({
 						tag: this._tag,
+						context: context,
 						callback: callback
 					});
 				} else {
@@ -353,6 +354,11 @@ var SolitaireEngine =
 						}
 					}
 				}
+			}
+		}, {
+			key: 'getEventsByName',
+			value: function getEventsByName(eventName) {
+				return this._events.indexOf(eventName) >= 0 ? this._events[this._events.indexOf(eventName)] : null;
 			}
 		}, {
 			key: 'log',
@@ -3395,7 +3401,13 @@ var SolitaireEngine =
 	
 	var addActionEvent = function addActionEvent(_event) {
 	
-		_event3.default.listen(_event, function (data) {
+		_event3.default.listen(
+	
+		// event name
+		_event,
+	
+		// callback
+		function (data) {
 	
 			for (var i in _decksActions) {
 				if (_decksActions[i].event == _event) {
@@ -3416,6 +3428,16 @@ var SolitaireEngine =
 					};
 				}
 			}
+		},
+	
+		// context
+		// _decksActions.indexOf(_event) >= 0 ? _decksActions[_decksActions.indexOf(_event)] : null
+		function () {
+			for (var actionName in _decksActions) {
+				// TODO
+				// ??? _events
+			}
+			return;
 		});
 	};
 	
@@ -6669,6 +6691,8 @@ var SolitaireEngine =
 							_checkMoveEnd = true;
 						}
 					}
+	
+					console.log('Events (moveEnd):', _event2.default.getEventsByName("moveEnd"));
 	
 					_event2.default.dispatch('addStep', {
 						'move': {

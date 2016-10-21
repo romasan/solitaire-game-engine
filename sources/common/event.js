@@ -10,13 +10,13 @@ class Event {
 		this._tag = 'global';
 	}
 
-	listen(eventName, callback) {
+	listen(eventName, callback, context) {
 
 		// console.log('listen: (tag:', this._tag + ')', eventName);
 		
 		if(
-			typeof eventName != 'string'       ||
-			typeof callback != 'function'
+			typeof callback  != 'function' ||
+			typeof eventName != 'string'
 		) {
 			return;
 		}
@@ -24,6 +24,7 @@ class Event {
 		if(this._events[eventName]) {
 			this._events[eventName].push({
 				tag: this._tag,
+				context       ,
 				callback
 			});
 		} else {
@@ -65,6 +66,10 @@ class Event {
 				}
 			}
 		}
+	}
+
+	getEventsByName(eventName) {
+		return this._events.indexOf(eventName) >= 0 ? this._events[this._events.indexOf(eventName)] : null;
 	}
 
 	log() {}
