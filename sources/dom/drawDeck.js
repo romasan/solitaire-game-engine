@@ -8,14 +8,14 @@ import Field    from 'field';
 import elRender from 'elRender';
 
 var applyChangedParameters = function(p, a, deck) {
-	
+
 	p.x = a.position && a.position.x && typeof a.position.x == 'number'  ? a.position.x : 0,
 	p.y = a.position && a.position.y && typeof a.position.y == 'number'  ? a.position.y : 0;
 	p.x = a.parentPosition && a.parentPosition.x ? p.x + a.parentPosition.x : p.x;
 	p.y = a.parentPosition && a.parentPosition.y ? p.y + a.parentPosition.y : p.y;
-	
+
 	deck.rotate = p.rotate = a.rotate && typeof a.rotate == 'number' ? a.rotate : 0;
-	
+
 	// у padding_x, padding_y приоритет выше чем paddingType
 
 	p.padding_y = a.paddingY          && typeof a.paddingY     == 'number' 
@@ -49,7 +49,7 @@ event.listen('addDeckEl', function(e) {
 	e.deck.domElement = 
 		elRender('<div>')
 			// .getEl();
-	
+
 	var _params = {
 		left      : e.params.x           + 'px',
 		top       : e.params.y           + 'px',
@@ -82,12 +82,13 @@ event.listen('addDeckEl', function(e) {
 
 
 	// add label
-		
+
 	var label = e.a.label && typeof e.a.label == 'string' ? e.a.label : null;
 	
 	if(dev && !e.a.label && share.get('debugLabels')) {
 		label = '<span style="color:#65B0FF;">' + e.deck.name + '</span>';
 	}
+
 	if(label) {
 		var _labelElement = 
 			elRender('<div>')
@@ -108,8 +109,10 @@ event.listen('addDeckEl', function(e) {
 // --------------------------------------------------------------------------------------------------------
 
 event.listen('redrawDeckFlip', function(e) {
-	
-	if(!e || !e.cards) return;
+
+	if(!e || !e.cards) {
+		return;
+	}
 
 	for(var i in e.cards) {
 		var _params = {};
@@ -130,8 +133,10 @@ event.listen('redrawDeckFlip', function(e) {
 // --------------------------------------------------------------------------------------------------------
 
 event.listen('redrawDeckIndexes', function(e) {
-	
-	if(!e || !e.cards) return;
+
+	if(!e || !e.cards) {
+		return;
+	}
 
 	for(var i in e.cards) {
 		elRender(e.cards[i].domElement).css({
@@ -144,7 +149,9 @@ event.listen('redrawDeckIndexes', function(e) {
 
 event.listen('redrawDeck', function(e) {
 
-	if(share.get('noRedraw')) { return false; };
+	if(share.get('noRedraw')) {
+		return false;
+	};
 
 	if(e.data) {
 		applyChangedParameters(e.params, e.data, e.deck);
@@ -173,15 +180,15 @@ event.listen('redrawDeck', function(e) {
 			'left'              : _card_position.x + 'px', 
 			'top'               : _card_position.y + 'px',
 			'z-index'           : _zIndex,
-		    '-ms-transform'     : 'rotate(' + (e.params.rotate|0) + 'deg)',
-		    '-webkit-transform' : 'rotate(' + (e.params.rotate|0) + 'deg)',
-		    '-moz-transform'    : 'rotate(' + (e.params.rotate|0) + 'deg)',
+			'-ms-transform'     : 'rotate(' + (e.params.rotate|0) + 'deg)',
+			'-webkit-transform' : 'rotate(' + (e.params.rotate|0) + 'deg)',
+			'-moz-transform'    : 'rotate(' + (e.params.rotate|0) + 'deg)',
 			'transform'         : 'rotate(' + (e.params.rotate|0) + 'deg)'
 		};
 		_params.display = e.deck.visible ? 'block' : 'none';
 
 		// e.deck.checkFlip(e.cards[i], i|0, e.cards.length|0);
-		
+
 		if(e.cards[i].flip) {
 			elRender(e.cards[i].domElement)
 				.addClass('flip');

@@ -27,7 +27,9 @@ var getTips = function() {
 
 var checkTips = function() {
 
-	if(share.get('noTips')) { return false; }
+	if(share.get('noTips')) {
+		return false;
+	}
 
 	event.dispatch('hideTips');
 
@@ -95,14 +97,20 @@ event.listen('checkTips', checkTips);
 
 var showTips = function(a) {
 	_showTips = true;
-	if(a && a.init) return;
+	if(a && a.init) {
+		return;
+	}
+
 	checkTips();
 };
 event.listen('tipsON', showTips);
 
 var hideTips = function(a) {
 	_showTips = false;
-	if(a && a.init) return;
+	if(a && a.init) {
+		return;
+	}
+
 	checkTips();
 };
 event.listen('tipsOFF', hideTips);
@@ -111,7 +119,9 @@ event.listen('tipsOFF', hideTips);
 
 var tipsMove = function(a) {
 
-	if(!share.get('showTipPriority')) { return; }
+	if(!share.get('showTipPriority')) {
+		return;
+	}
 
 	event.dispatch('hideTips', {types : ['tipPriority']});
 
@@ -167,6 +177,7 @@ let checkFrom = (_from)=>{
 			return true;
 		}
 	}
+	
 	return false;
 };
 
@@ -180,6 +191,7 @@ let fromTo = (_from, _to)=>{
 			return true;
 		}
 	}
+	
 	return false;
 };
 

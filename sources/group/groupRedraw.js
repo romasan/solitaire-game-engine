@@ -7,7 +7,12 @@ export default function(_a) {
 	var _decks = this.getDecks();
 	// var _index = {}
 
-	if(typeof _a.decks == 'undefined' || typeof _a.decks == 'number') {_a.decks = [];}
+	if(
+		typeof _a.decks == 'undefined' ||
+		typeof _a.decks == 'number'
+	) {
+		_a.decks = [];
+	}
 
 	for(var i in _decks) {
 		

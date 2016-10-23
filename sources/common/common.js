@@ -54,7 +54,7 @@ event.listen('actionBreak', function(e) {
 // Lock/Unlock
 
 var sqr = function(i) {
-    return i * i;
+	return i * i;
 };
 
 // --

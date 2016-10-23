@@ -11,7 +11,7 @@ var rpr = {
 
 	// Realtions filters
 
-	linePrev: (a)=>{
+	linePrev: (a) => {
 
 		let prev = getBeside(a.to).prev;
 
@@ -25,7 +25,7 @@ var rpr = {
 		return false;
 	},
 
-	lineNext: (a)=>{
+	lineNext: (a) => {
 		
 		let next = getBeside(a.to).next;
 
@@ -41,14 +41,18 @@ var rpr = {
 
 	// Internal use
 
-	_downupcards: (a)=>{
+	_downupcards: (a) => {
 
-		if(a.cards.length == 0) return false;
+		if(a.cards.length == 0) {
+			return false;
+		}
 		
 		let down = common.validateCardName(a.cards[a.cards.length  - 1].name);
 		let up   = common.validateCardName(a.putDeck[0].card.name);
 		
-		if(!down || !up) return false;
+		if(!down || !up) {
+			return false;
+		}
 		
 		return {
 			up   : up,
@@ -56,7 +60,7 @@ var rpr = {
 		}
 	},
 
-	_downupranknum: (a)=>{
+	_downupranknum: (a) => {
 
 		let du = rpr._downupcards(a);
 		
@@ -66,7 +70,7 @@ var rpr = {
 		} : false;
 	},
 
-	_isFirst: (a, _name)=>{
+	_isFirst: (a, _name) => {
 		
 		if(a.cards.length == 0) {
 		
@@ -83,9 +87,11 @@ var rpr = {
 
 	// Rules
 
-	striped: (a)=>{
+	striped: (a) => {
 		
-		if(a.cards.length == 0) return true;
+		if(a.cards.length == 0) {
+			return true;
+		}
 
 		let color_A   = common.validateCardName(a.cards[a.cards.length - 1].name).color,
 			color_B   = null,
@@ -98,61 +104,67 @@ var rpr = {
 		return color_A != color_B;
 	},
 
-	firstAce: (a)=>{			
+	firstAce: (a) => {			
 		
 		// let _rank = defaults.card.ranks[0];
 		
 		return rpr._isFirst(a, "1");
 	},
 
-	firstKing: (a)=>{
+	firstKing: (a) => {
 		
 		// let _rank = defaults.card.ranks[defaults.card.ranks.length - 1];
 
 		return rpr._isFirst(a, "k");
 	},
 
-	notForEmpty: (a)=>{
+	notForEmpty: (a) => {
 		
 		return a.cards.length;
 	},
 
-	onlyEmpty: (a)=>{
+	onlyEmpty: (a) => {
 
 		return a.cards.length === 0;
 	},
 
-	oneRank: (a)=>{
+	oneRank: (a) => {
 
-		if(a.cards.length == 0) return true;
+		if(a.cards.length == 0) {
+			return true;
+		}
 		
 		let du = rpr._downupcards(a);
 		
 		return du && du.up.rank == du.down.rank;
 	},
 	
-	oneSuit: (a)=>{
+	oneSuit: (a) => {
 		
-		if(a.cards.length == 0) return true;
+		if(a.cards.length == 0) {
+			return true;
+		}
 		
 		let du = rpr._downupcards(a);
 		
 		return du && du.up.suit == du.down.suit;
 	},
 
-	any: (a)=>{
+	any: (a) => {
 		
 		return true;
 	},
 
-	not: (a)=>{
+	not: (a) => {
 		
 		return false;
 	},
 
-	ascendDeck: (a)=>{//ascend deck by step
+	ascendDeck: (a) => {//ascend deck by step
 		
-		if(a.putDeck.length == 1) return true;
+		if(a.putDeck.length == 1) {
+			return true;
+		}
 		
 		let ruleCorrect = true;
 		
@@ -174,9 +186,11 @@ var rpr = {
 		return ruleCorrect;
 	},
 
-	descendDeck: (a)=>{//ascend deck by step
+	descendDeck: (a) => {//ascend deck by step
 		
-		if(a.putDeck.length == 1) return true;
+		if(a.putDeck.length == 1) {
+			return true;
+		}
 		
 		let ruleCorrect = true;
 		
@@ -198,9 +212,11 @@ var rpr = {
 		return ruleCorrect;
 	},
 	
-	oneRankDeck: (a)=>{
+	oneRankDeck: (a) => {
 		
-		if(a.putDeck.length == 1) return true;
+		if(a.putDeck.length == 1) {
+			return true;
+		}
 		
 		let ruleCorrect = true;
 
@@ -218,54 +234,66 @@ var rpr = {
 		return ruleCorrect;
 	},
 
-	ascend: (a)=>{
+	ascend: (a) => {
 		
-		if(a.cards.length == 0) return true;
+		if(a.cards.length == 0) {
+			return true;
+		}
 
 		let da = rpr._downupranknum(a);
 
 		return da && da.down < da.up;
 	},
 
-	descent: (a)=>{
+	descent: (a) => {
 		
-		if(a.cards.length == 0) return true;
+		if(a.cards.length == 0) {
+			return true;
+		}
 
 		let da = rpr._downupranknum(a);
 
 		return da && da.down > da.up;
 	},
 
-	descentOne: (a)=>{// one step
+	descentOne: (a) => {// one step
 		
-		if(a.cards.length == 0) return true;
+		if(a.cards.length == 0) {
+			return true;
+		}
 
 		let da = rpr._downupranknum(a);
 
 		return da && da.down == 1 + da.up;
 	},
 
-	ascendOne: (a)=>{// one step
+	ascendOne: (a) => {// one step
 
-		if(a.cards.length == 0) return true;
+		if(a.cards.length == 0) {
+			return true;
+		}
 
 		let da = rpr._downupranknum(a);
 
 		return da && 1 + da.down == da.up;
 	},
 
-	ascdescOne: (a)=>{
+	ascdescOne: (a) => {
 		
-		if(a.cards.length == 0) return true;
+		if(a.cards.length == 0) {
+			return true;
+		}
 
 		let da = rpr._downupranknum(a);
 
 		return da && Math.abs(da.down - da.up) == 1;
 	},
 
-	sum14: (a)=>{
+	sum14: (a) => {
 
-		if(a.cards.length == 0) return true;
+		if(a.cards.length == 0) {
+			return true;
+		}
 
 		let du = rpr._downupcards(a);
 		let _sum = du.down.value + du.up.value;
@@ -275,9 +303,11 @@ var rpr = {
 
 	// TODO rules with params ??? or atom rules
 
-	around: (a)=>{// {from, putDeck, cards}
+	around: (a) => {// {from, putDeck, cards}
 
-		if(a.cards.length == 0) return true;
+		if(a.cards.length == 0) {
+			return true;
+		}
 
 		let _around = a.from.deck.getRelationsByName('around', {from: null});
 		let _parent = Deck.getDeckById(a.cards[0].parent);

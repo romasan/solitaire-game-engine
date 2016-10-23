@@ -15,7 +15,9 @@ let forceMove = function(a) {// {from, to, deck, <flip>, <callback>}
 		return;
 	}
 
-	if(!a.deck.length) return;
+	if(!a.deck.length) {
+		return;
+	}
 	
 	let _from = typeof a.from == "string"
 		? Deck.Deck(a.from)

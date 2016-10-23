@@ -76,7 +76,7 @@ export default function(moveDeck, cursorMove) {
 			 || (cursorMove.direction.x < 0 && center_to.x < center_from.x)
 			) {
 				_autoTips[i].inDirection = true;
-    			_in_direction_count += 1;
+				_in_direction_count += 1;
 			}
 			
 		}
