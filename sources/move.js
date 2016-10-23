@@ -99,9 +99,6 @@ var Move = function(moveDeck, to, cursorMove) {
 						}
 					}
 
-
-					console.log('Events (moveEnd):', event.getEventsByName("moveEnd"));
-					
 					event.dispatch('addStep', {
 						'move' : {
 							from         : _deck_departure  .name      ,
@@ -110,7 +107,8 @@ var Move = function(moveDeck, to, cursorMove) {
 							stepType : {
 								undo: _stepType,
 								redo: _checkMoveEnd ? "specialStepType" : _stepType
-							}
+							},
+							context: "move"
 						}
 					})
 					
@@ -149,8 +147,16 @@ var Move = function(moveDeck, to, cursorMove) {
 								from     : _deck_departure      ,
 								to       : _deck_destination    ,
 								moveDeck : moveDeck             ,
-								stepType : share.get('stepType')
-								
+								stepType : share.get('stepType'),
+								before   : (e) => {
+									if(e && typeof e.stepType == "string") {
+										event.dispatch('addStep', {
+											'redo': {
+												'stepType': e.stepType
+											}
+										})
+									}
+								}
 							});
 
 							Tips.checkTips();

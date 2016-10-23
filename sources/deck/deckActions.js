@@ -71,14 +71,16 @@ var addActionEvent = function(_event) {
 		},
 
 		// context
+		
 		// _decksActions.indexOf(_event) >= 0 ? _decksActions[_decksActions.indexOf(_event)] : null
-		(()=>{
-			for(let actionName in _decksActions) {
-				// TODO
-				// ??? _events
-			}
-			return;
-		})
+		
+		// (()=>{
+		// 	for(let actionName in _decksActions) {
+		// 		// TODO
+		// 		// ??? _events
+		// 	}
+		// 	return;
+		// })
 	);
 
 };

@@ -87,7 +87,9 @@ event.listen('undo', function(_a) {
 	// elRender.animationsEnd();
 	event.dispatch('stopAnimations');
 	
-	if(!_a) { return; };
+	if(!_a) {
+		return;
+	};
 
 	// Обратная совместимость
 	if(_a instanceof Array) {
@@ -169,6 +171,12 @@ var _redo = function(a) {
 		forceMove(a.move);
 	}
 
+	if(
+		a.redo                            &&
+		typeof a.redo.stepType == "string"
+	) {
+		share.set('stepType', a.redo.stepType);
+	}
 };
 
 event.listen('redo', function(_a) {
@@ -177,7 +185,9 @@ event.listen('redo', function(_a) {
 	event.dispatch('stopAnimations');
 	
 
-	if(!_a) return;
+	if(!_a) {
+		return;
+	}
 
 	// Обратная совместимость
 	if(_a instanceof Array) {

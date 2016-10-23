@@ -68,11 +68,11 @@ class Event {
 		}
 	}
 
-	getEventsByName(eventName) {
-		return this._events.indexOf(eventName) >= 0 ? this._events[this._events.indexOf(eventName)] : null;
-	}
+	// getEventsByName(eventName) {
+	// 	return this._events.indexOf(eventName) >= 0 ? this._events[this._events.indexOf(eventName)] : null;
+	// }
 
-	log() {}
+	// log() {}
 };
 
 // let _event = new Event();
