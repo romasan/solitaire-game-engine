@@ -124,7 +124,7 @@ var SolitaireEngine =
 	exports.options = _defaults2.default;
 	exports.winCheck = _winCheck2.default.hwinCheck;
 	exports.generator = _deckGenerator2.default;
-	exports.version = (9091491760).toString().split(9).slice(1).map(function (e) {
+	exports.version = (9091491761).toString().split(9).slice(1).map(function (e) {
 		return parseInt(e, 8);
 	}).join('.');
 	
@@ -502,6 +502,8 @@ var SolitaireEngine =
 
 	'use strict';
 	
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	
 	var _share = __webpack_require__(1);
 	
 	var _share2 = _interopRequireDefault(_share);
@@ -528,247 +530,265 @@ var SolitaireEngine =
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
-	// var drag_el = null;
-	_share2.default.set('dragDeck', null);
-	_share2.default.set('startCursor', null);
-	
-	var _inputUndoRedo = function _inputUndoRedo() {
-	
-		var _dragDeck = _share2.default.get('dragDeck');
-		if (_dragDeck && _dragDeck[0] && _dragDeck[0].card && _dragDeck[0].card.parent) {
-	
-			var _deck = _addDeck2.default.getDeckById(_dragDeck[0].card.parent);
-			if (_deck) {
-				_deck.Redraw();
-			}
-		}
-	
-		_share2.default.set('dragDeck', null);
-		_share2.default.set('startCursor', null);
-	
-		_common2.default.curUnLock();
-	};
-	
-	_event2.default.listen('undo', function () {
-		_inputUndoRedo();
-	});
-	
-	_event2.default.listen('redo', function () {
-		_inputUndoRedo();
-	});
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 	
 	// -------------------------------------------------------------------------------------------------------------
 	
-	var cdown = function cdown(target, x, y) {
+	var inputs = function () {
 	
-		_share2.default.set('dragDeck', null);
-		_share2.default.set('startCursor', null);
+		// constructor() {}
 	
-		if (_common2.default.isCurLock()) {
-			return;
+		function inputs() {
+			var _this = this;
+	
+			_classCallCheck(this, inputs);
+	
+			_share2.default.set('dragDeck', null);
+			_share2.default.set('startCursor', null);
+	
+			_event2.default.listen('undo', this._inputUndoRedo());
+			_event2.default.listen('redo', this._inputUndoRedo());
+	
+			try {
+	
+				document.onmousedown = function (e) {
+	
+					if (e.button !== 0) {
+						return;
+					}
+	
+					_this.take(e.target, e.clientX, e.clientY);
+				};
+	
+				document.onmousemove = function (e) {
+					_this.drag(e.clientX, e.clientY);
+				};
+	
+				document.onmouseup = function (e) {
+					_this.put(e.target, e.clientX, e.clientY);
+				};
+	
+				document.ondblclick = function (e) {
+					_this.take(e.target, e.clientX, e.clientY);
+					_this.put(e.target, e.clientX, e.clientY, true);
+					_common2.default.curUnLock();
+				};
+	
+				document.addEventListener('touchstart', function (e) {
+					// e.preventDefault()
+					_this.take(e.target, e.touches[0].clientX, e.touches[0].clientY);
+				}, false);
+	
+				document.addEventListener('touchmove', function (e) {
+	
+					if (_share2.default.startCursor) {
+						e.preventDefault();
+					}
+	
+					_this.drag(e.touches[0].clientX, e.touches[0].clientY);
+				}, false);
+	
+				document.addEventListener('touchend', function (e) {
+					// e.preventDefault()
+					_this.put(e.changedTouches[0].target, e.changedTouches[0].clientX, e.changedTouches[0].clientY);
+				}, false);
+			} catch (e) {}
 		}
 	
-		if (target.className.split(' ').indexOf('slot') >= 0) {
+		_createClass(inputs, [{
+			key: '_inputUndoRedo',
+			value: function _inputUndoRedo() {
 	
-			var _id = target.id,
-			    _deck = _common2.default.getElementById(_id);
-			if (_deck) {
-				_event2.default.dispatch('click', {
-					to: _deck
+				var _dragDeck = _share2.default.get('dragDeck');
+				if (_dragDeck && _dragDeck[0] && _dragDeck[0].card && _dragDeck[0].card.parent) {
+	
+					var _deck = _addDeck2.default.getDeckById(_dragDeck[0].card.parent);
+					if (_deck) {
+						_deck.Redraw();
+					}
+				}
+	
+				_share2.default.set('dragDeck', null);
+				_share2.default.set('startCursor', null);
+	
+				_common2.default.curUnLock();
+			}
+		}, {
+			key: 'take',
+			value: function take(target, x, y) {
+	
+				_share2.default.set('dragDeck', null);
+				_share2.default.set('startCursor', null);
+	
+				if (_common2.default.isCurLock()) {
+					return;
+				}
+	
+				if (target.className.split(' ').indexOf('slot') >= 0) {
+	
+					var _id = target.id,
+					    _deck = _common2.default.getElementById(_id);
+					if (_deck) {
+						_event2.default.dispatch('click', {
+							to: _deck
+						});
+					}
+				}
+	
+				if (target.className.split(' ').indexOf('draggable') >= 0) {
+	
+					var _id = target.id,
+					    _card = _id ? _common2.default.getElementById(_id) : null,
+					    _parent = _card && _card.parent ? _card.parent : null,
+					    _deck = _parent ? _addDeck2.default.getDeckById(_parent) : null;
+	
+					if (_deck) {
+						_event2.default.dispatch('click', {
+							to: _deck
+						});
+					}
+	
+					// _deck.runActions();
+	
+					// TODO
+					// в данной ситуации обрабатывается только клик по карте, пустые колоды никак не обрабатываются
+	
+					var _dragDeck = _deck ? _deck.Take(_id) : null;
+	
+					_share2.default.set('dragDeck', _dragDeck);
+	
+					if (_dragDeck) {
+	
+						_share2.default.set('startCursor', { x: x, y: y });
+	
+						// ???
+						_tips2.default.tipsDestination({ currentCard: _card });
+					}
+				}
+			}
+	
+			// -------------------------------------------------------------------------------------------------------------
+	
+		}, {
+			key: 'drag',
+			value: function drag(x, y) {
+	
+				if (_common2.default.isCurLock()) {
+					return;
+				}
+	
+				var _startCursor = _share2.default.get('startCursor'),
+				    _dragDeck = _share2.default.get('dragDeck');
+	
+				if (!_dragDeck || !_startCursor) {
+					return;
+				}
+	
+				var _distance = _startCursor ? Math.sqrt(_common2.default.sqr(x - _startCursor.x) + _common2.default.sqr(y - _startCursor.y)) : 0;
+	
+				// console.log(x - _startCursor.x, y - _startCursor.y);
+	
+				var _deck = _common2.default.getElementById(_dragDeck[0].card.parent);
+	
+				var _position = _deck.padding(_dragDeck[_dragDeck.length - 1].index);
+	
+				_event2.default.dispatch('dragDeck', {
+					x: x, y: y,
+					_dragDeck: _dragDeck,
+					_startCursor: _startCursor,
+					_deck: _deck
+				});
+	
+				var cursorMove = {
+					distance: _distance,
+					direction: {
+						x: x - _startCursor.x, // (+) rigth / (-) left
+						y: y - _startCursor.y, // (+) down  / (-) up
+						right: x > _startCursor.x,
+						left: x < _startCursor.x,
+						down: y > _startCursor.y,
+						up: y < _startCursor.y
+					},
+					lastPosition: { x: x, y: y },
+					deckPosition: {
+						x: _position.x + (x - _startCursor.x),
+						y: _position.y + (y - _startCursor.y)
+					}
+				};
+	
+				_tips2.default.tipsMove({
+					moveDeck: _dragDeck,
+					cursorMove: cursorMove
 				});
 			}
-		}
 	
-		if (target.className.split(' ').indexOf('draggable') >= 0) {
+			// -------------------------------------------------------------------------------------------------------------
 	
-			var _id = target.id,
-			    _card = _id ? _common2.default.getElementById(_id) : null,
-			    _parent = _card && _card.parent ? _card.parent : null,
-			    _deck = _parent ? _addDeck2.default.getDeckById(_parent) : null;
+		}, {
+			key: 'put',
+			value: function put(target, x, y, dbclick) {
 	
-			if (_deck) {
-				_event2.default.dispatch('click', {
-					to: _deck
+				if (_common2.default.isCurLock()) {
+					return;
+				}
+	
+				var _startCursor = _share2.default.get('startCursor'),
+				    _dragDeck = _share2.default.get('dragDeck');
+	
+				if (!_dragDeck || !_startCursor) {
+					return;
+				}
+	
+				var _deck = _common2.default.getElementById(_dragDeck[0].card.parent);
+	
+				var _position = _deck.padding(_dragDeck[0].index);
+				var _distance = Math.sqrt(_common2.default.sqr(x - _startCursor.x) + _common2.default.sqr(y - _startCursor.y));
+				// console.log('>>> distance:', _distance, x - _startCursor.x, y - _startCursor.y);
+	
+				var cursorMove = {
+					distance: _distance,
+					dbclick: !!dbclick,
+					direction: {
+						x: x - _startCursor.x, // (+) rigth / (-) left
+						y: y - _startCursor.y, // (+) down  / (-) up
+						right: x > _startCursor.x,
+						left: x < _startCursor.x,
+						down: y > _startCursor.y,
+						up: y < _startCursor.y
+					},
+					lastPosition: { x: x, y: y },
+					deckPosition: {
+						x: _position.x + (x - _startCursor.x),
+						y: _position.y + (y - _startCursor.y)
+					}
+				};
+	
+				_share2.default.set('lastCursorMove', cursorMove, true);
+	
+				_event2.default.dispatch('hideCard', target);
+				var _dop = document.elementFromPoint(x, y);
+				_event2.default.dispatch('showCard', target);
+				// if(_dop) {
+	
+				// Move(_dragDeck, _dop, cursorMove);
+				_event2.default.dispatch('Move', {
+					moveDeck: _dragDeck,
+					to: _dop,
+					cursorMove: cursorMove
 				});
+				// }
+	
+				// event.dispatch('redrawDeckIndexes', _deck);
+	
+				_share2.default.set('dragDeck', null);
+				_share2.default.set('startCursor', null);
 			}
+		}]);
 	
-			// _deck.runActions();
+		return inputs;
+	}();
 	
-			// TODO
-			// в данной ситуации обрабатывается только клик по карте, пустые колоды никак не обрабатываются
-	
-			var _dragDeck = _deck ? _deck.Take(_id) : null;
-	
-			_share2.default.set('dragDeck', _dragDeck);
-	
-			if (_dragDeck) {
-	
-				_share2.default.set('startCursor', { x: x, y: y });
-	
-				// ???
-				_tips2.default.tipsDestination({ currentCard: _card });
-			}
-		}
-	};
-	
-	// -------------------------------------------------------------------------------------------------------------
-	
-	var cmove = function cmove(x, y) {
-	
-		if (_common2.default.isCurLock()) {
-			return;
-		}
-	
-		var _startCursor = _share2.default.get('startCursor'),
-		    _dragDeck = _share2.default.get('dragDeck');
-	
-		if (!_dragDeck || !_startCursor) {
-			return;
-		}
-	
-		var _distance = _startCursor ? Math.sqrt(_common2.default.sqr(x - _startCursor.x) + _common2.default.sqr(y - _startCursor.y)) : 0;
-	
-		// console.log(x - _startCursor.x, y - _startCursor.y);
-	
-		var _deck = _common2.default.getElementById(_dragDeck[0].card.parent);
-	
-		var _position = _deck.padding(_dragDeck[_dragDeck.length - 1].index);
-	
-		_event2.default.dispatch('dragDeck', {
-			x: x, y: y,
-			_dragDeck: _dragDeck,
-			_startCursor: _startCursor,
-			_deck: _deck
-		});
-	
-		var cursorMove = {
-			distance: _distance,
-			direction: {
-				x: x - _startCursor.x, // (+) rigth / (-) left
-				y: y - _startCursor.y, // (+) down  / (-) up
-				right: x > _startCursor.x,
-				left: x < _startCursor.x,
-				down: y > _startCursor.y,
-				up: y < _startCursor.y
-			},
-			lastPosition: { x: x, y: y },
-			deckPosition: {
-				x: _position.x + (x - _startCursor.x),
-				y: _position.y + (y - _startCursor.y)
-			}
-		};
-	
-		_tips2.default.tipsMove({
-			moveDeck: _dragDeck,
-			cursorMove: cursorMove
-		});
-	};
-	
-	// -------------------------------------------------------------------------------------------------------------
-	
-	var cend = function cend(target, x, y, dbclick) {
-	
-		if (_common2.default.isCurLock()) {
-			return;
-		}
-	
-		var _startCursor = _share2.default.get('startCursor'),
-		    _dragDeck = _share2.default.get('dragDeck');
-	
-		if (!_dragDeck || !_startCursor) {
-			return;
-		}
-	
-		var _deck = _common2.default.getElementById(_dragDeck[0].card.parent);
-	
-		var _position = _deck.padding(_dragDeck[0].index);
-		var _distance = Math.sqrt(_common2.default.sqr(x - _startCursor.x) + _common2.default.sqr(y - _startCursor.y));
-		// console.log('>>> distance:', _distance, x - _startCursor.x, y - _startCursor.y);
-	
-		var cursorMove = {
-			distance: _distance,
-			dbclick: !!dbclick,
-			direction: {
-				x: x - _startCursor.x, // (+) rigth / (-) left
-				y: y - _startCursor.y, // (+) down  / (-) up
-				right: x > _startCursor.x,
-				left: x < _startCursor.x,
-				down: y > _startCursor.y,
-				up: y < _startCursor.y
-			},
-			lastPosition: { x: x, y: y },
-			deckPosition: {
-				x: _position.x + (x - _startCursor.x),
-				y: _position.y + (y - _startCursor.y)
-			}
-		};
-	
-		_share2.default.set('lastCursorMove', cursorMove, true);
-	
-		_event2.default.dispatch('hideCard', target);
-		var _dop = document.elementFromPoint(x, y);
-		_event2.default.dispatch('showCard', target);
-		// if(_dop) {
-	
-		// Move(_dragDeck, _dop, cursorMove);
-		_event2.default.dispatch('Move', {
-			moveDeck: _dragDeck,
-			to: _dop,
-			cursorMove: cursorMove
-		});
-		// }
-	
-		// event.dispatch('redrawDeckIndexes', _deck);
-	
-		_share2.default.set('dragDeck', null);
-		_share2.default.set('startCursor', null);
-	};
-	
-	// -------------------------------------------------------------------------------------------------------------
-	try {
-	
-		document.onmousedown = function (e) {
-	
-			if (e.button !== 0) {
-				return;
-			}
-	
-			cdown(e.target, e.clientX, e.clientY);
-		};
-	
-		document.onmousemove = function (e) {
-			cmove(e.clientX, e.clientY);
-		};
-	
-		document.onmouseup = function (e) {
-			cend(e.target, e.clientX, e.clientY);
-		};
-	
-		document.ondblclick = function (e) {
-			cdown(e.target, e.clientX, e.clientY);
-			cend(e.target, e.clientX, e.clientY, true);
-			_common2.default.curUnLock();
-		};
-	
-		document.addEventListener('touchstart', function (e) {
-			// e.preventDefault()
-			cdown(e.target, e.touches[0].clientX, e.touches[0].clientY);
-		}, false);
-	
-		document.addEventListener('touchmove', function (e) {
-	
-			if (_share2.default.startCursor) {
-				e.preventDefault();
-			}
-	
-			cmove(e.touches[0].clientX, e.touches[0].clientY);
-		}, false);
-	
-		document.addEventListener('touchend', function (e) {
-			// e.preventDefault()
-			cend(e.changedTouches[0].target, e.changedTouches[0].clientX, e.changedTouches[0].clientY);
-		}, false);
-	} catch (e) {}
+	var _inputs = new inputs();
 
 /***/ },
 /* 5 */
