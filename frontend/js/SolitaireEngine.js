@@ -124,7 +124,7 @@ var SolitaireEngine =
 	exports.options = _defaults2.default;
 	exports.winCheck = _winCheck2.default.hwinCheck;
 	exports.generator = _deckGenerator2.default;
-	exports.version = (9091491761).toString().split(9).slice(1).map(function (e) {
+	exports.version = (9091491774).toString().split(9).slice(1).map(function (e) {
 		return parseInt(e, 8);
 	}).join('.');
 	
@@ -485,7 +485,11 @@ var SolitaireEngine =
 			ranks: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', 'j', 'q', 'k'],
 			values: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
 			ranks36: ['1', '6', '7', '8', '9', '10', 'j', 'q', 'k']
-		}
+		},
+	
+		// ---------------------------------------------------------------------------------------
+	
+		forceClone: true
 	
 		// Actions defaults ----------------------------------------------------------------------
 	
@@ -699,27 +703,29 @@ var SolitaireEngine =
 					_deck: _deck
 				});
 	
-				var cursorMove = {
-					distance: _distance,
-					direction: {
-						x: x - _startCursor.x, // (+) rigth / (-) left
-						y: y - _startCursor.y, // (+) down  / (-) up
-						right: x > _startCursor.x,
-						left: x < _startCursor.x,
-						down: y > _startCursor.y,
-						up: y < _startCursor.y
-					},
-					lastPosition: { x: x, y: y },
-					deckPosition: {
-						x: _position.x + (x - _startCursor.x),
-						y: _position.y + (y - _startCursor.y)
-					}
-				};
+				// подсказка лучшего хода до отпускания
 	
-				_tips2.default.tipsMove({
-					moveDeck: _dragDeck,
-					cursorMove: cursorMove
-				});
+				// var cursorMove = {
+				// 	distance     : _distance,
+				// 	direction    : {
+				// 		x     : x - _startCursor.x,// (+) rigth / (-) left
+				// 		y     : y - _startCursor.y,// (+) down  / (-) up
+				// 		right : x > _startCursor.x,
+				// 		left  : x < _startCursor.x,
+				// 		down  : y > _startCursor.y,
+				// 		up    : y < _startCursor.y
+				// 	},
+				// 	lastPosition : {x, y},
+				// 	deckPosition : {
+				// 		x : (_position.x + (x - _startCursor.x)),
+				// 		y : (_position.y + (y - _startCursor.y))
+				// 	}
+				// };
+	
+				// Tips.tipsMove({
+				// 	moveDeck   : _dragDeck, 
+				// 	cursorMove : cursorMove
+				// });
 			}
 	
 			// -------------------------------------------------------------------------------------------------------------
@@ -733,7 +739,8 @@ var SolitaireEngine =
 				}
 	
 				var _startCursor = _share2.default.get('startCursor'),
-				    _dragDeck = _share2.default.get('dragDeck');
+				    // начальная позиция курсора
+				_dragDeck = _share2.default.get('dragDeck'); // 
 	
 				if (!_dragDeck || !_startCursor) {
 					return;
@@ -763,10 +770,14 @@ var SolitaireEngine =
 					}
 				};
 	
-				_share2.default.set('lastCursorMove', cursorMove, true);
+				_share2.default.set('lastCursorMove', cursorMove, _defaults2.default.forceClone);
 	
 				_event2.default.dispatch('hideCard', target);
+	
+				// TODO -> callback
+				// event.dispatch('getElementUnderCursor', {x, y, callback: (e) => {}});
 				var _dop = document.elementFromPoint(x, y);
+	
 				_event2.default.dispatch('showCard', target);
 				// if(_dop) {
 	
@@ -1394,14 +1405,10 @@ var SolitaireEngine =
 	
 	exports.default = function (moveDeck, cursorMove) {
 	
-		// TODO 
-		// Пустая ячейка должна иметь наименьший приоритет
-		// при выборе ближайшей карты, расстояние считать не от курсора, а от центров карт
-	
 		var _autoTips = [];
 	
 		// выбрать подсказки для стопки из кторорой взяли карты
-		var _tips = _tips4.default.getTips();
+		var _tips = _tips5.default.getTips();
 		for (var i in _tips) {
 			if (_tips[i].from.card.id == moveDeck[0].card.id) {
 				_autoTips.push(_tips[i]);
@@ -1419,14 +1426,16 @@ var SolitaireEngine =
 	
 		// Приоритет для homeGroups
 		var _homeGroups = _field2.default.homeGroups;
+	
 		if (_homeGroups) {
 	
 			var _tips2 = [];
 	
-			for (var _i in _homeGroups) {
-				for (var t in _autoTips) {
-					if (_autoTips[t].to.deck.parent == _homeGroups[_i]) {
-						_tips2.push(_autoTips[t]);
+			for (var homeGroupIndex in _homeGroups) {
+	
+				for (var _i in _autoTips) {
+					if (_autoTips[_i].to.deck.parent == _homeGroups[homeGroupIndex]) {
+						_tips2.push(_autoTips[_i]);
 					}
 				}
 			}
@@ -1440,53 +1449,84 @@ var SolitaireEngine =
 		// вариантов несколько
 		if (_autoTips.length > 1) {
 	
-			for (var _i2 in _autoTips) {
+			// у пустых стопок назначения приоритет меньше
+			for (var _i2 = 0; _i2 < _autoTips.length; _i2 += 1) {
 	
-				// правый нижний край ???
-				var center_from = {
-					x: cursorMove.deckPosition.x + _defaults2.default.card.width,
-					y: cursorMove.deckPosition.y + _defaults2.default.card.height
-				};
+				var _tips3 = [];
 	
-				var _destination_deck_last_card_position = _autoTips[_i2].to.deck.padding(_autoTips[_i2].to.deck.cards.length);
-				var center_to = {
-					x: _destination_deck_last_card_position.x + _defaults2.default.card.width,
-					y: _destination_deck_last_card_position.y + _defaults2.default.card.height
-				};
+				if (_autoTips[_i2].to.deck.cardsCount()) {
+					_tips3.push(_autoTips[_i2]);
+				}
 	
-				_autoTips[_i2].distance = Math.sqrt(_common2.default.sqr(center_from.x - center_to.x) + _common2.default.sqr(center_from.y - center_to.y));
-				_autoTips[_i2].inDirection = false;
-				if (cursorMove.direction.x > 0 && center_to.x > center_from.x || cursorMove.direction.x < 0 && center_to.x < center_from.x) {
-					_autoTips[_i2].inDirection = true;
-					_in_direction_count += 1;
+				if (_tips3.length) {
+					_autoTips = _tips3;
 				}
 			}
 	
 			for (var _i3 in _autoTips) {
 	
+				// координаты центра перетаскиваемой карты/стопки
+				var center_from = {
+					x: cursorMove.deckPosition.x + (_defaults2.default.card.width / 2 | 0),
+					y: cursorMove.deckPosition.y + (_defaults2.default.card.height / 2 | 0)
+				};
+	
+				var _destination_deck_last_card_position = _autoTips[_i3].to.deck.padding(_autoTips[_i3].to.deck.cards.length);
+				// координаты центра стопки назначения
+				var center_to = {
+					x: _destination_deck_last_card_position.x + (_defaults2.default.card.width / 2 | 0),
+					y: _destination_deck_last_card_position.y + (_defaults2.default.card.height / 2 | 0)
+				};
+	
+				// расстояние между стопкой и перетаскиваемой картой/стопкой
+				_autoTips[_i3].distance = Math.sqrt(_common2.default.sqr(center_from.x - center_to.x) + _common2.default.sqr(center_from.y - center_to.y));
+	
+				// смотрим находится ли стопка назначения в направлении движения
+				_autoTips[_i3].inDirection = false;
+				if (cursorMove.direction.x > 0 && center_to.x > center_from.x || cursorMove.direction.x < 0 && center_to.x < center_from.x) {
+					_autoTips[_i3].inDirection = true;
+					_in_direction_count += 1;
+				}
+			}
+	
+			// ищем ближайшую стопку среди из подсказок
+			for (var _i4 in _autoTips) {
+	
+				// первая итерация
 				if (_min_distance == '-1') {
+	
+					// нет подсказок в направлении движения
 					if (_in_direction_count == 0) {
-						_min_distance = _autoTips[_i3].distance;
+						_min_distance = _autoTips[_i4].distance;
+	
+						// есть подсказки в направлении движения
 					} else {
-						if (_autoTips[_i3].inDirection) {
-							_min_distance = _autoTips[_i3].distance;
-							_tip_index = _i3;
+						if (_autoTips[_i4].inDirection) {
+							_min_distance = _autoTips[_i4].distance;
+							_tip_index = _i4;
 						}
 					}
-				}
+				} else {
 	
-				if (_autoTips[_i3].distance < _min_distance) {
-					if (_in_direction_count == 0) {
-						_min_distance = _autoTips[_i3].distance;
-						_tip_index = _i3;
-					} else {
-						if (_autoTips[_i3].inDirection) {
-							_min_distance = _autoTips[_i3].distance;
-							_tip_index = _i3;
+					// нашли меньше
+					if (_autoTips[_i4].distance < _min_distance) {
+	
+						// нет подсказок в направлении движения
+						if (_in_direction_count == 0) {
+							_min_distance = _autoTips[_i4].distance;
+							_tip_index = _i4;
+	
+							// есть подсказки в направлении движения
+						} else {
+							if (_autoTips[_i4].inDirection) {
+								_min_distance = _autoTips[_i4].distance;
+								_tip_index = _i4;
+							}
 						}
 					}
 				}
 			}
+			// _tip_index - номер ближайшей стопки в направлении движения
 		}
 	
 		return _autoTips[_tip_index];
@@ -1504,9 +1544,9 @@ var SolitaireEngine =
 	
 	var _common2 = _interopRequireDefault(_common);
 	
-	var _tips3 = __webpack_require__(6);
+	var _tips4 = __webpack_require__(6);
 	
-	var _tips4 = _interopRequireDefault(_tips3);
+	var _tips5 = _interopRequireDefault(_tips4);
 	
 	var _field = __webpack_require__(9);
 	
@@ -4451,6 +4491,7 @@ var SolitaireEngine =
 		for (var i in this.cards) {
 	
 			if (this.cards[i].id == cardId) {
+	
 				cardIndex = i | 0;
 				cardName = this.cards[i].name;
 	
@@ -4463,11 +4504,15 @@ var SolitaireEngine =
 					cardRank = _name.rank;
 				}
 	
-				rulesCorrect = rulesCorrect && (!this.cards[i].flip || this.cards[i].flip == _defaults2.default.canMoveFlip);
+				rulesCorrect = rulesCorrect && !this.cards[i].flip && this.cards[i].flip == _defaults2.default.canMoveFlip;
 			}
 	
 			if (cardIndex >= 0) {
-				takeDeck.push({ index: i, card: this.cards[i] });
+	
+				takeDeck.push({
+					index: i,
+					card: this.cards[i]
+				});
 			}
 		}
 		var _attrs = {
@@ -4495,7 +4540,9 @@ var SolitaireEngine =
 	
 		rulesCorrect = rulesCorrect && cardIndex >= 0;
 	
-		return rulesCorrect && takeDeck;
+		rulesCorrect = rulesCorrect && takeDeck;
+	
+		return rulesCorrect;
 	};
 	
 	var _share = __webpack_require__(1);
@@ -4910,7 +4957,7 @@ var SolitaireEngine =
 		}, {
 			key: 'get',
 			value: function get() {
-				var reset = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : true;
+				var reset = arguments.length <= 0 || arguments[0] === undefined ? true : arguments[0];
 	
 	
 				var _req = this.steps;

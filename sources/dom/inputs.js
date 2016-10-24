@@ -177,27 +177,29 @@ class inputs {
 			_deck
 		});
 
-		var cursorMove = {
-			distance     : _distance,
-			direction    : {
-				x     : x - _startCursor.x,// (+) rigth / (-) left
-				y     : y - _startCursor.y,// (+) down  / (-) up
-				right : x > _startCursor.x,
-				left  : x < _startCursor.x,
-				down  : y > _startCursor.y,
-				up    : y < _startCursor.y
-			},
-			lastPosition : {x, y},
-			deckPosition : {
-				x : (_position.x + (x - _startCursor.x)),
-				y : (_position.y + (y - _startCursor.y))
-			}
-		};
+		// подсказка лучшего хода до отпускания
 
-		Tips.tipsMove({
-			moveDeck   : _dragDeck, 
-			cursorMove : cursorMove
-		});
+		// var cursorMove = {
+		// 	distance     : _distance,
+		// 	direction    : {
+		// 		x     : x - _startCursor.x,// (+) rigth / (-) left
+		// 		y     : y - _startCursor.y,// (+) down  / (-) up
+		// 		right : x > _startCursor.x,
+		// 		left  : x < _startCursor.x,
+		// 		down  : y > _startCursor.y,
+		// 		up    : y < _startCursor.y
+		// 	},
+		// 	lastPosition : {x, y},
+		// 	deckPosition : {
+		// 		x : (_position.x + (x - _startCursor.x)),
+		// 		y : (_position.y + (y - _startCursor.y))
+		// 	}
+		// };
+
+		// Tips.tipsMove({
+		// 	moveDeck   : _dragDeck, 
+		// 	cursorMove : cursorMove
+		// });
 
 	}
 
@@ -209,8 +211,8 @@ class inputs {
 			return;
 		}
 
-		var _startCursor = share.get('startCursor'),
-		    _dragDeck    = share.get('dragDeck');
+		var _startCursor = share.get('startCursor'),// начальная позиция курсора
+		    _dragDeck    = share.get('dragDeck');   // 
 
 		if(!_dragDeck || !_startCursor) {
 			return;
@@ -240,10 +242,14 @@ class inputs {
 			}
 		};
 
-		share.set('lastCursorMove', cursorMove, true);
+		share.set('lastCursorMove', cursorMove, defaults.forceClone);
 
 		event.dispatch('hideCard', target);
+
+		// TODO -> callback
+		// event.dispatch('getElementUnderCursor', {x, y, callback: (e) => {}});
 		var _dop = document.elementFromPoint(x, y);
+		
 		event.dispatch('showCard', target);
 		// if(_dop) {
 

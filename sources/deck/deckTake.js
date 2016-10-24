@@ -34,6 +34,7 @@ export default function(cardId) {
 	for(var i in this.cards) {
 
 		if(this.cards[i].id == cardId) {
+			
 			cardIndex = i|0;
 			cardName  = this.cards[i].name;
 			
@@ -48,13 +49,17 @@ export default function(cardId) {
 			}
 			
 			rulesCorrect = rulesCorrect && (
-				!this.cards[i].flip
-			 || this.cards[i].flip == defaults.canMoveFlip
+				!this.cards[i].flip                        &&
+				this.cards[i].flip == defaults.canMoveFlip
 			);
 		}
 
 		if(cardIndex >= 0) {
-			takeDeck.push({index : i, card : this.cards[i]});
+			
+			takeDeck.push({
+				index : i,
+				card  : this.cards[i]
+			});
 		}
 	}
 	var _attrs = {
@@ -81,6 +86,8 @@ export default function(cardId) {
 	// записывает их как активные
 	
 	rulesCorrect = rulesCorrect && (cardIndex >= 0);
+	
+	rulesCorrect = rulesCorrect && takeDeck;
 
-	return rulesCorrect && takeDeck;
+	return rulesCorrect;
 };
