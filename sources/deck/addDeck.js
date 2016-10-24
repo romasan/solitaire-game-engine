@@ -62,7 +62,7 @@ class deckClass {
 		
 		this.locked     = a.locked   ? true : false;
 		this.save       = a.save     ? true : false;
-		this.longStep   = a.longStep ? true : false;
+		// this.longStep   = a.longStep ? true : false;
 		this.visible    = a.visible    && typeof a.visible    == 'boolean' ? a.visible    : true;// default true
 		this.groupIndex = a.groupIndex && typeof a.groupIndex == 'number'  ? a.groupIndex : null;
 		this.parent     = a.parent     && typeof a.parent     == 'string'  ? a.parent     : 'field';
@@ -207,6 +207,8 @@ class deckClass {
 
 		// перерисовка стопки
 		this.Redraw = function(data) {
+
+			// TODO "Ханойская башня", исправление перерисовки ячеек при перевлючении вида
 			
 			event.dispatch('redrawDeck', {
 				deck   : this,

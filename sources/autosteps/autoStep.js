@@ -81,7 +81,7 @@ export default class {
 				}
 				
 				this.check();
-			});
+			}, this);
 		}
 	}
 }

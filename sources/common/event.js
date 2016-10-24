@@ -68,6 +68,10 @@ class Event {
 		}
 	}
 
+	get(eventName) {
+		return this._events[eventName];
+	}
+
 	// getEventsByName(eventName) {
 	// 	return this._events.indexOf(eventName) >= 0 ? this._events[this._events.indexOf(eventName)] : null;
 	// }

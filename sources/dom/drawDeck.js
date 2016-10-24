@@ -154,18 +154,30 @@ event.listen('redrawDeck', function(e) {
 	};
 
 	if(e.data) {
+
 		applyChangedParameters(e.params, e.data, e.deck);
 
-		if(e.data.paddingX    ) share.get('padding_x',      e.data.paddingX    );
-		if(e.data.flipPaddingX) share.get('flip_padding_x', e.data.flipPaddingX);
-		if(e.data.paddingY    ) share.get('padding_y',      e.data.paddingY    );
-		if(e.data.flipPaddingY) share.get('flip_padding_y', e.data.flipPaddingY);
+		if(e.data.paddingX    ) {
+			share.get('padding_x',      e.data.paddingX);
+		}
+
+		if(e.data.flipPaddingX) {
+			share.get('flip_padding_x', e.data.flipPaddingX);
+		}
+
+		if(e.data.paddingY    ) {
+			share.get('padding_y',      e.data.paddingY);
+		}
+
+		if(e.data.flipPaddingY) {
+			share.get('flip_padding_y', e.data.flipPaddingY);
+		}
 	}
 
 	var _params = {
-		left      : e.params.x,
-		top       : e.params.y,
-		transform : 'rotate(' + (e.params.rotate|0) + 'deg)'
+		transform : 'rotate(' + (e.params.rotate|0) + 'deg)',
+		left      : e.params.x + 'px'                       ,
+		top       : e.params.y + 'px'
 	};
 	
 	_params.display = e.deck.visible ? 'block' : 'none';
@@ -174,12 +186,14 @@ event.listen('redrawDeck', function(e) {
 		.css(_params);
 
 	for(var i in e.cards) {
+		
 		var _card_position = e.deck.padding(i);
 		var _zIndex = (e.params.startZIndex|0) + (i|0);
+		
 		var _params = {
-			'left'              : _card_position.x + 'px', 
-			'top'               : _card_position.y + 'px',
-			'z-index'           : _zIndex,
+			'left'              : _card_position.x + 'px'                 , 
+			'top'               : _card_position.y + 'px'                 ,
+			'z-index'           : _zIndex                                 ,
 			'-ms-transform'     : 'rotate(' + (e.params.rotate|0) + 'deg)',
 			'-webkit-transform' : 'rotate(' + (e.params.rotate|0) + 'deg)',
 			'-moz-transform'    : 'rotate(' + (e.params.rotate|0) + 'deg)',
@@ -196,6 +210,7 @@ event.listen('redrawDeck', function(e) {
 			elRender(e.cards[i].domElement)
 				.removeClass('flip');
 		}
+		
 		elRender(e.cards[i].domElement)
 			.css(_params);
 	}

@@ -124,7 +124,7 @@ var SolitaireEngine =
 	exports.options = _defaults2.default;
 	exports.winCheck = _winCheck2.default.hwinCheck;
 	exports.generator = _deckGenerator2.default;
-	exports.version = (9091491774).toString().split(9).slice(1).map(function (e) {
+	exports.version = (9091491776).toString().split(9).slice(1).map(function (e) {
 		return parseInt(e, 8);
 	}).join('.');
 	
@@ -354,6 +354,11 @@ var SolitaireEngine =
 						}
 					}
 				}
+			}
+		}, {
+			key: 'get',
+			value: function get(eventName) {
+				return this._events[eventName];
 			}
 	
 			// getEventsByName(eventName) {
@@ -1868,8 +1873,8 @@ var SolitaireEngine =
 		"flipPaddingX": { type: "any" },
 		"flipPaddingY": { type: "any" },
 		"actions": { type: "any" },
-		"save": { type: "boolean", default: true },
-		"longStep": { type: "boolean", default: false }
+		"save": { type: "boolean", default: true }
+		// "longStep"     : {type : "boolean", default : false}
 	};
 	
 	var groupClass = function () {
@@ -2315,7 +2320,7 @@ var SolitaireEngine =
 	
 			this.locked = a.locked ? true : false;
 			this.save = a.save ? true : false;
-			this.longStep = a.longStep ? true : false;
+			// this.longStep   = a.longStep ? true : false;
 			this.visible = a.visible && typeof a.visible == 'boolean' ? a.visible : true; // default true
 			this.groupIndex = a.groupIndex && typeof a.groupIndex == 'number' ? a.groupIndex : null;
 			this.parent = a.parent && typeof a.parent == 'string' ? a.parent : 'field';
@@ -2443,6 +2448,8 @@ var SolitaireEngine =
 	
 			// перерисовка стопки
 			this.Redraw = function (data) {
+	
+				// TODO "Ханойская башня", исправление перерисовки ячеек при перевлючении вида
 	
 				_event2.default.dispatch('redrawDeck', {
 					deck: this,
@@ -6314,7 +6321,7 @@ var SolitaireEngine =
 						}
 	
 						_this.check();
-					});
+					}, this);
 				}
 			}
 		}]);
@@ -8147,18 +8154,30 @@ var SolitaireEngine =
 		};
 	
 		if (e.data) {
+	
 			applyChangedParameters(e.params, e.data, e.deck);
 	
-			if (e.data.paddingX) _share2.default.get('padding_x', e.data.paddingX);
-			if (e.data.flipPaddingX) _share2.default.get('flip_padding_x', e.data.flipPaddingX);
-			if (e.data.paddingY) _share2.default.get('padding_y', e.data.paddingY);
-			if (e.data.flipPaddingY) _share2.default.get('flip_padding_y', e.data.flipPaddingY);
+			if (e.data.paddingX) {
+				_share2.default.get('padding_x', e.data.paddingX);
+			}
+	
+			if (e.data.flipPaddingX) {
+				_share2.default.get('flip_padding_x', e.data.flipPaddingX);
+			}
+	
+			if (e.data.paddingY) {
+				_share2.default.get('padding_y', e.data.paddingY);
+			}
+	
+			if (e.data.flipPaddingY) {
+				_share2.default.get('flip_padding_y', e.data.flipPaddingY);
+			}
 		}
 	
 		var _params = {
-			left: e.params.x,
-			top: e.params.y,
-			transform: 'rotate(' + (e.params.rotate | 0) + 'deg)'
+			transform: 'rotate(' + (e.params.rotate | 0) + 'deg)',
+			left: e.params.x + 'px',
+			top: e.params.y + 'px'
 		};
 	
 		_params.display = e.deck.visible ? 'block' : 'none';
@@ -8166,8 +8185,10 @@ var SolitaireEngine =
 		(0, _elRender2.default)(e.deck.domElement).css(_params);
 	
 		for (var i in e.cards) {
+	
 			var _card_position = e.deck.padding(i);
 			var _zIndex = (e.params.startZIndex | 0) + (i | 0);
+	
 			var _params = {
 				'left': _card_position.x + 'px',
 				'top': _card_position.y + 'px',
@@ -8186,6 +8207,7 @@ var SolitaireEngine =
 			} else {
 				(0, _elRender2.default)(e.cards[i].domElement).removeClass('flip');
 			}
+	
 			(0, _elRender2.default)(e.cards[i].domElement).css(_params);
 		}
 	});
