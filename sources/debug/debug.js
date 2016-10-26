@@ -23,6 +23,118 @@ import renderTest from 'renderTest';
 // 	console.log('# Отправили данные на сохранение в историю:', e);
 // }
 
+// -- LOG
+
+// $(document).ready(() => {
+// 	$(document.body).append(
+// 		$('<span>')
+// 			.attr({id : 'log_1'})
+// 			.css({
+// 				'display'          : 'none'                                                            ,
+// 				'width'            : '250px'                                                           ,
+// 				'max-height'       : '70%'                                                             ,
+// 				'position'         : 'absolute'                                                        ,
+// 				'top'              : '0px'                                                             ,
+// 				'right'            : '2px'                                                             ,
+// 				'overflow'         : 'hidden'                                                          ,
+// 				'zIndex'           : 999                                                               ,
+// 				'background'       : 'rgba(0, 0, 0, .5)'                                               ,
+// 				'padding'          : '4px'                                                             ,
+// 				'border-radius'    : '0px 0px 5px 5px'                                                 ,
+// 				'text-shadow'      : '#000 1px 0 0px, #000 0 1px 0px, #000 -1px 0 0px, #000 0 -1px 0px',
+// 				'font-size'        : '10pt'                                                            ,
+// 				'font-family'      : 'Tahoma, Verdana'
+// 			})
+// 			.dblclick(function() {
+// 				setTimeout(() => {
+// 					$(this)
+// 						.hide()
+// 						.empty();
+// 				}, 100);
+// 			})
+// 	);
+// });
+
+
+let _log = (text, color) => {
+	
+	console.log(
+		'%c»%c' + text,
+
+		'color: white;',
+		
+		// 'background: rgba(0, 0, 0, .5);'                                                 +
+		'border-radius: 3px;'                                                               +
+		// 'text-shadow: #777 1px 0 0px, #777 0 1px 0px, #777 -1px 0 0px, #777 0 -1px 0px;' +
+		'padding: 2px;'                                                                     +
+		// 'border: 1px solid black;'                                                       +
+		'background: ' + color + ';'
+		// 'font-weight: bold;'
+		// 'color: ' + color + ';'
+	);
+
+	// $('#log_1')
+	// 	.show()
+	// 	.append(
+	// 		$('<div>')
+	// 		.html(text)
+	// 		.css({
+	// 			color
+	// 		})
+	// 	)
+	// 	.prop({
+	// 		scrollTop : 1e10//log_1.scrollHeight - log_1.clientHeight
+	// 	})
+};
+
+event.listen('shareSet:stepType', (e) => {
+	_log('stepType:' + e, 'yellow');
+})
+
+event.listen('shareSet:curLockState', (e) => {
+	_log('curLockState:' + e, '#aaffaa');
+});
+
+event.listen('moveEnd', (e) => {
+	_log('moveEnd', 'orange');
+});
+
+event.listen('forceMoveEnd', (e) => {
+	_log('forceMoveEnd', 'orange');
+});
+
+event.listen('gameInit', (e, a) => {
+	_log('gameInit (' + ((a.eventInfo.index | 0) + 1) + ', ' + a.eventInfo.count + ')', '#ff7777');
+});
+
+document.onwheel = function(e) {
+
+  let area = null;
+  // if (e.target.id == 'log_1') {
+  // 	area = e.target;
+  // } else 
+  if(e.target.parentNode.id == 'log_1') {
+  	area = e.target.parentNode;
+  } else {
+  	return;
+  }
+
+  let delta = e.deltaY || e.detail || e.wheelDelta;
+
+  area.scrollTop = area.scrollTop + delta;
+
+  // if (delta < 0 && area.scrollTop == 0) {
+    e.preventDefault();
+  // }
+
+  // if (delta > 0 && area.scrollHeight - area.clientHeight - area.scrollTop <= 1) {
+    e.preventDefault();
+  // }
+  
+};
+
+// --
+
 let _history = [],
 	_redo    = [];
 

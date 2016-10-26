@@ -124,7 +124,7 @@ var SolitaireEngine =
 	exports.options = _defaults2.default;
 	exports.winCheck = _winCheck2.default.hwinCheck;
 	exports.generator = _deckGenerator2.default;
-	exports.version = (9091491776).toString().split(9).slice(1).map(function (e) {
+	exports.version = (9091492133).toString().split(9).slice(1).map(function (e) {
 		return parseInt(e, 8);
 	}).join('.');
 	
@@ -327,9 +327,18 @@ var SolitaireEngine =
 			value: function dispatch(eventName, data) {
 	
 				if (this._events[eventName]) {
+	
 					for (var i in this._events[eventName]) {
+	
 						if (this._events[eventName][i]) {
-							this._events[eventName][i].callback(data);
+	
+							this._events[eventName][i].callback(data, {
+								eventInfo: {
+									eventName: eventName,
+									index: i,
+									count: this._events[eventName].length
+								}
+							});
 						}
 					}
 				}
@@ -576,6 +585,26 @@ var SolitaireEngine =
 				document.onmouseup = function (e) {
 					_this.put(e.target, e.clientX, e.clientY);
 				};
+	
+				// TODO
+				// Решение: (if distance > 0)
+				// Click
+				// Click
+				// Dblclick
+	
+				// var timeoutId = null;
+				// document.onmouseup = (e) {
+				// 	timeoutId && timeoutId = setTimeout(() => {
+				// 		this.put(e.target, e.clientX, e.clientY);
+				// 		timeoutId = null;
+				// 	}, 500);
+				// };
+				// document.ondblclick =function(){
+				// 	clearTimeout(timeoutId);
+				// 	this.take(e.target, e.clientX, e.clientY);
+				// 	this.put(e.target, e.clientX, e.clientY, true);
+				// 	common.curUnLock();
+				// };
 	
 				document.ondblclick = function (e) {
 					_this.take(e.target, e.clientX, e.clientY);
@@ -1016,9 +1045,10 @@ var SolitaireEngine =
 	
 	// ID generator
 	
-	var _id = 0,
-	    genId = function genId() {
-		return _id++;
+	var _id = 0;
+	
+	var genId = function genId() {
+		return _id += 1;
 	};
 	
 	// --
@@ -3944,7 +3974,14 @@ var SolitaireEngine =
 			};
 	
 			if (typeof a.callback == "function") {
-				moveDragDeckParams.callback = a.callback;
+				moveDragDeckParams.callback = function () {
+					_event2.default.dispatch('forceMoveEnd');
+					a.callback();
+				};
+			} else {
+				moveDragDeckParams.callback = function () {
+					_event2.default.dispatch('forceMoveEnd');
+				};
 			}
 	
 			// event.dispatch('moveEnd:' + share.get('stepType'));
@@ -4016,11 +4053,13 @@ var SolitaireEngine =
 			return false;
 		}
 	
+		_share2.default.set('stepType', stepType);
+	
 		// if(window.debug_kick) {
 		// 	console.log('data.eventData.stepType:', data);
 		// 	throw new Error();
 		// }
-		window.debug_kick = 1;
+		// window.debug_kick = 1;
 	
 		// if(
 		// 	data.eventData[0]                         &&
@@ -7422,7 +7461,8 @@ var SolitaireEngine =
 	
 	_allEl.stopAnimations = function (callback) {
 	
-		_allEl(".animated").css({ transition: '0s' }).removeClass("animated");
+		_allEl(".animated").css({ transition: '0s' }) // false
+		.removeClass("animated");
 	
 		/*var _animatedElementsStack = share.get('animatedElementsStack');
 	 	for(var i in _animatedElementsStack) {
@@ -8048,14 +8088,19 @@ var SolitaireEngine =
 	var applyChangedParameters = function applyChangedParameters(p, a, deck) {
 	
 		p.x = a.position && a.position.x && typeof a.position.x == 'number' ? a.position.x : 0, p.y = a.position && a.position.y && typeof a.position.y == 'number' ? a.position.y : 0;
+	
 		p.x = a.parentPosition && a.parentPosition.x ? p.x + a.parentPosition.x : p.x;
 		p.y = a.parentPosition && a.parentPosition.y ? p.y + a.parentPosition.y : p.y;
 	
 		deck.rotate = p.rotate = a.rotate && typeof a.rotate == 'number' ? a.rotate : 0;
 	
-		// у padding_x, padding_y приоритет выше чем paddingType
+		p.padding_y = a.paddingY && typeof a.paddingY == 'number' ? a.paddingY : a.paddingType ? _defaults2.default.padding_y : 0;
 	
-		p.padding_y = a.paddingY && typeof a.paddingY == 'number' ? a.paddingY : a.paddingType ? _defaults2.default.padding_y : 0, p.padding_x = a.paddingX && typeof a.paddingX == 'number' ? a.paddingX : a.paddingType ? _defaults2.default.padding_x : 0, p.flip_padding_y = a.flipPaddingY && typeof a.flipPaddingY == 'number' ? a.flipPaddingY : a.paddingType ? _defaults2.default.flip_padding_y : 0, p.flip_padding_x = a.flipPaddingX && typeof a.flipPaddingX == 'number' ? a.flipPaddingX : a.paddingType ? _defaults2.default.flip_padding_x : 0;
+		p.padding_x = a.paddingX && typeof a.paddingX == 'number' ? a.paddingX : a.paddingType ? _defaults2.default.padding_x : 0;
+	
+		p.flip_padding_y = a.flipPaddingY && typeof a.flipPaddingY == 'number' ? a.flipPaddingY : a.paddingType ? _defaults2.default.flip_padding_y : 0;
+	
+		p.flip_padding_x = a.flipPaddingX && typeof a.flipPaddingX == 'number' ? a.flipPaddingX : a.paddingType ? _defaults2.default.flip_padding_x : 0;
 	};
 	
 	// --------------------------------------------------------------------------------------------------------
@@ -8065,7 +8110,6 @@ var SolitaireEngine =
 		applyChangedParameters(e.params, e.a, e.deck);
 	
 		e.deck.domElement = (0, _elRender2.default)('<div>');
-		// .getEl();
 	
 		var _params = {
 			left: e.params.x + 'px',
@@ -8081,33 +8125,36 @@ var SolitaireEngine =
 			id: e.deck.getId()
 		});
 	
-		// var showSlot = e.a.showSlot && typeof e.a.showSlot == 'boolean' ? e.a.showSlot : defaults.showSlot;
 		if (e.a.showSlot) {
 			(0, _elRender2.default)(e.deck.domElement).addClass('slot');
 		}
+	
 		if (e.a.class) {
 			(0, _elRender2.default)(e.deck.domElement).addClass(e.a.class);
 		}
 	
 		(0, _elRender2.default)(_field2.default.domElement).append(e.deck.domElement);
 	
-		// add label
+		// draw label
+		// let label = e.a.label && typeof e.a.label == 'string' ? e.a.label : null;
 	
-		var label = e.a.label && typeof e.a.label == 'string' ? e.a.label : null;
+		// if(dev && !e.a.label && share.get('debugLabels')) {
+		// 	label = '<span style="color:#65B0FF;">' + e.deck.name + '</span>';
+		// }
 	
-		if ((true) && !e.a.label && _share2.default.get('debugLabels')) {
-			label = '<span style="color:#65B0FF;">' + e.deck.name + '</span>';
-		}
+		// if(label) {
 	
-		if (label) {
-			var _labelElement = (0, _elRender2.default)('<div>').addClass('deckLabel');
-			// .attr({
-			// 	"title" : e.deck.getId() + " (" + e.deck.parent + ")"
-			// })
-			// .getEl();
-			(0, _elRender2.default)(_labelElement).html(label);
-			(0, _elRender2.default)(e.deck.domElement).append(_labelElement);
-		}
+		// 	let _labelElement = 
+		// 		elRender('<div>')
+		// 			.addClass('deckLabel')
+	
+		// 	elRender(_labelElement)
+		// 		.html(label);
+	
+		// 	elRender(e.deck.domElement)
+		// 		.append(_labelElement);
+	
+		// }
 	});
 	
 	// --------------------------------------------------------------------------------------------------------
@@ -8119,6 +8166,7 @@ var SolitaireEngine =
 		}
 	
 		for (var i in e.cards) {
+	
 			var _params = {};
 	
 			if (e.cards[i].flip) {
@@ -8126,6 +8174,7 @@ var SolitaireEngine =
 			} else {
 				(0, _elRender2.default)(e.cards[i].domElement).removeClass('flip');
 			}
+	
 			(0, _elRender2.default)(e.cards[i].domElement).css(_params);
 		}
 	});
@@ -8174,6 +8223,7 @@ var SolitaireEngine =
 			}
 		}
 	
+		// перерисовка стопки
 		var _params = {
 			transform: 'rotate(' + (e.params.rotate | 0) + 'deg)',
 			left: e.params.x + 'px',
@@ -8184,23 +8234,23 @@ var SolitaireEngine =
 	
 		(0, _elRender2.default)(e.deck.domElement).css(_params);
 	
+		// перерисовка карт
 		for (var i in e.cards) {
 	
 			var _card_position = e.deck.padding(i);
 			var _zIndex = (e.params.startZIndex | 0) + (i | 0);
 	
-			var _params = {
-				'left': _card_position.x + 'px',
-				'top': _card_position.y + 'px',
-				'z-index': _zIndex,
+			var _params2 = {
 				'-ms-transform': 'rotate(' + (e.params.rotate | 0) + 'deg)',
 				'-webkit-transform': 'rotate(' + (e.params.rotate | 0) + 'deg)',
 				'-moz-transform': 'rotate(' + (e.params.rotate | 0) + 'deg)',
-				'transform': 'rotate(' + (e.params.rotate | 0) + 'deg)'
+				'transform': 'rotate(' + (e.params.rotate | 0) + 'deg)',
+				'left': _card_position.x + 'px',
+				'top': _card_position.y + 'px',
+				'z-index': _zIndex
 			};
-			_params.display = e.deck.visible ? 'block' : 'none';
 	
-			// e.deck.checkFlip(e.cards[i], i|0, e.cards.length|0);
+			_params2.display = e.deck.visible ? 'block' : 'none';
 	
 			if (e.cards[i].flip) {
 				(0, _elRender2.default)(e.cards[i].domElement).addClass('flip');
@@ -8208,7 +8258,7 @@ var SolitaireEngine =
 				(0, _elRender2.default)(e.cards[i].domElement).removeClass('flip');
 			}
 	
-			(0, _elRender2.default)(e.cards[i].domElement).css(_params);
+			(0, _elRender2.default)(e.cards[i].domElement).css(_params2);
 		}
 	});
 
@@ -8744,6 +8794,114 @@ var SolitaireEngine =
 	// event.listen('makeStep', (e) => {
 	// 	console.log('# Отправили данные на сохранение в историю:', e);
 	// }
+	
+	// -- LOG
+	
+	// $(document).ready(() => {
+	// 	$(document.body).append(
+	// 		$('<span>')
+	// 			.attr({id : 'log_1'})
+	// 			.css({
+	// 				'display'          : 'none'                                                            ,
+	// 				'width'            : '250px'                                                           ,
+	// 				'max-height'       : '70%'                                                             ,
+	// 				'position'         : 'absolute'                                                        ,
+	// 				'top'              : '0px'                                                             ,
+	// 				'right'            : '2px'                                                             ,
+	// 				'overflow'         : 'hidden'                                                          ,
+	// 				'zIndex'           : 999                                                               ,
+	// 				'background'       : 'rgba(0, 0, 0, .5)'                                               ,
+	// 				'padding'          : '4px'                                                             ,
+	// 				'border-radius'    : '0px 0px 5px 5px'                                                 ,
+	// 				'text-shadow'      : '#000 1px 0 0px, #000 0 1px 0px, #000 -1px 0 0px, #000 0 -1px 0px',
+	// 				'font-size'        : '10pt'                                                            ,
+	// 				'font-family'      : 'Tahoma, Verdana'
+	// 			})
+	// 			.dblclick(function() {
+	// 				setTimeout(() => {
+	// 					$(this)
+	// 						.hide()
+	// 						.empty();
+	// 				}, 100);
+	// 			})
+	// 	);
+	// });
+	
+	
+	var _log = function _log(text, color) {
+	
+		console.log('%c»%c' + text, 'color: white;',
+	
+		// 'background: rgba(0, 0, 0, .5);'                                                 +
+		'border-radius: 3px;' +
+		// 'text-shadow: #777 1px 0 0px, #777 0 1px 0px, #777 -1px 0 0px, #777 0 -1px 0px;' +
+		'padding: 2px;' +
+		// 'border: 1px solid black;'                                                       +
+		'background: ' + color + ';'
+		// 'font-weight: bold;'
+		// 'color: ' + color + ';'
+		);
+	
+		// $('#log_1')
+		// 	.show()
+		// 	.append(
+		// 		$('<div>')
+		// 		.html(text)
+		// 		.css({
+		// 			color
+		// 		})
+		// 	)
+		// 	.prop({
+		// 		scrollTop : 1e10//log_1.scrollHeight - log_1.clientHeight
+		// 	})
+	};
+	
+	_event2.default.listen('shareSet:stepType', function (e) {
+		_log('stepType:' + e, 'yellow');
+	});
+	
+	_event2.default.listen('shareSet:curLockState', function (e) {
+		_log('curLockState:' + e, '#aaffaa');
+	});
+	
+	_event2.default.listen('moveEnd', function (e) {
+		_log('moveEnd', 'orange');
+	});
+	
+	_event2.default.listen('forceMoveEnd', function (e) {
+		_log('forceMoveEnd', 'orange');
+	});
+	
+	_event2.default.listen('gameInit', function (e, a) {
+		_log('gameInit (' + ((a.eventInfo.index | 0) + 1) + ', ' + a.eventInfo.count + ')', '#ff7777');
+	});
+	
+	document.onwheel = function (e) {
+	
+		var area = null;
+		// if (e.target.id == 'log_1') {
+		// 	area = e.target;
+		// } else 
+		if (e.target.parentNode.id == 'log_1') {
+			area = e.target.parentNode;
+		} else {
+			return;
+		}
+	
+		var delta = e.deltaY || e.detail || e.wheelDelta;
+	
+		area.scrollTop = area.scrollTop + delta;
+	
+		// if (delta < 0 && area.scrollTop == 0) {
+		e.preventDefault();
+		// }
+	
+		// if (delta > 0 && area.scrollHeight - area.clientHeight - area.scrollTop <= 1) {
+		e.preventDefault();
+		// }
+	};
+	
+	// --
 	
 	var _history = [],
 	    _redo = [];

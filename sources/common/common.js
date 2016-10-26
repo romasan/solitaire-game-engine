@@ -177,9 +177,10 @@ var validateCardName = function(name, nolog) {
 
 // ID generator
 
-var _id = 0,
-	genId = function() {
-	return _id++;
+let _id = 0;
+
+let genId = () => {
+	return _id += 1;
 };
 
 // --

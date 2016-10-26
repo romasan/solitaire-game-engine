@@ -41,6 +41,26 @@ class inputs {
 				this.put(e.target, e.clientX, e.clientY);
 			};
 
+			// TODO
+			// Решение: (if distance > 0)
+			// Click
+			// Click
+			// Dblclick
+
+			// var timeoutId = null;
+			// document.onmouseup = (e) {
+			// 	timeoutId && timeoutId = setTimeout(() => {
+			// 		this.put(e.target, e.clientX, e.clientY);
+			// 		timeoutId = null;
+			// 	}, 500);
+			// };
+			// document.ondblclick =function(){
+			// 	clearTimeout(timeoutId);
+			// 	this.take(e.target, e.clientX, e.clientY);
+			// 	this.put(e.target, e.clientX, e.clientY, true);
+			// 	common.curUnLock();
+			// };
+
 			document.ondblclick = (e) => {
 				this.take(e.target, e.clientX, e.clientY);
 				this.put(e.target, e.clientX, e.clientY, true);

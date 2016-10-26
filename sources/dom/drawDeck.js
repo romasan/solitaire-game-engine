@@ -7,37 +7,39 @@ import defaults from 'defaults';
 import Field    from 'field';
 import elRender from 'elRender';
 
-var applyChangedParameters = function(p, a, deck) {
+let applyChangedParameters = (p, a, deck) => {
 
-	p.x = a.position && a.position.x && typeof a.position.x == 'number'  ? a.position.x : 0,
-	p.y = a.position && a.position.y && typeof a.position.y == 'number'  ? a.position.y : 0;
+	p.x = a.position && a.position.x && typeof a.position.x == 'number' ? a.position.x : 0,
+	p.y = a.position && a.position.y && typeof a.position.y == 'number' ? a.position.y : 0;
+	
 	p.x = a.parentPosition && a.parentPosition.x ? p.x + a.parentPosition.x : p.x;
 	p.y = a.parentPosition && a.parentPosition.y ? p.y + a.parentPosition.y : p.y;
 
 	deck.rotate = p.rotate = a.rotate && typeof a.rotate == 'number' ? a.rotate : 0;
 
-	// у padding_x, padding_y приоритет выше чем paddingType
-
 	p.padding_y = a.paddingY          && typeof a.paddingY     == 'number' 
 		? a.paddingY 
 		: a.paddingType
 			? defaults.padding_y      
-			: 0,
+			: 0;
+
 	p.padding_x = a.paddingX          && typeof a.paddingX     == 'number' 
-	? a.paddingX 
-	: a.paddingType
-		? defaults.padding_x      
-		: 0,
+		? a.paddingX 
+		: a.paddingType
+			? defaults.padding_x      
+			: 0;
+
 	p.flip_padding_y = a.flipPaddingY && typeof a.flipPaddingY == 'number' 
-	? a.flipPaddingY 
-	: a.paddingType
-		? defaults.flip_padding_y 
-		: 0,
+		? a.flipPaddingY 
+		: a.paddingType
+			? defaults.flip_padding_y 
+			: 0;
+
 	p.flip_padding_x = a.flipPaddingX && typeof a.flipPaddingX == 'number' 
-	? a.flipPaddingX 
-	: a.paddingType
-		? defaults.flip_padding_x 
-		: 0;
+		? a.flipPaddingX 
+		: a.paddingType
+			? defaults.flip_padding_x 
+			: 0;
 };
 
 // --------------------------------------------------------------------------------------------------------
@@ -48,9 +50,8 @@ event.listen('addDeckEl', function(e) {
 
 	e.deck.domElement = 
 		elRender('<div>')
-			// .getEl();
 
-	var _params = {
+	let _params = {
 		left      : e.params.x           + 'px',
 		top       : e.params.y           + 'px',
 		width     : defaults.card.width  + 'px',
@@ -67,11 +68,11 @@ event.listen('addDeckEl', function(e) {
 			id: e.deck.getId()
 		});
 
-	// var showSlot = e.a.showSlot && typeof e.a.showSlot == 'boolean' ? e.a.showSlot : defaults.showSlot;
 	if(e.a.showSlot) {
 		elRender(e.deck.domElement)
 			.addClass('slot');
 	}
+	
 	if(e.a.class) {
 		elRender(e.deck.domElement)
 			.addClass(e.a.class);
@@ -80,29 +81,26 @@ event.listen('addDeckEl', function(e) {
 	elRender(Field.domElement)
 		.append(e.deck.domElement);
 
-
-	// add label
-
-	var label = e.a.label && typeof e.a.label == 'string' ? e.a.label : null;
+	// draw label
+	// let label = e.a.label && typeof e.a.label == 'string' ? e.a.label : null;
 	
-	if(dev && !e.a.label && share.get('debugLabels')) {
-		label = '<span style="color:#65B0FF;">' + e.deck.name + '</span>';
-	}
+	// if(dev && !e.a.label && share.get('debugLabels')) {
+	// 	label = '<span style="color:#65B0FF;">' + e.deck.name + '</span>';
+	// }
 
-	if(label) {
-		var _labelElement = 
-			elRender('<div>')
-				.addClass('deckLabel')
-				// .attr({
-				// 	"title" : e.deck.getId() + " (" + e.deck.parent + ")"
-				// })
-				// .getEl();
-		elRender(_labelElement)
-			.html(label);
-		elRender(e.deck.domElement)
-			.append(_labelElement);
+	// if(label) {
 		
-	}
+	// 	let _labelElement = 
+	// 		elRender('<div>')
+	// 			.addClass('deckLabel')
+		
+	// 	elRender(_labelElement)
+	// 		.html(label);
+		
+	// 	elRender(e.deck.domElement)
+	// 		.append(_labelElement);
+		
+	// }
 
 });
 
@@ -114,8 +112,9 @@ event.listen('redrawDeckFlip', function(e) {
 		return;
 	}
 
-	for(var i in e.cards) {
-		var _params = {};
+	for(let i in e.cards) {
+		
+		let _params = {};
 		
 		if(e.cards[i].flip) {
 			elRender(e.cards[i].domElement)
@@ -124,6 +123,7 @@ event.listen('redrawDeckFlip', function(e) {
 			elRender(e.cards[i].domElement)
 				.removeClass('flip');
 		}
+		
 		elRender(e.cards[i].domElement)
 			.css(_params);
 	}
@@ -138,7 +138,7 @@ event.listen('redrawDeckIndexes', function(e) {
 		return;
 	}
 
-	for(var i in e.cards) {
+	for(let i in e.cards) {
 		elRender(e.cards[i].domElement).css({
 			'z-index' : (defaults.startZIndex|0) + (i|0)
 		})
@@ -157,7 +157,7 @@ event.listen('redrawDeck', function(e) {
 
 		applyChangedParameters(e.params, e.data, e.deck);
 
-		if(e.data.paddingX    ) {
+		if(e.data.paddingX) {
 			share.get('padding_x',      e.data.paddingX);
 		}
 
@@ -165,7 +165,7 @@ event.listen('redrawDeck', function(e) {
 			share.get('flip_padding_x', e.data.flipPaddingX);
 		}
 
-		if(e.data.paddingY    ) {
+		if(e.data.paddingY) {
 			share.get('padding_y',      e.data.paddingY);
 		}
 
@@ -174,7 +174,8 @@ event.listen('redrawDeck', function(e) {
 		}
 	}
 
-	var _params = {
+	// перерисовка стопки
+	let _params = {
 		transform : 'rotate(' + (e.params.rotate|0) + 'deg)',
 		left      : e.params.x + 'px'                       ,
 		top       : e.params.y + 'px'
@@ -185,23 +186,23 @@ event.listen('redrawDeck', function(e) {
 	elRender(e.deck.domElement)
 		.css(_params);
 
-	for(var i in e.cards) {
+	// перерисовка карт
+	for(let i in e.cards) {
 		
-		var _card_position = e.deck.padding(i);
-		var _zIndex = (e.params.startZIndex|0) + (i|0);
+		let _card_position = e.deck.padding(i);
+		let _zIndex        = (e.params.startZIndex|0) + (i|0);
 		
-		var _params = {
-			'left'              : _card_position.x + 'px'                 , 
-			'top'               : _card_position.y + 'px'                 ,
-			'z-index'           : _zIndex                                 ,
-			'-ms-transform'     : 'rotate(' + (e.params.rotate|0) + 'deg)',
-			'-webkit-transform' : 'rotate(' + (e.params.rotate|0) + 'deg)',
-			'-moz-transform'    : 'rotate(' + (e.params.rotate|0) + 'deg)',
-			'transform'         : 'rotate(' + (e.params.rotate|0) + 'deg)'
+		let _params = {
+			'-ms-transform'     : 'rotate(' + (e.params.rotate | 0) + 'deg)',
+			'-webkit-transform' : 'rotate(' + (e.params.rotate | 0) + 'deg)',
+			'-moz-transform'    : 'rotate(' + (e.params.rotate | 0) + 'deg)',
+			'transform'         : 'rotate(' + (e.params.rotate | 0) + 'deg)',
+			'left'              : _card_position.x + 'px'                   ,
+			'top'               : _card_position.y + 'px'                   ,
+			'z-index'           : _zIndex
 		};
+		
 		_params.display = e.deck.visible ? 'block' : 'none';
-
-		// e.deck.checkFlip(e.cards[i], i|0, e.cards.length|0);
 
 		if(e.cards[i].flip) {
 			elRender(e.cards[i].domElement)
@@ -214,5 +215,4 @@ event.listen('redrawDeck', function(e) {
 		elRender(e.cards[i].domElement)
 			.css(_params);
 	}
-
 });

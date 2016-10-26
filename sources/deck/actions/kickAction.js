@@ -54,11 +54,13 @@ export default function(data) {
 		return false;
 	}
 
+	share.set('stepType', stepType);
+
 	// if(window.debug_kick) {
 	// 	console.log('data.eventData.stepType:', data);
 	// 	throw new Error();
 	// }
-	window.debug_kick = 1;
+	// window.debug_kick = 1;
 
 	// if(
 	// 	data.eventData[0]                         &&
