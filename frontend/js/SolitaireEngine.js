@@ -124,7 +124,7 @@ var SolitaireEngine =
 	exports.options = _defaults2.default;
 	exports.winCheck = _winCheck2.default.hwinCheck;
 	exports.generator = _deckGenerator2.default;
-	exports.version = (9091492133).toString().split(9).slice(1).map(function (e) {
+	exports.version = (9091492166).toString().split(9).slice(1).map(function (e) {
 		return parseInt(e, 8);
 	}).join('.');
 	
@@ -263,6 +263,12 @@ var SolitaireEngine =
 			value: function getAll() {
 				return this._data;
 			}
+		}, {
+			key: 'saveState',
+			value: function saveState() {}
+		}, {
+			key: 'recover',
+			value: function recover() {}
 		}]);
 	
 		return shareClass;
@@ -7463,16 +7469,6 @@ var SolitaireEngine =
 	
 		_allEl(".animated").css({ transition: '0s' }) // false
 		.removeClass("animated");
-	
-		/*var _animatedElementsStack = share.get('animatedElementsStack');
-	 	for(var i in _animatedElementsStack) {
-	 	_animatedElementsStack[i].el.style.transition = null;
-	 };
-	 share.set('animatedElementsStack', []);
-	 	share.set('animatedElements', 0);
-	 var _animatedCallback = share.get('animatedCallback');
-	 _animatedCallback.call(this);
-	 share.set('animatedCallback', ()=>{});*/
 	};
 	
 	exports.default = _allEl;
@@ -7820,14 +7816,21 @@ var SolitaireEngine =
 				return this;
 			}
 		}, {
-			key: 'event',
-			value: function event(eventName, callback) {
+			key: 'listen',
+			value: function listen(eventName, callback) {
 				this.el.addEventListener(eventName, callback);
+			}
+		}, {
+			key: 'trigger',
+			value: function trigger(eventName) {
+				if (typeof this.el[eventName] == "function") {
+					this.el[eventName]();
+				}
 			}
 		}, {
 			key: 'click',
 			value: function click(callback) {
-				this.event(callback);
+				this.listen('click', callback);
 			}
 		}]);
 	

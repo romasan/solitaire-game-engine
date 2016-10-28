@@ -280,11 +280,17 @@ export default class elClass {
 		return this;
 	}
 
-	event(eventName, callback) {
+	listen(eventName, callback) {
 		this.el.addEventListener(eventName, callback);
 	}
 
+	trigger(eventName) {
+		if(typeof this.el[eventName] == "function") {
+			this.el[eventName]();
+		}
+	}
+
 	click(callback) {
-		this.event(callback);
+		this.listen('click', callback);
 	}
 }
