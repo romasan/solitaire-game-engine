@@ -66,10 +66,6 @@ class shareClass {
 	getAll() {
 		return this._data;
 	}
-
-	saveState() {}
-
-	recover() {}
 }
 
 export default new shareClass();
