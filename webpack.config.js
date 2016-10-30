@@ -32,20 +32,20 @@ let ftree   = (e) => {
 let config = {
 	entry: "index",
 	output: {
-		path: "./frontend/js/",
-		filename: "SolitaireEngine.js",
-		library: "SolitaireEngine"
+		path     : "./frontend/js/",
+		filename : "SolitaireEngine.js",
+		library  : "SolitaireEngine"
 	},
 	resolve: {
-		modulesDirectories: ['./sources/'].concat(ftree(tree)),
-		extensions: ['', '.js']
+		modulesDirectories : ['./sources/'].concat(ftree(tree)),
+		extensions         : ['', '.js']
 	},
 	module: {
 		loaders: [
 			{
-				test:	 /\.js$/,
-				loader: 'babel',
-				query: {
+				test   :	 /\.js$/,
+				loader : 'babel',
+				query  : {
 					presets: ['es2015']
 				}
 			},
@@ -56,8 +56,8 @@ let config = {
 			// },
 			
 			{
-				test: /\.scss$/,
-				loader: ExtractTextPlugin.extract('style', 'css!sass')
+				test   : /\.scss$/,
+				loader : ExtractTextPlugin.extract('style', 'css!sass')
 			},
 			
 			// {
@@ -76,8 +76,8 @@ let config = {
 			// }
 
 			{
-				test: /\.hamlc$/,
-				loader: "hamlc-loader"
+				test   : /\.hamlc$/,
+				loader : "hamlc-loader"
 			}
 
 			// {
@@ -106,9 +106,7 @@ let config = {
 						let _ver = _json.version.split('.');
 						_ver[_ver.length - 1] = (_ver[_ver.length - 1]|0) + 1;
 						_json.version = _ver.join('.');
-						// version = parseInt('9' + _json.version.split('.').map((e)=>{return parseInt(e).toString(8);}).join(9));
 						fs.writeFile(_file, JSON.stringify(_json, null, 2));
-
 					}
 				});
 			};
