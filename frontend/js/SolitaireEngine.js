@@ -124,7 +124,7 @@ var SolitaireEngine =
 	exports.options = _defaults2.default;
 	exports.winCheck = _winCheck2.default.hwinCheck;
 	exports.generator = _deckGenerator2.default;
-	exports.version = (9091492175).toString().split(9).slice(1).map(function (e) {
+	exports.version = (9091492201).toString().split(9).slice(1).map(function (e) {
 		return parseInt(e, 8);
 	}).join('.');
 	
@@ -225,9 +225,17 @@ var SolitaireEngine =
 			}
 		}, {
 			key: 'set',
-			value: function set(name, data, forceClone) {
+			value: function set(name, data) {
+				var forceClone = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : false;
 	
+	
+				// "foo", "bar", false
 				if (typeof name == "string") {
+	
+					_event2.default.dispatch('shareChange:' + name, {
+						from: this._data[name],
+						to: data
+					});
 	
 					if (typeof forceClone == "boolean" && forceClone) {
 						try {
@@ -236,25 +244,38 @@ var SolitaireEngine =
 							this._data[name] = data;
 						}
 					} else {
-	
-						_event2.default.dispatch('shareChange:' + name, {
-							from: this._data[name],
-							to: data
-						});
-	
 						this._data[name] = data;
-	
-						_event2.default.dispatch('shareSet:' + name, data);
 					}
-					// event.dispatch('shareSet', {name : _data});
+	
+					_event2.default.dispatch('shareSet:' + name, data);
+	
+					// {"foo" : "bar"}, false
 				} else if (name instanceof Object && typeof data == "undefined") {
 	
-					for (var _name in name) {
-						this._data[_name] = name[_name];
+					if (typeof data == 'boolean') {
+						forceClone = data;
 					}
-					// event.dispatch('shareSet', name);
-				} else {
 	
+					for (var _name in name) {
+	
+						_event2.default.dispatch('shareChange:' + name, {
+							from: this._data[_name],
+							to: name[_name]
+						});
+	
+						if (typeof forceClone == "boolean" && forceClone) {
+							try {
+								this._data[_name] = Object.assign({}, name[_name]);
+							} catch (e) {
+								this._data[_name] = name[_name];
+							}
+						} else {
+							this._data[_name] = name[_name];
+						}
+	
+						_event2.default.dispatch('shareSet:' + _name, name[_name]);
+					}
+				} else {
 					console.warn('Error share.set:', name, data);
 				}
 			}
@@ -368,6 +389,11 @@ var SolitaireEngine =
 			key: 'get',
 			value: function get(eventName) {
 				return this._events[eventName];
+			}
+		}, {
+			key: 'has',
+			value: function has(eventName) {
+				return this._events[eventName] ? this._events[eventName].length : 0;
 			}
 	
 			// getEventsByName(eventName) {
@@ -920,6 +946,14 @@ var SolitaireEngine =
 	
 	_event2.default.listen('actionBreak', function (e) {
 		_tips2.default.checkTips();
+	});
+	
+	_event2.default.listen('startSession', function (e) {
+		_share2.default.set('sessionStarted', true);
+	});
+	
+	_event2.default.listen('stopSession', function (e) {
+		_share2.default.set('sessionStarted', false);
 	});
 	
 	// Lock/Unlock
@@ -6779,6 +6813,8 @@ var SolitaireEngine =
 	
 	var Move = function Move(moveDeck, to, cursorMove) {
 	
+		_event2.default.dispatch('startSession', { type: 'move' });
+	
 		_common2.default.animationDefault();
 	
 		var _deck_departure = moveDeck[0].card.parent && _common2.default.getElementById(moveDeck[0].card.parent),
@@ -8775,7 +8811,11 @@ var SolitaireEngine =
 	
 	var _history3 = _interopRequireDefault(_history2);
 	
-	var _renderTest = __webpack_require__(77);
+	var _state = __webpack_require__(77);
+	
+	var _state2 = _interopRequireDefault(_state);
+	
+	var _renderTest = __webpack_require__(78);
 	
 	var _renderTest2 = _interopRequireDefault(_renderTest);
 	
@@ -8975,6 +9015,7 @@ var SolitaireEngine =
 		validateCardName: _common2.default.validateCardName,
 		elRender: _elRender2.default,
 		defaults: _defaults2.default,
+		state: _state2.default,
 		groupGenerators: {
 			mapCommon: _mapCommon2.default
 		},
@@ -8983,6 +9024,69 @@ var SolitaireEngine =
 
 /***/ },
 /* 77 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+		value: true
+	});
+	
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	
+	var _share2 = __webpack_require__(1);
+	
+	var _share3 = _interopRequireDefault(_share2);
+	
+	var _event = __webpack_require__(2);
+	
+	var _event2 = _interopRequireDefault(_event);
+	
+	var _defaults = __webpack_require__(3);
+	
+	var _defaults2 = _interopRequireDefault(_defaults);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	var stateManager = function () {
+		function stateManager() {
+			_classCallCheck(this, stateManager);
+	
+			this._state = null;
+		}
+	
+		_createClass(stateManager, [{
+			key: 'backup',
+			value: function backup() {
+	
+				var _share = _share3.default.getAll();
+	
+				this._state = _share;
+			}
+		}, {
+			key: 'restore',
+			value: function restore() {
+	
+				_share3.default.set(this._state, true);
+	
+				// let _share = {};
+				// for(let name in this._state) {
+				// 	_share[name] = this._state[name];
+				// }
+	
+				// share.set(_share);
+			}
+		}]);
+	
+		return stateManager;
+	}();
+	
+	exports.default = new stateManager();
+
+/***/ },
+/* 78 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';

@@ -13,6 +13,8 @@ import Field    from 'field';
 
 var Move = function(moveDeck, to, cursorMove) {
 
+	event.dispatch('startSession', {type: 'move'});
+
 	common.animationDefault();
 
 	let _deck_departure   = moveDeck[0].card.parent && common.getElementById(moveDeck[0].card.parent),// стопка из которой взяли

@@ -9,6 +9,7 @@ import deckGenerator from 'deckGenerator';
 import elRender      from 'elRender';
 import mapCommon     from 'mapCommon';
 import history       from 'history';
+import state         from 'state';
 
 import renderTest from 'renderTest';
 
@@ -225,6 +226,7 @@ export default {
 	validateCardName : common.validateCardName,
 	elRender                                  ,
 	defaults                                  ,
+	state                                     ,
 	groupGenerators : {
 		mapCommon
 	},

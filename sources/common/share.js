@@ -22,9 +22,15 @@ class shareClass {
 		}
 	}
 
-	set(name, data, forceClone) {
+	set(name, data, forceClone = false) {
 
+		// "foo", "bar", false
 		if(typeof name == "string") {
+
+			event.dispatch('shareChange:' + name, {
+				from: this._data[name],
+				to: data
+			});
 
 			if(
 				typeof forceClone == "boolean" && forceClone
@@ -36,30 +42,43 @@ class shareClass {
 				}
 
 			} else {
-				
-				event.dispatch('shareChange:' + name, {
-					from: this._data[name],
-					to: data
-				});
-
 				this._data[name] = data;
-
-				event.dispatch('shareSet:' + name, data);
-
 			}
-			// event.dispatch('shareSet', {name : _data});
-		
+
+			event.dispatch('shareSet:' + name, data);
+
+		// {"foo" : "bar"}, false
 		} else if(name instanceof Object && typeof data == "undefined") {
 
-			for(var _name in name) {
-				this._data[_name] = name[_name];
+			if(typeof data == 'boolean') {
+				forceClone = data;
 			}
-			// event.dispatch('shareSet', name);
+
+			for(var _name in name) {
+
+				event.dispatch('shareChange:' + name, {
+					from: this._data[_name],
+					to: name[_name]
+				});
+
+				if(
+					typeof forceClone == "boolean" && forceClone
+				) {
+					try {
+						this._data[_name] = Object.assign({}, name[_name]);
+					} catch(e) {
+						this._data[_name] = name[_name];
+					}
+
+				} else {
+					this._data[_name] = name[_name];
+				}
+
+				event.dispatch('shareSet:' + _name, name[_name]);
+			}
 
 		} else {
-
 			console.warn('Error share.set:', name, data);
-
 		}
 	}
 

@@ -20,7 +20,7 @@ import defaultPreferences from 'defaultPreferences';
 // 	console.log('%cshareChange:curLockState', 'background-color: blue;color: white;', e);
 // });
 
-event.listen('gameInit', (e)=>{
+event.listen('gameInit', (e) => {
 
 	share.set('stepType', defaults.stepType);
 
@@ -43,12 +43,20 @@ event.listen('gameInited', ()=>{
 // 	share.set('prevStepType', e.from);
 // });
 
-event.listen('moveEnd', function(e) {
+event.listen('moveEnd', (e) => {
 	Tips.checkTips();
 });
 
-event.listen('actionBreak', function(e) {
+event.listen('actionBreak', (e) => {
 	Tips.checkTips();
+});
+
+event.listen('startSession', (e) => {
+	share.set('sessionStarted', true);
+});
+
+event.listen('stopSession', (e) => {
+	share.set('sessionStarted', false);
 });
 
 // Lock/Unlock
