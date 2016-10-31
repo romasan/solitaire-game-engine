@@ -12,8 +12,6 @@ import Tips from 'tips';
 
 class inputs {
 
-	// constructor() {}
-
 	constructor() {
 
 		share.set('dragDeck',    null);
@@ -160,9 +158,7 @@ class inputs {
 				// ???
 				Tips.tipsDestination({currentCard : _card});
 			}
-
 		}
-
 	}
 
 // -------------------------------------------------------------------------------------------------------------
@@ -220,7 +216,6 @@ class inputs {
 		// 	moveDeck   : _dragDeck, 
 		// 	cursorMove : cursorMove
 		// });
-
 	}
 
 // -------------------------------------------------------------------------------------------------------------
@@ -265,11 +260,7 @@ class inputs {
 		share.set('lastCursorMove', cursorMove, defaults.forceClone);
 
 		event.dispatch('hideCard', target);
-
-		// TODO -> callback
-		// event.dispatch('getElementUnderCursor', {x, y, callback: (e) => {}});
 		var _dop = document.elementFromPoint(x, y);
-		
 		event.dispatch('showCard', target);
 		// if(_dop) {
 
@@ -285,7 +276,6 @@ class inputs {
 
 		share.set('dragDeck',    null);
 		share.set('startCursor', null);
-
 	}
 }
 

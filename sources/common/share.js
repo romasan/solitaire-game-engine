@@ -48,7 +48,7 @@ class shareClass {
 			event.dispatch('shareSet:' + name, data);
 
 		// {"foo" : "bar"}, false
-		} else if(name instanceof Object && typeof data == "undefined") {
+		} else if(name instanceof Object) {
 
 			if(typeof data == 'boolean') {
 				forceClone = data;
@@ -78,7 +78,7 @@ class shareClass {
 			}
 
 		} else {
-			console.warn('Error share.set:', name, data);
+			console.warn('Error share.set:', _name, name[_name]);
 		}
 	}
 

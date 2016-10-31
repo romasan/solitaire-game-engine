@@ -9,7 +9,7 @@ import defaults      from 'defaults';
 import Inputs        from 'inputs';
 import Move          from 'move';
 import forceMove     from 'forceMove';
-import domManager    from 'domManager';
+import render        from 'render';
 import Field         from 'field';
 import common        from 'common';
 import winCheck      from 'winCheck';

@@ -73,7 +73,7 @@ class deckClass {
 			a.showSlot = defaults.showSlot;
 		}
 		
-		// DOM
+		// params
 		var params = {};
 		params.x              = 0; 
 		params.y              = 0; 
@@ -119,13 +119,6 @@ class deckClass {
 		this.takeRules = a.takeRules;
 
 		// ------------- FILL -------------
-		
-		// var fillRule = (
-		// 	a.fillRule 
-		//  && typeof a.fillRule == "string" 
-		//  && typeof fillRules[a.fillRule] == "function"
-		// ) ? fillRules[a.fillRule]
-		//   : fillRules['not'];
 
 		this.fillRules = null;
 
@@ -180,7 +173,7 @@ class deckClass {
 		});
 
 		// Подписывается на перетаскивание стопки/карты
-		let _callback = (data)=>{
+		let _callback = (data) => {
 
 			// TODO
 			// проверять fill только для тех стопок котрые участвовали в Action
@@ -189,19 +182,7 @@ class deckClass {
 				return;
 			}
 
-			// console.log('_callback', this.checkFill, this.fillRules);
-
 			this.checkFill();
-			
-			// var _deck = data.destination;
-			
-			// if(_deck && !this.fill && this.callback({deck : _deck})) {
-			// 	this.deck.fill = true;
-			// 	History.add({fill : {
-			// 		deck : this.deck.name
-			// 	}});
-			// 	// event.dispatch('fillDeck', {deck : this.deck});
-			// }
 		};
 		event.listen('moveDragDeck', _callback);
 

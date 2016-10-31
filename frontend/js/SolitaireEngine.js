@@ -73,9 +73,9 @@ var SolitaireEngine =
 	
 	var _forceMove2 = _interopRequireDefault(_forceMove);
 	
-	var _domManager = __webpack_require__(61);
+	var _render = __webpack_require__(61);
 	
-	var _domManager2 = _interopRequireDefault(_domManager);
+	var _render2 = _interopRequireDefault(_render);
 	
 	var _field = __webpack_require__(9);
 	
@@ -124,7 +124,7 @@ var SolitaireEngine =
 	exports.options = _defaults2.default;
 	exports.winCheck = _winCheck2.default.hwinCheck;
 	exports.generator = _deckGenerator2.default;
-	exports.version = (9091492201).toString().split(9).slice(1).map(function (e) {
+	exports.version = (9091492213).toString().split(9).slice(1).map(function (e) {
 		return parseInt(e, 8);
 	}).join('.');
 	
@@ -226,7 +226,7 @@ var SolitaireEngine =
 		}, {
 			key: 'set',
 			value: function set(name, data) {
-				var forceClone = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : false;
+				var forceClone = arguments.length <= 2 || arguments[2] === undefined ? false : arguments[2];
 	
 	
 				// "foo", "bar", false
@@ -250,7 +250,7 @@ var SolitaireEngine =
 					_event2.default.dispatch('shareSet:' + name, data);
 	
 					// {"foo" : "bar"}, false
-				} else if (name instanceof Object && typeof data == "undefined") {
+				} else if (name instanceof Object) {
 	
 					if (typeof data == 'boolean') {
 						forceClone = data;
@@ -276,7 +276,7 @@ var SolitaireEngine =
 						_event2.default.dispatch('shareSet:' + _name, name[_name]);
 					}
 				} else {
-					console.warn('Error share.set:', name, data);
+					console.warn('Error share.set:', _name, name[_name]);
 				}
 			}
 		}, {
@@ -579,9 +579,6 @@ var SolitaireEngine =
 	// -------------------------------------------------------------------------------------------------------------
 	
 	var inputs = function () {
-	
-		// constructor() {}
-	
 		function inputs() {
 			var _this = this;
 	
@@ -833,11 +830,7 @@ var SolitaireEngine =
 				_share2.default.set('lastCursorMove', cursorMove, _defaults2.default.forceClone);
 	
 				_event2.default.dispatch('hideCard', target);
-	
-				// TODO -> callback
-				// event.dispatch('getElementUnderCursor', {x, y, callback: (e) => {}});
 				var _dop = document.elementFromPoint(x, y);
-	
 				_event2.default.dispatch('showCard', target);
 				// if(_dop) {
 	
@@ -2395,7 +2388,7 @@ var SolitaireEngine =
 				a.showSlot = _defaults2.default.showSlot;
 			}
 	
-			// DOM
+			// params
 			var params = {};
 			params.x = 0;
 			params.y = 0;
@@ -2430,13 +2423,6 @@ var SolitaireEngine =
 			this.takeRules = a.takeRules;
 	
 			// ------------- FILL -------------
-	
-			// var fillRule = (
-			// 	a.fillRule 
-			//  && typeof a.fillRule == "string" 
-			//  && typeof fillRules[a.fillRule] == "function"
-			// ) ? fillRules[a.fillRule]
-			//   : fillRules['not'];
 	
 			this.fillRules = null;
 	
@@ -2494,19 +2480,7 @@ var SolitaireEngine =
 					return;
 				}
 	
-				// console.log('_callback', this.checkFill, this.fillRules);
-	
 				_this.checkFill();
-	
-				// var _deck = data.destination;
-	
-				// if(_deck && !this.fill && this.callback({deck : _deck})) {
-				// 	this.deck.fill = true;
-				// 	History.add({fill : {
-				// 		deck : this.deck.name
-				// 	}});
-				// 	// event.dispatch('fillDeck', {deck : this.deck});
-				// }
 			};
 			_event2.default.listen('moveDragDeck', _callback);
 	
@@ -4798,6 +4772,25 @@ var SolitaireEngine =
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
 	;
+	
+	// class card {
+	
+	// 	constructor(e) {
+	// 		this.id      = e.id;
+	// 		this.name    = e.name;
+	// 		this.type    = 'card';
+	// 		this.visible = true;
+	// 		this.flip    = false;
+	// 	}
+	
+	// 	set domElement(e) {
+	
+	// 	}
+	
+	// 	get domElement() {
+	// 		return null;
+	// 	}
+	// };
 
 /***/ },
 /* 31 */
@@ -5037,7 +5030,7 @@ var SolitaireEngine =
 		}, {
 			key: 'get',
 			value: function get() {
-				var reset = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : true;
+				var reset = arguments.length <= 0 || arguments[0] === undefined ? true : arguments[0];
 	
 	
 				var _req = this.steps;
@@ -5103,18 +5096,22 @@ var SolitaireEngine =
 	exports.default = function (a) {
 	
 		var _decks = {};
+	
 		var _elements = _share2.default.get('elements');
-		for (var d in _elements) {
-			if (_elements[d].type == 'deck') {
-				if (a && a.visible) {
+	
+		if (a && a.visible) {
+	
+			for (var d in _elements) {
+				if (_elements[d].type == 'deck') {
 					if (_elements[d].visible) {
 						_decks[d] = _elements[d];
 					}
-				} else {
-					_decks[d] = _elements[d];
 				};
 			};
-		};
+		} else {
+			return _elements;
+		}
+	
 		return _decks;
 	};
 	
@@ -7414,6 +7411,8 @@ var SolitaireEngine =
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
+	// common
+	
 	_event2.default.listen('removeEl', function (e) {
 		(0, _elRender2.default)(e.domElement).remove();
 	});
@@ -7427,7 +7426,8 @@ var SolitaireEngine =
 	});
 	
 	_event2.default.listen('stopAnimations', function () {
-		_elRender2.default.stopAnimations();
+		// TODO
+		// elRender.stopAnimations();
 	});
 
 /***/ },
@@ -8779,6 +8779,8 @@ var SolitaireEngine =
 		value: true
 	});
 	
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	
 	var _share = __webpack_require__(1);
 	
 	var _share2 = _interopRequireDefault(_share);
@@ -8807,9 +8809,9 @@ var SolitaireEngine =
 	
 	var _mapCommon2 = _interopRequireDefault(_mapCommon);
 	
-	var _history2 = __webpack_require__(31);
+	var _history = __webpack_require__(31);
 	
-	var _history3 = _interopRequireDefault(_history2);
+	var _history2 = _interopRequireDefault(_history);
 	
 	var _state = __webpack_require__(77);
 	
@@ -8820,6 +8822,8 @@ var SolitaireEngine =
 	var _renderTest2 = _interopRequireDefault(_renderTest);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 	
 	// event.listen('addStep', (e) => {
 	// 	console.log('* Добавили данные для истории:', e.move ? e.move.stepType : 'none', e);
@@ -8940,34 +8944,49 @@ var SolitaireEngine =
 	
 	// --
 	
-	var _history = [],
-	    _redo = [];
+	var debugHistoryMgrClass = function () {
+		function debugHistoryMgrClass() {
+			_classCallCheck(this, debugHistoryMgrClass);
 	
-	var debugHistoryMgr = new function () {
+			this._history = [];
+			this._redo = [];
+		}
 	
-		this.record = function (data) {
-			_redo = [];
-			_history.push(data);
-		};
+		_createClass(debugHistoryMgrClass, [{
+			key: 'record',
+			value: function record(data) {
 	
-		this.undo = function () {
+				this._redo = [];
+				this._history.push(data);
+			}
+		}, {
+			key: 'undo',
+			value: function undo() {
 	
-			var _step = _history.pop();
-			if (_step) {
-				_redo.push(_step);
-			};
-			return _step;
-		};
+				var _step = this._history.pop();
+				if (_step) {
+					this._redo.push(_step);
+				};
+				return _step;
+			}
+		}, {
+			key: 'redo',
+			value: function redo() {
 	
-		this.redo = function () {
+				var _step = this._redo.pop();
+				if (_step) {
+					this._history.push(_step);
+				};
+				return _step;
+			}
+		}]);
 	
-			var _step = _redo.pop();
-			if (_step) {
-				_history.push(_step);
-			};
-			return _step;
-		};
+		return debugHistoryMgrClass;
 	}();
+	
+	;
+	
+	var debugHistoryMgr = new debugHistoryMgrClass();
 	
 	// add buttons
 	
@@ -9019,7 +9038,7 @@ var SolitaireEngine =
 		groupGenerators: {
 			mapCommon: _mapCommon2.default
 		},
-		history: _history3.default
+		history: _history2.default
 	};
 
 /***/ },
@@ -9046,6 +9065,10 @@ var SolitaireEngine =
 	
 	var _defaults2 = _interopRequireDefault(_defaults);
 	
+	var _field = __webpack_require__(9);
+	
+	var _field2 = _interopRequireDefault(_field);
+	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -9069,7 +9092,11 @@ var SolitaireEngine =
 			key: 'restore',
 			value: function restore() {
 	
+				// restore share
 				_share3.default.set(this._state, true);
+	
+				// redraw
+				_field2.default.Redraw();
 	
 				// let _share = {};
 				// for(let name in this._state) {

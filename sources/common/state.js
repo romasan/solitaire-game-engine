@@ -4,6 +4,8 @@ import share    from 'share';
 import event    from 'event';
 import defaults from 'defaults';
 
+import field    from 'field';
+
 class stateManager {
 	
 	constructor() {
@@ -19,7 +21,11 @@ class stateManager {
 
 	restore() {
 
+		// restore share
 		share.set(this._state, true);
+
+		// redraw
+		field.Redraw();
 		
 		// let _share = {};
 		// for(let name in this._state) {

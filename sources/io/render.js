@@ -12,6 +12,8 @@ import moveDragDeck   from 'moveDragDeck';
 import moveCardToHome from 'moveCardToHome';
 import fieldThemesSet from 'fieldThemesSet';
 
+// common
+
 event.listen('removeEl', function(e) {
 	elRender(e.domElement)
 		.remove();
@@ -26,5 +28,6 @@ event.listen('hideCard', function(target) {
 });
 
 event.listen('stopAnimations', function() {
-	elRender.stopAnimations();
+	// TODO
+	// elRender.stopAnimations();
 });

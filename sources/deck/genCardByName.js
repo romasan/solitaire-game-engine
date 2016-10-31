@@ -4,6 +4,25 @@ import event  from 'event';
 import share  from 'share';
 import common from 'common';
 
+// class card {
+
+// 	constructor(e) {
+// 		this.id      = e.id;
+// 		this.name    = e.name;
+// 		this.type    = 'card';
+// 		this.visible = true;
+// 		this.flip    = false;
+// 	}
+
+// 	set domElement(e) {
+
+// 	}
+
+// 	get domElement() {
+// 		return null;
+// 	}
+// };
+
 export default function(name) {// TODO
 
 	var _name = common.validateCardName(name);// {color, rank}
