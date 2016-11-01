@@ -124,7 +124,7 @@ var SolitaireEngine =
 	exports.options = _defaults2.default;
 	exports.winCheck = _winCheck2.default.hwinCheck;
 	exports.generator = _deckGenerator2.default;
-	exports.version = (9091492214).toString().split(9).slice(1).map(function (e) {
+	exports.version = (9091492230).toString().split(9).slice(1).map(function (e) {
 		return parseInt(e, 8);
 	}).join('.');
 	
@@ -837,7 +837,7 @@ var SolitaireEngine =
 				// Move(_dragDeck, _dop, cursorMove);
 				_event2.default.dispatch('Move', {
 					moveDeck: _dragDeck,
-					to: _dop,
+					to: _dop.id,
 					cursorMove: cursorMove
 				});
 				// }
@@ -6843,7 +6843,7 @@ var SolitaireEngine =
 	
 		_success = _success && to; // to - не пустой
 	
-		var _el = to && to.id && _common2.default.getElementById(to.id); // получаем карту/стопку
+		var _el = to && _common2.default.getElementById(to); // получаем карту/стопку
 	
 		// если положили на карту узнаём из какой она стопки
 		if (_el) {
@@ -6971,14 +6971,13 @@ var SolitaireEngine =
 				var Tip = (0, _bestTip2.default)(moveDeck, cursorMove);
 	
 				if (Tip) {
-					Move(moveDeck, Tip.to.deck.domElement.el, cursorMove);
+					Move(moveDeck, Tip.to.deck.id, cursorMove);
 					return;
 				} else {
 					_event2.default.dispatch('moveCardToHome', {
 						moveDeck: moveDeck,
 						departure: _deck_departure
 					});
-					// share.moveCardToHome();
 				}
 			} else {
 				_event2.default.dispatch('moveCardToHome', {
@@ -6987,10 +6986,6 @@ var SolitaireEngine =
 				});
 			}
 		}
-	
-		// if(_success) {
-		// afterMove();
-		// }
 	};
 	
 	_event2.default.listen('Move', function (e) {
@@ -7377,6 +7372,10 @@ var SolitaireEngine =
 	
 	var _event2 = _interopRequireDefault(_event);
 	
+	var _share = __webpack_require__(1);
+	
+	var _share2 = _interopRequireDefault(_share);
+	
 	var _elRender = __webpack_require__(62);
 	
 	var _elRender2 = _interopRequireDefault(_elRender);
@@ -7409,12 +7408,23 @@ var SolitaireEngine =
 	
 	var _fieldThemesSet2 = _interopRequireDefault(_fieldThemesSet);
 	
+	var _addDeck = __webpack_require__(11);
+	
+	var _addDeck2 = _interopRequireDefault(_addDeck);
+	
+	var _addGroup = __webpack_require__(10);
+	
+	var _addGroup2 = _interopRequireDefault(_addGroup);
+	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
 	// common
 	
 	_event2.default.listen('removeEl', function (e) {
-		(0, _elRender2.default)(e.domElement).remove();
+	
+		var _elDomElement = _share2.default.get('domElement:' + e.id);
+	
+		(0, _elRender2.default)(_elDomElement).remove();
 	});
 	
 	_event2.default.listen('showCard', function (target) {
@@ -8044,11 +8054,11 @@ var SolitaireEngine =
 	_event2.default.listen('initField', function (data) {
 	
 		var domElement = data.field ? data.field : '#map'; // default;
+	
 		if (typeof domElement == 'string') {
 			if (domElement.split('.').length == 2) {
 				domElement = document.getElementsByClassName(domElement.split('.')[1])[0];
 			} else if (domElement.split('#').length == 2) {
-	
 				domElement = document.getElementById(domElement.split('#')[1]);
 			} else {
 				domElement = document.getElementsByTagName(domElement);
@@ -8057,8 +8067,6 @@ var SolitaireEngine =
 				domElement = document.getElementById('mat');
 			}
 		};
-		// share.field = e.field;
-		_field2.default.domElement = domElement;
 	
 		var _params = {};
 	
@@ -8076,18 +8084,14 @@ var SolitaireEngine =
 		}
 	
 		var _zoom = _share2.default.get('zoom');
-		(_zoom != _defaults2.default.zoom || _zoom != 1) && (_params.transform = 'scale(' + _zoom + ')', _params['transform-origin'] = '0 0');
-		// if(a.rotate && typeof a.rotate == 'number') _params.transform = 'rotate(' + (a.rotate|0) + 'deg)';
-	
-		// var themeName = 
-		// 	typeof data.theme == 'string' 
-		// 		? data.theme 
-		// 		: typeof data.theme == 'object' && data.theme.name
-		// 			? data.theme.name
-		// 			: defaults.theme.name;
+		if (_zoom != _defaults2.default.zoom || _zoom != 1) {
+			_params.transform = 'scale(' + _zoom + ')';
+			_params['transform-origin'] = '0 0';
+		}
 	
 		(0, _elRender2.default)(domElement).css(_params).addClass('solitaireField');
-		// .addClass(themeName);
+	
+		_share2.default.set('domElement:field', domElement);
 	});
 
 /***/ },
@@ -8142,7 +8146,7 @@ var SolitaireEngine =
 	
 		applyChangedParameters(e.params, e.a, e.deck);
 	
-		e.deck.domElement = (0, _elRender2.default)('<div>');
+		var _deckDomElement = (0, _elRender2.default)('<div>');
 	
 		var _params = {
 			left: e.params.x + 'px',
@@ -8154,40 +8158,25 @@ var SolitaireEngine =
 	
 		_params.display = e.deck.visible ? 'block' : 'none';
 	
-		(0, _elRender2.default)(e.deck.domElement).css(_params).addClass('el').attr({
+		(0, _elRender2.default)(_deckDomElement).css(_params).addClass('el').attr({
 			id: e.deck.getId()
 		});
 	
 		if (e.a.showSlot) {
-			(0, _elRender2.default)(e.deck.domElement).addClass('slot');
+	
+			(0, _elRender2.default)(_deckDomElement).addClass('slot');
 		}
 	
 		if (e.a.class) {
-			(0, _elRender2.default)(e.deck.domElement).addClass(e.a.class);
+	
+			(0, _elRender2.default)(_deckDomElement).addClass(e.a.class);
 		}
 	
-		(0, _elRender2.default)(_field2.default.domElement).append(e.deck.domElement);
+		var _fieldDomElement = _share2.default.get('domElement:field');
 	
-		// draw label
-		// let label = e.a.label && typeof e.a.label == 'string' ? e.a.label : null;
+		(0, _elRender2.default)(_fieldDomElement).append(_deckDomElement);
 	
-		// if(dev && !e.a.label && share.get('debugLabels')) {
-		// 	label = '<span style="color:#65B0FF;">' + e.deck.name + '</span>';
-		// }
-	
-		// if(label) {
-	
-		// 	let _labelElement = 
-		// 		elRender('<div>')
-		// 			.addClass('deckLabel')
-	
-		// 	elRender(_labelElement)
-		// 		.html(label);
-	
-		// 	elRender(e.deck.domElement)
-		// 		.append(_labelElement);
-	
-		// }
+		_share2.default.set('domElement:' + e.deck.id, _deckDomElement);
 	});
 	
 	// --------------------------------------------------------------------------------------------------------
@@ -8202,13 +8191,17 @@ var SolitaireEngine =
 	
 			var _params = {};
 	
+			var _cardDomElement = _share2.default.get('domElement:' + e.cards[i].id);
+	
 			if (e.cards[i].flip) {
-				(0, _elRender2.default)(e.cards[i].domElement).addClass('flip');
+	
+				(0, _elRender2.default)(_cardDomElement).addClass('flip');
 			} else {
-				(0, _elRender2.default)(e.cards[i].domElement).removeClass('flip');
+	
+				(0, _elRender2.default)(_cardDomElement).removeClass('flip');
 			}
 	
-			(0, _elRender2.default)(e.cards[i].domElement).css(_params);
+			(0, _elRender2.default)(e.cards[i]).css(_params);
 		}
 	});
 	
@@ -8221,7 +8214,10 @@ var SolitaireEngine =
 		}
 	
 		for (var i in e.cards) {
-			(0, _elRender2.default)(e.cards[i].domElement).css({
+	
+			var _cardDomElement = _share2.default.get('domElement:' + e.cards[i].id);
+	
+			(0, _elRender2.default)(_cardDomElement).css({
 				'z-index': (_defaults2.default.startZIndex | 0) + (i | 0)
 			});
 		}
@@ -8265,7 +8261,9 @@ var SolitaireEngine =
 	
 		_params.display = e.deck.visible ? 'block' : 'none';
 	
-		(0, _elRender2.default)(e.deck.domElement).css(_params);
+		var _deckDomElement = _share2.default.get('domElement:' + e.deck.id);
+	
+		(0, _elRender2.default)(_deckDomElement).css(_params);
 	
 		// перерисовка карт
 		for (var i in e.cards) {
@@ -8285,13 +8283,17 @@ var SolitaireEngine =
 	
 			_params2.display = e.deck.visible ? 'block' : 'none';
 	
+			var _cardDomElement = _share2.default.get('domElement:' + e.cards[i].id);
+	
 			if (e.cards[i].flip) {
-				(0, _elRender2.default)(e.cards[i].domElement).addClass('flip');
+	
+				(0, _elRender2.default)(_cardDomElement).addClass('flip');
 			} else {
-				(0, _elRender2.default)(e.cards[i].domElement).removeClass('flip');
+	
+				(0, _elRender2.default)(_cardDomElement).removeClass('flip');
 			}
 	
-			(0, _elRender2.default)(e.cards[i].domElement).css(_params2);
+			(0, _elRender2.default)(_cardDomElement).css(_params2);
 		}
 	});
 
@@ -8330,12 +8332,8 @@ var SolitaireEngine =
 	_event2.default.listen('addCardEl', function (e) {
 	
 		var _card = {
-			width: _defaults2.default.card.width,
-			height: _defaults2.default.card.height
-		};
-		_card = {
-			width: _card.width.toFixed(3) * 1,
-			height: _card.height.toFixed(3) * 1
+			width: _defaults2.default.card.width.toFixed(3) * 1,
+			height: _defaults2.default.card.height.toFixed(3) * 1
 		};
 	
 		var _params = {
@@ -8343,31 +8341,17 @@ var SolitaireEngine =
 			"height": _card.height + 'px'
 		};
 	
-		e.domElement = (0, _elRender2.default)('<div>');
-		// .getEl();
+		var _domElement = (0, _elRender2.default)('<div>');
 	
-		(0, _elRender2.default)(e.domElement)
-		// .addClass(e.name)
-		.addClass('el card draggable ' + e.name)
-		// .css({'background-size' : null})
-		.css(_params).attr({
+		(0, _elRender2.default)(_domElement).addClass('el card draggable ' + e.name).css(_params).attr({
 			id: e.id
 		});
-		(0, _elRender2.default)(_field2.default.domElement).append(e.domElement);
-	});
 	
-	_event2.default.listen('hideCard', function (e) {
+		_share2.default.set('domElement:' + e.id, _domElement);
 	
-		if (e && e.domElement) {
-			(0, _elRender2.default)(e.domElement[0]).hide();
-		}
-	});
+		var _fieldDomElement = _share2.default.get('domElement:field');
 	
-	_event2.default.listen('showCard', function (e) {
-	
-		if (e && e.domElement) {
-			(0, _elRender2.default)(e.domElement[0]).show();
-		}
+		(0, _elRender2.default)(_fieldDomElement).append(_domElement);
 	});
 
 /***/ },
@@ -8379,6 +8363,10 @@ var SolitaireEngine =
 	var _event = __webpack_require__(2);
 	
 	var _event2 = _interopRequireDefault(_event);
+	
+	var _share = __webpack_require__(1);
+	
+	var _share2 = _interopRequireDefault(_share);
 	
 	var _elRender = __webpack_require__(62);
 	
@@ -8392,23 +8380,32 @@ var SolitaireEngine =
 	
 	_event2.default.listen('showTip', function (e) {
 	
-		if (e && e.el && e.el.domElement && e.type) {
-			(0, _elRender2.default)(e.el.domElement).addClass(e.type);
+		if (e && e.el && e.type) {
+			// e && e.el && e.el.domElement && e.type
+	
+			var _elDomElement = _share2.default.get('domElement:' + e.el.id);
+	
+			(0, _elRender2.default)(_elDomElement).addClass(e.type);
 		}
 	});
 	
 	_event2.default.listen('hideTips', function (e) {
 	
 		if (e && e.types) {
+	
 			for (var i in e.types) {
+	
 				var typeName = e.types[i];
+	
 				(0, _elRender2.default)('.' + typeName).removeClass(typeName);
 			}
 		} else {
 	
-			for (var i in _tips2.default.tipTypes) {
-				var typeName = _tips2.default.tipTypes[i];
-				(0, _elRender2.default)('.' + typeName).removeClass(typeName);
+			for (var _i in _tips2.default.tipTypes) {
+	
+				var _typeName = _tips2.default.tipTypes[_i];
+	
+				(0, _elRender2.default)('.' + _typeName).removeClass(_typeName);
 			}
 		}
 	});
@@ -8465,14 +8462,16 @@ var SolitaireEngine =
 			var departureAngle = angleValidate(e.departure.rotate),
 			    destinationAngle = angleValidate(e.destination.rotate);
 	
-			(0, _elRender2.default)(e.moveDeck[i].card.domElement).css({
+			var _cardDomElement = _share2.default.get('domElement:' + e.moveDeck[i].card.id);
+	
+			(0, _elRender2.default)(_cardDomElement).css({
 				'transform': 'rotate(' + departureAngle + 'deg)'
 			});
 	
 			if (departureAngle - destinationAngle > 180) {
 	
 				departureAngle = departureAngle - 360;
-				(0, _elRender2.default)(e.moveDeck[i].card.domElement).css({
+				(0, _elRender2.default)(_cardDomElement).css({
 					'transform': 'rotate(' + departureAngle + 'deg)'
 				});
 			};
@@ -8505,10 +8504,7 @@ var SolitaireEngine =
 				});
 			}.bind(null, e, i == _lastIndex);
 	
-			(0, _elRender2.default)(e.moveDeck[i].card.domElement).css({ 'z-index': _zIndex }).animate(_params, _callback);
-	
-			// elRender(e.moveDeck[i].card.domElement)
-			// .animate(_params)
+			(0, _elRender2.default)(_cardDomElement).css({ 'z-index': _zIndex }).animate(_params, _callback);
 		}
 	});
 	
@@ -8521,8 +8517,12 @@ var SolitaireEngine =
 		}
 	
 		var _deck = e.deck.cards;
+	
 		for (var i in _deck) {
-			(0, _elRender2.default)(_deck[i].domElement).addClass('fill');
+	
+			var _cardDomElement = _share2.default.get('domElement:' + _deck[i].id);
+	
+			(0, _elRender2.default)(_cardDomElement).addClass('fill');
 		}
 	});
 	
@@ -8540,7 +8540,9 @@ var SolitaireEngine =
 				'z-index': _defaults2.default.topZIndex + (i | 0)
 			};
 			// Operations with DOM
-			(0, _elRender2.default)(e._dragDeck[i].card.domElement).css(_params);
+			var _cardDomElement = _share2.default.get('domElement:' + e._dragDeck[i].card.id);
+	
+			(0, _elRender2.default)(_cardDomElement).css(_params);
 		}
 	});
 
@@ -8554,13 +8556,13 @@ var SolitaireEngine =
 	
 	var _event2 = _interopRequireDefault(_event);
 	
-	var _common = __webpack_require__(5);
-	
-	var _common2 = _interopRequireDefault(_common);
-	
 	var _share = __webpack_require__(1);
 	
 	var _share2 = _interopRequireDefault(_share);
+	
+	var _common = __webpack_require__(5);
+	
+	var _common2 = _interopRequireDefault(_common);
 	
 	var _elRender = __webpack_require__(62);
 	
@@ -8583,7 +8585,9 @@ var SolitaireEngine =
 				top: _position.y + 'px'
 			};
 	
-			(0, _elRender2.default)(e.moveDeck[i].card.domElement).animate(_params, function () {
+			var _cardDomElement = _share2.default.get('domElement:' + e.moveDeck[i].card.id);
+	
+			(0, _elRender2.default)(_cardDomElement).animate(_params, function () {
 	
 				_common2.default.curUnLock();
 	
@@ -8608,6 +8612,10 @@ var SolitaireEngine =
 	
 	var _event2 = _interopRequireDefault(_event);
 	
+	var _share = __webpack_require__(1);
+	
+	var _share2 = _interopRequireDefault(_share);
+	
 	var _defaults = __webpack_require__(3);
 	
 	var _defaults2 = _interopRequireDefault(_defaults);
@@ -8624,20 +8632,23 @@ var SolitaireEngine =
 	
 	_event2.default.listen('fieldThemesSet', function (pref) {
 	
-		var fieldDomElement = _field2.default.domElement;
+		var _fieldDomElement = _share2.default.get('domElement:field'); //Field.domElement;
 	
 		for (var prefName in _defaults2.default.themes) {
 	
 			// Clear old themes
 			for (var i in _defaults2.default.themes[prefName]) {
+	
 				var themeName = _defaults2.default.themes[prefName][i];
-				(0, _elRender2.default)(fieldDomElement).removeClass(themeName);
+	
+				(0, _elRender2.default)(_fieldDomElement).removeClass(themeName);
 			}
 	
 			// Add new themes
-			// let className = defaults.themes[prefName][pref[prefName]];
 			var className = pref[prefName];
-			(0, _elRender2.default)(fieldDomElement).addClass(className);
+			// let className = defaults.themes[prefName][pref[prefName]];
+	
+			(0, _elRender2.default)(_fieldDomElement).addClass(className);
 		}
 	});
 

@@ -56,7 +56,7 @@ var Move = function(moveDeck, to, cursorMove) {
 
 	_success = _success && to;// to - не пустой
 
-	let _el = to && to.id && common.getElementById(to.id);// получаем карту/стопку
+	let _el = to && common.getElementById(to);// получаем карту/стопку
 
 	// если положили на карту узнаём из какой она стопки
 	if(_el) {
@@ -187,14 +187,13 @@ var Move = function(moveDeck, to, cursorMove) {
 				var Tip = bestTip(moveDeck, cursorMove);
 
 				if(Tip) {
-					Move(moveDeck, Tip.to.deck.domElement.el, cursorMove);
+					Move(moveDeck, Tip.to.deck.id, cursorMove);
 					return;
 				} else {
 					event.dispatch('moveCardToHome', {
 						moveDeck  : moveDeck       ,
 						departure : _deck_departure
 					});
-					// share.moveCardToHome();
 				}
 
 		} else {
@@ -203,12 +202,7 @@ var Move = function(moveDeck, to, cursorMove) {
 				departure : _deck_departure
 			});
 		}
-
 	}
-
-	// if(_success) {
-	// afterMove();
-	// }
 };
 
 event.listen('Move', function(e) {

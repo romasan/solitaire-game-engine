@@ -11,12 +11,8 @@ import elRender from 'elRender';
 event.listen('addCardEl', function(e) {
 	
 	var _card = {
-		width  : defaults.card.width,
-		height : defaults.card.height
-	};
-	_card = {
-		width  : _card.width .toFixed(3) * 1,
-		height : _card.height.toFixed(3) * 1
+		width  : defaults.card.width .toFixed(3) * 1,
+		height : defaults.card.height.toFixed(3) * 1
 	};
 
 	var _params = {
@@ -24,34 +20,20 @@ event.listen('addCardEl', function(e) {
 		"height" : _card.height + 'px'
 	};
 
-	e.domElement = 
+	let _domElement = 
 		elRender('<div>')
-			// .getEl();
 	
-	elRender(e.domElement)
-		// .addClass(e.name)
+	elRender(_domElement)
 		.addClass('el card draggable ' + e.name)
-		// .css({'background-size' : null})
 		.css(_params)
 		.attr({
 			id: e.id
 		});
-	elRender(Field.domElement)
-		.append(e.domElement);
-});
 
-event.listen('hideCard', function(e) {
+	share.set('domElement:' + e.id, _domElement);
 
-	if(e && e.domElement) {
-		elRender(e.domElement[0])
-			.hide();
-	}
-});
+	let _fieldDomElement = share.get('domElement:field');
 	
-event.listen('showCard', function(e) {
-
-	if(e && e.domElement) {
-		elRender(e.domElement[0])
-			.show();
-	}
+	elRender(_fieldDomElement)
+		.append(_domElement);
 });

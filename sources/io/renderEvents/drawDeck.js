@@ -48,7 +48,7 @@ event.listen('addDeckEl', function(e) {
 
 	applyChangedParameters(e.params, e.a, e.deck);
 
-	e.deck.domElement = 
+	let _deckDomElement = 
 		elRender('<div>')
 
 	let _params = {
@@ -61,47 +61,31 @@ event.listen('addDeckEl', function(e) {
 	
 	_params.display = e.deck.visible ? 'block' : 'none';
 
-	elRender(e.deck.domElement)
+	elRender(_deckDomElement)
 		.css(_params)
 		.addClass('el')
 		.attr({
-			id: e.deck.getId()
+			id : e.deck.getId()
 		});
 
 	if(e.a.showSlot) {
-		elRender(e.deck.domElement)
+
+		elRender(_deckDomElement)
 			.addClass('slot');
 	}
 	
 	if(e.a.class) {
-		elRender(e.deck.domElement)
+		
+		elRender(_deckDomElement)
 			.addClass(e.a.class);
 	}
 
-	elRender(Field.domElement)
-		.append(e.deck.domElement);
-
-	// draw label
-	// let label = e.a.label && typeof e.a.label == 'string' ? e.a.label : null;
+	let _fieldDomElement = share.get('domElement:field');
 	
-	// if(dev && !e.a.label && share.get('debugLabels')) {
-	// 	label = '<span style="color:#65B0FF;">' + e.deck.name + '</span>';
-	// }
+	elRender(_fieldDomElement)
+		.append(_deckDomElement);
 
-	// if(label) {
-		
-	// 	let _labelElement = 
-	// 		elRender('<div>')
-	// 			.addClass('deckLabel')
-		
-	// 	elRender(_labelElement)
-	// 		.html(label);
-		
-	// 	elRender(e.deck.domElement)
-	// 		.append(_labelElement);
-		
-	// }
-
+	share.set('domElement:' + e.deck.id, _deckDomElement);
 });
 
 // --------------------------------------------------------------------------------------------------------
@@ -115,16 +99,20 @@ event.listen('redrawDeckFlip', function(e) {
 	for(let i in e.cards) {
 		
 		let _params = {};
+
+		let _cardDomElement = share.get('domElement:' + e.cards[i].id);
 		
 		if(e.cards[i].flip) {
-			elRender(e.cards[i].domElement)
+
+			elRender(_cardDomElement)
 				.addClass('flip');
 		} else {
-			elRender(e.cards[i].domElement)
+
+			elRender(_cardDomElement)
 				.removeClass('flip');
 		}
 		
-		elRender(e.cards[i].domElement)
+		elRender(e.cards[i])
 			.css(_params);
 	}
 
@@ -139,7 +127,10 @@ event.listen('redrawDeckIndexes', function(e) {
 	}
 
 	for(let i in e.cards) {
-		elRender(e.cards[i].domElement).css({
+
+		let _cardDomElement = share.get('domElement:' + e.cards[i].id);
+
+		elRender(_cardDomElement).css({
 			'z-index' : (defaults.startZIndex|0) + (i|0)
 		})
 	}
@@ -183,7 +174,9 @@ event.listen('redrawDeck', function(e) {
 	
 	_params.display = e.deck.visible ? 'block' : 'none';
 
-	elRender(e.deck.domElement)
+	let _deckDomElement = share.get('domElement:' + e.deck.id);
+	
+	elRender(_deckDomElement)
 		.css(_params);
 
 	// перерисовка карт
@@ -204,15 +197,20 @@ event.listen('redrawDeck', function(e) {
 		
 		_params.display = e.deck.visible ? 'block' : 'none';
 
+		let _cardDomElement = share.get('domElement:' + e.cards[i].id);
+
 		if(e.cards[i].flip) {
-			elRender(e.cards[i].domElement)
+		
+			elRender(_cardDomElement)
 				.addClass('flip');
 		} else {
-			elRender(e.cards[i].domElement)
+		
+			elRender(_cardDomElement)
 				.removeClass('flip');
 		}
 		
-		elRender(e.cards[i].domElement)
+		
+		elRender(_cardDomElement)
 			.css(_params);
 	}
 });

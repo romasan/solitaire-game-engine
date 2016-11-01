@@ -1,6 +1,7 @@
 'use strict';
 
 import event    from 'event';
+import share    from 'share';
 import defaults from 'defaults';
 
 import Field    from 'field';
@@ -8,22 +9,26 @@ import elRender from 'elRender';
 
 event.listen('fieldThemesSet', (pref)=>{
 	
-	let fieldDomElement = Field.domElement;
+	let _fieldDomElement = share.get('domElement:field');//Field.domElement;
 
-
-	for(var prefName in defaults.themes) {
+	for(let prefName in defaults.themes) {
 		
 		// Clear old themes
-		for(var i in defaults.themes[prefName]) {
+		for(let i in defaults.themes[prefName]) {
+			
 			let themeName = defaults.themes[prefName][i];
-			elRender(fieldDomElement).removeClass(themeName);
+			
+			elRender(_fieldDomElement)
+				.removeClass(themeName);
 			
 		}
 		
 		// Add new themes
-		// let className = defaults.themes[prefName][pref[prefName]];
 		let className = pref[prefName];
-		elRender(fieldDomElement).addClass(className);
+		// let className = defaults.themes[prefName][pref[prefName]];
+		
+		elRender(_fieldDomElement)
+			.addClass(className);
 		
 	}
 });

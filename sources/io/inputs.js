@@ -267,7 +267,7 @@ class inputs {
 		// Move(_dragDeck, _dop, cursorMove);
 		event.dispatch('Move', {
 			moveDeck   : _dragDeck,
-			to         : _dop,
+			to         : _dop.id,
 			cursorMove : cursorMove
 		})
 		// }

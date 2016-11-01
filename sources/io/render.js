@@ -1,6 +1,7 @@
 'use strict';
 
 import event from 'event';
+import share from 'share';
 
 import elRender from 'elRender';
 
@@ -12,10 +13,16 @@ import moveDragDeck   from 'moveDragDeck';
 import moveCardToHome from 'moveCardToHome';
 import fieldThemesSet from 'fieldThemesSet';
 
+import addDeck        from 'addDeck';
+import addGroup       from 'addGroup';
+
 // common
 
 event.listen('removeEl', function(e) {
-	elRender(e.domElement)
+
+	let _elDomElement = share.get('domElement:' + e.id);
+
+	elRender(_elDomElement)
 		.remove();
 });
 
