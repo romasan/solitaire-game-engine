@@ -5,7 +5,7 @@ import share          from 'share';
 import defaults       from 'defaults';
 import common         from 'common';
 
-import Deck           from 'addDeck';
+import Deck           from 'deck';
 import groupFill      from 'groupFill';
 import groupRedraw    from 'groupRedraw';
 import groupGenerator from 'groupGenerator';
@@ -333,11 +333,11 @@ var addGroup = function(a) {
 	return _el_group;
 };
 
-var Group = function(name) {
+var getGroup = function(name) {
 	return common.getElementsByName(name, 'group')[0];
 };
 	
 export default {
 	addGroup,
-	Group
+	getGroup
 };

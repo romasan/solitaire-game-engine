@@ -13,9 +13,6 @@ import moveDragDeck   from 'moveDragDeck';
 import moveCardToHome from 'moveCardToHome';
 import fieldThemesSet from 'fieldThemesSet';
 
-import addDeck        from 'addDeck';
-import addGroup       from 'addGroup';
-
 // common
 
 event.listen('removeEl', function(e) {

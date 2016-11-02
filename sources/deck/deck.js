@@ -1,9 +1,9 @@
 'use strict';
 
-import event    from 'event';
-import share    from 'share';
-import defaults from 'defaults';
-import common   from 'common';
+import event          from 'event';
+import share          from 'share';
+import defaults       from 'defaults';
+import common         from 'common';
 
 import flipTypes      from 'flipTypes';
 import readyPutRules  from 'readyPutRules';
@@ -14,15 +14,15 @@ import deckActions    from 'deckActions';
 import Take           from 'deckTake';
 import Put            from 'deckPut';
 import genCardByName  from 'genCardByName';
-import Group          from 'addGroup';
+import Group          from 'group';
 import History        from 'history';
 
-import getDecks      from 'getDecks';
-import getDeckById   from 'getDeckById';
-import deckCardNames from 'deckCardNames';
-import getDeck       from 'getDeck';
+import getDecks       from 'getDecks';
+import getDeckById    from 'getDeckById';
+import deckCardNames  from 'deckCardNames';
+import getDeck        from 'getDeck';
 
-class deckClass {
+class Deck {
 
 	constructor(a, _id) {
 
@@ -34,15 +34,6 @@ class deckClass {
 
 		this.cards = [];
 		
-		this.getTopCard = function() {
-
-			if(this.cards.length === 0) {
-				return false;
-			}
-			
-			return this.cards[this.cards.length - 1];
-		}
-		
 		// parameters
 		this.type = 'deck';
 		this.fill = false;
@@ -52,7 +43,7 @@ class deckClass {
 			return id;
 		}
 
-		var _parent_el   = Group.Group(a.parent),
+		let _parent_el   = Group.getGroup(a.parent),
 			_parent_name = _parent_el ? _parent_el.name : 'xname',// ???
 			_new_id      = _parent_el ? _parent_el.getDecks().length : id;
 		
@@ -60,8 +51,8 @@ class deckClass {
 			? a.name 
 			: (_parent_name + '_' + _new_id);
 		
-		this.locked     = a.locked   ? true : false;
-		this.save       = a.save     ? true : false;
+		this.locked     = a.locked ? true : false;
+		this.save       = a.save   ? true : false;
 		// this.longStep   = a.longStep ? true : false;
 		this.visible    = a.visible    && typeof a.visible    == 'boolean' ? a.visible    : true;// default true
 		this.groupIndex = a.groupIndex && typeof a.groupIndex == 'number'  ? a.groupIndex : null;
@@ -74,7 +65,7 @@ class deckClass {
 		}
 		
 		// params
-		var params = {};
+		let params = {};
 		params.x              = 0; 
 		params.y              = 0; 
 		params.rotate         = this.rotate = 0; 
@@ -86,17 +77,11 @@ class deckClass {
 		
 		// ------------- FLIP -------------
 		
-		var flipType = a.flip && typeof a.flip == 'string' 
+		let flipType = a.flip && typeof a.flip == 'string' 
 			? a.flip 
-			: defaults.flip_type,
-			checkFlip = flipTypes[flipType];
-
-		this.flipCheck = function() {
-			for(var i in this.cards) {
-				checkFlip(this.cards[i], i|0, this.cards.length);
-			}
-			event.dispatch('redrawDeckFlip', this);
-		}
+			: defaults.flip_type;
+		
+		this.cardFlipCheck = flipTypes[flipType];
 		
 		// ------------- PUT -------------
 
@@ -133,7 +118,7 @@ class deckClass {
 		// ------------- PADDING -------------
 		
 		// порядок карт в колоде
-		var padding = a.paddingX || a.paddingY
+		let padding = a.paddingX || a.paddingY
 			? paddingTypes.special 
 			: a.paddingType 
 				? (typeof a.paddingType == 'string' && paddingTypes[a.paddingType]) 
@@ -142,7 +127,9 @@ class deckClass {
 				: paddingTypes[defaults.paddingType];
 
 		this.padding = function(index) {
-			var _padding = padding(params, this.cards[index], index, this.cards.length, this.cards);
+			
+			let _padding = padding(params, this.cards[index], index, this.cards.length, this.cards);
+			
 			return _padding;
 		}
 		
@@ -185,23 +172,30 @@ class deckClass {
 			this.checkFill();
 		};
 		event.listen('moveDragDeck', _callback);
-
-		// перерисовка стопки
-		this.Redraw = function(data) {
-
-			// TODO "Ханойская башня", исправление перерисовки ячеек при перевлючении вида
-			
-			event.dispatch('redrawDeck', {
-				deck   : this,
-				data   : data,
-				params : params,
-				cards  : this.cards
-			});
-		};
-
 	}
 
 // -------------------------------------------------------------------------------------------------
+
+	// перерисовка стопки
+	Redraw(data) {
+
+		event.dispatch('redrawDeck', {
+			deck   : this,
+			data   : data,
+			params : params,
+			cards  : this.cards
+
+		});
+	}
+
+	getTopCard() {
+
+		if(this.cards.length === 0) {
+			return false;
+		}
+		
+		return this.cards[this.cards.length - 1];
+	}
 
 	lock() {
 		
@@ -211,6 +205,15 @@ class deckClass {
 	unlock() {
 
 		this.locked = false;
+	}
+
+	flipCheck() {
+			
+		for(var i in this.cards) {
+			this.cardFlipCheck(this.cards[i], i|0, this.cards.length);
+		}
+		
+		event.dispatch('redrawDeckFlip', this);
 	}
 	
 	checkFill() {
@@ -232,13 +235,13 @@ class deckClass {
 
 	Fill(cardNames) {
 
-		for(var i in cardNames) {
+		for(let i in cardNames) {
 			this.genCardByName(cardNames[i]);
 		}
 	}
 
 	clear() {
-		for(var i in this.cards) {
+		for(let i in this.cards) {
 			event.dispatch('removeEl', this.cards[i]);
 			this.cards[i] = null;
 		}
@@ -247,7 +250,7 @@ class deckClass {
 	}
 
 	Push(deck) {// , parentName) {
-		for(var i in deck) {
+		for(let i in deck) {
 			deck[i].parent = this.getId();
 			this.cards.push(deck[i]);
 		}
@@ -259,9 +262,9 @@ class deckClass {
 			return false;
 		}
 
-		var _deck = [];
+		let _deck = [];
 		for(;count;count -= 1) {
-			var _pop = this.cards.pop();
+			let _pop = this.cards.pop();
 			if(clearParent) _pop.parent = null;
 			_deck.push(_pop);
 			_deck[_deck.length - 1].parent = null;
@@ -370,7 +373,6 @@ class deckClass {
 						_relations.push(this.relations[i]);
 					}
 				} else {
-
 					_relations.push(this.relations[i]);
 				}
 			}
@@ -392,9 +394,7 @@ class deckClass {
 
 }
 
-// ------------------------------------------------------------------------------------------------------------------------------------------
-
-var addDeck = function(a) {
+let addDeck = (a) => {
 
 	if(!a) {
 		return false;
@@ -409,7 +409,7 @@ var addDeck = function(a) {
 		_a = a;
 	}
 	
-	let _el_deck = new deckClass(_a, _id);
+	let _el_deck = new Deck(_a, _id);
 
 	// fill deck
 	if(a.fill) {
@@ -429,10 +429,12 @@ var addDeck = function(a) {
 	return _el_deck;
 };
 
+// ------------------------------------------------------------------------------------------------------------------------------------------
+
 export default {
-	addDeck       ,
-	Deck : getDeck,
-	getDecks      ,
-	getDeckById   ,
-	deckCardNames
+	deckCardNames,
+	addDeck      ,
+	getDeck      ,
+	getDecks     ,
+	getDeckById
 };

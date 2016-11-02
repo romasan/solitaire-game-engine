@@ -4,7 +4,7 @@ import event  from 'event';
 import share  from 'share';
 import common from 'common';
 
-import Deck from 'addDeck';
+import Deck from 'deck';
 import Tips from 'tips';
 
 let forceMove = function(a) {// {from, to, deck, <flip>, <callback>}
@@ -20,11 +20,11 @@ let forceMove = function(a) {// {from, to, deck, <flip>, <callback>}
 	}
 	
 	let _from = typeof a.from == "string"
-		? Deck.Deck(a.from)
+		? Deck.getDeck(a.from)
 		: a.from;
 
 	let _to   = typeof a.to   == "string"
-		? Deck.Deck(a.to)
+		? Deck.getDeck(a.to)
 		: a.to;
 
 	if(!_from || !_to || _from.type != "deck" || _to.type != "deck") {

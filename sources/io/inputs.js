@@ -5,8 +5,8 @@ import event    from 'event';
 import defaults from 'defaults';
 import common   from 'common';
 
-import Deck from 'addDeck';
-import Tips from 'tips';
+import Deck     from 'deck';
+import Tips     from 'tips';
 
 // -------------------------------------------------------------------------------------------------------------
 

@@ -1,13 +1,13 @@
 'use strict';
 
 // module.exports = function(main, share) {
-import share     from 'share';
-import event     from 'event';
-import defaults  from 'defaults';
-import common    from 'common';
+import share        from 'share';
+import event        from 'event';
+import defaults     from 'defaults';
+import common       from 'common';
 
-import Group        from 'addGroup';
-import Deck         from 'addDeck';
+import Group        from 'group';
+import Deck         from 'deck';
 import Tips         from 'tips';
 import addAutoSteps from 'addAutoSteps';
 import storage      from 'storage';
@@ -33,7 +33,7 @@ class Field {
 
 	create(data) {
 
-		var a = null;
+		let a = null;
 		try {
 			a = Object.assign({}, data);
 		} catch(e) {
@@ -104,14 +104,14 @@ class Field {
 		}
 
 		// параметры отображения подсказок
-		for(var tipParamName in defaults.tipsParams) {
+		for(let tipParamName in defaults.tipsParams) {
 			this.tipsParams[tipParamName] = (a.tipsParams && typeof a.tipsParams[tipParamName] != "undefined")
 				? a.tipsParams[tipParamName]
 				: defaults.tipsParams[tipParamName]
 		}
 
 		// параметры ввода
-		for(var inputParamName in defaults.inputParams) {
+		for(let inputParamName in defaults.inputParams) {
 			this.inputParams[inputParamName] = (a.inputParams && typeof a.inputParams[inputParamName] != "undefined")
 				? a.inputParams[inputParamName]
 				: defaults.inputParams[inputParamName]
@@ -134,14 +134,14 @@ class Field {
 
 		// Отрисовка элементов
 		if(a.groups) {
-			for(var groupName in a.groups) {
+			for(let groupName in a.groups) {
 				a.groups[groupName].name = groupName;
 				Group.addGroup(a.groups[groupName]);
 			}
 		}
 
 		if(a.decks) {
-			for(var e in a.decks) {
+			for(let e in a.decks) {
 				Deck.addDeck(a.decks[e]);
 			}
 		}
@@ -157,9 +157,9 @@ class Field {
 			}
 
 			for(;_fill.length;) {
-				for(var deckId in _decks) {
+				for(let deckId in _decks) {
 					if(_fill.length) {
-						var _card = _fill.shift();
+						let _card = _fill.shift();
 						_decks[deckId].Fill([_card]);
 					}
 				}
@@ -176,7 +176,7 @@ class Field {
 
 	Redraw(data) {
 
-		var a = null;
+		let a = null;
 
 		if(data) {
 
@@ -187,25 +187,29 @@ class Field {
 				console.warn('Field.Redraw input params is not JSON, can\'t clone');
 			}
 
-			for(var _groupName in a.groups) {
+			for(let _groupName in a.groups) {
 
-				var _group = Group.Group(_groupName);
+				let _group = Group.getGroup(_groupName);
+				
 				if(_group) {
 					_group.Redraw(a.groups[_groupName]);
 				}
 			}
 
-			for(var i in a.decks) {
+			for(let i in a.decks) {
 				
-				var _deck = Deck.Deck(a.decks[i].name);
+				let _deck = Deck.getDeck(a.decks[i].name);
+				
 				if(_deck) {
 					_deck.Redraw(a.decks[i]);
 				}
 			}
 
 		} else {
-			var _decks = Deck.getDecks();
-			for(var i in _decks) {
+			
+			let _decks = Deck.getDecks();
+			
+			for(let i in _decks) {
 				_decks[i].Redraw();
 			}
 		}
@@ -213,8 +217,9 @@ class Field {
 
 	clear() {
 
-		var _elements = share.get('elements');
-		for(var i in _elements) {
+		let _elements = share.get('elements');
+		
+		for(let i in _elements) {
 			if(_elements[i].type == 'deck') {
 				_elements[i].clear();
 				_elements[i] = null;
@@ -222,6 +227,7 @@ class Field {
 				_elements[i] = null;
 			}
 		}
+		
 		share.set('elements', {});
 	}
 }

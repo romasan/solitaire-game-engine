@@ -16,7 +16,7 @@ import winCheck      from 'winCheck';
 import History       from 'history';
 import Tips          from 'tips';
 import deckGenerator from 'deckGenerator';
-import storage       from 'storage';
+// import storage       from 'storage';
 
 // styles DOM
 import 'common.scss';

@@ -7,7 +7,7 @@ import common    from 'common';
 
 import allToAll from 'allToAll';
 import bestTip  from 'bestTip';
-import Deck     from 'addDeck';
+import Deck     from 'deck';
 import Field    from 'field';
 
 var _showTips = defaults.showTips;

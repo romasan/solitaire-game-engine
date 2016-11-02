@@ -5,7 +5,7 @@ import share    from 'share';
 import defaults from 'defaults';
 import common   from 'common';
 
-import Deck     from 'addDeck';
+import Deck     from 'deck';
 import Tips     from 'tips';
 import bestTip  from 'bestTip';
 import winCheck from 'winCheck';

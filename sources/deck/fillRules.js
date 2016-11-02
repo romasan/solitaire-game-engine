@@ -3,7 +3,7 @@
 import defaults from 'defaults';
 import common   from 'common';
 
-import Deck      from 'addDeck';
+import Deck      from 'deck';
 import Tips      from 'tips';
 import getBeside from 'getBeside';
 
@@ -48,7 +48,7 @@ let fr = {
 
 		for(;_prev && _check;) {
 			
-			let _deck = Deck.Deck(_prev);
+			let _deck = Deck.getDeck(_prev);
 			_card = _deck.getTopCard();
 			
 			_check = _check && _card && _callback(common.validateCardName(_topCard).value, common.validateCardName(_card).value|0);

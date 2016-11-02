@@ -5,7 +5,7 @@ import share     from 'share';
 import common    from 'common';
 
 import forceMove from 'forceMove';
-import Deck      from 'addDeck';
+import Deck      from 'deck';
 import Tips      from 'tips';
 // import elRender  from 'elRender';
 

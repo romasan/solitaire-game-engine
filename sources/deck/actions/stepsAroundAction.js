@@ -6,7 +6,7 @@ import common   from 'common';
 import defaults from 'defaults';
 
 import Tips from 'tips';
-import Deck from 'addDeck';
+import Deck from 'deck';
 
 let stepType = 'stepsAround';
 

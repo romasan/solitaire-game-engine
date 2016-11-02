@@ -28,7 +28,7 @@ export default function(data) {// data.actionData, e
 	share.set('stepType', stepType);
 
 	let dealDeck = typeof data.actionData.from == "string"
-		? Deck.Deck(data.actionData.from)
+		? Deck.getDeck(data.actionData.from)
 		: this
 	
 	// смотрим остались ли карты

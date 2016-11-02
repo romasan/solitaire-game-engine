@@ -1,12 +1,12 @@
 'use strict';
 
-import share    from 'share';
-import event    from 'event';
-import defaults from 'defaults';
+import share              from 'share';
+import event              from 'event';
+import defaults           from 'defaults';
 
-import Tips     from 'tips';
-import Field    from 'field';
-import History  from 'history';
+import Tips               from 'tips';
+import Field              from 'field';
+import History            from 'history';
 
 import drawPreferences    from 'drawPreferences';
 import preferencesEvents  from 'preferencesEvents';
@@ -235,7 +235,7 @@ event.listen('historyReapeater', function(e) {
 
 let deckInGroups = (deck, groups)=>{
 	for(let groupName in groups) {
-		Group.Group(groupName).hasDeck();
+		Group.getGroup(groupName).hasDeck();
 	}
 }
 

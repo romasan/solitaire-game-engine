@@ -3,7 +3,7 @@
 import common   from 'common';
 import defaults from 'defaults';
 
-import Deck      from 'addDeck';
+import Deck      from 'deck';
 import getBeside from 'getBeside';
 
 var rpr = {
