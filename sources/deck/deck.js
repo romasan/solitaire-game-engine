@@ -64,16 +64,16 @@ class Deck {
 			a.showSlot = defaults.showSlot;
 		}
 		
-		// params
-		let params = {};
-		params.x              = 0; 
-		params.y              = 0; 
-		params.rotate         = this.rotate = 0; 
-		params.padding_y      = ( a.paddingY     && typeof a.paddingY     == 'number' ) ? a.paddingY     : defaults.padding_y;
-		params.flip_padding_y = ( a.flipPaddingY && typeof a.flipPaddingY == 'number' ) ? a.flipPaddingY : defaults.flip_padding_y;
-		params.padding_x      = ( a.paddingX     && typeof a.paddingX     == 'number' ) ? a.paddingX     : defaults.padding_x;
-		params.flip_padding_x = ( a.flipPaddingX && typeof a.flipPaddingX == 'number' ) ? a.flipPaddingX : defaults.flip_padding_x;
-		params.startZIndex    = ( a.startZIndex  && typeof a.startZIndex  == 'number' ) ? a.startZIndex  : defaults.startZIndex;
+		this._params = {
+			padding_y      : ( a.paddingY     && typeof a.paddingY     == 'number' ) ? a.paddingY     : defaults.padding_y     ,
+			flip_padding_y : ( a.flipPaddingY && typeof a.flipPaddingY == 'number' ) ? a.flipPaddingY : defaults.flip_padding_y,
+			padding_x      : ( a.paddingX     && typeof a.paddingX     == 'number' ) ? a.paddingX     : defaults.padding_x     ,
+			flip_padding_x : ( a.flipPaddingX && typeof a.flipPaddingX == 'number' ) ? a.flipPaddingX : defaults.flip_padding_x,
+			startZIndex    : ( a.startZIndex  && typeof a.startZIndex  == 'number' ) ? a.startZIndex  : defaults.startZIndex   ,
+			rotate         : this.rotate = 0                                                                                   ,
+			x              : 0                                                                                                 ,
+			y              : 0
+		};
 		
 		// ------------- FLIP -------------
 		
@@ -128,7 +128,7 @@ class Deck {
 
 		this.padding = function(index) {
 			
-			let _padding = padding(params, this.cards[index], index, this.cards.length, this.cards);
+			let _padding = padding(this._params, this.cards[index], index, this.cards.length, this.cards);
 			
 			return _padding;
 		}
@@ -156,7 +156,7 @@ class Deck {
 		event.dispatch('addDeckEl', {
 			a     : a, 
 			deck  : this,
-			params: params
+			params: this._params
 		});
 
 		// Подписывается на перетаскивание стопки/карты
@@ -182,9 +182,8 @@ class Deck {
 		event.dispatch('redrawDeck', {
 			deck   : this,
 			data   : data,
-			params : params,
+			params : this._params,
 			cards  : this.cards
-
 		});
 	}
 

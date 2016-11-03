@@ -52,11 +52,11 @@ event.listen('actionBreak', (e) => {
 });
 
 event.listen('startSession', (e) => {
-	share.set('sessionStarted', true);
+	// share.set('sessionStarted', true);
 });
 
 event.listen('stopSession', (e) => {
-	share.set('sessionStarted', false);
+	// share.set('sessionStarted', false);
 });
 
 // Lock/Unlock

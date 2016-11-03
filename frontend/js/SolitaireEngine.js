@@ -65,15 +65,15 @@ var SolitaireEngine =
 	
 	var _inputs2 = _interopRequireDefault(_inputs);
 	
-	var _move = __webpack_require__(55);
+	var _move = __webpack_require__(58);
 	
 	var _move2 = _interopRequireDefault(_move);
 	
-	var _forceMove = __webpack_require__(20);
+	var _forceMove = __webpack_require__(21);
 	
 	var _forceMove2 = _interopRequireDefault(_forceMove);
 	
-	var _render = __webpack_require__(58);
+	var _render = __webpack_require__(61);
 	
 	var _render2 = _interopRequireDefault(_render);
 	
@@ -85,11 +85,11 @@ var SolitaireEngine =
 	
 	var _common2 = _interopRequireDefault(_common);
 	
-	var _winCheck = __webpack_require__(56);
+	var _winCheck = __webpack_require__(59);
 	
 	var _winCheck2 = _interopRequireDefault(_winCheck);
 	
-	var _history = __webpack_require__(44);
+	var _history = __webpack_require__(31);
 	
 	var _history2 = _interopRequireDefault(_history);
 	
@@ -97,15 +97,15 @@ var SolitaireEngine =
 	
 	var _tips2 = _interopRequireDefault(_tips);
 	
-	var _deckGenerator = __webpack_require__(69);
+	var _deckGenerator = __webpack_require__(72);
 	
 	var _deckGenerator2 = _interopRequireDefault(_deckGenerator);
 	
-	__webpack_require__(70);
+	__webpack_require__(73);
 	
-	__webpack_require__(71);
+	__webpack_require__(74);
 	
-	__webpack_require__(72);
+	__webpack_require__(75);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
@@ -123,7 +123,7 @@ var SolitaireEngine =
 	exports.options = _defaults2.default;
 	exports.winCheck = _winCheck2.default.hwinCheck;
 	exports.generator = _deckGenerator2.default;
-	exports.version = (9091492274).toString().split(9).slice(1).map(function (e) {
+	exports.version = (9091492311).toString().split(9).slice(1).map(function (e) {
 		return parseInt(e, 8);
 	}).join('.');
 	
@@ -173,7 +173,7 @@ var SolitaireEngine =
 	};
 	
 	if (true) {
-		var debug = __webpack_require__(73);
+		var debug = __webpack_require__(76);
 		exports.debug = debug.default;
 	}
 
@@ -201,7 +201,10 @@ var SolitaireEngine =
 	
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 	
+	var _debug = [];
+	
 	// export default new function() {
+	
 	var shareClass = function () {
 		function shareClass() {
 			_classCallCheck(this, shareClass);
@@ -228,8 +231,19 @@ var SolitaireEngine =
 				var forceClone = arguments.length <= 2 || arguments[2] === undefined ? false : arguments[2];
 	
 	
+				var _time = new Date().getTime();
+				_debug.push(_time);
+				if (_debug.length >= 100) {
+					_debug.shift();
+					console.log('>>>');
+					if (window._debug123 && _time - _debug[0] < 1000) {
+						throw new Error('time of last 100 iteration = ' + (_time - _debug[0]));
+					}
+				}
 				// "foo", "bar", false
 				if (typeof name == "string") {
+	
+					console.log(name, _time - _debug[0], window._debug123, _time - _debug[0] < 1000);
 	
 					_event2.default.dispatch('shareChange:' + name, {
 						from: this._data[name],
@@ -563,7 +577,7 @@ var SolitaireEngine =
 	
 	var _common2 = _interopRequireDefault(_common);
 	
-	var _deck2 = __webpack_require__(10);
+	var _deck2 = __webpack_require__(11);
 	
 	var _deck3 = _interopRequireDefault(_deck2);
 	
@@ -883,19 +897,19 @@ var SolitaireEngine =
 	
 	var _field2 = _interopRequireDefault(_field);
 	
-	var _history = __webpack_require__(44);
+	var _history = __webpack_require__(31);
 	
 	var _history2 = _interopRequireDefault(_history);
 	
-	var _drawPreferences = __webpack_require__(49);
+	var _drawPreferences = __webpack_require__(53);
 	
 	var _drawPreferences2 = _interopRequireDefault(_drawPreferences);
 	
-	var _preferencesEvents = __webpack_require__(51);
+	var _preferencesEvents = __webpack_require__(55);
 	
 	var _preferencesEvents2 = _interopRequireDefault(_preferencesEvents);
 	
-	var _defaultPreferences = __webpack_require__(54);
+	var _defaultPreferences = __webpack_require__(57);
 	
 	var _defaultPreferences2 = _interopRequireDefault(_defaultPreferences);
 	
@@ -941,11 +955,11 @@ var SolitaireEngine =
 	});
 	
 	_event2.default.listen('startSession', function (e) {
-		_share2.default.set('sessionStarted', true);
+		// share.set('sessionStarted', true);
 	});
 	
 	_event2.default.listen('stopSession', function (e) {
-		_share2.default.set('sessionStarted', false);
+		// share.set('sessionStarted', false);
 	});
 	
 	// Lock/Unlock
@@ -1192,7 +1206,7 @@ var SolitaireEngine =
 	
 	var _bestTip2 = _interopRequireDefault(_bestTip);
 	
-	var _deck = __webpack_require__(10);
+	var _deck = __webpack_require__(11);
 	
 	var _deck2 = _interopRequireDefault(_deck);
 	
@@ -1647,11 +1661,11 @@ var SolitaireEngine =
 	
 	var _common2 = _interopRequireDefault(_common);
 	
-	var _group2 = __webpack_require__(30);
+	var _group2 = __webpack_require__(10);
 	
 	var _group3 = _interopRequireDefault(_group2);
 	
-	var _deck2 = __webpack_require__(10);
+	var _deck2 = __webpack_require__(11);
 	
 	var _deck3 = _interopRequireDefault(_deck2);
 	
@@ -1659,7 +1673,7 @@ var SolitaireEngine =
 	
 	var _tips2 = _interopRequireDefault(_tips);
 	
-	var _addAutoSteps = __webpack_require__(76);
+	var _addAutoSteps = __webpack_require__(49);
 	
 	var _addAutoSteps2 = _interopRequireDefault(_addAutoSteps);
 	
@@ -1902,2575 +1916,19 @@ var SolitaireEngine =
 	
 	var _common2 = _interopRequireDefault(_common);
 	
-	var _flipTypes = __webpack_require__(11);
-	
-	var _flipTypes2 = _interopRequireDefault(_flipTypes);
-	
-	var _readyPutRules = __webpack_require__(12);
-	
-	var _readyPutRules2 = _interopRequireDefault(_readyPutRules);
-	
-	var _readyTakeRules = __webpack_require__(14);
-	
-	var _readyTakeRules2 = _interopRequireDefault(_readyTakeRules);
-	
-	var _fillRules = __webpack_require__(15);
-	
-	var _fillRules2 = _interopRequireDefault(_fillRules);
-	
-	var _paddingTypes = __webpack_require__(16);
-	
-	var _paddingTypes2 = _interopRequireDefault(_paddingTypes);
-	
-	var _deckActions = __webpack_require__(17);
-	
-	var _deckActions2 = _interopRequireDefault(_deckActions);
-	
-	var _deckTake = __webpack_require__(27);
-	
-	var _deckTake2 = _interopRequireDefault(_deckTake);
-	
-	var _deckPut = __webpack_require__(28);
-	
-	var _deckPut2 = _interopRequireDefault(_deckPut);
-	
-	var _genCardByName2 = __webpack_require__(29);
-	
-	var _genCardByName3 = _interopRequireDefault(_genCardByName2);
-	
-	var _group = __webpack_require__(30);
-	
-	var _group2 = _interopRequireDefault(_group);
-	
-	var _history = __webpack_require__(44);
-	
-	var _history2 = _interopRequireDefault(_history);
-	
-	var _getDecks = __webpack_require__(45);
-	
-	var _getDecks2 = _interopRequireDefault(_getDecks);
-	
-	var _getDeckById = __webpack_require__(46);
-	
-	var _getDeckById2 = _interopRequireDefault(_getDeckById);
-	
-	var _deckCardNames = __webpack_require__(47);
-	
-	var _deckCardNames2 = _interopRequireDefault(_deckCardNames);
-	
-	var _getDeck = __webpack_require__(48);
-	
-	var _getDeck2 = _interopRequireDefault(_getDeck);
-	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-	
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-	
-	var deckClass = function () {
-		function deckClass(a, _id) {
-			var _this = this;
-	
-			_classCallCheck(this, deckClass);
-	
-			// console.log('%cADD DECK', 'background: orange;');
-	
-			if (!a) {
-				return false;
-			}
-	
-			this.cards = [];
-	
-			// parameters
-			this.type = 'deck';
-			this.fill = false;
-			var id = _id;
-	
-			this.getId = function () {
-				return id;
-			};
-	
-			var _parent_el = _group2.default.getGroup(a.parent),
-			    _parent_name = _parent_el ? _parent_el.name : 'xname',
-			    // ???
-			_new_id = _parent_el ? _parent_el.getDecks().length : id;
-	
-			this.name = a.name && typeof a.name == 'string' ? a.name : _parent_name + '_' + _new_id;
-	
-			this.locked = a.locked ? true : false;
-			this.save = a.save ? true : false;
-			// this.longStep   = a.longStep ? true : false;
-			this.visible = a.visible && typeof a.visible == 'boolean' ? a.visible : true; // default true
-			this.groupIndex = a.groupIndex && typeof a.groupIndex == 'number' ? a.groupIndex : null;
-			this.parent = a.parent && typeof a.parent == 'string' ? a.parent : 'field';
-			this.autoHide = a.autoHide && typeof a.autoHide == 'boolean' ? a.autoHide : _defaults2.default.autohide;
-	
-			// changed parameters
-			if (typeof a.showSlot == "undefined") {
-				a.showSlot = _defaults2.default.showSlot;
-			}
-	
-			// params
-			var params = {};
-			params.x = 0;
-			params.y = 0;
-			params.rotate = this.rotate = 0;
-			params.padding_y = a.paddingY && typeof a.paddingY == 'number' ? a.paddingY : _defaults2.default.padding_y;
-			params.flip_padding_y = a.flipPaddingY && typeof a.flipPaddingY == 'number' ? a.flipPaddingY : _defaults2.default.flip_padding_y;
-			params.padding_x = a.paddingX && typeof a.paddingX == 'number' ? a.paddingX : _defaults2.default.padding_x;
-			params.flip_padding_x = a.flipPaddingX && typeof a.flipPaddingX == 'number' ? a.flipPaddingX : _defaults2.default.flip_padding_x;
-			params.startZIndex = a.startZIndex && typeof a.startZIndex == 'number' ? a.startZIndex : _defaults2.default.startZIndex;
-	
-			// ------------- FLIP -------------
-	
-			var flipType = a.flip && typeof a.flip == 'string' ? a.flip : _defaults2.default.flip_type;
-	
-			this.cardFlipCheck = _flipTypes2.default[flipType];
-	
-			// ------------- PUT -------------
-	
-			this.putRules = a.putRules ? typeof a.putRules == 'function' ? a.putRules : typeof a.putRules == 'string' ? _readyPutRules2.default[a.putRules] ? _readyPutRules2.default[a.putRules] : _readyPutRules2.default[_defaults2.default.putRule]
-			// : typeof a.putRules === 'object' 
-			: a.putRules.constructor == Array ? a.putRules : _readyPutRules2.default[_defaults2.default.putRule] : _readyPutRules2.default[_defaults2.default.putRule];
-	
-			// ------------- TAKE -------------
-	
-			// можно ли взять карту/стопку
-			this.takeRules = a.takeRules;
-	
-			// ------------- FILL -------------
-	
-			this.fillRules = null;
-	
-			if (a.fillRule && !a.fillRules) {
-				a.fillRules = [a.fillRule];
-			}
-	
-			if (a.fillRules) {
-				this.fillRules = a.fillRules;
-			}
-	
-			// ------------- PADDING -------------
-	
-			// порядок карт в колоде
-			var padding = a.paddingX || a.paddingY ? _paddingTypes2.default.special : a.paddingType ? typeof a.paddingType == 'string' && _paddingTypes2.default[a.paddingType] ? _paddingTypes2.default[a.paddingType] : _paddingTypes2.default.none : _paddingTypes2.default[_defaults2.default.paddingType];
-	
-			this.padding = function (index) {
-	
-				var _padding = padding(params, this.cards[index], index, this.cards.length, this.cards);
-	
-				return _padding;
-			};
-	
-			this.actions = [];
-			if (a.actions) {
-				this.actions = a.actions;
-				_deckActions2.default.addActions.call(this);
-			}
-	
-			// ------------ RELATIONS ------------
-	
-			if (a.relations) {
-				this.relations = a.relations;
-			} else {
-				this.relations = [];
-			}
-	
-			// --
-	
-			this.tags = a.tags ? a.tags : [];
-	
-			// --
-	
-			_event2.default.dispatch('addDeckEl', {
-				a: a,
-				deck: this,
-				params: params
-			});
-	
-			// Подписывается на перетаскивание стопки/карты
-			var _callback = function _callback(data) {
-	
-				// TODO
-				// проверять fill только для тех стопок котрые участвовали в Action
-	
-				if (data.destination.name != _this.name) {
-					return;
-				}
-	
-				_this.checkFill();
-			};
-			_event2.default.listen('moveDragDeck', _callback);
-		}
-	
-		// -------------------------------------------------------------------------------------------------
-	
-		// перерисовка стопки
-	
-	
-		_createClass(deckClass, [{
-			key: 'Redraw',
-			value: function Redraw(data) {
-	
-				_event2.default.dispatch('redrawDeck', {
-					deck: this,
-					data: data,
-					params: params,
-					cards: this.cards
-	
-				});
-			}
-		}, {
-			key: 'getTopCard',
-			value: function getTopCard() {
-	
-				if (this.cards.length === 0) {
-					return false;
-				}
-	
-				return this.cards[this.cards.length - 1];
-			}
-		}, {
-			key: 'lock',
-			value: function lock() {
-	
-				this.locked = true;
-			}
-		}, {
-			key: 'unlock',
-			value: function unlock() {
-	
-				this.locked = false;
-			}
-		}, {
-			key: 'flipCheck',
-			value: function flipCheck() {
-	
-				for (var i in this.cards) {
-					this.cardFlipCheck(this.cards[i], i | 0, this.cards.length);
-				}
-	
-				_event2.default.dispatch('redrawDeckFlip', this);
-			}
-		}, {
-			key: 'checkFill',
-			value: function checkFill() {
-	
-				if (!this.fill) {
-	
-					var notFill = true;
-	
-					for (var ruleName in this.fillRules) {
-	
-						if (_fillRules2.default[ruleName]) {
-							notFill = notFill && !_fillRules2.default[ruleName](this);
-						}
-					}
-	
-					this.fill = !notFill;
-				}
-			}
-		}, {
-			key: 'Fill',
-			value: function Fill(cardNames) {
-	
-				for (var i in cardNames) {
-					this.genCardByName(cardNames[i]);
-				}
-			}
-		}, {
-			key: 'clear',
-			value: function clear() {
-				for (var i in this.cards) {
-					_event2.default.dispatch('removeEl', this.cards[i]);
-					this.cards[i] = null;
-				}
-				this.cards = [];
-				_event2.default.dispatch('removeEl', this);
-			}
-		}, {
-			key: 'Push',
-			value: function Push(deck) {
-				// , parentName) {
-				for (var i in deck) {
-					deck[i].parent = this.getId();
-					this.cards.push(deck[i]);
-				}
-			}
-		}, {
-			key: 'Pop',
-			value: function Pop(count, clearParent) {
-	
-				if (this.cards.length < count) {
-					return false;
-				}
-	
-				var _deck = [];
-				for (; count; count -= 1) {
-					var _pop = this.cards.pop();
-					if (clearParent) _pop.parent = null;
-					_deck.push(_pop);
-					_deck[_deck.length - 1].parent = null;
-				}
-				_deck.reverse();
-	
-				// что делать если вынули все карты
-				if (this.autoHide && this.cards.length === 0) {
-					this.hide();
-				}
-	
-				this.Redraw();
-	
-				return _deck;
-			}
-		}, {
-			key: 'Take',
-			value: function Take(cardId) {
-				return _deckTake2.default.call(this, cardId); // ??? .call(this, attributes);
-			}
-	
-			// проверяем, можем ли положить стопку/карту
-			// возвращает true, если согласно правилам сюда можно положить карту
-	
-		}, {
-			key: 'Put',
-			value: function Put(putDeck) {
-				return _deckPut2.default.call(this, putDeck); //(deckConstructor);
-			}
-	
-			// создать карту
-	
-		}, {
-			key: 'genCardByName',
-			value: function genCardByName(name) {
-				return _genCardByName3.default.call(this, name);
-			}
-		}, {
-			key: 'hide',
-			value: function hide() {
-				this.visible = false;
-				_history2.default.add({ hideDeck: this.name });
-				this.Redraw();
-			}
-		}, {
-			key: 'show',
-			value: function show() {
-				this.visible = false;
-				_history2.default.add({ showDeck: this.name });
-				this.Redraw();
-			}
-		}, {
-			key: 'getCardsByName',
-			value: function getCardsByName(cardName) {
-				var _cards = [];
-				for (var i in this.cards) {
-					if (this.cards[i].name == cardName) {
-						_cards.push(this.cards[i]);
-					}
-				}
-				return _cards;
-			}
-		}, {
-			key: 'Card',
-			value: function Card(cardName) {
-				return this.getCardsByName(cardName)[0];
-			}
-		}, {
-			key: 'hideCards',
-			value: function hideCards() {
-				for (var i in this.cards) {
-					this.cards[i].visible = false;
-					_event2.default.dispatch('hideCard', this.cards[i]);
-				}
-			}
-		}, {
-			key: 'showCards',
-			value: function showCards() {
-				for (var i in this.cards) {
-					this.cards[i].visible = true;
-					_event2.default.dispatch('showCard', this.cards[i]);
-				}
-			}
-		}, {
-			key: 'getCardsNames',
-			value: function getCardsNames() {
-	
-				var _cardsNames = [];
-	
-				for (var i in this.cards) {
-					_cardsNames.push(this.cards[i].name);
-				}
-	
-				return _cardsNames;
-			}
-		}, {
-			key: 'cardsCount',
-			value: function cardsCount() {
-				return this.cards.length;
-			}
-		}, {
-			key: 'getRelationsByName',
-			value: function getRelationsByName(relationName, filter) {
-	
-				var _relations = [];
-	
-				for (var i in this.relations) {
-					if (this.relations[i].name == relationName) {
-	
-						if (filter) {
-	
-							var _checked = 0,
-							    _count = 0;
-	
-							for (var attr in filter) {
-								_count += 1;
-								if (this.relations[i][attr] == filter[attr]) {
-									_checked += 1;
-								}
-							}
-	
-							if (_checked == _count) {
-								_relations.push(this.relations[i]);
-							}
-						} else {
-							_relations.push(this.relations[i]);
-						}
-					}
-				}
-	
-				return _relations;
-			}
-		}, {
-			key: 'hasTag',
-			value: function hasTag(tagName) {
-	
-				for (var i in this.tags) {
-					if (this.tags[i] == tagName) {
-						return true;
-					}
-				}
-	
-				return false;
-			}
-		}]);
-	
-		return deckClass;
-	}();
-	
-	var addDeck = function addDeck(a) {
-	
-		if (!a) {
-			return false;
-		}
-	
-		var _id = 'deck_' + _common2.default.genId();
-	
-		var _a = null;
-		try {
-			_a = Object.assign({}, a);
-		} catch (e) {
-			_a = a;
-		}
-	
-		var _el_deck = new deckClass(_a, _id);
-	
-		// fill deck
-		if (a.fill) {
-			for (var i in a.fill) {
-				if (typeof a.fill[i] == 'string') {
-					_el_deck.genCardByName(a.fill[i]);
-				}
-			}
-		}
-	
-		var _elements = _share2.default.get('elements');
-	
-		_elements[_id] = _el_deck;
-	
-		_share2.default.set('elements', _elements);
-	
-		return _el_deck;
-	};
-	
-	// ------------------------------------------------------------------------------------------------------------------------------------------
-	
-	exports.default = {
-		deckCardNames: _deckCardNames2.default,
-		addDeck: addDeck,
-		getDeck: _getDeck2.default,
-		getDecks: _getDecks2.default,
-		getDeckById: _getDeckById2.default
-	};
-
-/***/ },
-/* 11 */
-/***/ function(module, exports) {
-
-	'use strict';
-	
-	Object.defineProperty(exports, "__esModule", {
-		value: true
-	});
-	exports.default = {
-	
-		none: function none(card, i, length) {
-			card.flip = false;
-		},
-	
-		all: function all(card, i, length) {
-			card.flip = true;
-		},
-	
-		notlast: function notlast(card, i, length) {
-			card.flip = i < length - 1 ? true : false;
-		},
-	
-		first_1: function first_1(card, i, length) {
-			card.flip = i < 1 ? true : false;
-		},
-	
-		first_2: function first_2(card, i, length) {
-			card.flip = i < 2 ? true : false;
-		},
-	
-		first_3: function first_3(card, i, length) {
-			card.flip = i < 3 ? true : false;
-		},
-	
-		bee: function bee(card, i, length) {
-			card.flip = i == length - 1 ? false : i % 2 == 0 ? true : false;
-		}
-	};
-
-/***/ },
-/* 12 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	Object.defineProperty(exports, "__esModule", {
-		value: true
-	});
-	
-	var _common = __webpack_require__(5);
-	
-	var _common2 = _interopRequireDefault(_common);
-	
-	var _defaults = __webpack_require__(3);
-	
-	var _defaults2 = _interopRequireDefault(_defaults);
-	
-	var _deck = __webpack_require__(10);
+	var _deck = __webpack_require__(11);
 	
 	var _deck2 = _interopRequireDefault(_deck);
 	
-	var _getBeside = __webpack_require__(13);
-	
-	var _getBeside2 = _interopRequireDefault(_getBeside);
-	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-	
-	var rpr = {
-	
-		// Realtions filters
-	
-		linePrev: function linePrev(a) {
-	
-			var prev = (0, _getBeside2.default)(a.to).prev;
-	
-			if (prev) {
-	
-				a.link = prev.to;
-	
-				return true;
-			}
-	
-			return false;
-		},
-	
-		lineNext: function lineNext(a) {
-	
-			var next = (0, _getBeside2.default)(a.to).next;
-	
-			if (next) {
-	
-				a.link = next.to;
-	
-				return true;
-			}
-	
-			return false;
-		},
-	
-		// Internal use
-	
-		_downupcards: function _downupcards(a) {
-	
-			if (a.cards.length == 0) {
-				return false;
-			}
-	
-			var down = _common2.default.validateCardName(a.cards[a.cards.length - 1].name);
-			var up = _common2.default.validateCardName(a.putDeck[0].card.name);
-	
-			if (!down || !up) {
-				return false;
-			}
-	
-			return {
-				up: up,
-				down: down
-			};
-		},
-	
-		_downupranknum: function _downupranknum(a) {
-	
-			var du = rpr._downupcards(a);
-	
-			return du ? {
-				down: _defaults2.default.card.ranks.indexOf(du.down.rank),
-				up: _defaults2.default.card.ranks.indexOf(du.up.rank)
-			} : false;
-		},
-	
-		_isFirst: function _isFirst(a, _name) {
-	
-			if (a.cards.length == 0) {
-	
-				var _validate = null;
-	
-				return (_validate = _common2.default.validateCardName(a.putDeck[0].card.name)) && _validate.rank == _name;
-			}
-	
-			return true;
-		},
-	
-		// Rules
-	
-		striped: function striped(a) {
-	
-			if (a.cards.length == 0) {
-				return true;
-			}
-	
-			var color_A = _common2.default.validateCardName(a.cards[a.cards.length - 1].name).color,
-			    color_B = null,
-			    _validate = null;
-	
-			if (_validate = _common2.default.validateCardName(a.putDeck[0].card.name)) {
-				color_B = _validate.color;
-			}
-	
-			return color_A != color_B;
-		},
-	
-		firstAce: function firstAce(a) {
-	
-			// let _rank = defaults.card.ranks[0];
-	
-			return rpr._isFirst(a, "1");
-		},
-	
-		firstKing: function firstKing(a) {
-	
-			// let _rank = defaults.card.ranks[defaults.card.ranks.length - 1];
-	
-			return rpr._isFirst(a, "k");
-		},
-	
-		notForEmpty: function notForEmpty(a) {
-	
-			return a.cards.length;
-		},
-	
-		onlyEmpty: function onlyEmpty(a) {
-	
-			return a.cards.length === 0;
-		},
-	
-		oneRank: function oneRank(a) {
-	
-			if (a.cards.length == 0) {
-				return true;
-			}
-	
-			var du = rpr._downupcards(a);
-	
-			return du && du.up.rank == du.down.rank;
-		},
-	
-		oneSuit: function oneSuit(a) {
-	
-			if (a.cards.length == 0) {
-				return true;
-			}
-	
-			var du = rpr._downupcards(a);
-	
-			return du && du.up.suit == du.down.suit;
-		},
-	
-		any: function any(a) {
-	
-			return true;
-		},
-	
-		not: function not(a) {
-	
-			return false;
-		},
-	
-		ascendDeck: function ascendDeck(a) {
-			//ascend deck by step
-	
-			if (a.putDeck.length == 1) {
-				return true;
-			}
-	
-			var ruleCorrect = true;
-	
-			for (var i in a.putDeck) {
-	
-				if (i > 0) {
-	
-					var down = _defaults2.default.card.ranks.indexOf(_common2.default.validateCardName(a.putDeck[i - 1].card.name).rank),
-					    up = _defaults2.default.card.ranks.indexOf(_common2.default.validateCardName(a.putDeck[i].card.name).rank);
-	
-					ruleCorrect = ruleCorrect && 1 + down == up;
-				};
-			};
-	
-			return ruleCorrect;
-		},
-	
-		descendDeck: function descendDeck(a) {
-			//ascend deck by step
-	
-			if (a.putDeck.length == 1) {
-				return true;
-			}
-	
-			var ruleCorrect = true;
-	
-			for (var i in a.putDeck) {
-	
-				if (i > 0) {
-	
-					var down = _defaults2.default.card.ranks.indexOf(_common2.default.validateCardName(a.putDeck[i - 1].card.name).rank),
-					    up = _defaults2.default.card.ranks.indexOf(_common2.default.validateCardName(a.putDeck[i].card.name).rank);
-	
-					ruleCorrect = ruleCorrect && down == 1 + up;
-				};
-			};
-	
-			return ruleCorrect;
-		},
-	
-		oneRankDeck: function oneRankDeck(a) {
-	
-			if (a.putDeck.length == 1) {
-				return true;
-			}
-	
-			var ruleCorrect = true;
-	
-			for (var i in a.putDeck) {
-	
-				if (i > 0) {
-	
-					var down = _common2.default.validateCardName(a.putDeck[i - 1].card.name).suit,
-					    up = _common2.default.validateCardName(a.putDeck[i].card.name).suit;
-	
-					ruleCorrect = ruleCorrect && down == up;
-				}
-			};
-	
-			return ruleCorrect;
-		},
-	
-		ascend: function ascend(a) {
-	
-			if (a.cards.length == 0) {
-				return true;
-			}
-	
-			var da = rpr._downupranknum(a);
-	
-			return da && da.down < da.up;
-		},
-	
-		descent: function descent(a) {
-	
-			if (a.cards.length == 0) {
-				return true;
-			}
-	
-			var da = rpr._downupranknum(a);
-	
-			return da && da.down > da.up;
-		},
-	
-		descentOne: function descentOne(a) {
-			// one step
-	
-			if (a.cards.length == 0) {
-				return true;
-			}
-	
-			var da = rpr._downupranknum(a);
-	
-			return da && da.down == 1 + da.up;
-		},
-	
-		ascendOne: function ascendOne(a) {
-			// one step
-	
-			if (a.cards.length == 0) {
-				return true;
-			}
-	
-			var da = rpr._downupranknum(a);
-	
-			return da && 1 + da.down == da.up;
-		},
-	
-		ascdescOne: function ascdescOne(a) {
-	
-			if (a.cards.length == 0) {
-				return true;
-			}
-	
-			var da = rpr._downupranknum(a);
-	
-			return da && Math.abs(da.down - da.up) == 1;
-		},
-	
-		sum14: function sum14(a) {
-	
-			if (a.cards.length == 0) {
-				return true;
-			}
-	
-			var du = rpr._downupcards(a);
-			var _sum = du.down.value + du.up.value;
-	
-			return _sum == 14;
-		},
-	
-		// TODO rules with params ??? or atom rules
-	
-		around: function around(a) {
-			// {from, putDeck, cards}
-	
-			if (a.cards.length == 0) {
-				return true;
-			}
-	
-			var _around = a.from.deck.getRelationsByName('around', { from: null });
-			var _parent = _deck2.default.getDeckById(a.cards[0].parent);
-	
-			for (var i in _around) {
-	
-				if (_around[i].to == _parent.name) {
-					return true;
-				}
-			}
-	
-			return false;
-		}
-	
-	};
-	
-	exports.default = rpr;
-
-/***/ },
-/* 13 */
-/***/ function(module, exports) {
-
-	'use strict';
-	
-	Object.defineProperty(exports, "__esModule", {
-		value: true
-	});
-	
-	exports.default = function (_deck) {
-		// {deck}
-	
-		var prev = _deck.getRelationsByName('beside', {
-			from: null,
-			type: "prev"
-		})[0];
-	
-		var next = _deck.getRelationsByName('beside', {
-			from: null,
-			type: "next"
-		})[0];
-	
-		return { prev: prev, next: next };
-	};
-
-/***/ },
-/* 14 */
-/***/ function(module, exports) {
-
-	'use strict';
-	
-	Object.defineProperty(exports, "__esModule", {
-		value: true
-	});
-	exports.default = {
-	
-		// SimpleRules
-		not: function not(a) {
-			return false;
-		},
-	
-		notFirst: function notFirst(a) {
-			return a.cardIndex > 0;
-		},
-	
-		any: function any(a) {
-			return true;
-		},
-	
-		onlytop: function onlytop(a) {
-	
-			return a.cardIndex == a.deckLength - 1;
-		}
-	
-		// TODO rules
-	
-		// ask : function(a) {
-		// 	return true;
-		// },
-	
-		// desc : function(a) {
-		// 	return true;
-		// }
-	};
-
-/***/ },
-/* 15 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	Object.defineProperty(exports, "__esModule", {
-		value: true
-	});
-	
-	var _defaults = __webpack_require__(3);
-	
-	var _defaults2 = _interopRequireDefault(_defaults);
-	
-	var _common = __webpack_require__(5);
-	
-	var _common2 = _interopRequireDefault(_common);
-	
-	var _deck2 = __webpack_require__(10);
-	
-	var _deck3 = _interopRequireDefault(_deck2);
-	
-	var _tips = __webpack_require__(6);
-	
-	var _tips2 = _interopRequireDefault(_tips);
-	
-	var _getBeside = __webpack_require__(13);
-	
-	var _getBeside2 = _interopRequireDefault(_getBeside);
-	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-	
-	var fr = {
-	
-		deckLength: function deckLength(e) {
-	
-			return _defaults2.default.card.ranks.length <= a.deck.cards.length;
-		},
-	
-		not: function not() {
-	
-			return false;
-		},
-	
-		noMoves: function noMoves(a) {
-	
-			return !_tips2.default.checkFrom(a.name);
-		},
-	
-		_top: function _top(a) {
-			// filter
-	
-			var _card = e.getTopCard();
-			return _card && _common2.default.validateCardName(_card).rank;
-		},
-	
-		topAce: function topAce(e) {
-	
-			return fr._top() == '1';
-		},
-	
-		topKing: function topKing(e) {
-	
-			return fr._top() == 'k';
-		},
-	
-		_prev_next_desc_ask: function _prev_next_desc_ask(e, _type, _callback) {
-			// filter
-	
-			var _check = true;
-			var _prev = (0, _getBeside2.default)(a.to)[_type];
-			var _topCard = e.getTopCard();
-	
-			for (; _prev && _check;) {
-	
-				var _deck = _deck3.default.getDeck(_prev);
-				_card = _deck.getTopCard();
-	
-				_check = _check && _card && _callback(_common2.default.validateCardName(_topCard).value, _common2.default.validateCardName(_card).value | 0);
-	
-				_topCard = _card;
-				_prev = (0, _getBeside2.default)(_deck)[_type];
-			}
-	
-			return _check;
-		},
-	
-		// prevDescOne: (e)=>{
-	
-		// 	let _check = true;
-		// 	let _prev = getBeside(a.to).prev;
-		// 	let _topCard = e.getTopCard();
-	
-		// 	for(;_prev && _check;) {
-	
-		// 		let _deck = Deck.Deck(_prev);
-	
-		// 		_card = _deck.getTopCard();
-	
-		// 		_check = _check && _card && common.validateCardName(_topCard).value == (common.validateCardName(_card).value|0) + 1;
-	
-		// 		_topCard = _card;
-	
-		// 		_prev = getBeside(_deck).prev;
-		// 	}
-	
-		// 	return _check;
-		// }
-	
-		prevDescOne: function prevDescOne(e) {
-	
-			return fr._prev_next_desc_ask(e, 'prev', function (u, d) {
-				return u == (d | 0) + 1;
-			});
-		},
-	
-		prevAscOne: function prevAscOne(e) {
-	
-			return fr._prev_next_desc_ask(e, 'prev', function (u, d) {
-				return (u | 0) + 1 == d;
-			});
-		},
-	
-		nextDescOne: function nextDescOne(e) {
-	
-			return fr._prev_next_desc_ask(e, 'next', function (u, d) {
-				return u == (d | 0) + 1;
-			});
-		},
-	
-		nextAscOne: function nextAscOne(e) {
-	
-			return fr._prev_next_desc_ask(e, 'next', function (u, d) {
-				return (u | 0) + 1 == d;
-			});
-		},
-	
-		prevDesc: function prevDesc() {
-	
-			return fr._prev_next_desc_ask(e, 'prev', function (u, d) {
-				return u > d;
-			});
-		},
-		prevAsc: function prevAsc() {
-	
-			return fr._prev_next_desc_ask(e, 'prev', function (u, d) {
-				return u < d;
-			});
-		},
-		nextDesc: function nextDesc() {
-	
-			return fr._prev_next_desc_ask(e, 'next', function (u, d) {
-				return u > d;
-			});
-		},
-		nextAsc: function nextAsc() {
-	
-			return fr._prev_next_desc_ask(e, 'next', function (u, d) {
-				return u < d;
-			});
-		}
-	};
-	
-	exports.default = fr;
-
-/***/ },
-/* 16 */
-/***/ function(module, exports) {
-
-	'use strict';
-	
-	Object.defineProperty(exports, "__esModule", {
-		value: true
-	});
-	exports.default = {
-	
-		none: function none(params, card, index, length, deck) {
-	
-			return {
-				x: params.x,
-				y: params.y
-			};
-		},
-	
-		last_three_min: function last_three_min(params, card, index, length, deck) {
-	
-			if (index > length - 3) {
-				if (length > 3) {
-					return {
-						x: params.x - (length - 3 - index) * 2,
-						y: params.y - (length - 3 - index)
-					};
-				} else {
-					return {
-						x: params.x + index * 2,
-						y: params.y + (index | 0)
-					};
-				}
-			} else {
-				return {
-					x: x,
-					y: y
-				};
-			}
-		},
-	
-		twindeck_typeA: function twindeck_typeA(params, card, index, length, deck) {
-	
-			var twindeck_max_cards = 24,
-			    twindeck_deck_length = 3;
-	
-			var _padding = {
-				x: 2,
-				y: 1
-			};
-	
-			var _depth = length / twindeck_max_cards * twindeck_deck_length | 0;
-			if (_depth >= twindeck_deck_length) _depth = twindeck_deck_length - 1;
-	
-			var _plus = index - (length - _depth - 1);
-			if (_plus < 0) _plus = 0;
-	
-			return {
-				x: params.x + _padding.x * _plus,
-				y: params.y + _padding.y * _plus
-			};
-		},
-	
-		radial: function radial(params, card, index, length, deck) {
-	
-			//              b
-			//       C  ..`:   A = sin(b) * C
-			//     ...``   :B  B = cos(b) * C
-			// a.``.......+:
-			//        A     y 90deg
-			var _depth = 1,
-			    _radius = index * _depth,
-	
-			// _step   = 180 / 16,
-			// _card   = defaults.card,
-			_angle = params.rotate,
-			    //_step / 2 + 270;
-			_deg = Math.PI / 180,
-			    _a = Math.sin(_angle * _deg) * _radius,
-			    _b = Math.cos(_angle * _deg) * _radius;
-			// if(_angle > 360) _angle -= 360;
-	
-			return {
-				x: params.x + _a, // - _card.width  / 2,
-				y: params.y - _b // - _card.height / 2
-			};
-		},
-	
-		special: function special(params, card, index, length, deck) {
-	
-			var _y = params.y,
-			    _x = params.x;
-	
-			for (var i = 0; i < index; i += 1) {
-				_y += deck[i] && deck[i].flip ? params.flip_padding_y : params.padding_y;
-				_x += deck[i] && deck[i].flip ? params.flip_padding_x : params.padding_x;
-			}
-	
-			return {
-				x: _x,
-				y: _y
-			};
-		},
-	
-		vertical: function vertical(params, card, index, length, deck) {
-	
-			var _y = params.y;
-	
-			for (var i = 0; i < index; i += 1) {
-				_y += deck[i] && deck[i].flip ? params.flip_padding_y : params.padding_y;
-			}
-	
-			var _return = {
-				x: params.x,
-				y: _y
-			};
-	
-			return _return;
-		},
-	
-		horizontal: function horizontal(params, card, index, length, deck) {
-	
-			var _x = params.x;
-	
-			for (var i = 0; i < index; i += 1) {
-				_x += deck[i] && deck[i].flip ? params.flip_padding_x : params.padding_x;
-			}
-	
-			var _return = {
-				x: _x,
-				y: params.y
-			};
-	
-			return _return;
-		}
-	};
-
-/***/ },
-/* 17 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	Object.defineProperty(exports, "__esModule", {
-		value: true
-	});
-	
-	var _event2 = __webpack_require__(2);
-	
-	var _event3 = _interopRequireDefault(_event2);
-	
-	var _share = __webpack_require__(1);
-	
-	var _share2 = _interopRequireDefault(_share);
-	
-	var _defaults = __webpack_require__(3);
-	
-	var _defaults2 = _interopRequireDefault(_defaults);
-	
-	var _common = __webpack_require__(5);
-	
-	var _common2 = _interopRequireDefault(_common);
-	
-	var _twindeckAction = __webpack_require__(18);
-	
-	var _twindeckAction2 = _interopRequireDefault(_twindeckAction);
-	
-	var _dealerdeckAction = __webpack_require__(19);
-	
-	var _dealerdeckAction2 = _interopRequireDefault(_dealerdeckAction);
-	
-	var _kickAction = __webpack_require__(21);
-	
-	var _kickAction2 = _interopRequireDefault(_kickAction);
-	
-	var _stepsAroundAction = __webpack_require__(22);
-	
-	var _stepsAroundAction2 = _interopRequireDefault(_stepsAroundAction);
-	
-	var _changeStepTypeAction = __webpack_require__(23);
-	
-	var _changeStepTypeAction2 = _interopRequireDefault(_changeStepTypeAction);
-	
-	var _lockAction = __webpack_require__(24);
-	
-	var _lockAction2 = _interopRequireDefault(_lockAction);
-	
-	var _unlockAction = __webpack_require__(26);
-	
-	var _unlockAction2 = _interopRequireDefault(_unlockAction);
-	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-	
-	var _actions = {
-		"twindeck": _twindeckAction2.default,
-		"dealerdeck": _dealerdeckAction2.default,
-		"kick": _kickAction2.default,
-		"stepsAround": _stepsAroundAction2.default,
-		"changeStepType": _changeStepTypeAction2.default,
-		"lock": _lockAction2.default,
-		"unlock": _unlockAction2.default
-	};
-	
-	// ------------------------------------------------------------------------------------------
-	
-	// Actions
-	var _decksActions = [],
-	    _events = [];
-	
-	_event3.default.listen('initField', function () {
-		_decksActions = [];
-		_events = [];
-	});
-	
-	var addActionEvent = function addActionEvent(_event) {
-	
-		_event3.default.listen(
-	
-		// event name
-		_event,
-	
-		// callback
-		function (data) {
-	
-			for (var i in _decksActions) {
-				if (_decksActions[i].event == _event) {
-	
-					var _actionName = _decksActions[i].action;
-	
-					var _canRun = _event == 'click' ? data.to.name == _decksActions[i].deck.name : true;
-					// data._stepType = data.stepType;
-					// data.stepType = share.get('stepType');
-	
-					if (_canRun) {
-	
-						_actions[_actionName].call(_decksActions[i].deck, {
-							actionData: _decksActions[i].deck.actions[_actionName],
-							eventData: data,
-							eventName: _event
-						});
-					};
-				}
-			}
-		});
-	};
-	
-	var addActions = function addActions() {
-	
-		for (var actionName in this.actions) {
-	
-			// если не описано событие выполнять по клику
-			if (!this.actions[actionName].event) {
-				this.actions[actionName].event = 'click';
-			}
-	
-			if (_actions[actionName]) {
-				_decksActions.push({
-					deck: this,
-					event: this.actions[actionName].event,
-					action: actionName
-				});
-	
-				if (_events.indexOf(this.actions[actionName].event) < 0) {
-					// КОПАТЬ ТУТ
-					_events.push(this.actions[actionName].event);
-					addActionEvent(this.actions[actionName].event);
-				}
-			} else {
-				console.warn('Action', actionName, 'for', this.name, 'not found.');
-			};
-		}
-		autoRunActions(this.actions);
-	};
-	
-	var autoRunActions = function autoRunActions(data) {
-		// bind this deck
-	
-		_common2.default.animationDefault();
-	
-		for (var actionName in data.actions) {
-			if (data.actions[actionName].autorun) {
-				if (_actions[actionName]) {
-					_actions[actionName].call(data, {
-						actionData: data.actions[actionName],
-						eventData: null,
-						eventName: data.actions[actionName].event
-					});
-				}
-			}
-		}
-		// Tips.checkTips();
-	};
-	
-	exports.default = {
-		addActions: addActions
-	};
-
-/***/ },
-/* 18 */
-/***/ function(module, exports) {
-
-	'use strict';
-	
-	// import event    from 'event';
-	// import defaults from 'defaults';
-	
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-	
-	exports.default = function (e) {
-	
-	  // TODO переделать
-	
-	};
-
-/***/ },
-/* 19 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	Object.defineProperty(exports, "__esModule", {
-		value: true
-	});
-	
-	exports.default = function (data) {
-		// data.actionData, e
-	
-		// default data.actionData.onlyEmpty - false
-		// default data.actionData.from      - this.name
-		// default data.actionData.stepType  - NULL
-	
-		// console.log('dealerdeckAction:', this.name, data);
-	
-		if (typeof data.actionData.stepType == "string" && data.actionData.stepType != _share2.default.get('stepType')) {
-			return;
-		}
-	
-		// меняем тип хода
-		_share2.default.set('stepType', stepType);
-	
-		var dealDeck = typeof data.actionData.from == "string" ? Deck.getDeck(data.actionData.from) : this;
-	
-		// смотрим остались ли карты
-		if (dealDeck.cards.length == 0) {
-	
-			_share2.default.set('stepType', _defaults2.default.stepType);
-	
-			_event2.default.dispatch('actionBreak');
-			_event2.default.dispatch('dealEnd');
-	
-			return;
-		}
-	
-		// карты для раздачи
-		var _decks = [];
-	
-		// to == toGroup ???
-		if (data.actionData.toGroup && !data.actionData.to) {
-	
-			data.actionData.to = data.actionData.toGroup;
-		};
-	
-		// есть куда раздать
-		if (data.actionData.to) {
-	
-			// передали имя
-			if (typeof data.actionData.to == "string") {
-	
-				// ищем элементы с таким именем
-				var _elements = _common2.default.getElementsByName(data.actionData.to);
-				for (var i in _elements) {
-	
-					// это группа
-					if (_elements[i].type == "group") {
-	
-						// _decks = _decks.concat(Group.Group(data.actionData.to).decks);
-						// var __decks = Group.Group(data.actionData.to).decks;
-	
-						// берём колоды из группы
-						for (var deckIndex in _elements[i].decks) {
-							_decks.push(_elements[i].decks[deckIndex]);
-						}
-					};
-	
-					// это колода, добавляем её в список
-					if (_elements[i].type == "deck") {
-						_decks.push(_el);
-					};
-				}
-	
-				// передали массив
-			} else {
-	
-				for (var i in data.actionData.to) {
-	
-					var _elements = _common2.default.getElementsByName(data.actionData.to[i]);
-	
-					for (var elIndex in _elements) {
-	
-						if (_elements[elIndex].type == "group") {
-							// _decks = _decks.concat(Group.Group(data.actionData.to[i]).decks);
-							// var __decks = Group.Group(data.actionData.to[i]).decks;
-							for (var deckIndex in _elements[elIndex].decks) {
-								_decks.push(_elements[elIndex].decks[deckIndex]);
-							}
-						};
-	
-						if (_elements[elIndex].type == "deck") {
-							_decks.push(_elements[elIndex]);
-						};
-					}
-				}
-			}
-		};
-	
-		// вкл/выкл анимации по умолчанию
-		_common2.default.animationDefault();
-	
-		// флаг, что раздача удалась
-		var _makeStep = false;
-	
-		// пробегаем колоды из списка
-		for (var deckId in _decks) {
-	
-			// берём верхнюю карту
-			var _card = dealDeck.getTopCard();
-	
-			// флаг что такой ход возможен
-			var _canStep = data.actionData.onlyEmpty ? _decks[deckId].cards.length == 0 : true;
-	
-			if (_canStep && _card) {
-	
-				_makeStep = true;
-	
-				var _cardName = _card.name;
-	
-				var _callback = function _callback() {
-	
-					_event2.default.dispatch('checkTips');
-				};
-	
-				(0, _forceMove2.default)({
-					from: dealDeck.name,
-					to: _decks[deckId].name,
-					deck: [_cardName],
-					flip: true,
-					callback: _callback
-				}, true);
-	
-				_decks[deckId].flipCheck();
-				// _decks[deckId].Redraw();
-	
-				_event2.default.dispatch('dealEnd');
-	
-				_event2.default.dispatch('addStep', {
-					'move': {
-						from: dealDeck.name,
-						to: _decks[deckId].name,
-						deck: [_cardName],
-						flip: true,
-						stepType: {
-							undo: _share2.default.get('stepType'),
-							redo: data.actionData.dispatch ? _share2.default.get('stepType') : _defaults2.default.stepType
-						},
-						context: "dealerdeckAction"
-					}
-				});
-			};
-		};
-	
-		if (_makeStep) {
-	
-			// сохраняем если паздача удалась
-			_event2.default.dispatch('saveSteps');
-		};
-	
-		if (data.actionData.dispatch) {
-	
-			_event2.default.dispatch(data.actionData.dispatch, !_makeStep);
-		} else {
-			// сохраняем если ничего не вызываем
-	
-			_share2.default.set('stepType', _defaults2.default.stepType);
-		}
-	};
-	
-	var _event = __webpack_require__(2);
-	
-	var _event2 = _interopRequireDefault(_event);
-	
-	var _share = __webpack_require__(1);
-	
-	var _share2 = _interopRequireDefault(_share);
-	
-	var _defaults = __webpack_require__(3);
-	
-	var _defaults2 = _interopRequireDefault(_defaults);
-	
-	var _common = __webpack_require__(5);
-	
-	var _common2 = _interopRequireDefault(_common);
-	
-	var _forceMove = __webpack_require__(20);
-	
-	var _forceMove2 = _interopRequireDefault(_forceMove);
-	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-	
-	var stepType = 'dealerdeckStepType';
-
-/***/ },
-/* 20 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	Object.defineProperty(exports, "__esModule", {
-		value: true
-	});
-	
-	var _event = __webpack_require__(2);
-	
-	var _event2 = _interopRequireDefault(_event);
-	
-	var _share = __webpack_require__(1);
-	
-	var _share2 = _interopRequireDefault(_share);
-	
-	var _common = __webpack_require__(5);
-	
-	var _common2 = _interopRequireDefault(_common);
-	
-	var _deck = __webpack_require__(10);
-	
-	var _deck2 = _interopRequireDefault(_deck);
-	
-	var _tips = __webpack_require__(6);
-	
-	var _tips2 = _interopRequireDefault(_tips);
-	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-	
-	var forceMove = function forceMove(a) {
-		// {from, to, deck, <flip>, <callback>}
-	
-		// console.log('forceMove', a);
-	
-		if (!a.from || !a.to || !a.deck) {
-			return;
-		}
-	
-		if (!a.deck.length) {
-			return;
-		}
-	
-		var _from = typeof a.from == "string" ? _deck2.default.getDeck(a.from) : a.from;
-	
-		var _to = typeof a.to == "string" ? _deck2.default.getDeck(a.to) : a.to;
-	
-		if (!_from || !_to || _from.type != "deck" || _to.type != "deck") {
-			return;
-		}
-	
-		var _check = true;
-		var _from_deck = _from.cards;
-	
-		for (var i in _from_deck) {
-	
-			if (i >= _from_deck.length - a.deck.length) {
-	
-				var _id = i - (_from_deck.length | 0) + (a.deck.length | 0);
-	
-				if (a.deck[_id] && _from_deck[i].name != a.deck[_id]) {
-					_check = false;
-				}
-			}
-		}
-	
-		if (_check) {
-	
-			var _pop = _from.Pop(a.deck.length);
-	
-			// перевернуть карты во время хода
-			if (a.flip) {
-				for (var _i in _pop) {
-					_pop[_i].flip = !_pop[_i].flip;
-				}
-			}
-	
-			_to.Push(_pop);
-	
-			var __pop = [];
-			for (var _i2 in _pop) {
-				__pop.push({
-					card: _pop[_i2]
-				});
-			}
-	
-			var moveDragDeckParams = {
-				departure: _from,
-				destination: _to,
-				moveDeck: __pop
-			};
-	
-			if (typeof a.callback == "function") {
-				moveDragDeckParams.callback = function () {
-					_event2.default.dispatch('forceMoveEnd');
-					a.callback();
-				};
-			} else {
-				moveDragDeckParams.callback = function () {
-					_event2.default.dispatch('forceMoveEnd');
-				};
-			}
-	
-			// event.dispatch('moveEnd:' + share.get('stepType'));
-			_event2.default.dispatch('moveDragDeck', moveDragDeckParams);
-		} else {
-			// _warn(4);
-			console.warn("forceMove:Ход невозможен", a);
-		}
-	};
-	
-	_event2.default.listen('forceMove', function (e) {
-		forceMove(e);
-	});
-	
-	exports.default = forceMove;
-
-/***/ },
-/* 21 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	Object.defineProperty(exports, "__esModule", {
-		value: true
-	});
-	
-	exports.default = function (data) {
-	
-		// если тип хода не стандартный не выполнять кик
-		if (_share2.default.get('stepType') != _defaults2.default.stepType) {
-			return false;
-		}
-	
-		// TODO спорный момент
-		if (typeof data.eventData.stepType == "string" && data.eventData.stepType != _defaults2.default.stepType) {
-			return false;
-		}
-	
-		// if(share.get('prevStepType') != defaults.stepType) {
-		// 	return false;
-		// }
-	
-		// let _name = null;
-		// if(
-		// 	data.eventData[0]                            &&
-		// 	data.eventData[0].move                       &&
-		// 	typeof data.eventData[0].move.to == "string"
-		// ) {
-		// 	_name = data.eventData[0].move.to;
-		// }
-	
-		// if(
-		// 	data.eventData.to                    &&
-		// 	typeof data.eventData.to == "string"
-		// ) {
-		// 	_name = data.eventData.to;
-		// }
-	
-		// if(
-		// 	data.eventData.to                         &&
-		// 	typeof data.eventData.to != "string"      &&
-		// 	typeof data.eventData.to.name == "string"
-		// ) {
-		// 	_name = data.eventData.to.name;
-		// }
-	
-		if (data.eventData.to.name != this.name) {
-			// data.eventData.to - куда мы перетащили карты
-			return false;
-		}
-	
-		_share2.default.set('stepType', stepType);
-	
-		// if(window.debug_kick) {
-		// 	console.log('data.eventData.stepType:', data);
-		// 	throw new Error();
-		// }
-		// window.debug_kick = 1;
-	
-		// if(
-		// 	data.eventData[0]                         &&
-		// 	typeof data.eventData[0].name == "string" &&
-		// 	data.eventData[0].name != this.name
-		// ) {
-		// 	return false;
-		// }
-	
-		_common2.default.animationDefault();
-	
-		// var _toDeck = Deck.Deck(data.actionData.to);
-	
-		// let _from = typeof data.eventData.to == "string"
-		// 		? Deck.Deck(_name)
-		// 		: data.eventData.to
-	
-		var _from = data.eventData.to,
-		    //Deck.Deck(_name),
-		_deck = _from.getCardsNames();
-	
-		var _callback = function _callback() {
-	
-			console.log('KICK END>>>', data.actionData.dispatch);
-	
-			var _addStep = function _addStep(e) {
-	
-				_event2.default.dispatch('addStep', {
-					"move": {
-						from: _from.name,
-						to: data.actionData.to,
-						deck: _deck,
-						flip: true,
-						stepType: {
-							undo: e.undo, //stepType,// share.get('stepType'),
-							redo: e.redo //data.actionData.dispatch ? share.get('stepType') : defaults.stepType
-						},
-						context: "kickAction"
-					}
-				});
-			};
-	
-			_share2.default.set('stepType', _defaults2.default.stepType);
-	
-			if (data.actionData.dispatch) {
-				_event2.default.dispatch(data.actionData.dispatch, {
-					before: function before(e) {
-	
-						_addStep({
-							undo: stepType,
-							redo: e.stepType
-						});
-	
-						_event2.default.dispatch('saveSteps');
-					}
-				});
-			} else {
-	
-				_addStep({
-					undo: stepType, // share.get('stepType'),
-					redo: data.actionData.dispatch ? _share2.default.get('stepType') : _defaults2.default.stepType
-				});
-	
-				_event2.default.dispatch('saveSteps');
-			}
-		};
-	
-		// TODO interval
-		var forceMoveParams = {
-			from: _from,
-			to: data.actionData.to,
-			deck: _deck,
-			flip: true,
-			callback: _callback
-		};
-	
-		// forceMove(forceMoveParams);
-		_event2.default.dispatch('forceMove', forceMoveParams);
-	
-		// if(e.after) {
-		// 	_events[e.after].call(this, e);
-		// };
-	};
-	
-	var _event = __webpack_require__(2);
-	
-	var _event2 = _interopRequireDefault(_event);
-	
-	var _share = __webpack_require__(1);
-	
-	var _share2 = _interopRequireDefault(_share);
-	
-	var _common = __webpack_require__(5);
-	
-	var _common2 = _interopRequireDefault(_common);
-	
-	var _defaults = __webpack_require__(3);
-	
-	var _defaults2 = _interopRequireDefault(_defaults);
-	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-	
-	var stepType = 'kickStepType';
-
-/***/ },
-/* 22 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	Object.defineProperty(exports, "__esModule", {
-		value: true
-	});
-	
-	exports.default = function (data) {
-		var _this = this;
-	
-		// {actionData, eventData, eventName}
-	
-		var _stepType = _share2.default.get('stepType');
-		if (_stepType != _defaults2.default.stepType) {
-			return;
-		};
-	
-		_share2.default.set('stepType', stepType);
-		// stop Drag'n'Drop
-		_common2.default.curLock();
-	
-		var _relations = this.getRelationsByName('around', { from: null });
-		var _tips = _tips3.default.getTips();
-	
-		// выполняется для всех вокруг
-		// ход не делается
-		// вместо хода выполняется едействие для текущей стопки (если _central, по умолчанию true)
-		if (typeof data.actionData.run == "string") {
-			(function () {
-	
-				var _central = typeof data.actionData.central == "boolean" ? data.actionData.central : true;
-	
-				var _runStack = [];
-	
-				for (var i in _relations) {
-	
-					if (_tips3.default.fromTo(_this.name, _relations[i].to)) {
-						_runStack.push(_relations[i]);
-					}
-				}
-	
-				var _counter = _runStack.length;
-	
-				var _callback = function _callback() {
-	
-					_counter -= 1;
-					if (_counter === 0) {
-	
-						endAction();
-						// event.dispatch(data.actionData.dispatch)
-					}
-				};
-	
-				if (_counter === 0) {
-	
-					endAction();
-				} else if (_central) {
-	
-					_counter += 1;
-	
-					_event2.default.dispatch(data.actionData.run, {
-						to: _this.name,
-						callback: _callback
-					});
-				}
-	
-				for (var _i in _runStack) {
-	
-					var _data = null;
-					try {
-						_data = Object.assign({}, _runStack[_i]);
-					} catch (e) {
-						_data = _runStack[_i];
-					}
-	
-					_data.callback = _callback;
-					_event2.default.dispatch(data.actionData.run, _data);
-				}
-	
-				// выполняется после хода 
-			})();
-		} else {
-	
-			var _callback2 = function _callback2() {
-	
-				if (_share2.default.get('stepType') == stepType) {
-					endAction();
-				}
-			};
-	
-			_event2.default.listen('makeStep', _callback2);
-			// event.dispatch(data.actionData.dispatch)
-		}
-	};
-	
-	var _event = __webpack_require__(2);
-	
-	var _event2 = _interopRequireDefault(_event);
-	
-	var _share = __webpack_require__(1);
-	
-	var _share2 = _interopRequireDefault(_share);
-	
-	var _common = __webpack_require__(5);
-	
-	var _common2 = _interopRequireDefault(_common);
-	
-	var _defaults = __webpack_require__(3);
-	
-	var _defaults2 = _interopRequireDefault(_defaults);
-	
-	var _tips2 = __webpack_require__(6);
-	
-	var _tips3 = _interopRequireDefault(_tips2);
-	
-	var _deck = __webpack_require__(10);
-	
-	var _deck2 = _interopRequireDefault(_deck);
-	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-	
-	var stepType = 'stepsAround';
-	
-	var endAction = function endAction() {
-	
-		_share2.default.set('stepType', _defaults2.default.stepType);
-		_common2.default.curUnLock();
-		// Tips.checkTips();
-	
-		if (data.actionData.dispatch) {
-			_event2.default.dispatch(data.actionData.dispatch, data.eventData);
-		}
-	};
-	
-	;
-
-/***/ },
-/* 23 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	Object.defineProperty(exports, "__esModule", {
-		value: true
-	});
-	
-	exports.default = function (data) {
-	
-		if (data.eventData.to.name != this.name) {
-			return false;
-		}
-	
-		if (typeof data.actionData.to != "string") {
-			return;
-		} else {
-			_share2.default.set('stepType', data.actionData.to);
-		}
-	};
-	
-	var _event = __webpack_require__(2);
-	
-	var _event2 = _interopRequireDefault(_event);
-	
-	var _share = __webpack_require__(1);
-	
-	var _share2 = _interopRequireDefault(_share);
-	
-	var _defaults = __webpack_require__(3);
-	
-	var _defaults2 = _interopRequireDefault(_defaults);
-	
-	var _common = __webpack_require__(5);
-	
-	var _common2 = _interopRequireDefault(_common);
-	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-	
-	;
-
-/***/ },
-/* 24 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	Object.defineProperty(exports, "__esModule", {
-		value: true
-	});
-	
-	exports.default = function (data) {
-	
-		if (data.eventData.to.name != this.name) {
-			return false;
-		}
-	
-		(0, _lockActionCommon2.default)(data.actionData, 'lock', this.name);
-	};
-	
-	var _event = __webpack_require__(2);
-	
-	var _event2 = _interopRequireDefault(_event);
-	
-	var _share = __webpack_require__(1);
-	
-	var _share2 = _interopRequireDefault(_share);
-	
-	var _defaults = __webpack_require__(3);
-	
-	var _defaults2 = _interopRequireDefault(_defaults);
-	
-	var _common = __webpack_require__(5);
-	
-	var _common2 = _interopRequireDefault(_common);
-	
-	var _lockActionCommon = __webpack_require__(25);
-	
-	var _lockActionCommon2 = _interopRequireDefault(_lockActionCommon);
-	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-	
-	;
-
-/***/ },
-/* 25 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	Object.defineProperty(exports, "__esModule", {
-		value: true
-	});
-	
-	var _event = __webpack_require__(2);
-	
-	var _event2 = _interopRequireDefault(_event);
-	
-	var _share = __webpack_require__(1);
-	
-	var _share2 = _interopRequireDefault(_share);
-	
-	var _defaults = __webpack_require__(3);
-	
-	var _defaults2 = _interopRequireDefault(_defaults);
-	
-	var _common = __webpack_require__(5);
-	
-	var _common2 = _interopRequireDefault(_common);
-	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-	
-	exports.default = function (data, method, me) {
-	
-		var sources = [];
-		if (typeof data.source != "string") {
-			if (data.source && data.source.constructor == Array) {
-				for (var i in data.source) {
-					sources.push(data.source[i]);
-				}
-			} else {
-				sources = [me];
-			}
-		} else {
-			sources = [data.source];
-		}
-	
-		if (data.save) {
-			var _step = {};
-			_step[method] = sources;
-			_event2.default.dispatch('addStep', _step);
-			_event2.default.dispatch('saveSteps');
-		}
-	
-		for (var _i in sources) {
-	
-			var current = _common2.default.getElementsByName(sources[_i])[0];
-	
-			if (current.type == "group") {
-				var decks = current.getDecks();
-				for (var deckIndex in decks) {
-					decks[deckIndex][method]();
-				}
-			}
-	
-			if (current.type == "deck") {
-				current[method]();
-			}
-		}
-	};
-
-/***/ },
-/* 26 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	Object.defineProperty(exports, "__esModule", {
-		value: true
-	});
-	
-	exports.default = function (data) {
-	
-		if (data.eventData.to.name != this.name) {
-			return false;
-		}
-	
-		(0, _lockActionCommon2.default)(data.actionData, 'unlock', this.name);
-	};
-	
-	var _event = __webpack_require__(2);
-	
-	var _event2 = _interopRequireDefault(_event);
-	
-	var _share = __webpack_require__(1);
-	
-	var _share2 = _interopRequireDefault(_share);
-	
-	var _defaults = __webpack_require__(3);
-	
-	var _defaults2 = _interopRequireDefault(_defaults);
-	
-	var _common = __webpack_require__(5);
-	
-	var _common2 = _interopRequireDefault(_common);
-	
-	var _lockActionCommon = __webpack_require__(25);
-	
-	var _lockActionCommon2 = _interopRequireDefault(_lockActionCommon);
-	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-	
-	;
-
-/***/ },
-/* 27 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	Object.defineProperty(exports, "__esModule", {
-		value: true
-	});
-	
-	exports.default = function (cardId) {
-	
-		// Нестандартный ход (autosteps)
-		// if(share.get('stepType') != defaults.stepType) {return false;};
-	
-		var rulesCorrect = true; //!common.isLock();
-	
-		rulesCorrect = rulesCorrect && !this.locked;
-	
-		if (typeof this.fill == "boolean") {
-			rulesCorrect = rulesCorrect && !this.fill;
-		}
-	
-		// берём карту/стопку
-	
-		var cardIndex = -1;
-		var cardName = null;
-		var cardSuit = null;
-		var cardRank = null;
-		var deckLength = this.cards.length;
-	
-		// проверяем не является ли перевернутой
-	
-		var takeDeck = [];
-	
-		for (var i in this.cards) {
-	
-			if (this.cards[i].id == cardId) {
-	
-				cardIndex = i | 0;
-				cardName = this.cards[i].name;
-	
-				var _name = _common2.default.validateCardName(cardName);
-	
-				rulesCorrect = rulesCorrect && _name;
-	
-				if (_name) {
-					cardSuit = _name.suit;
-					cardRank = _name.rank;
-				}
-	
-				rulesCorrect = rulesCorrect && !this.cards[i].flip && this.cards[i].flip == _defaults2.default.canMoveFlip;
-			}
-	
-			if (cardIndex >= 0) {
-	
-				takeDeck.push({
-					index: i,
-					card: this.cards[i]
-				});
-			}
-		}
-		var _attrs = {
-			cardId: cardId,
-			cardName: cardName,
-			cardSuit: cardSuit,
-			cardRank: cardRank,
-			cardIndex: cardIndex,
-			deckLength: deckLength
-		};
-	
-		for (var ruleIndex in this.takeRules) {
-			var ruleName = this.takeRules[ruleIndex];
-	
-			if (_readyTakeRules2.default[ruleName]) {
-				rulesCorrect = rulesCorrect && _readyTakeRules2.default[ruleName](_attrs);
-			} else {
-				console.warn('Incorrect take rule:', ruleName);
-				rulesCorrect = false;
-			}
-		}
-	
-		// возвращает массив ID карт которые можно будет перетащить
-		// записывает их как активные
-	
-		rulesCorrect = rulesCorrect && cardIndex >= 0;
-	
-		rulesCorrect = rulesCorrect && takeDeck;
-	
-		return rulesCorrect;
-	};
-	
-	var _share = __webpack_require__(1);
-	
-	var _share2 = _interopRequireDefault(_share);
-	
-	var _defaults = __webpack_require__(3);
-	
-	var _defaults2 = _interopRequireDefault(_defaults);
-	
-	var _common = __webpack_require__(5);
-	
-	var _common2 = _interopRequireDefault(_common);
-	
-	var _readyTakeRules = __webpack_require__(14);
-	
-	var _readyTakeRules2 = _interopRequireDefault(_readyTakeRules);
-	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-	
-	;
-
-/***/ },
-/* 28 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	Object.defineProperty(exports, "__esModule", {
-		value: true
-	});
-	
-	exports.default = function (putDeck) {
-	
-		var _stepType = _share2.default.get('stepType');
-	
-		var rulesCorrect = true;
-	
-		var _deckId = putDeck[0].card.parent;
-		var _deck_departure = _deck3.default.getDeckById(_deckId);
-	
-		rulesCorrect = rulesCorrect && !this.locked;
-	
-		if (_stepType != _defaults2.default.stepType) {
-	
-			// Нестандартный ход (autosteps)
-			rulesCorrect = rulesCorrect && _field2.default.autoSteps && _field2.default.autoSteps[_stepType] ? _field2.default.autoSteps[_stepType].manual({
-				putDeck: putDeck,
-				to: this
-			}) : false;
-		} else {
-	
-			var _link = null; // deckName
-			var _deck = this;
-	
-			for (var ruleIndex in this.putRules) {
-	
-				if (rulesCorrect) {
-	
-					if (_link) {
-						_deck = _deck3.default.getDeck(_link);
-					}
-	
-					var ruleName = this.putRules[ruleIndex];
-	
-					if (_readyPutRules2.default[ruleName]) {
-	
-						var _param = {
-							from: {
-								deckId: _deckId,
-								deck: _deck_departure
-							},
-							putDeck: putDeck,
-							cards: _deck.cards,
-							to: _deck,
-							link: _link
-							// rulesArgs : putRules[ruleName]
-						};
-						rulesCorrect = rulesCorrect && _readyPutRules2.default[ruleName](_param);
-						_link = _param.link;
-					} else {
-						console.warn('putRule:', ruleName, 'not exists');
-						rulesCorrect = false;
-					}
-				}
-			}
-		}
-	
-		return rulesCorrect;
-	};
-	
-	var _share = __webpack_require__(1);
-	
-	var _share2 = _interopRequireDefault(_share);
-	
-	var _defaults = __webpack_require__(3);
-	
-	var _defaults2 = _interopRequireDefault(_defaults);
-	
-	var _field = __webpack_require__(9);
-	
-	var _field2 = _interopRequireDefault(_field);
-	
-	var _deck2 = __webpack_require__(10);
-	
-	var _deck3 = _interopRequireDefault(_deck2);
-	
-	var _readyPutRules = __webpack_require__(12);
-	
-	var _readyPutRules2 = _interopRequireDefault(_readyPutRules);
-	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-	
-	;
-
-/***/ },
-/* 29 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	Object.defineProperty(exports, "__esModule", {
-		value: true
-	});
-	
-	exports.default = function (name) {
-		// TODO
-	
-		var _name = _common2.default.validateCardName(name); // {color, rank}
-	
-		if (_name) {
-	
-			var _id = 'card_' + _common2.default.genId(),
-			    _card = {
-				id: _id,
-				name: name,
-				type: 'card',
-				// domElement : domElement,
-				visible: true,
-				// parent  : _parent,
-				flip: false
-			};
-			_card.parent = this.getId();
-	
-			_event2.default.dispatch('addCardEl', _card);
-	
-			var _elements = _share2.default.get('elements');
-			_elements[_id] = _card;
-			_share2.default.set('elements', _elements);
-	
-			this.Push([_card]);
-			this.flipCheck();
-			this.Redraw();
-	
-			return _card;
-		}
-	
-		return false;
-	};
-	
-	var _event = __webpack_require__(2);
-	
-	var _event2 = _interopRequireDefault(_event);
-	
-	var _share = __webpack_require__(1);
-	
-	var _share2 = _interopRequireDefault(_share);
-	
-	var _common = __webpack_require__(5);
-	
-	var _common2 = _interopRequireDefault(_common);
-	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-	
-	;
-	
-	// class card {
-	
-	// 	constructor(e) {
-	// 		this.id      = e.id;
-	// 		this.name    = e.name;
-	// 		this.type    = 'card';
-	// 		this.visible = true;
-	// 		this.flip    = false;
-	// 	}
-	
-	// 	set domElement(e) {
-	
-	// 	}
-	
-	// 	get domElement() {
-	// 		return null;
-	// 	}
-	// };
-
-/***/ },
-/* 30 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	Object.defineProperty(exports, "__esModule", {
-		value: true
-	});
-	
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-	
-	var _event = __webpack_require__(2);
-	
-	var _event2 = _interopRequireDefault(_event);
-	
-	var _share = __webpack_require__(1);
-	
-	var _share2 = _interopRequireDefault(_share);
-	
-	var _defaults = __webpack_require__(3);
-	
-	var _defaults2 = _interopRequireDefault(_defaults);
-	
-	var _common = __webpack_require__(5);
-	
-	var _common2 = _interopRequireDefault(_common);
-	
-	var _deck = __webpack_require__(10);
-	
-	var _deck2 = _interopRequireDefault(_deck);
-	
-	var _groupFill = __webpack_require__(31);
+	var _groupFill = __webpack_require__(36);
 	
 	var _groupFill2 = _interopRequireDefault(_groupFill);
 	
-	var _groupRedraw = __webpack_require__(32);
+	var _groupRedraw = __webpack_require__(37);
 	
 	var _groupRedraw2 = _interopRequireDefault(_groupRedraw);
 	
-	var _groupGenerator = __webpack_require__(33);
+	var _groupGenerator = __webpack_require__(38);
 	
 	var _groupGenerator2 = _interopRequireDefault(_groupGenerator);
 	
@@ -4806,96 +2264,7 @@ var SolitaireEngine =
 	};
 
 /***/ },
-/* 31 */
-/***/ function(module, exports) {
-
-	'use strict';
-	
-	Object.defineProperty(exports, "__esModule", {
-		value: true
-	});
-	
-	exports.default = function (cardNames) {
-	
-		var deckIndex = [];
-		var _decksLength = 0;
-	
-		// создаём карты из списка cardNames в порядке очерёдности колод (по одной карте)
-		for (var i in this.decks) {
-			_decksLength += 1;
-			deckIndex.push(null);
-		};
-	
-		// если параметр groupIndex не выходит за рамки занимаем соответствующий порядковый номер
-		for (var i in this.decks) {
-			if (this.decks[i].groupIndex && this.decks[i].groupIndex <= _decksLength) {
-				deckIndex[this.decks[i].groupIndex - 1] = true;
-			};
-		};
-	
-		// если нет параметра groupIndex (начинается с 1) ставим первый свободный порядковый номер
-		for (var i in this.decks) {
-			if (!this.decks[i].groupIndex) {
-				var _index = 0;
-				for (; deckIndex[_index] != null; _index += 1) {}
-				deckIndex[_index] = this.decks[i].getId();
-			};
-		};
-	
-		// если параметр groupIndex не выходит за рамки ставим соответствующий порядковый номер
-		for (var i in this.decks) {
-			if (this.decks[i].groupIndex && this.decks[i].groupIndex <= _decksLength) {
-				deckIndex[this.decks[i].groupIndex - 1] = this.decks[i].getId();
-			};
-		};
-	
-		// если параметр groupIndex выходит за рамки запоминаем...
-		var _decksWithBigIndex = {};
-		for (var i in this.decks) {
-			if (this.decks[i].groupIndex && this.decks[i].groupIndex > _decksLength) {
-				_decksWithBigIndex[this.decks[i].groupIndex - 1] = this.decks[i].getId();
-			};
-		};
-		// ...и сортируем
-		for (var i in _decksWithBigIndex) {
-			var _index = 0;
-			for (; deckIndex[_index] != null; _index += 1) {}
-			deckIndex[_index] = this.decks[_decksWithBigIndex[i]].getId();
-		};
-	
-		// сморим являются ли элементы названиями карт (строкой)
-		var _checkDeck = true;
-		for (var i in cardNames) {
-			_checkDeck = _checkDeck && typeof cardNames[i] == 'string';
-		};
-	
-		// циклично добавляет карты в колоды в группе (в порядке добавления)
-		if (_checkDeck) {
-	
-			for (var i in cardNames) {
-	
-				var _index = deckIndex[i % deckIndex.length];
-	
-				this.decks[_index].genCardByName(cardNames[i]);
-			}
-			// если нужно добавить несколько групп карт
-		} else {
-	
-			for (var i in cardNames) {
-				if (i < deckIndex.length) {
-	
-					// console.log('fillDeck', deckIndex[i].name, cardNames[i]);
-	
-					this.decks[deckIndex[i]].Fill(cardNames[i]);
-				};
-			};
-		};
-	};
-	
-	;
-
-/***/ },
-/* 32 */
+/* 11 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -4904,812 +2273,2553 @@ var SolitaireEngine =
 		value: true
 	});
 	
-	exports.default = function (_a) {
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 	
-		var _decks = this.getDecks();
-		// var _index = {}
+	var _event = __webpack_require__(2);
 	
-		if (typeof _a.decks == 'undefined' || typeof _a.decks == 'number') {
-			_a.decks = [];
-		}
+	var _event2 = _interopRequireDefault(_event);
 	
-		for (var i in _decks) {
+	var _share = __webpack_require__(1);
 	
-			if (!_a.decks[i]) {
-				_a.decks[i] = {};
-			};
-	
-			// changed values
-			if (_a.position && _a.decks[i].parentPosition) {
-				_a.decks[i].parentPosition = {
-					x: _a.position.x,
-					y: _a.position.y
-				};
-			};
-	
-			if (_a.rotate) {
-				_a.decks[i].rotate = _a.rotate;
-			};
-			if (_a.paddingX) {
-				_a.decks[i].paddingX = _a.paddingX;
-			};
-			if (_a.paddingY) {
-				_a.decks[i].paddingY = _a.paddingY;
-			};
-			if (_a.flipPaddingX) {
-				_a.decks[i].flipPaddingX = _a.flipPaddingX;
-			};
-			if (_a.flipPaddingY) {
-				_a.decks[i].flipPaddingY = _a.flipPaddingY;
-			};
-			if (!_a.decks[i].position) {
-				_a.decks[i].position = {};
-			};
-			if (!_a.decks[i].parentPosition) {
-				_a.decks[i].parentPosition = {};
-			};
-	
-			if (!_a.decks[i].parentPosition.x && a.position && a.position.x && typeof a.position.x == 'number') {
-				_a.decks[i].parentPosition.x = _a.position.x;
-			};
-	
-			if (!_a.decks[i].parentPosition.y && a.position && a.position.y && typeof a.position.y == 'number') {
-				_a.decks[i].parentPosition.y = _a.position.y;
-			};
-	
-			if (_a.placement) {
-	
-				var _card = _defaults2.default.card;
-				if (_a.placement.x) _a.decks[i].position.x = (_a.placement.x + _card.width) * i;
-				if (_a.placement.y) _a.decks[i].position.y = (_a.placement.y + _card.height) * i;
-			};
-	
-			if (!_a.decks[i].rotate && _a.rotate && typeof _a.rotate == 'number') {
-				_a.decks[i].rotate = _a.rotate;
-			};
-			if (!_a.decks[i].paddingX && _a.paddingX && typeof _a.paddingX == 'number') {
-				_a.decks[i].paddingX = _a.paddingX;
-			};
-			if (!_a.decks[i].paddingY && _a.paddingY && typeof _a.paddingY == 'number') {
-				_a.decks[i].paddingY = _a.paddingY;
-			};
-			if (!_a.decks[i].flipPaddingX && _a.flipPaddingX && typeof _a.flipPaddingX == 'number') {
-				_a.decks[i].flipPaddingX = _a.flipPaddingX;
-			};
-			if (!_a.decks[i].flipPaddingY && _a.flipPaddingY && typeof _a.flipPaddingY == 'number') {
-				_a.decks[i].flipPaddingY = _a.flipPaddingY;
-			};
-	
-			_decks[i].Redraw(_a.decks[i]);
-		};
-	};
+	var _share2 = _interopRequireDefault(_share);
 	
 	var _defaults = __webpack_require__(3);
 	
 	var _defaults2 = _interopRequireDefault(_defaults);
 	
+	var _common = __webpack_require__(5);
+	
+	var _common2 = _interopRequireDefault(_common);
+	
+	var _flipTypes = __webpack_require__(12);
+	
+	var _flipTypes2 = _interopRequireDefault(_flipTypes);
+	
+	var _readyPutRules = __webpack_require__(13);
+	
+	var _readyPutRules2 = _interopRequireDefault(_readyPutRules);
+	
+	var _readyTakeRules = __webpack_require__(15);
+	
+	var _readyTakeRules2 = _interopRequireDefault(_readyTakeRules);
+	
+	var _fillRules = __webpack_require__(16);
+	
+	var _fillRules2 = _interopRequireDefault(_fillRules);
+	
+	var _paddingTypes = __webpack_require__(17);
+	
+	var _paddingTypes2 = _interopRequireDefault(_paddingTypes);
+	
+	var _deckActions = __webpack_require__(18);
+	
+	var _deckActions2 = _interopRequireDefault(_deckActions);
+	
+	var _deckTake = __webpack_require__(28);
+	
+	var _deckTake2 = _interopRequireDefault(_deckTake);
+	
+	var _deckPut = __webpack_require__(29);
+	
+	var _deckPut2 = _interopRequireDefault(_deckPut);
+	
+	var _genCardByName2 = __webpack_require__(30);
+	
+	var _genCardByName3 = _interopRequireDefault(_genCardByName2);
+	
+	var _group = __webpack_require__(10);
+	
+	var _group2 = _interopRequireDefault(_group);
+	
+	var _history = __webpack_require__(31);
+	
+	var _history2 = _interopRequireDefault(_history);
+	
+	var _getDecks = __webpack_require__(32);
+	
+	var _getDecks2 = _interopRequireDefault(_getDecks);
+	
+	var _getDeckById = __webpack_require__(33);
+	
+	var _getDeckById2 = _interopRequireDefault(_getDeckById);
+	
+	var _deckCardNames = __webpack_require__(34);
+	
+	var _deckCardNames2 = _interopRequireDefault(_deckCardNames);
+	
+	var _getDeck = __webpack_require__(35);
+	
+	var _getDeck2 = _interopRequireDefault(_getDeck);
+	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
-	;
-
-/***/ },
-/* 33 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/*
-	 * генерация стопок в группах
-	 */
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 	
-	'use strict';
+	var Deck = function () {
+		function Deck(a, _id) {
+			var _this = this;
 	
-	Object.defineProperty(exports, "__esModule", {
-		value: true
-	});
+			_classCallCheck(this, Deck);
 	
-	var _countGenerator = __webpack_require__(34);
+			// console.log('%cADD DECK', 'background: orange;');
 	
-	var _countGenerator2 = _interopRequireDefault(_countGenerator);
+			if (!a) {
+				return false;
+			}
 	
-	var _fanGenerator = __webpack_require__(35);
+			this.cards = [];
 	
-	var _fanGenerator2 = _interopRequireDefault(_fanGenerator);
+			// parameters
+			this.type = 'deck';
+			this.fill = false;
+			var id = _id;
 	
-	var _mapGenerator = __webpack_require__(36);
+			this.getId = function () {
+				return id;
+			};
 	
-	var _mapGenerator2 = _interopRequireDefault(_mapGenerator);
+			var _parent_el = _group2.default.getGroup(a.parent),
+			    _parent_name = _parent_el ? _parent_el.name : 'xname',
+			    // ???
+			_new_id = _parent_el ? _parent_el.getDecks().length : id;
 	
-	var _lineGenerator = __webpack_require__(43);
+			this.name = a.name && typeof a.name == 'string' ? a.name : _parent_name + '_' + _new_id;
 	
-	var _lineGenerator2 = _interopRequireDefault(_lineGenerator);
+			this.locked = a.locked ? true : false;
+			this.save = a.save ? true : false;
+			// this.longStep   = a.longStep ? true : false;
+			this.visible = a.visible && typeof a.visible == 'boolean' ? a.visible : true; // default true
+			this.groupIndex = a.groupIndex && typeof a.groupIndex == 'number' ? a.groupIndex : null;
+			this.parent = a.parent && typeof a.parent == 'string' ? a.parent : 'field';
+			this.autoHide = a.autoHide && typeof a.autoHide == 'boolean' ? a.autoHide : _defaults2.default.autohide;
 	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+			// changed parameters
+			if (typeof a.showSlot == "undefined") {
+				a.showSlot = _defaults2.default.showSlot;
+			}
+	
+			this._params = {
+				padding_y: a.paddingY && typeof a.paddingY == 'number' ? a.paddingY : _defaults2.default.padding_y,
+				flip_padding_y: a.flipPaddingY && typeof a.flipPaddingY == 'number' ? a.flipPaddingY : _defaults2.default.flip_padding_y,
+				padding_x: a.paddingX && typeof a.paddingX == 'number' ? a.paddingX : _defaults2.default.padding_x,
+				flip_padding_x: a.flipPaddingX && typeof a.flipPaddingX == 'number' ? a.flipPaddingX : _defaults2.default.flip_padding_x,
+				startZIndex: a.startZIndex && typeof a.startZIndex == 'number' ? a.startZIndex : _defaults2.default.startZIndex,
+				rotate: this.rotate = 0,
+				x: 0,
+				y: 0
+			};
+	
+			// ------------- FLIP -------------
+	
+			var flipType = a.flip && typeof a.flip == 'string' ? a.flip : _defaults2.default.flip_type;
+	
+			this.cardFlipCheck = _flipTypes2.default[flipType];
+	
+			// ------------- PUT -------------
+	
+			this.putRules = a.putRules ? typeof a.putRules == 'function' ? a.putRules : typeof a.putRules == 'string' ? _readyPutRules2.default[a.putRules] ? _readyPutRules2.default[a.putRules] : _readyPutRules2.default[_defaults2.default.putRule]
+			// : typeof a.putRules === 'object' 
+			: a.putRules.constructor == Array ? a.putRules : _readyPutRules2.default[_defaults2.default.putRule] : _readyPutRules2.default[_defaults2.default.putRule];
+	
+			// ------------- TAKE -------------
+	
+			// можно ли взять карту/стопку
+			this.takeRules = a.takeRules;
+	
+			// ------------- FILL -------------
+	
+			this.fillRules = null;
+	
+			if (a.fillRule && !a.fillRules) {
+				a.fillRules = [a.fillRule];
+			}
+	
+			if (a.fillRules) {
+				this.fillRules = a.fillRules;
+			}
+	
+			// ------------- PADDING -------------
+	
+			// порядок карт в колоде
+			var padding = a.paddingX || a.paddingY ? _paddingTypes2.default.special : a.paddingType ? typeof a.paddingType == 'string' && _paddingTypes2.default[a.paddingType] ? _paddingTypes2.default[a.paddingType] : _paddingTypes2.default.none : _paddingTypes2.default[_defaults2.default.paddingType];
+	
+			this.padding = function (index) {
+	
+				var _padding = padding(this._params, this.cards[index], index, this.cards.length, this.cards);
+	
+				return _padding;
+			};
+	
+			this.actions = [];
+			if (a.actions) {
+				this.actions = a.actions;
+				_deckActions2.default.addActions.call(this);
+			}
+	
+			// ------------ RELATIONS ------------
+	
+			if (a.relations) {
+				this.relations = a.relations;
+			} else {
+				this.relations = [];
+			}
+	
+			// --
+	
+			this.tags = a.tags ? a.tags : [];
+	
+			// --
+	
+			_event2.default.dispatch('addDeckEl', {
+				a: a,
+				deck: this,
+				params: this._params
+			});
+	
+			// Подписывается на перетаскивание стопки/карты
+			var _callback = function _callback(data) {
+	
+				// TODO
+				// проверять fill только для тех стопок котрые участвовали в Action
+	
+				if (data.destination.name != _this.name) {
+					return;
+				}
+	
+				_this.checkFill();
+			};
+			_event2.default.listen('moveDragDeck', _callback);
+		}
+	
+		// -------------------------------------------------------------------------------------------------
+	
+		// перерисовка стопки
+	
+	
+		_createClass(Deck, [{
+			key: 'Redraw',
+			value: function Redraw(data) {
+	
+				_event2.default.dispatch('redrawDeck', {
+					deck: this,
+					data: data,
+					params: this._params,
+					cards: this.cards
+				});
+			}
+		}, {
+			key: 'getTopCard',
+			value: function getTopCard() {
+	
+				if (this.cards.length === 0) {
+					return false;
+				}
+	
+				return this.cards[this.cards.length - 1];
+			}
+		}, {
+			key: 'lock',
+			value: function lock() {
+	
+				this.locked = true;
+			}
+		}, {
+			key: 'unlock',
+			value: function unlock() {
+	
+				this.locked = false;
+			}
+		}, {
+			key: 'flipCheck',
+			value: function flipCheck() {
+	
+				for (var i in this.cards) {
+					this.cardFlipCheck(this.cards[i], i | 0, this.cards.length);
+				}
+	
+				_event2.default.dispatch('redrawDeckFlip', this);
+			}
+		}, {
+			key: 'checkFill',
+			value: function checkFill() {
+	
+				if (!this.fill) {
+	
+					var notFill = true;
+	
+					for (var ruleName in this.fillRules) {
+	
+						if (_fillRules2.default[ruleName]) {
+							notFill = notFill && !_fillRules2.default[ruleName](this);
+						}
+					}
+	
+					this.fill = !notFill;
+				}
+			}
+		}, {
+			key: 'Fill',
+			value: function Fill(cardNames) {
+	
+				for (var i in cardNames) {
+					this.genCardByName(cardNames[i]);
+				}
+			}
+		}, {
+			key: 'clear',
+			value: function clear() {
+				for (var i in this.cards) {
+					_event2.default.dispatch('removeEl', this.cards[i]);
+					this.cards[i] = null;
+				}
+				this.cards = [];
+				_event2.default.dispatch('removeEl', this);
+			}
+		}, {
+			key: 'Push',
+			value: function Push(deck) {
+				// , parentName) {
+				for (var i in deck) {
+					deck[i].parent = this.getId();
+					this.cards.push(deck[i]);
+				}
+			}
+		}, {
+			key: 'Pop',
+			value: function Pop(count, clearParent) {
+	
+				if (this.cards.length < count) {
+					return false;
+				}
+	
+				var _deck = [];
+				for (; count; count -= 1) {
+					var _pop = this.cards.pop();
+					if (clearParent) _pop.parent = null;
+					_deck.push(_pop);
+					_deck[_deck.length - 1].parent = null;
+				}
+				_deck.reverse();
+	
+				// что делать если вынули все карты
+				if (this.autoHide && this.cards.length === 0) {
+					this.hide();
+				}
+	
+				this.Redraw();
+	
+				return _deck;
+			}
+		}, {
+			key: 'Take',
+			value: function Take(cardId) {
+				return _deckTake2.default.call(this, cardId); // ??? .call(this, attributes);
+			}
+	
+			// проверяем, можем ли положить стопку/карту
+			// возвращает true, если согласно правилам сюда можно положить карту
+	
+		}, {
+			key: 'Put',
+			value: function Put(putDeck) {
+				return _deckPut2.default.call(this, putDeck); //(deckConstructor);
+			}
+	
+			// создать карту
+	
+		}, {
+			key: 'genCardByName',
+			value: function genCardByName(name) {
+				return _genCardByName3.default.call(this, name);
+			}
+		}, {
+			key: 'hide',
+			value: function hide() {
+				this.visible = false;
+				_history2.default.add({ hideDeck: this.name });
+				this.Redraw();
+			}
+		}, {
+			key: 'show',
+			value: function show() {
+				this.visible = false;
+				_history2.default.add({ showDeck: this.name });
+				this.Redraw();
+			}
+		}, {
+			key: 'getCardsByName',
+			value: function getCardsByName(cardName) {
+				var _cards = [];
+				for (var i in this.cards) {
+					if (this.cards[i].name == cardName) {
+						_cards.push(this.cards[i]);
+					}
+				}
+				return _cards;
+			}
+		}, {
+			key: 'Card',
+			value: function Card(cardName) {
+				return this.getCardsByName(cardName)[0];
+			}
+		}, {
+			key: 'hideCards',
+			value: function hideCards() {
+				for (var i in this.cards) {
+					this.cards[i].visible = false;
+					_event2.default.dispatch('hideCard', this.cards[i]);
+				}
+			}
+		}, {
+			key: 'showCards',
+			value: function showCards() {
+				for (var i in this.cards) {
+					this.cards[i].visible = true;
+					_event2.default.dispatch('showCard', this.cards[i]);
+				}
+			}
+		}, {
+			key: 'getCardsNames',
+			value: function getCardsNames() {
+	
+				var _cardsNames = [];
+	
+				for (var i in this.cards) {
+					_cardsNames.push(this.cards[i].name);
+				}
+	
+				return _cardsNames;
+			}
+		}, {
+			key: 'cardsCount',
+			value: function cardsCount() {
+				return this.cards.length;
+			}
+		}, {
+			key: 'getRelationsByName',
+			value: function getRelationsByName(relationName, filter) {
+	
+				var _relations = [];
+	
+				for (var i in this.relations) {
+					if (this.relations[i].name == relationName) {
+	
+						if (filter) {
+	
+							var _checked = 0,
+							    _count = 0;
+	
+							for (var attr in filter) {
+								_count += 1;
+								if (this.relations[i][attr] == filter[attr]) {
+									_checked += 1;
+								}
+							}
+	
+							if (_checked == _count) {
+								_relations.push(this.relations[i]);
+							}
+						} else {
+							_relations.push(this.relations[i]);
+						}
+					}
+				}
+	
+				return _relations;
+			}
+		}, {
+			key: 'hasTag',
+			value: function hasTag(tagName) {
+	
+				for (var i in this.tags) {
+					if (this.tags[i] == tagName) {
+						return true;
+					}
+				}
+	
+				return false;
+			}
+		}]);
+	
+		return Deck;
+	}();
+	
+	var addDeck = function addDeck(a) {
+	
+		if (!a) {
+			return false;
+		}
+	
+		var _id = 'deck_' + _common2.default.genId();
+	
+		var _a = null;
+		try {
+			_a = Object.assign({}, a);
+		} catch (e) {
+			_a = a;
+		}
+	
+		var _el_deck = new Deck(_a, _id);
+	
+		// fill deck
+		if (a.fill) {
+			for (var i in a.fill) {
+				if (typeof a.fill[i] == 'string') {
+					_el_deck.genCardByName(a.fill[i]);
+				}
+			}
+		}
+	
+		var _elements = _share2.default.get('elements');
+	
+		_elements[_id] = _el_deck;
+	
+		_share2.default.set('elements', _elements);
+	
+		return _el_deck;
+	};
+	
+	// ------------------------------------------------------------------------------------------------------------------------------------------
 	
 	exports.default = {
-		"count": _countGenerator2.default,
-		"fan": _fanGenerator2.default,
-		"map": _mapGenerator2.default,
-		"line": _lineGenerator2.default
+		deckCardNames: _deckCardNames2.default,
+		addDeck: addDeck,
+		getDeck: _getDeck2.default,
+		getDecks: _getDecks2.default,
+		getDeckById: _getDeckById2.default
 	};
 
 /***/ },
-/* 34 */
+/* 12 */
 /***/ function(module, exports) {
 
-	/*
-	 * сгенерировать ряд из N карт
-	 */
-	
 	'use strict';
 	
 	Object.defineProperty(exports, "__esModule", {
 		value: true
 	});
+	exports.default = {
 	
-	exports.default = function (e) {
+		none: function none(card, i, length) {
+			card.flip = false;
+		},
 	
-		// {
-		// 	type   : "count",
-		// 	count  : int,
-		// }
+		all: function all(card, i, length) {
+			card.flip = true;
+		},
 	
-		var _count = e.count;
-		var _decks = [];
+		notlast: function notlast(card, i, length) {
+			card.flip = i < length - 1 ? true : false;
+		},
 	
-		for (var deckIndex = 0; deckIndex < _count; deckIndex += 1) {
-			var _deckName = this.name + "_deck" + (deckIndex + 1);
-			_decks.push({
-				name: _deckName
-			});
+		first_1: function first_1(card, i, length) {
+			card.flip = i < 1 ? true : false;
+		},
+	
+		first_2: function first_2(card, i, length) {
+			card.flip = i < 2 ? true : false;
+		},
+	
+		first_3: function first_3(card, i, length) {
+			card.flip = i < 3 ? true : false;
+		},
+	
+		bee: function bee(card, i, length) {
+			card.flip = i == length - 1 ? false : i % 2 == 0 ? true : false;
 		}
-	
-		return _decks;
 	};
 
 /***/ },
-/* 35 */
+/* 13 */
 /***/ function(module, exports, __webpack_require__) {
 
-	/*
-	 * сгенерировать группу для полумесяца
-	 */
-	
 	'use strict';
 	
 	Object.defineProperty(exports, "__esModule", {
 		value: true
 	});
 	
-	exports.default = function (e) {
+	var _common = __webpack_require__(5);
 	
-		// {
-		// 	type   : "fan",
-		// 	count  : int,
-		// 	radius : int,
-		// 	center : {
-		// 		x : int,
-		// 		y : int
-		// 	}
-		// }
-	
-		this.placement = {
-			x: 0,
-			y: 0
-		};
-	
-		//              b
-		//       C  ..`:   A = sin(b) * C
-		//     ...``   :B  B = cos(b) * C
-		// a.``.......+:
-		//        A     y 90deg
-	
-		var _decks = [];
-		var _count = typeof e.count == "number" ? e.count : 3; //16
-		var _step = 180 / _count;
-		var _radius = typeof e.radius == "number" ? e.radius : 100; //405;
-		var _center = typeof e.center != "undefined" && typeof e.center.x != "undefined" && typeof e.center.y != "undefined" ? e.center : {
-			"x": 0,
-			"y": 0
-		};
-		var _angle = _step / 2 + 270;
-		var _deg = Math.PI / 180;
-	
-		for (var deckIndex = 0; deckIndex < _count; deckIndex += 1) {
-	
-			var _a = Math.sin(_angle * _deg) * _radius;
-			var _b = Math.cos(_angle * _deg) * _radius;
-			if (_angle > 360) _angle -= 360;
-			_decks.push({
-				"name": this.name + "_deck" + deckIndex,
-				"rotate": _angle,
-				"position": {
-					"x": _center.x + _a - _defaults2.default.card.width / 2,
-					"y": _center.y - _b - _defaults2.default.card.height / 2
-				}
-			});
-			_angle += _step;
-		}
-	
-		return _decks;
-	};
+	var _common2 = _interopRequireDefault(_common);
 	
 	var _defaults = __webpack_require__(3);
 	
 	var _defaults2 = _interopRequireDefault(_defaults);
 	
+	var _deck = __webpack_require__(11);
+	
+	var _deck2 = _interopRequireDefault(_deck);
+	
+	var _getBeside = __webpack_require__(14);
+	
+	var _getBeside2 = _interopRequireDefault(_getBeside);
+	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
-	;
+	var rpr = {
+	
+		// Realtions filters
+	
+		linePrev: function linePrev(a) {
+	
+			var prev = (0, _getBeside2.default)(a.to).prev;
+	
+			if (prev) {
+	
+				a.link = prev.to;
+	
+				return true;
+			}
+	
+			return false;
+		},
+	
+		lineNext: function lineNext(a) {
+	
+			var next = (0, _getBeside2.default)(a.to).next;
+	
+			if (next) {
+	
+				a.link = next.to;
+	
+				return true;
+			}
+	
+			return false;
+		},
+	
+		// Internal use
+	
+		_downupcards: function _downupcards(a) {
+	
+			if (a.cards.length == 0) {
+				return false;
+			}
+	
+			var down = _common2.default.validateCardName(a.cards[a.cards.length - 1].name);
+			var up = _common2.default.validateCardName(a.putDeck[0].card.name);
+	
+			if (!down || !up) {
+				return false;
+			}
+	
+			return {
+				up: up,
+				down: down
+			};
+		},
+	
+		_downupranknum: function _downupranknum(a) {
+	
+			var du = rpr._downupcards(a);
+	
+			return du ? {
+				down: _defaults2.default.card.ranks.indexOf(du.down.rank),
+				up: _defaults2.default.card.ranks.indexOf(du.up.rank)
+			} : false;
+		},
+	
+		_isFirst: function _isFirst(a, _name) {
+	
+			if (a.cards.length == 0) {
+	
+				var _validate = null;
+	
+				return (_validate = _common2.default.validateCardName(a.putDeck[0].card.name)) && _validate.rank == _name;
+			}
+	
+			return true;
+		},
+	
+		// Rules
+	
+		striped: function striped(a) {
+	
+			if (a.cards.length == 0) {
+				return true;
+			}
+	
+			var color_A = _common2.default.validateCardName(a.cards[a.cards.length - 1].name).color,
+			    color_B = null,
+			    _validate = null;
+	
+			if (_validate = _common2.default.validateCardName(a.putDeck[0].card.name)) {
+				color_B = _validate.color;
+			}
+	
+			return color_A != color_B;
+		},
+	
+		firstAce: function firstAce(a) {
+	
+			// let _rank = defaults.card.ranks[0];
+	
+			return rpr._isFirst(a, "1");
+		},
+	
+		firstKing: function firstKing(a) {
+	
+			// let _rank = defaults.card.ranks[defaults.card.ranks.length - 1];
+	
+			return rpr._isFirst(a, "k");
+		},
+	
+		notForEmpty: function notForEmpty(a) {
+	
+			return a.cards.length;
+		},
+	
+		onlyEmpty: function onlyEmpty(a) {
+	
+			return a.cards.length === 0;
+		},
+	
+		oneRank: function oneRank(a) {
+	
+			if (a.cards.length == 0) {
+				return true;
+			}
+	
+			var du = rpr._downupcards(a);
+	
+			return du && du.up.rank == du.down.rank;
+		},
+	
+		oneSuit: function oneSuit(a) {
+	
+			if (a.cards.length == 0) {
+				return true;
+			}
+	
+			var du = rpr._downupcards(a);
+	
+			return du && du.up.suit == du.down.suit;
+		},
+	
+		any: function any(a) {
+	
+			return true;
+		},
+	
+		not: function not(a) {
+	
+			return false;
+		},
+	
+		ascendDeck: function ascendDeck(a) {
+			//ascend deck by step
+	
+			if (a.putDeck.length == 1) {
+				return true;
+			}
+	
+			var ruleCorrect = true;
+	
+			for (var i in a.putDeck) {
+	
+				if (i > 0) {
+	
+					var down = _defaults2.default.card.ranks.indexOf(_common2.default.validateCardName(a.putDeck[i - 1].card.name).rank),
+					    up = _defaults2.default.card.ranks.indexOf(_common2.default.validateCardName(a.putDeck[i].card.name).rank);
+	
+					ruleCorrect = ruleCorrect && 1 + down == up;
+				};
+			};
+	
+			return ruleCorrect;
+		},
+	
+		descendDeck: function descendDeck(a) {
+			//ascend deck by step
+	
+			if (a.putDeck.length == 1) {
+				return true;
+			}
+	
+			var ruleCorrect = true;
+	
+			for (var i in a.putDeck) {
+	
+				if (i > 0) {
+	
+					var down = _defaults2.default.card.ranks.indexOf(_common2.default.validateCardName(a.putDeck[i - 1].card.name).rank),
+					    up = _defaults2.default.card.ranks.indexOf(_common2.default.validateCardName(a.putDeck[i].card.name).rank);
+	
+					ruleCorrect = ruleCorrect && down == 1 + up;
+				};
+			};
+	
+			return ruleCorrect;
+		},
+	
+		oneRankDeck: function oneRankDeck(a) {
+	
+			if (a.putDeck.length == 1) {
+				return true;
+			}
+	
+			var ruleCorrect = true;
+	
+			for (var i in a.putDeck) {
+	
+				if (i > 0) {
+	
+					var down = _common2.default.validateCardName(a.putDeck[i - 1].card.name).suit,
+					    up = _common2.default.validateCardName(a.putDeck[i].card.name).suit;
+	
+					ruleCorrect = ruleCorrect && down == up;
+				}
+			};
+	
+			return ruleCorrect;
+		},
+	
+		ascend: function ascend(a) {
+	
+			if (a.cards.length == 0) {
+				return true;
+			}
+	
+			var da = rpr._downupranknum(a);
+	
+			return da && da.down < da.up;
+		},
+	
+		descent: function descent(a) {
+	
+			if (a.cards.length == 0) {
+				return true;
+			}
+	
+			var da = rpr._downupranknum(a);
+	
+			return da && da.down > da.up;
+		},
+	
+		descentOne: function descentOne(a) {
+			// one step
+	
+			if (a.cards.length == 0) {
+				return true;
+			}
+	
+			var da = rpr._downupranknum(a);
+	
+			return da && da.down == 1 + da.up;
+		},
+	
+		ascendOne: function ascendOne(a) {
+			// one step
+	
+			if (a.cards.length == 0) {
+				return true;
+			}
+	
+			var da = rpr._downupranknum(a);
+	
+			return da && 1 + da.down == da.up;
+		},
+	
+		ascdescOne: function ascdescOne(a) {
+	
+			if (a.cards.length == 0) {
+				return true;
+			}
+	
+			var da = rpr._downupranknum(a);
+	
+			return da && Math.abs(da.down - da.up) == 1;
+		},
+	
+		sum14: function sum14(a) {
+	
+			if (a.cards.length == 0) {
+				return true;
+			}
+	
+			var du = rpr._downupcards(a);
+			var _sum = du.down.value + du.up.value;
+	
+			return _sum == 14;
+		},
+	
+		// TODO rules with params ??? or atom rules
+	
+		around: function around(a) {
+			// {from, putDeck, cards}
+	
+			if (a.cards.length == 0) {
+				return true;
+			}
+	
+			var _around = a.from.deck.getRelationsByName('around', { from: null });
+			var _parent = _deck2.default.getDeckById(a.cards[0].parent);
+	
+			for (var i in _around) {
+	
+				if (_around[i].to == _parent.name) {
+					return true;
+				}
+			}
+	
+			return false;
+		}
+	
+	};
+	
+	exports.default = rpr;
 
 /***/ },
-/* 36 */
-/***/ function(module, exports, __webpack_require__) {
+/* 14 */
+/***/ function(module, exports) {
 
-	/*
-	 * сгенерировать группу из матрицы
-	 */
-	
 	'use strict';
 	
 	Object.defineProperty(exports, "__esModule", {
 		value: true
 	});
 	
-	exports.default = function (e) {
+	exports.default = function (_deck) {
+		// {deck}
 	
-		// {
-		// 	type            : "map",
-		// 	map             : [[string|{name, next, prev}]],
-		// 	relations       : {
-		// 		around : true,
-		// 		beside : ???,
-		// 		fall   : {
-		// 			directories : [
-		// 				"down",
-		// 				"right"
-		// 			]
-		// 		}
-		// 	}
-		// }
+		var prev = _deck.getRelationsByName('beside', {
+			from: null,
+			type: "prev"
+		})[0];
 	
-		var _decks = [];
+		var next = _deck.getRelationsByName('beside', {
+			from: null,
+			type: "next"
+		})[0];
 	
-		var _default_placement = {
-			x: 0,
-			y: 0
-		};
+		return { prev: prev, next: next };
+	};
+
+/***/ },
+/* 15 */
+/***/ function(module, exports) {
+
+	'use strict';
 	
-		var _placement = this.placement ? {
-			x: typeof this.placement.x != "undefined" ? this.placement.x : _default_placement.x,
-			y: typeof this.placement.y != "undefined" ? this.placement.y : _default_placement.y
-		} : _default_placement;
+	Object.defineProperty(exports, "__esModule", {
+		value: true
+	});
+	exports.default = {
 	
-		this.placement = { x: 0, y: 0 };
+		// SimpleRules
+		not: function not(a) {
+			return false;
+		},
 	
-		var _index = 1;
+		notFirst: function notFirst(a) {
+			return a.cardIndex > 0;
+		},
 	
-		var _mapSize = _mapCommon2.default.mapSize(e.map);
+		any: function any(a) {
+			return true;
+		},
 	
-		// {name: 'groupName_deck_0_0'}
-		for (var y in e.map) {
-			for (var x in e.map[y]) {
+		onlytop: function onlytop(a) {
 	
-				if (typeof e.map[y][x] == "boolean" && e.map[y][x] || typeof e.map[y][x] == "number" && e.map[y][x] > 0) {
-					e.map[y][x] = {};
-				};
-	
-				if (typeof e.map[y][x] == "string") {
-					e.map[y][x] = { name: e.map[y][x] };
-				} else if (e.map[y][x] && typeof e.map[y][x] != "undefined" && typeof e.map[y][x].name != "string") {
-					e.map[y][x].name = this.name + "_deck_" + x + "_" + y;
-				};
-			}
+			return a.cardIndex == a.deckLength - 1;
 		}
 	
-		for (var _y in e.map) {
-			for (var _x in e.map[_y]) {
+		// TODO rules
 	
-				var x = _x | 0,
-				    y = _y | 0;
+		// ask : function(a) {
+		// 	return true;
+		// },
 	
-				var _el = e.map[y][x];
+		// desc : function(a) {
+		// 	return true;
+		// }
+	};
+
+/***/ },
+/* 16 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
 	
-				if (_el) {
+	Object.defineProperty(exports, "__esModule", {
+		value: true
+	});
 	
-					var _deck = {
-						"name": e.map[y][x].name, // (this.name + "_deck" + _index) OR (this.name + '_' + e.map[y][x])
-						"position": {
-							"x": x * ((_defaults2.default.card.width | 0) + (_placement.x | 0)),
-							"y": y * ((_defaults2.default.card.height | 0) + (_placement.y | 0))
+	var _defaults = __webpack_require__(3);
+	
+	var _defaults2 = _interopRequireDefault(_defaults);
+	
+	var _common = __webpack_require__(5);
+	
+	var _common2 = _interopRequireDefault(_common);
+	
+	var _deck2 = __webpack_require__(11);
+	
+	var _deck3 = _interopRequireDefault(_deck2);
+	
+	var _tips = __webpack_require__(6);
+	
+	var _tips2 = _interopRequireDefault(_tips);
+	
+	var _getBeside = __webpack_require__(14);
+	
+	var _getBeside2 = _interopRequireDefault(_getBeside);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	var fr = {
+	
+		deckLength: function deckLength(e) {
+	
+			return _defaults2.default.card.ranks.length <= a.deck.cards.length;
+		},
+	
+		not: function not() {
+	
+			return false;
+		},
+	
+		noMoves: function noMoves(a) {
+	
+			return !_tips2.default.checkFrom(a.name);
+		},
+	
+		_top: function _top(a) {
+			// filter
+	
+			var _card = e.getTopCard();
+			return _card && _common2.default.validateCardName(_card).rank;
+		},
+	
+		topAce: function topAce(e) {
+	
+			return fr._top() == '1';
+		},
+	
+		topKing: function topKing(e) {
+	
+			return fr._top() == 'k';
+		},
+	
+		_prev_next_desc_ask: function _prev_next_desc_ask(e, _type, _callback) {
+			// filter
+	
+			var _check = true;
+			var _prev = (0, _getBeside2.default)(a.to)[_type];
+			var _topCard = e.getTopCard();
+	
+			for (; _prev && _check;) {
+	
+				var _deck = _deck3.default.getDeck(_prev);
+				_card = _deck.getTopCard();
+	
+				_check = _check && _card && _callback(_common2.default.validateCardName(_topCard).value, _common2.default.validateCardName(_card).value | 0);
+	
+				_topCard = _card;
+				_prev = (0, _getBeside2.default)(_deck)[_type];
+			}
+	
+			return _check;
+		},
+	
+		// prevDescOne: (e)=>{
+	
+		// 	let _check = true;
+		// 	let _prev = getBeside(a.to).prev;
+		// 	let _topCard = e.getTopCard();
+	
+		// 	for(;_prev && _check;) {
+	
+		// 		let _deck = Deck.Deck(_prev);
+	
+		// 		_card = _deck.getTopCard();
+	
+		// 		_check = _check && _card && common.validateCardName(_topCard).value == (common.validateCardName(_card).value|0) + 1;
+	
+		// 		_topCard = _card;
+	
+		// 		_prev = getBeside(_deck).prev;
+		// 	}
+	
+		// 	return _check;
+		// }
+	
+		prevDescOne: function prevDescOne(e) {
+	
+			return fr._prev_next_desc_ask(e, 'prev', function (u, d) {
+				return u == (d | 0) + 1;
+			});
+		},
+	
+		prevAscOne: function prevAscOne(e) {
+	
+			return fr._prev_next_desc_ask(e, 'prev', function (u, d) {
+				return (u | 0) + 1 == d;
+			});
+		},
+	
+		nextDescOne: function nextDescOne(e) {
+	
+			return fr._prev_next_desc_ask(e, 'next', function (u, d) {
+				return u == (d | 0) + 1;
+			});
+		},
+	
+		nextAscOne: function nextAscOne(e) {
+	
+			return fr._prev_next_desc_ask(e, 'next', function (u, d) {
+				return (u | 0) + 1 == d;
+			});
+		},
+	
+		prevDesc: function prevDesc() {
+	
+			return fr._prev_next_desc_ask(e, 'prev', function (u, d) {
+				return u > d;
+			});
+		},
+		prevAsc: function prevAsc() {
+	
+			return fr._prev_next_desc_ask(e, 'prev', function (u, d) {
+				return u < d;
+			});
+		},
+		nextDesc: function nextDesc() {
+	
+			return fr._prev_next_desc_ask(e, 'next', function (u, d) {
+				return u > d;
+			});
+		},
+		nextAsc: function nextAsc() {
+	
+			return fr._prev_next_desc_ask(e, 'next', function (u, d) {
+				return u < d;
+			});
+		}
+	};
+	
+	exports.default = fr;
+
+/***/ },
+/* 17 */
+/***/ function(module, exports) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+		value: true
+	});
+	exports.default = {
+	
+		none: function none(params, card, index, length, deck) {
+	
+			return {
+				x: params.x,
+				y: params.y
+			};
+		},
+	
+		last_three_min: function last_three_min(params, card, index, length, deck) {
+	
+			if (index > length - 3) {
+				if (length > 3) {
+					return {
+						x: params.x - (length - 3 - index) * 2,
+						y: params.y - (length - 3 - index)
+					};
+				} else {
+					return {
+						x: params.x + index * 2,
+						y: params.y + (index | 0)
+					};
+				}
+			} else {
+				return {
+					x: x,
+					y: y
+				};
+			}
+		},
+	
+		twindeck_typeA: function twindeck_typeA(params, card, index, length, deck) {
+	
+			var twindeck_max_cards = 24,
+			    twindeck_deck_length = 3;
+	
+			var _padding = {
+				x: 2,
+				y: 1
+			};
+	
+			var _depth = length / twindeck_max_cards * twindeck_deck_length | 0;
+			if (_depth >= twindeck_deck_length) _depth = twindeck_deck_length - 1;
+	
+			var _plus = index - (length - _depth - 1);
+			if (_plus < 0) _plus = 0;
+	
+			return {
+				x: params.x + _padding.x * _plus,
+				y: params.y + _padding.y * _plus
+			};
+		},
+	
+		radial: function radial(params, card, index, length, deck) {
+	
+			//              b
+			//       C  ..`:   A = sin(b) * C
+			//     ...``   :B  B = cos(b) * C
+			// a.``.......+:
+			//        A     y 90deg
+			var _depth = 1,
+			    _radius = index * _depth,
+	
+			// _step   = 180 / 16,
+			// _card   = defaults.card,
+			_angle = params.rotate,
+			    //_step / 2 + 270;
+			_deg = Math.PI / 180,
+			    _a = Math.sin(_angle * _deg) * _radius,
+			    _b = Math.cos(_angle * _deg) * _radius;
+			// if(_angle > 360) _angle -= 360;
+	
+			return {
+				x: params.x + _a, // - _card.width  / 2,
+				y: params.y - _b // - _card.height / 2
+			};
+		},
+	
+		special: function special(params, card, index, length, deck) {
+	
+			var _y = params.y,
+			    _x = params.x;
+	
+			for (var i = 0; i < index; i += 1) {
+				_y += deck[i] && deck[i].flip ? params.flip_padding_y : params.padding_y;
+				_x += deck[i] && deck[i].flip ? params.flip_padding_x : params.padding_x;
+			}
+	
+			return {
+				x: _x,
+				y: _y
+			};
+		},
+	
+		vertical: function vertical(params, card, index, length, deck) {
+	
+			var _y = params.y;
+	
+			for (var i = 0; i < index; i += 1) {
+				_y += deck[i] && deck[i].flip ? params.flip_padding_y : params.padding_y;
+			}
+	
+			var _return = {
+				x: params.x,
+				y: _y
+			};
+	
+			return _return;
+		},
+	
+		horizontal: function horizontal(params, card, index, length, deck) {
+	
+			var _x = params.x;
+	
+			for (var i = 0; i < index; i += 1) {
+				_x += deck[i] && deck[i].flip ? params.flip_padding_x : params.padding_x;
+			}
+	
+			var _return = {
+				x: _x,
+				y: params.y
+			};
+	
+			return _return;
+		}
+	};
+
+/***/ },
+/* 18 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+		value: true
+	});
+	
+	var _event2 = __webpack_require__(2);
+	
+	var _event3 = _interopRequireDefault(_event2);
+	
+	var _share = __webpack_require__(1);
+	
+	var _share2 = _interopRequireDefault(_share);
+	
+	var _defaults = __webpack_require__(3);
+	
+	var _defaults2 = _interopRequireDefault(_defaults);
+	
+	var _common = __webpack_require__(5);
+	
+	var _common2 = _interopRequireDefault(_common);
+	
+	var _twindeckAction = __webpack_require__(19);
+	
+	var _twindeckAction2 = _interopRequireDefault(_twindeckAction);
+	
+	var _dealerdeckAction = __webpack_require__(20);
+	
+	var _dealerdeckAction2 = _interopRequireDefault(_dealerdeckAction);
+	
+	var _kickAction = __webpack_require__(22);
+	
+	var _kickAction2 = _interopRequireDefault(_kickAction);
+	
+	var _stepsAroundAction = __webpack_require__(23);
+	
+	var _stepsAroundAction2 = _interopRequireDefault(_stepsAroundAction);
+	
+	var _changeStepTypeAction = __webpack_require__(24);
+	
+	var _changeStepTypeAction2 = _interopRequireDefault(_changeStepTypeAction);
+	
+	var _lockAction = __webpack_require__(25);
+	
+	var _lockAction2 = _interopRequireDefault(_lockAction);
+	
+	var _unlockAction = __webpack_require__(27);
+	
+	var _unlockAction2 = _interopRequireDefault(_unlockAction);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	var _actions = {
+		"twindeck": _twindeckAction2.default,
+		"dealerdeck": _dealerdeckAction2.default,
+		"kick": _kickAction2.default,
+		"stepsAround": _stepsAroundAction2.default,
+		"changeStepType": _changeStepTypeAction2.default,
+		"lock": _lockAction2.default,
+		"unlock": _unlockAction2.default
+	};
+	
+	// ------------------------------------------------------------------------------------------
+	
+	// Actions
+	var _decksActions = [],
+	    _events = [];
+	
+	_event3.default.listen('initField', function () {
+		_decksActions = [];
+		_events = [];
+	});
+	
+	var addActionEvent = function addActionEvent(_event) {
+	
+		_event3.default.listen(
+	
+		// event name
+		_event,
+	
+		// callback
+		function (data) {
+	
+			for (var i in _decksActions) {
+				if (_decksActions[i].event == _event) {
+	
+					var _actionName = _decksActions[i].action;
+	
+					var _canRun = _event == 'click' ? data.to.name == _decksActions[i].deck.name : true;
+					// data._stepType = data.stepType;
+					// data.stepType = share.get('stepType');
+	
+					if (_canRun) {
+	
+						_actions[_actionName].call(_decksActions[i].deck, {
+							actionData: _decksActions[i].deck.actions[_actionName],
+							eventData: data,
+							eventName: _event
+						});
+					};
+				}
+			}
+		});
+	};
+	
+	var addActions = function addActions() {
+	
+		for (var actionName in this.actions) {
+	
+			// если не описано событие выполнять по клику
+			if (!this.actions[actionName].event) {
+				this.actions[actionName].event = 'click';
+			}
+	
+			if (_actions[actionName]) {
+				_decksActions.push({
+					deck: this,
+					event: this.actions[actionName].event,
+					action: actionName
+				});
+	
+				if (_events.indexOf(this.actions[actionName].event) < 0) {
+					// КОПАТЬ ТУТ
+					_events.push(this.actions[actionName].event);
+					addActionEvent(this.actions[actionName].event);
+				}
+			} else {
+				console.warn('Action', actionName, 'for', this.name, 'not found.');
+			};
+		}
+		autoRunActions(this.actions);
+	};
+	
+	var autoRunActions = function autoRunActions(data) {
+		// bind this deck
+	
+		_common2.default.animationDefault();
+	
+		for (var actionName in data.actions) {
+			if (data.actions[actionName].autorun) {
+				if (_actions[actionName]) {
+					_actions[actionName].call(data, {
+						actionData: data.actions[actionName],
+						eventData: null,
+						eventName: data.actions[actionName].event
+					});
+				}
+			}
+		}
+		// Tips.checkTips();
+	};
+	
+	exports.default = {
+		addActions: addActions
+	};
+
+/***/ },
+/* 19 */
+/***/ function(module, exports) {
+
+	'use strict';
+	
+	// import event    from 'event';
+	// import defaults from 'defaults';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	
+	exports.default = function (e) {
+	
+	  // TODO переделать
+	
+	};
+
+/***/ },
+/* 20 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+		value: true
+	});
+	
+	exports.default = function (data) {
+		// data.actionData, e
+	
+		// default data.actionData.onlyEmpty - false
+		// default data.actionData.from      - this.name
+		// default data.actionData.stepType  - NULL
+	
+		// console.log('dealerdeckAction:', this.name, data);
+	
+		if (typeof data.actionData.stepType == "string" && data.actionData.stepType != _share2.default.get('stepType')) {
+			return;
+		}
+	
+		// меняем тип хода
+		_share2.default.set('stepType', stepType);
+	
+		var dealDeck = typeof data.actionData.from == "string" ? Deck.getDeck(data.actionData.from) : this;
+	
+		// смотрим остались ли карты
+		if (dealDeck.cards.length == 0) {
+	
+			_share2.default.set('stepType', _defaults2.default.stepType);
+	
+			_event2.default.dispatch('actionBreak');
+			_event2.default.dispatch('dealEnd');
+	
+			return;
+		}
+	
+		// карты для раздачи
+		var _decks = [];
+	
+		// to == toGroup ???
+		if (data.actionData.toGroup && !data.actionData.to) {
+	
+			data.actionData.to = data.actionData.toGroup;
+		};
+	
+		// есть куда раздать
+		if (data.actionData.to) {
+	
+			// передали имя
+			if (typeof data.actionData.to == "string") {
+	
+				// ищем элементы с таким именем
+				var _elements = _common2.default.getElementsByName(data.actionData.to);
+				for (var i in _elements) {
+	
+					// это группа
+					if (_elements[i].type == "group") {
+	
+						// _decks = _decks.concat(Group.Group(data.actionData.to).decks);
+						// var __decks = Group.Group(data.actionData.to).decks;
+	
+						// берём колоды из группы
+						for (var deckIndex in _elements[i].decks) {
+							_decks.push(_elements[i].decks[deckIndex]);
 						}
 					};
 	
-					//  ---------------------------------------------------------
-					var _relations = [];
-	
-					var _relGenerators = {
-						"around": "mapAroundRelations",
-						"beside": "mapBesideRelations",
-						"fall": "mapFallRelations"
+					// это колода, добавляем её в список
+					if (_elements[i].type == "deck") {
+						_decks.push(_el);
 					};
+				}
 	
-					if (e.relations) {
+				// передали массив
+			} else {
 	
-						for (var relGenName in _relGenerators) {
+				for (var i in data.actionData.to) {
 	
-							if (e.relations[relGenName]) {
-								_relations = _relations.concat(_relationsGenerator2.default[_relGenerators[relGenName]]({
-									x: x, y: y,
-									map: e.map,
-									mapSize: _mapSize,
-									el: _el,
-									data: e.relations[relGenName]
-								}));
-							};
+					var _elements = _common2.default.getElementsByName(data.actionData.to[i]);
+	
+					for (var elIndex in _elements) {
+	
+						if (_elements[elIndex].type == "group") {
+							// _decks = _decks.concat(Group.Group(data.actionData.to[i]).decks);
+							// var __decks = Group.Group(data.actionData.to[i]).decks;
+							for (var deckIndex in _elements[elIndex].decks) {
+								_decks.push(_elements[elIndex].decks[deckIndex]);
+							}
 						};
-					};
 	
-					_deck.relations = _relations;
-					//  ---------------------------------------------------------
-	
-					_decks.push(_deck);
-					_index += 1;
+						if (_elements[elIndex].type == "deck") {
+							_decks.push(_elements[elIndex]);
+						};
+					}
 				}
 			}
-		}
+		};
 	
-		return _decks;
+		// вкл/выкл анимации по умолчанию
+		_common2.default.animationDefault();
+	
+		// флаг, что раздача удалась
+		var _makeStep = false;
+	
+		// пробегаем колоды из списка
+		for (var deckId in _decks) {
+	
+			// берём верхнюю карту
+			var _card = dealDeck.getTopCard();
+	
+			// флаг что такой ход возможен
+			var _canStep = data.actionData.onlyEmpty ? _decks[deckId].cards.length == 0 : true;
+	
+			if (_canStep && _card) {
+	
+				_makeStep = true;
+	
+				var _cardName = _card.name;
+	
+				var _callback = function _callback() {
+	
+					_event2.default.dispatch('checkTips');
+				};
+	
+				(0, _forceMove2.default)({
+					from: dealDeck.name,
+					to: _decks[deckId].name,
+					deck: [_cardName],
+					flip: true,
+					callback: _callback
+				}, true);
+	
+				_decks[deckId].flipCheck();
+				// _decks[deckId].Redraw();
+	
+				_event2.default.dispatch('dealEnd');
+	
+				_event2.default.dispatch('addStep', {
+					'move': {
+						from: dealDeck.name,
+						to: _decks[deckId].name,
+						deck: [_cardName],
+						flip: true,
+						stepType: {
+							undo: _share2.default.get('stepType'),
+							redo: data.actionData.dispatch ? _share2.default.get('stepType') : _defaults2.default.stepType
+						},
+						context: "dealerdeckAction"
+					}
+				});
+			};
+		};
+	
+		if (_makeStep) {
+	
+			// сохраняем если паздача удалась
+			_event2.default.dispatch('saveSteps');
+		};
+	
+		if (data.actionData.dispatch) {
+	
+			_event2.default.dispatch(data.actionData.dispatch, !_makeStep);
+		} else {
+			// сохраняем если ничего не вызываем
+	
+			_share2.default.set('stepType', _defaults2.default.stepType);
+		}
 	};
+	
+	var _event = __webpack_require__(2);
+	
+	var _event2 = _interopRequireDefault(_event);
+	
+	var _share = __webpack_require__(1);
+	
+	var _share2 = _interopRequireDefault(_share);
 	
 	var _defaults = __webpack_require__(3);
 	
 	var _defaults2 = _interopRequireDefault(_defaults);
 	
-	var _relationsGenerator = __webpack_require__(37);
+	var _common = __webpack_require__(5);
 	
-	var _relationsGenerator2 = _interopRequireDefault(_relationsGenerator);
+	var _common2 = _interopRequireDefault(_common);
 	
-	var _mapCommon = __webpack_require__(39);
+	var _forceMove = __webpack_require__(21);
 	
-	var _mapCommon2 = _interopRequireDefault(_mapCommon);
+	var _forceMove2 = _interopRequireDefault(_forceMove);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	var stepType = 'dealerdeckStepType';
+
+/***/ },
+/* 21 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+		value: true
+	});
+	
+	var _event = __webpack_require__(2);
+	
+	var _event2 = _interopRequireDefault(_event);
+	
+	var _share = __webpack_require__(1);
+	
+	var _share2 = _interopRequireDefault(_share);
+	
+	var _common = __webpack_require__(5);
+	
+	var _common2 = _interopRequireDefault(_common);
+	
+	var _deck = __webpack_require__(11);
+	
+	var _deck2 = _interopRequireDefault(_deck);
+	
+	var _tips = __webpack_require__(6);
+	
+	var _tips2 = _interopRequireDefault(_tips);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	var forceMove = function forceMove(a) {
+		// {from, to, deck, <flip>, <callback>}
+	
+		// console.log('forceMove', a);
+	
+		if (!a.from || !a.to || !a.deck) {
+			return;
+		}
+	
+		if (!a.deck.length) {
+			return;
+		}
+	
+		var _from = typeof a.from == "string" ? _deck2.default.getDeck(a.from) : a.from;
+	
+		var _to = typeof a.to == "string" ? _deck2.default.getDeck(a.to) : a.to;
+	
+		if (!_from || !_to || _from.type != "deck" || _to.type != "deck") {
+			return;
+		}
+	
+		var _check = true;
+		var _from_deck = _from.cards;
+	
+		for (var i in _from_deck) {
+	
+			if (i >= _from_deck.length - a.deck.length) {
+	
+				var _id = i - (_from_deck.length | 0) + (a.deck.length | 0);
+	
+				if (a.deck[_id] && _from_deck[i].name != a.deck[_id]) {
+					_check = false;
+				}
+			}
+		}
+	
+		if (_check) {
+	
+			var _pop = _from.Pop(a.deck.length);
+	
+			// перевернуть карты во время хода
+			if (a.flip) {
+				for (var _i in _pop) {
+					_pop[_i].flip = !_pop[_i].flip;
+				}
+			}
+	
+			_to.Push(_pop);
+	
+			var __pop = [];
+			for (var _i2 in _pop) {
+				__pop.push({
+					card: _pop[_i2]
+				});
+			}
+	
+			var moveDragDeckParams = {
+				departure: _from,
+				destination: _to,
+				moveDeck: __pop
+			};
+	
+			if (typeof a.callback == "function") {
+				moveDragDeckParams.callback = function () {
+					_event2.default.dispatch('forceMoveEnd');
+					a.callback();
+				};
+			} else {
+				moveDragDeckParams.callback = function () {
+					_event2.default.dispatch('forceMoveEnd');
+				};
+			}
+	
+			// event.dispatch('moveEnd:' + share.get('stepType'));
+			_event2.default.dispatch('moveDragDeck', moveDragDeckParams);
+		} else {
+			// _warn(4);
+			console.warn("forceMove:Ход невозможен", a);
+		}
+	};
+	
+	_event2.default.listen('forceMove', function (e) {
+		forceMove(e);
+	});
+	
+	exports.default = forceMove;
+
+/***/ },
+/* 22 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+		value: true
+	});
+	
+	exports.default = function (data) {
+	
+		// если тип хода не стандартный не выполнять кик
+		if (_share2.default.get('stepType') != _defaults2.default.stepType) {
+			return false;
+		}
+	
+		// TODO спорный момент
+		if (typeof data.eventData.stepType == "string" && data.eventData.stepType != _defaults2.default.stepType) {
+			return false;
+		}
+	
+		// if(share.get('prevStepType') != defaults.stepType) {
+		// 	return false;
+		// }
+	
+		// let _name = null;
+		// if(
+		// 	data.eventData[0]                            &&
+		// 	data.eventData[0].move                       &&
+		// 	typeof data.eventData[0].move.to == "string"
+		// ) {
+		// 	_name = data.eventData[0].move.to;
+		// }
+	
+		// if(
+		// 	data.eventData.to                    &&
+		// 	typeof data.eventData.to == "string"
+		// ) {
+		// 	_name = data.eventData.to;
+		// }
+	
+		// if(
+		// 	data.eventData.to                         &&
+		// 	typeof data.eventData.to != "string"      &&
+		// 	typeof data.eventData.to.name == "string"
+		// ) {
+		// 	_name = data.eventData.to.name;
+		// }
+	
+		if (data.eventData.to.name != this.name) {
+			// data.eventData.to - куда мы перетащили карты
+			return false;
+		}
+	
+		_share2.default.set('stepType', stepType);
+	
+		// if(window.debug_kick) {
+		// 	console.log('data.eventData.stepType:', data);
+		// 	throw new Error();
+		// }
+		// window.debug_kick = 1;
+	
+		// if(
+		// 	data.eventData[0]                         &&
+		// 	typeof data.eventData[0].name == "string" &&
+		// 	data.eventData[0].name != this.name
+		// ) {
+		// 	return false;
+		// }
+	
+		_common2.default.animationDefault();
+	
+		// var _toDeck = Deck.Deck(data.actionData.to);
+	
+		// let _from = typeof data.eventData.to == "string"
+		// 		? Deck.Deck(_name)
+		// 		: data.eventData.to
+	
+		var _from = data.eventData.to,
+		    //Deck.Deck(_name),
+		_deck = _from.getCardsNames();
+	
+		var _callback = function _callback() {
+	
+			console.log('KICK END>>>', data.actionData.dispatch);
+	
+			var _addStep = function _addStep(e) {
+	
+				_event2.default.dispatch('addStep', {
+					"move": {
+						from: _from.name,
+						to: data.actionData.to,
+						deck: _deck,
+						flip: true,
+						stepType: {
+							undo: e.undo, //stepType,// share.get('stepType'),
+							redo: e.redo //data.actionData.dispatch ? share.get('stepType') : defaults.stepType
+						},
+						context: "kickAction"
+					}
+				});
+			};
+	
+			_share2.default.set('stepType', _defaults2.default.stepType);
+	
+			if (data.actionData.dispatch) {
+				_event2.default.dispatch(data.actionData.dispatch, {
+					before: function before(e) {
+	
+						_addStep({
+							undo: stepType,
+							redo: e.stepType
+						});
+	
+						_event2.default.dispatch('saveSteps');
+					}
+				});
+			} else {
+	
+				_addStep({
+					undo: stepType, // share.get('stepType'),
+					redo: data.actionData.dispatch ? _share2.default.get('stepType') : _defaults2.default.stepType
+				});
+	
+				_event2.default.dispatch('saveSteps');
+			}
+		};
+	
+		// TODO interval
+		var forceMoveParams = {
+			from: _from,
+			to: data.actionData.to,
+			deck: _deck,
+			flip: true,
+			callback: _callback
+		};
+	
+		// forceMove(forceMoveParams);
+		_event2.default.dispatch('forceMove', forceMoveParams);
+	
+		// if(e.after) {
+		// 	_events[e.after].call(this, e);
+		// };
+	};
+	
+	var _event = __webpack_require__(2);
+	
+	var _event2 = _interopRequireDefault(_event);
+	
+	var _share = __webpack_require__(1);
+	
+	var _share2 = _interopRequireDefault(_share);
+	
+	var _common = __webpack_require__(5);
+	
+	var _common2 = _interopRequireDefault(_common);
+	
+	var _defaults = __webpack_require__(3);
+	
+	var _defaults2 = _interopRequireDefault(_defaults);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	var stepType = 'kickStepType';
+
+/***/ },
+/* 23 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+		value: true
+	});
+	
+	exports.default = function (data) {
+		var _this = this;
+	
+		// {actionData, eventData, eventName}
+	
+		var _stepType = _share2.default.get('stepType');
+		if (_stepType != _defaults2.default.stepType) {
+			return;
+		};
+	
+		_share2.default.set('stepType', stepType);
+		// stop Drag'n'Drop
+		_common2.default.curLock();
+	
+		var _relations = this.getRelationsByName('around', { from: null });
+		var _tips = _tips3.default.getTips();
+	
+		// выполняется для всех вокруг
+		// ход не делается
+		// вместо хода выполняется едействие для текущей стопки (если _central, по умолчанию true)
+		if (typeof data.actionData.run == "string") {
+			(function () {
+	
+				var _central = typeof data.actionData.central == "boolean" ? data.actionData.central : true;
+	
+				var _runStack = [];
+	
+				for (var i in _relations) {
+	
+					if (_tips3.default.fromTo(_this.name, _relations[i].to)) {
+						_runStack.push(_relations[i]);
+					}
+				}
+	
+				var _counter = _runStack.length;
+	
+				var _callback = function _callback() {
+	
+					_counter -= 1;
+					if (_counter === 0) {
+	
+						endAction();
+						// event.dispatch(data.actionData.dispatch)
+					}
+				};
+	
+				if (_counter === 0) {
+	
+					endAction();
+				} else if (_central) {
+	
+					_counter += 1;
+	
+					_event2.default.dispatch(data.actionData.run, {
+						to: _this.name,
+						callback: _callback
+					});
+				}
+	
+				for (var _i in _runStack) {
+	
+					var _data = null;
+					try {
+						_data = Object.assign({}, _runStack[_i]);
+					} catch (e) {
+						_data = _runStack[_i];
+					}
+	
+					_data.callback = _callback;
+					_event2.default.dispatch(data.actionData.run, _data);
+				}
+	
+				// выполняется после хода 
+			})();
+		} else {
+	
+			var _callback2 = function _callback2() {
+	
+				if (_share2.default.get('stepType') == stepType) {
+					endAction();
+				}
+			};
+	
+			_event2.default.listen('makeStep', _callback2);
+			// event.dispatch(data.actionData.dispatch)
+		}
+	};
+	
+	var _event = __webpack_require__(2);
+	
+	var _event2 = _interopRequireDefault(_event);
+	
+	var _share = __webpack_require__(1);
+	
+	var _share2 = _interopRequireDefault(_share);
+	
+	var _common = __webpack_require__(5);
+	
+	var _common2 = _interopRequireDefault(_common);
+	
+	var _defaults = __webpack_require__(3);
+	
+	var _defaults2 = _interopRequireDefault(_defaults);
+	
+	var _tips2 = __webpack_require__(6);
+	
+	var _tips3 = _interopRequireDefault(_tips2);
+	
+	var _deck = __webpack_require__(11);
+	
+	var _deck2 = _interopRequireDefault(_deck);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	var stepType = 'stepsAround';
+	
+	var endAction = function endAction() {
+	
+		_share2.default.set('stepType', _defaults2.default.stepType);
+		_common2.default.curUnLock();
+		// Tips.checkTips();
+	
+		if (data.actionData.dispatch) {
+			_event2.default.dispatch(data.actionData.dispatch, data.eventData);
+		}
+	};
+	
+	;
+
+/***/ },
+/* 24 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+		value: true
+	});
+	
+	exports.default = function (data) {
+	
+		if (data.eventData.to.name != this.name) {
+			return false;
+		}
+	
+		if (typeof data.actionData.to != "string") {
+			return;
+		} else {
+			_share2.default.set('stepType', data.actionData.to);
+		}
+	};
+	
+	var _event = __webpack_require__(2);
+	
+	var _event2 = _interopRequireDefault(_event);
+	
+	var _share = __webpack_require__(1);
+	
+	var _share2 = _interopRequireDefault(_share);
+	
+	var _defaults = __webpack_require__(3);
+	
+	var _defaults2 = _interopRequireDefault(_defaults);
+	
+	var _common = __webpack_require__(5);
+	
+	var _common2 = _interopRequireDefault(_common);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	;
+
+/***/ },
+/* 25 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+		value: true
+	});
+	
+	exports.default = function (data) {
+	
+		if (data.eventData.to.name != this.name) {
+			return false;
+		}
+	
+		(0, _lockActionCommon2.default)(data.actionData, 'lock', this.name);
+	};
+	
+	var _event = __webpack_require__(2);
+	
+	var _event2 = _interopRequireDefault(_event);
+	
+	var _share = __webpack_require__(1);
+	
+	var _share2 = _interopRequireDefault(_share);
+	
+	var _defaults = __webpack_require__(3);
+	
+	var _defaults2 = _interopRequireDefault(_defaults);
+	
+	var _common = __webpack_require__(5);
+	
+	var _common2 = _interopRequireDefault(_common);
+	
+	var _lockActionCommon = __webpack_require__(26);
+	
+	var _lockActionCommon2 = _interopRequireDefault(_lockActionCommon);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	;
+
+/***/ },
+/* 26 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+		value: true
+	});
+	
+	var _event = __webpack_require__(2);
+	
+	var _event2 = _interopRequireDefault(_event);
+	
+	var _share = __webpack_require__(1);
+	
+	var _share2 = _interopRequireDefault(_share);
+	
+	var _defaults = __webpack_require__(3);
+	
+	var _defaults2 = _interopRequireDefault(_defaults);
+	
+	var _common = __webpack_require__(5);
+	
+	var _common2 = _interopRequireDefault(_common);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	exports.default = function (data, method, me) {
+	
+		var sources = [];
+		if (typeof data.source != "string") {
+			if (data.source && data.source.constructor == Array) {
+				for (var i in data.source) {
+					sources.push(data.source[i]);
+				}
+			} else {
+				sources = [me];
+			}
+		} else {
+			sources = [data.source];
+		}
+	
+		if (data.save) {
+			var _step = {};
+			_step[method] = sources;
+			_event2.default.dispatch('addStep', _step);
+			_event2.default.dispatch('saveSteps');
+		}
+	
+		for (var _i in sources) {
+	
+			var current = _common2.default.getElementsByName(sources[_i])[0];
+	
+			if (current.type == "group") {
+				var decks = current.getDecks();
+				for (var deckIndex in decks) {
+					decks[deckIndex][method]();
+				}
+			}
+	
+			if (current.type == "deck") {
+				current[method]();
+			}
+		}
+	};
+
+/***/ },
+/* 27 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+		value: true
+	});
+	
+	exports.default = function (data) {
+	
+		if (data.eventData.to.name != this.name) {
+			return false;
+		}
+	
+		(0, _lockActionCommon2.default)(data.actionData, 'unlock', this.name);
+	};
+	
+	var _event = __webpack_require__(2);
+	
+	var _event2 = _interopRequireDefault(_event);
+	
+	var _share = __webpack_require__(1);
+	
+	var _share2 = _interopRequireDefault(_share);
+	
+	var _defaults = __webpack_require__(3);
+	
+	var _defaults2 = _interopRequireDefault(_defaults);
+	
+	var _common = __webpack_require__(5);
+	
+	var _common2 = _interopRequireDefault(_common);
+	
+	var _lockActionCommon = __webpack_require__(26);
+	
+	var _lockActionCommon2 = _interopRequireDefault(_lockActionCommon);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	;
+
+/***/ },
+/* 28 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+		value: true
+	});
+	
+	exports.default = function (cardId) {
+	
+		// Нестандартный ход (autosteps)
+		// if(share.get('stepType') != defaults.stepType) {return false;};
+	
+		var rulesCorrect = true; //!common.isLock();
+	
+		rulesCorrect = rulesCorrect && !this.locked;
+	
+		if (typeof this.fill == "boolean") {
+			rulesCorrect = rulesCorrect && !this.fill;
+		}
+	
+		// берём карту/стопку
+	
+		var cardIndex = -1;
+		var cardName = null;
+		var cardSuit = null;
+		var cardRank = null;
+		var deckLength = this.cards.length;
+	
+		// проверяем не является ли перевернутой
+	
+		var takeDeck = [];
+	
+		for (var i in this.cards) {
+	
+			if (this.cards[i].id == cardId) {
+	
+				cardIndex = i | 0;
+				cardName = this.cards[i].name;
+	
+				var _name = _common2.default.validateCardName(cardName);
+	
+				rulesCorrect = rulesCorrect && _name;
+	
+				if (_name) {
+					cardSuit = _name.suit;
+					cardRank = _name.rank;
+				}
+	
+				rulesCorrect = rulesCorrect && !this.cards[i].flip && this.cards[i].flip == _defaults2.default.canMoveFlip;
+			}
+	
+			if (cardIndex >= 0) {
+	
+				takeDeck.push({
+					index: i,
+					card: this.cards[i]
+				});
+			}
+		}
+		var _attrs = {
+			cardId: cardId,
+			cardName: cardName,
+			cardSuit: cardSuit,
+			cardRank: cardRank,
+			cardIndex: cardIndex,
+			deckLength: deckLength
+		};
+	
+		for (var ruleIndex in this.takeRules) {
+			var ruleName = this.takeRules[ruleIndex];
+	
+			if (_readyTakeRules2.default[ruleName]) {
+				rulesCorrect = rulesCorrect && _readyTakeRules2.default[ruleName](_attrs);
+			} else {
+				console.warn('Incorrect take rule:', ruleName);
+				rulesCorrect = false;
+			}
+		}
+	
+		// возвращает массив ID карт которые можно будет перетащить
+		// записывает их как активные
+	
+		rulesCorrect = rulesCorrect && cardIndex >= 0;
+	
+		rulesCorrect = rulesCorrect && takeDeck;
+	
+		return rulesCorrect;
+	};
+	
+	var _share = __webpack_require__(1);
+	
+	var _share2 = _interopRequireDefault(_share);
+	
+	var _defaults = __webpack_require__(3);
+	
+	var _defaults2 = _interopRequireDefault(_defaults);
+	
+	var _common = __webpack_require__(5);
+	
+	var _common2 = _interopRequireDefault(_common);
+	
+	var _readyTakeRules = __webpack_require__(15);
+	
+	var _readyTakeRules2 = _interopRequireDefault(_readyTakeRules);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	;
+
+/***/ },
+/* 29 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+		value: true
+	});
+	
+	exports.default = function (putDeck) {
+	
+		var _stepType = _share2.default.get('stepType');
+	
+		var rulesCorrect = true;
+	
+		var _deckId = putDeck[0].card.parent;
+		var _deck_departure = _deck3.default.getDeckById(_deckId);
+	
+		rulesCorrect = rulesCorrect && !this.locked;
+	
+		if (_stepType != _defaults2.default.stepType) {
+	
+			// Нестандартный ход (autosteps)
+			rulesCorrect = rulesCorrect && _field2.default.autoSteps && _field2.default.autoSteps[_stepType] ? _field2.default.autoSteps[_stepType].manual({
+				putDeck: putDeck,
+				to: this
+			}) : false;
+		} else {
+	
+			var _link = null; // deckName
+			var _deck = this;
+	
+			for (var ruleIndex in this.putRules) {
+	
+				if (rulesCorrect) {
+	
+					if (_link) {
+						_deck = _deck3.default.getDeck(_link);
+					}
+	
+					var ruleName = this.putRules[ruleIndex];
+	
+					if (_readyPutRules2.default[ruleName]) {
+	
+						var _param = {
+							from: {
+								deckId: _deckId,
+								deck: _deck_departure
+							},
+							putDeck: putDeck,
+							cards: _deck.cards,
+							to: _deck,
+							link: _link
+							// rulesArgs : putRules[ruleName]
+						};
+						rulesCorrect = rulesCorrect && _readyPutRules2.default[ruleName](_param);
+						_link = _param.link;
+					} else {
+						console.warn('putRule:', ruleName, 'not exists');
+						rulesCorrect = false;
+					}
+				}
+			}
+		}
+	
+		return rulesCorrect;
+	};
+	
+	var _share = __webpack_require__(1);
+	
+	var _share2 = _interopRequireDefault(_share);
+	
+	var _defaults = __webpack_require__(3);
+	
+	var _defaults2 = _interopRequireDefault(_defaults);
+	
+	var _field = __webpack_require__(9);
+	
+	var _field2 = _interopRequireDefault(_field);
+	
+	var _deck2 = __webpack_require__(11);
+	
+	var _deck3 = _interopRequireDefault(_deck2);
+	
+	var _readyPutRules = __webpack_require__(13);
+	
+	var _readyPutRules2 = _interopRequireDefault(_readyPutRules);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	;
+
+/***/ },
+/* 30 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+		value: true
+	});
+	
+	exports.default = function (name) {
+		// TODO
+	
+		var _name = _common2.default.validateCardName(name); // {color, rank}
+	
+		if (_name) {
+	
+			var _id = 'card_' + _common2.default.genId(),
+			    _card = {
+				id: _id,
+				name: name,
+				type: 'card',
+				// domElement : domElement,
+				visible: true,
+				// parent  : _parent,
+				flip: false
+			};
+			_card.parent = this.getId();
+	
+			_event2.default.dispatch('addCardEl', _card);
+	
+			var _elements = _share2.default.get('elements');
+			_elements[_id] = _card;
+			_share2.default.set('elements', _elements);
+	
+			this.Push([_card]);
+			this.flipCheck();
+			this.Redraw();
+	
+			return _card;
+		}
+	
+		return false;
+	};
+	
+	var _event = __webpack_require__(2);
+	
+	var _event2 = _interopRequireDefault(_event);
+	
+	var _share = __webpack_require__(1);
+	
+	var _share2 = _interopRequireDefault(_share);
+	
+	var _common = __webpack_require__(5);
+	
+	var _common2 = _interopRequireDefault(_common);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
 	;
 	
-	// var getName = (el)=>{
-	// 	return typeof el == "string" ? el : typeof el != "undefined" && typeof el.name == "string" ? el.name : null;
+	// class card {
+	
+	// 	constructor(e) {
+	// 		this.id      = e.id;
+	// 		this.name    = e.name;
+	// 		this.type    = 'card';
+	// 		this.visible = true;
+	// 		this.flip    = false;
+	// 	}
+	
+	// 	set domElement(e) {
+	
+	// 	}
+	
+	// 	get domElement() {
+	// 		return null;
+	// 	}
 	// };
-	
-	// -------------------------------------------------------------------------------------------------------------------
 
 /***/ },
-/* 37 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	Object.defineProperty(exports, "__esModule", {
-		value: true
-	});
-	
-	var _mapFallRelations = __webpack_require__(38);
-	
-	var _mapFallRelations2 = _interopRequireDefault(_mapFallRelations);
-	
-	var _mapAroundRelations = __webpack_require__(40);
-	
-	var _mapAroundRelations2 = _interopRequireDefault(_mapAroundRelations);
-	
-	var _mapBesideRelations = __webpack_require__(41);
-	
-	var _mapBesideRelations2 = _interopRequireDefault(_mapBesideRelations);
-	
-	var _lineBesideRelations = __webpack_require__(42);
-	
-	var _lineBesideRelations2 = _interopRequireDefault(_lineBesideRelations);
-	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-	
-	exports.default = {
-		mapFallRelations: _mapFallRelations2.default,
-		mapAroundRelations: _mapAroundRelations2.default,
-		mapBesideRelations: _mapBesideRelations2.default,
-		lineBesideRelations: _lineBesideRelations2.default
-	};
-
-/***/ },
-/* 38 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	Object.defineProperty(exports, "__esModule", {
-		value: true
-	});
-	
-	var _mapCommon = __webpack_require__(39);
-	
-	var _mapCommon2 = _interopRequireDefault(_mapCommon);
-	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-	
-	// map froup generator fall relations
-	
-	// const directions = [
-	// 	'left' ,
-	// 	'rigth',
-	// 	'up'   ,
-	// 	'down'
-	// ];
-	
-	var opposite = [
-	// ['left', 'right'],
-	// ['up'  , 'down' ]
-	{ left: 'right' }, { right: 'left' }, { up: 'down' }, { down: 'up' }];
-	
-	exports.default = function (e) {
-		// {x, y, map, mapSize, el, data}
-	
-		var _relations = [];
-	
-		var _directions = [];
-		for (var i in e.data.directions) {
-			if (_directions.indexOf(e.data.directions[i]) < 0 // этого направления ещё не было
-			&& _directions.indexOf(opposite[e.data.directions[i]]) < 0 // противоположного направления тоже не было
-			) {
-					_directions.push(e.data.directions[i]);
-				}
-		}
-	
-		for (var _i in _directions) {
-			switch (_directions[_i]) {
-				case 'left':
-					var x = (e.x | 0) + _mapCommon2.default.beSide.left.x,
-					    y = (e.y | 0) + _mapCommon2.default.beSide.left.y;
-					if (_mapCommon2.default.exist(x, y, e.mapSize, e.map)) {
-						_relations.push({
-							name: 'fall',
-							direction: 'left',
-							to: e.map[y][x].name
-						});
-					}
-					break;
-				case 'right':
-					var x = (e.x | 0) + _mapCommon2.default.beSide.right.x,
-					    y = (e.y | 0) + _mapCommon2.default.beSide.right.y;
-					if (_mapCommon2.default.exist(x, y, e.mapSize, e.map)) {
-						_relations.push({
-							name: 'fall',
-							direction: 'right',
-							to: e.map[y][x].name
-						});
-					}
-					break;
-				case 'up':
-					var x = (e.x | 0) + _mapCommon2.default.beSide.up.x,
-					    y = (e.y | 0) + _mapCommon2.default.beSide.up.y;
-					if (_mapCommon2.default.exist(x, y, e.mapSize, e.map)) {
-						_relations.push({
-							name: 'fall',
-							direction: 'up',
-							to: e.map[y][x].name
-						});
-					}
-					break;
-				case 'down':
-					var x = (e.x | 0) + _mapCommon2.default.beSide.down.x,
-					    y = (e.y | 0) + _mapCommon2.default.beSide.down.y;
-					if (_mapCommon2.default.exist(x, y, e.mapSize, e.map)) {
-						_relations.push({
-							name: 'fall',
-							direction: 'down',
-							to: e.map[y][x].name
-						});
-					}
-					break;
-			}
-		}
-	
-		return _relations;
-	};
-
-/***/ },
-/* 39 */
-/***/ function(module, exports) {
-
-	'use strict';
-	
-	Object.defineProperty(exports, "__esModule", {
-		value: true
-	});
-	var beSide = {
-		left: { x: -1, y: 0 },
-		right: { x: 1, y: 0 },
-		up: { x: 0, y: -1 },
-		down: { x: 0, y: 1 }
-	};
-	
-	var inMap = function inMap(x, y, mapSize) {
-		return x >= 0 && y >= 0 && x < mapSize.width && y < mapSize.height;
-	};
-	
-	var exist = function exist(x, y, mapSize, map) {
-		return inMap(x, y, mapSize) && map[y][x];
-	};
-	
-	var mapSize = function mapSize(map) {
-	
-		var _mapSize = {
-			width: map[0].length, //MAX LENGTH
-			height: map.length
-		};
-	
-		map.forEach(function (e) {
-			_mapSize.width = Math.max(_mapSize.width, e.length);
-		});
-	
-		return _mapSize;
-	};
-	
-	// IDs             TYPEs
-	// CLT TOP CRT ... CORN SIDE CORN
-	// LFT     RGT ... SIDE      SIDE
-	// CLB BTM CRB ... CORN SIDE CORN
-	var aroundRelations = [{ x: -1, y: -1, type: 'corn', id: 'clt' }, { x: 0, y: -1, type: 'side', id: 'top' }, { x: 1, y: -1, type: 'corn', id: 'crt' }, { x: -1, y: 0, type: 'side', id: 'lft' }, { x: 1, y: 0, type: 'side', id: 'rgt' }, { x: -1, y: 1, type: 'corn', id: 'clb' }, { x: 0, y: 1, type: 'side', id: 'btm' }, { x: 1, y: 1, type: 'corn', id: 'crb' }];
-	
-	exports.default = {
-		beSide: beSide,
-		mapSize: mapSize,
-		inMap: inMap,
-		aroundRelations: aroundRelations,
-		exist: exist
-	};
-
-/***/ },
-/* 40 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	Object.defineProperty(exports, "__esModule", {
-		value: true
-	});
-	
-	var _mapCommon = __webpack_require__(39);
-	
-	var _mapCommon2 = _interopRequireDefault(_mapCommon);
-	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-	
-	exports.default = function (e) {
-		// {x, y, map, mapSize, el, data}
-	
-		var _relations = [];
-	
-		for (var i in _mapCommon2.default.aroundRelations) {
-	
-			if (_mapCommon2.default.inMap(e.x + _mapCommon2.default.aroundRelations[i].x, e.y + _mapCommon2.default.aroundRelations[i].y, e.mapSize) && e.map[e.y + _mapCommon2.default.aroundRelations[i].y][e.x + _mapCommon2.default.aroundRelations[i].x]) {
-				_relations.push({
-					name: 'around',
-					type: _mapCommon2.default.aroundRelations[i].type,
-					id: _mapCommon2.default.aroundRelations[i].id,
-					to: e.map[e.y + _mapCommon2.default.aroundRelations[i].y][e.x + _mapCommon2.default.aroundRelations[i].x].name
-				});
-			}
-		}
-	
-		return _relations;
-	};
-
-/***/ },
-/* 41 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	Object.defineProperty(exports, "__esModule", {
-		value: true
-	});
-	
-	var _mapCommon = __webpack_require__(39);
-	
-	var _mapCommon2 = _interopRequireDefault(_mapCommon);
-	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-	
-	// let getBeside = (_x, _y, mapSize, map, el, type)=>{
-	
-	// 	if(typeof el[type] == "string") {
-	
-	// 		switch(el[type]) {
-	// 			case 'left':
-	// 				var x = _x + mapCommon.beSide.left.x,
-	// 					y = _y + mapCommon.beSide.left.y;
-	// 				return mapCommon.exist(x, y, mapSize, map)
-	// 			 		? map[y][x].name
-	// 			 		: null;
-	// 			case 'rigth':
-	// 				var x = _x + mapCommon.beSide.rigth.x,
-	// 					y = _y + mapCommon.beSide.rigth.y;
-	// 				return mapCommon.exist(x, y, mapSize, map)
-	// 			 		? map[y][x].name
-	// 			 		: null;
-	// 			case 'up':
-	// 				var x = _x + mapCommon.beSide.up.x,
-	// 					y = _y + mapCommon.beSide.up.y;
-	// 				return mapCommon.exist(x, y, mapSize, map)
-	// 			 		? map[y][x].name
-	// 			 		: null;
-	// 			case 'down':
-	// 				var x = _x + mapCommon.beSide.down.x,
-	// 					y = _y + mapCommon.beSide.down.y;
-	// 				return mapCommon.exist(x, y, mapSize, map)
-	// 			 		? map[y][x].name
-	// 			 		: null;
-	// 			default:
-	// 				return null;
-	// 		}
-	// 	};
-	// 	return null;
-	// };
-	
-	exports.default = function (e) {
-		// {x, y, map, mapSize, el, data}
-	
-		var _relations = [];
-	
-		// var _next = getBeside(e.x, e.y, e.mapSize, e.map, e.el, 'next') && (
-		// 	_relations.push({name: 'next', to: _next})
-		// );
-		// var _prev = getBeside(e.x, e.y, e.mapSize, e.map, e.el, 'prev') && (
-		// 	_relations.push({name: 'prev', to: _prev})
-		// );
-	
-		return _relations;
-	};
-
-/***/ },
-/* 42 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	Object.defineProperty(exports, "__esModule", {
-		value: true
-	});
-	
-	var _mapCommon = __webpack_require__(39);
-	
-	var _mapCommon2 = _interopRequireDefault(_mapCommon);
-	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-	
-	exports.default = function (e) {
-		// {deckIndex, count, decks, data}
-	
-		var _relations = [];
-	
-		var _prev = e.deckIndex > 0 ? e.decks[(e.deckIndex | 0) - 1].name : null;
-		if (_prev) {
-			_relations.push({
-				name: 'beside',
-				type: 'prev',
-				to: _prev
-			});
-		}
-	
-		var _next = e.deckIndex < e.count - 1 ? e.decks[(e.deckIndex | 0) + 1].name : null;
-		if (_next) {
-			_relations.push({
-				name: 'beside',
-				type: 'next',
-				to: _next
-			});
-		}
-	
-		return _relations;
-	};
-
-/***/ },
-/* 43 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/*
-	 * сгенерировать ряд из N карт
-	 */
-	
-	'use strict';
-	
-	Object.defineProperty(exports, "__esModule", {
-		value: true
-	});
-	
-	exports.default = function (e) {
-	
-		// {
-		// 	type	 : "line",
-		// 	count	: int,
-		// 	relations : {
-		// 		"beside" : true
-		// 	}
-		// }
-	
-		// direction <- placement: {x, y}
-	
-		var _count = e.count;
-		var _decks = [];
-	
-		for (var deckIndex = 0; deckIndex < _count; deckIndex += 1) {
-			var _deckName = this.name + "_deck" + (deckIndex + 1);
-	
-			var _deck = {
-				name: _deckName
-			};
-	
-			_decks.push(_deck);
-		}
-	
-		if (e.first) {
-	
-			var _deck2 = _decks[0];
-	
-			for (var propName in e.first) {
-				_deck2[propName] = e.first[propName];
-			}
-		}
-	
-		_decks[0].tag = 'first';
-	
-		if (e.last) {
-	
-			var _deck3 = _decks[_decks.length - 1];
-	
-			for (var _propName in e.first) {
-				_deck3[_propName] = e.first[_propName];
-			}
-		}
-	
-		_decks[_decks.length - 1].tag = 'last';
-	
-		for (var _deckIndex in _decks) {
-			//  ---------------------------------------------------------
-			var _relations = [];
-	
-			var _relGenerators = {
-				"beside": "lineBesideRelations"
-			};
-	
-			if (e.relations) {
-	
-				for (var relGenName in _relGenerators) {
-	
-					// TODO
-					if (e.relations[relGenName]) {
-						_relations = _relations.concat(_relationsGenerator2.default[_relGenerators[relGenName]]({
-							deckIndex: _deckIndex,
-							count: _count,
-							decks: _decks,
-							data: e.relations[relGenName]
-						}));
-					};
-				};
-			};
-	
-			_decks[_deckIndex].relations = _relations;
-			//  ---------------------------------------------------------
-		}
-	
-		return _decks;
-	};
-	
-	var _relationsGenerator = __webpack_require__(37);
-	
-	var _relationsGenerator2 = _interopRequireDefault(_relationsGenerator);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-/***/ },
-/* 44 */
+/* 31 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -5732,11 +4842,11 @@ var SolitaireEngine =
 	
 	var _common2 = _interopRequireDefault(_common);
 	
-	var _forceMove = __webpack_require__(20);
+	var _forceMove = __webpack_require__(21);
 	
 	var _forceMove2 = _interopRequireDefault(_forceMove);
 	
-	var _deck = __webpack_require__(10);
+	var _deck = __webpack_require__(11);
 	
 	var _deck2 = _interopRequireDefault(_deck);
 	
@@ -6000,7 +5110,7 @@ var SolitaireEngine =
 	exports.default = _history;
 
 /***/ },
-/* 45 */
+/* 32 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -6038,7 +5148,7 @@ var SolitaireEngine =
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 /***/ },
-/* 46 */
+/* 33 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -6068,7 +5178,7 @@ var SolitaireEngine =
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 /***/ },
-/* 47 */
+/* 34 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -6092,7 +5202,7 @@ var SolitaireEngine =
 	};
 
 /***/ },
-/* 48 */
+/* 35 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -6124,7 +5234,1268 @@ var SolitaireEngine =
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 /***/ },
+/* 36 */
+/***/ function(module, exports) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+		value: true
+	});
+	
+	exports.default = function (cardNames) {
+	
+		var deckIndex = [];
+		var _decksLength = 0;
+	
+		// создаём карты из списка cardNames в порядке очерёдности колод (по одной карте)
+		for (var i in this.decks) {
+			_decksLength += 1;
+			deckIndex.push(null);
+		};
+	
+		// если параметр groupIndex не выходит за рамки занимаем соответствующий порядковый номер
+		for (var i in this.decks) {
+			if (this.decks[i].groupIndex && this.decks[i].groupIndex <= _decksLength) {
+				deckIndex[this.decks[i].groupIndex - 1] = true;
+			};
+		};
+	
+		// если нет параметра groupIndex (начинается с 1) ставим первый свободный порядковый номер
+		for (var i in this.decks) {
+			if (!this.decks[i].groupIndex) {
+				var _index = 0;
+				for (; deckIndex[_index] != null; _index += 1) {}
+				deckIndex[_index] = this.decks[i].getId();
+			};
+		};
+	
+		// если параметр groupIndex не выходит за рамки ставим соответствующий порядковый номер
+		for (var i in this.decks) {
+			if (this.decks[i].groupIndex && this.decks[i].groupIndex <= _decksLength) {
+				deckIndex[this.decks[i].groupIndex - 1] = this.decks[i].getId();
+			};
+		};
+	
+		// если параметр groupIndex выходит за рамки запоминаем...
+		var _decksWithBigIndex = {};
+		for (var i in this.decks) {
+			if (this.decks[i].groupIndex && this.decks[i].groupIndex > _decksLength) {
+				_decksWithBigIndex[this.decks[i].groupIndex - 1] = this.decks[i].getId();
+			};
+		};
+		// ...и сортируем
+		for (var i in _decksWithBigIndex) {
+			var _index = 0;
+			for (; deckIndex[_index] != null; _index += 1) {}
+			deckIndex[_index] = this.decks[_decksWithBigIndex[i]].getId();
+		};
+	
+		// сморим являются ли элементы названиями карт (строкой)
+		var _checkDeck = true;
+		for (var i in cardNames) {
+			_checkDeck = _checkDeck && typeof cardNames[i] == 'string';
+		};
+	
+		// циклично добавляет карты в колоды в группе (в порядке добавления)
+		if (_checkDeck) {
+	
+			for (var i in cardNames) {
+	
+				var _index = deckIndex[i % deckIndex.length];
+	
+				this.decks[_index].genCardByName(cardNames[i]);
+			}
+			// если нужно добавить несколько групп карт
+		} else {
+	
+			for (var i in cardNames) {
+				if (i < deckIndex.length) {
+	
+					// console.log('fillDeck', deckIndex[i].name, cardNames[i]);
+	
+					this.decks[deckIndex[i]].Fill(cardNames[i]);
+				};
+			};
+		};
+	};
+	
+	;
+
+/***/ },
+/* 37 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+		value: true
+	});
+	
+	exports.default = function (_a) {
+	
+		var _decks = this.getDecks();
+		// var _index = {}
+	
+		if (typeof _a.decks == 'undefined' || typeof _a.decks == 'number') {
+			_a.decks = [];
+		}
+	
+		for (var i in _decks) {
+	
+			if (!_a.decks[i]) {
+				_a.decks[i] = {};
+			};
+	
+			// changed values
+			if (_a.position && _a.decks[i].parentPosition) {
+				_a.decks[i].parentPosition = {
+					x: _a.position.x,
+					y: _a.position.y
+				};
+			};
+	
+			if (_a.rotate) {
+				_a.decks[i].rotate = _a.rotate;
+			};
+			if (_a.paddingX) {
+				_a.decks[i].paddingX = _a.paddingX;
+			};
+			if (_a.paddingY) {
+				_a.decks[i].paddingY = _a.paddingY;
+			};
+			if (_a.flipPaddingX) {
+				_a.decks[i].flipPaddingX = _a.flipPaddingX;
+			};
+			if (_a.flipPaddingY) {
+				_a.decks[i].flipPaddingY = _a.flipPaddingY;
+			};
+			if (!_a.decks[i].position) {
+				_a.decks[i].position = {};
+			};
+			if (!_a.decks[i].parentPosition) {
+				_a.decks[i].parentPosition = {};
+			};
+	
+			if (!_a.decks[i].parentPosition.x && a.position && a.position.x && typeof a.position.x == 'number') {
+				_a.decks[i].parentPosition.x = _a.position.x;
+			};
+	
+			if (!_a.decks[i].parentPosition.y && a.position && a.position.y && typeof a.position.y == 'number') {
+				_a.decks[i].parentPosition.y = _a.position.y;
+			};
+	
+			if (_a.placement) {
+	
+				var _card = _defaults2.default.card;
+				if (_a.placement.x) _a.decks[i].position.x = (_a.placement.x + _card.width) * i;
+				if (_a.placement.y) _a.decks[i].position.y = (_a.placement.y + _card.height) * i;
+			};
+	
+			if (!_a.decks[i].rotate && _a.rotate && typeof _a.rotate == 'number') {
+				_a.decks[i].rotate = _a.rotate;
+			};
+			if (!_a.decks[i].paddingX && _a.paddingX && typeof _a.paddingX == 'number') {
+				_a.decks[i].paddingX = _a.paddingX;
+			};
+			if (!_a.decks[i].paddingY && _a.paddingY && typeof _a.paddingY == 'number') {
+				_a.decks[i].paddingY = _a.paddingY;
+			};
+			if (!_a.decks[i].flipPaddingX && _a.flipPaddingX && typeof _a.flipPaddingX == 'number') {
+				_a.decks[i].flipPaddingX = _a.flipPaddingX;
+			};
+			if (!_a.decks[i].flipPaddingY && _a.flipPaddingY && typeof _a.flipPaddingY == 'number') {
+				_a.decks[i].flipPaddingY = _a.flipPaddingY;
+			};
+	
+			_decks[i].Redraw(_a.decks[i]);
+		};
+	};
+	
+	var _defaults = __webpack_require__(3);
+	
+	var _defaults2 = _interopRequireDefault(_defaults);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	;
+
+/***/ },
+/* 38 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/*
+	 * генерация стопок в группах
+	 */
+	
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+		value: true
+	});
+	
+	var _countGenerator = __webpack_require__(39);
+	
+	var _countGenerator2 = _interopRequireDefault(_countGenerator);
+	
+	var _fanGenerator = __webpack_require__(40);
+	
+	var _fanGenerator2 = _interopRequireDefault(_fanGenerator);
+	
+	var _mapGenerator = __webpack_require__(41);
+	
+	var _mapGenerator2 = _interopRequireDefault(_mapGenerator);
+	
+	var _lineGenerator = __webpack_require__(48);
+	
+	var _lineGenerator2 = _interopRequireDefault(_lineGenerator);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	exports.default = {
+		"count": _countGenerator2.default,
+		"fan": _fanGenerator2.default,
+		"map": _mapGenerator2.default,
+		"line": _lineGenerator2.default
+	};
+
+/***/ },
+/* 39 */
+/***/ function(module, exports) {
+
+	/*
+	 * сгенерировать ряд из N карт
+	 */
+	
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+		value: true
+	});
+	
+	exports.default = function (e) {
+	
+		// {
+		// 	type   : "count",
+		// 	count  : int,
+		// }
+	
+		var _count = e.count;
+		var _decks = [];
+	
+		for (var deckIndex = 0; deckIndex < _count; deckIndex += 1) {
+			var _deckName = this.name + "_deck" + (deckIndex + 1);
+			_decks.push({
+				name: _deckName
+			});
+		}
+	
+		return _decks;
+	};
+
+/***/ },
+/* 40 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/*
+	 * сгенерировать группу для полумесяца
+	 */
+	
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+		value: true
+	});
+	
+	exports.default = function (e) {
+	
+		// {
+		// 	type   : "fan",
+		// 	count  : int,
+		// 	radius : int,
+		// 	center : {
+		// 		x : int,
+		// 		y : int
+		// 	}
+		// }
+	
+		this.placement = {
+			x: 0,
+			y: 0
+		};
+	
+		//              b
+		//       C  ..`:   A = sin(b) * C
+		//     ...``   :B  B = cos(b) * C
+		// a.``.......+:
+		//        A     y 90deg
+	
+		var _decks = [];
+		var _count = typeof e.count == "number" ? e.count : 3; //16
+		var _step = 180 / _count;
+		var _radius = typeof e.radius == "number" ? e.radius : 100; //405;
+		var _center = typeof e.center != "undefined" && typeof e.center.x != "undefined" && typeof e.center.y != "undefined" ? e.center : {
+			"x": 0,
+			"y": 0
+		};
+		var _angle = _step / 2 + 270;
+		var _deg = Math.PI / 180;
+	
+		for (var deckIndex = 0; deckIndex < _count; deckIndex += 1) {
+	
+			var _a = Math.sin(_angle * _deg) * _radius;
+			var _b = Math.cos(_angle * _deg) * _radius;
+			if (_angle > 360) _angle -= 360;
+			_decks.push({
+				"name": this.name + "_deck" + deckIndex,
+				"rotate": _angle,
+				"position": {
+					"x": _center.x + _a - _defaults2.default.card.width / 2,
+					"y": _center.y - _b - _defaults2.default.card.height / 2
+				}
+			});
+			_angle += _step;
+		}
+	
+		return _decks;
+	};
+	
+	var _defaults = __webpack_require__(3);
+	
+	var _defaults2 = _interopRequireDefault(_defaults);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	;
+
+/***/ },
+/* 41 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/*
+	 * сгенерировать группу из матрицы
+	 */
+	
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+		value: true
+	});
+	
+	exports.default = function (e) {
+	
+		// {
+		// 	type            : "map",
+		// 	map             : [[string|{name, next, prev}]],
+		// 	relations       : {
+		// 		around : true,
+		// 		beside : ???,
+		// 		fall   : {
+		// 			directories : [
+		// 				"down",
+		// 				"right"
+		// 			]
+		// 		}
+		// 	}
+		// }
+	
+		var _decks = [];
+	
+		var _default_placement = {
+			x: 0,
+			y: 0
+		};
+	
+		var _placement = this.placement ? {
+			x: typeof this.placement.x != "undefined" ? this.placement.x : _default_placement.x,
+			y: typeof this.placement.y != "undefined" ? this.placement.y : _default_placement.y
+		} : _default_placement;
+	
+		this.placement = { x: 0, y: 0 };
+	
+		var _index = 1;
+	
+		var _mapSize = _mapCommon2.default.mapSize(e.map);
+	
+		// {name: 'groupName_deck_0_0'}
+		for (var y in e.map) {
+			for (var x in e.map[y]) {
+	
+				if (typeof e.map[y][x] == "boolean" && e.map[y][x] || typeof e.map[y][x] == "number" && e.map[y][x] > 0) {
+					e.map[y][x] = {};
+				};
+	
+				if (typeof e.map[y][x] == "string") {
+					e.map[y][x] = { name: e.map[y][x] };
+				} else if (e.map[y][x] && typeof e.map[y][x] != "undefined" && typeof e.map[y][x].name != "string") {
+					e.map[y][x].name = this.name + "_deck_" + x + "_" + y;
+				};
+			}
+		}
+	
+		for (var _y in e.map) {
+			for (var _x in e.map[_y]) {
+	
+				var x = _x | 0,
+				    y = _y | 0;
+	
+				var _el = e.map[y][x];
+	
+				if (_el) {
+	
+					var _deck = {
+						"name": e.map[y][x].name, // (this.name + "_deck" + _index) OR (this.name + '_' + e.map[y][x])
+						"position": {
+							"x": x * ((_defaults2.default.card.width | 0) + (_placement.x | 0)),
+							"y": y * ((_defaults2.default.card.height | 0) + (_placement.y | 0))
+						}
+					};
+	
+					//  ---------------------------------------------------------
+					var _relations = [];
+	
+					var _relGenerators = {
+						"around": "mapAroundRelations",
+						"beside": "mapBesideRelations",
+						"fall": "mapFallRelations"
+					};
+	
+					if (e.relations) {
+	
+						for (var relGenName in _relGenerators) {
+	
+							if (e.relations[relGenName]) {
+								_relations = _relations.concat(_relationsGenerator2.default[_relGenerators[relGenName]]({
+									x: x, y: y,
+									map: e.map,
+									mapSize: _mapSize,
+									el: _el,
+									data: e.relations[relGenName]
+								}));
+							};
+						};
+					};
+	
+					_deck.relations = _relations;
+					//  ---------------------------------------------------------
+	
+					_decks.push(_deck);
+					_index += 1;
+				}
+			}
+		}
+	
+		return _decks;
+	};
+	
+	var _defaults = __webpack_require__(3);
+	
+	var _defaults2 = _interopRequireDefault(_defaults);
+	
+	var _relationsGenerator = __webpack_require__(42);
+	
+	var _relationsGenerator2 = _interopRequireDefault(_relationsGenerator);
+	
+	var _mapCommon = __webpack_require__(44);
+	
+	var _mapCommon2 = _interopRequireDefault(_mapCommon);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	;
+	
+	// var getName = (el)=>{
+	// 	return typeof el == "string" ? el : typeof el != "undefined" && typeof el.name == "string" ? el.name : null;
+	// };
+	
+	// -------------------------------------------------------------------------------------------------------------------
+
+/***/ },
+/* 42 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+		value: true
+	});
+	
+	var _mapFallRelations = __webpack_require__(43);
+	
+	var _mapFallRelations2 = _interopRequireDefault(_mapFallRelations);
+	
+	var _mapAroundRelations = __webpack_require__(45);
+	
+	var _mapAroundRelations2 = _interopRequireDefault(_mapAroundRelations);
+	
+	var _mapBesideRelations = __webpack_require__(46);
+	
+	var _mapBesideRelations2 = _interopRequireDefault(_mapBesideRelations);
+	
+	var _lineBesideRelations = __webpack_require__(47);
+	
+	var _lineBesideRelations2 = _interopRequireDefault(_lineBesideRelations);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	exports.default = {
+		mapFallRelations: _mapFallRelations2.default,
+		mapAroundRelations: _mapAroundRelations2.default,
+		mapBesideRelations: _mapBesideRelations2.default,
+		lineBesideRelations: _lineBesideRelations2.default
+	};
+
+/***/ },
+/* 43 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+		value: true
+	});
+	
+	var _mapCommon = __webpack_require__(44);
+	
+	var _mapCommon2 = _interopRequireDefault(_mapCommon);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	// map froup generator fall relations
+	
+	// const directions = [
+	// 	'left' ,
+	// 	'rigth',
+	// 	'up'   ,
+	// 	'down'
+	// ];
+	
+	var opposite = [
+	// ['left', 'right'],
+	// ['up'  , 'down' ]
+	{ left: 'right' }, { right: 'left' }, { up: 'down' }, { down: 'up' }];
+	
+	exports.default = function (e) {
+		// {x, y, map, mapSize, el, data}
+	
+		var _relations = [];
+	
+		var _directions = [];
+		for (var i in e.data.directions) {
+			if (_directions.indexOf(e.data.directions[i]) < 0 // этого направления ещё не было
+			&& _directions.indexOf(opposite[e.data.directions[i]]) < 0 // противоположного направления тоже не было
+			) {
+					_directions.push(e.data.directions[i]);
+				}
+		}
+	
+		for (var _i in _directions) {
+			switch (_directions[_i]) {
+				case 'left':
+					var x = (e.x | 0) + _mapCommon2.default.beSide.left.x,
+					    y = (e.y | 0) + _mapCommon2.default.beSide.left.y;
+					if (_mapCommon2.default.exist(x, y, e.mapSize, e.map)) {
+						_relations.push({
+							name: 'fall',
+							direction: 'left',
+							to: e.map[y][x].name
+						});
+					}
+					break;
+				case 'right':
+					var x = (e.x | 0) + _mapCommon2.default.beSide.right.x,
+					    y = (e.y | 0) + _mapCommon2.default.beSide.right.y;
+					if (_mapCommon2.default.exist(x, y, e.mapSize, e.map)) {
+						_relations.push({
+							name: 'fall',
+							direction: 'right',
+							to: e.map[y][x].name
+						});
+					}
+					break;
+				case 'up':
+					var x = (e.x | 0) + _mapCommon2.default.beSide.up.x,
+					    y = (e.y | 0) + _mapCommon2.default.beSide.up.y;
+					if (_mapCommon2.default.exist(x, y, e.mapSize, e.map)) {
+						_relations.push({
+							name: 'fall',
+							direction: 'up',
+							to: e.map[y][x].name
+						});
+					}
+					break;
+				case 'down':
+					var x = (e.x | 0) + _mapCommon2.default.beSide.down.x,
+					    y = (e.y | 0) + _mapCommon2.default.beSide.down.y;
+					if (_mapCommon2.default.exist(x, y, e.mapSize, e.map)) {
+						_relations.push({
+							name: 'fall',
+							direction: 'down',
+							to: e.map[y][x].name
+						});
+					}
+					break;
+			}
+		}
+	
+		return _relations;
+	};
+
+/***/ },
+/* 44 */
+/***/ function(module, exports) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+		value: true
+	});
+	var beSide = {
+		left: { x: -1, y: 0 },
+		right: { x: 1, y: 0 },
+		up: { x: 0, y: -1 },
+		down: { x: 0, y: 1 }
+	};
+	
+	var inMap = function inMap(x, y, mapSize) {
+		return x >= 0 && y >= 0 && x < mapSize.width && y < mapSize.height;
+	};
+	
+	var exist = function exist(x, y, mapSize, map) {
+		return inMap(x, y, mapSize) && map[y][x];
+	};
+	
+	var mapSize = function mapSize(map) {
+	
+		var _mapSize = {
+			width: map[0].length, //MAX LENGTH
+			height: map.length
+		};
+	
+		map.forEach(function (e) {
+			_mapSize.width = Math.max(_mapSize.width, e.length);
+		});
+	
+		return _mapSize;
+	};
+	
+	// IDs             TYPEs
+	// CLT TOP CRT ... CORN SIDE CORN
+	// LFT     RGT ... SIDE      SIDE
+	// CLB BTM CRB ... CORN SIDE CORN
+	var aroundRelations = [{ x: -1, y: -1, type: 'corn', id: 'clt' }, { x: 0, y: -1, type: 'side', id: 'top' }, { x: 1, y: -1, type: 'corn', id: 'crt' }, { x: -1, y: 0, type: 'side', id: 'lft' }, { x: 1, y: 0, type: 'side', id: 'rgt' }, { x: -1, y: 1, type: 'corn', id: 'clb' }, { x: 0, y: 1, type: 'side', id: 'btm' }, { x: 1, y: 1, type: 'corn', id: 'crb' }];
+	
+	exports.default = {
+		beSide: beSide,
+		mapSize: mapSize,
+		inMap: inMap,
+		aroundRelations: aroundRelations,
+		exist: exist
+	};
+
+/***/ },
+/* 45 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+		value: true
+	});
+	
+	var _mapCommon = __webpack_require__(44);
+	
+	var _mapCommon2 = _interopRequireDefault(_mapCommon);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	exports.default = function (e) {
+		// {x, y, map, mapSize, el, data}
+	
+		var _relations = [];
+	
+		for (var i in _mapCommon2.default.aroundRelations) {
+	
+			if (_mapCommon2.default.inMap(e.x + _mapCommon2.default.aroundRelations[i].x, e.y + _mapCommon2.default.aroundRelations[i].y, e.mapSize) && e.map[e.y + _mapCommon2.default.aroundRelations[i].y][e.x + _mapCommon2.default.aroundRelations[i].x]) {
+				_relations.push({
+					name: 'around',
+					type: _mapCommon2.default.aroundRelations[i].type,
+					id: _mapCommon2.default.aroundRelations[i].id,
+					to: e.map[e.y + _mapCommon2.default.aroundRelations[i].y][e.x + _mapCommon2.default.aroundRelations[i].x].name
+				});
+			}
+		}
+	
+		return _relations;
+	};
+
+/***/ },
+/* 46 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+		value: true
+	});
+	
+	var _mapCommon = __webpack_require__(44);
+	
+	var _mapCommon2 = _interopRequireDefault(_mapCommon);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	// let getBeside = (_x, _y, mapSize, map, el, type)=>{
+	
+	// 	if(typeof el[type] == "string") {
+	
+	// 		switch(el[type]) {
+	// 			case 'left':
+	// 				var x = _x + mapCommon.beSide.left.x,
+	// 					y = _y + mapCommon.beSide.left.y;
+	// 				return mapCommon.exist(x, y, mapSize, map)
+	// 			 		? map[y][x].name
+	// 			 		: null;
+	// 			case 'rigth':
+	// 				var x = _x + mapCommon.beSide.rigth.x,
+	// 					y = _y + mapCommon.beSide.rigth.y;
+	// 				return mapCommon.exist(x, y, mapSize, map)
+	// 			 		? map[y][x].name
+	// 			 		: null;
+	// 			case 'up':
+	// 				var x = _x + mapCommon.beSide.up.x,
+	// 					y = _y + mapCommon.beSide.up.y;
+	// 				return mapCommon.exist(x, y, mapSize, map)
+	// 			 		? map[y][x].name
+	// 			 		: null;
+	// 			case 'down':
+	// 				var x = _x + mapCommon.beSide.down.x,
+	// 					y = _y + mapCommon.beSide.down.y;
+	// 				return mapCommon.exist(x, y, mapSize, map)
+	// 			 		? map[y][x].name
+	// 			 		: null;
+	// 			default:
+	// 				return null;
+	// 		}
+	// 	};
+	// 	return null;
+	// };
+	
+	exports.default = function (e) {
+		// {x, y, map, mapSize, el, data}
+	
+		var _relations = [];
+	
+		// var _next = getBeside(e.x, e.y, e.mapSize, e.map, e.el, 'next') && (
+		// 	_relations.push({name: 'next', to: _next})
+		// );
+		// var _prev = getBeside(e.x, e.y, e.mapSize, e.map, e.el, 'prev') && (
+		// 	_relations.push({name: 'prev', to: _prev})
+		// );
+	
+		return _relations;
+	};
+
+/***/ },
+/* 47 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+		value: true
+	});
+	
+	var _mapCommon = __webpack_require__(44);
+	
+	var _mapCommon2 = _interopRequireDefault(_mapCommon);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	exports.default = function (e) {
+		// {deckIndex, count, decks, data}
+	
+		var _relations = [];
+	
+		var _prev = e.deckIndex > 0 ? e.decks[(e.deckIndex | 0) - 1].name : null;
+		if (_prev) {
+			_relations.push({
+				name: 'beside',
+				type: 'prev',
+				to: _prev
+			});
+		}
+	
+		var _next = e.deckIndex < e.count - 1 ? e.decks[(e.deckIndex | 0) + 1].name : null;
+		if (_next) {
+			_relations.push({
+				name: 'beside',
+				type: 'next',
+				to: _next
+			});
+		}
+	
+		return _relations;
+	};
+
+/***/ },
+/* 48 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/*
+	 * сгенерировать ряд из N карт
+	 */
+	
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+		value: true
+	});
+	
+	exports.default = function (e) {
+	
+		// {
+		// 	type	 : "line",
+		// 	count	: int,
+		// 	relations : {
+		// 		"beside" : true
+		// 	}
+		// }
+	
+		// direction <- placement: {x, y}
+	
+		var _count = e.count;
+		var _decks = [];
+	
+		for (var deckIndex = 0; deckIndex < _count; deckIndex += 1) {
+			var _deckName = this.name + "_deck" + (deckIndex + 1);
+	
+			var _deck = {
+				name: _deckName
+			};
+	
+			_decks.push(_deck);
+		}
+	
+		if (e.first) {
+	
+			var _deck2 = _decks[0];
+	
+			for (var propName in e.first) {
+				_deck2[propName] = e.first[propName];
+			}
+		}
+	
+		_decks[0].tag = 'first';
+	
+		if (e.last) {
+	
+			var _deck3 = _decks[_decks.length - 1];
+	
+			for (var _propName in e.first) {
+				_deck3[_propName] = e.first[_propName];
+			}
+		}
+	
+		_decks[_decks.length - 1].tag = 'last';
+	
+		for (var _deckIndex in _decks) {
+			//  ---------------------------------------------------------
+			var _relations = [];
+	
+			var _relGenerators = {
+				"beside": "lineBesideRelations"
+			};
+	
+			if (e.relations) {
+	
+				for (var relGenName in _relGenerators) {
+	
+					// TODO
+					if (e.relations[relGenName]) {
+						_relations = _relations.concat(_relationsGenerator2.default[_relGenerators[relGenName]]({
+							deckIndex: _deckIndex,
+							count: _count,
+							decks: _decks,
+							data: e.relations[relGenName]
+						}));
+					};
+				};
+			};
+	
+			_decks[_deckIndex].relations = _relations;
+			//  ---------------------------------------------------------
+		}
+	
+		return _decks;
+	};
+	
+	var _relationsGenerator = __webpack_require__(42);
+	
+	var _relationsGenerator2 = _interopRequireDefault(_relationsGenerator);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+/***/ },
 /* 49 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+		value: true
+	});
+	
+	var _fallAutoStep = __webpack_require__(50);
+	
+	var _fallAutoStep2 = _interopRequireDefault(_fallAutoStep);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	// import A         from 'A';
+	// import B         from 'B';
+	// import C         from 'C';
+	
+	var autosteps = {
+		fallAutoStep: _fallAutoStep2.default
+	};
+	
+	exports.default = function (autoStepsParams) {
+	
+		var _autosteps = {};
+	
+		for (var autoStepName in autoStepsParams) {
+	
+			if (autosteps[autoStepName]) {
+	
+				var _autostep = new autosteps[autoStepName](autoStepsParams[autoStepName]);
+				_autostep.init(autoStepName);
+	
+				_autosteps[autoStepName] = _autostep;
+			} else {
+				console.warn('Autostep \'' + autoStepName + '\' is not exist.');
+			}
+		}
+	
+		return _autosteps;
+	};
+
+/***/ },
+/* 50 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+		value: true
+	});
+	
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	
+	var _share = __webpack_require__(1);
+	
+	var _share2 = _interopRequireDefault(_share);
+	
+	var _defaults = __webpack_require__(3);
+	
+	var _defaults2 = _interopRequireDefault(_defaults);
+	
+	var _event = __webpack_require__(2);
+	
+	var _event2 = _interopRequireDefault(_event);
+	
+	var _autoStep2 = __webpack_require__(51);
+	
+	var _autoStep3 = _interopRequireDefault(_autoStep2);
+	
+	var _deck = __webpack_require__(11);
+	
+	var _deck2 = _interopRequireDefault(_deck);
+	
+	var _tips2 = __webpack_require__(6);
+	
+	var _tips3 = _interopRequireDefault(_tips2);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+	
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+	
+	var fallAutoStep = function (_autoStep) {
+		_inherits(fallAutoStep, _autoStep);
+	
+		function fallAutoStep(params) {
+			_classCallCheck(this, fallAutoStep);
+	
+			return _possibleConstructorReturn(this, (fallAutoStep.__proto__ || Object.getPrototypeOf(fallAutoStep)).call(this, params));
+	
+			// event.listen('fallAutoStepCheck', this.check);
+		}
+	
+		// есть ли ещё ходы этого типа
+	
+	
+		_createClass(fallAutoStep, [{
+			key: 'check',
+			value: function check() {
+	
+				_tips3.default.checkTips();
+	
+				var _tips = _tips3.default.getTips();
+	
+				if (_tips.length === 0) {
+	
+					this.end();
+					// Tips.checkTips();
+				}
+			}
+	
+			// start() {
+			// 	super.start();
+			// 	console.log('FALL AUTO STEP');
+			// }
+	
+		}, {
+			key: 'auto',
+			value: function auto() {
+	
+				console.log('-- fallAutoStep:auto, curLockState -', _share2.default.get('curLockState'));
+				// fall lines auto
+	
+				// get groups
+				// 	get fall directions ???
+				// 	get decks
+				// 	get fall relations
+	
+				// OR getTips + random ???
+			}
+	
+			// manual если autostep = false
+			// если click = true, вручную отрабатываем перемещения карт возвращаем false
+			// если click = false то отрабатывается move а здесь проверка возможен ли ход
+	
+		}, {
+			key: 'manual',
+			value: function manual(data) {
+	
+				// empty
+				// check fall
+				// this.check();
+				var _from = _deck2.default.getDeckById(data.putDeck[0].card.parent),
+				    _to = data.to;
+	
+				var _relations = _from.getRelationsByName('fall', { from: null });
+	
+				for (var i in _relations) {
+					if (_relations[i].to == _to.name && _to.cardsCount() === 0) {
+						return true;
+					}
+				}
+	
+				return false;
+			}
+		}]);
+	
+		return fallAutoStep;
+	}(_autoStep3.default);
+	
+	exports.default = fallAutoStep;
+
+/***/ },
+/* 51 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+		value: true
+	});
+	
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	
+	var _event = __webpack_require__(2);
+	
+	var _event2 = _interopRequireDefault(_event);
+	
+	var _share = __webpack_require__(1);
+	
+	var _share2 = _interopRequireDefault(_share);
+	
+	var _common = __webpack_require__(5);
+	
+	var _common2 = _interopRequireDefault(_common);
+	
+	var _defaults = __webpack_require__(3);
+	
+	var _defaults2 = _interopRequireDefault(_defaults);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	var _class = function () {
+		function _class(params) {
+			_classCallCheck(this, _class);
+	
+			if (typeof params.groups != "undefined") {
+				this.groups = params.groups;
+			}
+	
+			if (typeof params.event == "string") {
+				this.event = params.event;
+			}
+	
+			if (typeof params.dispatch == "string") {
+				this.dispatch = params.dispatch;
+			}
+	
+			if (typeof params.autoStep == "boolean") {
+				this.autoStep = params.autoStep;
+			}
+		}
+	
+		_createClass(_class, [{
+			key: 'start',
+			value: function start(e) {
+	
+				console.log('### start auto step:', this.stepType, e);
+	
+				if (e && typeof e.before == "function") {
+					e.before({
+						stepType: this.stepType
+					});
+				}
+	
+				_share2.default.set('stepType', this.stepType);
+	
+				if (this.autoStep) {
+	
+					_common2.default.curLock();
+					this.auto();
+				} else {
+	
+					this.check();
+				}
+			}
+		}, {
+			key: 'end',
+			value: function end() {
+	
+				if (this.dispatch) {
+					_event2.default.dispatch(this.dispatch, {
+						stepType: _share2.default.get('stepType'),
+						callback: function callback() {
+							_share2.default.set('stepType', _defaults2.default.stepType);
+						}
+					});
+				} else {
+					// share.set('stepType', defaults.stepType);
+				}
+			}
+		}, {
+			key: 'init',
+			value: function init(stepType) {
+				var _this = this;
+	
+				this.stepType = stepType;
+	
+				if (this.event) {
+					_event2.default.listen(this.event, function (e) {
+						_this.start(e);
+					});
+				}
+	
+				if (!this.autoStep) {
+	
+					_event2.default.listen('moveEnd', function () {
+	
+						if (_share2.default.get('stepType') != _this.stepType) {
+							return;
+						}
+	
+						_this.check();
+					}, this);
+				}
+			}
+		}]);
+
+		return _class;
+	}();
+
+	exports.default = _class;
+
+/***/ },
+/* 52 */
+/***/ function(module, exports) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+		value: true
+	});
+	
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	var storage = function () {
+	
+		// TODO настройки сохраняются для всех игр,
+		// возможно нужно будет для каждой отдельно,
+		// тогда в конфигурацию нужно будет включить gameId
+	
+		function storage() {
+			_classCallCheck(this, storage);
+	
+			try {
+				if (!localStorage.hasOwnProperty('SolitaireEngine')) {
+					localStorage.SolitaireEngine = "{}";
+				}
+			} catch (e) {}
+		}
+	
+		_createClass(storage, [{
+			key: 'set',
+			value: function set(key, data) {
+	
+				try {
+					var _ls = JSON.parse(localStorage.SolitaireEngine);
+					_ls[key] = data;
+					var _data = JSON.stringify(_ls);
+					localStorage.SolitaireEngine = _data;
+				} catch (e) {}
+			}
+		}, {
+			key: 'get',
+			value: function get(key) {
+	
+				try {
+					var _ls = JSON.parse(localStorage.SolitaireEngine);
+					return _ls[key];
+				} catch (e) {
+					return null;
+				}
+			}
+		}, {
+			key: 'clear',
+			value: function clear() {
+	
+				try {
+					localStorage.SolitaireEngine = "{}";
+				} catch (e) {}
+			}
+		}]);
+	
+		return storage;
+	}();
+	
+	exports.default = new storage();
+
+/***/ },
+/* 53 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -6177,7 +6548,7 @@ var SolitaireEngine =
 	
 		// --
 	
-		var _html = __webpack_require__(50);
+		var _html = __webpack_require__(54);
 	
 		$("#gpCommit").parent().before(_html);
 	
@@ -6185,13 +6556,13 @@ var SolitaireEngine =
 	};
 
 /***/ },
-/* 50 */
+/* 54 */
 /***/ function(module, exports) {
 
 	module.exports = "<div id=\"solitaire-engine-style-preferences\">\n    <h4>Настройки оформления</h4>\n    <div>\n\t    <span class=\"solitaire-engine-style-preferences-label\">Фон:</span>\n\t    <!-- <select id=\"pref_field\" class=\"solitaire-engine-style-preferences-element\"> -->\n        <label>\n        \t<input type=\"radio\" name=\"pref_field\" value=\"default_field\">\n        \tКлассический\n    \t</label>\n        <label>\n        \t<input type=\"radio\" name=\"pref_field\" value=\"alternative_field\">\n        \tАльтернативный\n    \t</label>\n\t    <!-- </select> -->\n\t</div>\n\t<div>\n\t    <span class=\"solitaire-engine-style-preferences-label\">Лицевая сторона:</span>\n\t    <!-- <select id=\"pref_face\" class=\"solitaire-engine-style-preferences-element\"> -->\n        <label>\n        \t<input type=\"radio\" name=\"pref_face\" value=\"default_face\">\n        \tКлассическая\n    \t</label>\n        <label>\n        \t<input type=\"radio\" name=\"pref_face\" value=\"alternative_face\">\n        \tАнгло-американская\n    \t</label>\n\t    <!-- </select> -->\n\t</div>\n    <div>\n\t    <span class=\"solitaire-engine-style-preferences-label\">Рубашка:</span>\n\t    <!-- <select id=\"pref_back\" class=\"solitaire-engine-style-preferences-element\"> -->\n        <label>\n        \t<input type=\"radio\" name=\"pref_back\" value=\"default_back\">\n        \tКлассическая\n    \t</label>\n        <label>\n        \t<input type=\"radio\" name=\"pref_back\" value=\"alternative_back\">\n        \tАльтернативная\n    \t</label>\n        <!-- <label>\n        \t<input type=\"radio\" name=\"pref_back\" value=\"red_back\">\n        \tКрасная\n    \t</label>\n        <label>\n        \t<input type=\"radio\" name=\"pref_back\" value=\"blue_back\">\n        \tСиняя\n    \t</label> -->\n\t    <!-- </select> -->\n\t</div>\n    <div id=\"gamePreferences\"></div>\n    <!-- <div>\n\t    <span class=\"solitaire-engine-style-preferences-label\">Пустая ячейка:</span>\n\t    <select id=\"pref_empty\" class=\"solitaire-engine-style-preferences-element\">\n\t        <option value=0>Классическая</option>\n\t        <option value=1>С обводкой</option>\n\t    </select>\n\t</div> -->\n\n</div>";
 
 /***/ },
-/* 51 */
+/* 55 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -6216,7 +6587,7 @@ var SolitaireEngine =
 	
 	var _storage2 = _interopRequireDefault(_storage);
 	
-	var _gamePreferences = __webpack_require__(53);
+	var _gamePreferences = __webpack_require__(56);
 	
 	var _gamePreferences2 = _interopRequireDefault(_gamePreferences);
 	
@@ -6288,74 +6659,7 @@ var SolitaireEngine =
 	};
 
 /***/ },
-/* 52 */
-/***/ function(module, exports) {
-
-	'use strict';
-	
-	Object.defineProperty(exports, "__esModule", {
-		value: true
-	});
-	
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-	
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-	
-	var storage = function () {
-	
-		// TODO настройки сохраняются для всех игр,
-		// возможно нужно будет для каждой отдельно,
-		// тогда в конфигурацию нужно будет включить gameId
-	
-		function storage() {
-			_classCallCheck(this, storage);
-	
-			try {
-				if (!localStorage.hasOwnProperty('SolitaireEngine')) {
-					localStorage.SolitaireEngine = "{}";
-				}
-			} catch (e) {}
-		}
-	
-		_createClass(storage, [{
-			key: 'set',
-			value: function set(key, data) {
-	
-				try {
-					var _ls = JSON.parse(localStorage.SolitaireEngine);
-					_ls[key] = data;
-					var _data = JSON.stringify(_ls);
-					localStorage.SolitaireEngine = _data;
-				} catch (e) {}
-			}
-		}, {
-			key: 'get',
-			value: function get(key) {
-	
-				try {
-					var _ls = JSON.parse(localStorage.SolitaireEngine);
-					return _ls[key];
-				} catch (e) {
-					return null;
-				}
-			}
-		}, {
-			key: 'clear',
-			value: function clear() {
-	
-				try {
-					localStorage.SolitaireEngine = "{}";
-				} catch (e) {}
-			}
-		}]);
-	
-		return storage;
-	}();
-	
-	exports.default = new storage();
-
-/***/ },
-/* 53 */
+/* 56 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -6445,7 +6749,7 @@ var SolitaireEngine =
 	exports.default = new gamePreferences();
 
 /***/ },
-/* 54 */
+/* 57 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -6487,7 +6791,7 @@ var SolitaireEngine =
 	};
 
 /***/ },
-/* 55 */
+/* 58 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -6508,7 +6812,7 @@ var SolitaireEngine =
 	
 	var _common2 = _interopRequireDefault(_common);
 	
-	var _deck = __webpack_require__(10);
+	var _deck = __webpack_require__(11);
 	
 	var _deck2 = _interopRequireDefault(_deck);
 	
@@ -6520,7 +6824,7 @@ var SolitaireEngine =
 	
 	var _bestTip2 = _interopRequireDefault(_bestTip);
 	
-	var _winCheck = __webpack_require__(56);
+	var _winCheck = __webpack_require__(59);
 	
 	var _winCheck2 = _interopRequireDefault(_winCheck);
 	
@@ -6531,6 +6835,8 @@ var SolitaireEngine =
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
 	var Move = function Move(moveDeck, to, cursorMove) {
+	
+		console.log('MOVE', moveDeck, to, cursorMove);
 	
 		_event2.default.dispatch('startSession', { type: 'move' });
 	
@@ -6565,10 +6871,16 @@ var SolitaireEngine =
 	
 		_success = _success && to; // to - не пустой
 	
-		var _el = to && _common2.default.getElementById(to); // получаем карту/стопку
+		var _el = null;
+	
+		if (_success) {
+			_el = _common2.default.getElementById(to); // получаем карту/стопку
+		}
+	
+		_success = _success && _el;
 	
 		// если положили на карту узнаём из какой она стопки
-		if (_el) {
+		if (_success) {
 			if (_el.type == 'card') {
 				_deck_destination = _common2.default.getElementById(_el.parent);
 			} else if (_el.type == 'deck') {
@@ -6715,7 +7027,7 @@ var SolitaireEngine =
 	});
 
 /***/ },
-/* 56 */
+/* 59 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -6736,11 +7048,11 @@ var SolitaireEngine =
 	
 	var _common2 = _interopRequireDefault(_common);
 	
-	var _winCheckMethods = __webpack_require__(57);
+	var _winCheckMethods = __webpack_require__(60);
 	
 	var _winCheckMethods2 = _interopRequireDefault(_winCheckMethods);
 	
-	var _deck = __webpack_require__(10);
+	var _deck = __webpack_require__(11);
 	
 	var _deck2 = _interopRequireDefault(_deck);
 	
@@ -6810,7 +7122,7 @@ var SolitaireEngine =
 	};
 
 /***/ },
-/* 57 */
+/* 60 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -7085,7 +7397,7 @@ var SolitaireEngine =
 	exports.default = wcm;
 
 /***/ },
-/* 58 */
+/* 61 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -7098,35 +7410,35 @@ var SolitaireEngine =
 	
 	var _share2 = _interopRequireDefault(_share);
 	
-	var _elRender = __webpack_require__(59);
+	var _elRender = __webpack_require__(62);
 	
 	var _elRender2 = _interopRequireDefault(_elRender);
 	
-	var _initField = __webpack_require__(62);
+	var _initField = __webpack_require__(65);
 	
 	var _initField2 = _interopRequireDefault(_initField);
 	
-	var _drawDeck = __webpack_require__(63);
+	var _drawDeck = __webpack_require__(66);
 	
 	var _drawDeck2 = _interopRequireDefault(_drawDeck);
 	
-	var _drawCard = __webpack_require__(64);
+	var _drawCard = __webpack_require__(67);
 	
 	var _drawCard2 = _interopRequireDefault(_drawCard);
 	
-	var _drawTip = __webpack_require__(65);
+	var _drawTip = __webpack_require__(68);
 	
 	var _drawTip2 = _interopRequireDefault(_drawTip);
 	
-	var _moveDragDeck = __webpack_require__(66);
+	var _moveDragDeck = __webpack_require__(69);
 	
 	var _moveDragDeck2 = _interopRequireDefault(_moveDragDeck);
 	
-	var _moveCardToHome = __webpack_require__(67);
+	var _moveCardToHome = __webpack_require__(70);
 	
 	var _moveCardToHome2 = _interopRequireDefault(_moveCardToHome);
 	
-	var _fieldThemesSet = __webpack_require__(68);
+	var _fieldThemesSet = __webpack_require__(71);
 	
 	var _fieldThemesSet2 = _interopRequireDefault(_fieldThemesSet);
 	
@@ -7155,7 +7467,7 @@ var SolitaireEngine =
 	});
 
 /***/ },
-/* 59 */
+/* 62 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -7176,11 +7488,11 @@ var SolitaireEngine =
 	
 	var _share2 = _interopRequireDefault(_share);
 	
-	var _elClass = __webpack_require__(60);
+	var _elClass = __webpack_require__(63);
 	
 	var _elClass2 = _interopRequireDefault(_elClass);
 	
-	var _allElClass = __webpack_require__(61);
+	var _allElClass = __webpack_require__(64);
 	
 	var _allElClass2 = _interopRequireDefault(_allElClass);
 	
@@ -7228,7 +7540,7 @@ var SolitaireEngine =
 	exports.default = _allEl;
 
 /***/ },
-/* 60 */
+/* 63 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -7594,7 +7906,7 @@ var SolitaireEngine =
 	exports.default = elClass;
 
 /***/ },
-/* 61 */
+/* 64 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -7609,7 +7921,7 @@ var SolitaireEngine =
 	
 	var _defaults2 = _interopRequireDefault(_defaults);
 	
-	var _elClass = __webpack_require__(60);
+	var _elClass = __webpack_require__(63);
 	
 	var _elClass2 = _interopRequireDefault(_elClass);
 	
@@ -7738,7 +8050,7 @@ var SolitaireEngine =
 	exports.default = allElClass;
 
 /***/ },
-/* 62 */
+/* 65 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -7759,7 +8071,7 @@ var SolitaireEngine =
 	
 	var _field2 = _interopRequireDefault(_field);
 	
-	var _elRender = __webpack_require__(59);
+	var _elRender = __webpack_require__(62);
 	
 	var _elRender2 = _interopRequireDefault(_elRender);
 	
@@ -7809,7 +8121,7 @@ var SolitaireEngine =
 	});
 
 /***/ },
-/* 63 */
+/* 66 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -7830,7 +8142,7 @@ var SolitaireEngine =
 	
 	var _field2 = _interopRequireDefault(_field);
 	
-	var _elRender = __webpack_require__(59);
+	var _elRender = __webpack_require__(62);
 	
 	var _elRender2 = _interopRequireDefault(_elRender);
 	
@@ -8012,7 +8324,7 @@ var SolitaireEngine =
 	});
 
 /***/ },
-/* 64 */
+/* 67 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -8037,7 +8349,7 @@ var SolitaireEngine =
 	
 	var _field2 = _interopRequireDefault(_field);
 	
-	var _elRender = __webpack_require__(59);
+	var _elRender = __webpack_require__(62);
 	
 	var _elRender2 = _interopRequireDefault(_elRender);
 	
@@ -8069,7 +8381,7 @@ var SolitaireEngine =
 	});
 
 /***/ },
-/* 65 */
+/* 68 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -8082,7 +8394,7 @@ var SolitaireEngine =
 	
 	var _share2 = _interopRequireDefault(_share);
 	
-	var _elRender = __webpack_require__(59);
+	var _elRender = __webpack_require__(62);
 	
 	var _elRender2 = _interopRequireDefault(_elRender);
 	
@@ -8125,7 +8437,7 @@ var SolitaireEngine =
 	});
 
 /***/ },
-/* 66 */
+/* 69 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -8146,7 +8458,7 @@ var SolitaireEngine =
 	
 	var _defaults2 = _interopRequireDefault(_defaults);
 	
-	var _elRender = __webpack_require__(59);
+	var _elRender = __webpack_require__(62);
 	
 	var _elRender2 = _interopRequireDefault(_elRender);
 	
@@ -8261,7 +8573,7 @@ var SolitaireEngine =
 	});
 
 /***/ },
-/* 67 */
+/* 70 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -8278,7 +8590,7 @@ var SolitaireEngine =
 	
 	var _common2 = _interopRequireDefault(_common);
 	
-	var _elRender = __webpack_require__(59);
+	var _elRender = __webpack_require__(62);
 	
 	var _elRender2 = _interopRequireDefault(_elRender);
 	
@@ -8317,7 +8629,7 @@ var SolitaireEngine =
 	});
 
 /***/ },
-/* 68 */
+/* 71 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -8338,7 +8650,7 @@ var SolitaireEngine =
 	
 	var _field2 = _interopRequireDefault(_field);
 	
-	var _elRender = __webpack_require__(59);
+	var _elRender = __webpack_require__(62);
 	
 	var _elRender2 = _interopRequireDefault(_elRender);
 	
@@ -8367,7 +8679,7 @@ var SolitaireEngine =
 	});
 
 /***/ },
-/* 69 */
+/* 72 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -8477,25 +8789,25 @@ var SolitaireEngine =
 	;
 
 /***/ },
-/* 70 */
-/***/ function(module, exports) {
-
-	// removed by extract-text-webpack-plugin
-
-/***/ },
-/* 71 */
-/***/ function(module, exports) {
-
-	// removed by extract-text-webpack-plugin
-
-/***/ },
-/* 72 */
-/***/ function(module, exports) {
-
-	// removed by extract-text-webpack-plugin
-
-/***/ },
 /* 73 */
+/***/ function(module, exports) {
+
+	// removed by extract-text-webpack-plugin
+
+/***/ },
+/* 74 */
+/***/ function(module, exports) {
+
+	// removed by extract-text-webpack-plugin
+
+/***/ },
+/* 75 */
+/***/ function(module, exports) {
+
+	// removed by extract-text-webpack-plugin
+
+/***/ },
+/* 76 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -8522,27 +8834,27 @@ var SolitaireEngine =
 	
 	var _defaults2 = _interopRequireDefault(_defaults);
 	
-	var _deckGenerator = __webpack_require__(69);
+	var _deckGenerator = __webpack_require__(72);
 	
 	var _deckGenerator2 = _interopRequireDefault(_deckGenerator);
 	
-	var _elRender = __webpack_require__(59);
+	var _elRender = __webpack_require__(62);
 	
 	var _elRender2 = _interopRequireDefault(_elRender);
 	
-	var _mapCommon = __webpack_require__(39);
+	var _mapCommon = __webpack_require__(44);
 	
 	var _mapCommon2 = _interopRequireDefault(_mapCommon);
 	
-	var _history = __webpack_require__(44);
+	var _history = __webpack_require__(31);
 	
 	var _history2 = _interopRequireDefault(_history);
 	
-	var _state = __webpack_require__(74);
+	var _state = __webpack_require__(77);
 	
 	var _state2 = _interopRequireDefault(_state);
 	
-	var _renderTest = __webpack_require__(75);
+	var _renderTest = __webpack_require__(78);
 	
 	var _renderTest2 = _interopRequireDefault(_renderTest);
 	
@@ -8767,7 +9079,7 @@ var SolitaireEngine =
 	};
 
 /***/ },
-/* 74 */
+/* 77 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -8838,7 +9150,7 @@ var SolitaireEngine =
 	exports.default = new stateManager();
 
 /***/ },
-/* 75 */
+/* 78 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -8847,7 +9159,7 @@ var SolitaireEngine =
 		value: true
 	});
 	
-	var _elRender = __webpack_require__(59);
+	var _elRender = __webpack_require__(62);
 	
 	var _elRender2 = _interopRequireDefault(_elRender);
 	
@@ -9035,297 +9347,6 @@ var SolitaireEngine =
 	 		_el_8
 	 	);*/
 	};
-
-/***/ },
-/* 76 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	Object.defineProperty(exports, "__esModule", {
-		value: true
-	});
-	
-	var _fallAutoStep = __webpack_require__(77);
-	
-	var _fallAutoStep2 = _interopRequireDefault(_fallAutoStep);
-	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-	
-	// import A         from 'A';
-	// import B         from 'B';
-	// import C         from 'C';
-	
-	var autosteps = {
-		fallAutoStep: _fallAutoStep2.default
-	};
-	
-	exports.default = function (autoStepsParams) {
-	
-		var _autosteps = {};
-	
-		for (var autoStepName in autoStepsParams) {
-	
-			if (autosteps[autoStepName]) {
-	
-				var _autostep = new autosteps[autoStepName](autoStepsParams[autoStepName]);
-				_autostep.init(autoStepName);
-	
-				_autosteps[autoStepName] = _autostep;
-			} else {
-				console.warn('Autostep \'' + autoStepName + '\' is not exist.');
-			}
-		}
-	
-		return _autosteps;
-	};
-
-/***/ },
-/* 77 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	Object.defineProperty(exports, "__esModule", {
-		value: true
-	});
-	
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-	
-	var _share = __webpack_require__(1);
-	
-	var _share2 = _interopRequireDefault(_share);
-	
-	var _defaults = __webpack_require__(3);
-	
-	var _defaults2 = _interopRequireDefault(_defaults);
-	
-	var _event = __webpack_require__(2);
-	
-	var _event2 = _interopRequireDefault(_event);
-	
-	var _autoStep2 = __webpack_require__(78);
-	
-	var _autoStep3 = _interopRequireDefault(_autoStep2);
-	
-	var _deck = __webpack_require__(10);
-	
-	var _deck2 = _interopRequireDefault(_deck);
-	
-	var _tips2 = __webpack_require__(6);
-	
-	var _tips3 = _interopRequireDefault(_tips2);
-	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-	
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-	
-	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-	
-	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-	
-	var fallAutoStep = function (_autoStep) {
-		_inherits(fallAutoStep, _autoStep);
-	
-		function fallAutoStep(params) {
-			_classCallCheck(this, fallAutoStep);
-	
-			return _possibleConstructorReturn(this, (fallAutoStep.__proto__ || Object.getPrototypeOf(fallAutoStep)).call(this, params));
-	
-			// event.listen('fallAutoStepCheck', this.check);
-		}
-	
-		// есть ли ещё ходы этого типа
-	
-	
-		_createClass(fallAutoStep, [{
-			key: 'check',
-			value: function check() {
-	
-				_tips3.default.checkTips();
-	
-				var _tips = _tips3.default.getTips();
-	
-				if (_tips.length === 0) {
-	
-					this.end();
-					// Tips.checkTips();
-				}
-			}
-	
-			// start() {
-			// 	super.start();
-			// 	console.log('FALL AUTO STEP');
-			// }
-	
-		}, {
-			key: 'auto',
-			value: function auto() {
-	
-				console.log('-- fallAutoStep:auto, curLockState -', _share2.default.get('curLockState'));
-				// fall lines auto
-	
-				// get groups
-				// 	get fall directions ???
-				// 	get decks
-				// 	get fall relations
-	
-				// OR getTips + random ???
-			}
-	
-			// manual если autostep = false
-			// если click = true, вручную отрабатываем перемещения карт возвращаем false
-			// если click = false то отрабатывается move а здесь проверка возможен ли ход
-	
-		}, {
-			key: 'manual',
-			value: function manual(data) {
-	
-				// empty
-				// check fall
-				// this.check();
-				var _from = _deck2.default.getDeckById(data.putDeck[0].card.parent),
-				    _to = data.to;
-	
-				var _relations = _from.getRelationsByName('fall', { from: null });
-	
-				for (var i in _relations) {
-					if (_relations[i].to == _to.name && _to.cardsCount() === 0) {
-						return true;
-					}
-				}
-	
-				return false;
-			}
-		}]);
-	
-		return fallAutoStep;
-	}(_autoStep3.default);
-	
-	exports.default = fallAutoStep;
-
-/***/ },
-/* 78 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	Object.defineProperty(exports, "__esModule", {
-		value: true
-	});
-	
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-	
-	var _event = __webpack_require__(2);
-	
-	var _event2 = _interopRequireDefault(_event);
-	
-	var _share = __webpack_require__(1);
-	
-	var _share2 = _interopRequireDefault(_share);
-	
-	var _common = __webpack_require__(5);
-	
-	var _common2 = _interopRequireDefault(_common);
-	
-	var _defaults = __webpack_require__(3);
-	
-	var _defaults2 = _interopRequireDefault(_defaults);
-	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-	
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-	
-	var _class = function () {
-		function _class(params) {
-			_classCallCheck(this, _class);
-	
-			if (typeof params.groups != "undefined") {
-				this.groups = params.groups;
-			}
-	
-			if (typeof params.event == "string") {
-				this.event = params.event;
-			}
-	
-			if (typeof params.dispatch == "string") {
-				this.dispatch = params.dispatch;
-			}
-	
-			if (typeof params.autoStep == "boolean") {
-				this.autoStep = params.autoStep;
-			}
-		}
-	
-		_createClass(_class, [{
-			key: 'start',
-			value: function start(e) {
-	
-				console.log('### start auto step:', this.stepType, e);
-	
-				if (e && typeof e.before == "function") {
-					e.before({
-						stepType: this.stepType
-					});
-				}
-	
-				_share2.default.set('stepType', this.stepType);
-	
-				if (this.autoStep) {
-	
-					_common2.default.curLock();
-					this.auto();
-				} else {
-	
-					this.check();
-				}
-			}
-		}, {
-			key: 'end',
-			value: function end() {
-	
-				if (this.dispatch) {
-					_event2.default.dispatch(this.dispatch, {
-						stepType: _share2.default.get('stepType'),
-						callback: function callback() {
-							_share2.default.set('stepType', _defaults2.default.stepType);
-						}
-					});
-				} else {
-					// share.set('stepType', defaults.stepType);
-				}
-			}
-		}, {
-			key: 'init',
-			value: function init(stepType) {
-				var _this = this;
-	
-				this.stepType = stepType;
-	
-				if (this.event) {
-					_event2.default.listen(this.event, function (e) {
-						_this.start(e);
-					});
-				}
-	
-				if (!this.autoStep) {
-	
-					_event2.default.listen('moveEnd', function () {
-	
-						if (_share2.default.get('stepType') != _this.stepType) {
-							return;
-						}
-	
-						_this.check();
-					}, this);
-				}
-			}
-		}]);
-
-		return _class;
-	}();
-
-	exports.default = _class;
 
 /***/ }
 /******/ ]);

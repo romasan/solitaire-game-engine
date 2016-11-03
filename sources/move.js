@@ -13,6 +13,8 @@ import Field    from 'field';
 
 var Move = function(moveDeck, to, cursorMove) {
 
+	console.log('MOVE', moveDeck, to, cursorMove);
+
 	event.dispatch('startSession', {type: 'move'});
 
 	common.animationDefault();
@@ -56,10 +58,16 @@ var Move = function(moveDeck, to, cursorMove) {
 
 	_success = _success && to;// to - не пустой
 
-	let _el = to && common.getElementById(to);// получаем карту/стопку
+	let _el = null;
+
+	if(_success) {
+		_el = common.getElementById(to);// получаем карту/стопку
+	}
+
+	_success = _success && _el;
 
 	// если положили на карту узнаём из какой она стопки
-	if(_el) {
+	if(_success) {
 		if(_el.type == 'card') {
 			_deck_destination = common.getElementById(_el.parent)
 		} else if(_el.type == 'deck') {
@@ -95,6 +103,7 @@ var Move = function(moveDeck, to, cursorMove) {
 					let _stepType = share.get('stepType');
 
 					let _checkMoveEnd = false;
+					
 					for(let _actionName in _deck_destination.actions) {
 						if(_deck_destination.actions[_actionName].event == "moveEnd") {
 							_checkMoveEnd = true;

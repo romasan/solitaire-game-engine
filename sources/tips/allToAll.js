@@ -1,6 +1,6 @@
 'use strict';
 
-export default (a)=>{
+export default (a) => {
 
 	let _moves = [];
 	

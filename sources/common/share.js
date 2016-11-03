@@ -3,6 +3,8 @@
 import event    from 'event';
 import defaults from 'defaults';
 
+let _debug = [];
+
 // export default new function() {
 class shareClass {
 
@@ -24,12 +26,23 @@ class shareClass {
 
 	set(name, data, forceClone = false) {
 
+		let _time = new Date().getTime();
+		_debug.push(_time);
+		if(_debug.length >= 100) {
+			_debug.shift();
+			console.log('>>>');
+			if(window._debug123 && (_time - _debug[0]) < 1000) {
+				throw new Error('time of last 100 iteration = ' + (_time - _debug[0]));
+			}
+		}
 		// "foo", "bar", false
 		if(typeof name == "string") {
 
+			console.log(name, _time - _debug[0], window._debug123, (_time - _debug[0]) < 1000);
+
 			event.dispatch('shareChange:' + name, {
-				from: this._data[name],
-				to: data
+				from : this._data[name],
+				to   : data
 			});
 
 			if(
@@ -57,8 +70,8 @@ class shareClass {
 			for(var _name in name) {
 
 				event.dispatch('shareChange:' + name, {
-					from: this._data[_name],
-					to: name[_name]
+					from : this._data[_name],
+					to   : name[_name]
 				});
 
 				if(
