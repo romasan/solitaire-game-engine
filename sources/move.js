@@ -11,7 +11,7 @@ import bestTip  from 'bestTip';
 import winCheck from 'winCheck';
 import Field    from 'field';
 
-var Move = function(moveDeck, to, cursorMove) {
+let Move = (moveDeck, to, cursorMove) => {
 
 	event.dispatch('startSession', {type: 'move'});
 
@@ -76,92 +76,89 @@ var Move = function(moveDeck, to, cursorMove) {
 	_success = _success && _deck_destination;
 
 	// _deck_departure = moveDeck[0].card.parent && common.getElementById(moveDeck[0].card.parent);
-		_success = _success && _deck_departure;
+	_success = _success && _deck_departure;
 
-		// смотрим не одна и та же ли эта стопка
-		if(_deck_destination && _deck_destination.id != _deck_departure.id) {
+	_success = _success && _deck_destination.id != _deck_departure.id;
 
-			// узнаём можно ли положить карты на папку назначения
-			var _put = _deck_destination.Put(moveDeck);
-			_success = _success && _put;
-			if(_put) {// } && _deck_departure) {
+	// смотрим не одна и та же ли эта стопка
+	if(_success) {
 
-				// если можно положить карты берём их из исходной стопки
-				var _pop = _deck_departure.Pop(moveDeck.length);
-				_success = _success && _pop;
+		// узнаём можно ли положить карты на папку назначения
+		let _put = _deck_destination.Put(moveDeck);
+		_success = _success && _put;
+		if(_put) {// } && _deck_departure) {
 
-				if(_pop) {
-					
-					// ложим карты в колоду назначения
-					_deck_destination.Push(_pop);
+			// если можно положить карты берём их из исходной стопки
+			let _pop = _deck_departure.Pop(moveDeck.length);
+			_success = _success && _pop;
 
-					// режим анимации по умолчанию
-					common.animationDefault();
+			if(_pop) {
 
-					let _stepType = share.get('stepType');
+				// ложим карты в колоду назначения
+				_deck_destination.Push(_pop);
 
-					let _checkMoveEnd = false;
-					
-					for(let _actionName in _deck_destination.actions) {
-						if(_deck_destination.actions[_actionName].event == "moveEnd") {
-							_checkMoveEnd = true;
-						}
+				// режим анимации по умолчанию
+				common.animationDefault();
+
+				let _stepType = share.get('stepType');
+
+				let _checkMoveEnd = false;
+				
+				for(let _actionName in _deck_destination.actions) {
+					if(_deck_destination.actions[_actionName].event == "moveEnd") {
+						_checkMoveEnd = true;
 					}
-
-					event.dispatch('addStep', {
-						'move' : {
-							from     : _deck_departure  .name      ,
-							to       : _deck_destination.name      ,
-							deck     : Deck.deckCardNames(moveDeck),
-							stepType : {
-								undo: _stepType,
-								redo: _checkMoveEnd ? "specialStepType" : _stepType
-							},
-							context  : "move"
-						}
-					})
-					
-					if(_deck_destination.save) {
-						event.dispatch('saveSteps');
-					}
-
-					event.dispatch('moveDragDeck', {
-						
-						departure   : _deck_departure  ,
-						destination : _deck_destination,
-						moveDeck    : moveDeck         ,
-						
-						callback    : () => {
-
-							event.dispatch('moveEnd:' + share.get('stepType'));
-							event.dispatch('moveEnd', {
-								from     : _deck_departure      ,
-								to       : _deck_destination    ,
-								moveDeck : moveDeck             ,
-								stepType : share.get('stepType'),
-								before   : (e) => {
-									if(e && typeof e.stepType == "string") {
-										event.dispatch('addStep', {
-											'redo': {
-												'stepType': e.stepType
-											}
-										})
-									}
-								}
-							});
-
-							Tips.checkTips();
-
-							winCheck.winCheck({show : true});
-						}
-					});
 				}
+
+				event.dispatch('addStep', {
+					'move' : {
+						from     : _deck_departure  .name      ,
+						to       : _deck_destination.name      ,
+						deck     : Deck.deckCardNames(moveDeck),
+						stepType : {
+							undo: _stepType,
+							redo: _checkMoveEnd ? "specialStepType" : _stepType
+						},
+						context  : "move"
+					}
+				})
+				
+				if(_deck_destination.save) {
+					event.dispatch('saveSteps');
+				}
+
+				event.dispatch('moveDragDeck', {
+					
+					departure   : _deck_departure  ,
+					destination : _deck_destination,
+					moveDeck    : moveDeck         ,
+					callback    : () => {
+
+						event.dispatch('moveEnd:' + share.get('stepType'));
+						event.dispatch('moveEnd', {
+							from     : _deck_departure      ,
+							to       : _deck_destination    ,
+							moveDeck : moveDeck             ,
+							stepType : share.get('stepType'),
+							before   : (e) => {
+								if(e && typeof e.stepType == "string") {
+									event.dispatch('addStep', {
+										'redo': {
+											'stepType': e.stepType
+										}
+									})
+								}
+							}
+						});
+
+						Tips.checkTips();
+
+						winCheck.winCheck({show : true});
+					}
+				});
 			}
-		} else {
-			// карту отпустили на той же стопке
-			// + минимальное неоходимое расстояние для автохода не пройдено
-			_success = false;
 		}
+	}
 
 	// если не кдалось положить карты, вернуть обратно
 	// или положить на лучшее возможное место
@@ -173,7 +170,7 @@ var Move = function(moveDeck, to, cursorMove) {
 			cursorMove.dbclick                               ||
 			cursorMove.distance >= share.get('moveDistance')
 		) {
-				var Tip = bestTip(moveDeck, cursorMove);
+				let Tip = bestTip(moveDeck, cursorMove);
 
 				if(Tip) {
 					Move(moveDeck, Tip.to.deck.id, cursorMove);

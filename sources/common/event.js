@@ -7,7 +7,7 @@ class Event {
 
 	constructor() {
 		this._events = {};
-		this._tag = 'global';
+		this._tag    = 'global';
 	}
 
 	listen(eventName, callback, context) {

@@ -70,6 +70,8 @@ var addActionEvent = function(_event) {
 			}
 		},
 
+		'addActionEvent:' + _event
+
 		// context
 		
 		// _decksActions.indexOf(_event) >= 0 ? _decksActions[_decksActions.indexOf(_event)] : null
