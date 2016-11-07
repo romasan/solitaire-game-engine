@@ -13,8 +13,6 @@ import Field    from 'field';
 
 var Move = function(moveDeck, to, cursorMove) {
 
-	console.log('MOVE', moveDeck, to, cursorMove);
-
 	event.dispatch('startSession', {type: 'move'});
 
 	common.animationDefault();
@@ -178,7 +176,6 @@ var Move = function(moveDeck, to, cursorMove) {
 				var Tip = bestTip(moveDeck, cursorMove);
 
 				if(Tip) {
-					console.log('###', Tip.to);
 					Move(moveDeck, Tip.to.deck.id, cursorMove);
 					return;
 				} else {
