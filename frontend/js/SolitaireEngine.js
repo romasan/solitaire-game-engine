@@ -123,7 +123,7 @@ var SolitaireEngine =
 	exports.options = _defaults2.default;
 	exports.winCheck = _winCheck2.default.hwinCheck;
 	exports.generator = _deckGenerator2.default;
-	exports.version = (9091492311).toString().split(9).slice(1).map(function (e) {
+	exports.version = (9091492314).toString().split(9).slice(1).map(function (e) {
 		return parseInt(e, 8);
 	}).join('.');
 	
@@ -201,10 +201,7 @@ var SolitaireEngine =
 	
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 	
-	var _debug = [];
-	
 	// export default new function() {
-	
 	var shareClass = function () {
 		function shareClass() {
 			_classCallCheck(this, shareClass);
@@ -231,19 +228,8 @@ var SolitaireEngine =
 				var forceClone = arguments.length <= 2 || arguments[2] === undefined ? false : arguments[2];
 	
 	
-				var _time = new Date().getTime();
-				_debug.push(_time);
-				if (_debug.length >= 100) {
-					_debug.shift();
-					console.log('>>>');
-					if (window._debug123 && _time - _debug[0] < 1000) {
-						throw new Error('time of last 100 iteration = ' + (_time - _debug[0]));
-					}
-				}
 				// "foo", "bar", false
 				if (typeof name == "string") {
-	
-					console.log(name, _time - _debug[0], window._debug123, _time - _debug[0] < 1000);
 	
 					_event2.default.dispatch('shareChange:' + name, {
 						from: this._data[name],
@@ -1959,13 +1945,9 @@ var SolitaireEngine =
 	
 			this.type = 'group';
 	
-			var id = _id;
+			this.id = _id;
 	
-			this.getId = function () {
-				return id;
-			};
-	
-			this.name = a.name && typeof a.name == 'string' ? a.name : 'name_' + id;
+			this.name = a.name && typeof a.name == 'string' ? a.name : 'name_' + _id;
 	
 			this.position = {
 				x: a.position && a.position.x && typeof a.position.x == 'number' ? a.position.x : 0,
@@ -2098,8 +2080,8 @@ var SolitaireEngine =
 	
 				var _el = _deck2.default.addDeck(a);
 	
-				this.deckIndex[_index] = _el.getId();
-				this.decks[_el.getId()] = _el;
+				this.deckIndex[_index] = _el.id;
+				this.decks[_el.id] = _el;
 			}
 	
 			// Fill group
@@ -2372,16 +2354,13 @@ var SolitaireEngine =
 			// parameters
 			this.type = 'deck';
 			this.fill = false;
-			var id = _id;
 	
-			this.getId = function () {
-				return id;
-			};
+			this.id = _id;
 	
 			var _parent_el = _group2.default.getGroup(a.parent),
 			    _parent_name = _parent_el ? _parent_el.name : 'xname',
 			    // ???
-			_new_id = _parent_el ? _parent_el.getDecks().length : id;
+			_new_id = _parent_el ? _parent_el.getDecks().length : _id;
 	
 			this.name = a.name && typeof a.name == 'string' ? a.name : _parent_name + '_' + _new_id;
 	
@@ -2580,7 +2559,7 @@ var SolitaireEngine =
 			value: function Push(deck) {
 				// , parentName) {
 				for (var i in deck) {
-					deck[i].parent = this.getId();
+					deck[i].parent = this.id;
 					this.cards.push(deck[i]);
 				}
 			}
@@ -4765,7 +4744,7 @@ var SolitaireEngine =
 				// parent  : _parent,
 				flip: false
 			};
-			_card.parent = this.getId();
+			_card.parent = this.id;
 	
 			_event2.default.dispatch('addCardEl', _card);
 	
@@ -5266,14 +5245,14 @@ var SolitaireEngine =
 			if (!this.decks[i].groupIndex) {
 				var _index = 0;
 				for (; deckIndex[_index] != null; _index += 1) {}
-				deckIndex[_index] = this.decks[i].getId();
+				deckIndex[_index] = this.decks[i].id;
 			};
 		};
 	
 		// если параметр groupIndex не выходит за рамки ставим соответствующий порядковый номер
 		for (var i in this.decks) {
 			if (this.decks[i].groupIndex && this.decks[i].groupIndex <= _decksLength) {
-				deckIndex[this.decks[i].groupIndex - 1] = this.decks[i].getId();
+				deckIndex[this.decks[i].groupIndex - 1] = this.decks[i].id;
 			};
 		};
 	
@@ -5281,14 +5260,14 @@ var SolitaireEngine =
 		var _decksWithBigIndex = {};
 		for (var i in this.decks) {
 			if (this.decks[i].groupIndex && this.decks[i].groupIndex > _decksLength) {
-				_decksWithBigIndex[this.decks[i].groupIndex - 1] = this.decks[i].getId();
+				_decksWithBigIndex[this.decks[i].groupIndex - 1] = this.decks[i].id;
 			};
 		};
 		// ...и сортируем
 		for (var i in _decksWithBigIndex) {
 			var _index = 0;
 			for (; deckIndex[_index] != null; _index += 1) {}
-			deckIndex[_index] = this.decks[_decksWithBigIndex[i]].getId();
+			deckIndex[_index] = this.decks[_decksWithBigIndex[i]].id;
 		};
 	
 		// сморим являются ли элементы названиями карт (строкой)
@@ -6894,7 +6873,7 @@ var SolitaireEngine =
 		_success = _success && _deck_departure;
 	
 		// смотрим не одна и та же ли эта стопка
-		if (_deck_destination && _deck_destination.getId() != _deck_departure.getId()) {
+		if (_deck_destination && _deck_destination.id != _deck_departure.id) {
 	
 			// узнаём можно ли положить карты на папку назначения
 			var _put = _deck_destination.Put(moveDeck);
@@ -6917,6 +6896,7 @@ var SolitaireEngine =
 					var _stepType2 = _share2.default.get('stepType');
 	
 					var _checkMoveEnd = false;
+	
 					for (var _actionName in _deck_destination.actions) {
 						if (_deck_destination.actions[_actionName].event == "moveEnd") {
 							_checkMoveEnd = true;
@@ -6940,20 +6920,6 @@ var SolitaireEngine =
 						_event2.default.dispatch('saveSteps');
 					}
 	
-					// var _deck = _deck_departure.cards;
-					// if(_deck.length && _deck[_deck.length - 1].flip) {
-	
-					// 	_deck[_deck.length - 1].flip = false;
-	
-					// 	event.dispatch('addStep', {
-					// 		deck : _deck_departure.name,
-					// 		card : {
-					// 			name  : _deck[_deck.length - 1].name,
-					// 			index : _deck.length - 1
-					// 		}
-					// 	});
-					// }
-	
 					_event2.default.dispatch('moveDragDeck', {
 	
 						departure: _deck_departure,
@@ -6961,10 +6927,6 @@ var SolitaireEngine =
 						moveDeck: moveDeck,
 	
 						callback: function callback() {
-	
-							// записать ход (если он не составной)
-							// if(_stepType == defaults.stepType) {				
-							// }
 	
 							_event2.default.dispatch('moveEnd:' + _share2.default.get('stepType'));
 							_event2.default.dispatch('moveEnd', {
@@ -7005,6 +6967,7 @@ var SolitaireEngine =
 				var Tip = (0, _bestTip2.default)(moveDeck, cursorMove);
 	
 				if (Tip) {
+					console.log('###', Tip.to);
 					Move(moveDeck, Tip.to.deck.id, cursorMove);
 					return;
 				} else {
@@ -8185,7 +8148,7 @@ var SolitaireEngine =
 		_params.display = e.deck.visible ? 'block' : 'none';
 	
 		(0, _elRender2.default)(_deckDomElement).css(_params).addClass('el').attr({
-			id: e.deck.getId()
+			id: e.deck.id
 		});
 	
 		if (e.a.showSlot) {

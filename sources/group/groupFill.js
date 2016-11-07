@@ -23,14 +23,14 @@ export default function(cardNames) {
 		if(!this.decks[i].groupIndex) {
 			var _index = 0;
 			for(;deckIndex[_index] != null;_index += 1) {}
-			deckIndex[_index] = this.decks[i].getId();
+			deckIndex[_index] = this.decks[i].id;
 		};
 	};
 
 	// если параметр groupIndex не выходит за рамки ставим соответствующий порядковый номер
 	for(var i in this.decks) {
 		if(this.decks[i].groupIndex && this.decks[i].groupIndex <= _decksLength) {
-			deckIndex[this.decks[i].groupIndex - 1] = this.decks[i].getId();
+			deckIndex[this.decks[i].groupIndex - 1] = this.decks[i].id;
 		};
 	};
 
@@ -38,14 +38,14 @@ export default function(cardNames) {
 	var _decksWithBigIndex = {}
 	for(var i in this.decks) {
 		if(this.decks[i].groupIndex && this.decks[i].groupIndex > _decksLength) {
-			_decksWithBigIndex[this.decks[i].groupIndex - 1] = this.decks[i].getId();
+			_decksWithBigIndex[this.decks[i].groupIndex - 1] = this.decks[i].id;
 		};
 	};
 	// ...и сортируем
 	for(var i in _decksWithBigIndex) {
 		var _index = 0;
 		for(;deckIndex[_index] != null;_index += 1) {}
-		deckIndex[_index] = this.decks[_decksWithBigIndex[i]].getId();
+		deckIndex[_index] = this.decks[_decksWithBigIndex[i]].id;
 	};
 
 	// сморим являются ли элементы названиями карт (строкой)

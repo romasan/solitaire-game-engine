@@ -33,15 +33,11 @@ class groupClass {
 		
 		this.type = 'group';
 		
-		var id = _id;
-		
-		this.getId = function() {
-			return id;
-		}
+		this.id = _id
 
 		this.name = a.name && typeof a.name == 'string' 
 			? a.name 
-			: ('name_' + id);
+			: ('name_' + _id);
 		
 		this.position = {
 			x : a.position && a.position.x && typeof a.position.x == 'number' 
@@ -190,8 +186,8 @@ class groupClass {
 
 		var _el = Deck.addDeck(a);
 		
-		this.deckIndex[_index]  = _el.getId();
-		this.decks[_el.getId()] = _el;
+		this.deckIndex[_index]  = _el.id;
+		this.decks[_el.id] = _el;
 	}
 
 	// Fill group

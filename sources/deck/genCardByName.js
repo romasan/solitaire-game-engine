@@ -39,7 +39,7 @@ export default function(name) {// TODO
 				// parent  : _parent,
 				flip    : false
 			}
-		_card.parent = this.getId();
+		_card.parent = this.id;
 		
 		event.dispatch('addCardEl', _card);
 		

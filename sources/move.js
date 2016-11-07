@@ -81,7 +81,7 @@ var Move = function(moveDeck, to, cursorMove) {
 		_success = _success && _deck_departure;
 
 		// смотрим не одна и та же ли эта стопка
-		if(_deck_destination && _deck_destination.getId() != _deck_departure.getId()) {
+		if(_deck_destination && _deck_destination.id != _deck_departure.id) {
 
 			// узнаём можно ли положить карты на папку назначения
 			var _put = _deck_destination.Put(moveDeck);
@@ -112,34 +112,20 @@ var Move = function(moveDeck, to, cursorMove) {
 
 					event.dispatch('addStep', {
 						'move' : {
-							from         : _deck_departure  .name      ,
-							to           : _deck_destination.name      ,
-							deck         : Deck.deckCardNames(moveDeck),
+							from     : _deck_departure  .name      ,
+							to       : _deck_destination.name      ,
+							deck     : Deck.deckCardNames(moveDeck),
 							stepType : {
 								undo: _stepType,
 								redo: _checkMoveEnd ? "specialStepType" : _stepType
 							},
-							context: "move"
+							context  : "move"
 						}
 					})
 					
 					if(_deck_destination.save) {
 						event.dispatch('saveSteps');
 					}
-
-					// var _deck = _deck_departure.cards;
-					// if(_deck.length && _deck[_deck.length - 1].flip) {
-						
-					// 	_deck[_deck.length - 1].flip = false;
-						
-					// 	event.dispatch('addStep', {
-					// 		deck : _deck_departure.name,
-					// 		card : {
-					// 			name  : _deck[_deck.length - 1].name,
-					// 			index : _deck.length - 1
-					// 		}
-					// 	});
-					// }
 
 					event.dispatch('moveDragDeck', {
 						
@@ -148,10 +134,6 @@ var Move = function(moveDeck, to, cursorMove) {
 						moveDeck    : moveDeck         ,
 						
 						callback    : () => {
-
-							// записать ход (если он не составной)
-							// if(_stepType == defaults.stepType) {				
-							// }
 
 							event.dispatch('moveEnd:' + share.get('stepType'));
 							event.dispatch('moveEnd', {
@@ -196,6 +178,7 @@ var Move = function(moveDeck, to, cursorMove) {
 				var Tip = bestTip(moveDeck, cursorMove);
 
 				if(Tip) {
+					console.log('###', Tip.to);
 					Move(moveDeck, Tip.to.deck.id, cursorMove);
 					return;
 				} else {

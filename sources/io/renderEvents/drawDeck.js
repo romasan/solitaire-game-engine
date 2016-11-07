@@ -65,7 +65,7 @@ event.listen('addDeckEl', function(e) {
 		.css(_params)
 		.addClass('el')
 		.attr({
-			id : e.deck.getId()
+			id : e.deck.id
 		});
 
 	if(e.a.showSlot) {

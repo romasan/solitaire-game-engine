@@ -37,18 +37,15 @@ class Deck {
 		// parameters
 		this.type = 'deck';
 		this.fill = false;
-		var id = _id;
 
-		this.getId = function() {
-			return id;
-		}
+		this.id = _id;
 
 		let _parent_el   = Group.getGroup(a.parent),
 			_parent_name = _parent_el ? _parent_el.name : 'xname',// ???
-			_new_id      = _parent_el ? _parent_el.getDecks().length : id;
+			_new_id      = _parent_el ? _parent_el.getDecks().length : _id;
 		
 		this.name = a.name && typeof a.name == 'string' 
-			? a.name 
+			? a.name
 			: (_parent_name + '_' + _new_id);
 		
 		this.locked     = a.locked ? true : false;
@@ -250,7 +247,7 @@ class Deck {
 
 	Push(deck) {// , parentName) {
 		for(let i in deck) {
-			deck[i].parent = this.getId();
+			deck[i].parent = this.id;
 			this.cards.push(deck[i]);
 		}
 	}
