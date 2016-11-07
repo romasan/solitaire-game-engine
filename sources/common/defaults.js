@@ -10,15 +10,15 @@ export default {
 	//     textureSuits  : ['d', 'c', 'h', 's']
 	// },
 
-    pref : {
-    	field : "default_field",    // 0
-    	face  : "alternative_face", // 1
+	pref : {
+		field : "default_field",    // 0
+		face  : "alternative_face", // 1
 		back  : "default_back"      // 0
-	 // empty : 1
-    },
+	// empty : 1
+	},
 
-    stepType : 'default',
-    
+	stepType : 'default',
+
 	themes : {
 		field : [
 			"default_field",
@@ -48,9 +48,9 @@ export default {
 	canMoveFlip         : false,
 
 	tipsParams   : {
-        hideOnEmpty       : false,
-        excludeHomeGroups : true
-    },
+		hideOnEmpty       : false,
+		excludeHomeGroups : true
+	},
 	
 // Field ---------------------------------------------------------------------------------
 
@@ -61,9 +61,9 @@ export default {
 	animation           : true,
 	animationTime       : 600,// ms.
 
-    inputParams : {
-        doubleClick : false
-    },
+	inputParams : {
+		doubleClick : false
+	},
 
 // Group
 
@@ -92,25 +92,29 @@ export default {
 	debugLabels         : false,
 
 	startZIndex         : 100,
-    topZIndex           : 900,
+	topZIndex           : 900,
 
 // Card ----------------------------------------------------------------------------------
 
 	card : {
-	    width        : 71,
-	    height       : 96,
+		width        : 71,
+		height       : 96,
 
-	    suits        : ['h', 'd', 'c', 's'],
-	    // suitindexes : [ 1,   2,   3,   4 ],
-	    colors       : {
-	    	red   : ['h', 'd'],
+		suits        : ['h', 'd', 'c', 's'],
+		// suitindexes : [ 1,   2,   3,   4 ],
+		colors       : {
+			red   : ['h', 'd'],
 			black : ['c', 's']
-	    },
-	    
-	    ranks        : ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', 'j', 'q', 'k'],
-	    values       : [ 1,   2,   3,   4,   5,   6,   7,   8,   9,   10,   11,  12,  13],
-	    ranks36      : ['1',                     '6', '7', '8', '9', '10', 'j', 'q', 'k']
-	}
+		},
+
+		ranks        : ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', 'j', 'q', 'k'],
+		values       : [ 1,   2,   3,   4,   5,   6,   7,   8,   9,   10,   11,  12,  13],
+		ranks36      : ['1',                     '6', '7', '8', '9', '10', 'j', 'q', 'k']
+	},
+
+// ---------------------------------------------------------------------------------------
+
+	forceClone       : true
 
 // Actions defaults ----------------------------------------------------------------------
 

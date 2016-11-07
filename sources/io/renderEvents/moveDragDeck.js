@@ -7,15 +7,15 @@ import defaults from 'defaults';
 
 import elRender from 'elRender';
 
-let angleValidate = (_angle)=>{
+let angleValidate = (_angle) => {
 
-	if(_angle < 0	 ) { _angle += 360; }
+	if(_angle < 0  ) { _angle += 360; }
 	if(_angle > 360) { _angle -= 360; }
 
 	return _angle;
 };
 
-event.listen('moveDragDeck', (e)=>{
+event.listen('moveDragDeck', (e) => {
 
 	common.curLock();
 
@@ -24,10 +24,12 @@ event.listen('moveDragDeck', (e)=>{
 
 		let _position = e.destination.padding(e.destination.cards.length - 1 + (i | 0));
 
-		let departureAngle = angleValidate(e.departure	.rotate), 
-			destinationAngle = angleValidate(e.destination.rotate);
+		let departureAngle   = angleValidate(e.departure	.rotate), 
+		    destinationAngle = angleValidate(e.destination.rotate);
 
-		elRender(e.moveDeck[i].card.domElement)
+		let _cardDomElement = share.get('domElement:' + e.moveDeck[i].card.id);
+
+		elRender(_cardDomElement)
 			.css({
 				'transform' : 'rotate(' + departureAngle + 'deg)'
 			})
@@ -35,7 +37,7 @@ event.listen('moveDragDeck', (e)=>{
 		if(departureAngle - destinationAngle > 180) {
 			
 			departureAngle = departureAngle - 360;
-			elRender(e.moveDeck[i].card.domElement)
+			elRender(_cardDomElement)
 				.css({
 					'transform' : 'rotate(' + departureAngle + 'deg)'
 				})
@@ -46,8 +48,8 @@ event.listen('moveDragDeck', (e)=>{
 		}
 
 		let _params = {
-			'left'			: _position.x + 'px', 
-			'top'			 : _position.y + 'px',
+			'left'      : _position.x + 'px', 
+			'top'       : _position.y + 'px',
 			'transform' : 'rotate(' + destinationAngle + 'deg)'
 		};
 
@@ -69,37 +71,37 @@ event.listen('moveDragDeck', (e)=>{
 			});
 		}.bind(null, e, i == _lastIndex);
 
-		elRender(e.moveDeck[i].card.domElement)
+		elRender(_cardDomElement)
 			.css({'z-index' : _zIndex})
 			.animate(
 				_params, 
 				_callback
 			);
-
-		// elRender(e.moveDeck[i].card.domElement)
-			// .animate(_params)
-
 	}
 });
 
 // --------------------------------------------------------------------------------------------------------
 
-event.listen('moveDragDeckDone', (e)=>{
+event.listen('moveDragDeckDone', (e) => {
 
 	if(!e.deck.fill) {
 		return;
 	}
 
 	let _deck = e.deck.cards;
+	
 	for(let i in _deck) {
-		elRender(_deck[i].domElement)
+
+		let _cardDomElement = share.get('domElement:' + _deck[i].id);
+
+		elRender(_cardDomElement)
 			.addClass('fill')
 	}
 });
 
 // --------------------------------------------------------------------------------------------------------
 
-event.listen('dragDeck', (e)=>{// {x, y, _dragDeck, _startCursor, _deck}
+event.listen('dragDeck', (e) => {// {x, y, _dragDeck, _startCursor, _deck}
 
 	for(let i in e._dragDeck) {
 			let _position = e._deck.padding(e._dragDeck[i].index);
@@ -110,7 +112,9 @@ event.listen('dragDeck', (e)=>{// {x, y, _dragDeck, _startCursor, _deck}
 				'z-index' : defaults.topZIndex + (i | 0)
 			}
 			// Operations with DOM
-				elRender(e._dragDeck[i].card.domElement)
-						.css(_params);	 
+			let _cardDomElement = share.get('domElement:' + e._dragDeck[i].card.id);
+
+			elRender(_cardDomElement)
+					.css(_params);	 
 		}
 });

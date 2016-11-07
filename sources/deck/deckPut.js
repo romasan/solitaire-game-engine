@@ -4,7 +4,7 @@ import share    from 'share';
 import defaults from 'defaults';
 
 import Field    from 'field';
-import Deck     from 'addDeck';
+import Deck     from 'deck';
 import putRules from 'readyPutRules';
 
 export default function(putDeck) {
@@ -37,7 +37,7 @@ export default function(putDeck) {
 			if(rulesCorrect) {
 
 				if(_link) {
-					_deck = Deck.Deck(_link);
+					_deck = Deck.getDeck(_link);
 				}
 
 				var ruleName = this.putRules[ruleIndex];

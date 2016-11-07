@@ -5,7 +5,7 @@ import defaults from 'defaults';
 import event    from 'event';
 
 import autoStep from 'autoStep';
-import Deck     from 'addDeck';
+import Deck     from 'deck';
 import Tips     from 'tips';
 
 export default class fallAutoStep extends autoStep {

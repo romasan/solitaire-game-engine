@@ -5,7 +5,7 @@ import share     from 'share';
 import common    from 'common';
 
 import forceMove from 'forceMove';
-import Deck      from 'addDeck';
+import Deck      from 'deck';
 import Tips      from 'tips';
 // import elRender  from 'elRender';
 
@@ -24,22 +24,9 @@ var _undo = function(a) {
 	// };
 	
 	// if(a.unflip) {
-	// 	if(
-	// 		typeof a.unflip.deck       == "string"
-	// 	 && typeof a.unflip.card       != "undefined"
-	// 	 && typeof a.unflip.card.name  == "string"
-	// 	 && typeof a.unflip.card.index != "undefined"
-	// 	) {
-	// 		var _deck = Deck.Deck(a.unflip.deck),
-	// 			_cards = _deck ? _deck.cards : [];
-	// 		if(_cards[a.unflip.card.index].name == a.unflip.card.name) {
-	// 			_cards[a.unflip.card.index].flip = true;
-	// 		}
-	// 	}
 	// };
 	
 	// if(a.fill) {
-	// 	// TODO
 	// };
 
 	// LOCK
@@ -75,9 +62,19 @@ var _undo = function(a) {
 	 && typeof a.move.to   != "undefined" 
 	 && typeof a.move.deck != "undefined"
 	) {
+
+		if(a.move.stepType) {
+			if(typeof a.move.stepType == "string") {
+				share.set('stepType', a.move.stepType);
+			}
+			if(typeof a.move.stepType.undo == "string") {
+				share.set('stepType', a.move.stepType.undo);
+			}
+		}
+
 		forceMove({
-			from : a.move.to,// from <=> to
-			to   : a.move.from,
+			from : a.move.to,   // from ->
+			to   : a.move.from, //      <- to
 			deck : a.move.deck,
 			flip : a.move.flip
 		});
@@ -90,7 +87,9 @@ event.listen('undo', function(_a) {
 	// elRender.animationsEnd();
 	event.dispatch('stopAnimations');
 	
-	if(!_a) { return; };
+	if(!_a) {
+		return;
+	};
 
 	// Обратная совместимость
 	if(_a instanceof Array) {
@@ -121,21 +120,6 @@ var _redo = function(a) {
 	// }
 
 	// if(a.flip) {
-	// };
-	
-	// if(a.unflip) {
-	// 	if(
-	// 		typeof a.unflip.deck       == "string"
-	// 	 && typeof a.unflip.card       != "undefined"
-	// 	 && typeof a.unflip.card.name  == "string"
-	// 	 && typeof a.unflip.card.index != "undefined"
-	// 	) {
-	// 		var _deck = Deck.Deck(a.unflip.deck),
-	// 			_cards = _deck ? _deck.cards : [];
-	// 		if(_cards[a.unflip.card.index].name == a.unflip.card.name) {
-	// 			_cards[a.unflip.card.index].flip = false;
-	// 		}
-	// 	}
 	// };
 	
 	// if(a.fill) {
@@ -174,9 +158,25 @@ var _redo = function(a) {
 	 && typeof a.move.to   != "undefined" 
 	 && typeof a.move.deck != "undefined"
 	) {
+
+		if(a.move.stepType) {
+			if(typeof a.move.stepType == "string") {
+				share.set('stepType', a.move.stepType);
+			}
+			if(typeof a.move.stepType.redo == "string") {
+				share.set('stepType', a.move.stepType.redo);
+			}
+		}
+
 		forceMove(a.move);
 	}
 
+	if(
+		a.redo                            &&
+		typeof a.redo.stepType == "string"
+	) {
+		share.set('stepType', a.redo.stepType);
+	}
 };
 
 event.listen('redo', function(_a) {
@@ -185,7 +185,9 @@ event.listen('redo', function(_a) {
 	event.dispatch('stopAnimations');
 	
 
-	if(!_a) return;
+	if(!_a) {
+		return;
+	}
 
 	// Обратная совместимость
 	if(_a instanceof Array) {

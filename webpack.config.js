@@ -16,42 +16,36 @@ let _json = require(_file);
 
 let version = parseInt('9' + _json.version.split('.').map((e)=>{return parseInt(e).toString(8);}).join(9));
 
-var config = {
+let dirTree = require('directory-tree');
+let tree    = dirTree('./sources/');
+let ftree   = (e) => {
+	let pathTree = [];
+	for(let i in e.children) {
+		if(e.children[i].children) {
+			pathTree.push('./' + e.children[i].path);
+			pathTree = pathTree.concat(ftree(e.children[i]));
+		}
+	}
+	return pathTree;
+}
+
+let config = {
 	entry: "index",
 	output: {
-		path: "./frontend/js/",
-		filename: "SolitaireEngine.js",
-		library: "SolitaireEngine"
+		path     : "./frontend/js/",
+		filename : "SolitaireEngine.js",
+		library  : "SolitaireEngine"
 	},
 	resolve: {
-		modulesDirectories: [
-			// tree
-			'./sources/'                           ,
-			'./sources/autosteps/'                 ,
-			'./sources/common/'                    ,
-			'./sources/debug/'                     ,
-			'./sources/debug/games/'               ,
-			'./sources/debug/tests/'               ,
-			'./sources/deck/'                      ,
-			'./sources/deck/actions/'              ,
-			'./sources/dom/'                       ,
-			'./sources/dom/render/'                ,
-			'./sources/group/'                     ,
-			'./sources/group/generators/'          ,
-			'./sources/group/generators/relations/',
-			'./sources/history/'                   ,
-			'./sources/preferences/'               ,
-			'./sources/styles/'                    ,
-			'./sources/tips/'                      
-		],
-		extensions: ['', '.js']
+		modulesDirectories : ['./sources/'].concat(ftree(tree)),
+		extensions         : ['', '.js']
 	},
 	module: {
 		loaders: [
 			{
-				test:	 /\.js$/,
-				loader: 'babel',
-				query: {
+				test   :	 /\.js$/,
+				loader : 'babel',
+				query  : {
 					presets: ['es2015']
 				}
 			},
@@ -62,8 +56,8 @@ var config = {
 			// },
 			
 			{
-				test: /\.scss$/,
-				loader: ExtractTextPlugin.extract('style', 'css!sass')
+				test   : /\.scss$/,
+				loader : ExtractTextPlugin.extract('style', 'css!sass')
 			},
 			
 			// {
@@ -82,8 +76,8 @@ var config = {
 			// }
 
 			{
-				test: /\.hamlc$/,
-				loader: "hamlc-loader"
+				test   : /\.hamlc$/,
+				loader : "hamlc-loader"
 			}
 
 			// {
@@ -112,9 +106,7 @@ var config = {
 						let _ver = _json.version.split('.');
 						_ver[_ver.length - 1] = (_ver[_ver.length - 1]|0) + 1;
 						_json.version = _ver.join('.');
-						// version = parseInt('9' + _json.version.split('.').map((e)=>{return parseInt(e).toString(8);}).join(9));
 						fs.writeFile(_file, JSON.stringify(_json, null, 2));
-
 					}
 				});
 			};

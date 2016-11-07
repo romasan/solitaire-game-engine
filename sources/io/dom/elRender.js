@@ -10,11 +10,11 @@ import share    from 'share';
 import elClass    from 'elClass';
 import allElClass from 'allElClass';
 
-share.set('animatedElements',      0);
-share.set('animatedElementsStack', []);
-share.set('animatedCallback',      ()=>{});
+share.set('animatedElements'     , 0       );
+share.set('animatedElementsStack', []      );
+share.set('animatedCallback'     , () => {});
 
-var _allEl = (e)=>{
+var _allEl = (e) => {
 
 	if(!e) {
 		throw new Error("elRender:empty arguments");
@@ -44,23 +44,11 @@ var _allEl = (e)=>{
 	}
 };
 
-_allEl.stopAnimations = (callback)=>{
+_allEl.stopAnimations = (callback) => {
 
 	_allEl(".animated")
-		.css({transition: '0s'})
+		.css({transition: '0s'}) // false
 		.removeClass("animated");
-
-	/*var _animatedElementsStack = share.get('animatedElementsStack');
-
-	for(var i in _animatedElementsStack) {
-		_animatedElementsStack[i].el.style.transition = null;
-	};
-	share.set('animatedElementsStack', []);
-
-	share.set('animatedElements', 0);
-	var _animatedCallback = share.get('animatedCallback');
-	_animatedCallback.call(this);
-	share.set('animatedCallback', ()=>{});*/
 };
 
 export default _allEl;

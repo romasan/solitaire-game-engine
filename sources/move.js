@@ -5,7 +5,7 @@ import share    from 'share';
 import defaults from 'defaults';
 import common   from 'common';
 
-import Deck     from 'addDeck';
+import Deck     from 'deck';
 import Tips     from 'tips';
 import bestTip  from 'bestTip';
 import winCheck from 'winCheck';
@@ -13,11 +13,12 @@ import Field    from 'field';
 
 var Move = function(moveDeck, to, cursorMove) {
 
+	event.dispatch('startSession', {type: 'move'});
+
 	common.animationDefault();
 
-	let _deck_destination = null,// to
-	    // находим стопку из которой взяли
-	    _deck_departure   = moveDeck[0].card.parent && common.getElementById(moveDeck[0].card.parent),// from
+	let _deck_departure   = moveDeck[0].card.parent && common.getElementById(moveDeck[0].card.parent),// стопка из которой взяли
+	    _deck_destination = null,                                                                     // в которую положили
 	    _success          = true;
 
 	let _stepType = share.get('stepType');
@@ -46,8 +47,8 @@ var Move = function(moveDeck, to, cursorMove) {
 		let _deck_departure = moveDeck[0].card.parent && common.getElementById(moveDeck[0].card.parent);
 
 		event.dispatch('moveCardToHome', {
-			moveDeck  : moveDeck,
-			departure : _deck_departure,
+			moveDeck  : moveDeck             ,
+			departure : _deck_departure      ,
 			stepType  : share.get('stepType')
 		});
 		return;
@@ -55,10 +56,16 @@ var Move = function(moveDeck, to, cursorMove) {
 
 	_success = _success && to;// to - не пустой
 
-	let _el = to && to.id && common.getElementById(to.id);// получаем карту/стопку
+	let _el = null;
+
+	if(_success) {
+		_el = common.getElementById(to);// получаем карту/стопку
+	}
+
+	_success = _success && _el;
 
 	// если положили на карту узнаём из какой она стопки
-	if(_el) {
+	if(_success) {
 		if(_el.type == 'card') {
 			_deck_destination = common.getElementById(_el.parent)
 		} else if(_el.type == 'deck') {
@@ -72,12 +79,11 @@ var Move = function(moveDeck, to, cursorMove) {
 		_success = _success && _deck_departure;
 
 		// смотрим не одна и та же ли эта стопка
-		if(_deck_destination && _deck_destination.getId() != _deck_departure.getId()) {
+		if(_deck_destination && _deck_destination.id != _deck_departure.id) {
 
 			// узнаём можно ли положить карты на папку назначения
 			var _put = _deck_destination.Put(moveDeck);
 			_success = _success && _put;
-
 			if(_put) {// } && _deck_departure) {
 
 				// если можно положить карты берём их из исходной стопки
@@ -92,12 +98,26 @@ var Move = function(moveDeck, to, cursorMove) {
 					// режим анимации по умолчанию
 					common.animationDefault();
 
+					let _stepType = share.get('stepType');
+
+					let _checkMoveEnd = false;
+					
+					for(let _actionName in _deck_destination.actions) {
+						if(_deck_destination.actions[_actionName].event == "moveEnd") {
+							_checkMoveEnd = true;
+						}
+					}
+
 					event.dispatch('addStep', {
 						'move' : {
-							from : _deck_departure  .name,
-							to   : _deck_destination.name,
-							deck : Deck.deckCardNames(moveDeck),
-							stepType : share.get('stepType')
+							from     : _deck_departure  .name      ,
+							to       : _deck_destination.name      ,
+							deck     : Deck.deckCardNames(moveDeck),
+							stepType : {
+								undo: _stepType,
+								redo: _checkMoveEnd ? "specialStepType" : _stepType
+							},
+							context  : "move"
 						}
 					})
 					
@@ -105,38 +125,29 @@ var Move = function(moveDeck, to, cursorMove) {
 						event.dispatch('saveSteps');
 					}
 
-					// var _deck = _deck_departure.cards;
-					// if(_deck.length && _deck[_deck.length - 1].flip) {
-						
-					// 	_deck[_deck.length - 1].flip = false;
-						
-					// 	event.dispatch('addStep', {
-					// 		deck : _deck_departure.name,
-					// 		card : {
-					// 			name  : _deck[_deck.length - 1].name,
-					// 			index : _deck.length - 1
-					// 		}
-					// 	});
-					// }
-
 					event.dispatch('moveDragDeck', {
 						
-						departure   : _deck_departure,
+						departure   : _deck_departure  ,
 						destination : _deck_destination,
-						moveDeck    : moveDeck,
+						moveDeck    : moveDeck         ,
 						
-						callback    : ()=>{
-
-							// записать ход (если он не составной)
-							// if(_stepType == defaults.stepType) {				
-							// }
+						callback    : () => {
 
 							event.dispatch('moveEnd:' + share.get('stepType'));
 							event.dispatch('moveEnd', {
-								from     : _deck_departure,
-								to       : _deck_destination,
-								moveDeck : moveDeck,
-								stepType : share.get('stepType')
+								from     : _deck_departure      ,
+								to       : _deck_destination    ,
+								moveDeck : moveDeck             ,
+								stepType : share.get('stepType'),
+								before   : (e) => {
+									if(e && typeof e.stepType == "string") {
+										event.dispatch('addStep', {
+											'redo': {
+												'stepType': e.stepType
+											}
+										})
+									}
+								}
 							});
 
 							Tips.checkTips();
@@ -158,35 +169,29 @@ var Move = function(moveDeck, to, cursorMove) {
 
 		// достаточно ли перетащили (если клика не достаточно и не двойной клик)
 		if(
-			Field.inputParams.doubleClick                   &&
+			Field.inputParams.doubleClick                    &&
 			cursorMove.dbclick                               ||
 			cursorMove.distance >= share.get('moveDistance')
 		) {
 				var Tip = bestTip(moveDeck, cursorMove);
 
 				if(Tip) {
-					Move(moveDeck, Tip.to.deck.domElement.el, cursorMove);
+					Move(moveDeck, Tip.to.deck.id, cursorMove);
 					return;
 				} else {
 					event.dispatch('moveCardToHome', {
-						moveDeck  : moveDeck,
+						moveDeck  : moveDeck       ,
 						departure : _deck_departure
 					});
-					// share.moveCardToHome();
 				}
 
 		} else {
 			event.dispatch('moveCardToHome', {
-				moveDeck  : moveDeck,
+				moveDeck  : moveDeck       ,
 				departure : _deck_departure
 			});
 		}
-
 	}
-
-	// if(_success) {
-	// afterMove();
-	// }
 };
 
 event.listen('Move', function(e) {

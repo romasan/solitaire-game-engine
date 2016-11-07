@@ -26,7 +26,15 @@ export default class {
 		}
 	}
 
-	start() {
+	start(e) {
+
+		console.log('### start auto step:', this.stepType, e);
+
+		if(e && typeof e.before == "function") {
+			e.before({
+				stepType: this.stepType
+			});
+		}
 		
 		share.set('stepType', this.stepType);
 
@@ -45,7 +53,7 @@ export default class {
 		if(this.dispatch) {
 			event.dispatch(this.dispatch, {
 				stepType: share.get('stepType'),
-				callback: ()=>{
+				callback: () => {
 					share.set('stepType', defaults.stepType);
 				}
 			});
@@ -59,19 +67,21 @@ export default class {
 		this.stepType = stepType;
 
 		if(this.event) {
-			event.listen(this.event, ()=>{
-				this.start();
+			event.listen(this.event, (e) => {
+				this.start(e);
 			});
 		}
 		
 		if(!this.autoStep) {
 
-			event.listen('moveEnd', ()=>{
+			event.listen('moveEnd', () => {
 
-				if(share.get('stepType') != this.stepType) { return; }
+				if(share.get('stepType') != this.stepType) {
+					return; 
+				}
 				
 				this.check();
-			});
+			}, this);
 		}
 	}
 }

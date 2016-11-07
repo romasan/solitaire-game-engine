@@ -3,7 +3,7 @@
 import defaults from 'defaults';
 
 var shuffle = function(a) {
-    for(var j, x, i = a.length; i; j = Math.floor(Math.random() * i), x = a[--i], a[i] = a[j], a[j] = x) {};
+	for(var j, x, i = a.length; i; j = Math.floor(Math.random() * i), x = a[--i], a[i] = a[j], a[j] = x) {};
 }
 
 export default function(a) {
@@ -27,7 +27,7 @@ export default function(a) {
 		}
 		return _deck;
 	}
-	
+
 	var _ranks = _deckCount == 36 ? defaults.card.ranks36 : defaults.card.ranks;
 	if(a && a.ranks) {
 		_ranks = []
@@ -37,7 +37,7 @@ export default function(a) {
 			}
 		}
 	}
-	
+
 	var genTypes = {
 		all    : function() {
 			return genType(defaults.card.suits, _ranks);
@@ -77,16 +77,15 @@ export default function(a) {
 			var _cardsSuits = [defaults.card.solors[(Math.random() * defaults.card.solors.length)|0]];
 			return genType(_cardsSuits, _ranks);
 		}
-		
 	}
-	
+
 	genTypes.hearts   = genTypes.h_only;
 	genTypes.diamonds = genTypes.d_only;
 	genTypes.clubs    = genTypes.c_only;
 	genTypes.spades   = genTypes.s_only;
 	
 	var _deck = [];
-	
+
 	for(;_iterations > 0;_iterations -= 1) {
 		_deck = _deck.concat(genTypes[type]());
 	}

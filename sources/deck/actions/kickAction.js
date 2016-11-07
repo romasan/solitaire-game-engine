@@ -5,17 +5,20 @@ import share    from 'share';
 import common   from 'common';
 import defaults from 'defaults';
 
+const stepType = 'kickStepType';
+
 export default function(data) {
 	
+	// если тип хода не стандартный не выполнять кик
 	if(share.get('stepType') != defaults.stepType) {
 		return false;
 	}
 
+	// TODO спорный момент
 	if(
 		typeof data.eventData.stepType == "string"   &&
 		data.eventData.stepType != defaults.stepType
 	) {
-		// ??? TODO проверить нужно ли это
 		return false;
 	}
 
@@ -51,11 +54,13 @@ export default function(data) {
 		return false;
 	}
 
+	share.set('stepType', stepType);
+
 	// if(window.debug_kick) {
 	// 	console.log('data.eventData.stepType:', data);
 	// 	throw new Error();
 	// }
-	window.debug_kick = 1;
+	// window.debug_kick = 1;
 
 	// if(
 	// 	data.eventData[0]                         &&
@@ -76,38 +81,64 @@ export default function(data) {
 	let _from = data.eventData.to, //Deck.Deck(_name),
 	    _deck = _from.getCardsNames();
 
-	let _callback = ()=>{
+	let _callback = () => {
 
-		event.dispatch('addStep', {
-			"move" : {
-				from     : _from.name,
-				to       : data.actionData.to,
-				deck     : _deck,
-				flip     : true,
-				stepType : share.get('stepType')
-			}
-		});
+		console.log('KICK END>>>', data.actionData.dispatch);
 
-		event.dispatch('saveSteps');
+		let _addStep = (e) => {
+
+			event.dispatch('addStep', {
+				"move" : {
+					from     : _from.name,
+					to       : data.actionData.to,
+					deck     : _deck,
+					flip     : true,
+					stepType : {
+						undo: e.undo,//stepType,// share.get('stepType'),
+						redo: e.redo//data.actionData.dispatch ? share.get('stepType') : defaults.stepType
+					},
+					context  : "kickAction"
+				}
+			});
+		};		
+
+		share.set('stepType', defaults.stepType);
 
 		if(data.actionData.dispatch) {
-			event.dispatch(data.actionData.dispatch);
+			event.dispatch(data.actionData.dispatch, {
+				before: (e) => {
+					
+					_addStep({
+						undo: stepType,
+						redo: e.stepType	
+					});
+
+					event.dispatch('saveSteps');
+				}
+			});
+		} else {
+			
+			_addStep({
+				undo: stepType,// share.get('stepType'),
+				redo: data.actionData.dispatch ? share.get('stepType') : defaults.stepType
+			})
+			
+			event.dispatch('saveSteps');
 		}
 	}
 	
 
 	// TODO interval
 	let forceMoveParams = {
-		from     : _from             ,// deck
-		to       : data.actionData.to,// _decks[deckId].name,
-		deck     : _deck             ,// [_cardName],
-		flip     : true              ,// true
+		from     : _from             ,
+		to       : data.actionData.to,
+		deck     : _deck             ,
+		flip     : true              ,
 		callback : _callback
 	};
 	
 	// forceMove(forceMoveParams);
 	event.dispatch('forceMove', forceMoveParams);
-	
 
 	// if(e.after) {
 	// 	_events[e.after].call(this, e);

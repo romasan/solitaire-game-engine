@@ -4,19 +4,19 @@
 
 class Event {
 // export default new function() {
-	
+
 	constructor() {
 		this._events = {};
 		this._tag = 'global';
 	}
 
-	listen(eventName, callback) {
+	listen(eventName, callback, context) {
 
 		// console.log('listen: (tag:', this._tag + ')', eventName);
-		
+
 		if(
-			typeof eventName != 'string'       ||
-			typeof callback != 'function'
+			typeof callback  != 'function' ||
+			typeof eventName != 'string'
 		) {
 			return;
 		}
@@ -24,6 +24,7 @@ class Event {
 		if(this._events[eventName]) {
 			this._events[eventName].push({
 				tag: this._tag,
+				context       ,
 				callback
 			});
 		} else {
@@ -38,9 +39,23 @@ class Event {
 	dispatch(eventName, data) {
 
 		if(this._events[eventName]) {
+
 			for(let i in this._events[eventName]) {
+
 				if(this._events[eventName][i]) {
-					this._events[eventName][i].callback(data);
+
+					this._events[eventName][i].callback(
+
+						data,
+
+						{
+							eventInfo : {
+								eventName                             ,
+								index : i                             ,
+								count : this._events[eventName].length
+							}
+						}
+					);
 				}
 			}
 		}
@@ -67,7 +82,19 @@ class Event {
 		}
 	}
 
-	log() {}
+	get(eventName) {
+		return this._events[eventName];
+	}
+
+	has(eventName) {
+		return this._events[eventName] ? this._events[eventName].length : 0;
+	}
+
+	// getEventsByName(eventName) {
+	// 	return this._events.indexOf(eventName) >= 0 ? this._events[this._events.indexOf(eventName)] : null;
+	// }
+
+	// log() {}
 };
 
 // let _event = new Event();

@@ -6,7 +6,7 @@ import common   from 'common';
 import defaults from 'defaults';
 
 import Tips from 'tips';
-import Deck from 'addDeck';
+import Deck from 'deck';
 
 let stepType = 'stepsAround';
 
@@ -24,7 +24,9 @@ let endAction = ()=>{
 export default function(data) {// {actionData, eventData, eventName}
 
 	let _stepType = share.get('stepType');
-	if(_stepType != defaults.stepType) { return; };
+	if(_stepType != defaults.stepType) {
+		return;
+	};
 
 	share.set('stepType', stepType);
 	// stop Drag'n'Drop
@@ -32,10 +34,6 @@ export default function(data) {// {actionData, eventData, eventName}
 	
 	let _relations = this.getRelationsByName('around', {from: null});
 	let _tips = Tips.getTips();
-
-	if(typeof data.actionData.action == "string") {
-	
-	}
 
 	// выполняется для всех вокруг
 	// ход не делается

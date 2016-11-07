@@ -5,7 +5,7 @@ import event           from 'event';
 import common          from 'common';
 
 import winCheckMethods from 'winCheckMethods';
-import Deck            from 'addDeck';
+import Deck            from 'deck';
 
 var winCheck = function(params) {
 
@@ -36,7 +36,9 @@ var winCheck = function(params) {
 
 	if(rulesCorrect) {
 		
-		if(params && params.noCallback) { return true; }
+		if(params && params.noCallback) {
+			return true;
+		}
 		
 		// show you win message
 		event.dispatch('win', params);

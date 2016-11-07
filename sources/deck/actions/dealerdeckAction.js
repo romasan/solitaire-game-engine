@@ -7,7 +7,7 @@ import common    from 'common';
 
 import forceMove from 'forceMove';
 
-let stepType = 'dealerdeckStepType';
+const stepType = 'dealerdeckStepType';
 
 export default function(data) {// data.actionData, e
 
@@ -18,37 +18,17 @@ export default function(data) {// data.actionData, e
 	// console.log('dealerdeckAction:', this.name, data);
 
 	if(
-		typeof data.actionData.stepType == "string" &&
+		typeof data.actionData.stepType == "string"       &&
 		data.actionData.stepType != share.get('stepType')
 	) {
 		return;
 	}
-
-	// listen click
-	// click is for me (default)
-	// if(this.name != data.actionData.name) { return; };
-	
-	// if(
-	// 	!data.eventData ||
-	// 	this.name != data.eventData.to.name
-	// ) {
-	// 	return;
-	// };
-
-	// console.log('dealerDeckAction', this, data);
-
-	// if(
-	// 	!data.eventData.to                  &&
-	// 	this.name != data.eventData.to.name
-	// ) {
-	// 	return;
-	// };
 	
 	// меняем тип хода
 	share.set('stepType', stepType);
 
 	let dealDeck = typeof data.actionData.from == "string"
-		? Deck.Deck(data.actionData.from)
+		? Deck.getDeck(data.actionData.from)
 		: this
 	
 	// смотрим остались ли карты
@@ -70,12 +50,6 @@ export default function(data) {// data.actionData, e
 		
 		data.actionData.to = data.actionData.toGroup;
 		
-		// _decks = _decks.concat(Group.Group(e.toGroup).decks);
-		
-		// var __decks = Group.Group(data.actionData.toGroup).decks;
-		// for(var deckIndex in __decks) {
-		// 	_decks.push(__decks[deckIndex]);
-		// }
 	};
 
 	// есть куда раздать
@@ -174,13 +148,18 @@ export default function(data) {// data.actionData, e
 			// _decks[deckId].Redraw();
 
 			event.dispatch('dealEnd');
+
 			event.dispatch('addStep', {
 				'move' : {
-					from     : dealDeck.name,
-					to       : _decks[deckId].name,
-					deck     : [_cardName],
-					flip     : true,
-					stepType : share.get('stepType')
+					from         : dealDeck.name,
+					to           : _decks[deckId].name,
+					deck         : [_cardName],
+					flip         : true,
+					stepType     : {
+						undo: share.get('stepType'),
+						redo: data.actionData.dispatch ? share.get('stepType') : defaults.stepType
+					},
+					context: "dealerdeckAction"
 				}
 			});
 
@@ -192,10 +171,6 @@ export default function(data) {// data.actionData, e
 
 		// сохраняем если паздача удалась
 		event.dispatch('saveSteps');
-		// event.dispatch('checkTips');
-		// if(History.count()) {
-		// 	event.dispatch('makeStep', History.get());
-		// }
 
 	};
 

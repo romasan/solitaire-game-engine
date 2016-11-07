@@ -5,25 +5,26 @@ import share          from 'share';
 import defaults       from 'defaults';
 import common         from 'common';
 
-import Deck           from 'addDeck';
+import Deck           from 'deck';
 import groupFill      from 'groupFill';
 import groupRedraw    from 'groupRedraw';
 import groupGenerator from 'groupGenerator';
 
 const params = {
-	"paddingType"  : {type: "any"    },
-	"flip"         : {type: "any"    },
-	"showSlot"     : {type: "any"    },
-	"takeRules"    : {type: "any"    },
-	"putRules"     : {type: "any"    },
-	"fillRule"     : {type: "any"    },
-	"autoHide"     : {type: "any"    },
-	"paddingX"     : {type: "any"    },
-	"paddingY"     : {type: "any"    },
-	"flipPaddingX" : {type: "any"    },
-	"flipPaddingY" : {type: "any"    },
-	"actions"      : {type: "any"    },
-	"save"         : {type: "boolean", default: true}
+	"paddingType"  : {type : "any"}                    ,
+	"flip"         : {type : "any"}                    ,
+	"showSlot"     : {type : "any"}                    ,
+	"takeRules"    : {type : "any"}                    ,
+	"putRules"     : {type : "any"}                    ,
+	"fillRule"     : {type : "any"}                    ,
+	"autoHide"     : {type : "any"}                    ,
+	"paddingX"     : {type : "any"}                    ,
+	"paddingY"     : {type : "any"}                    ,
+	"flipPaddingX" : {type : "any"}                    ,
+	"flipPaddingY" : {type : "any"}                    ,
+	"actions"      : {type : "any"}                    ,
+	"save"         : {type : "boolean", default : true}
+	// "longStep"     : {type : "boolean", default : false}
 };
 
 class groupClass {
@@ -32,15 +33,11 @@ class groupClass {
 		
 		this.type = 'group';
 		
-		var id = _id;
-		
-		this.getId = function() {
-			return id;
-		}
+		this.id = _id
 
 		this.name = a.name && typeof a.name == 'string' 
 			? a.name 
-			: ('name_' + id);
+			: ('name_' + _id);
 		
 		this.position = {
 			x : a.position && a.position.x && typeof a.position.x == 'number' 
@@ -84,7 +81,9 @@ class groupClass {
 	// Add deck to group
 	addDeck(a) {
 
-		if(!a) return;
+		if(!a) {
+			return;
+		}
 		
 		if(!a.position) {
 			a.position = {
@@ -187,8 +186,8 @@ class groupClass {
 
 		var _el = Deck.addDeck(a);
 		
-		this.deckIndex[_index]  = _el.getId();
-		this.decks[_el.getId()] = _el;
+		this.deckIndex[_index]  = _el.id;
+		this.decks[_el.id] = _el;
 	}
 
 	// Fill group
@@ -246,7 +245,10 @@ class groupClass {
 
 var addGroup = function(a) {
 
-	if(!a) return false;
+	if(!a) {
+		return false;
+	}
+	
 	var _id = 'group_' + common.genId();
 	
 	var _el_group = new groupClass(a, _id);
@@ -327,11 +329,11 @@ var addGroup = function(a) {
 	return _el_group;
 };
 
-var Group = function(name) {
+var getGroup = function(name) {
 	return common.getElementsByName(name, 'group')[0];
 };
 	
 export default {
 	addGroup,
-	Group
+	getGroup
 };

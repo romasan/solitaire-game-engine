@@ -1,12 +1,12 @@
 'use strict';
 
-import share    from 'share';
-import event    from 'event';
-import defaults from 'defaults';
+import share              from 'share';
+import event              from 'event';
+import defaults           from 'defaults';
 
-import Tips     from 'tips';
-import Field    from 'field';
-import History  from 'history';
+import Tips               from 'tips';
+import Field              from 'field';
+import History            from 'history';
 
 import drawPreferences    from 'drawPreferences';
 import preferencesEvents  from 'preferencesEvents';
@@ -20,7 +20,7 @@ import defaultPreferences from 'defaultPreferences';
 // 	console.log('%cshareChange:curLockState', 'background-color: blue;color: white;', e);
 // });
 
-event.listen('gameInit', (e)=>{
+event.listen('gameInit', (e) => {
 
 	share.set('stepType', defaults.stepType);
 
@@ -38,23 +38,31 @@ event.listen('gameInited', ()=>{
 	defaultPreferences();
 });
 
-share.set('prevStepType', defaults.stepType);
-event.listen('change:stepType', ()=>{
-	share.set('prevStepType', share.get('stepType'));
-});
+// share.set('prevStepType', defaults.stepType);
+// event.listen('shareChange:stepType', (e) => {
+// 	share.set('prevStepType', e.from);
+// });
 
-event.listen('moveEnd', function(e) {
+event.listen('moveEnd', (e) => {
 	Tips.checkTips();
 });
 
-event.listen('actionBreak', function(e) {
+event.listen('actionBreak', (e) => {
 	Tips.checkTips();
+});
+
+event.listen('startSession', (e) => {
+	// share.set('sessionStarted', true);
+});
+
+event.listen('stopSession', (e) => {
+	// share.set('sessionStarted', false);
 });
 
 // Lock/Unlock
 
 var sqr = function(i) {
-    return i * i;
+	return i * i;
 };
 
 // --
@@ -177,9 +185,10 @@ var validateCardName = function(name, nolog) {
 
 // ID generator
 
-var _id = 0,
-	genId = function() {
-	return _id++;
+let _id = 0;
+
+let genId = () => {
+	return _id += 1;
 };
 
 // --
@@ -226,7 +235,7 @@ event.listen('historyReapeater', function(e) {
 
 let deckInGroups = (deck, groups)=>{
 	for(let groupName in groups) {
-		Group.Group(groupName).hasDeck();
+		Group.getGroup(groupName).hasDeck();
 	}
 }
 
