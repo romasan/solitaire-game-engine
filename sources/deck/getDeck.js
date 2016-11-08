@@ -2,12 +2,14 @@
 
 import common from 'common';
 
-export default function(name, groupName) {
-	
-	var _decks = common.getElementsByName(name, 'deck');
+export default (name, groupName) => {
+
+	let _decks = common.getElementsByName(name, 'deck');
+
 	if(groupName && typeof groupName == 'string') {
-		for(var i in _decks) {
-			var _group = common.getElementById(_decks[i].parent());
+		for(let i in _decks) {
+
+			let _group = common.getElementById(_decks[i].parent());
 			if(_group && _group.name && _group.name == groupName) {
 				return _decks[i];
 			}

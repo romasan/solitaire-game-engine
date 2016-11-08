@@ -44,7 +44,7 @@ exports.onChangePreferences = (f) => {
 // 	let _pref = storage.get('pref');
 // };
 
-exports.init = function(gameConfig) {
+exports.init = (gameConfig) => {
 
 	event.dispatch('gameInit', {firstInit});
 

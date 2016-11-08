@@ -18,11 +18,11 @@ export default function(e) {
 	
 	// direction <- placement: {x, y}
 
-	var _count = e.count;
-	var _decks = [];
+	let _count = e.count;
+	let _decks = [];
 	
-	for(var deckIndex = 0; deckIndex < _count; deckIndex += 1) {
-		var _deckName = this.name + "_deck" + (deckIndex + 1);
+	for(let deckIndex = 0; deckIndex < _count; deckIndex += 1) {
+		let _deckName = this.name + "_deck" + (deckIndex + 1);
 		
 		let _deck = {
 			name : _deckName

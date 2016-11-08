@@ -10,22 +10,22 @@ import bestTip  from 'bestTip';
 import Deck     from 'deck';
 import Field    from 'field';
 
-var _showTips = defaults.showTips;
+let _showTips = defaults.showTips;
 
-var tipTypes = [
+let tipTypes = [
 	'tip'        , 
 	'tipTo'      , 
 	'tipPriority',
 	'tipToHome'
 ];
 
-var _tips = [];
+let _tips = [];
 
-var getTips = function() {
+let getTips = () => {
 	return _tips;
 }
 
-var checkTips = function() {
+let checkTips = () => {
 
 	if(share.get('noTips')) {
 		return false;
@@ -33,7 +33,7 @@ var checkTips = function() {
 
 	event.dispatch('hideTips');
 
-	var _decks = Deck.getDecks({visible : true});
+	let _decks = Deck.getDecks({visible : true});
 
 	_tips = allToAll({
 		decks : _decks
@@ -48,12 +48,12 @@ var checkTips = function() {
 		console.log('No possible moves.');
 	}
 
-	// var _showTips = share.get('showTips')
+	// let _showTips = share.get('showTips')
 	if(_showTips) {
 
-		var _homeGroups = Field.homeGroups;
+		let _homeGroups = Field.homeGroups;
 
-		for(var i in _tips) {
+		for(let i in _tips) {
 
 			// TODO инициализировать "hideTipsInDom" в Field.js 
 			if(
@@ -95,8 +95,10 @@ event.listen('checkTips', checkTips);
 
 // --------------------------------------------------------
 
-var showTips = function(a) {
+let showTips = (a) => {
+	
 	_showTips = true;
+	
 	if(a && a.init) {
 		return;
 	}
@@ -105,8 +107,10 @@ var showTips = function(a) {
 };
 event.listen('tipsON', showTips);
 
-var hideTips = function(a) {
+let hideTips = (a) => {
+	
 	_showTips = false;
+	
 	if(a && a.init) {
 		return;
 	}
@@ -117,7 +121,7 @@ event.listen('tipsOFF', hideTips);
 
 // --------------------------------------------------------
 
-var tipsMove = function(a) {
+let tipsMove = (a) => {
 
 	if(!share.get('showTipPriority')) {
 		return;
@@ -134,7 +138,7 @@ var tipsMove = function(a) {
 		a.cursorMove.distance >= share.moveDistance
 	) {
 
-		var Tip = bestTip(a.moveDeck, a.cursorMove);
+		let Tip = bestTip(a.moveDeck, a.cursorMove);
 
 		if(Tip) {
 
@@ -148,14 +152,14 @@ var tipsMove = function(a) {
 
 // --------------------------------------------------------
 
-var tipsDestination = function(a) {
+let tipsDestination = (a) => {
 
 	if(share.get('showTipsDestination')) {
 
 		event.dispatch('hideTips');
 		
 		if(a && a.currentCard && a.currentCard.id) {
-			for(var i in _tips) {
+			for(let i in _tips) {
 				if(_tips[i].from.card.id == a.currentCard.id) {					
 					
 					event.dispatch('showTip', {
@@ -168,7 +172,7 @@ var tipsDestination = function(a) {
 	}
 };
 
-let checkFrom = (_from)=>{
+let checkFrom = (_from) => {
 
 	for(let i in _tips) {
 		if(
@@ -181,7 +185,7 @@ let checkFrom = (_from)=>{
 	return false;
 };
 
-let fromTo = (_from, _to)=>{
+let fromTo = (_from, _to) => {
 	
 	for(let i in _tips) {
 		if(

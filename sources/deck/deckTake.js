@@ -11,7 +11,7 @@ export default function(cardId) {
 	// Нестандартный ход (autosteps)
 	// if(share.get('stepType') != defaults.stepType) {return false;};
 
-	var rulesCorrect = true;//!common.isLock();
+	let rulesCorrect = true;//!common.isLock();
 
 	rulesCorrect = rulesCorrect && !this.locked;
 	
@@ -21,24 +21,24 @@ export default function(cardId) {
 
 	// берём карту/стопку
 
-	var cardIndex  = -1;
-	var cardName   = null; 
-	var cardSuit   = null; 
-	var cardRank   = null; 
-	var deckLength = this.cards.length;
+	let cardIndex  = -1;
+	let cardName   = null; 
+	let cardSuit   = null; 
+	let cardRank   = null; 
+	let deckLength = this.cards.length;
 
 	// проверяем не является ли перевернутой
 
-	var takeDeck = []
+	let takeDeck = []
 
-	for(var i in this.cards) {
+	for(let i in this.cards) {
 
 		if(this.cards[i].id == cardId) {
 			
 			cardIndex = i|0;
 			cardName  = this.cards[i].name;
 			
-			var _name = common.validateCardName(cardName);
+			let _name = common.validateCardName(cardName);
 			
 			rulesCorrect = rulesCorrect && _name;
 
@@ -62,7 +62,8 @@ export default function(cardId) {
 			});
 		}
 	}
-	var _attrs = {
+	
+	let _attrs = {
 		cardId     : cardId, 
 		cardName   : cardName, 
 		cardSuit   : cardSuit, 
@@ -71,8 +72,9 @@ export default function(cardId) {
 		deckLength : deckLength
 	}
 
-	for(var ruleIndex in this.takeRules) {
-		var ruleName = this.takeRules[ruleIndex];
+	for(let ruleIndex in this.takeRules) {
+		
+		let ruleName = this.takeRules[ruleIndex];
 		
 		if(takeRules[ruleName]) {
 			rulesCorrect = rulesCorrect && takeRules[ruleName](_attrs);

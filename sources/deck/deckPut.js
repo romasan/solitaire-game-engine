@@ -11,10 +11,10 @@ export default function(putDeck) {
 
 	let _stepType = share.get('stepType');
 
-	var rulesCorrect = true;
+	let rulesCorrect = true;
 	
-	var _deckId         = putDeck[0].card.parent;
-	var _deck_departure = Deck.getDeckById(_deckId);
+	let _deckId         = putDeck[0].card.parent;
+	let _deck_departure = Deck.getDeckById(_deckId);
 
 	rulesCorrect = rulesCorrect && !this.locked;
 
@@ -32,7 +32,7 @@ export default function(putDeck) {
 		let _link = null;// deckName
 		let _deck = this;
 
-		for(var ruleIndex in this.putRules) {
+		for(let ruleIndex in this.putRules) {
 			
 			if(rulesCorrect) {
 
@@ -40,7 +40,7 @@ export default function(putDeck) {
 					_deck = Deck.getDeck(_link);
 				}
 
-				var ruleName = this.putRules[ruleIndex];
+				let ruleName = this.putRules[ruleIndex];
 
 				if(putRules[ruleName]) {
 

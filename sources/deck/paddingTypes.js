@@ -34,18 +34,18 @@ export default {
 	
 	twindeck_typeA : (params, card, index, length, deck) => {
 
-		var twindeck_max_cards       = 24,
+		let twindeck_max_cards       = 24,
 			twindeck_deck_length     = 3;
 
-		var _padding = {
+		let _padding = {
 			x : 2,
 			y : 1
 		}
 
-		var _depth = (length / twindeck_max_cards * twindeck_deck_length)|0;
+		let _depth = (length / twindeck_max_cards * twindeck_deck_length)|0;
 		if(_depth >= twindeck_deck_length) _depth = twindeck_deck_length - 1;
 
-		var _plus = index - (length - _depth - 1);
+		let _plus = index - (length - _depth - 1);
 		if(_plus < 0) _plus = 0;
 
 		return {
@@ -61,7 +61,7 @@ export default {
 		//     ...``   :B  B = cos(b) * C
 		// a.``.......+:
 		//        A     y 90deg
-		var _depth  = 1,
+		let _depth  = 1,
 		_radius = index * _depth,
 		// _step   = 180 / 16,
 		// _card   = defaults.card,
@@ -79,9 +79,9 @@ export default {
 	
 	special : (params, card, index, length, deck) => {
 
-		var _y = params.y, _x = params.x;
+		let _y = params.y, _x = params.x;
 
-		for(var i = 0; i < index; i += 1) {
+		for(let i = 0; i < index; i += 1) {
 			_y += deck[i] && deck[i].flip ? params.flip_padding_y : params.padding_y;
 			_x += deck[i] && deck[i].flip ? params.flip_padding_x : params.padding_x;
 		}

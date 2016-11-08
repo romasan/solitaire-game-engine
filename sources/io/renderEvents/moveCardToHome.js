@@ -7,7 +7,7 @@ import common   from 'common';
 import elRender from 'elRender';
 
 // Move card to home
-event.listen('moveCardToHome', function(e) {
+event.listen('moveCardToHome', (e) => {
 
 	if(share.get('lastCursorMove').distance > 0) {
 		common.curLock();

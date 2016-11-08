@@ -43,7 +43,7 @@ export default function(data) {// data.actionData, e
 	}
 
 	// карты для раздачи
-	var _decks = [];
+	let _decks = [];
 
 	// to == toGroup ???
 	if(data.actionData.toGroup && !data.actionData.to) {
@@ -59,17 +59,17 @@ export default function(data) {// data.actionData, e
 		if(typeof data.actionData.to == "string") {
 			
 			// ищем элементы с таким именем
-			var _elements = common.getElementsByName(data.actionData.to);
-			for(var i in _elements) {
+			let _elements = common.getElementsByName(data.actionData.to);
+			for(let i in _elements) {
 
 				// это группа
 				if(_elements[i].type == "group") {
 					
 					// _decks = _decks.concat(Group.Group(data.actionData.to).decks);
-					// var __decks = Group.Group(data.actionData.to).decks;
+					// let __decks = Group.Group(data.actionData.to).decks;
 					
 					// берём колоды из группы
-					for(var deckIndex in _elements[i].decks) {
+					for(let deckIndex in _elements[i].decks) {
 						_decks.push(_elements[i].decks[deckIndex]);
 					}
 				};
@@ -84,16 +84,16 @@ export default function(data) {// data.actionData, e
 		// передали массив
 		} else {
 			
-			for(var i in data.actionData.to) {
+			for(let i in data.actionData.to) {
 				
-				var _elements = common.getElementsByName(data.actionData.to[i]);
+				let _elements = common.getElementsByName(data.actionData.to[i]);
 				
-				for(var elIndex in _elements) {
+				for(let elIndex in _elements) {
 
 					if(_elements[elIndex].type == "group") {
 						// _decks = _decks.concat(Group.Group(data.actionData.to[i]).decks);
-						// var __decks = Group.Group(data.actionData.to[i]).decks;
-						for(var deckIndex in _elements[elIndex].decks) {
+						// let __decks = Group.Group(data.actionData.to[i]).decks;
+						for(let deckIndex in _elements[elIndex].decks) {
 							_decks.push(_elements[elIndex].decks[deckIndex]);
 						}
 					};
@@ -112,16 +112,16 @@ export default function(data) {// data.actionData, e
 	common.animationDefault();
 
 	// флаг, что раздача удалась
-	var _makeStep = false;
+	let _makeStep = false;
 
 	// пробегаем колоды из списка
-	for(var deckId in _decks) {
+	for(let deckId in _decks) {
 		
 		// берём верхнюю карту
-		var _card = dealDeck.getTopCard();
+		let _card = dealDeck.getTopCard();
 
 		// флаг что такой ход возможен
-		var _canStep = data.actionData.onlyEmpty
+		let _canStep = data.actionData.onlyEmpty
 			? _decks[deckId].cards.length == 0
 			: true;
 		
@@ -129,7 +129,7 @@ export default function(data) {// data.actionData, e
 
 			_makeStep = true;
 
-			var _cardName = _card.name;
+			let _cardName = _card.name;
 			
 			let _callback = ()=>{
 

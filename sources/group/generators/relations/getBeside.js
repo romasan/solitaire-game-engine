@@ -1,6 +1,6 @@
 'use strict';
 
-export default (_deck)=>{// {deck}
+export default (_deck) => {// {deck}
 	
 	let prev = _deck.getRelationsByName('beside', {
 		from: null,

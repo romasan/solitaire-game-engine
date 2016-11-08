@@ -6,7 +6,7 @@ import defaults from 'defaults';
 import Deck      from 'deck';
 import getBeside from 'getBeside';
 
-var rpr = {
+let rpr = {
 			
 
 	// Realtions filters

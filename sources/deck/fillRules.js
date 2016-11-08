@@ -9,38 +9,38 @@ import getBeside from 'getBeside';
 
 let fr = {
 
-	deckLength: (e)=>{
+	deckLength: (e) => {
 		
 		return defaults.card.ranks.length <= a.deck.cards.length;
 	},
 	
-	not: ()=>{
+	not: () => {
 		
 		return false;
 	},
 
-	noMoves: (a)=>{
+	noMoves: (a) => {
 
 		return !Tips.checkFrom(a.name);
 	},
 
-	_top: (a)=>{// filter
+	_top: (a) => {// filter
 
 		let _card = e.getTopCard();
 		return _card && common.validateCardName(_card).rank;
 	},
 
-	topAce: (e)=>{
+	topAce: (e) => {
 
 		return fr._top() == '1';
 	},
 
-	topKing: (e)=>{
+	topKing: (e) => {
 
 		return fr._top() == 'k';
 	},
 
-	_prev_next_desc_ask: (e, _type, _callback)=>{// filter
+	_prev_next_desc_ask: (e, _type, _callback) => {// filter
 
 		let _check = true;
 		let _prev = getBeside(a.to)[_type];
@@ -60,7 +60,7 @@ let fr = {
 		return _check;
 	},
 
-	// prevDescOne: (e)=>{
+	// prevDescOne: (e) => {
 
 	// 	let _check = true;
 	// 	let _prev = getBeside(a.to).prev;
@@ -82,55 +82,55 @@ let fr = {
 	// 	return _check;
 	// }
 
-	prevDescOne: (e)=>{
+	prevDescOne: (e) => {
 
-		return fr._prev_next_desc_ask(e, 'prev', (u, d)=>{
+		return fr._prev_next_desc_ask(e, 'prev', (u, d) => {
 			return u == (d|0) + 1;
 		});
 	},
 
-	prevAscOne: (e)=>{
+	prevAscOne: (e) => {
 
-		return fr._prev_next_desc_ask(e, 'prev', (u, d)=>{
+		return fr._prev_next_desc_ask(e, 'prev', (u, d) => {
 			return (u|0) + 1 == d;
 		});
 	},
 
-	nextDescOne: (e)=>{
+	nextDescOne: (e) => {
 
-		return fr._prev_next_desc_ask(e, 'next', (u, d)=>{
+		return fr._prev_next_desc_ask(e, 'next', (u, d) => {
 			return u == (d|0) + 1;
 		});
 	},
 
-	nextAscOne: (e)=>{
+	nextAscOne: (e) => {
 
-		return fr._prev_next_desc_ask(e, 'next', (u, d)=>{
+		return fr._prev_next_desc_ask(e, 'next', (u, d) => {
 			return (u|0) + 1 == d;
 		});
 	},
 
-	prevDesc: ()=>{
+	prevDesc: () => {
 
-		return fr._prev_next_desc_ask(e, 'prev', (u, d)=>{
+		return fr._prev_next_desc_ask(e, 'prev', (u, d) => {
 			return u > d;
 		});
 	},
-	prevAsc: ()=>{
+	prevAsc: () => {
 
-		return fr._prev_next_desc_ask(e, 'prev', (u, d)=>{
+		return fr._prev_next_desc_ask(e, 'prev', (u, d) => {
 			return u < d;
 		});
 	},
-	nextDesc: ()=>{
+	nextDesc: () => {
 
-		return fr._prev_next_desc_ask(e, 'next', (u, d)=>{
+		return fr._prev_next_desc_ask(e, 'next', (u, d) => {
 			return u > d;
 		});
 	},
-	nextAsc: ()=>{
+	nextAsc: () => {
 
-		return fr._prev_next_desc_ask(e, 'next', (u, d)=>{
+		return fr._prev_next_desc_ask(e, 'next', (u, d) => {
 			return u < d;
 		});
 	},

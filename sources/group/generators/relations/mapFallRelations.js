@@ -20,11 +20,12 @@ const opposite = [
 	{down  : 'up'   }
 ];
 
-export default (e)=>{// {x, y, map, mapSize, el, data}
+export default (e) => {// {x, y, map, mapSize, el, data}
 
-	var _relations = [];
+	let _relations = [];
 
 	let _directions = [];
+	
 	for(let i in e.data.directions) {
 		if(
 			_directions.indexOf(e.data.directions[i]) < 0          // этого направления ещё не было
@@ -35,10 +36,17 @@ export default (e)=>{// {x, y, map, mapSize, el, data}
 	}
 	
 	for(let i in _directions) {
+
+		let x = null,
+		    y = null;
+
 		switch(_directions[i]) {
+			
 			case 'left' :
-				var x = (e.x|0) + mapCommon.beSide.left.x,
-					y = (e.y|0) + mapCommon.beSide.left.y;
+			
+				x = (e.x|0) + mapCommon.beSide.left.x;
+				y = (e.y|0) + mapCommon.beSide.left.y;
+			
 				if(mapCommon.exist(x, y, e.mapSize, e.map)) {
 					_relations.push({
 						name      : 'fall',
@@ -46,10 +54,14 @@ export default (e)=>{// {x, y, map, mapSize, el, data}
 						to        : e.map[y][x].name
 					});
 				}
+			
 				break;
+			
 			case 'right':
-				var x = (e.x|0) + mapCommon.beSide.right.x,
-					y = (e.y|0) + mapCommon.beSide.right.y;
+			
+				x = (e.x|0) + mapCommon.beSide.right.x;
+				y = (e.y|0) + mapCommon.beSide.right.y;
+			
 				if(mapCommon.exist(x, y, e.mapSize, e.map)) {
 					_relations.push({
 						name      : 'fall',
@@ -57,10 +69,14 @@ export default (e)=>{// {x, y, map, mapSize, el, data}
 						to        : e.map[y][x].name
 					});
 				}
+			
 				break;
+			
 			case 'up'   :
-				var x = (e.x|0) + mapCommon.beSide.up.x,
-					y = (e.y|0) + mapCommon.beSide.up.y;
+			
+				x = (e.x|0) + mapCommon.beSide.up.x;
+				y = (e.y|0) + mapCommon.beSide.up.y;
+			
 				if(mapCommon.exist(x, y, e.mapSize, e.map)) {
 					_relations.push({
 						name      : 'fall',
@@ -68,10 +84,14 @@ export default (e)=>{// {x, y, map, mapSize, el, data}
 						to        : e.map[y][x].name
 					});
 				}
+			
 				break;
+			
 			case 'down' :
-				var x = (e.x|0) + mapCommon.beSide.down.x,
-					y = (e.y|0) + mapCommon.beSide.down.y;
+			
+				x = (e.x|0) + mapCommon.beSide.down.x;
+				y = (e.y|0) + mapCommon.beSide.down.y;
+			
 				if(mapCommon.exist(x, y, e.mapSize, e.map)) {
 					_relations.push({
 						name      : 'fall',
@@ -79,6 +99,7 @@ export default (e)=>{// {x, y, map, mapSize, el, data}
 						to        : e.map[y][x].name
 					});
 				}
+			
 				break;
 		}
 	}

@@ -45,7 +45,7 @@ class inputs {
 			// Click
 			// Dblclick
 
-			// var timeoutId = null;
+			// let timeoutId = null;
 			// document.onmouseup = (e) {
 			// 	timeoutId && timeoutId = setTimeout(() => {
 			// 		this.put(e.target, e.clientX, e.clientY);
@@ -89,7 +89,8 @@ class inputs {
 
 	_inputUndoRedo() {
 
-		var _dragDeck = share.get('dragDeck');
+		let _dragDeck = share.get('dragDeck');
+		
 		if(
 			_dragDeck                &&
 			_dragDeck[0]             &&
@@ -97,7 +98,8 @@ class inputs {
 			_dragDeck[0].card.parent
 		) {
 			
-			var _deck = Deck.getDeckById(_dragDeck[0].card.parent)
+			let _deck = Deck.getDeckById(_dragDeck[0].card.parent)
+			
 			if(_deck) {
 				_deck.Redraw();
 			}
@@ -120,8 +122,10 @@ class inputs {
 
 		if( target.className.split(' ').indexOf('slot') >= 0 ) {
 
-			var _id   = target.id,
+			let _id   = target.id,
+			
 			_deck = common.getElementById(_id);
+			
 			if(_deck) {
 				event.dispatch('click', {
 					to: _deck
@@ -131,7 +135,7 @@ class inputs {
 
 		if( target.className.split(' ').indexOf('draggable') >= 0 ) {
 
-			var _id     = target.id,
+			let _id     = target.id,
 			    _card   = _id                   ? common.getElementById(_id) : null,
 			    _parent = _card && _card.parent ? _card.parent               : null,
 			    _deck   = _parent               ? Deck.getDeckById(_parent)  : null;
@@ -147,7 +151,7 @@ class inputs {
 			// TODO
 			// в данной ситуации обрабатывается только клик по карте, пустые колоды никак не обрабатываются
 
-			var _dragDeck = _deck ? _deck.Take(_id) : null;
+			let _dragDeck = _deck ? _deck.Take(_id) : null;
 
 			share.set('dragDeck', _dragDeck);
 
@@ -169,7 +173,7 @@ class inputs {
 			return;
 		}
 		
-		var _startCursor = share.get('startCursor'),
+		let _startCursor = share.get('startCursor'),
 		    _dragDeck    = share.get('dragDeck');
 
 		if(!_dragDeck || !_startCursor) {
@@ -182,9 +186,9 @@ class inputs {
 
 		// console.log(x - _startCursor.x, y - _startCursor.y);
 
-		var _deck = common.getElementById(_dragDeck[0].card.parent);
+		let _deck = common.getElementById(_dragDeck[0].card.parent);
 
-		var _position = _deck.padding(_dragDeck[_dragDeck.length - 1].index);
+		let _position = _deck.padding(_dragDeck[_dragDeck.length - 1].index);
 
 		event.dispatch('dragDeck', {
 			x, y        , 
@@ -195,7 +199,7 @@ class inputs {
 
 		// подсказка лучшего хода до отпускания
 
-		// var cursorMove = {
+		// let cursorMove = {
 		// 	distance     : _distance,
 		// 	direction    : {
 		// 		x     : x - _startCursor.x,// (+) rigth / (-) left
@@ -226,20 +230,21 @@ class inputs {
 			return;
 		}
 
-		var _startCursor = share.get('startCursor'),// начальная позиция курсора
+		let _startCursor = share.get('startCursor'),// начальная позиция курсора
 		    _dragDeck    = share.get('dragDeck');   // 
 
 		if(!_dragDeck || !_startCursor) {
 			return;
 		}
 
-		var _deck = common.getElementById(_dragDeck[0].card.parent);
+		let _deck = common.getElementById(_dragDeck[0].card.parent);
 
-		var _position = _deck.padding(_dragDeck[0].index);
+		let _position = _deck.padding(_dragDeck[0].index);
+		
 		let _distance = Math.sqrt(common.sqr(x - _startCursor.x) + common.sqr(y - _startCursor.y));
 		// console.log('>>> distance:', _distance, x - _startCursor.x, y - _startCursor.y);
 
-		var cursorMove = {
+		let cursorMove = {
 			distance     : _distance,
 			dbclick      : !!dbclick,
 			direction    : {
@@ -260,7 +265,7 @@ class inputs {
 		share.set('lastCursorMove', cursorMove, defaults.forceClone);
 
 		event.dispatch('hideCard', target);
-		var _dop = document.elementFromPoint(x, y);
+		let _dop = document.elementFromPoint(x, y);
 		event.dispatch('showCard', target);
 		// if(_dop) {
 

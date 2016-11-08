@@ -6,7 +6,7 @@ import share    from 'share';
 import elRender from 'elRender';
 import Tips     from 'tips';
 
-event.listen('showTip', function(e) {
+event.listen('showTip', (e) => {
 
 	if(e && e.el && e.type) {// e && e.el && e.el.domElement && e.type
 
@@ -17,7 +17,7 @@ event.listen('showTip', function(e) {
 	}
 });
 
-event.listen('hideTips', function(e) {
+event.listen('hideTips', (e) => {
 
 	if(e && e.types) {
 

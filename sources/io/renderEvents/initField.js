@@ -7,7 +7,7 @@ import defaults from 'defaults';
 import Field    from 'field';
 import elRender from 'elRender';
 
-event.listen('initField', function(data) {
+event.listen('initField', (data) => {
 
 	let domElement = data.field ? data.field : '#map';// default;
 	

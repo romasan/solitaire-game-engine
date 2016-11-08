@@ -2,7 +2,7 @@
 
 import mapCommon from 'mapCommon';
 
-export default (e)=>{// {x, y, map, mapSize, el, data}
+export default (e) => {// {x, y, map, mapSize, el, data}
 
 	let _relations = [];
 

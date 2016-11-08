@@ -7,9 +7,9 @@ import common   from 'common';
 import Tips  from 'tips';
 import Field from 'field';
 
-export default function(moveDeck, cursorMove) {
+export default (moveDeck, cursorMove) => {
 
-	var _autoTips = [];
+	let _autoTips = [];
 
 	// выбрать подсказки для стопки из кторорой взяли карты
 	let _tips = Tips.getTips();
@@ -75,9 +75,9 @@ export default function(moveDeck, cursorMove) {
 				y : cursorMove.deckPosition.y + ((defaults.card.height / 2) | 0)
 			}
 
-			var _destination_deck_last_card_position = _autoTips[i].to.deck.padding(_autoTips[i].to.deck.cards.length);
+			let _destination_deck_last_card_position = _autoTips[i].to.deck.padding(_autoTips[i].to.deck.cards.length);
 			// координаты центра стопки назначения
-			var center_to = {
+			let center_to = {
 				x : _destination_deck_last_card_position.x + ((defaults.card.width  / 2) | 0),
 				y : _destination_deck_last_card_position.y + ((defaults.card.height / 2) | 0)
 			}

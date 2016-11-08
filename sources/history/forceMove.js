@@ -7,7 +7,7 @@ import common from 'common';
 import Deck from 'deck';
 import Tips from 'tips';
 
-let forceMove = function(a) {// {from, to, deck, <flip>, <callback>}
+let forceMove = (a) => {// {from, to, deck, <flip>, <callback>}
 
 	// console.log('forceMove', a);
 

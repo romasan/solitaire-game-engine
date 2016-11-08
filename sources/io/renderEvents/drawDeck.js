@@ -44,7 +44,7 @@ let applyChangedParameters = (p, a, deck) => {
 
 // --------------------------------------------------------------------------------------------------------
 
-event.listen('addDeckEl', function(e) {
+event.listen('addDeckEl', (e) => {
 
 	applyChangedParameters(e.params, e.a, e.deck);
 
@@ -90,7 +90,7 @@ event.listen('addDeckEl', function(e) {
 
 // --------------------------------------------------------------------------------------------------------
 
-event.listen('redrawDeckFlip', function(e) {
+event.listen('redrawDeckFlip', (e) => {
 
 	if(!e || !e.cards) {
 		return;
@@ -120,7 +120,7 @@ event.listen('redrawDeckFlip', function(e) {
 
 // --------------------------------------------------------------------------------------------------------
 
-event.listen('redrawDeckIndexes', function(e) {
+event.listen('redrawDeckIndexes', (e) => {
 
 	if(!e || !e.cards) {
 		return;
@@ -138,7 +138,7 @@ event.listen('redrawDeckIndexes', function(e) {
 
 // --------------------------------------------------------------------------------------------------------
 
-event.listen('redrawDeck', function(e) {
+event.listen('redrawDeck', (e) => {
 
 	if(share.get('noRedraw')) {
 		return false;

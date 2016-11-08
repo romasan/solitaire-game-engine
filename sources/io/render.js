@@ -15,7 +15,7 @@ import fieldThemesSet from 'fieldThemesSet';
 
 // common
 
-event.listen('removeEl', function(e) {
+event.listen('removeEl', (e) => {
 
 	let _elDomElement = share.get('domElement:' + e.id);
 
@@ -23,15 +23,15 @@ event.listen('removeEl', function(e) {
 		.remove();
 });
 
-event.listen('showCard', function(target) {
+event.listen('showCard', (target) => {
 	elRender(target).show();
 });
 
-event.listen('hideCard', function(target) {
+event.listen('hideCard', (target) => {
 	elRender(target).hide();
 });
 
-event.listen('stopAnimations', function() {
+event.listen('stopAnimations', () => {
 	// TODO
 	// elRender.stopAnimations();
 });

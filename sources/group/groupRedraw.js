@@ -4,8 +4,8 @@ import defaults from 'defaults';
 
 export default function(_a) {
 
-	var _decks = this.getDecks();
-	// var _index = {}
+	let _decks = this.getDecks();
+	// let _index = {}
 
 	if(
 		typeof _a.decks == 'undefined' ||
@@ -14,7 +14,7 @@ export default function(_a) {
 		_a.decks = [];
 	}
 
-	for(var i in _decks) {
+	for(let i in _decks) {
 		
 		if(!_a.decks[i]) { _a.decks[i] = {}; };
 
@@ -47,7 +47,7 @@ export default function(_a) {
 
 		if(_a.placement) {
 			
-			var _card = defaults.card;
+			let _card = defaults.card;
 			if(_a.placement.x) _a.decks[i].position.x = (_a.placement.x + _card.width)  * i;
 			if(_a.placement.y) _a.decks[i].position.y = (_a.placement.y + _card.height) * i;
 		};

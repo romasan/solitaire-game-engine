@@ -5,7 +5,7 @@ import defaults from 'defaults';
 
 import storage from 'storage';
 
-export default ()=>{
+export default () => {
 
 	let pref = storage.get('pref');
 	!pref && (pref = defaults.pref);

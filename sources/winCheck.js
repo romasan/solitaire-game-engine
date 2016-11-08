@@ -7,13 +7,13 @@ import common          from 'common';
 import winCheckMethods from 'winCheckMethods';
 import Deck            from 'deck';
 
-var winCheck = function(params) {
+let winCheck = (params) => {
 
-	var rulesCorrect = true;
-	var _hasMetods = false;
-	var _winCheck = share.get('winCheck');// _field.winCheck
+	let rulesCorrect = true;
+	let _hasMetods = false;
+	let _winCheck = share.get('winCheck');// _field.winCheck
 	
-	for(var ruleName in _winCheck.rules) {
+	for(let ruleName in _winCheck.rules) {
 		_hasMetods = true;
 		
 		if(winCheckMethods[ruleName]) {
@@ -52,7 +52,7 @@ var winCheck = function(params) {
 };
 
 // hidden check
-var hwinCheck = function(a) {
+let hwinCheck = (a) => {
 	
 	if(!a) {
 		a = {};

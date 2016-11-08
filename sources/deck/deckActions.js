@@ -14,7 +14,7 @@ import changeStepType from 'changeStepTypeAction';
 import lock           from 'lockAction';
 import unlock         from 'unlockAction';
 
-var _actions = {
+let _actions = {
 	"twindeck"       : twindeck      ,
 	"dealerdeck"     : dealerdeck    ,
 	"kick"           : kickAction    ,
@@ -26,15 +26,15 @@ var _actions = {
 
 // ------------------------------------------------------------------------------------------
 
-var _decksActions  = [],
-    _events = [];
+let _decksActions  = [],
+    _events        = [];
 
 event.listen('initField', () => {
 	_decksActions = [];
-	_events = [];
+	_events       = [];
 })
 
-var addActionEvent = function(_event) {
+let addActionEvent = (_event) => {
 
 	event.listen(
 
@@ -44,21 +44,21 @@ var addActionEvent = function(_event) {
 		// callback
 		(data) => {
 
-			for(var i in _decksActions) {
+			for(let i in _decksActions) {
 				if(_decksActions[i].event == _event) {
 					
-					var _actionName = _decksActions[i].action;
+					let _actionName = _decksActions[i].action;
 
-					var _canRun = _event == 'click'
+					let _canRun = _event == 'click'
 					    ? data.to.name == _decksActions[i].deck.name
 					    : true;
-					// data._stepType = data.stepType;
-					// data.stepType = share.get('stepType');
 					
 					if(_canRun) {
 						
 						_actions[_actionName].call(
+							
 							_decksActions[i].deck, 
+							
 							{
 								actionData : _decksActions[i].deck.actions[_actionName],
 								eventData  : data,
@@ -70,26 +70,15 @@ var addActionEvent = function(_event) {
 			}
 		},
 
-		'addActionEvent:' + _event
-
 		// context
-		
-		// _decksActions.indexOf(_event) >= 0 ? _decksActions[_decksActions.indexOf(_event)] : null
-		
-		// (()=>{
-		// 	for(let actionName in _decksActions) {
-		// 		// TODO
-		// 		// ??? _events
-		// 	}
-		// 	return;
-		// })
+		'addActionEvent:' + _event
 	);
 
 };
 
-var addActions = function() {
+let addActions = function() {
 
-	for(var actionName in this.actions) {
+	for(let actionName in this.actions) {
 
 		// если не описано событие выполнять по клику
 		if(!this.actions[actionName].event) {
@@ -116,11 +105,11 @@ var addActions = function() {
 	autoRunActions(this.actions);
 };
 
-var autoRunActions = function(data) {// bind this deck
+let autoRunActions = (data) => {// bind this deck
 
 	common.animationDefault();
 
-	for(var actionName in data.actions) {
+	for(let actionName in data.actions) {
 		if(data.actions[actionName].autorun) {
 			if(_actions[actionName]) {
 				_actions[actionName].call(

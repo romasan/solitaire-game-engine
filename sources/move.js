@@ -191,6 +191,6 @@ let Move = (moveDeck, to, cursorMove) => {
 	}
 };
 
-event.listen('Move', function(e) {
+event.listen('Move', (e) => {
 	Move(e.moveDeck, e.to, e.cursorMove);
 });

@@ -25,11 +25,11 @@ import common from 'common';
 
 export default function(name) {// TODO
 
-	var _name = common.validateCardName(name);// {color, rank}
+	let _name = common.validateCardName(name);// {color, rank}
 	
 	if(_name) {
 
-		var _id = 'card_' + common.genId(),
+		let _id = 'card_' + common.genId(),
 			_card = {
 				id      : _id,
 				name    : name,
@@ -43,7 +43,7 @@ export default function(name) {// TODO
 		
 		event.dispatch('addCardEl', _card);
 		
-		var _elements = share.get('elements');
+		let _elements = share.get('elements');
 		_elements[_id] = _card;
 		share.set('elements', _elements);
 		

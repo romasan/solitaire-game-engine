@@ -18,7 +18,7 @@ export default class elClass {
 // --
 	attr(attributes) {
 		try {
-			for(var attrName in attributes) {
+			for(let attrName in attributes) {
 				this.el[attrName] = attributes[attrName];
 			}
 			
@@ -29,7 +29,7 @@ export default class elClass {
 	hasClass(className) {
 		try {
 	
-			var _classes = this.el.className.split(' ');
+			let _classes = this.el.className.split(' ');
 			return _classes.indexOf(className) >= 0;
 		} catch(e) {}
 	}
@@ -48,7 +48,7 @@ export default class elClass {
 	addClass(className) {
 		try {
 	
-			var _classes = this.el.className.split(' ');
+			let _classes = this.el.className.split(' ');
 			if(!this.hasClass(className)) {
 				_classes.push(className);
 				this.el.className = _classes.join(' ');
@@ -66,12 +66,12 @@ export default class elClass {
 		
 		try {
 
-			var _classes = this.el.className.split(' ');
+			let _classes = this.el.className.split(' ');
 			
 			if(this.hasClass(className)) {
 	
-				var _clone = [];
-				for(var i in _classes) {
+				let _clone = [];
+				for(let i in _classes) {
 					if(_classes[i] != className) {
 						_clone.push(_classes[i]);
 					}
@@ -92,7 +92,7 @@ export default class elClass {
 
 		try {
 	
-			for(var attrName in a) {
+			for(let attrName in a) {
 				try {
 					this.el.style[attrName] = a[attrName];
 				} catch(e) {}
@@ -148,7 +148,7 @@ export default class elClass {
 	animate(params, animationTime, callback, animationName) {
 
 		try {
-			var _animation = share.get('animation');
+			let _animation = share.get('animation');
 
 			typeof animationTime == "undefined" && (animationTime = defaults.animationTime);
 			typeof animationTime == "function"  && (callback = animationTime, animationTime = defaults.animationTime);
@@ -175,7 +175,7 @@ export default class elClass {
 					return e;
 				};
 
-				for(var attrName in params) {
+				for(let attrName in params) {
 					
 					if(
 						// this.el.style[attrName] != params[attrName]
@@ -245,10 +245,10 @@ export default class elClass {
 			this.el.parentNode.insertBefore(html, this.el.nextElementSibling);
 			/*if(html.el) html = html.el;
 
-			var _parentElements = this.el.parentNode.children;
-			var _newChildren = [];
+			let _parentElements = this.el.parentNode.children;
+			let _newChildren = [];
 			
-			for(var i in _parentElements) {
+			for(let i in _parentElements) {
 				_newChildren.push(_parentElements[i]);
 				if(_parentElements[i] == this.el) {
 					_newChildren.push(html);
@@ -265,10 +265,10 @@ export default class elClass {
 			this.el.parentNode.insertBefore(html, this.el);
 			/*if(html.el) html = html.el;
 
-			var _parentElements = this.el.parentNode.children;
-			var _newChildren = [];
+			let _parentElements = this.el.parentNode.children;
+			let _newChildren = [];
 			
-			for(var i in _parentElements) {
+			for(let i in _parentElements) {
 				if(_parentElements[i] == this.el) {
 					_newChildren.push(html);
 				}

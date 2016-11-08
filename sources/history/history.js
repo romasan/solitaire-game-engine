@@ -9,14 +9,14 @@ import Deck      from 'deck';
 import Tips      from 'tips';
 // import elRender  from 'elRender';
 
-// var _undoMethods = {};
-// var _redoMethods = {};
+// let _undoMethods = {};
+// let _redoMethods = {};
 
 // ---------------------------------------- UNDO ----------------------------------------
 
-var _undo = function(a) {
+let _undo = (a) => {
 
-	// for(var i in _undoMethods) {
+	// for(let i in _undoMethods) {
 	// 	_undoMethods[i](a);
 	// }
 	
@@ -96,8 +96,8 @@ event.listen('undo', function(_a) {
 
 		_a.reverse();
 		
-		for(var _i in _a) {
-			var a = _a[_i];
+		for(let _i in _a) {
+			let a = _a[_i];
 			_undo(a);
 		}
 		
@@ -113,9 +113,9 @@ event.listen('undo', function(_a) {
 
 // ---------------------------------------- REDO ----------------------------------------
 
-var _redo = function(a) {
+let _redo = (a) => {
 
-	// for(var i in _redoMethods) {
+	// for(let i in _redoMethods) {
 	// 	_redoMethods[i](a);
 	// }
 
@@ -192,8 +192,8 @@ event.listen('redo', function(_a) {
 	// Обратная совместимость
 	if(_a instanceof Array) {
 		_a.reverse();
-		for(var _i in _a) {
-			var a = _a[_i];
+		for(let _i in _a) {
+			let a = _a[_i];
 			_redo(a);
 		}
 	} else {
@@ -219,7 +219,7 @@ class history {
 
 	add(step) {
 
-		// for(var i in step) {
+		// for(let i in step) {
 		this.steps.push(step);
 		// }
 	}
@@ -227,7 +227,7 @@ class history {
 	// get steps and reset
 	get(reset = true) {
 
-		var _req = this.steps;
+		let _req = this.steps;
 		
 		if(reset) {
 			this.reset();
@@ -245,13 +245,13 @@ class history {
 	}
 
 	// addUndoMethods(a) {
-	// 	for(var i in a) {
+	// 	for(let i in a) {
 	// 		_undoMethods[i] = a[i];
 	// 	}
 	// }
 	
 	// addRedoMethods(a) {
-	// 	for(var i in a) {
+	// 	for(let i in a) {
 	// 		_redoMethods[i] = a[i];
 	// 	}
 	// }

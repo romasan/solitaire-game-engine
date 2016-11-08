@@ -109,7 +109,7 @@ class groupClass {
 		// расставляем колоды в группе
 		// 1 приоретет отдаётся параметру groupIndex
 		// остальные вставляются в промежутки или добавляются в конец
-		var _index = 0;
+		let _index = 0;
 		
 		if( a.groupIndex 
 		 && typeof a.groupIndex == 'number' 
@@ -127,14 +127,18 @@ class groupClass {
 				for(;typeof this.deckIndex[_index] != 'undefined';_index += 1) {}
 				
 				if(placement) {
-					var _index    = this.deckIndex[a.groupIndex - 1];
-					var _elements = share.get('elements');
+					
+					let _index    = this.deckIndex[a.groupIndex - 1];
+					let _elements = share.get('elements');
+					
 					if(placement.x) {
 						_elements[_index].x( this.position.x + (placement.x + defaults.card.width) * _index );
 					}
+					
 					if(placement.y) {
 						_elements[_index].y( this.position.y + (placement.y + defaults.card.width) * _index );
 					}
+					
 					share.set('elements', _elements);
 				}
 
@@ -184,7 +188,7 @@ class groupClass {
 			}
 		};
 
-		var _el = Deck.addDeck(a);
+		let _el = Deck.addDeck(a);
 		
 		this.deckIndex[_index]  = _el.id;
 		this.decks[_el.id] = _el;
@@ -200,7 +204,7 @@ class groupClass {
 	}
 
 	getDecksByName(name) {
-		var _decks = {};
+		let _decks = {};
 		for(let d in this.decks) {
 			if(this.decks[d].name == name) {
 				_decks[d] = decks[d];
@@ -211,7 +215,7 @@ class groupClass {
 
 	// Get decks from group
 	getDecks(a) {
-		var _decks = [];
+		let _decks = [];
 		for(let i in this.decks) {
 			if(a && a.visible) {
 				if(this.decks[i].visible) {
@@ -243,15 +247,15 @@ class groupClass {
 
 // -----------------------------------------------------------------------------------------------------------------------
 
-var addGroup = function(a) {
+let addGroup = function(a) {
 
 	if(!a) {
 		return false;
 	}
 	
-	var _id = 'group_' + common.genId();
+	let _id = 'group_' + common.genId();
 	
-	var _el_group = new groupClass(a, _id);
+	let _el_group = new groupClass(a, _id);
 
 	if(a.decks) {
 		
@@ -313,14 +317,14 @@ var addGroup = function(a) {
 		};
 	};
 
-	var _elements = share.get('elements');
+	let _elements = share.get('elements');
 	_elements[_id] = _el_group;
 	share.set('elements', _elements);
 	
 	// fill group
 	if(a && a.fill) {
 
-		var _checkFillDeck = a.fill.length;
+		let _checkFillDeck = a.fill.length;
 		if(_checkFillDeck) {
 			_el_group.Fill(a.fill);
 		}
@@ -329,7 +333,7 @@ var addGroup = function(a) {
 	return _el_group;
 };
 
-var getGroup = function(name) {
+let getGroup = function(name) {
 	return common.getElementsByName(name, 'group')[0];
 };
 	

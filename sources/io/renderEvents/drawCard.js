@@ -8,14 +8,14 @@ import common   from 'common';
 import Field    from 'field';
 import elRender from 'elRender';
 
-event.listen('addCardEl', function(e) {
+event.listen('addCardEl', (e) => {
 	
-	var _card = {
+	let _card = {
 		width  : defaults.card.width .toFixed(3) * 1,
 		height : defaults.card.height.toFixed(3) * 1
 	};
 
-	var _params = {
+	let _params = {
 		"width"  : _card.width  + 'px',
 		"height" : _card.height + 'px'
 	};
