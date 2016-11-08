@@ -82,8 +82,32 @@ class Event {
 		}
 	}
 
-	get(eventName) {
-		return this._events[eventName];
+	get(eventName, filter) {
+		
+		if(filter) {
+
+			let _events = [];
+
+			for(let i in this._events[eventName]) {
+				
+				let _correct = true;
+			
+				for(let _attr in filter) {
+
+					if(this._events[eventName][i][_attr] != filter[_attr]) {
+						_correct = false;
+					}
+				}
+
+				if(_correct) {
+					_events.push(this._events[eventName][i]);
+				}
+			}
+
+			return _events;
+		} else {
+			return this._events[eventName];
+		}
 	}
 
 	has(eventName) {

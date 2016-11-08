@@ -10,7 +10,7 @@ import Deck from 'deck';
 
 let stepType = 'stepsAround';
 
-let endAction = ()=>{
+let endAction = () => {
 
 	share.set('stepType', defaults.stepType);
 	common.curUnLock();
@@ -21,7 +21,7 @@ let endAction = ()=>{
 	}
 };
 
-export default function(data) {// {actionData, eventData, eventName}
+export default (deck, data) => {// {actionData, eventData, eventName}
 
 	let _stepType = share.get('stepType');
 	if(_stepType != defaults.stepType) {
@@ -32,7 +32,7 @@ export default function(data) {// {actionData, eventData, eventName}
 	// stop Drag'n'Drop
 	common.curLock();
 	
-	let _relations = this.getRelationsByName('around', {from: null});
+	let _relations = deck.getRelationsByName('around', {from: null});
 	let _tips = Tips.getTips();
 
 	// выполняется для всех вокруг
@@ -47,7 +47,7 @@ export default function(data) {// {actionData, eventData, eventName}
 		for(let i in _relations) {
 			
 			if(
-				Tips.fromTo(this.name, _relations[i].to)
+				Tips.fromTo(deck.name, _relations[i].to)
 			) {
 				_runStack.push(_relations[i]);
 			}
@@ -55,7 +55,7 @@ export default function(data) {// {actionData, eventData, eventName}
 
 		let _counter = _runStack.length;
 
-		let _callback = ()=>{
+		let _callback = () => {
 				
 			_counter -= 1;
 			if(_counter === 0) {
@@ -74,7 +74,7 @@ export default function(data) {// {actionData, eventData, eventName}
 			_counter += 1;
 
 			event.dispatch(data.actionData.run, {
-				to       : this.name,
+				to       : deck.name,
 				callback : _callback
 			});
 		}
@@ -95,7 +95,7 @@ export default function(data) {// {actionData, eventData, eventName}
 	// выполняется после хода 
 	} else {
 		
-		let _callback = ()=>{
+		let _callback = () => {
 
 			if(share.get('stepType') == stepType) {
 				endAction();

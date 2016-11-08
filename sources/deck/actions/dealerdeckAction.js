@@ -9,13 +9,13 @@ import forceMove from 'forceMove';
 
 const stepType = 'dealerdeckStepType';
 
-export default function(data) {// data.actionData, e
+export default (deck, data) => {// data.actionData, e
 
 // default data.actionData.onlyEmpty - false
-// default data.actionData.from      - this.name
+// default data.actionData.from      - deck.name
 // default data.actionData.stepType  - NULL
 	
-	// console.log('dealerdeckAction:', this.name, data);
+	// console.log('dealerdeckAction:', deck.name, data);
 
 	if(
 		typeof data.actionData.stepType == "string"       &&
@@ -29,7 +29,7 @@ export default function(data) {// data.actionData, e
 
 	let dealDeck = typeof data.actionData.from == "string"
 		? Deck.getDeck(data.actionData.from)
-		: this
+		: deck
 	
 	// смотрим остались ли карты
 	if(dealDeck.cards.length == 0) {

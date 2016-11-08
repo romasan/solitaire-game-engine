@@ -55,7 +55,8 @@ let addActionEvent = (_event) => {
 					
 					if(_canRun) {
 						
-						_actions[_actionName].call(
+						// _actions[_actionName].call(
+						_actions[_actionName](
 							
 							_decksActions[i].deck, 
 							
@@ -102,6 +103,7 @@ let addActions = function() {
 		};
 
 	}
+	
 	autoRunActions(this.actions);
 };
 
@@ -112,8 +114,10 @@ let autoRunActions = (data) => {// bind this deck
 	for(let actionName in data.actions) {
 		if(data.actions[actionName].autorun) {
 			if(_actions[actionName]) {
-				_actions[actionName].call(
+				_actions[actionName](
+					
 					data, 
+					
 					{
 						actionData : data.actions[actionName],
 						eventData  : null,

@@ -3,7 +3,7 @@
 // import event    from 'event';
 // import defaults from 'defaults';
 
-export default function(e) {
+export default (deck, data) => {
 
 // TODO переделать
 

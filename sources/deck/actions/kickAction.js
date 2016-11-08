@@ -7,7 +7,7 @@ import defaults from 'defaults';
 
 const stepType = 'kickStepType';
 
-export default function(data) {
+export default (deck, data) => {
 	
 	// если тип хода не стандартный не выполнять кик
 	if(share.get('stepType') != defaults.stepType) {
@@ -50,7 +50,7 @@ export default function(data) {
 	// 	_name = data.eventData.to.name;
 	// }
 
-	if(data.eventData.to.name != this.name) {// data.eventData.to - куда мы перетащили карты
+	if(data.eventData.to.name != deck.name) {// data.eventData.to - куда мы перетащили карты
 		return false;
 	}
 
@@ -65,7 +65,7 @@ export default function(data) {
 	// if(
 	// 	data.eventData[0]                         &&
 	// 	typeof data.eventData[0].name == "string" &&
-	// 	data.eventData[0].name != this.name
+	// 	data.eventData[0].name != deck.name
 	// ) {
 	// 	return false;
 	// }
@@ -141,6 +141,6 @@ export default function(data) {
 	event.dispatch('forceMove', forceMoveParams);
 
 	// if(e.after) {
-	// 	_events[e.after].call(this, e);
+	// 	_events[e.after].call(deck, e);
 	// };
 }

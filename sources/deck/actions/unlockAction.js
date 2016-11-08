@@ -1,17 +1,17 @@
 'use strict';
 
-import event    from 'event';
-import share    from 'share';
-import defaults from 'defaults';
-import common   from 'common';
+import event            from 'event';
+import share            from 'share';
+import defaults         from 'defaults';
+import common           from 'common';
 
 import lockActionCommon from 'lockActionCommon';
 
-export default function(data) {
+export default (deck, data) => {
 
-	if(data.eventData.to.name != this.name) {
+	if(data.eventData.to.name != deck.name) {
 		return false;
 	}
 
-	lockActionCommon(data.actionData, 'unlock', this.name);
+	lockActionCommon(data.actionData, 'unlock', deck.name);
 };

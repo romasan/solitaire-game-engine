@@ -5,9 +5,9 @@ import share    from 'share';
 import defaults from 'defaults';
 import common   from 'common';
 
-export default function(data) {
+export default (deck, data) => {
 
-	if(data.eventData.to.name != this.name) {
+	if(data.eventData.to.name != deck.name) {
 		return false;
 	}
 
