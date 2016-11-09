@@ -1,10 +1,15 @@
 'use strict';
 
-export default class deckAction {
+import event from 'event';
+
+export default
+class deckAction {
 	
 	constructor() {}
 
 	run() {}
 
-	end() {}
+	end() {
+		event.dispatch('stopSession');
+	}
 }

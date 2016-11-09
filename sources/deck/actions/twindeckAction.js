@@ -1,10 +1,18 @@
 'use strict';
 
-// import event    from 'event';
-// import defaults from 'defaults';
+import deckAction from 'deckAction';
 
-export default (deck, data) => {
+const stepType = 'twindeckStepType';
 
-// TODO переделать
+class twindeckAction extends deckAction {
+
+	constructor() {
+		super();
+	}
+
+	// TODO переделать
+	run(deck, data) {}
 
 }
+
+export default new twindeckAction();

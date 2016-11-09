@@ -47,10 +47,9 @@ exports.onChangePreferences = (f) => {
 exports.init = (gameConfig) => {
 
 	event.dispatch('gameInit', {firstInit});
-
 	
-	event.clearByTag('new_game');
-	event.setTag('new_game');
+	event.clearByTag(event.tags.inGame);
+	event.setTag(event.tags.inGame);
 
 	Field.clear();
 	Field.create(gameConfig);

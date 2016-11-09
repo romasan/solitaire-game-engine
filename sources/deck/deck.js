@@ -133,7 +133,7 @@ class Deck {
 		this.actions = [];
 		if(a.actions) {
 			this.actions = a.actions;
-			deckActions.addActions.call(this);
+			deckActions.add(this);
 		}
 
 		// ------------ RELATIONS ------------

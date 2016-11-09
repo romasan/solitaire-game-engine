@@ -51,6 +51,7 @@ let Move = (moveDeck, to, cursorMove) => {
 			departure : _deck_departure      ,
 			stepType  : share.get('stepType')
 		});
+		
 		return;
 	}
 
@@ -121,7 +122,7 @@ let Move = (moveDeck, to, cursorMove) => {
 						},
 						context  : "move"
 					}
-				})
+				});
 				
 				if(_deck_destination.save) {
 					event.dispatch('saveSteps');
@@ -133,6 +134,14 @@ let Move = (moveDeck, to, cursorMove) => {
 					destination : _deck_destination,
 					moveDeck    : moveDeck         ,
 					callback    : () => {
+
+						if(
+							!event.has('moveEnd', {
+								tag: event.tags.inGame
+							})
+						) {
+							event.dispatch('stopSession');
+						}
 
 						event.dispatch('moveEnd:' + share.get('stepType'));
 						event.dispatch('moveEnd', {

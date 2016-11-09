@@ -1,186 +1,196 @@
 'use strict';
 
-import event     from 'event';
-import share     from 'share';
-import defaults  from 'defaults';
-import common    from 'common';
+import event      from 'event';
+import share      from 'share';
+import defaults   from 'defaults';
+import common     from 'common';
 
-import forceMove from 'forceMove';
+import forceMove  from 'forceMove';
+import deckAction from 'deckAction';
 
 const stepType = 'dealerdeckStepType';
 
-export default (deck, data) => {// data.actionData, e
+class dealerdeckAction extends deckAction {
 
-// default data.actionData.onlyEmpty - false
-// default data.actionData.from      - deck.name
-// default data.actionData.stepType  - NULL
-	
-	// console.log('dealerdeckAction:', deck.name, data);
-
-	if(
-		typeof data.actionData.stepType == "string"       &&
-		data.actionData.stepType != share.get('stepType')
-	) {
-		return;
-	}
-	
-	// меняем тип хода
-	share.set('stepType', stepType);
-
-	let dealDeck = typeof data.actionData.from == "string"
-		? Deck.getDeck(data.actionData.from)
-		: deck
-	
-	// смотрим остались ли карты
-	if(dealDeck.cards.length == 0) {
-
-		share.set('stepType', defaults.stepType);
-
-		event.dispatch('actionBreak');
-		event.dispatch('dealEnd');
-		
-		return;
+	constructor() {
+		super();
 	}
 
-	// карты для раздачи
-	let _decks = [];
+	run(deck, data) {// data.actionData, e
 
-	// to == toGroup ???
-	if(data.actionData.toGroup && !data.actionData.to) {
+	// default data.actionData.onlyEmpty - false
+	// default data.actionData.from      - deck.name
+	// default data.actionData.stepType  - NULL
 		
-		data.actionData.to = data.actionData.toGroup;
+		// console.log('dealerdeckAction:', deck.name, data);
+
+		if(
+			typeof data.actionData.stepType == "string"       &&
+			data.actionData.stepType != share.get('stepType')
+		) {
+			return;
+		}
 		
-	};
+		// меняем тип хода
+		share.set('stepType', stepType);
 
-	// есть куда раздать
-	if(data.actionData.to) {
+		let dealDeck = typeof data.actionData.from == "string"
+			? Deck.getDeck(data.actionData.from)
+			: deck
+		
+		// смотрим остались ли карты
+		if(dealDeck.cards.length == 0) {
 
-		// передали имя
-		if(typeof data.actionData.to == "string") {
+			share.set('stepType', defaults.stepType);
+
+			event.dispatch('actionBreak');
+			event.dispatch('dealEnd');
 			
-			// ищем элементы с таким именем
-			let _elements = common.getElementsByName(data.actionData.to);
-			for(let i in _elements) {
+			return;
+		}
 
-				// это группа
-				if(_elements[i].type == "group") {
-					
-					// _decks = _decks.concat(Group.Group(data.actionData.to).decks);
-					// let __decks = Group.Group(data.actionData.to).decks;
-					
-					// берём колоды из группы
-					for(let deckIndex in _elements[i].decks) {
-						_decks.push(_elements[i].decks[deckIndex]);
-					}
-				};
+		// карты для раздачи
+		let _decks = [];
 
-				// это колода, добавляем её в список
-				if(_elements[i].type == "deck") {
-					_decks.push(_el);
-				};
-
-			}
-
-		// передали массив
-		} else {
+		// to == toGroup ???
+		if(data.actionData.toGroup && !data.actionData.to) {
 			
-			for(let i in data.actionData.to) {
-				
-				let _elements = common.getElementsByName(data.actionData.to[i]);
-				
-				for(let elIndex in _elements) {
+			data.actionData.to = data.actionData.toGroup;
+			
+		};
 
-					if(_elements[elIndex].type == "group") {
-						// _decks = _decks.concat(Group.Group(data.actionData.to[i]).decks);
-						// let __decks = Group.Group(data.actionData.to[i]).decks;
-						for(let deckIndex in _elements[elIndex].decks) {
-							_decks.push(_elements[elIndex].decks[deckIndex]);
+		// есть куда раздать
+		if(data.actionData.to) {
+
+			// передали имя
+			if(typeof data.actionData.to == "string") {
+				
+				// ищем элементы с таким именем
+				let _elements = common.getElementsByName(data.actionData.to);
+				for(let i in _elements) {
+
+					// это группа
+					if(_elements[i].type == "group") {
+						
+						// _decks = _decks.concat(Group.Group(data.actionData.to).decks);
+						// let __decks = Group.Group(data.actionData.to).decks;
+						
+						// берём колоды из группы
+						for(let deckIndex in _elements[i].decks) {
+							_decks.push(_elements[i].decks[deckIndex]);
 						}
 					};
 
-					if(_elements[elIndex].type == "deck") {
-						_decks.push(_elements[elIndex]);
+					// это колода, добавляем её в список
+					if(_elements[i].type == "deck") {
+						_decks.push(_el);
 					};
 
 				}
 
+			// передали массив
+			} else {
+				
+				for(let i in data.actionData.to) {
+					
+					let _elements = common.getElementsByName(data.actionData.to[i]);
+					
+					for(let elIndex in _elements) {
+
+						if(_elements[elIndex].type == "group") {
+							// _decks = _decks.concat(Group.Group(data.actionData.to[i]).decks);
+							// let __decks = Group.Group(data.actionData.to[i]).decks;
+							for(let deckIndex in _elements[elIndex].decks) {
+								_decks.push(_elements[elIndex].decks[deckIndex]);
+							}
+						};
+
+						if(_elements[elIndex].type == "deck") {
+							_decks.push(_elements[elIndex]);
+						};
+
+					}
+
+				}
 			}
-		}
-	};
-	
-	// вкл/выкл анимации по умолчанию
-	common.animationDefault();
-
-	// флаг, что раздача удалась
-	let _makeStep = false;
-
-	// пробегаем колоды из списка
-	for(let deckId in _decks) {
+		};
 		
-		// берём верхнюю карту
-		let _card = dealDeck.getTopCard();
+		// вкл/выкл анимации по умолчанию
+		common.animationDefault();
 
-		// флаг что такой ход возможен
-		let _canStep = data.actionData.onlyEmpty
-			? _decks[deckId].cards.length == 0
-			: true;
-		
-		if(_canStep && _card) {
+		// флаг, что раздача удалась
+		let _makeStep = false;
 
-			_makeStep = true;
-
-			let _cardName = _card.name;
+		// пробегаем колоды из списка
+		for(let deckId in _decks) {
 			
-			let _callback = ()=>{
+			// берём верхнюю карту
+			let _card = dealDeck.getTopCard();
 
-				event.dispatch('checkTips');
+			// флаг что такой ход возможен
+			let _canStep = data.actionData.onlyEmpty
+				? _decks[deckId].cards.length == 0
+				: true;
+			
+			if(_canStep && _card) {
+
+				_makeStep = true;
+
+				let _cardName = _card.name;
+				
+				let _callback = ()=>{
+
+					event.dispatch('checkTips');
+				};
+
+				forceMove({
+					from : dealDeck.name,
+					to   : _decks[deckId].name,
+					deck : [_cardName],
+					flip : true,
+					callback: _callback
+				}, true);
+				
+				_decks[deckId].flipCheck();
+				// _decks[deckId].Redraw();
+
+				event.dispatch('dealEnd');
+
+				event.dispatch('addStep', {
+					'move' : {
+						from         : dealDeck.name,
+						to           : _decks[deckId].name,
+						deck         : [_cardName],
+						flip         : true,
+						stepType     : {
+							undo: share.get('stepType'),
+							redo: data.actionData.dispatch ? share.get('stepType') : defaults.stepType
+						},
+						context: "dealerdeckAction"
+					}
+				});
+
 			};
 
-			forceMove({
-				from : dealDeck.name,
-				to   : _decks[deckId].name,
-				deck : [_cardName],
-				flip : true,
-				callback: _callback
-			}, true);
-			
-			_decks[deckId].flipCheck();
-			// _decks[deckId].Redraw();
+		};
+		
+		if(_makeStep) {
 
-			event.dispatch('dealEnd');
-
-			event.dispatch('addStep', {
-				'move' : {
-					from         : dealDeck.name,
-					to           : _decks[deckId].name,
-					deck         : [_cardName],
-					flip         : true,
-					stepType     : {
-						undo: share.get('stepType'),
-						redo: data.actionData.dispatch ? share.get('stepType') : defaults.stepType
-					},
-					context: "dealerdeckAction"
-				}
-			});
+			// сохраняем если паздача удалась
+			event.dispatch('saveSteps');
 
 		};
 
-	};
-	
-	if(_makeStep) {
+		if(data.actionData.dispatch) {
+			
+			event.dispatch(data.actionData.dispatch, !_makeStep);
+		} else {
+			// сохраняем если ничего не вызываем
 
-		// сохраняем если паздача удалась
-		event.dispatch('saveSteps');
-
-	};
-
-	if(data.actionData.dispatch) {
-		
-		event.dispatch(data.actionData.dispatch, !_makeStep);
-	} else {
-		// сохраняем если ничего не вызываем
-
-		share.set('stepType', defaults.stepType);
+			share.set('stepType', defaults.stepType);
+		}
 	}
 
 }
+
+export default new dealerdeckAction();

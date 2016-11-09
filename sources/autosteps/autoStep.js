@@ -59,6 +59,7 @@ export default class {
 			});
 		} else {
 			// share.set('stepType', defaults.stepType);
+			event.dispatch('stopSession');
 		}
 	}
 
@@ -74,14 +75,22 @@ export default class {
 		
 		if(!this.autoStep) {
 
-			event.listen('moveEnd', () => {
-
-				if(share.get('stepType') != this.stepType) {
-					return; 
-				}
+			event.listen(
 				
-				this.check();
-			}, this);
+				'moveEnd',
+
+				() => {
+
+					if(share.get('stepType') != this.stepType) {
+						return; 
+					}
+				
+					this.check();
+				},
+
+				// this
+				'addAutoStepEvent:' + this.event
+			);
 		}
 	}
 }

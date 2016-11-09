@@ -56,7 +56,7 @@ let addActionEvent = (_event) => {
 					if(_canRun) {
 						
 						// _actions[_actionName].call(
-						_actions[_actionName](
+						_actions[_actionName].run(
 							
 							_decksActions[i].deck, 
 							
@@ -77,51 +77,58 @@ let addActionEvent = (_event) => {
 
 };
 
-let addActions = function() {
+let add = function(deck) {
 
-	for(let actionName in this.actions) {
+	for(let actionName in deck.actions) {
 
 		// если не описано событие выполнять по клику
-		if(!this.actions[actionName].event) {
-			this.actions[actionName].event = 'click';
+		if(!deck.actions[actionName].event) {
+			deck.actions[actionName].event = 'click';
 		}
 
+		// если такой action существует
 		if(_actions[actionName]) {
+			
+			// сохраняем action
 			_decksActions.push({
-				deck   : this, 
-				event  : this.actions[actionName].event,
+				deck   : deck, 
+				event  : deck.actions[actionName].event,
 				action : actionName
 			});
 
-			if(_events.indexOf(this.actions[actionName].event) < 0) {
-				// КОПАТЬ ТУТ
-				_events.push(this.actions[actionName].event);
-				addActionEvent(this.actions[actionName].event);
+			// создаём событие если оно еще не создано
+			if(_events.indexOf(deck.actions[actionName].event) < 0) {
+				
+				// сохраняем событие в список с уже созданными
+				_events.push(deck.actions[actionName].event);
+				
+				// вешаем событие
+				addActionEvent(deck.actions[actionName].event);
 			}
 		} else {
-			console.warn('Action', actionName, 'for', this.name, 'not found.');
+			console.warn('Action', actionName, 'for', deck.name, 'not found.');
 		};
 
 	}
 	
-	autoRunActions(this.actions);
+	autoRunActions(deck);
 };
 
-let autoRunActions = (data) => {// bind this deck
+let autoRunActions = (deck) => {// bind this deck
 
 	common.animationDefault();
 
-	for(let actionName in data.actions) {
-		if(data.actions[actionName].autorun) {
+	for(let actionName in deck.actions) {
+		if(deck.actions[actionName].autorun) {
 			if(_actions[actionName]) {
-				_actions[actionName](
+				_actions[actionName].run(
 					
-					data, 
+					deck, 
 					
 					{
-						actionData : data.actions[actionName],
+						actionData : deck.actions[actionName],
 						eventData  : null,
-						eventName  : data.actions[actionName].event
+						eventName  : deck.actions[actionName].event
 					}
 				);
 			}
@@ -131,5 +138,5 @@ let autoRunActions = (data) => {// bind this deck
 }
 
 export default {
-	addActions
+	add
 }

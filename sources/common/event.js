@@ -6,8 +6,15 @@ class Event {
 // export default new function() {
 
 	constructor() {
+
+		this.tags = {
+			preInit : 'preInit',
+			inGame  : 'inGame'
+		};
+
+		this._tag = this.tags.preInit;
+		
 		this._events = {};
-		this._tag    = 'global';
 	}
 
 	listen(eventName, callback, context) {
@@ -83,20 +90,28 @@ class Event {
 	}
 
 	get(eventName, filter) {
-		
+
 		if(filter) {
 
 			let _events = [];
 
 			for(let i in this._events[eventName]) {
-				
+
 				let _correct = true;
-			
+
 				for(let _attr in filter) {
 
-					if(this._events[eventName][i][_attr] != filter[_attr]) {
-						_correct = false;
-					}
+					// if(_attr == "slice") {
+
+					// 	for(let _sliceAttr in filter[_attr]) {
+
+					// 		let _name = _sliceAttr;
+
+					// 		_correct = _correct && this._events[eventName][i][_name].split(':') == filter[_attr][_sliceAttr];
+					// 	}
+					// } else {
+					_correct = _correct && this._events[eventName][i][_attr] == filter[_attr];
+					// }
 				}
 
 				if(_correct) {
@@ -105,13 +120,36 @@ class Event {
 			}
 
 			return _events;
+
 		} else {
 			return this._events[eventName];
 		}
 	}
 
-	has(eventName) {
-		return this._events[eventName] ? this._events[eventName].length : 0;
+	has(eventName, filter) {
+
+		if(filter) {
+
+			let _count = 0;
+
+			for(let i in this._events[eventName]) {
+
+				let _correct = true;
+
+				for(let _attr in filter) {
+					_correct = _correct && this._events[eventName][i][_attr] == filter[_attr];
+				}
+
+				if(_correct) {
+					_count += 1;
+				}
+			}
+
+			return _count;
+
+		} else {
+			return this._events[eventName] ? this._events[eventName].length : 0;
+		}
 	}
 
 	// getEventsByName(eventName) {

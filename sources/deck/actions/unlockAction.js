@@ -5,13 +5,24 @@ import share            from 'share';
 import defaults         from 'defaults';
 import common           from 'common';
 
+import deckAction       from 'deckAction';
 import lockActionCommon from 'lockActionCommon';
 
-export default (deck, data) => {
-
-	if(data.eventData.to.name != deck.name) {
-		return false;
+class unlockAction extends deckAction {
+	
+	constructor() {
+		super();
 	}
 
-	lockActionCommon(data.actionData, 'unlock', deck.name);
-};
+	run(deck, data) {
+
+		if(data.eventData.to.name != deck.name) {
+			return false;
+		}
+
+		lockActionCommon(data.actionData, 'unlock', deck.name);
+	}
+
+}
+
+export default new unlockAction();

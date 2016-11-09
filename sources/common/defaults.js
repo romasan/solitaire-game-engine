@@ -4,21 +4,6 @@ export default {
 
 // Theme ---------------------------------------------------------------------------------
 
-	// theme               : {
-	// 	name          : 'alternative_theme',
-	// 	spriteTexture : true,
-	//     textureSuits  : ['d', 'c', 'h', 's']
-	// },
-
-	pref : {
-		field : "default_field",    // 0
-		face  : "alternative_face", // 1
-		back  : "default_back"      // 0
-	// empty : 1
-	},
-
-	stepType : 'default',
-
 	themes : {
 		field : [
 			"default_field",
@@ -30,14 +15,18 @@ export default {
 		],
 		back  : [
 			"default_back",
-			"alternative_back"//,
-			// "red_back",
-			// "blue_back"
+			"alternative_back"
 		]
 		// empty : [
 		// 	"default_empty",
 		// 	"alternative_empty"
 		// ]
+	},
+	
+	pref : {
+		field : "default_field",    // 0
+		face  : "alternative_face", // 1
+		back  : "default_back"      // 0
 	},
 
 // Tips ----------------------------------------------------------------------------------
@@ -59,7 +48,7 @@ export default {
 	locale              : "ru",
 
 	animation           : true,
-	animationTime       : 600,// ms.
+	animationTime       : 600,  // time in milliseconds
 
 	inputParams : {
 		doubleClick : false
@@ -67,8 +56,8 @@ export default {
 
 // Group
 
-	flip                : null,// param for deck
-	actions             : null,// param for deck
+	flip                : null, // param for deck
+	actions             : null, // param for deck
 
 // Deck ----------------------------------------------------------------------------------
 
@@ -86,8 +75,8 @@ export default {
 
 	padding_y           : 0,
 	padding_x           : 0,
-	flip_padding_y      : 0,//5,
-	flip_padding_x      : 0,//20,
+	flip_padding_y      : 0,    //5,
+	flip_padding_x      : 0,    //20,
 	move_distance       : 10,
 	debugLabels         : false,
 
@@ -101,7 +90,6 @@ export default {
 		height       : 96,
 
 		suits        : ['h', 'd', 'c', 's'],
-		// suitindexes : [ 1,   2,   3,   4 ],
 		colors       : {
 			red   : ['h', 'd'],
 			black : ['c', 's']
@@ -114,13 +102,7 @@ export default {
 
 // ---------------------------------------------------------------------------------------
 
+	stepType         : 'default',
 	forceClone       : true
 
-// Actions defaults ----------------------------------------------------------------------
-
-	// actions : {
-	// 	twindeck : {
-	// 		cardCount : 3
-	// 	}
-	// }
 };
