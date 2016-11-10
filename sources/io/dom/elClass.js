@@ -150,8 +150,8 @@ export default class elClass {
 		try {
 			let _animation = share.get('animation');
 
-			typeof animationTime == "undefined" && (animationTime = defaults.animationTime);
-			typeof animationTime == "function"  && (callback = animationTime, animationTime = defaults.animationTime);
+			typeof animationTime == "undefined" && (animationTime = share.get('animationTime'));
+			typeof animationTime == "function"  && (callback = animationTime, animationTime = share.get('animationTime'));
 			typeof callback      == "string"    && (animationName = callback, callback = null);
 
 			// Thread

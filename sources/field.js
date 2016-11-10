@@ -103,6 +103,13 @@ class Field {
 			share.set('gamePreferences', {});
 		}
 
+		// время анимации
+		share.set({
+			animationTime : typeof data.animationTime == "number"
+				? data.animationTime
+				: defaults.animationTime
+		});
+
 		// параметры отображения подсказок
 		for(let tipParamName in defaults.tipsParams) {
 			this.tipsParams[tipParamName] = (a.tipsParams && typeof a.tipsParams[tipParamName] != "undefined")

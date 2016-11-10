@@ -4,35 +4,47 @@ import share    from 'share';
 import event    from 'event';
 import defaults from 'defaults';
 
-import field    from 'field';
-
 class stateManager {
 	
 	constructor() {
-		this._state = null;
+		
+		this._state = {};
+
+		this._sourceList = [
+			'elements',
+			'stepType'
+		];
+
+		this._clearList = [
+			'animatedCallback'     ,
+			'animatedElements'     ,
+			'animatedElementsStack',
+			'curLockState'         ,
+			'sessionStarted'       ,
+			'startCursor'          ,
+			'lastCursorMove'
+		];
 	}
 
 	backup() {
 
-		let _share = share.getAll();
+		this._state = {};
 
-		this._state = _share;
+		for(let i in this._sourceList) {
+			this._state[this._sourceList[i]] = this._sourceList[i];
+		}
 	}
 
 	restore() {
 
 		// restore share
-		share.set(this._state, true);
-
-		// redraw
-		field.Redraw();
+		for(let i in this._clearList) {
+			share.delete(this._clearList[i]);
+		}
 		
-		// let _share = {};
-		// for(let name in this._state) {
-		// 	_share[name] = this._state[name];
-		// }
-
-		// share.set(_share);
+		for(let i in this._sourceList) {
+			share.set(this._sourceList[i], this._state[this._sourceList[i]], true);
+		}
 	}
 }
 

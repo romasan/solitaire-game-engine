@@ -111,11 +111,11 @@ let _log = (text, color, e) => {
 // });
 
 event.listen('startSession', (e) => {
-	_log('---', 'red', e);
+	_log('start', 'red', e);
 });
 
 event.listen('stopSession', () => {
-	_log('+++', 'green');
+	_log('stop', 'green');
 });
 
 document.onwheel = (e) => {

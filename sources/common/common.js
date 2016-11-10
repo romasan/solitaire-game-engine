@@ -3,6 +3,7 @@
 import share              from 'share';
 import event              from 'event';
 import defaults           from 'defaults';
+import state              from 'state';
 
 import Tips               from 'tips';
 import Field              from 'field';
@@ -53,10 +54,12 @@ event.listen('actionBreak', (e) => {
 
 event.listen('startSession', (e) => {
 	share.set('sessionStarted', true);
+	state.backup();
 });
 
 event.listen('stopSession', (e) => {
 	share.set('sessionStarted', false);
+	state.backup();
 });
 
 // Lock/Unlock

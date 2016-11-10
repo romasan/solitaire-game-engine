@@ -3,10 +3,12 @@
 import event     from 'event';
 import share     from 'share';
 import common    from 'common';
+import state     from 'state';
 
 import forceMove from 'forceMove';
 import Deck      from 'deck';
 import Tips      from 'tips';
+import field     from 'field';
 // import elRender  from 'elRender';
 
 // let _undoMethods = {};
@@ -15,6 +17,14 @@ import Tips      from 'tips';
 // ---------------------------------------- UNDO ----------------------------------------
 
 let _undo = (a) => {
+
+	if(share.get('sessionStarted')) {
+		
+		state.restore();
+
+		// redraw
+		field.Redraw();
+	}
 
 	// for(let i in _undoMethods) {
 	// 	_undoMethods[i](a);

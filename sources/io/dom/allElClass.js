@@ -66,8 +66,8 @@ export default class allElClass {
 // --
 	animate(params, animationTime, callback, animationName) {
 		
-		typeof animationTime == "undefined" && (animationTime = defaults.animationTime);
-		typeof animationTime == "function"  && (callback = animationTime, animationTime = defaults.animationTime);
+		typeof animationTime == "undefined" && (animationTime = share.get('animationTime'));
+		typeof animationTime == "function"  && (callback = animationTime, animationTime = share.get('animationTime'));
 		typeof callback      == "string"    && (animationName = callback, callback = null);
 
 		let counter = 0;
