@@ -21,6 +21,9 @@ class unlockAction extends deckAction {
 		}
 
 		lockActionCommon(data.actionData, 'unlock', deck.name);
+
+		// !data.actionData.dispatch
+		super.end();
 	}
 
 }

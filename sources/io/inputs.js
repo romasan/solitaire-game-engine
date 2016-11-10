@@ -116,7 +116,10 @@ class inputs {
 		share.set('dragDeck',    null);
 		share.set('startCursor', null);
 
-		if(common.isCurLock()) {
+		if(
+			common.isCurLock()          ||
+			share.get('sessionStarted')
+		) {
 			return;
 		}
 

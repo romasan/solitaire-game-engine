@@ -28,7 +28,11 @@ export default class {
 
 	start(e) {
 
-		console.log('### start auto step:', this.stepType, e);
+		if(!this.autoStep) {
+			event.dispatch('stopSession');
+		}
+
+		share.set('autoStep:stepType', this.stepType);
 
 		if(e && typeof e.before == "function") {
 			e.before({
@@ -61,6 +65,8 @@ export default class {
 			// share.set('stepType', defaults.stepType);
 			event.dispatch('stopSession');
 		}
+
+		share.delete('autoStep:stepType');
 	}
 
 	init(stepType) {

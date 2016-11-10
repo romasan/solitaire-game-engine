@@ -83,7 +83,13 @@ class Event {
 					this._events[eventName][i]            &&
 					this._events[eventName][i].tag == tag
 				) {
-					this._events[eventName][i] = null;
+					// this._events[eventName][i] = null;
+					this._events[eventName] = this._events[eventName]
+						.slice(0, i)
+						.concat(
+							this._events[eventName]
+								.slice((i | 0) + 1)
+						);
 				}
 			}
 		}

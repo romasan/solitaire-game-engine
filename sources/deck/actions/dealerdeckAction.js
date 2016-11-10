@@ -28,6 +28,9 @@ class dealerdeckAction extends deckAction {
 			typeof data.actionData.stepType == "string"       &&
 			data.actionData.stepType != share.get('stepType')
 		) {
+
+			super.break();
+			
 			return;
 		}
 		
@@ -45,6 +48,8 @@ class dealerdeckAction extends deckAction {
 
 			event.dispatch('actionBreak');
 			event.dispatch('dealEnd');
+
+			super.end();
 			
 			return;
 		}
@@ -158,15 +163,15 @@ class dealerdeckAction extends deckAction {
 
 				event.dispatch('addStep', {
 					'move' : {
-						from         : dealDeck.name,
-						to           : _decks[deckId].name,
-						deck         : [_cardName],
-						flip         : true,
-						stepType     : {
+						from     : dealDeck.name,
+						to       : _decks[deckId].name,
+						deck     : [_cardName],
+						flip     : true,
+						stepType : {
 							undo: share.get('stepType'),
 							redo: data.actionData.dispatch ? share.get('stepType') : defaults.stepType
 						},
-						context: "dealerdeckAction"
+						context  : "dealerdeckAction"
 					}
 				});
 
@@ -182,11 +187,12 @@ class dealerdeckAction extends deckAction {
 		};
 
 		if(data.actionData.dispatch) {
-			
+
 			event.dispatch(data.actionData.dispatch, !_makeStep);
 		} else {
-			// сохраняем если ничего не вызываем
 
+			super.end();
+			// сохраняем если ничего не вызываем
 			share.set('stepType', defaults.stepType);
 		}
 	}

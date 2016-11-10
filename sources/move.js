@@ -13,8 +13,6 @@ import Field    from 'field';
 
 let Move = (moveDeck, to, cursorMove) => {
 
-	event.dispatch('startSession', {type: 'move'});
-
 	common.animationDefault();
 
 	let _deck_departure   = moveDeck[0].card.parent && common.getElementById(moveDeck[0].card.parent),// стопка из которой взяли
@@ -54,6 +52,8 @@ let Move = (moveDeck, to, cursorMove) => {
 		
 		return;
 	}
+
+	event.dispatch('startSession', {type: 'move'});
 
 	_success = _success && to;// to - не пустой
 
@@ -138,7 +138,8 @@ let Move = (moveDeck, to, cursorMove) => {
 						if(
 							!event.has('moveEnd', {
 								tag: event.tags.inGame
-							})
+							}) ||
+							share.get('autoStep:stepType') == share.get('stepType')
 						) {
 							event.dispatch('stopSession');
 						}
@@ -182,20 +183,29 @@ let Move = (moveDeck, to, cursorMove) => {
 				let Tip = bestTip(moveDeck, cursorMove);
 
 				if(Tip) {
+					
 					Move(moveDeck, Tip.to.deck.id, cursorMove);
+					
 					return;
+				
 				} else {
+
 					event.dispatch('moveCardToHome', {
 						moveDeck  : moveDeck       ,
 						departure : _deck_departure
 					});
+					// ^ callback
+					event.dispatch('stopSession');
 				}
 
 		} else {
+			
 			event.dispatch('moveCardToHome', {
 				moveDeck  : moveDeck       ,
 				departure : _deck_departure
 			});
+			// ^ callback
+			event.dispatch('stopSession');
 		}
 	}
 };

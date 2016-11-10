@@ -19,6 +19,9 @@ class kickAction extends deckAction {
 		
 		// если тип хода не стандартный не выполнять кик
 		if(share.get('stepType') != defaults.stepType) {
+			
+			super.break();
+
 			return false;
 		}
 
@@ -27,10 +30,16 @@ class kickAction extends deckAction {
 			typeof data.eventData.stepType == "string"   &&
 			data.eventData.stepType != defaults.stepType
 		) {
+			
+			super.break();
+
 			return false;
 		}
 
 		if(data.eventData.to.name != deck.name) {// data.eventData.to - куда мы перетащили карты
+			
+			super.break();
+
 			return false;
 		}
 
@@ -42,8 +51,6 @@ class kickAction extends deckAction {
 		    _deck = _from.getCardsNames();
 
 		let _callback = () => {
-
-			console.log('KICK END>>>', data.actionData.dispatch);
 
 			let _addStep = (e) => {
 
@@ -65,6 +72,7 @@ class kickAction extends deckAction {
 			share.set('stepType', defaults.stepType);
 
 			if(data.actionData.dispatch) {
+				
 				event.dispatch(data.actionData.dispatch, {
 					before: (e) => {
 						
@@ -84,6 +92,8 @@ class kickAction extends deckAction {
 				})
 				
 				event.dispatch('saveSteps');
+
+				super.end();
 			}
 		}
 		

@@ -11,7 +11,11 @@ class twindeckAction extends deckAction {
 	}
 
 	// TODO переделать
-	run(deck, data) {}
+	run(deck, data) {
+
+		// !data.actionData.dispatch
+		super.end();
+	}
 
 }
 

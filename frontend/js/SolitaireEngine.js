@@ -123,7 +123,7 @@ var SolitaireEngine =
 	exports.options = _defaults2.default;
 	exports.winCheck = _winCheck2.default.hwinCheck;
 	exports.generator = _deckGenerator2.default;
-	exports.version = (9091492405).toString().split(9).slice(1).map(function (e) {
+	exports.version = (9091492431).toString().split(9).slice(1).map(function (e) {
 		return parseInt(e, 8);
 	}).join('.');
 	
@@ -283,6 +283,11 @@ var SolitaireEngine =
 			value: function getAll() {
 				return this._data;
 			}
+		}, {
+			key: 'delete',
+			value: function _delete(name) {
+				delete this._data[name];
+			}
 		}]);
 	
 		return shareClass;
@@ -385,7 +390,8 @@ var SolitaireEngine =
 				for (var eventName in this._events) {
 					for (var i in this._events[eventName]) {
 						if (this._events[eventName][i] && this._events[eventName][i].tag == tag) {
-							this._events[eventName][i] = null;
+							// this._events[eventName][i] = null;
+							this._events[eventName] = this._events[eventName].slice(0, i).concat(this._events[eventName].slice((i | 0) + 1));
 						}
 					}
 				}
@@ -722,7 +728,7 @@ var SolitaireEngine =
 				_share2.default.set('dragDeck', null);
 				_share2.default.set('startCursor', null);
 	
-				if (_common2.default.isCurLock()) {
+				if (_common2.default.isCurLock() || _share2.default.get('sessionStarted')) {
 					return;
 				}
 	
@@ -3783,6 +3789,8 @@ var SolitaireEngine =
 	
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 	
+	var _get = function get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
+	
 	var _deckAction2 = __webpack_require__(20);
 	
 	var _deckAction3 = _interopRequireDefault(_deckAction2);
@@ -3811,7 +3819,11 @@ var SolitaireEngine =
 	
 		_createClass(twindeckAction, [{
 			key: 'run',
-			value: function run(deck, data) {}
+			value: function run(deck, data) {
+	
+				// !data.actionData.dispatch
+				_get(twindeckAction.prototype.__proto__ || Object.getPrototypeOf(twindeckAction.prototype), 'end', this).call(this);
+			}
 		}]);
 	
 		return twindeckAction;
@@ -3852,6 +3864,9 @@ var SolitaireEngine =
 			value: function end() {
 				_event2.default.dispatch('stopSession');
 			}
+		}, {
+			key: 'break',
+			value: function _break() {}
 		}]);
 	
 		return deckAction;
@@ -3870,6 +3885,8 @@ var SolitaireEngine =
 	});
 	
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	
+	var _get = function get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
 	
 	var _event = __webpack_require__(2);
 	
@@ -3926,6 +3943,9 @@ var SolitaireEngine =
 				// console.log('dealerdeckAction:', deck.name, data);
 	
 				if (typeof data.actionData.stepType == "string" && data.actionData.stepType != _share2.default.get('stepType')) {
+	
+					_get(dealerdeckAction.prototype.__proto__ || Object.getPrototypeOf(dealerdeckAction.prototype), 'break', this).call(this);
+	
 					return;
 				}
 	
@@ -3941,6 +3961,8 @@ var SolitaireEngine =
 	
 					_event2.default.dispatch('actionBreak');
 					_event2.default.dispatch('dealEnd');
+	
+					_get(dealerdeckAction.prototype.__proto__ || Object.getPrototypeOf(dealerdeckAction.prototype), 'end', this).call(this);
 	
 					return;
 				}
@@ -4072,8 +4094,9 @@ var SolitaireEngine =
 	
 					_event2.default.dispatch(data.actionData.dispatch, !_makeStep);
 				} else {
-					// сохраняем если ничего не вызываем
 	
+					_get(dealerdeckAction.prototype.__proto__ || Object.getPrototypeOf(dealerdeckAction.prototype), 'end', this).call(this);
+					// сохраняем если ничего не вызываем
 					_share2.default.set('stepType', _defaults2.default.stepType);
 				}
 			}
@@ -4215,6 +4238,8 @@ var SolitaireEngine =
 	
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 	
+	var _get = function get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
+	
 	var _event = __webpack_require__(2);
 	
 	var _event2 = _interopRequireDefault(_event);
@@ -4257,19 +4282,29 @@ var SolitaireEngine =
 		_createClass(kickAction, [{
 			key: 'run',
 			value: function run(deck, data) {
+				var _this2 = this;
 	
 				// если тип хода не стандартный не выполнять кик
 				if (_share2.default.get('stepType') != _defaults2.default.stepType) {
+	
+					_get(kickAction.prototype.__proto__ || Object.getPrototypeOf(kickAction.prototype), 'break', this).call(this);
+	
 					return false;
 				}
 	
 				// TODO спорный момент
 				if (typeof data.eventData.stepType == "string" && data.eventData.stepType != _defaults2.default.stepType) {
+	
+					_get(kickAction.prototype.__proto__ || Object.getPrototypeOf(kickAction.prototype), 'break', this).call(this);
+	
 					return false;
 				}
 	
 				if (data.eventData.to.name != deck.name) {
 					// data.eventData.to - куда мы перетащили карты
+	
+					_get(kickAction.prototype.__proto__ || Object.getPrototypeOf(kickAction.prototype), 'break', this).call(this);
+	
 					return false;
 				}
 	
@@ -4282,8 +4317,6 @@ var SolitaireEngine =
 				_deck = _from.getCardsNames();
 	
 				var _callback = function _callback() {
-	
-					console.log('KICK END>>>', data.actionData.dispatch);
 	
 					var _addStep = function _addStep(e) {
 	
@@ -4305,6 +4338,7 @@ var SolitaireEngine =
 					_share2.default.set('stepType', _defaults2.default.stepType);
 	
 					if (data.actionData.dispatch) {
+	
 						_event2.default.dispatch(data.actionData.dispatch, {
 							before: function before(e) {
 	
@@ -4324,6 +4358,8 @@ var SolitaireEngine =
 						});
 	
 						_event2.default.dispatch('saveSteps');
+	
+						_get(kickAction.prototype.__proto__ || Object.getPrototypeOf(kickAction.prototype), 'end', _this2).call(_this2);
 					}
 				};
 	
@@ -4415,7 +4451,11 @@ var SolitaireEngine =
 				// {actionData, eventData, eventName}
 	
 				var _stepType = _share2.default.get('stepType');
+	
 				if (_stepType != _defaults2.default.stepType) {
+	
+					_get(stepsAroundAction.prototype.__proto__ || Object.getPrototypeOf(stepsAroundAction.prototype), 'break', this).call(this);
+	
 					return;
 				};
 	
@@ -4529,6 +4569,8 @@ var SolitaireEngine =
 	
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 	
+	var _get = function get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
+	
 	var _event = __webpack_require__(2);
 	
 	var _event2 = _interopRequireDefault(_event);
@@ -4575,8 +4617,16 @@ var SolitaireEngine =
 				}
 	
 				if (typeof data.actionData.to != "string") {
+	
+					// !data.actionData.dispatch
+					_get(changeStepTypeAction.prototype.__proto__ || Object.getPrototypeOf(changeStepTypeAction.prototype), 'end', this).call(this);
+	
 					return;
 				} else {
+	
+					// !data.actionData.dispatch
+					_get(changeStepTypeAction.prototype.__proto__ || Object.getPrototypeOf(changeStepTypeAction.prototype), 'end', this).call(this);
+	
 					_share2.default.set('stepType', data.actionData.to);
 				}
 			}
@@ -4598,6 +4648,8 @@ var SolitaireEngine =
 	});
 	
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	
+	var _get = function get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
 	
 	var _event = __webpack_require__(2);
 	
@@ -4649,6 +4701,9 @@ var SolitaireEngine =
 				}
 	
 				(0, _lockActionCommon2.default)(data.actionData, 'lock', deck.name);
+	
+				// !data.actionData.dispatch
+				_get(lockAction.prototype.__proto__ || Object.getPrototypeOf(lockAction.prototype), 'end', this).call(this);
 			}
 		}]);
 	
@@ -4736,6 +4791,8 @@ var SolitaireEngine =
 	
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 	
+	var _get = function get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
+	
 	var _event = __webpack_require__(2);
 	
 	var _event2 = _interopRequireDefault(_event);
@@ -4786,6 +4843,9 @@ var SolitaireEngine =
 				}
 	
 				(0, _lockActionCommon2.default)(data.actionData, 'unlock', deck.name);
+	
+				// !data.actionData.dispatch
+				_get(unlockAction.prototype.__proto__ || Object.getPrototypeOf(unlockAction.prototype), 'end', this).call(this);
 			}
 		}]);
 	
@@ -6649,7 +6709,11 @@ var SolitaireEngine =
 			key: 'start',
 			value: function start(e) {
 	
-				console.log('### start auto step:', this.stepType, e);
+				if (!this.autoStep) {
+					_event2.default.dispatch('stopSession');
+				}
+	
+				_share2.default.set('autoStep:stepType', this.stepType);
 	
 				if (e && typeof e.before == "function") {
 					e.before({
@@ -6683,6 +6747,8 @@ var SolitaireEngine =
 					// share.set('stepType', defaults.stepType);
 					_event2.default.dispatch('stopSession');
 				}
+	
+				_share2.default.delete('autoStep:stepType');
 			}
 		}, {
 			key: 'init',
@@ -7128,8 +7194,6 @@ var SolitaireEngine =
 	
 	var Move = function Move(moveDeck, to, cursorMove) {
 	
-		_event2.default.dispatch('startSession', { type: 'move' });
-	
 		_common2.default.animationDefault();
 	
 		var _deck_departure = moveDeck[0].card.parent && _common2.default.getElementById(moveDeck[0].card.parent),
@@ -7159,6 +7223,8 @@ var SolitaireEngine =
 	
 			return;
 		}
+	
+		_event2.default.dispatch('startSession', { type: 'move' });
 	
 		_success = _success && to; // to - не пустой
 	
@@ -7243,7 +7309,7 @@ var SolitaireEngine =
 	
 							if (!_event2.default.has('moveEnd', {
 								tag: _event2.default.tags.inGame
-							})) {
+							}) || _share2.default.get('autoStep:stepType') == _share2.default.get('stepType')) {
 								_event2.default.dispatch('stopSession');
 							}
 	
@@ -7282,19 +7348,27 @@ var SolitaireEngine =
 				var Tip = (0, _bestTip2.default)(moveDeck, cursorMove);
 	
 				if (Tip) {
+	
 					Move(moveDeck, Tip.to.deck.id, cursorMove);
+	
 					return;
 				} else {
+	
 					_event2.default.dispatch('moveCardToHome', {
 						moveDeck: moveDeck,
 						departure: _deck_departure
 					});
+					// ^ callback
+					_event2.default.dispatch('stopSession');
 				}
 			} else {
+	
 				_event2.default.dispatch('moveCardToHome', {
 					moveDeck: moveDeck,
 					departure: _deck_departure
 				});
+				// ^ callback
+				_event2.default.dispatch('stopSession');
 			}
 		}
 	};
@@ -9202,7 +9276,7 @@ var SolitaireEngine =
 	// });
 	
 	
-	var _log = function _log(text, color) {
+	var _log = function _log(text, color, e) {
 	
 		console.log('%c»%c' + text, 'color: white;',
 	
@@ -9211,10 +9285,11 @@ var SolitaireEngine =
 		// 'text-shadow: #777 1px 0 0px, #777 0 1px 0px, #777 -1px 0 0px, #777 0 -1px 0px;' +
 		'padding: 2px;' +
 		// 'border: 1px solid black;'                                                       +
-		'background: ' + color + ';'
+		'background: ' + color + ';',
 		// 'font-weight: bold;'
 		// 'color: ' + color + ';'
-		);
+	
+		e ? e : '');
 	
 		// $('#log_1')
 		// 	.show()
@@ -9230,24 +9305,32 @@ var SolitaireEngine =
 		// 	})
 	};
 	
-	_event2.default.listen('shareSet:stepType', function (e) {
-		_log('stepType:' + e, 'yellow');
+	// event.listen('shareSet:stepType', (e) => {
+	// 	_log('stepType:' + e, 'yellow');
+	// })
+	
+	// event.listen('shareSet:curLockState', (e) => {
+	// 	_log('curLockState:' + e, '#aaffaa');
+	// });
+	
+	// event.listen('moveEnd', (e) => {
+	// 	_log('moveEnd', 'orange');
+	// });
+	
+	// event.listen('forceMoveEnd', (e) => {
+	// 	_log('forceMoveEnd', 'orange');
+	// });
+	
+	// event.listen('gameInit', (e, a) => {
+	// 	_log('gameInit (' + ((a.eventInfo.index | 0) + 1) + ', ' + a.eventInfo.count + ')', '#ff7777');
+	// });
+	
+	_event2.default.listen('startSession', function (e) {
+		_log('---', 'red', e);
 	});
 	
-	_event2.default.listen('shareSet:curLockState', function (e) {
-		_log('curLockState:' + e, '#aaffaa');
-	});
-	
-	_event2.default.listen('moveEnd', function (e) {
-		_log('moveEnd', 'orange');
-	});
-	
-	_event2.default.listen('forceMoveEnd', function (e) {
-		_log('forceMoveEnd', 'orange');
-	});
-	
-	_event2.default.listen('gameInit', function (e, a) {
-		_log('gameInit (' + ((a.eventInfo.index | 0) + 1) + ', ' + a.eventInfo.count + ')', '#ff7777');
+	_event2.default.listen('stopSession', function () {
+		_log('+++', 'green');
 	});
 	
 	document.onwheel = function (e) {

@@ -20,7 +20,11 @@ class stepsAroundAction extends deckAction {
 	run(deck, data) {// {actionData, eventData, eventName}
 
 		let _stepType = share.get('stepType');
+		
 		if(_stepType != defaults.stepType) {
+			
+			super.break();
+
 			return;
 		};
 
