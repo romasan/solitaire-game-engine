@@ -6,7 +6,7 @@ import defaults        from 'defaults';
 
 // import elRender from 'elRender';
 
-export default ()=>{
+export default () => {
 
 
 	// let _locale = require('json!locales.json')[defaults.locale];

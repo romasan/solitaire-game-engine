@@ -28,7 +28,11 @@ export default class {
 
 	start(e) {
 
-		console.log('### start auto step:', this.stepType, e);
+		if(!this.autoStep) {
+			event.dispatch('stopSession');
+		}
+
+		share.set('autoStep:stepType', this.stepType);
 
 		if(e && typeof e.before == "function") {
 			e.before({
@@ -59,7 +63,10 @@ export default class {
 			});
 		} else {
 			// share.set('stepType', defaults.stepType);
+			event.dispatch('stopSession');
 		}
+
+		share.delete('autoStep:stepType');
 	}
 
 	init(stepType) {
@@ -74,14 +81,22 @@ export default class {
 		
 		if(!this.autoStep) {
 
-			event.listen('moveEnd', () => {
-
-				if(share.get('stepType') != this.stepType) {
-					return; 
-				}
+			event.listen(
 				
-				this.check();
-			}, this);
+				'moveEnd',
+
+				() => {
+
+					if(share.get('stepType') != this.stepType) {
+						return; 
+					}
+				
+					this.check();
+				},
+
+				// this
+				'addAutoStepEvent:' + this.event
+			);
 		}
 	}
 }

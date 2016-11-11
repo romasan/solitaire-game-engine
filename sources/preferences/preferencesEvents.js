@@ -50,7 +50,7 @@ let saveParameters = (pref) => {
 	storage.set('pref', pref);
 };
 
-export default ()=>{
+export default () => {
 	
 	// TODO переделать без jQuery
 

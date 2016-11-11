@@ -14,7 +14,7 @@ import changeStepType from 'changeStepTypeAction';
 import lock           from 'lockAction';
 import unlock         from 'unlockAction';
 
-var _actions = {
+let _actions = {
 	"twindeck"       : twindeck      ,
 	"dealerdeck"     : dealerdeck    ,
 	"kick"           : kickAction    ,
@@ -26,15 +26,15 @@ var _actions = {
 
 // ------------------------------------------------------------------------------------------
 
-var _decksActions  = [],
-    _events = [];
+let _decksActions  = [],
+    _events        = [];
 
 event.listen('initField', () => {
 	_decksActions = [];
-	_events = [];
+	_events       = [];
 })
 
-var addActionEvent = function(_event) {
+let addActionEvent = (_event) => {
 
 	event.listen(
 
@@ -44,21 +44,22 @@ var addActionEvent = function(_event) {
 		// callback
 		(data) => {
 
-			for(var i in _decksActions) {
+			for(let i in _decksActions) {
 				if(_decksActions[i].event == _event) {
 					
-					var _actionName = _decksActions[i].action;
+					let _actionName = _decksActions[i].action;
 
-					var _canRun = _event == 'click'
+					let _canRun = _event == 'click'
 					    ? data.to.name == _decksActions[i].deck.name
 					    : true;
-					// data._stepType = data.stepType;
-					// data.stepType = share.get('stepType');
 					
 					if(_canRun) {
 						
-						_actions[_actionName].call(
+						// _actions[_actionName].call(
+						_actions[_actionName].run(
+							
 							_decksActions[i].deck, 
+							
 							{
 								actionData : _decksActions[i].deck.actions[_actionName],
 								eventData  : data,
@@ -71,62 +72,63 @@ var addActionEvent = function(_event) {
 		},
 
 		// context
-		
-		// _decksActions.indexOf(_event) >= 0 ? _decksActions[_decksActions.indexOf(_event)] : null
-		
-		// (()=>{
-		// 	for(let actionName in _decksActions) {
-		// 		// TODO
-		// 		// ??? _events
-		// 	}
-		// 	return;
-		// })
+		'addActionEvent:' + _event
 	);
 
 };
 
-var addActions = function() {
+let add = function(deck) {
 
-	for(var actionName in this.actions) {
+	for(let actionName in deck.actions) {
 
 		// если не описано событие выполнять по клику
-		if(!this.actions[actionName].event) {
-			this.actions[actionName].event = 'click';
+		if(!deck.actions[actionName].event) {
+			deck.actions[actionName].event = 'click';
 		}
 
+		// если такой action существует
 		if(_actions[actionName]) {
+			
+			// сохраняем action
 			_decksActions.push({
-				deck   : this, 
-				event  : this.actions[actionName].event,
+				deck   : deck, 
+				event  : deck.actions[actionName].event,
 				action : actionName
 			});
 
-			if(_events.indexOf(this.actions[actionName].event) < 0) {
-				// КОПАТЬ ТУТ
-				_events.push(this.actions[actionName].event);
-				addActionEvent(this.actions[actionName].event);
+			// создаём событие если оно еще не создано
+			if(_events.indexOf(deck.actions[actionName].event) < 0) {
+				
+				// сохраняем событие в список с уже созданными
+				_events.push(deck.actions[actionName].event);
+				
+				// вешаем событие
+				addActionEvent(deck.actions[actionName].event);
 			}
 		} else {
-			console.warn('Action', actionName, 'for', this.name, 'not found.');
+			console.warn('Action', actionName, 'for', deck.name, 'not found.');
 		};
 
 	}
-	autoRunActions(this.actions);
+	
+	autoRunActions(deck);
 };
 
-var autoRunActions = function(data) {// bind this deck
+let autoRunActions = (deck) => {// bind this deck
 
 	common.animationDefault();
 
-	for(var actionName in data.actions) {
-		if(data.actions[actionName].autorun) {
+	for(let actionName in deck.actions) {
+		if(deck.actions[actionName].autorun) {
 			if(_actions[actionName]) {
-				_actions[actionName].call(
-					data, 
+				_actions[actionName].run(
+					
+					deck, 
+					
 					{
-						actionData : data.actions[actionName],
+						actionData : deck.actions[actionName],
 						eventData  : null,
-						eventName  : data.actions[actionName].event
+						eventName  : deck.actions[actionName].event
 					}
 				);
 			}
@@ -136,5 +138,5 @@ var autoRunActions = function(data) {// bind this deck
 }
 
 export default {
-	addActions
+	add
 }

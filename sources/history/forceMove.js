@@ -7,40 +7,50 @@ import common from 'common';
 import Deck from 'deck';
 import Tips from 'tips';
 
-let forceMove = function(a) {// {from, to, deck, <flip>, <callback>}
+let forceMove = (data) => {// {from, to, deck, <flip>, <callback>}
 
-	// console.log('forceMove', a);
+	// console.log('forceMove', data);
 
-	if(!a.from || !a.to || !a.deck) {
+	if(
+		!data.from ||
+		!data.to   ||
+		!data.deck
+	) {
 		return;
 	}
 
-	if(!a.deck.length) {
+	if(!data.deck.length) {
 		return;
 	}
 	
-	let _from = typeof a.from == "string"
-		? Deck.getDeck(a.from)
-		: a.from;
+	let deckFrom = typeof data.from == "string"
+		? Deck.getDeck(data.from)
+		: data.from;
 
-	let _to   = typeof a.to   == "string"
-		? Deck.getDeck(a.to)
-		: a.to;
+	let deckTo = typeof data.to == "string"
+		? Deck.getDeck(data.to)
+		: data.to;
 
-	if(!_from || !_to || _from.type != "deck" || _to.type != "deck") {
+	if(
+		!deckFrom                ||
+		 deckFrom.type != "deck" ||
+		!deckTo                  ||
+		 deckTo.type != "deck"
+	) {
 		return;
 	}
 
-	let _check     = true;
-	let _from_deck = _from.cards;
+	let _check = true;
 
-	for(let i in _from_deck) {
-		
-		if(i >= _from_deck.length - a.deck.length) {
-			
-			let _id = i - (_from_deck.length|0) + (a.deck.length|0);
-			
-			if(a.deck[_id] && _from_deck[i].name != a.deck[_id]) {
+	let deckFromCards = deckFrom.cards;
+
+	for(let i in deckFromCards) {
+
+		if(i >= deckFromCards.length - data.deck.length) {
+
+			let _id = i - (deckFromCards.length | 0) + (data.deck.length | 0);
+
+			if(data.deck[_id] && deckFromCards[i].name != data.deck[_id]) {
 				_check = false;
 			}
 		}
@@ -48,51 +58,50 @@ let forceMove = function(a) {// {from, to, deck, <flip>, <callback>}
 
 	if(_check) {
 
-		let _pop = _from.Pop(a.deck.length);
+		let cardsPop = deckFrom.Pop(data.deck.length);
 
 		// перевернуть карты во время хода
-		if(a.flip) {
-			for(let i in _pop) {
-				_pop[i].flip = !_pop[i].flip;
+		if(data.flip) {
+			for(let i in cardsPop) {
+				cardsPop[i].flip = !cardsPop[i].flip;
 			}
 		}
 
-		_to.Push(_pop);
-		
-		let __pop = [];
-		for(let i in _pop) {
-			__pop.push({
-				card : _pop[i]
+		deckTo.Push(cardsPop);
+
+		let cardsMove = [];
+
+		for(let i in cardsPop) {
+			cardsMove.push({
+				card : cardsPop[i]
 			});
 		}
 
 		let moveDragDeckParams = {
-			departure   : _from,
-			destination : _to,
-			moveDeck    : __pop
+			moveDeck    : cardsMove,
+			departure   : deckFrom ,
+			destination : deckTo
 		};
 
-		if(typeof a.callback == "function") {
+		if(typeof data.callback == "function") {
 			moveDragDeckParams.callback = () => {
 				event.dispatch('forceMoveEnd');
-				a.callback();
+				data.callback();
 			}
 		} else {
 			moveDragDeckParams.callback = () => {
 				event.dispatch('forceMoveEnd');
 			}
 		}
-		
-		// event.dispatch('moveEnd:' + share.get('stepType'));
+
 		event.dispatch('moveDragDeck', moveDragDeckParams);
 	} else {
-		// _warn(4);
-		console.warn("forceMove:Ход невозможен", a);
+		console.warn("forceMove:Ход невозможен", data);
 	}
 };
 
-event.listen('forceMove', (e)=>{
-	forceMove(e);
+event.listen('forceMove', (data) => {
+	forceMove(data);
 });
 
 export default forceMove;

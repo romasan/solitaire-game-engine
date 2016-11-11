@@ -3,40 +3,50 @@
 import event     from 'event';
 import share     from 'share';
 import common    from 'common';
+import state     from 'state';
 
 import forceMove from 'forceMove';
 import Deck      from 'deck';
 import Tips      from 'tips';
+import field     from 'field';
 // import elRender  from 'elRender';
 
-// var _undoMethods = {};
-// var _redoMethods = {};
+// let _undoMethods = {};
+// let _redoMethods = {};
 
 // ---------------------------------------- UNDO ----------------------------------------
 
-var _undo = function(a) {
+let _undo = (data) => {
 
-	// for(var i in _undoMethods) {
-	// 	_undoMethods[i](a);
+	if(share.get('sessionStarted')) {
+		
+		state.restore();
+
+		// redraw
+		field.Redraw();
+	}
+
+	// for(let i in _undoMethods) {
+	// 	_undoMethods[i](data);
 	// }
 	
-	// if(a.flip) {
+	// if(data.flip) {
 	// };
 	
-	// if(a.unflip) {
+	// if(data.unflip) {
 	// };
 	
-	// if(a.fill) {
+	// if(data.fill) {
 	// };
 
 	// LOCK
 	if(
-		typeof a.lock != "undefined"
+		typeof data.lock != "undefined"
 	) {
-		// Deck.Deck(a.lock).unlock();
+		// Deck.Deck(data.lock).unlock();
 		// TODO сделать также в оставшихся местах
-		for(let i in a.lock) {
-			let _elements = common.getElementsByName(a.lock[i]);
+		for(let i in data.lock) {
+			let _elements = common.getElementsByName(data.lock[i]);
 			for(let elNum in _elements) {
 				_elements[elNum].unlock();
 			}
@@ -44,11 +54,11 @@ var _undo = function(a) {
 	}
 
 	if(
-		typeof a.unlock != "undefined"
+		typeof data.unlock != "undefined"
 	) {
-		// Deck.Deck(a.unlock).lock();
-		for(let i in a.lock) {
-			let _elements = common.getElementsByName(a.lock[i]);
+		// Deck.Deck(data.unlock).lock();
+		for(let i in data.lock) {
+			let _elements = common.getElementsByName(data.lock[i]);
 			for(let elNum in _elements) {
 				_elements[elNum].lock();
 			}
@@ -57,26 +67,26 @@ var _undo = function(a) {
 
 	// MOVE
 	if(
-		typeof a.move      != "undefined" 
-	 && typeof a.move.from != "undefined" 
-	 && typeof a.move.to   != "undefined" 
-	 && typeof a.move.deck != "undefined"
+		typeof data.move      != "undefined" &&
+		typeof data.move.from != "undefined" &&
+		typeof data.move.to   != "undefined" &&
+		typeof data.move.deck != "undefined"
 	) {
 
-		if(a.move.stepType) {
-			if(typeof a.move.stepType == "string") {
-				share.set('stepType', a.move.stepType);
+		if(data.move.stepType) {
+			if(typeof data.move.stepType == "string") {
+				share.set('stepType', data.move.stepType);
 			}
-			if(typeof a.move.stepType.undo == "string") {
-				share.set('stepType', a.move.stepType.undo);
+			if(typeof data.move.stepType.undo == "string") {
+				share.set('stepType', data.move.stepType.undo);
 			}
 		}
 
 		forceMove({
-			from : a.move.to,   // from ->
-			to   : a.move.from, //      <- to
-			deck : a.move.deck,
-			flip : a.move.flip
+			from : data.move.to,   // from ->
+			to   : data.move.from, //      <- to
+			deck : data.move.deck,
+			flip : data.move.flip
 		});
 	}
 
@@ -96,9 +106,9 @@ event.listen('undo', function(_a) {
 
 		_a.reverse();
 		
-		for(var _i in _a) {
-			var a = _a[_i];
-			_undo(a);
+		for(let _i in _a) {
+			let data = _a[_i];
+			_undo(data);
 		}
 		
 	} else {
@@ -113,26 +123,26 @@ event.listen('undo', function(_a) {
 
 // ---------------------------------------- REDO ----------------------------------------
 
-var _redo = function(a) {
+let _redo = (data) => {
 
-	// for(var i in _redoMethods) {
-	// 	_redoMethods[i](a);
+	// for(let i in _redoMethods) {
+	// 	_redoMethods[i](data);
 	// }
 
-	// if(a.flip) {
+	// if(data.flip) {
 	// };
 	
-	// if(a.fill) {
+	// if(data.fill) {
 	// 	// TODO
 	// };
 
 	// LOCK
 	if(
-		typeof a.lock != "undefined"
+		typeof data.lock != "undefined"
 	) {
-		// Deck.Deck(a.lock).lock();
-		for(let i in a.lock) {
-			let _elements = common.getElementsByName(a.lock[i]);
+		// Deck.Deck(data.lock).lock();
+		for(let i in data.lock) {
+			let _elements = common.getElementsByName(data.lock[i]);
 			for(let elNum in _elements) {
 				_elements[elNum].lock();
 			}
@@ -140,11 +150,11 @@ var _redo = function(a) {
 	}
 
 	if(
-		typeof a.unlock != "undefined"
+		typeof data.unlock != "undefined"
 	) {
-		// Deck.Deck(a.unlock).unlock();
-		for(let i in a.unlock) {
-			let _elements = common.getElementsByName(a.lock[i]);
+		// Deck.Deck(data.unlock).unlock();
+		for(let i in data.unlock) {
+			let _elements = common.getElementsByName(data.lock[i]);
 			for(let elNum in _elements) {
 				_elements[elNum].unlock();
 			}
@@ -153,29 +163,29 @@ var _redo = function(a) {
 
 	// MOVE
 	if(
-		typeof a.move      != "undefined" 
-	 && typeof a.move.from != "undefined" 
-	 && typeof a.move.to   != "undefined" 
-	 && typeof a.move.deck != "undefined"
+		typeof data.move      != "undefined" &&
+		typeof data.move.from != "undefined" &&
+		typeof data.move.to   != "undefined" &&
+		typeof data.move.deck != "undefined"
 	) {
 
-		if(a.move.stepType) {
-			if(typeof a.move.stepType == "string") {
-				share.set('stepType', a.move.stepType);
+		if(data.move.stepType) {
+			if(typeof data.move.stepType == "string") {
+				share.set('stepType', data.move.stepType);
 			}
-			if(typeof a.move.stepType.redo == "string") {
-				share.set('stepType', a.move.stepType.redo);
+			if(typeof data.move.stepType.redo == "string") {
+				share.set('stepType', data.move.stepType.redo);
 			}
 		}
 
-		forceMove(a.move);
+		forceMove(data.move);
 	}
 
 	if(
-		a.redo                            &&
-		typeof a.redo.stepType == "string"
+		data.redo                            &&
+		typeof data.redo.stepType == "string"
 	) {
-		share.set('stepType', a.redo.stepType);
+		share.set('stepType', data.redo.stepType);
 	}
 };
 
@@ -192,9 +202,9 @@ event.listen('redo', function(_a) {
 	// Обратная совместимость
 	if(_a instanceof Array) {
 		_a.reverse();
-		for(var _i in _a) {
-			var a = _a[_i];
-			_redo(a);
+		for(let _i in _a) {
+			let data = _a[_i];
+			_redo(data);
 		}
 	} else {
 		_redo(_a);
@@ -219,7 +229,7 @@ class history {
 
 	add(step) {
 
-		// for(var i in step) {
+		// for(let i in step) {
 		this.steps.push(step);
 		// }
 	}
@@ -227,7 +237,7 @@ class history {
 	// get steps and reset
 	get(reset = true) {
 
-		var _req = this.steps;
+		let _req = this.steps;
 		
 		if(reset) {
 			this.reset();
@@ -244,15 +254,15 @@ class history {
 		return this.steps.length;
 	}
 
-	// addUndoMethods(a) {
-	// 	for(var i in a) {
-	// 		_undoMethods[i] = a[i];
+	// addUndoMethods(data) {
+	// 	for(let i in data) {
+	// 		_undoMethods[i] = data[i];
 	// 	}
 	// }
 	
-	// addRedoMethods(a) {
-	// 	for(var i in a) {
-	// 		_redoMethods[i] = a[i];
+	// addRedoMethods(data) {
+	// 	for(let i in data) {
+	// 		_redoMethods[i] = data[i];
 	// 	}
 	// }
 }

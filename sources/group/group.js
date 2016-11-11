@@ -29,32 +29,32 @@ const params = {
 
 class groupClass {
 	
-	constructor(a, _id) {
+	constructor(data, _id) {
 		
 		this.type = 'group';
 		
 		this.id = _id
 
-		this.name = a.name && typeof a.name == 'string' 
-			? a.name 
+		this.name = data.name && typeof data.name == 'string' 
+			? data.name 
 			: ('name_' + _id);
 		
 		this.position = {
-			x : a.position && a.position.x && typeof a.position.x == 'number' 
-				? a.position.x 
+			x : data.position && data.position.x && typeof data.position.x == 'number' 
+				? data.position.x 
 				: 0,
-			y : a.position && a.position.y && typeof a.position.y == 'number' 
-				? a.position.y 
+			y : data.position && data.position.y && typeof data.position.y == 'number' 
+				? data.position.y 
 				: 0,
 		};
 
-		this.placement = a.placement 
+		this.placement = data.placement 
 			? {
-				x : a.placement.x 
-					? a.placement.x 
+				x : data.placement.x 
+					? data.placement.x 
 					: 0, 
-				y : a.placement.y 
-					? a.placement.y 
+				y : data.placement.y 
+					? data.placement.y 
 					: 0
 			} 
 			: null
@@ -65,10 +65,10 @@ class groupClass {
 		this.parameters = {};
 		for(let paramName in params) {
 			if(params[paramName].type == "any") {
-				this.parameters[paramName] = a[paramName] ? a[paramName] : defaults[paramName];
+				this.parameters[paramName] = data[paramName] ? data[paramName] : defaults[paramName];
 			} else if(params[paramName].type == "boolean") {
-				this.parameters[paramName] = typeof a[paramName] == "boolean" ? a[paramName] : params[paramName].default;
-				// this.parameters[paramName] = typeof a[paramName] == "boolean" ? a[paramName] : defaults[paramName];
+				this.parameters[paramName] = typeof data[paramName] == "boolean" ? data[paramName] : params[paramName].default;
+				// this.parameters[paramName] = typeof data[paramName] == "boolean" ? data[paramName] : defaults[paramName];
 			}
 		};
 		
@@ -79,14 +79,14 @@ class groupClass {
 // --------------------------------------------------------------------
 
 	// Add deck to group
-	addDeck(a) {
+	addDeck(data) {
 
-		if(!a) {
+		if(!data) {
 			return;
 		}
 		
-		if(!a.position) {
-			a.position = {
+		if(!data.position) {
+			data.position = {
 				'x' : 0, 
 				'y' : 0
 			};
@@ -94,14 +94,14 @@ class groupClass {
 
 		// сортировка элементов в группе по заданному индексу и порядку добавления
 		
-		// if(!a.position.x) { a.position.x = 0; }
-		// if(!a.position.y) { a.position.y = 0; }
+		// if(!data.position.x) { data.position.x = 0; }
+		// if(!data.position.y) { data.position.y = 0; }
 
-		if(!a.parent) {
-			a.parent = this.name;
+		if(!data.parent) {
+			data.parent = this.name;
 		}
 		
-		a.parentPosition = {
+		data.parentPosition = {
 			x : this.position.x, 
 			y : this.position.y
 		};
@@ -109,42 +109,47 @@ class groupClass {
 		// расставляем колоды в группе
 		// 1 приоретет отдаётся параметру groupIndex
 		// остальные вставляются в промежутки или добавляются в конец
-		var _index = 0;
+		let _index = 0;
 		
-		if( a.groupIndex 
-		 && typeof a.groupIndex == 'number' 
-		 && this.deckIndex[a.groupIndex - 1] 
-		 && decks[ this.deckIndex[a.groupIndex - 1] ].this.deckIndex == a.this.deckIndex
+		if(
+			data.groupIndex                                                                 &&
+			decks[ this.deckIndex[data.groupIndex - 1] ].this.deckIndex == data.this.deckIndex &&
+			typeof data.groupIndex == 'number'                                              &&
+			this.deckIndex[data.groupIndex - 1]
 		) {
-			console.warn('Warning: duplicate groupIndex', a.groupIndex, 'changed to null');
-			a.groupIndex = null;
+			console.warn('Warning: duplicate groupIndex', data.groupIndex, 'changed to null');
+			data.groupIndex = null;
 		}
 
-		if(a.groupIndex && typeof a.groupIndex == 'number') {
+		if(data.groupIndex && typeof data.groupIndex == 'number') {
 
-			if(this.deckIndex[a.groupIndex - 1]) {
+			if(this.deckIndex[data.groupIndex - 1]) {
 				
 				for(;typeof this.deckIndex[_index] != 'undefined';_index += 1) {}
 				
 				if(placement) {
-					var _index    = this.deckIndex[a.groupIndex - 1];
-					var _elements = share.get('elements');
+					
+					let _index    = this.deckIndex[data.groupIndex - 1];
+					let _elements = share.get('elements');
+					
 					if(placement.x) {
 						_elements[_index].x( this.position.x + (placement.x + defaults.card.width) * _index );
 					}
+					
 					if(placement.y) {
 						_elements[_index].y( this.position.y + (placement.y + defaults.card.width) * _index );
 					}
+					
 					share.set('elements', _elements);
 				}
 
-				this.deckIndex[_index] = this.deckIndex[a.groupIndex - 1];
-				this.deckIndex[a.groupIndex - 1] = true;
-				_index = a.groupIndex - 1
+				this.deckIndex[_index] = this.deckIndex[data.groupIndex - 1];
+				this.deckIndex[data.groupIndex - 1] = true;
+				_index = data.groupIndex - 1
 			} else {
 				
-				this.deckIndex[a.groupIndex - 1] = true;
-				_index = a.groupIndex - 1
+				this.deckIndex[data.groupIndex - 1] = true;
+				_index = data.groupIndex - 1
 			}
 
 		} else {
@@ -157,10 +162,11 @@ class groupClass {
 
 
 			if(this.placement.x) {
-				a.position.x = (this.placement.x + defaults.card.width)  * (_index);
+				data.position.x = (this.placement.x + defaults.card.width)  * (_index);
 			}
+			
 			if(this.placement.y) {
-				a.position.y = (this.placement.y + defaults.card.height) * (_index);
+				data.position.y = (this.placement.y + defaults.card.height) * (_index);
 			}
 		}
 
@@ -170,21 +176,21 @@ class groupClass {
 			if(params[paramName].type == "any") {
 				if(
 					this.parameters[paramName]        &&
-					typeof a[paramName] == "undefined"
+					typeof data[paramName] == "undefined"
 				) {
-					a[paramName] = this.parameters[paramName];
+					data[paramName] = this.parameters[paramName];
 				};
 			} else if(params[paramName].type == "boolean") {
 				// if(
 				//	typeof this.parameters[paramName] != "undefined" &&
-				//	typeof a[paramName] == "undefined"
+				//	typeof data[paramName] == "undefined"
 				// ) {
-				a[paramName] = this.parameters[paramName];
+				data[paramName] = this.parameters[paramName];
 				// }			
 			}
 		};
 
-		var _el = Deck.addDeck(a);
+		let _el = Deck.addDeck(data);
 		
 		this.deckIndex[_index]  = _el.id;
 		this.decks[_el.id] = _el;
@@ -200,20 +206,25 @@ class groupClass {
 	}
 
 	getDecksByName(name) {
-		var _decks = {};
+		
+		let _decks = {};
+		
 		for(let d in this.decks) {
 			if(this.decks[d].name == name) {
 				_decks[d] = decks[d];
 			}
 		}
+		
 		return _decks;
 	}
 
 	// Get decks from group
-	getDecks(a) {
-		var _decks = [];
+	getDecks(data) {
+		
+		let _decks = [];
+		
 		for(let i in this.decks) {
-			if(a && a.visible) {
+			if(data && data.visible) {
 				if(this.decks[i].visible) {
 					_decks.push(this.decks[i]);
 				}
@@ -221,21 +232,25 @@ class groupClass {
 				_decks.push(this.decks[i]);
 			}
 		}
+		
 		return _decks;
 	}
 
 	// Redraw group
 	Redraw(_a) {
-		groupRedraw.call(this, _a);
+		groupRedraw(this, _a);
 	}
 
 	hasDeck(deckName) {
+		
 		let has = false;
+		
 		for(let deckId in decks) {
 			if(decks[deckId].name == deckName) {
 				has = true;
 			}
 		}
+		
 		return has;
 	}
 
@@ -243,36 +258,36 @@ class groupClass {
 
 // -----------------------------------------------------------------------------------------------------------------------
 
-var addGroup = function(a) {
+let add = function(data) {
 
-	if(!a) {
+	if(!data) {
 		return false;
 	}
-	
-	var _id = 'group_' + common.genId();
-	
-	var _el_group = new groupClass(a, _id);
 
-	if(a.decks) {
-		
-		if(typeof a.decks == 'number') {
-			a.decks = {
+	let _id = 'group_' + common.genId();
+
+	let _el_group = new groupClass(data, _id);
+
+	if(data.decks) {
+
+		if(typeof data.decks == 'number') {
+			data.decks = {
 				"generator" : {
 					"type"  : "count",
-					"count" : a.decks
+					"count" : data.decks
 				}
 			};
 		};
-		
-		if(a.decks.generator) {
-			
-			if(a.decks.generator.type) {
-				
-				if(groupGenerator[a.decks.generator.type]) {
-				
-					a.decks = groupGenerator[a.decks.generator.type].call(_el_group, a.decks.generator);
+
+		if(data.decks.generator) {
+
+			if(data.decks.generator.type) {
+
+				if(groupGenerator[data.decks.generator.type]) {
+
+					data.decks = groupGenerator[data.decks.generator.type].call(_el_group, data.decks.generator);
 				} else {
-					console.warn('Deck generator type "' + a.decks.generator.type + '" not found.');
+					console.warn('Deck generator type "' + data.decks.generator.type + '" not found.');
 					return;
 				}
 			} else {
@@ -280,60 +295,60 @@ var addGroup = function(a) {
 				return;
 			};
 
-			a.placement = null;
+			data.placement = null;
 
 		};
 
 		// relations TO <-> FROM
-		// if( a.backRelations ) TODO
-		for(let to in a.decks) {
+		// if( data.backRelations ) TODO
+		for(let to in data.decks) {
 
-			for(let relId in a.decks[to].relations) {
+			for(let relId in data.decks[to].relations) {
 
 				let _relation = null;
 				try {
-					_relation = Object.assign({}, a.decks[to].relations[relId]);
+					_relation = Object.assign({}, data.decks[to].relations[relId]);
 				} catch(e) {
-					_relation = a.decks[to].relations[relId];
+					_relation = data.decks[to].relations[relId];
 				}
 
-				for(let from in a.decks) {
+				for(let from in data.decks) {
 					
-					if(a.decks[from].name == _relation.to) {
+					if(data.decks[from].name == _relation.to) {
 						_relation.to = null;
-						_relation.from = a.decks[to].name;
-						a.decks[from].relations.push(_relation)
+						_relation.from = data.decks[to].name;
+						data.decks[from].relations.push(_relation)
 					}
 				}
 			}
 		}
 
-		for(let d in a.decks) {
-			_el_group.addDeck(a.decks[d]);
+		for(let d in data.decks) {
+			_el_group.addDeck(data.decks[d]);
 		};
 	};
 
-	var _elements = share.get('elements');
+	let _elements = share.get('elements');
 	_elements[_id] = _el_group;
 	share.set('elements', _elements);
 	
 	// fill group
-	if(a && a.fill) {
+	if(data && data.fill) {
 
-		var _checkFillDeck = a.fill.length;
+		let _checkFillDeck = data.fill.length;
 		if(_checkFillDeck) {
-			_el_group.Fill(a.fill);
+			_el_group.Fill(data.fill);
 		}
 	}
 
 	return _el_group;
 };
 
-var getGroup = function(name) {
+let getGroup = function(name) {
 	return common.getElementsByName(name, 'group')[0];
 };
 	
 export default {
-	addGroup,
+	add,
 	getGroup
 };

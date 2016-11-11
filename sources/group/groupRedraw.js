@@ -2,62 +2,68 @@
 
 import defaults from 'defaults';
 
-export default function(_a) {
+export default function(group, data) {
 
-	var _decks = this.getDecks();
-	// var _index = {}
-
-	if(
-		typeof _a.decks == 'undefined' ||
-		typeof _a.decks == 'number'
-	) {
-		_a.decks = [];
+	if(!group || !data) {
+		return;
 	}
 
-	for(var i in _decks) {
+	let _decks = group.getDecks();
+
+	if(
+		typeof data.decks == 'undefined' ||
+		typeof data.decks == 'number'
+	) {
+		data.decks = [];
+	}
+
+	for(let i in _decks) {
 		
-		if(!_a.decks[i]) { _a.decks[i] = {}; };
+		if(!data.decks[i]) {
+			data.decks[i] = {};
+		};
 
 		// changed values
 		if(
-			_a.position
-		 && _a.decks[i].parentPosition
+			data.position                &&
+			data.decks[i].parentPosition
 		) {
-			_a.decks[i].parentPosition = {
-				x : _a.position.x,
-				y : _a.position.y
+			data.decks[i].parentPosition = {
+				x : data.position.x,
+				y : data.position.y
 			};
 		};
 
-		if( _a.rotate                   ) { _a.decks[i].rotate         = _a.rotate;       };
-		if( _a.paddingX                 ) { _a.decks[i].paddingX       = _a.paddingX;     };
-		if( _a.paddingY                 ) { _a.decks[i].paddingY       = _a.paddingY;     };
-		if( _a.flipPaddingX             ) { _a.decks[i].flipPaddingX   = _a.flipPaddingX; };
-		if( _a.flipPaddingY             ) { _a.decks[i].flipPaddingY   = _a.flipPaddingY; };
-		if( !_a.decks[i].position       ) { _a.decks[i].position       = {};              };
-		if( !_a.decks[i].parentPosition ) { _a.decks[i].parentPosition = {};              };
+		if(  data.rotate                  ) { data.decks[i].rotate         = data.rotate;       };
+		if(  data.paddingX                ) { data.decks[i].paddingX       = data.paddingX;     };
+		if(  data.paddingY                ) { data.decks[i].paddingY       = data.paddingY;     };
+		if(  data.flipPaddingX            ) { data.decks[i].flipPaddingX   = data.flipPaddingX; };
+		if(  data.flipPaddingY            ) { data.decks[i].flipPaddingY   = data.flipPaddingY; };
+		if( !data.decks[i].position       ) { data.decks[i].position       = {};                };
+		if( !data.decks[i].parentPosition ) { data.decks[i].parentPosition = {};                };
 
-		if(!_a.decks[i].parentPosition.x && a.position && a.position.x && typeof a.position.x == 'number') {
-			_a.decks[i].parentPosition.x = _a.position.x;
+		if(!data.decks[i].parentPosition.x && a.position && a.position.x && typeof a.position.x == 'number') {
+			data.decks[i].parentPosition.x = data.position.x;
 		};
 
-		if(!_a.decks[i].parentPosition.y && a.position && a.position.y && typeof a.position.y == 'number') {
-			_a.decks[i].parentPosition.y = _a.position.y;
+		if(!data.decks[i].parentPosition.y && a.position && a.position.y && typeof a.position.y == 'number') {
+			data.decks[i].parentPosition.y = data.position.y;
 		};
 
-		if(_a.placement) {
+		if(data.placement) {
 			
-			var _card = defaults.card;
-			if(_a.placement.x) _a.decks[i].position.x = (_a.placement.x + _card.width)  * i;
-			if(_a.placement.y) _a.decks[i].position.y = (_a.placement.y + _card.height) * i;
+			let _card = defaults.card;
+			
+			if(data.placement.x) { data.decks[i].position.x = (data.placement.x + _card.width)  * i; }
+			if(data.placement.y) { data.decks[i].position.y = (data.placement.y + _card.height) * i; }
 		};
 		
-		if( !_a.decks[i].rotate       && _a.rotate        && typeof _a.rotate       == 'number' ) { _a.decks[i].rotate       = _a.rotate;       };
-		if( !_a.decks[i].paddingX     && _a.paddingX      && typeof _a.paddingX     == 'number' ) { _a.decks[i].paddingX     = _a.paddingX;     };
-		if( !_a.decks[i].paddingY     && _a.paddingY      && typeof _a.paddingY     == 'number' ) { _a.decks[i].paddingY     = _a.paddingY;     };
-		if( !_a.decks[i].flipPaddingX && _a.flipPaddingX  && typeof _a.flipPaddingX == 'number' ) { _a.decks[i].flipPaddingX = _a.flipPaddingX; };
-		if( !_a.decks[i].flipPaddingY && _a.flipPaddingY  && typeof _a.flipPaddingY == 'number' ) { _a.decks[i].flipPaddingY = _a.flipPaddingY; };
+		if( !data.decks[i].rotate       && data.rotate       && typeof data.rotate       == 'number' ) { data.decks[i].rotate       = data.rotate;       };
+		if( !data.decks[i].paddingX     && data.paddingX     && typeof data.paddingX     == 'number' ) { data.decks[i].paddingX     = data.paddingX;     };
+		if( !data.decks[i].paddingY     && data.paddingY     && typeof data.paddingY     == 'number' ) { data.decks[i].paddingY     = data.paddingY;     };
+		if( !data.decks[i].flipPaddingX && data.flipPaddingX && typeof data.flipPaddingX == 'number' ) { data.decks[i].flipPaddingX = data.flipPaddingX; };
+		if( !data.decks[i].flipPaddingY && data.flipPaddingY && typeof data.flipPaddingY == 'number' ) { data.decks[i].flipPaddingY = data.flipPaddingY; };
 		
-		_decks[i].Redraw(_a.decks[i]);
+		_decks[i].Redraw(data.decks[i]);
 	};
 };

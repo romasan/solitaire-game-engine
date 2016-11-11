@@ -2,15 +2,15 @@
 
 import share from 'share';
 
-export default function(a) {
+export default (data) => {
 
-	var _decks = {};
+	let _decks = {};
 
-	var _elements = share.get('elements');
+	let _elements = share.get('elements');
 
-	if(a && a.visible) {
+	if(data && data.visible) {
 
-		for(var d in _elements) {
+		for(let d in _elements) {
 			if(_elements[d].type == 'deck') {
 				if(_elements[d].visible) {
 					_decks[d] = _elements[d];

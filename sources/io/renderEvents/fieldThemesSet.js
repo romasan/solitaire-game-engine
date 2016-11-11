@@ -7,7 +7,7 @@ import defaults from 'defaults';
 import Field    from 'field';
 import elRender from 'elRender';
 
-event.listen('fieldThemesSet', (pref)=>{
+event.listen('fieldThemesSet', (pref) => {
 	
 	let _fieldDomElement = share.get('domElement:field');//Field.domElement;
 

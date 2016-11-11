@@ -6,6 +6,7 @@ import common        from 'common'       ;
 import defaults      from 'defaults'     ;
 
 import deckGenerator from 'deckGenerator';
+import field         from 'field'        ;
 import elRender      from 'elRender'     ;
 import mapCommon     from 'mapCommon'    ;
 import history       from 'history'      ;
@@ -57,7 +58,7 @@ import renderTest    from 'renderTest'   ;
 // });
 
 
-let _log = (text, color) => {
+let _log = (text, color, e) => {
 	
 	console.log(
 		'%c»%c' + text,
@@ -69,9 +70,11 @@ let _log = (text, color) => {
 		// 'text-shadow: #777 1px 0 0px, #777 0 1px 0px, #777 -1px 0 0px, #777 0 -1px 0px;' +
 		'padding: 2px;'                                                                     +
 		// 'border: 1px solid black;'                                                       +
-		'background: ' + color + ';'
+		'background: ' + color + ';',
 		// 'font-weight: bold;'
 		// 'color: ' + color + ';'
+		
+		e ? e : ''
 	);
 
 	// $('#log_1')
@@ -88,24 +91,32 @@ let _log = (text, color) => {
 	// 	})
 };
 
-event.listen('shareSet:stepType', (e) => {
-	_log('stepType:' + e, 'yellow');
-})
+// event.listen('shareSet:stepType', (e) => {
+// 	_log('stepType:' + e, 'yellow');
+// })
 
-event.listen('shareSet:curLockState', (e) => {
-	_log('curLockState:' + e, '#aaffaa');
+// event.listen('shareSet:curLockState', (e) => {
+// 	_log('curLockState:' + e, '#aaffaa');
+// });
+
+// event.listen('moveEnd', (e) => {
+// 	_log('moveEnd', 'orange');
+// });
+
+// event.listen('forceMoveEnd', (e) => {
+// 	_log('forceMoveEnd', 'orange');
+// });
+
+// event.listen('gameInit', (e, a) => {
+// 	_log('gameInit (' + ((a.eventInfo.index | 0) + 1) + ', ' + a.eventInfo.count + ')', '#ff7777');
+// });
+
+event.listen('startSession', (e) => {
+	_log('start', 'red', e);
 });
 
-event.listen('moveEnd', (e) => {
-	_log('moveEnd', 'orange');
-});
-
-event.listen('forceMoveEnd', (e) => {
-	_log('forceMoveEnd', 'orange');
-});
-
-event.listen('gameInit', (e, a) => {
-	_log('gameInit (' + ((a.eventInfo.index | 0) + 1) + ', ' + a.eventInfo.count + ')', '#ff7777');
+event.listen('stopSession', () => {
+	_log('stop', 'green');
 });
 
 document.onwheel = (e) => {
@@ -232,8 +243,9 @@ export default {
 	elRender                                  ,
 	defaults                                  ,
 	state                                     ,
+	history                                   ,
+	field                                     ,
 	groupGenerators : {
 		mapCommon
-	},
-	history
+	}
 };

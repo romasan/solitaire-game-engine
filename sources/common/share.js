@@ -85,6 +85,10 @@ class shareClass {
 	getAll() {
 		return this._data;
 	}
+
+	delete(name) {
+		delete this._data[name];
+	}
 }
 
 export default new shareClass();

@@ -6,24 +6,24 @@ import share    from 'share';
 import elRender from 'elRender';
 import Tips     from 'tips';
 
-event.listen('showTip', function(e) {
+event.listen('showTip', (data) => {
 
-	if(e && e.el && e.type) {// e && e.el && e.el.domElement && e.type
+	if(data && data.el && data.type) {// data && data.el && data.el.domElement && data.type
 
-		let _elDomElement = share.get('domElement:' + e.el.id);
+		let _elDomElement = share.get('domElement:' + data.el.id);
 
 		elRender(_elDomElement)
-			.addClass(e.type);
+			.addClass(data.type);
 	}
 });
 
-event.listen('hideTips', function(e) {
+event.listen('hideTips', (data) => {
 
-	if(e && e.types) {
+	if(data && data.types) {
 
-		for(let i in e.types) {
+		for(let i in data.types) {
 			
-			let typeName = e.types[i];
+			let typeName = data.types[i];
 			
 			elRender('.' + typeName)
 				.removeClass(typeName);

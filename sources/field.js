@@ -27,24 +27,16 @@ class Field {
 
 		share.set('elements', {});
 		
-		this.tipsParams = {};
+		this.tipsParams  = {};
 		this.inputParams = {};
 	}
 
 	create(data) {
 
-		let a = null;
-		try {
-			a = Object.assign({}, data);
-		} catch(e) {
-			a = data;
-			console.warn('Field input params is not JSON, maybe the rules are wrong.');
-		}
-
-		this.homeGroups = a.homeGroups ? a.homeGroups : [];
+		this.homeGroups = data.homeGroups ? data.homeGroups : [];
 
 		// вкл./выкл. подсказок
-		if(typeof a.showTips == 'boolean' && a.showTips) {
+		if(typeof data.showTips == 'boolean' && data.showTips) {
 			Tips.showTips({init : true});
 		} else {
 			Tips.hideTips({init : true});
@@ -55,105 +47,119 @@ class Field {
 
 		// Альтернативные подсказки
 		share.set(
-		'showTipsDestination', 
-		typeof a.showTipsDestination == 'boolean' 
-			? a       .showTipsDestination 
-			: defaults.showTipsDestination
+			'showTipsDestination', 
+			typeof data.showTipsDestination == 'boolean' 
+				? data.showTipsDestination 
+				: defaults.showTipsDestination
 		);
 		
 		share.set(
 			'showTipPriority', 
-			typeof a.showTipPriority == 'boolean' 
-				? a       .showTipPriority 
+			typeof data.showTipPriority == 'boolean' 
+				? data.showTipPriority 
 				: defaults.showTipPriority
 		);
 
 		share.set(
 			'moveDistance', 
-			a.moveDistance && typeof a.moveDistance == 'number' 
-				? a.moveDistance 
+			data.moveDistance && typeof data.moveDistance == 'number' 
+				? data.moveDistance 
 				: defaults.moveDistance
 		);
 
 		// условие выигрыша
-		share.set('winCheck', a.winCheck);
+		share.set('winCheck', data.winCheck);
 
 		// масштаб отображения
 		share.set(
 			'zoom', 
-			(a.zoom && typeof a.zoom == 'number') 
-				? a.zoom 
+			data.zoom && typeof data.zoom == 'number'
+				? data.zoom 
 				: defaults.zoom
 		);
 
 		// Настройки игры
-		if(a.preferences) {
+		if(data.preferences) {
+			
 			let _pref = storage.get('pref'),
-			    _preferences = {},
-			    _prefData    = {};
-			for(let prefName in a.preferences) {
+			    _preferences = {}          ,
+			    _prefData    = {}          ;
+			
+			for(let prefName in data.preferences) {
 				if(typeof prefName == "string") {
-					_preferences[prefName] = a.preferences[prefName];
-					_prefData[prefName] = _pref && typeof _pref[prefName] != "undefined" ? _pref[prefName] : a.preferences[prefName].value;
+					
+					_preferences[prefName] = data.preferences[prefName];
+					
+					_prefData[prefName] = _pref && typeof _pref[prefName] != "undefined"
+						? _pref[prefName]
+						: data.preferences[prefName].value;
 				}
 			}
-			share.set('gamePreferences', _preferences);
+			
+			share.set('gamePreferences',     _preferences);
 			share.set('gamePreferencesData', _prefData);
 		} else {
 			share.set('gamePreferences', {});
 		}
 
+		// время анимации
+		share.set({
+			animationTime : typeof data.animationTime == "number"
+				? data.animationTime
+				: defaults.animationTime
+		});
+
 		// параметры отображения подсказок
 		for(let tipParamName in defaults.tipsParams) {
-			this.tipsParams[tipParamName] = (a.tipsParams && typeof a.tipsParams[tipParamName] != "undefined")
-				? a.tipsParams[tipParamName]
+			this.tipsParams[tipParamName] = (data.tipsParams && typeof data.tipsParams[tipParamName] != "undefined")
+				? data.tipsParams[tipParamName]
 				: defaults.tipsParams[tipParamName]
 		}
 
 		// параметры ввода
 		for(let inputParamName in defaults.inputParams) {
-			this.inputParams[inputParamName] = (a.inputParams && typeof a.inputParams[inputParamName] != "undefined")
-				? a.inputParams[inputParamName]
+			this.inputParams[inputParamName] = (data.inputParams && typeof data.inputParams[inputParamName] != "undefined")
+				? data.inputParams[inputParamName]
 				: defaults.inputParams[inputParamName]
 		}
 
 		// дополнительные параметры отображения
 		// начальная позиция порядка отображения элементов
-		if(a.startZIndex && typeof a.startZIndex == 'number') {
-			share.set('start_z_index', a.startZIndex);
+		if(data.startZIndex && typeof data.startZIndex == 'number') {
+			share.set('start_z_index', data.startZIndex);
 		}
 
 		// инициализация автоходов
-		if(a.autoSteps) {
-			this.autoSteps = addAutoSteps(a.autoSteps);
+		if(data.autoSteps) {
+			this.autoSteps = addAutoSteps(data.autoSteps);
 		}
 
 		// NOTE: на событие подписан deckActions
 		// если ставить позже отрисовки элементов, переделать
-		event.dispatch('initField', a);
+		event.dispatch('initField', data);
 
 		// Отрисовка элементов
-		if(a.groups) {
-			for(let groupName in a.groups) {
-				a.groups[groupName].name = groupName;
-				Group.addGroup(a.groups[groupName]);
+		if(data.groups) {
+			for(let groupName in data.groups) {
+				data.groups[groupName].name = groupName;
+				Group.add(data.groups[groupName]);
 			}
 		}
 
-		if(a.decks) {
-			for(let e in a.decks) {
-				Deck.addDeck(a.decks[e]);
+		if(data.decks) {
+			for(let e in data.decks) {
+				Deck.addDeck(data.decks[e]);
 			}
 		}
 
-		if(a.fill) {
+		if(data.fill) {
 			
 			let _decks = Deck.getDecks();
 			let _fill  = null;
 			try {
-				_fill = Object.assign([], a.fill);
+				_fill = Object.assign([], data.fill);
 			} catch(e) {
-				_fill = a.fill;
+				_fill = data.fill;
 			}
 
 			for(;_fill.length;) {
@@ -176,39 +182,31 @@ class Field {
 
 	Redraw(data) {
 
-		let a = null;
-
+		// прокидываеем <новую> конфигурацию
 		if(data) {
 
-			try {
-				a = Object.assign({}, data);
-			} catch(e) {
-				a = data;
-				console.warn('Field.Redraw input params is not JSON, can\'t clone');
-			}
-
-			for(let _groupName in a.groups) {
+			for(let _groupName in data.groups) {
 
 				let _group = Group.getGroup(_groupName);
 				
 				if(_group) {
-					_group.Redraw(a.groups[_groupName]);
+					_group.Redraw(data.groups[_groupName]);
 				}
 			}
 
-			for(let i in a.decks) {
+			for(let i in data.decks) {
 				
-				let _deck = Deck.getDeck(a.decks[i].name);
+				let _deck = Deck.getDeck(data.decks[i].name);
 				
 				if(_deck) {
-					_deck.Redraw(a.decks[i]);
+					_deck.Redraw(data.decks[i]);
 				}
 			}
 
 		} else {
 			
 			let _decks = Deck.getDecks();
-			
+
 			for(let i in _decks) {
 				_decks[i].Redraw();
 			}
