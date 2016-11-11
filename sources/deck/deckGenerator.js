@@ -6,17 +6,17 @@ let shuffle = (a) => {
 	for(let j, x, i = a.length; i; j = Math.floor(Math.random() * i), x = a[--i], a[i] = a[j], a[j] = x) {};
 }
 
-export default function(a) {
+export default (data) => {
 
 	let default_type = 'all';
 
 	let default_shuffle = false;
 	let max_iterations = 10;
 
-	let type        = a && a.type       && typeof a.type       == 'string'                                  ? a.type       : default_type;
-	let _deckCount  = a && a.deckCount  && typeof a.deckCount  == 'number'                                  ? a.deckCount  : 52;
-	let _iterations = a && a.iterations && typeof a.iterations == 'number' && a.iterations < max_iterations ? a.iterations : 1;
-	let _shuffle    = a && a.shuffle    && typeof a.shuffle    != 'undefuned'                               ? a.shuffle    : default_shuffle;
+	let type        = data && data.type       && typeof data.type       == 'string'                                     ? data.type       : default_type;
+	let _deckCount  = data && data.deckCount  && typeof data.deckCount  == 'number'                                     ? data.deckCount  : 52;
+	let _iterations = data && data.iterations && typeof data.iterations == 'number' && data.iterations < max_iterations ? data.iterations : 1;
+	let _shuffle    = data && data.shuffle    && typeof data.shuffle    != 'undefuned'                                  ? data.shuffle    : default_shuffle;
 
 	let genType = function(_cardsColors, _cardsRanks) {
 		
@@ -33,11 +33,11 @@ export default function(a) {
 
 	let _ranks = _deckCount == 36 ? defaults.card.ranks36 : defaults.card.ranks;
 	
-	if(a && a.ranks) {
+	if(data && data.ranks) {
 		_ranks = []
-		for(i in a.ranks) {
-			if(defaults.card.rank.indexOf(a.ranks[i].toString()) >= 0) {
-				_ranks.push(a.ranks[i].toString())
+		for(i in data.ranks) {
+			if(defaults.card.rank.indexOf(data.ranks[i].toString()) >= 0) {
+				_ranks.push(data.ranks[i].toString())
 			}
 		}
 	}

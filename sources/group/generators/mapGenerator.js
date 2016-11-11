@@ -67,9 +67,9 @@ export default function(e) {
 			if(typeof e.map[y][x] == "string") {
 				e.map[y][x] = {name: e.map[y][x]};
 			} else if(
-				e.map[y][x]
-			 && typeof e.map[y][x]      != "undefined"
-			 && typeof e.map[y][x].name != "string"
+				e.map[y][x]                            &&
+				typeof e.map[y][x]      != "undefined" &&
+				typeof e.map[y][x].name != "string"
 			) {
 				e.map[y][x].name = this.name + "_deck_" + x + "_" + y;
 			};

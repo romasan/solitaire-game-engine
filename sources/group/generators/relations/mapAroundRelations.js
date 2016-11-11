@@ -9,16 +9,18 @@ export default (e) => {// {x, y, map, mapSize, el, data}
 	for(let i in mapCommon.aroundRelations) {
 
 		if(
-			mapCommon.inMap(e.x + mapCommon.aroundRelations[i].x, e.y + mapCommon.aroundRelations[i].y, e.mapSize)
-		 && e.map[e.y + mapCommon.aroundRelations[i].y][e.x + mapCommon.aroundRelations[i].x]
+			mapCommon.inMap(
+				e.x + mapCommon.aroundRelations[i].x,
+				e.y + mapCommon.aroundRelations[i].y, e.mapSize
+			) &&
+			e.map[e.y + mapCommon.aroundRelations[i].y][e.x + mapCommon.aroundRelations[i].x]
 		) {
 			_relations.push({
-				name : 'around',
-				type : mapCommon.aroundRelations[i].type,
-				id   : mapCommon.aroundRelations[i].id,
-				to   : e.map[e.y + mapCommon.aroundRelations[i].y][e.x + mapCommon.aroundRelations[i].x].name
+				to   : e.map[e.y + mapCommon.aroundRelations[i].y][e.x + mapCommon.aroundRelations[i].x].name,
+				type : mapCommon.aroundRelations[i].type                                                     ,
+				id   : mapCommon.aroundRelations[i].id                                                       ,
+				name : 'around'
 			});
-			
 		}
 	}
 

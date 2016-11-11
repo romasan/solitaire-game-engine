@@ -15,19 +15,20 @@ let angleValidate = (_angle) => {
 	return _angle;
 };
 
-event.listen('moveDragDeck', (e) => {
+event.listen('moveDragDeck', (data) => {
 
 	common.curLock();
 
-	let _lastIndex = e.moveDeck.length - 1;
-	for(let i in e.moveDeck) {
+	let _lastIndex = data.moveDeck.length - 1;
 
-		let _position = e.destination.padding(e.destination.cards.length - 1 + (i | 0));
+	for(let i in data.moveDeck) {
 
-		let departureAngle   = angleValidate(e.departure	.rotate), 
-		    destinationAngle = angleValidate(e.destination.rotate);
+		let _position = data.destination.padding(data.destination.cards.length - 1 + (i | 0));
 
-		let _cardDomElement = share.get('domElement:' + e.moveDeck[i].card.id);
+		let departureAngle   = angleValidate(data.departure	.rotate), 
+		    destinationAngle = angleValidate(data.destination.rotate);
+
+		let _cardDomElement = share.get('domElement:' + data.moveDeck[i].card.id);
 
 		elRender(_cardDomElement)
 			.css({
@@ -48,33 +49,35 @@ event.listen('moveDragDeck', (e) => {
 		}
 
 		let _params = {
-			'left'      : _position.x + 'px', 
-			'top'       : _position.y + 'px',
-			'transform' : 'rotate(' + destinationAngle + 'deg)'
+			'transform' : 'rotate(' + destinationAngle + 'deg)',
+			'left'      : _position.x + 'px'                   ,
+			'top'       : _position.y + 'px'
 		};
 
 		let _zIndex = (defaults.topZIndex | 0) + (i | 0);
 
-		let _callback = function(e, _last) {
+		let _callback = function(data, _last) {
 
-			e.departure	 .Redraw();
-			e.destination.Redraw();
+			data.departure	.Redraw();
+			data.destination.Redraw();
 
 			common.curUnLock();
 
-			if(_last && typeof e.callback == "function") {
-				e.callback();
+			if(_last && typeof data.callback == "function") {
+				data.callback();
 			}
 
 			event.dispatch('moveDragDeckDone', {
-				deck : e.destination
+				deck : data.destination
 			});
-		}.bind(null, e, i == _lastIndex);
+		}.bind(null, data, i == _lastIndex);
 
 		elRender(_cardDomElement)
-			.css({'z-index' : _zIndex})
+			.css({
+				'z-index' : _zIndex
+			})
 			.animate(
-				_params, 
+				_params  ,
 				_callback
 			);
 	}
@@ -82,13 +85,13 @@ event.listen('moveDragDeck', (e) => {
 
 // --------------------------------------------------------------------------------------------------------
 
-event.listen('moveDragDeckDone', (e) => {
+event.listen('moveDragDeckDone', (data) => {
 
-	if(!e.deck.fill) {
+	if(!data.deck.fill) {
 		return;
 	}
 
-	let _deck = e.deck.cards;
+	let _deck = data.deck.cards;
 	
 	for(let i in _deck) {
 
@@ -101,18 +104,18 @@ event.listen('moveDragDeckDone', (e) => {
 
 // --------------------------------------------------------------------------------------------------------
 
-event.listen('dragDeck', (e) => {// {x, y, _dragDeck, _startCursor, _deck}
+event.listen('dragDeck', (data) => {// {x, y, _dragDeck, _startCursor, _deck}
 
-	for(let i in e._dragDeck) {
-			let _position = e._deck.padding(e._dragDeck[i].index);
+	for(let i in data._dragDeck) {
+			let _position = data._deck.padding(data._dragDeck[i].index);
 			let _params = {
-				'left'    : (_position.x + (e.x - e._startCursor.x)) + 'px',
-				'top'     : (_position.y + (e.y - e._startCursor.y)) + 'px',
-				// transform : 'rotate(0deg)',
+				'left'    : (_position.x + (data.x - data._startCursor.x)) + 'px',
+				'top'     : (_position.y + (data.y - data._startCursor.y)) + 'px',
 				'z-index' : defaults.topZIndex + (i | 0)
 			}
+
 			// Operations with DOM
-			let _cardDomElement = share.get('domElement:' + e._dragDeck[i].card.id);
+			let _cardDomElement = share.get('domElement:' + data._dragDeck[i].card.id);
 
 			elRender(_cardDomElement)
 					.css(_params);	 

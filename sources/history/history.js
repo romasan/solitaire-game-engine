@@ -16,7 +16,7 @@ import field     from 'field';
 
 // ---------------------------------------- UNDO ----------------------------------------
 
-let _undo = (a) => {
+let _undo = (data) => {
 
 	if(share.get('sessionStarted')) {
 		
@@ -27,26 +27,26 @@ let _undo = (a) => {
 	}
 
 	// for(let i in _undoMethods) {
-	// 	_undoMethods[i](a);
+	// 	_undoMethods[i](data);
 	// }
 	
-	// if(a.flip) {
+	// if(data.flip) {
 	// };
 	
-	// if(a.unflip) {
+	// if(data.unflip) {
 	// };
 	
-	// if(a.fill) {
+	// if(data.fill) {
 	// };
 
 	// LOCK
 	if(
-		typeof a.lock != "undefined"
+		typeof data.lock != "undefined"
 	) {
-		// Deck.Deck(a.lock).unlock();
+		// Deck.Deck(data.lock).unlock();
 		// TODO сделать также в оставшихся местах
-		for(let i in a.lock) {
-			let _elements = common.getElementsByName(a.lock[i]);
+		for(let i in data.lock) {
+			let _elements = common.getElementsByName(data.lock[i]);
 			for(let elNum in _elements) {
 				_elements[elNum].unlock();
 			}
@@ -54,11 +54,11 @@ let _undo = (a) => {
 	}
 
 	if(
-		typeof a.unlock != "undefined"
+		typeof data.unlock != "undefined"
 	) {
-		// Deck.Deck(a.unlock).lock();
-		for(let i in a.lock) {
-			let _elements = common.getElementsByName(a.lock[i]);
+		// Deck.Deck(data.unlock).lock();
+		for(let i in data.lock) {
+			let _elements = common.getElementsByName(data.lock[i]);
 			for(let elNum in _elements) {
 				_elements[elNum].lock();
 			}
@@ -67,26 +67,26 @@ let _undo = (a) => {
 
 	// MOVE
 	if(
-		typeof a.move      != "undefined" 
-	 && typeof a.move.from != "undefined" 
-	 && typeof a.move.to   != "undefined" 
-	 && typeof a.move.deck != "undefined"
+		typeof data.move      != "undefined" &&
+		typeof data.move.from != "undefined" &&
+		typeof data.move.to   != "undefined" &&
+		typeof data.move.deck != "undefined"
 	) {
 
-		if(a.move.stepType) {
-			if(typeof a.move.stepType == "string") {
-				share.set('stepType', a.move.stepType);
+		if(data.move.stepType) {
+			if(typeof data.move.stepType == "string") {
+				share.set('stepType', data.move.stepType);
 			}
-			if(typeof a.move.stepType.undo == "string") {
-				share.set('stepType', a.move.stepType.undo);
+			if(typeof data.move.stepType.undo == "string") {
+				share.set('stepType', data.move.stepType.undo);
 			}
 		}
 
 		forceMove({
-			from : a.move.to,   // from ->
-			to   : a.move.from, //      <- to
-			deck : a.move.deck,
-			flip : a.move.flip
+			from : data.move.to,   // from ->
+			to   : data.move.from, //      <- to
+			deck : data.move.deck,
+			flip : data.move.flip
 		});
 	}
 
@@ -107,8 +107,8 @@ event.listen('undo', function(_a) {
 		_a.reverse();
 		
 		for(let _i in _a) {
-			let a = _a[_i];
-			_undo(a);
+			let data = _a[_i];
+			_undo(data);
 		}
 		
 	} else {
@@ -123,26 +123,26 @@ event.listen('undo', function(_a) {
 
 // ---------------------------------------- REDO ----------------------------------------
 
-let _redo = (a) => {
+let _redo = (data) => {
 
 	// for(let i in _redoMethods) {
-	// 	_redoMethods[i](a);
+	// 	_redoMethods[i](data);
 	// }
 
-	// if(a.flip) {
+	// if(data.flip) {
 	// };
 	
-	// if(a.fill) {
+	// if(data.fill) {
 	// 	// TODO
 	// };
 
 	// LOCK
 	if(
-		typeof a.lock != "undefined"
+		typeof data.lock != "undefined"
 	) {
-		// Deck.Deck(a.lock).lock();
-		for(let i in a.lock) {
-			let _elements = common.getElementsByName(a.lock[i]);
+		// Deck.Deck(data.lock).lock();
+		for(let i in data.lock) {
+			let _elements = common.getElementsByName(data.lock[i]);
 			for(let elNum in _elements) {
 				_elements[elNum].lock();
 			}
@@ -150,11 +150,11 @@ let _redo = (a) => {
 	}
 
 	if(
-		typeof a.unlock != "undefined"
+		typeof data.unlock != "undefined"
 	) {
-		// Deck.Deck(a.unlock).unlock();
-		for(let i in a.unlock) {
-			let _elements = common.getElementsByName(a.lock[i]);
+		// Deck.Deck(data.unlock).unlock();
+		for(let i in data.unlock) {
+			let _elements = common.getElementsByName(data.lock[i]);
 			for(let elNum in _elements) {
 				_elements[elNum].unlock();
 			}
@@ -163,29 +163,29 @@ let _redo = (a) => {
 
 	// MOVE
 	if(
-		typeof a.move      != "undefined" 
-	 && typeof a.move.from != "undefined" 
-	 && typeof a.move.to   != "undefined" 
-	 && typeof a.move.deck != "undefined"
+		typeof data.move      != "undefined" &&
+		typeof data.move.from != "undefined" &&
+		typeof data.move.to   != "undefined" &&
+		typeof data.move.deck != "undefined"
 	) {
 
-		if(a.move.stepType) {
-			if(typeof a.move.stepType == "string") {
-				share.set('stepType', a.move.stepType);
+		if(data.move.stepType) {
+			if(typeof data.move.stepType == "string") {
+				share.set('stepType', data.move.stepType);
 			}
-			if(typeof a.move.stepType.redo == "string") {
-				share.set('stepType', a.move.stepType.redo);
+			if(typeof data.move.stepType.redo == "string") {
+				share.set('stepType', data.move.stepType.redo);
 			}
 		}
 
-		forceMove(a.move);
+		forceMove(data.move);
 	}
 
 	if(
-		a.redo                            &&
-		typeof a.redo.stepType == "string"
+		data.redo                            &&
+		typeof data.redo.stepType == "string"
 	) {
-		share.set('stepType', a.redo.stepType);
+		share.set('stepType', data.redo.stepType);
 	}
 };
 
@@ -203,8 +203,8 @@ event.listen('redo', function(_a) {
 	if(_a instanceof Array) {
 		_a.reverse();
 		for(let _i in _a) {
-			let a = _a[_i];
-			_redo(a);
+			let data = _a[_i];
+			_redo(data);
 		}
 	} else {
 		_redo(_a);
@@ -254,15 +254,15 @@ class history {
 		return this.steps.length;
 	}
 
-	// addUndoMethods(a) {
-	// 	for(let i in a) {
-	// 		_undoMethods[i] = a[i];
+	// addUndoMethods(data) {
+	// 	for(let i in data) {
+	// 		_undoMethods[i] = data[i];
 	// 	}
 	// }
 	
-	// addRedoMethods(a) {
-	// 	for(let i in a) {
-	// 		_redoMethods[i] = a[i];
+	// addRedoMethods(data) {
+	// 	for(let i in data) {
+	// 		_redoMethods[i] = data[i];
 	// 	}
 	// }
 }

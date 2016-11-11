@@ -7,77 +7,77 @@ import defaults from 'defaults';
 import Field    from 'field';
 import elRender from 'elRender';
 
-let applyChangedParameters = (p, a, deck) => {
+let applyChangedParameters = (params, deckData, deck) => {
 
-	p.x = a.position && a.position.x && typeof a.position.x == 'number' ? a.position.x : 0,
-	p.y = a.position && a.position.y && typeof a.position.y == 'number' ? a.position.y : 0;
+	params.x = deckData.position && deckData.position.x && typeof deckData.position.x == 'number' ? deckData.position.x : 0,
+	params.y = deckData.position && deckData.position.y && typeof deckData.position.y == 'number' ? deckData.position.y : 0;
 	
-	p.x = a.parentPosition && a.parentPosition.x ? p.x + a.parentPosition.x : p.x;
-	p.y = a.parentPosition && a.parentPosition.y ? p.y + a.parentPosition.y : p.y;
+	params.x = deckData.parentPosition && deckData.parentPosition.x ? params.x + deckData.parentPosition.x : params.x;
+	params.y = deckData.parentPosition && deckData.parentPosition.y ? params.y + deckData.parentPosition.y : params.y;
 
-	deck.rotate = p.rotate = a.rotate && typeof a.rotate == 'number' ? a.rotate : 0;
+	deck.rotate = params.rotate = deckData.rotate && typeof deckData.rotate == 'number' ? deckData.rotate : 0;
 
-	p.padding_y = a.paddingY          && typeof a.paddingY     == 'number' 
-		? a.paddingY 
-		: a.paddingType
+	params.padding_y = deckData.paddingY          && typeof deckData.paddingY     == 'number' 
+		? deckData.paddingY 
+		: deckData.paddingType
 			? defaults.padding_y      
 			: 0;
 
-	p.padding_x = a.paddingX          && typeof a.paddingX     == 'number' 
-		? a.paddingX 
-		: a.paddingType
+	params.padding_x = deckData.paddingX          && typeof deckData.paddingX     == 'number' 
+		? deckData.paddingX 
+		: deckData.paddingType
 			? defaults.padding_x      
 			: 0;
 
-	p.flip_padding_y = a.flipPaddingY && typeof a.flipPaddingY == 'number' 
-		? a.flipPaddingY 
-		: a.paddingType
+	params.flip_padding_y = deckData.flipPaddingY && typeof deckData.flipPaddingY == 'number' 
+		? deckData.flipPaddingY 
+		: deckData.paddingType
 			? defaults.flip_padding_y 
 			: 0;
 
-	p.flip_padding_x = a.flipPaddingX && typeof a.flipPaddingX == 'number' 
-		? a.flipPaddingX 
-		: a.paddingType
+	params.flip_padding_x = deckData.flipPaddingX && typeof deckData.flipPaddingX == 'number' 
+		? deckData.flipPaddingX 
+		: deckData.paddingType
 			? defaults.flip_padding_x 
 			: 0;
 };
 
 // --------------------------------------------------------------------------------------------------------
 
-event.listen('addDeckEl', (e) => {
+event.listen('addDeckEl', (data) => {
 
-	applyChangedParameters(e.params, e.a, e.deck);
+	applyChangedParameters(data.params, data.deckData, data.deck);
 
 	let _deckDomElement = 
 		elRender('<div>')
 
 	let _params = {
-		left      : e.params.x           + 'px',
-		top       : e.params.y           + 'px',
-		width     : defaults.card.width  + 'px',
- 		height    : defaults.card.height + 'px',
-		transform : 'rotate(' + (e.params.rotate|0) + 'deg)'
+		transform : 'rotate(' + (data.params.rotate|0) + 'deg)',
+		width     : defaults.card.width  + 'px'                ,
+ 		height    : defaults.card.height + 'px'                ,
+		left      : data.params.x        + 'px'                ,
+		top       : data.params.y        + 'px'
 	};
 	
-	_params.display = e.deck.visible ? 'block' : 'none';
+	_params.display = data.deck.visible ? 'block' : 'none';
 
 	elRender(_deckDomElement)
 		.css(_params)
 		.addClass('el')
 		.attr({
-			id : e.deck.id
+			id : data.deck.id
 		});
 
-	if(e.a.showSlot) {
+	if(data.deckData.showSlot) {
 
 		elRender(_deckDomElement)
 			.addClass('slot');
 	}
 	
-	if(e.a.class) {
+	if(data.deckData.class) {
 		
 		elRender(_deckDomElement)
-			.addClass(e.a.class);
+			.addClass(data.deckData.class);
 	}
 
 	let _fieldDomElement = share.get('domElement:field');
@@ -85,24 +85,24 @@ event.listen('addDeckEl', (e) => {
 	elRender(_fieldDomElement)
 		.append(_deckDomElement);
 
-	share.set('domElement:' + e.deck.id, _deckDomElement);
+	share.set('domElement:' + data.deck.id, _deckDomElement);
 });
 
 // --------------------------------------------------------------------------------------------------------
 
-event.listen('redrawDeckFlip', (e) => {
+event.listen('redrawDeckFlip', (data) => {
 
-	if(!e || !e.cards) {
+	if(!data || !data.cards) {
 		return;
 	}
 
-	for(let i in e.cards) {
+	for(let i in data.cards) {
 		
 		let _params = {};
 
-		let _cardDomElement = share.get('domElement:' + e.cards[i].id);
+		let _cardDomElement = share.get('domElement:' + data.cards[i].id);
 		
-		if(e.cards[i].flip) {
+		if(data.cards[i].flip) {
 
 			elRender(_cardDomElement)
 				.addClass('flip');
@@ -112,7 +112,7 @@ event.listen('redrawDeckFlip', (e) => {
 				.removeClass('flip');
 		}
 		
-		elRender(e.cards[i])
+		elRender(data.cards[i])
 			.css(_params);
 	}
 
@@ -120,15 +120,15 @@ event.listen('redrawDeckFlip', (e) => {
 
 // --------------------------------------------------------------------------------------------------------
 
-event.listen('redrawDeckIndexes', (e) => {
+event.listen('redrawDeckIndexes', (data) => {
 
-	if(!e || !e.cards) {
+	if(!data || !data.cards) {
 		return;
 	}
 
-	for(let i in e.cards) {
+	for(let i in data.cards) {
 
-		let _cardDomElement = share.get('domElement:' + e.cards[i].id);
+		let _cardDomElement = share.get('domElement:' + data.cards[i].id);
 
 		elRender(_cardDomElement).css({
 			'z-index' : (defaults.startZIndex|0) + (i|0)
@@ -138,68 +138,68 @@ event.listen('redrawDeckIndexes', (e) => {
 
 // --------------------------------------------------------------------------------------------------------
 
-event.listen('redrawDeck', (e) => {
+event.listen('redrawDeck', (data) => {
 
 	if(share.get('noRedraw')) {
 		return false;
 	};
 
-	if(e.data) {
+	if(data.deckData) {
 
-		applyChangedParameters(e.params, e.data, e.deck);
+		applyChangedParameters(data.params, data.deckData, data.deck);
 
-		if(e.data.paddingX) {
-			share.get('padding_x',      e.data.paddingX);
+		if(data.deckData.paddingX) {
+			share.get('padding_x',      data.deckData.paddingX);
 		}
 
-		if(e.data.flipPaddingX) {
-			share.get('flip_padding_x', e.data.flipPaddingX);
+		if(data.deckData.flipPaddingX) {
+			share.get('flip_padding_x', data.deckData.flipPaddingX);
 		}
 
-		if(e.data.paddingY) {
-			share.get('padding_y',      e.data.paddingY);
+		if(data.deckData.paddingY) {
+			share.get('padding_y',      data.deckData.paddingY);
 		}
 
-		if(e.data.flipPaddingY) {
-			share.get('flip_padding_y', e.data.flipPaddingY);
+		if(data.deckData.flipPaddingY) {
+			share.get('flip_padding_y', data.deckData.flipPaddingY);
 		}
 	}
 
 	// перерисовка стопки
 	let _params = {
-		transform : 'rotate(' + (e.params.rotate|0) + 'deg)',
-		left      : e.params.x + 'px'                       ,
-		top       : e.params.y + 'px'
+		transform : 'rotate(' + (data.params.rotate|0) + 'deg)',
+		left      : data.params.x + 'px'                       ,
+		top       : data.params.y + 'px'
 	};
 	
-	_params.display = e.deck.visible ? 'block' : 'none';
+	_params.display = data.deck.visible ? 'block' : 'none';
 
-	let _deckDomElement = share.get('domElement:' + e.deck.id);
+	let _deckDomElement = share.get('domElement:' + data.deck.id);
 	
 	elRender(_deckDomElement)
 		.css(_params);
 
 	// перерисовка карт
-	for(let i in e.cards) {
+	for(let i in data.cards) {
 		
-		let _card_position = e.deck.padding(i);
-		let _zIndex        = (e.params.startZIndex|0) + (i|0);
+		let _card_position = data.deck.padding(i);
+		let _zIndex        = (data.params.startZIndex|0) + (i|0);
 		
 		let _params = {
-			'-ms-transform'     : 'rotate(' + (e.params.rotate | 0) + 'deg)',
-			'-webkit-transform' : 'rotate(' + (e.params.rotate | 0) + 'deg)',
-			'-moz-transform'    : 'rotate(' + (e.params.rotate | 0) + 'deg)',
-			'transform'         : 'rotate(' + (e.params.rotate | 0) + 'deg)',
+			'-ms-transform'     : 'rotate(' + (data.params.rotate | 0) + 'deg)',
+			'-webkit-transform' : 'rotate(' + (data.params.rotate | 0) + 'deg)',
+			'-moz-transform'    : 'rotate(' + (data.params.rotate | 0) + 'deg)',
+			'transform'         : 'rotate(' + (data.params.rotate | 0) + 'deg)',
 			'left'              : _card_position.x + 'px'                   ,
 			'top'               : _card_position.y + 'px'                   ,
 			'z-index'           : _zIndex
 		};
 		
-		_params.display = e.deck.visible ? 'block' : 'none';
+		_params.display = data.deck.visible ? 'block' : 'none';
 
-		let _cardDomElement = share.get('domElement:' + e.cards[i].id);
+		let _cardDomElement = share.get('domElement:' + data.cards[i].id);
 
-		if(e.cards[i].flip) {
+		if(data.cards[i].flip) {
 		
 			elRender(_cardDomElement)
 				.addClass('flip');

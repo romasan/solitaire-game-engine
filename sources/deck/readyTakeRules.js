@@ -3,30 +3,30 @@
 export default {
 				
 	// SimpleRules
-	not      : (a) => {
+	not      : (data) => {
 		return false;
 	},
 
-	notFirst : (a) => {
-		return a.cardIndex > 0;
+	notFirst : (data) => {
+		return data.cardIndex > 0;
 	},
 
-	any      : (a) => {
+	any      : (data) => {
 		return true;
 	},
 
-	onlytop  : (a) => {
+	onlytop  : (data) => {
 
-		return a.cardIndex == a.deckLength - 1;
+		return data.cardIndex == data.deckLength - 1;
 	}
 	
 	// TODO rules
 	
-	// ask : function(a) {
+	// ask : function(data) {
 	// 	return true;
 	// },
 
-	// desc : function(a) {
+	// desc : function(data) {
 	// 	return true;
 	// }
 };

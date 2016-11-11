@@ -6,6 +6,7 @@ import common        from 'common'       ;
 import defaults      from 'defaults'     ;
 
 import deckGenerator from 'deckGenerator';
+import field         from 'field'        ;
 import elRender      from 'elRender'     ;
 import mapCommon     from 'mapCommon'    ;
 import history       from 'history'      ;
@@ -242,8 +243,9 @@ export default {
 	elRender                                  ,
 	defaults                                  ,
 	state                                     ,
+	history                                   ,
+	field                                     ,
 	groupGenerators : {
 		mapCommon
-	},
-	history
+	}
 };

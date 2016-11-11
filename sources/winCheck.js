@@ -52,17 +52,17 @@ let winCheck = (params) => {
 };
 
 // hidden check
-let hwinCheck = (a) => {
+let hwinCheck = (params) => {
 	
-	if(!a) {
-		a = {};
+	if(!params) {
+		params = {};
 	}
 	
-	if(typeof a.show == 'undefined') {
-		a.show = false;
+	if(typeof params.show == 'undefined') {
+		params.show = false;
 	}
 	
-	winCheck(a);
+	winCheck(params);
 	// return winCheck({noCallback : true});
 };
 

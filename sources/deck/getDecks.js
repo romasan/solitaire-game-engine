@@ -2,13 +2,13 @@
 
 import share from 'share';
 
-export default (a) => {
+export default (data) => {
 
 	let _decks = {};
 
 	let _elements = share.get('elements');
 
-	if(a && a.visible) {
+	if(data && data.visible) {
 
 		for(let d in _elements) {
 			if(_elements[d].type == 'deck') {

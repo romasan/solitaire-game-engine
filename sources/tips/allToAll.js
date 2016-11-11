@@ -10,9 +10,9 @@ class allToAll {
 
 	// 1)
 	// пробегаем все колоды
-	get(a) {
+	get(data) {
 
-		this._decks = a.decks;
+		this._decks = data.decks;
 		this._moves = [];
 
 		for(let deckIndex in this._decks) {
@@ -86,6 +86,6 @@ class allToAll {
 
 let _allToAll = new allToAll();
 
-export default (a) => {
-	return _allToAll.get(a);
+export default (data) => {
+	return _allToAll.get(data);
 };

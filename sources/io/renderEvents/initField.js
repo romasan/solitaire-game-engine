@@ -9,7 +9,7 @@ import elRender from 'elRender';
 
 event.listen('initField', (data) => {
 
-	let domElement = data.field ? data.field : '#map';// default;
+	let domElement = data.field ? data.field : '#map';
 	
 	if(typeof domElement == 'string') {
 		if(domElement.split('.').length == 2) {

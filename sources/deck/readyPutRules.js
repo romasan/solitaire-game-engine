@@ -8,16 +8,15 @@ import getBeside from 'getBeside';
 
 let rpr = {
 			
+	// Relations filters
 
-	// Realtions filters
+	linePrev: (deck) => {
 
-	linePrev: (a) => {
-
-		let prev = getBeside(a.to).prev;
+		let prev = getBeside(deck.to).prev;
 
 		if(prev) {
 			
-			a.link = prev.to;
+			deck.link = prev.to;
 			
 			return true;
 		}
@@ -25,13 +24,13 @@ let rpr = {
 		return false;
 	},
 
-	lineNext: (a) => {
+	lineNext: (deck) => {
 		
-		let next = getBeside(a.to).next;
+		let next = getBeside(deck.to).next;
 
 		if(next) {
 			
-			a.link = next.to;
+			deck.link = next.to;
 
 			return true;
 		}
@@ -41,28 +40,28 @@ let rpr = {
 
 	// Internal use
 
-	_downupcards: (a) => {
+	_downupcards: (deck) => {
 
-		if(a.cards.length == 0) {
+		if(deck.cards.length == 0) {
 			return false;
 		}
 		
-		let down = common.validateCardName(a.cards[a.cards.length  - 1].name);
-		let up   = common.validateCardName(a.putDeck[0].card.name);
+		let down = common.validateCardName(deck.cards[deck.cards.length - 1].name);
+		let up   = common.validateCardName(deck.putDeck[0].card.name);
 		
 		if(!down || !up) {
 			return false;
 		}
 		
 		return {
-			up   : up,
-			down : down
+			up  ,
+			down
 		}
 	},
 
-	_downupranknum: (a) => {
+	_downupranknum: (deck) => {
 
-		let du = rpr._downupcards(a);
+		let du = rpr._downupcards(deck);
 		
 		return du ? {
 			down : defaults.card.ranks.indexOf(du.down.rank),
@@ -70,15 +69,15 @@ let rpr = {
 		} : false;
 	},
 
-	_isFirst: (a, _name) => {
+	_isFirst: (deck, _name) => {
 		
-		if(a.cards.length == 0) {
+		if(deck.cards.length == 0) {
 		
 			let _validate = null;
 			
 			return (
-				(_validate = common.validateCardName(a.putDeck[0].card.name))
-			 && _validate.rank == _name
+				(_validate = common.validateCardName(deck.putDeck[0].card.name)) &&
+				_validate.rank == _name
 			);
 		}
 	 	
@@ -87,96 +86,92 @@ let rpr = {
 
 	// Rules
 
-	striped: (a) => {
+	striped: (deck) => {
 		
-		if(a.cards.length == 0) {
+		if(deck.cards.length == 0) {
 			return true;
 		}
 
-		let color_A   = common.validateCardName(a.cards[a.cards.length - 1].name).color,
+		let color_A   = common.validateCardName(deck.cards[deck.cards.length - 1].name).color,
 			color_B   = null,
 			_validate = null;
 		
-		if(_validate = common.validateCardName(a.putDeck[0].card.name)) {
+		if(_validate = common.validateCardName(deck.putDeck[0].card.name)) {
 			color_B = _validate.color;
 		}
 		
 		return color_A != color_B;
 	},
 
-	firstAce: (a) => {			
-		
-		// let _rank = defaults.card.ranks[0];
-		
-		return rpr._isFirst(a, "1");
+	firstAce: (deck) => {
+
+		return rpr._isFirst(deck, defaults.card.ranks[0]);
 	},
 
-	firstKing: (a) => {
-		
-		// let _rank = defaults.card.ranks[defaults.card.ranks.length - 1];
+	firstKing: (deck) => {
 
-		return rpr._isFirst(a, "k");
+		return rpr._isFirst(deck, defaults.card.ranks[defaults.card.ranks.length - 1]);
 	},
 
-	notForEmpty: (a) => {
-		
-		return a.cards.length;
+	notForEmpty: (deck) => {
+
+		return deck.cards.length;
 	},
 
-	onlyEmpty: (a) => {
+	onlyEmpty: (deck) => {
 
-		return a.cards.length === 0;
+		return deck.cards.length === 0;
 	},
 
-	oneRank: (a) => {
+	oneRank: (deck) => {
 
-		if(a.cards.length == 0) {
+		if(deck.cards.length == 0) {
 			return true;
 		}
 		
-		let du = rpr._downupcards(a);
+		let du = rpr._downupcards(deck);
 		
 		return du && du.up.rank == du.down.rank;
 	},
 	
-	oneSuit: (a) => {
+	oneSuit: (deck) => {
 		
-		if(a.cards.length == 0) {
+		if(deck.cards.length == 0) {
 			return true;
 		}
 		
-		let du = rpr._downupcards(a);
+		let du = rpr._downupcards(deck);
 		
 		return du && du.up.suit == du.down.suit;
 	},
 
-	any: (a) => {
+	any: (deck) => {
 		
 		return true;
 	},
 
-	not: (a) => {
+	not: (deck) => {
 		
 		return false;
 	},
 
-	ascendDeck: (a) => {//ascend deck by step
+	ascendDeck: (deck) => {//ascend deck by step
 		
-		if(a.putDeck.length == 1) {
+		if(deck.putDeck.length == 1) {
 			return true;
 		}
 		
 		let ruleCorrect = true;
 		
-		for(let i in a.putDeck) {
+		for(let i in deck.putDeck) {
 
 			if(i > 0) {
 
 				let down = defaults.card.ranks.indexOf(
-						common.validateCardName(a.putDeck[i - 1].card.name).rank
+						common.validateCardName(deck.putDeck[i - 1].card.name).rank
 					),
 					up   = defaults.card.ranks.indexOf(
-						common.validateCardName(a.putDeck[i].card.name).rank
+						common.validateCardName(deck.putDeck[i].card.name).rank
 					);
 				
 				ruleCorrect = ruleCorrect && 1 + down == up;
@@ -186,23 +181,23 @@ let rpr = {
 		return ruleCorrect;
 	},
 
-	descendDeck: (a) => {//ascend deck by step
+	descendDeck: (deck) => {//ascend deck by step
 		
-		if(a.putDeck.length == 1) {
+		if(deck.putDeck.length == 1) {
 			return true;
 		}
 		
 		let ruleCorrect = true;
 		
-		for(let i in a.putDeck) {
+		for(let i in deck.putDeck) {
 			
 			if(i > 0) {
 
 				let down = defaults.card.ranks.indexOf(
-						common.validateCardName(a.putDeck[i - 1].card.name).rank
+						common.validateCardName(deck.putDeck[i - 1].card.name).rank
 					),
 					up   = defaults.card.ranks.indexOf(
-						common.validateCardName(a.putDeck[i].card.name).rank
+						common.validateCardName(deck.putDeck[i].card.name).rank
 					);
 				
 				ruleCorrect = ruleCorrect && down == 1 + up;
@@ -212,20 +207,20 @@ let rpr = {
 		return ruleCorrect;
 	},
 	
-	oneRankDeck: (a) => {
+	oneRankDeck: (deck) => {
 		
-		if(a.putDeck.length == 1) {
+		if(deck.putDeck.length == 1) {
 			return true;
 		}
 		
 		let ruleCorrect = true;
 
-		for(let i in a.putDeck) {
+		for(let i in deck.putDeck) {
 
 			if(i > 0) {
 
-				let down = common.validateCardName(a.putDeck[i - 1].card.name).suit,
-					up   = common.validateCardName(a.putDeck[i].card.name).suit
+				let down = common.validateCardName(deck.putDeck[i - 1].card.name).suit,
+					up   = common.validateCardName(deck.putDeck[i].card.name).suit
 				
 				ruleCorrect = ruleCorrect && down == up;
 			}
@@ -234,68 +229,68 @@ let rpr = {
 		return ruleCorrect;
 	},
 
-	ascend: (a) => {
+	ascend: (deck) => {
 		
-		if(a.cards.length == 0) {
+		if(deck.cards.length == 0) {
 			return true;
 		}
 
-		let da = rpr._downupranknum(a);
+		let da = rpr._downupranknum(deck);
 
 		return da && da.down < da.up;
 	},
 
-	descent: (a) => {
+	descent: (deck) => {
 		
-		if(a.cards.length == 0) {
+		if(deck.cards.length == 0) {
 			return true;
 		}
 
-		let da = rpr._downupranknum(a);
+		let da = rpr._downupranknum(deck);
 
 		return da && da.down > da.up;
 	},
 
-	descentOne: (a) => {// one step
+	descentOne: (deck) => {// one step
 		
-		if(a.cards.length == 0) {
+		if(deck.cards.length == 0) {
 			return true;
 		}
 
-		let da = rpr._downupranknum(a);
+		let da = rpr._downupranknum(deck);
 
 		return da && da.down == 1 + da.up;
 	},
 
-	ascendOne: (a) => {// one step
+	ascendOne: (deck) => {// one step
 
-		if(a.cards.length == 0) {
+		if(deck.cards.length == 0) {
 			return true;
 		}
 
-		let da = rpr._downupranknum(a);
+		let da = rpr._downupranknum(deck);
 
 		return da && 1 + da.down == da.up;
 	},
 
-	ascdescOne: (a) => {
+	ascdescOne: (deck) => {
 		
-		if(a.cards.length == 0) {
+		if(deck.cards.length == 0) {
 			return true;
 		}
 
-		let da = rpr._downupranknum(a);
+		let da = rpr._downupranknum(deck);
 
 		return da && Math.abs(da.down - da.up) == 1;
 	},
 
-	sum14: (a) => {
+	sum14: (deck) => {
 
-		if(a.cards.length == 0) {
+		if(deck.cards.length == 0) {
 			return true;
 		}
 
-		let du = rpr._downupcards(a);
+		let du = rpr._downupcards(deck);
 		let _sum = du.down.value + du.up.value;
 
 		return _sum == 14;
@@ -303,14 +298,14 @@ let rpr = {
 
 	// TODO rules with params ??? or atom rules
 
-	around: (a) => {// {from, putDeck, cards}
+	around: (deck) => {// {from, putDeck, cards}
 
-		if(a.cards.length == 0) {
+		if(deck.cards.length == 0) {
 			return true;
 		}
 
-		let _around = a.from.deck.getRelationsByName('around', {from: null});
-		let _parent = Deck.getDeckById(a.cards[0].parent);
+		let _around = deck.from.deck.getRelationsByName('around', {from: null});
+		let _parent = Deck.getDeckById(deck.cards[0].parent);
 		
 		for(let i in _around) {
 

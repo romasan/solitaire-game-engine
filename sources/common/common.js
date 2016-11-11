@@ -35,7 +35,7 @@ event.listen('gameInit', (e) => {
 	preferencesEvents();
 });
 
-event.listen('gameInited', ()=>{
+event.listen('gameInited', () => {
 	defaultPreferences();
 });
 
@@ -44,44 +44,44 @@ event.listen('gameInited', ()=>{
 // 	share.set('prevStepType', e.from);
 // });
 
-event.listen('moveEnd', (e) => {
+event.listen('moveEnd', () => {
 	Tips.checkTips();
 });
 
-event.listen('actionBreak', (e) => {
+event.listen('actionBreak', () => {
 	Tips.checkTips();
 });
 
-event.listen('startSession', (e) => {
+event.listen('startSession', () => {
 	share.set('sessionStarted', true);
 	state.backup();
 });
 
-event.listen('stopSession', (e) => {
+event.listen('stopSession', () => {
 	share.set('sessionStarted', false);
 	state.backup();
 });
 
-// Lock/Unlock
+// --
 
-var sqr = function(i) {
-	return i * i;
-};
+let sqr = i => i * i;
 
 // --
 
-// var _lock = false;
+// Lock/Unlock
 
-// var isLock = function() {
+// let _lock = false;
+
+// let isLock = function() {
 // 	return _lock;
 // };
 
-// var lock = function() {
+// let lock = function() {
 // 	_lock = true;
 // }
 // event.listen('lock', lock);
 
-// var unlock = function() {
+// let unlock = function() {
 // 	lock = false;
 // }
 // event.listen('unlock', unlock);
@@ -90,15 +90,15 @@ var sqr = function(i) {
 
 let _inputStack = [];
 
-var isCurLock = function() {
+let isCurLock = () => {
 	return share.get('curLockState');
 };
 
-var curLock = function() {
+let curLock = () => {
 	share.set('curLockState', true);
 };
 
-var curUnLock = function() {
+let curUnLock = () => {
 	
 	share.set('curLockState', false);
 	
@@ -120,19 +120,24 @@ let input = (callback) => {
 
 // getters
 
-var getElements = function() {
+let getElements = () => {
 	return share.get('elements');
 }
 
-var getElementById = function(a) {
-	var _elements = share.get('elements');
-	return _elements[a];
+let getElementById = (id) => {
+	
+	let _elements = share.get('elements');
+	
+	return _elements[id];
 }
 
-var getElementsByName = function(name, type) {
-	var response = [];
-	var _elements = share.get('elements');
-	for(var i in _elements) {
+let getElementsByName = (name, type) => {
+
+	let response = [];
+
+	let _elements = share.get('elements');
+
+	for(let i in _elements) {
 		if(_elements[i].name && typeof _elements[i].name == 'string' && _elements[i].name == name) {
 			if(type && typeof _elements[i].type == 'string') {
 				if(type && _elements[i].type == type) {
@@ -145,12 +150,13 @@ var getElementsByName = function(name, type) {
 			}
 		}
 	}
+
 	return response;
 };
 
 // validator
 
-var validateCardName = function(name, nolog) {
+let validateCardName = (name, nolog) => {
 	
 	if(typeof name != 'string') {
 		console.warn('Warning: validate name must have string type', name);
@@ -158,26 +164,26 @@ var validateCardName = function(name, nolog) {
 		return false;
 	}
 	
-	var suit  = name.slice(0, 1),
+	let suit  = name.slice(0, 1),
 		rank  = name.slice(1, 3),
 		color = null,
 		value = defaults.card.values[defaults.card.ranks.indexOf(rank)];
-	for(var colorName in defaults.card.colors) {
+	for(let colorName in defaults.card.colors) {
 		if(defaults.card.colors[colorName].indexOf(suit) >= 0) {
 			color = colorName;
 		}
 	}
 	
 	if( 
-		defaults.card.suits.indexOf(suit) >= 0
-	 && defaults.card.ranks.indexOf(rank) >= 0
+		defaults.card.suits.indexOf(suit) >= 0 &&
+		defaults.card.ranks.indexOf(rank) >= 0
 	) {
 		return {
-			suit , 
-			rank ,
 			color,
 			value,
-			name 
+			name ,
+			suit , 
+			rank
 		}
 	} else {
 		console.warn('Warning: validate name:', name, '- incorrect');
@@ -198,19 +204,19 @@ let genId = () => {
 
 share.set('animation', defaults.animation);
 
-var animationOn = function() {
+let animationOn = () => {
 	share.set('animation', true);
 }
 
-var animationDefault = function() {
+let animationDefault = () => {
 	share.set('animation', defaults.animation);
 }
 
-var animationOff = function() {
+let animationOff = () => {
 	share.set('animation', false);
 }
 
-event.listen('newGame', function(e) {
+event.listen('newGame', () => {
 	// TODO
 	// из-за отключения анимации 
 	// на время восстановления ходов из истории приходится костылять
@@ -222,8 +228,8 @@ event.listen('newGame', function(e) {
 
 // --
 
-event.listen('historyReapeater', function(e) {
-	if(e) {
+event.listen('historyReapeater', (data) => {
+	if(data) {
 		share.set('noRedraw', true);
 		share.set('noTips', true);
 	} else {
@@ -236,7 +242,7 @@ event.listen('historyReapeater', function(e) {
 
 // --
 
-let deckInGroups = (deck, groups)=>{
+let deckInGroups = (deck, groups) => {
 	for(let groupName in groups) {
 		Group.getGroup(groupName).hasDeck();
 	}

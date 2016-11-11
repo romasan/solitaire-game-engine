@@ -24,11 +24,11 @@ import getDeck        from 'getDeck';
 
 class Deck {
 
-	constructor(a, _id) {
+	constructor(data, _id) {
 
 		// console.log('%cADD DECK', 'background: orange;');
 
-		if(!a) {
+		if(!data) {
 			return false;
 		}
 
@@ -40,33 +40,33 @@ class Deck {
 
 		this.id = _id;
 
-		let _parent_el   = Group.getGroup(a.parent),
+		let _parent_el   = Group.getGroup(data.parent),
 			_parent_name = _parent_el ? _parent_el.name : 'xname',// ???
 			_new_id      = _parent_el ? _parent_el.getDecks().length : _id;
 		
-		this.name = a.name && typeof a.name == 'string' 
-			? a.name
+		this.name = data.name && typeof data.name == 'string' 
+			? data.name
 			: (_parent_name + '_' + _new_id);
 		
-		this.locked     = a.locked ? true : false;
-		this.save       = a.save   ? true : false;
-		// this.longStep   = a.longStep ? true : false;
-		this.visible    = a.visible    && typeof a.visible    == 'boolean' ? a.visible    : true;// default true
-		this.groupIndex = a.groupIndex && typeof a.groupIndex == 'number'  ? a.groupIndex : null;
-		this.parent     = a.parent     && typeof a.parent     == 'string'  ? a.parent     : 'field';
-		this.autoHide   = a.autoHide   && typeof a.autoHide   == 'boolean' ? a.autoHide   : defaults.autohide;
+		this.locked     = data.locked ? true : false;
+		this.save       = data.save   ? true : false;
+		// this.longStep   = data.longStep ? true : false;
+		this.visible    = data.visible    && typeof data.visible    == 'boolean' ? data.visible    : true;// default true
+		this.groupIndex = data.groupIndex && typeof data.groupIndex == 'number'  ? data.groupIndex : null;
+		this.parent     = data.parent     && typeof data.parent     == 'string'  ? data.parent     : 'field';
+		this.autoHide   = data.autoHide   && typeof data.autoHide   == 'boolean' ? data.autoHide   : defaults.autohide;
 		
 		// changed parameters
-		if(typeof a.showSlot == "undefined") {
-			a.showSlot = defaults.showSlot;
+		if(typeof data.showSlot == "undefined") {
+			data.showSlot = defaults.showSlot;
 		}
 		
 		this._params = {
-			padding_y      : ( a.paddingY     && typeof a.paddingY     == 'number' ) ? a.paddingY     : defaults.padding_y     ,
-			flip_padding_y : ( a.flipPaddingY && typeof a.flipPaddingY == 'number' ) ? a.flipPaddingY : defaults.flip_padding_y,
-			padding_x      : ( a.paddingX     && typeof a.paddingX     == 'number' ) ? a.paddingX     : defaults.padding_x     ,
-			flip_padding_x : ( a.flipPaddingX && typeof a.flipPaddingX == 'number' ) ? a.flipPaddingX : defaults.flip_padding_x,
-			startZIndex    : ( a.startZIndex  && typeof a.startZIndex  == 'number' ) ? a.startZIndex  : defaults.startZIndex   ,
+			padding_y      : ( data.paddingY     && typeof data.paddingY     == 'number' ) ? data.paddingY     : defaults.padding_y     ,
+			flip_padding_y : ( data.flipPaddingY && typeof data.flipPaddingY == 'number' ) ? data.flipPaddingY : defaults.flip_padding_y,
+			padding_x      : ( data.paddingX     && typeof data.paddingX     == 'number' ) ? data.paddingX     : defaults.padding_x     ,
+			flip_padding_x : ( data.flipPaddingX && typeof data.flipPaddingX == 'number' ) ? data.flipPaddingX : defaults.flip_padding_x,
+			startZIndex    : ( data.startZIndex  && typeof data.startZIndex  == 'number' ) ? data.startZIndex  : defaults.startZIndex   ,
 			rotate         : this.rotate = 0                                                                                   ,
 			x              : 0                                                                                                 ,
 			y              : 0
@@ -74,52 +74,52 @@ class Deck {
 		
 		// ------------- FLIP -------------
 		
-		let flipType = a.flip && typeof a.flip == 'string' 
-			? a.flip 
+		let flipType = data.flip && typeof data.flip == 'string' 
+			? data.flip 
 			: defaults.flip_type;
 		
 		this.cardFlipCheck = flipTypes[flipType];
 		
 		// ------------- PUT -------------
 
-		this.putRules = a.putRules 
-			? typeof a.putRules == 'function' 
-				? a.putRules
-				: typeof a.putRules == 'string' 
-					? readyPutRules[a.putRules] 
-						? readyPutRules[a.putRules]
+		this.putRules = data.putRules 
+			? typeof data.putRules == 'function' 
+				? data.putRules
+				: typeof data.putRules == 'string' 
+					? readyPutRules[data.putRules] 
+						? readyPutRules[data.putRules]
 						: readyPutRules[defaults.putRule]
-					// : typeof a.putRules === 'object' 
-					: a.putRules.constructor == Array 
-						? a.putRules
+					// : typeof data.putRules === 'object' 
+					: data.putRules.constructor == Array 
+						? data.putRules
 						: readyPutRules[defaults.putRule]
 			: readyPutRules[defaults.putRule];
 
 		// ------------- TAKE -------------
 		
 		// можно ли взять карту/стопку
-		this.takeRules = a.takeRules;
+		this.takeRules = data.takeRules;
 
 		// ------------- FILL -------------
 
 		this.fillRules = null;
 
-		if(a.fillRule && !a.fillRules) {
-			a.fillRules = [a.fillRule];
+		if(data.fillRule && !data.fillRules) {
+			data.fillRules = [data.fillRule];
 		}
 
-		if(a.fillRules) {
-			this.fillRules = a.fillRules;
+		if(data.fillRules) {
+			this.fillRules = data.fillRules;
 		}
 		
 		// ------------- PADDING -------------
 		
 		// порядок карт в колоде
-		let padding = a.paddingX || a.paddingY
+		let padding = data.paddingX || data.paddingY
 			? paddingTypes.special 
-			: a.paddingType 
-				? (typeof a.paddingType == 'string' && paddingTypes[a.paddingType]) 
-					? paddingTypes[a.paddingType] 
+			: data.paddingType 
+				? (typeof data.paddingType == 'string' && paddingTypes[data.paddingType]) 
+					? paddingTypes[data.paddingType] 
 					: paddingTypes.none
 				: paddingTypes[defaults.paddingType];
 
@@ -131,29 +131,29 @@ class Deck {
 		}
 		
 		this.actions = [];
-		if(a.actions) {
-			this.actions = a.actions;
+		if(data.actions) {
+			this.actions = data.actions;
 			deckActions.add(this);
 		}
 
 		// ------------ RELATIONS ------------
 
-		if(a.relations) {
-			this.relations = a.relations;
+		if(data.relations) {
+			this.relations = data.relations;
 		} else {
 			this.relations = [];
 		}
 
 		// --
 
-		this.tags = a.tags ? a.tags : [];
+		this.tags = data.tags ? data.tags : [];
 		
 		// --
 
 		event.dispatch('addDeckEl', {
-			a     : a, 
-			deck  : this,
-			params: this._params
+			deckData : data, 
+			deck     : this,
+			params   : this._params
 		});
 
 		// Подписывается на перетаскивание стопки/карты
@@ -390,9 +390,9 @@ class Deck {
 
 }
 
-let addDeck = (a) => {
+let addDeck = (data) => {
 
-	if(!a) {
+	if(!data) {
 		return false;
 	}
 	
@@ -400,18 +400,18 @@ let addDeck = (a) => {
 	
 	let _a = null;
 	try {
-		_a = Object.assign({}, a);
+		_a = Object.assign({}, data);
 	} catch(e) {
-		_a = a;
+		_a = data;
 	}
 	
 	let _el_deck = new Deck(_a, _id);
 
 	// fill deck
-	if(a.fill) {
-		for(let i in a.fill) {
-			if(typeof a.fill[i] == 'string') {
-				_el_deck.genCardByName(a.fill[i]);
+	if(data.fill) {
+		for(let i in data.fill) {
+			if(typeof data.fill[i] == 'string') {
+				_el_deck.genCardByName(data.fill[i]);
 			}
 		}
 	}

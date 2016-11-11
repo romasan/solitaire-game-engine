@@ -95,11 +95,11 @@ event.listen('checkTips', checkTips);
 
 // --------------------------------------------------------
 
-let showTips = (a) => {
+let showTips = (data) => {
 	
 	_showTips = true;
 	
-	if(a && a.init) {
+	if(data && data.init) {
 		return;
 	}
 
@@ -107,11 +107,11 @@ let showTips = (a) => {
 };
 event.listen('tipsON', showTips);
 
-let hideTips = (a) => {
+let hideTips = (data) => {
 	
 	_showTips = false;
 	
-	if(a && a.init) {
+	if(data && data.init) {
 		return;
 	}
 
@@ -121,7 +121,7 @@ event.listen('tipsOFF', hideTips);
 
 // --------------------------------------------------------
 
-let tipsMove = (a) => {
+let tipsMove = (data) => {
 
 	if(!share.get('showTipPriority')) {
 		return;
@@ -131,14 +131,14 @@ let tipsMove = (a) => {
 
 	if(
 		share.showTipPriority                       &&
-		a                                           &&
-		a.moveDeck                                  &&
-		a.cursorMove                                &&
-		a.cursorMove.distance                       &&
-		a.cursorMove.distance >= share.moveDistance
+		data                                           &&
+		data.moveDeck                                  &&
+		data.cursorMove                                &&
+		data.cursorMove.distance                       &&
+		data.cursorMove.distance >= share.moveDistance
 	) {
 
-		let Tip = bestTip(a.moveDeck, a.cursorMove);
+		let Tip = bestTip(data.moveDeck, data.cursorMove);
 
 		if(Tip) {
 
@@ -152,15 +152,15 @@ let tipsMove = (a) => {
 
 // --------------------------------------------------------
 
-let tipsDestination = (a) => {
+let tipsDestination = (data) => {
 
 	if(share.get('showTipsDestination')) {
 
 		event.dispatch('hideTips');
 		
-		if(a && a.currentCard && a.currentCard.id) {
+		if(data && data.currentCard && data.currentCard.id) {
 			for(let i in _tips) {
-				if(_tips[i].from.card.id == a.currentCard.id) {					
+				if(_tips[i].from.card.id == data.currentCard.id) {					
 					
 					event.dispatch('showTip', {
 						'el'   : _tips[i].to.deck, 

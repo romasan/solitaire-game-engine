@@ -7,21 +7,21 @@ import common   from 'common';
 import elRender from 'elRender';
 
 // Move card to home
-event.listen('moveCardToHome', (e) => {
+event.listen('moveCardToHome', (data) => {
 
 	if(share.get('lastCursorMove').distance > 0) {
 		common.curLock();
 	}
 
-	for(let i in e.moveDeck) {
+	for(let i in data.moveDeck) {
 
-		let _position = e.departure.padding(e.moveDeck[i].index);
+		let _position = data.departure.padding(data.moveDeck[i].index);
 		let _params = {
 			left : _position.x + 'px',
 			top  : _position.y + 'px'
 		}
 
-		let _cardDomElement = share.get('domElement:' + e.moveDeck[i].card.id);
+		let _cardDomElement = share.get('domElement:' + data.moveDeck[i].card.id);
 
 		elRender(_cardDomElement)
 			.animate(
@@ -32,12 +32,12 @@ event.listen('moveCardToHome', (e) => {
 
 					common.curUnLock();
 
-					if(e.departure) {
-						e.departure.Redraw();
+					if(data.departure) {
+						data.departure.Redraw();
 					}
 
-					if(typeof e.callback == "function") {
-						e.callback();
+					if(typeof data.callback == "function") {
+						data.callback();
 					}
 				},
 
