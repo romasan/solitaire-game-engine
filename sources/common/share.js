@@ -36,9 +36,12 @@ class shareClass {
 				typeof forceClone == "boolean" && forceClone
 			) {
 				try {
-					console.log('***', name);
-
-					this._data[name] = Object.assign({}, data);
+					// this._data[name] = Object.assign({}, data);
+					this._data[name] = ['string', 'number', 'boolean'].indexOf(typeof data) >= 0
+					? data
+					: data instanceof Array
+						? Object.assign([], data)
+						: Object.assign({}, data);
 				} catch(e) {
 					this._data[name] = data;
 				}
@@ -67,7 +70,12 @@ class shareClass {
 					typeof forceClone == "boolean" && forceClone
 				) {
 					try {
-						this._data[_name] = Object.assign({}, name[_name]);
+						// this._data[_name] = Object.assign({}, name[_name]);
+						this._data[_name] = ['string', 'number', 'boolean'].indexOf(typeof name[_name]) >= 0
+						? name[_name]
+						: name[_name] instanceof Array
+							? Object.assign([], name[_name])
+							: Object.assign({}, name[_name]);
 					} catch(e) {
 						this._data[_name] = name[_name];
 					}

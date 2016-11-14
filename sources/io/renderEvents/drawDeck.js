@@ -185,7 +185,7 @@ event.listen('redrawDeck', (data) => {
 	elRender(_deckDomElement)
 		.css(_params);
 
-	console.log('redraw cards for', data.deck.name, data.cards);
+	// console.log('redraw cards for', data.deck.name, data.cards);
 
 	// перерисовка карт
 	for(let i in data.cards) {

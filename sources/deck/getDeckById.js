@@ -12,5 +12,7 @@ export default (id) => {// ID
 	// 	};
 	// };
 
-	return _elements[id];
+	return _elements[id] && _elements[id].type == 'deck'
+		? _elements[id]
+		: false;
 }

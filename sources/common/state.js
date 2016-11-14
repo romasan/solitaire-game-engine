@@ -1,8 +1,14 @@
 'use strict';
 
-import share    from 'share';
-import event    from 'event';
-import defaults from 'defaults';
+import share       from 'share';
+import event       from 'event';
+import defaults    from 'defaults';
+import common      from 'common';
+
+import getDecks    from 'getDecks';
+import getDeckById from 'getDeckById';
+
+// let stateModel = {};
 
 class stateManager {
 	
@@ -11,7 +17,7 @@ class stateManager {
 		this._state = null;
 
 		this._sourceList = [
-			'elements',
+			// 'elements',
 			'stepType'
 		];
 
@@ -31,7 +37,39 @@ class stateManager {
 		this._state = {};
 
 		for(let i in this._sourceList) {
-			this._state[this._sourceList[i]] = Object.assign({}, share.get(this._sourceList[i]));
+
+			let _element = share.get(this._sourceList[i]);
+			
+			this._state[this._sourceList[i]] = ['string', 'number', 'boolean'].indexOf(typeof _element) >= 0
+				? _element
+				: _element instanceof Array
+					? Object.assign([], _element)
+					: Object.assign({}, _element);
+		}
+
+		// --
+
+		this._state.model = {};
+
+		let _decks = getDecks();
+
+		for(let deckId in _decks) {
+
+			let _cards = [];
+
+			for(let cardId in _decks[deckId].cards) {
+				_cards.push({
+					'name'   : _decks[deckId].cards[cardId].name  ,
+					'id'     : _decks[deckId].cards[cardId].id    ,
+					'parent' : _decks[deckId].cards[cardId].parent
+				});
+			}
+
+			this._state.model[deckId] = {
+				'name'  : _decks[deckId].name  ,
+				'cards' : _cards               ,
+				'group' : _decks[deckId].parent
+			}
 		}
 	}
 
@@ -49,17 +87,42 @@ class stateManager {
 			share.delete(this._clearList[i]);
 		}
 
-		console.log( '#1', share.get('elements') );
-
 		for(let i in this._sourceList) {
-
-			console.log('>>>', this._sourceList[i]);
-
 			share.set(this._sourceList[i], this._state[this._sourceList[i]], true);
 		}
 
-		console.log( '#2', share.get('elements') );
+		// --
 
+		for(let deckId in this._state.model) {
+			
+			let _deck = getDeckById(deckId);
+
+			let _cards = [];
+
+			for(let i in this._state.model[deckId].cards) {
+
+				let cardId = this._state.model[deckId].cards[i].id;
+
+				let _card = common.getElementById(cardId);
+
+				if(_card.name == this._state.model[deckId].cards[i].name) {
+					_card.parent = this._state.model[deckId].cards[i].parent;
+					_cards.push(_card);
+				} else {
+					console.warn(
+						'Что-то не так с картой'               ,
+						this._state.model[deckId].cards[i].id  ,
+						this._state.model[deckId].cards[i].name,
+						' != '                                 ,
+						_card.id                               ,
+						_card.name
+					);
+				}
+			}
+
+			_deck.cards = _cards;
+			_deck.Redraw();
+		}
 	}
 
 	get() {

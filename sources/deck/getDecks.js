@@ -10,17 +10,17 @@ export default (data) => {
 
 	if(data && data.visible) {
 
-		for(let d in _elements) {
-			if(_elements[d].type == 'deck') {
-				if(_elements[d].visible) {
-					_decks[d] = _elements[d];
+		for(let deckId in _elements) {
+			if(_elements[deckId].type == 'deck') {
+				if(_elements[deckId].visible) {
+					_decks[deckId] = _elements[deckId];
 				}
 			};
 		};
 	} else {
-		for(let d in _elements) {
-			if(_elements[d].type == 'deck') {
-				_decks[d] = _elements[d];
+		for(let deckId in _elements) {
+			if(_elements[deckId].type == 'deck') {
+				_decks[deckId] = _elements[deckId];
 			};
 		};
 		// return _elements;

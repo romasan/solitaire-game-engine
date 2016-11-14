@@ -320,19 +320,19 @@ class Deck {
 	// 	return this.getCardsByName(cardName)[0];
 	// }
 
-	getCards() {
+	// getCards() {
 
-		let _cards = [];
+	// 	let _cards = [];
 		
-		for(let i in this.cards) {
+	// 	for(let i in this.cards) {
 			
-			let _card = common.getElementById(this.cards[i]);
+	// 		let _card = common.getElementById(this.cards[i]);
 			
-			_cards.push(_card);
-		}
+	// 		_cards.push(_card);
+	// 	}
 
-		return _cards;
-	}
+	// 	return _cards;
+	// }
 
 	hideCards() {
 		for(var i in this.cards) {

@@ -29,17 +29,16 @@ export default function(name) {// TODO
 	
 	if(_name) {
 
-		let _id = 'card_' + common.genId(),
-			_card = {
-				id      : _id,
-				name    : name,
-				type    : 'card',
-				// domElement : domElement,
-				visible : true,
-				// parent  : _parent,
-				flip    : false
-			}
-		_card.parent = this.id;
+		let _id = 'card_' + common.genId();
+
+		let _card = {
+			id      : _id    ,
+			name    : name   ,
+			type    : 'card' ,
+			visible : true   ,
+			flip    : false  ,
+			parent  : this.id
+		};
 		
 		event.dispatch('addCardEl', _card);
 		
