@@ -19,11 +19,7 @@ import field     from 'field';
 let _undo = (data) => {
 
 	if(share.get('sessionStarted')) {
-		
 		state.restore();
-
-		// redraw
-		field.Redraw();
 	}
 
 	// for(let i in _undoMethods) {

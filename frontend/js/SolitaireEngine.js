@@ -123,7 +123,7 @@ var SolitaireEngine =
 	exports.options = _defaults2.default;
 	exports.winCheck = _winCheck2.default.hwinCheck;
 	exports.generator = _deckGenerator2.default;
-	exports.version = (9091492631).toString().split(9).slice(1).map(function (e) {
+	exports.version = (9091492633).toString().split(9).slice(1).map(function (e) {
 		return parseInt(e, 8);
 	}).join('.');
 	
@@ -5475,11 +5475,7 @@ var SolitaireEngine =
 	var _undo = function _undo(data) {
 	
 		if (_share2.default.get('sessionStarted')) {
-	
 			_state2.default.restore();
-	
-			// redraw
-			_field2.default.Redraw();
 		}
 	
 		// for(let i in _undoMethods) {
