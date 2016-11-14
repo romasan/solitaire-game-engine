@@ -123,16 +123,13 @@ event.listen('redrawDeckFlip', (data) => {
 		
 		if(data.cards[i].flip) {
 
-			elRender(_cardDomElement)
-				.addClass('flip');
+			_cardDomElement.addClass('flip');
 		} else {
 
-			elRender(_cardDomElement)
-				.removeClass('flip');
+			_cardDomElement.removeClass('flip');
 		}
 		
-		elRender(data.cards[i])
-			.css(_params);
+		_cardDomElement.css(_params);
 	}
 
 });
@@ -149,9 +146,9 @@ event.listen('redrawDeckIndexes', (data) => {
 
 		let _cardDomElement = share.get('domElement:' + data.cards[i].id);
 
-		elRender(_cardDomElement).css({
+		_cardDomElement.css({
 			'z-index' : (defaults.startZIndex | 0) + (i | 0)
-		})
+		});
 	}
 });
 

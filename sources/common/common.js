@@ -24,6 +24,7 @@ import defaultPreferences from 'defaultPreferences';
 event.listen('gameInit', (e) => {
 
 	share.set('stepType', defaults.stepType);
+	share.delete('sessionStarted');
 
 	curUnLock();
 	

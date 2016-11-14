@@ -19,8 +19,9 @@ event.listen('removeEl', (e) => {
 
 	let _elDomElement = share.get('domElement:' + e.id);
 
-	elRender(_elDomElement)
-		.remove();
+	_elDomElement.remove();
+
+	share.delete('domElement:' + e.id);
 });
 
 event.listen('showCard', (target) => {

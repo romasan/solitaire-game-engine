@@ -184,6 +184,11 @@ class Deck {
 			params   : this._params,
 			cards    : this.cards
 		});
+
+		event.dispatch('redrawDeckFlip', {
+			cards : this.cards
+		});
+
 	}
 
 	getTopCard() {

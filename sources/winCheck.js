@@ -12,6 +12,10 @@ let winCheck = (params) => {
 	let rulesCorrect = true;
 	let _hasMetods = false;
 	let _winCheck = share.get('winCheck');// _field.winCheck
+
+	if(!_winCheck) {
+		return false;
+	}
 	
 	for(let ruleName in _winCheck.rules) {
 		_hasMetods = true;

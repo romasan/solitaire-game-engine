@@ -19,6 +19,9 @@ import field     from 'field';
 let _undo = (data) => {
 
 	if(share.get('sessionStarted')) {
+
+		event.dispatch('stopAnimations');
+		
 		state.restore();
 	}
 

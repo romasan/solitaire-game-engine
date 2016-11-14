@@ -6,6 +6,7 @@
 
 import defaults from 'defaults';
 import share    from 'share';
+import event    from 'event';
 
 import elClass    from 'elClass';
 import allElClass from 'allElClass';
@@ -51,11 +52,14 @@ var _allEl = (e) => {
 	}
 };
 
-_allEl.stopAnimations = (callback) => {
+_allEl.stopAnimations = () => {
 
 	_allEl(".animated")
-		.css({transition: '0s'}) // false
+		// .css({transition: '0s'})
+		.css({transition: false})
 		.removeClass("animated");
 };
+
+event.listen('stopAnimations', _allEl.stopAnimations);
 
 export default _allEl;

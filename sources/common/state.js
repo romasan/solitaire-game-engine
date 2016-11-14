@@ -59,9 +59,11 @@ class stateManager {
 
 			for(let cardId in _decks[deckId].cards) {
 				_cards.push({
-					'name'   : _decks[deckId].cards[cardId].name  ,
-					'id'     : _decks[deckId].cards[cardId].id    ,
-					'parent' : _decks[deckId].cards[cardId].parent
+					'name'    : _decks[deckId].cards[cardId].name   ,
+					'id'      : _decks[deckId].cards[cardId].id     ,
+					'visible' : _decks[deckId].cards[cardId].visible,
+					'flip'    : _decks[deckId].cards[cardId].flip   ,
+					'parent'  : _decks[deckId].cards[cardId].parent
 				});
 			}
 
@@ -106,7 +108,11 @@ class stateManager {
 				let _card = common.getElementById(cardId);
 
 				if(_card.name == this._state.model[deckId].cards[i].name) {
-					_card.parent = this._state.model[deckId].cards[i].parent;
+					
+					_card.parent  = this._state.model[deckId].cards[i].parent;
+					_card.visible = this._state.model[deckId].cards[i].visible;
+					_card.flip    = this._state.model[deckId].cards[i].flip;
+					
 					_cards.push(_card);
 				} else {
 					console.warn(
