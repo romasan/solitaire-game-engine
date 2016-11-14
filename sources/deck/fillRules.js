@@ -1,7 +1,7 @@
 'use strict';
 
-import defaults from 'defaults';
-import common   from 'common';
+import defaults  from 'defaults';
+import common    from 'common';
 
 import Deck      from 'deck';
 import Tips      from 'tips';

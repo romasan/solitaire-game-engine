@@ -60,8 +60,12 @@ class inputs {
 			// };
 
 			document.ondblclick = (e) => {
+
+				event.dispatch('stopAnimations');
+				
 				this.take(e.target, e.clientX, e.clientY);
 				this.put(e.target, e.clientX, e.clientY, true);
+				
 				common.curUnLock();
 			};
 

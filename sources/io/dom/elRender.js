@@ -56,7 +56,9 @@ _allEl.stopAnimations = () => {
 
 	_allEl(".animated")
 		// .css({transition: '0s'})
-		.css({transition: false})
+		.css({
+			'transition': false
+		})
 		.removeClass("animated");
 };
 

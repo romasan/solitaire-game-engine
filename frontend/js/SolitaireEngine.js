@@ -123,7 +123,7 @@ var SolitaireEngine =
 	exports.options = _defaults2.default;
 	exports.winCheck = _winCheck2.default.hwinCheck;
 	exports.generator = _deckGenerator2.default;
-	exports.version = (9091492634).toString().split(9).slice(1).map(function (e) {
+	exports.version = (9091492663).toString().split(9).slice(1).map(function (e) {
 		return parseInt(e, 8);
 	}).join('.');
 	
@@ -681,8 +681,12 @@ var SolitaireEngine =
 				// };
 	
 				document.ondblclick = function (e) {
+	
+					_event2.default.dispatch('stopAnimations');
+	
 					_this.take(e.target, e.clientX, e.clientY);
 					_this.put(e.target, e.clientX, e.clientY, true);
+	
 					_common2.default.curUnLock();
 				};
 	
@@ -8143,7 +8147,9 @@ var SolitaireEngine =
 	
 		_allEl(".animated")
 		// .css({transition: '0s'})
-		.css({ transition: false }).removeClass("animated");
+		.css({
+			'transition': false
+		}).removeClass("animated");
 	};
 	
 	_event2.default.listen('stopAnimations', _allEl.stopAnimations);
@@ -8258,17 +8264,19 @@ var SolitaireEngine =
 	
 					var _classes = this.el.className.split(' ');
 	
-					if (this.hasClass(className)) {
+					// if(this.hasClass(className)) {
+					var _clone = [];
 	
-						var _clone = [];
-						for (var i in _classes) {
-							if (_classes[i] != className) {
-								_clone.push(_classes[i]);
-							}
+					for (var i in _classes) {
+						if (_classes[i] != className) {
+							_clone.push(_classes[i]);
 						}
-						_classes = _clone;
-						this.el.className = _classes.join(' ');
 					}
+	
+					_classes = _clone;
+	
+					this.el.className = _classes.join(' ');
+					// }
 	
 					return this;
 				} catch (e) {}

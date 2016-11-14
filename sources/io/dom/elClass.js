@@ -68,17 +68,19 @@ export default class elClass {
 
 			let _classes = this.el.className.split(' ');
 
-			if(this.hasClass(className)) {
-
-				let _clone = [];
-				for(let i in _classes) {
-					if(_classes[i] != className) {
-						_clone.push(_classes[i]);
-					}
+			// if(this.hasClass(className)) {
+			let _clone = [];
+			
+			for(let i in _classes) {
+				if(_classes[i] != className) {
+					_clone.push(_classes[i]);
 				}
-				_classes = _clone;
-				this.el.className = _classes.join(' ');
 			}
+			
+			_classes = _clone;
+			
+			this.el.className = _classes.join(' ');
+			// }
 
 			return this;
 		} catch(e) {}
