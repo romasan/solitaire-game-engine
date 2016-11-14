@@ -185,15 +185,17 @@ class Field {
 		// прокидываеем <новую> конфигурацию
 		if(data) {
 
+			// ерерисовываем все группы и стопки в них
 			for(let _groupName in data.groups) {
 
-				let _group = Group.getGroup(_groupName);
+				let _group = Group.getByName(_groupName);
 				
 				if(_group) {
 					_group.Redraw(data.groups[_groupName]);
 				}
 			}
 
+			// перерисовываем отдельно стоящие стопки
 			for(let i in data.decks) {
 				
 				let _deck = Deck.getDeck(data.decks[i].name);
@@ -203,10 +205,13 @@ class Field {
 				}
 			}
 
+		// перерисовка без конфигурации
 		} else {
 			
+			// получаем все существующие стопки
 			let _decks = Deck.getDecks();
 
+			// перерисовываем каждую
 			for(let i in _decks) {
 				_decks[i].Redraw();
 			}

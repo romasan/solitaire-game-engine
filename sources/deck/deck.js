@@ -24,7 +24,7 @@ import getDeck        from 'getDeck';
 
 class Deck {
 
-	constructor(data, _id) {
+	constructor(data, id) {
 
 		// console.log('%cADD DECK', 'background: orange;');
 
@@ -38,23 +38,23 @@ class Deck {
 		this.type = 'deck';
 		this.fill = false;
 
-		this.id = _id;
+		this.id = id;
 
-		let _parent_el   = Group.getGroup(data.parent),
-			_parent_name = _parent_el ? _parent_el.name : 'xname',// ???
-			_new_id      = _parent_el ? _parent_el.getDecks().length : _id;
+		let _parent_el   = Group.getByName(data.parent)                  ,
+			_parent_name = _parent_el ? _parent_el.name : 'no_parent_'   ,
+			_new_id      = _parent_el ? _parent_el.getDecks().length : id;
 		
-		this.name = data.name && typeof data.name == 'string' 
+		this.name = typeof data.name == 'string' 
 			? data.name
 			: (_parent_name + '_' + _new_id);
 		
 		this.locked     = data.locked ? true : false;
 		this.save       = data.save   ? true : false;
 		// this.longStep   = data.longStep ? true : false;
-		this.visible    = data.visible    && typeof data.visible    == 'boolean' ? data.visible    : true;// default true
-		this.groupIndex = data.groupIndex && typeof data.groupIndex == 'number'  ? data.groupIndex : null;
-		this.parent     = data.parent     && typeof data.parent     == 'string'  ? data.parent     : 'field';
-		this.autoHide   = data.autoHide   && typeof data.autoHide   == 'boolean' ? data.autoHide   : defaults.autohide;
+		this.visible    = typeof data.visible    == 'boolean' ? data.visible    : true;// default true
+		this.groupIndex = typeof data.groupIndex == 'number'  ? data.groupIndex : null;
+		this.parent     = typeof data.parent     == 'string'  ? data.parent     : 'field';
+		this.autoHide   = typeof data.autoHide   == 'boolean' ? data.autoHide   : defaults.autohide;
 		
 		// changed parameters
 		if(typeof data.showSlot == "undefined") {
@@ -62,15 +62,17 @@ class Deck {
 		}
 		
 		this._params = {
-			padding_y      : ( data.paddingY     && typeof data.paddingY     == 'number' ) ? data.paddingY     : defaults.padding_y     ,
-			flip_padding_y : ( data.flipPaddingY && typeof data.flipPaddingY == 'number' ) ? data.flipPaddingY : defaults.flip_padding_y,
-			padding_x      : ( data.paddingX     && typeof data.paddingX     == 'number' ) ? data.paddingX     : defaults.padding_x     ,
-			flip_padding_x : ( data.flipPaddingX && typeof data.flipPaddingX == 'number' ) ? data.flipPaddingX : defaults.flip_padding_x,
-			startZIndex    : ( data.startZIndex  && typeof data.startZIndex  == 'number' ) ? data.startZIndex  : defaults.startZIndex   ,
-			rotate         : this.rotate = 0                                                                                   ,
-			x              : 0                                                                                                 ,
+			padding_y      : ( typeof data.paddingY     == 'number' ) ? data.paddingY     : defaults.padding_y     ,
+			flip_padding_y : ( typeof data.flipPaddingY == 'number' ) ? data.flipPaddingY : defaults.flip_padding_y,
+			padding_x      : ( typeof data.paddingX     == 'number' ) ? data.paddingX     : defaults.padding_x     ,
+			flip_padding_x : ( typeof data.flipPaddingX == 'number' ) ? data.flipPaddingX : defaults.flip_padding_x,
+			startZIndex    : ( typeof data.startZIndex  == 'number' ) ? data.startZIndex  : defaults.startZIndex   ,
+			rotate         : ( typeof data.rotate       == 'number' ) ? data.rotate       : defaults.rotate        ,
+			x              : 0                                                                                     ,
 			y              : 0
 		};
+
+		this.rotate = this._params.rotate;
 		
 		// ------------- FLIP -------------
 		
@@ -177,10 +179,10 @@ class Deck {
 	Redraw(data) {
 
 		event.dispatch('redrawDeck', {
-			deck   : this,
-			data   : data,
-			params : this._params,
-			cards  : this.cards
+			deck     : this,
+			deckData : data,
+			params   : this._params,
+			cards    : this.cards
 		});
 	}
 
@@ -304,18 +306,32 @@ class Deck {
 		this.Redraw();
 	}
 
-	getCardsByName(cardName) {
-		var _cards = [];
-		for(var i in this.cards) {
-			if(this.cards[i].name == cardName) {
-				_cards.push(this.cards[i]);
-			}
-		}
-		return _cards;
-	}
+	// getCardsByName(cardName) {
+	// 	var _cards = [];
+	// 	for(var i in this.cards) {
+	// 		if(this.cards[i].name == cardName) {
+	// 			_cards.push(this.cards[i]);
+	// 		}
+	// 	}
+	// 	return _cards;
+	// }
 
-	Card(cardName) {
-		return this.getCardsByName(cardName)[0];
+	// Card(cardName) {
+	// 	return this.getCardsByName(cardName)[0];
+	// }
+
+	getCards() {
+
+		let _cards = [];
+		
+		for(let i in this.cards) {
+			
+			let _card = common.getElementById(this.cards[i]);
+			
+			_cards.push(_card);
+		}
+
+		return _cards;
 	}
 
 	hideCards() {
@@ -396,16 +412,9 @@ let addDeck = (data) => {
 		return false;
 	}
 	
-	let _id = 'deck_' + common.genId();
+	let id = 'deck_' + common.genId();
 	
-	let _a = null;
-	try {
-		_a = Object.assign({}, data);
-	} catch(e) {
-		_a = data;
-	}
-	
-	let _el_deck = new Deck(_a, _id);
+	let _el_deck = new Deck(data, id);
 
 	// fill deck
 	if(data.fill) {
@@ -418,7 +427,7 @@ let addDeck = (data) => {
 	
 	let _elements = share.get('elements');
 
-	_elements[_id] = _el_deck;
+	_elements[id] = _el_deck;
 	
 	share.set('elements', _elements);
 

@@ -18,7 +18,12 @@ export default (data) => {
 			};
 		};
 	} else {
-		return _elements;
+		for(let d in _elements) {
+			if(_elements[d].type == 'deck') {
+				_decks[d] = _elements[d];
+			};
+		};
+		// return _elements;
 	}
 	
 	return _decks;

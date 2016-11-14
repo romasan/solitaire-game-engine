@@ -36,6 +36,8 @@ class shareClass {
 				typeof forceClone == "boolean" && forceClone
 			) {
 				try {
+					console.log('***', name);
+
 					this._data[name] = Object.assign({}, data);
 				} catch(e) {
 					this._data[name] = data;

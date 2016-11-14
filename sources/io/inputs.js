@@ -183,15 +183,15 @@ class inputs {
 			return;
 		}
 
-		let _distance = _startCursor 
-			? Math.sqrt(common.sqr(x - _startCursor.x) + common.sqr(y - _startCursor.y)) 
-			: 0;
+		// let _distance = _startCursor 
+		// 	? Math.sqrt(common.sqr(x - _startCursor.x) + common.sqr(y - _startCursor.y)) 
+		// 	: 0;
 
 		// console.log(x - _startCursor.x, y - _startCursor.y);
 
 		let _deck = common.getElementById(_dragDeck[0].card.parent);
 
-		let _position = _deck.padding(_dragDeck[_dragDeck.length - 1].index);
+		// let _position = _deck.padding(_dragDeck[_dragDeck.length - 1].index);
 
 		event.dispatch('dragDeck', {
 			x, y        , 
@@ -276,8 +276,8 @@ class inputs {
 		event.dispatch('Move', {
 			moveDeck   : _dragDeck,
 			to         : _dop.id,
-			cursorMove : cursorMove
-		})
+			cursorMove
+		});
 		// }
 
 		// event.dispatch('redrawDeckIndexes', _deck);
@@ -287,4 +287,5 @@ class inputs {
 	}
 }
 
-let _inputs = new inputs();
+// let _inputs = new inputs();
+new inputs();

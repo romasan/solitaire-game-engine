@@ -67,6 +67,8 @@ export default {
 
 	paddingType         : 'none',
 	flip_type           : 'none',
+
+	rotate              : 0,
 	
 	takeRules           : ['onlytop'],
 	putRule             : 'any',

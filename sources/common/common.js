@@ -59,7 +59,7 @@ event.listen('startSession', () => {
 
 event.listen('stopSession', () => {
 	share.set('sessionStarted', false);
-	state.backup();
+	// state.backup();
 });
 
 // --
@@ -110,13 +110,13 @@ let curUnLock = () => {
 	_inputStack = [];
 }
 
-let input = (callback) => {
-	if(!isCurLock()) {
-		callback();
-	} else {
-		_inputStack.push(callback);
-	}
-}
+// let input = (callback) => {
+// 	if(!isCurLock()) {
+// 		callback();
+// 	} else {
+// 		_inputStack.push(callback);
+// 	}
+// }
 
 // getters
 
@@ -244,7 +244,7 @@ event.listen('historyReapeater', (data) => {
 
 let deckInGroups = (deck, groups) => {
 	for(let groupName in groups) {
-		Group.getGroup(groupName).hasDeck();
+		Group.getByName(groupName).hasDeck();
 	}
 }
 

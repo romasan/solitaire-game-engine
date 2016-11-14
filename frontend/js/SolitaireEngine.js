@@ -123,7 +123,7 @@ var SolitaireEngine =
 	exports.options = _defaults2.default;
 	exports.winCheck = _winCheck2.default.hwinCheck;
 	exports.generator = _deckGenerator2.default;
-	exports.version = (9091492465).toString().split(9).slice(1).map(function (e) {
+	exports.version = (9091492606).toString().split(9).slice(1).map(function (e) {
 		return parseInt(e, 8);
 	}).join('.');
 	
@@ -238,6 +238,8 @@ var SolitaireEngine =
 	
 					if (typeof forceClone == "boolean" && forceClone) {
 						try {
+							console.log('***', name);
+	
 							this._data[name] = Object.assign({}, data);
 						} catch (e) {
 							this._data[name] = data;
@@ -546,6 +548,8 @@ var SolitaireEngine =
 		paddingType: 'none',
 		flip_type: 'none',
 	
+		rotate: 0,
+	
 		takeRules: ['onlytop'],
 		putRule: 'any',
 	
@@ -793,13 +797,15 @@ var SolitaireEngine =
 					return;
 				}
 	
-				var _distance = _startCursor ? Math.sqrt(_common2.default.sqr(x - _startCursor.x) + _common2.default.sqr(y - _startCursor.y)) : 0;
+				// let _distance = _startCursor 
+				// 	? Math.sqrt(common.sqr(x - _startCursor.x) + common.sqr(y - _startCursor.y)) 
+				// 	: 0;
 	
 				// console.log(x - _startCursor.x, y - _startCursor.y);
 	
 				var _deck = _common2.default.getElementById(_dragDeck[0].card.parent);
 	
-				var _position = _deck.padding(_dragDeck[_dragDeck.length - 1].index);
+				// let _position = _deck.padding(_dragDeck[_dragDeck.length - 1].index);
 	
 				_event2.default.dispatch('dragDeck', {
 					x: x, y: y,
@@ -901,7 +907,10 @@ var SolitaireEngine =
 		return inputs;
 	}();
 	
-	var _inputs = new inputs();
+	// let _inputs = new inputs();
+	
+	
+	new inputs();
 
 /***/ },
 /* 5 */
@@ -1001,7 +1010,7 @@ var SolitaireEngine =
 	
 	_event2.default.listen('stopSession', function () {
 		_share2.default.set('sessionStarted', false);
-		_state2.default.backup();
+		// state.backup();
 	});
 	
 	// --
@@ -1054,13 +1063,13 @@ var SolitaireEngine =
 		_inputStack = [];
 	};
 	
-	var input = function input(callback) {
-		if (!isCurLock()) {
-			callback();
-		} else {
-			_inputStack.push(callback);
-		}
-	};
+	// let input = (callback) => {
+	// 	if(!isCurLock()) {
+	// 		callback();
+	// 	} else {
+	// 		_inputStack.push(callback);
+	// 	}
+	// }
 	
 	// getters
 	
@@ -1185,7 +1194,7 @@ var SolitaireEngine =
 	
 	var deckInGroups = function deckInGroups(deck, groups) {
 		for (var groupName in groups) {
-			Group.getGroup(groupName).hasDeck();
+			Group.getByName(groupName).hasDeck();
 		}
 	};
 	
@@ -1268,7 +1277,7 @@ var SolitaireEngine =
 				this._state = {};
 	
 				for (var i in this._sourceList) {
-					this._state[this._sourceList[i]] = _share2.default.get(this._sourceList[i]);
+					this._state[this._sourceList[i]] = Object.assign({}, _share2.default.get(this._sourceList[i]));
 				}
 			}
 		}, {
@@ -1287,9 +1296,16 @@ var SolitaireEngine =
 					_share2.default.delete(this._clearList[i]);
 				}
 	
+				console.log('#1', _share2.default.get('elements'));
+	
 				for (var _i in this._sourceList) {
+	
+					console.log('>>>', this._sourceList[_i]);
+	
 					_share2.default.set(this._sourceList[_i], this._state[this._sourceList[_i]], true);
 				}
+	
+				console.log('#2', _share2.default.get('elements'));
 			}
 		}, {
 			key: 'get',
@@ -1999,15 +2015,17 @@ var SolitaireEngine =
 				// прокидываеем <новую> конфигурацию
 				if (data) {
 	
+					// ерерисовываем все группы и стопки в них
 					for (var _groupName in data.groups) {
 	
-						var _group = _group3.default.getGroup(_groupName);
+						var _group = _group3.default.getByName(_groupName);
 	
 						if (_group) {
 							_group.Redraw(data.groups[_groupName]);
 						}
 					}
 	
+					// перерисовываем отдельно стоящие стопки
 					for (var i in data.decks) {
 	
 						var _deck = _deck3.default.getDeck(data.decks[i].name);
@@ -2016,10 +2034,14 @@ var SolitaireEngine =
 							_deck.Redraw(data.decks[i]);
 						}
 					}
+	
+					// перерисовка без конфигурации
 				} else {
 	
+					// получаем все существующие стопки
 					var _decks = _deck3.default.getDecks();
 	
+					// перерисовываем каждую
 					for (var _i in _decks) {
 						_decks[_i].Redraw();
 					}
@@ -2098,31 +2120,33 @@ var SolitaireEngine =
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 	
 	var params = {
-		"paddingType": { type: "any" },
-		"flip": { type: "any" },
-		"showSlot": { type: "any" },
-		"takeRules": { type: "any" },
-		"putRules": { type: "any" },
-		"fillRule": { type: "any" },
-		"autoHide": { type: "any" },
-		"paddingX": { type: "any" },
-		"paddingY": { type: "any" },
-		"flipPaddingX": { type: "any" },
-		"flipPaddingY": { type: "any" },
-		"actions": { type: "any" },
-		"save": { type: "boolean", default: true }
-		// "longStep"     : {type : "boolean", default : false}
+		"paddingType": { "type": "any" },
+		"flip": { "type": "any" },
+		"showSlot": { "type": "any" },
+		"takeRules": { "type": "any" },
+		"putRules": { "type": "any" },
+		"fillRule": { "type": "any" },
+		"autoHide": { "type": "any" },
+		"paddingX": { "type": "any" },
+		"paddingY": { "type": "any" },
+		"flipPaddingX": { "type": "any" },
+		"flipPaddingY": { "type": "any" },
+		"actions": { "type": "any" },
+		"save": {
+			"type": "boolean",
+			"default": true
+		}
 	};
 	
 	var groupClass = function () {
-		function groupClass(data, _id) {
+		function groupClass(data, id) {
 			_classCallCheck(this, groupClass);
 	
 			this.type = 'group';
 	
-			this.id = _id;
+			this.id = id;
 	
-			this.name = data.name && typeof data.name == 'string' ? data.name : 'name_' + _id;
+			this.name = data.name && typeof data.name == 'string' ? data.name : 'name_' + id;
 	
 			this.position = {
 				x: data.position && data.position.x && typeof data.position.x == 'number' ? data.position.x : 0,
@@ -2316,8 +2340,8 @@ var SolitaireEngine =
 	
 		}, {
 			key: 'Redraw',
-			value: function Redraw(_a) {
-				(0, _groupRedraw2.default)(this, _a);
+			value: function Redraw(data) {
+				(0, _groupRedraw2.default)(this, data);
 			}
 		}, {
 			key: 'hasDeck',
@@ -2346,9 +2370,13 @@ var SolitaireEngine =
 			return false;
 		}
 	
-		var _id = 'group_' + _common2.default.genId();
+		if (!data.decks) {
+			return false;
+		}
 	
-		var _el_group = new groupClass(data, _id);
+		var id = 'group_' + _common2.default.genId();
+	
+		var _el_group = new groupClass(data, id);
 	
 		if (data.decks) {
 	
@@ -2359,7 +2387,7 @@ var SolitaireEngine =
 						"count": data.decks
 					}
 				};
-			};
+			}
 	
 			if (data.decks.generator) {
 	
@@ -2378,7 +2406,7 @@ var SolitaireEngine =
 				};
 	
 				data.placement = null;
-			};
+			}
 	
 			// relations TO <-> FROM
 			// if( data.backRelations ) TODO
@@ -2407,10 +2435,10 @@ var SolitaireEngine =
 			for (var d in data.decks) {
 				_el_group.addDeck(data.decks[d]);
 			};
-		};
+		}
 	
 		var _elements = _share2.default.get('elements');
-		_elements[_id] = _el_group;
+		_elements[id] = _el_group;
 		_share2.default.set('elements', _elements);
 	
 		// fill group
@@ -2425,13 +2453,14 @@ var SolitaireEngine =
 		return _el_group;
 	};
 	
-	var getGroup = function getGroup(name) {
+	var getByName = function getByName(name) {
+		// TODO rename to "getByName"
 		return _common2.default.getElementsByName(name, 'group')[0];
 	};
 	
 	exports.default = {
-		add: add,
-		getGroup: getGroup
+		getByName: getByName,
+		add: add
 	};
 
 /***/ },
@@ -2527,7 +2556,7 @@ var SolitaireEngine =
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 	
 	var Deck = function () {
-		function Deck(data, _id) {
+		function Deck(data, id) {
 			var _this = this;
 	
 			_classCallCheck(this, Deck);
@@ -2544,22 +2573,21 @@ var SolitaireEngine =
 			this.type = 'deck';
 			this.fill = false;
 	
-			this.id = _id;
+			this.id = id;
 	
-			var _parent_el = _group2.default.getGroup(data.parent),
-			    _parent_name = _parent_el ? _parent_el.name : 'xname',
-			    // ???
-			_new_id = _parent_el ? _parent_el.getDecks().length : _id;
+			var _parent_el = _group2.default.getByName(data.parent),
+			    _parent_name = _parent_el ? _parent_el.name : 'no_parent_',
+			    _new_id = _parent_el ? _parent_el.getDecks().length : id;
 	
-			this.name = data.name && typeof data.name == 'string' ? data.name : _parent_name + '_' + _new_id;
+			this.name = typeof data.name == 'string' ? data.name : _parent_name + '_' + _new_id;
 	
 			this.locked = data.locked ? true : false;
 			this.save = data.save ? true : false;
 			// this.longStep   = data.longStep ? true : false;
-			this.visible = data.visible && typeof data.visible == 'boolean' ? data.visible : true; // default true
-			this.groupIndex = data.groupIndex && typeof data.groupIndex == 'number' ? data.groupIndex : null;
-			this.parent = data.parent && typeof data.parent == 'string' ? data.parent : 'field';
-			this.autoHide = data.autoHide && typeof data.autoHide == 'boolean' ? data.autoHide : _defaults2.default.autohide;
+			this.visible = typeof data.visible == 'boolean' ? data.visible : true; // default true
+			this.groupIndex = typeof data.groupIndex == 'number' ? data.groupIndex : null;
+			this.parent = typeof data.parent == 'string' ? data.parent : 'field';
+			this.autoHide = typeof data.autoHide == 'boolean' ? data.autoHide : _defaults2.default.autohide;
 	
 			// changed parameters
 			if (typeof data.showSlot == "undefined") {
@@ -2567,15 +2595,17 @@ var SolitaireEngine =
 			}
 	
 			this._params = {
-				padding_y: data.paddingY && typeof data.paddingY == 'number' ? data.paddingY : _defaults2.default.padding_y,
-				flip_padding_y: data.flipPaddingY && typeof data.flipPaddingY == 'number' ? data.flipPaddingY : _defaults2.default.flip_padding_y,
-				padding_x: data.paddingX && typeof data.paddingX == 'number' ? data.paddingX : _defaults2.default.padding_x,
-				flip_padding_x: data.flipPaddingX && typeof data.flipPaddingX == 'number' ? data.flipPaddingX : _defaults2.default.flip_padding_x,
-				startZIndex: data.startZIndex && typeof data.startZIndex == 'number' ? data.startZIndex : _defaults2.default.startZIndex,
-				rotate: this.rotate = 0,
+				padding_y: typeof data.paddingY == 'number' ? data.paddingY : _defaults2.default.padding_y,
+				flip_padding_y: typeof data.flipPaddingY == 'number' ? data.flipPaddingY : _defaults2.default.flip_padding_y,
+				padding_x: typeof data.paddingX == 'number' ? data.paddingX : _defaults2.default.padding_x,
+				flip_padding_x: typeof data.flipPaddingX == 'number' ? data.flipPaddingX : _defaults2.default.flip_padding_x,
+				startZIndex: typeof data.startZIndex == 'number' ? data.startZIndex : _defaults2.default.startZIndex,
+				rotate: typeof data.rotate == 'number' ? data.rotate : _defaults2.default.rotate,
 				x: 0,
 				y: 0
 			};
+	
+			this.rotate = this._params.rotate;
 	
 			// ------------- FLIP -------------
 	
@@ -2670,7 +2700,7 @@ var SolitaireEngine =
 	
 				_event2.default.dispatch('redrawDeck', {
 					deck: this,
-					data: data,
+					deckData: data,
 					params: this._params,
 					cards: this.cards
 				});
@@ -2814,21 +2844,35 @@ var SolitaireEngine =
 				_history2.default.add({ showDeck: this.name });
 				this.Redraw();
 			}
+	
+			// getCardsByName(cardName) {
+			// 	var _cards = [];
+			// 	for(var i in this.cards) {
+			// 		if(this.cards[i].name == cardName) {
+			// 			_cards.push(this.cards[i]);
+			// 		}
+			// 	}
+			// 	return _cards;
+			// }
+	
+			// Card(cardName) {
+			// 	return this.getCardsByName(cardName)[0];
+			// }
+	
 		}, {
-			key: 'getCardsByName',
-			value: function getCardsByName(cardName) {
+			key: 'getCards',
+			value: function getCards() {
+	
 				var _cards = [];
+	
 				for (var i in this.cards) {
-					if (this.cards[i].name == cardName) {
-						_cards.push(this.cards[i]);
-					}
+	
+					var _card = _common2.default.getElementById(this.cards[i]);
+	
+					_cards.push(_card);
 				}
+	
 				return _cards;
-			}
-		}, {
-			key: 'Card',
-			value: function Card(cardName) {
-				return this.getCardsByName(cardName)[0];
 			}
 		}, {
 			key: 'hideCards',
@@ -2918,16 +2962,9 @@ var SolitaireEngine =
 			return false;
 		}
 	
-		var _id = 'deck_' + _common2.default.genId();
+		var id = 'deck_' + _common2.default.genId();
 	
-		var _a = null;
-		try {
-			_a = Object.assign({}, data);
-		} catch (e) {
-			_a = data;
-		}
-	
-		var _el_deck = new Deck(_a, _id);
+		var _el_deck = new Deck(data, id);
 	
 		// fill deck
 		if (data.fill) {
@@ -2940,7 +2977,7 @@ var SolitaireEngine =
 	
 		var _elements = _share2.default.get('elements');
 	
-		_elements[_id] = _el_deck;
+		_elements[id] = _el_deck;
 	
 		_share2.default.set('elements', _elements);
 	
@@ -4517,9 +4554,9 @@ var SolitaireEngine =
 	
 	var _deckAction3 = _interopRequireDefault(_deckAction2);
 	
-	var _tips2 = __webpack_require__(7);
+	var _tips = __webpack_require__(7);
 	
-	var _tips3 = _interopRequireDefault(_tips2);
+	var _tips2 = _interopRequireDefault(_tips);
 	
 	var _deck = __webpack_require__(12);
 	
@@ -4565,7 +4602,7 @@ var SolitaireEngine =
 				_common2.default.curLock();
 	
 				var _relations = deck.getRelationsByName('around', { from: null });
-				var _tips = _tips3.default.getTips();
+				// let _tips = Tips.getTips();
 	
 				// выполняется для всех вокруг
 				// ход не делается
@@ -4579,7 +4616,7 @@ var SolitaireEngine =
 	
 						for (var i in _relations) {
 	
-							if (_tips3.default.fromTo(deck.name, _relations[i].to)) {
+							if (_tips2.default.fromTo(deck.name, _relations[i].to)) {
 								_runStack.push(_relations[i]);
 							}
 						}
@@ -5581,7 +5618,12 @@ var SolitaireEngine =
 				};
 			};
 		} else {
-			return _elements;
+			for (var _d in _elements) {
+				if (_elements[_d].type == 'deck') {
+					_decks[_d] = _elements[_d];
+				};
+			};
+			// return _elements;
 		}
 	
 		return _decks;
@@ -5780,19 +5822,22 @@ var SolitaireEngine =
 			return;
 		}
 	
-		var _decks = group.getDecks();
+		// получаем стопки текущей группы
+		var decks = group.getDecks();
 	
 		if (typeof data.decks == 'undefined' || typeof data.decks == 'number') {
 			data.decks = [];
 		}
 	
-		for (var i in _decks) {
+		// прокидываем конфигурацию для стопок
+		for (var i in decks) {
 	
+			// иннициируем конфигурацию стопки если отсутствует
 			if (!data.decks[i]) {
 				data.decks[i] = {};
 			};
 	
-			// changed values
+			// прокидываем информацию о координатах группы
 			if (data.position && data.decks[i].parentPosition) {
 				data.decks[i].parentPosition = {
 					x: data.position.x,
@@ -5800,45 +5845,46 @@ var SolitaireEngine =
 				};
 			};
 	
-			if (data.rotate) {
-				data.decks[i].rotate = data.rotate;
-			};
-			if (data.paddingX) {
+			// прокидываем остальные параметры (параметры группы приоритетнее)
+			if (typeof data.paddingX == "number") {
 				data.decks[i].paddingX = data.paddingX;
 			};
-			if (data.paddingY) {
+			if (typeof data.paddingY == "number") {
 				data.decks[i].paddingY = data.paddingY;
 			};
-			if (data.flipPaddingX) {
+	
+			if (typeof data.flipPaddingX == "number") {
 				data.decks[i].flipPaddingX = data.flipPaddingX;
 			};
-			if (data.flipPaddingY) {
+			if (typeof data.flipPaddingY == "number") {
 				data.decks[i].flipPaddingY = data.flipPaddingY;
 			};
-			if (!data.decks[i].position) {
+	
+			if (typeof data.decks[i].position == "undefined") {
 				data.decks[i].position = {};
 			};
-			if (!data.decks[i].parentPosition) {
-				data.decks[i].parentPosition = {};
+	
+			data.decks[i].parentPosition = {};
+	
+			if (typeof data.rotate == "number") {
+				data.decks[i].parentRotate = data.rotate;
 			};
 	
-			if (!data.decks[i].parentPosition.x && a.position && a.position.x && typeof a.position.x == 'number') {
+			if (data.position && typeof data.position.x == 'number') {
 				data.decks[i].parentPosition.x = data.position.x;
 			};
 	
-			if (!data.decks[i].parentPosition.y && a.position && a.position.y && typeof a.position.y == 'number') {
+			if (data.position && typeof data.position.y == 'number') {
 				data.decks[i].parentPosition.y = data.position.y;
 			};
 	
+			// расстановка стопок
 			if (data.placement) {
-	
-				var _card = _defaults2.default.card;
-	
 				if (data.placement.x) {
-					data.decks[i].position.x = (data.placement.x + _card.width) * i;
+					data.decks[i].position.x = (data.placement.x + _defaults2.default.card.width) * i;
 				}
 				if (data.placement.y) {
-					data.decks[i].position.y = (data.placement.y + _card.height) * i;
+					data.decks[i].position.y = (data.placement.y + _defaults2.default.card.height) * i;
 				}
 			};
 	
@@ -5858,7 +5904,7 @@ var SolitaireEngine =
 				data.decks[i].flipPaddingY = data.flipPaddingY;
 			};
 	
-			_decks[i].Redraw(data.decks[i]);
+			decks[i].Redraw(data.decks[i]);
 		};
 	};
 	
@@ -8152,9 +8198,7 @@ var SolitaireEngine =
 				try {
 	
 					for (var attrName in a) {
-						try {
-							this.el.style[attrName] = a[attrName];
-						} catch (e) {}
+						this.el.style[attrName] = a[attrName];
 					}
 	
 					return this;
@@ -8166,8 +8210,9 @@ var SolitaireEngine =
 			key: 'hide',
 			value: function hide() {
 				try {
-	
-					return this.css({ 'display': 'none' });
+					return this.css({
+						'display': 'none'
+					});
 				} catch (e) {}
 			}
 			// --	
@@ -8176,8 +8221,9 @@ var SolitaireEngine =
 			key: 'show',
 			value: function show() {
 				try {
-	
-					return this.css({ 'display': 'block' });
+					return this.css({
+						'display': 'block'
+					});
 				} catch (e) {}
 			}
 			// --	
@@ -8190,6 +8236,7 @@ var SolitaireEngine =
 					if (el.el) {
 						el = el.el;
 					}
+	
 					this.el.appendChild(el);
 	
 					return this;
@@ -8224,6 +8271,7 @@ var SolitaireEngine =
 	
 				try {
 					(function () {
+	
 						var _animation = _share2.default.get('animation');
 	
 						typeof animationTime == "undefined" && (animationTime = _share2.default.get('animationTime'));
@@ -8234,7 +8282,9 @@ var SolitaireEngine =
 						setTimeout(function () {
 	
 							if (_animation) {
-								_this.css({ transition: animationTime / 1000 + 's' });
+								_this.css({
+									'transition': animationTime / 1000 + 's'
+								});
 							}
 	
 							var counter = 0;
@@ -8254,11 +8304,10 @@ var SolitaireEngine =
 	
 							for (var attrName in params) {
 	
-								if (
-								// this.el.style[attrName] != params[attrName]
-								reType(_this.el.style[attrName]) != reType(params[attrName])) {
+								if (reType(_this.el.style[attrName]) != reType(params[attrName])) {
 									counter += 1;
 								}
+	
 								_this.el.style[attrName] = params[attrName];
 							}
 	
@@ -8304,17 +8353,10 @@ var SolitaireEngine =
 			key: 'remove',
 			value: function remove() {
 				try {
-	
 					// this.el.remove();
 					this.el.parentNode.removeChild(this.el);
 				} catch (e) {}
 			}
-	
-			/*getEl() {
-	  	
-	  	return this.el;
-	  }*/
-	
 		}, {
 			key: 'parent',
 			value: function parent() {
@@ -8323,41 +8365,21 @@ var SolitaireEngine =
 		}, {
 			key: 'after',
 			value: function after(html) {
+	
 				try {
 					this.el.parentNode.insertBefore(html, this.el.nextElementSibling);
-					/*if(html.el) html = html.el;
-	    	let _parentElements = this.el.parentNode.children;
-	    let _newChildren = [];
-	    
-	    for(let i in _parentElements) {
-	    	_newChildren.push(_parentElements[i]);
-	    	if(_parentElements[i] == this.el) {
-	    		_newChildren.push(html);
-	    	}
-	    }
-	    
-	    this.el.parentNode.children = _newChildren;*/
 				} catch (e) {}
+	
 				return this;
 			}
 		}, {
 			key: 'before',
 			value: function before(html) {
+	
 				try {
 					this.el.parentNode.insertBefore(html, this.el);
-					/*if(html.el) html = html.el;
-	    	let _parentElements = this.el.parentNode.children;
-	    let _newChildren = [];
-	    
-	    for(let i in _parentElements) {
-	    	if(_parentElements[i] == this.el) {
-	    		_newChildren.push(html);
-	    	}
-	    	_newChildren.push(_parentElements[i]);
-	    }
-	    
-	    this.el.parentNode.children = _newChildren;*/
 				} catch (e) {}
+	
 				return this;
 			}
 		}, {
@@ -8627,53 +8649,56 @@ var SolitaireEngine =
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
-	var applyChangedParameters = function applyChangedParameters(params, deckData, deck) {
+	/*
+	 * addDeckEl
+	 * redrawDeckFlip
+	 * redrawDeckIndexes
+	 * redrawDeck
+	 */
 	
-		params.x = deckData.position && deckData.position.x && typeof deckData.position.x == 'number' ? deckData.position.x : 0, params.y = deckData.position && deckData.position.y && typeof deckData.position.y == 'number' ? deckData.position.y : 0;
+	var applyChangedParameters = function applyChangedParameters(data) {
 	
-		params.x = deckData.parentPosition && deckData.parentPosition.x ? params.x + deckData.parentPosition.x : params.x;
-		params.y = deckData.parentPosition && deckData.parentPosition.y ? params.y + deckData.parentPosition.y : params.y;
+		data.params.x = ((data.deckData.position && typeof data.deckData.position.x == 'number' ? data.deckData.position.x : 0) | 0) + ((data.deckData.parentPosition && typeof data.deckData.parentPosition.x == 'number' ? data.deckData.parentPosition.x : 0) | 0);
 	
-		deck.rotate = params.rotate = deckData.rotate && typeof deckData.rotate == 'number' ? deckData.rotate : 0;
+		data.params.y = ((data.deckData.position && typeof data.deckData.position.y == 'number' ? data.deckData.position.y : 0) | 0) + ((data.deckData.parentPosition && typeof data.deckData.parentPosition.y == 'number' ? data.deckData.parentPosition.y : 0) | 0);
 	
-		params.padding_y = deckData.paddingY && typeof deckData.paddingY == 'number' ? deckData.paddingY : deckData.paddingType ? _defaults2.default.padding_y : 0;
+		data.deck.rotate = data.params.rotate = data.deckData.rotate && typeof data.deckData.rotate == 'number' ? data.deckData.rotate : 0;
 	
-		params.padding_x = deckData.paddingX && typeof deckData.paddingX == 'number' ? deckData.paddingX : deckData.paddingType ? _defaults2.default.padding_x : 0;
+		data.params.padding_y = data.deckData.paddingY && typeof data.deckData.paddingY == 'number' ? data.deckData.paddingY : data.deckData.paddingType ? _defaults2.default.padding_y : 0;
 	
-		params.flip_padding_y = deckData.flipPaddingY && typeof deckData.flipPaddingY == 'number' ? deckData.flipPaddingY : deckData.paddingType ? _defaults2.default.flip_padding_y : 0;
+		data.params.padding_x = data.deckData.paddingX && typeof data.deckData.paddingX == 'number' ? data.deckData.paddingX : data.deckData.paddingType ? _defaults2.default.padding_x : 0;
 	
-		params.flip_padding_x = deckData.flipPaddingX && typeof deckData.flipPaddingX == 'number' ? deckData.flipPaddingX : deckData.paddingType ? _defaults2.default.flip_padding_x : 0;
+		data.params.flip_padding_y = data.deckData.flipPaddingY && typeof data.deckData.flipPaddingY == 'number' ? data.deckData.flipPaddingY : data.deckData.paddingType ? _defaults2.default.flip_padding_y : 0;
+	
+		data.params.flip_padding_x = data.deckData.flipPaddingX && typeof data.deckData.flipPaddingX == 'number' ? data.deckData.flipPaddingX : data.deckData.paddingType ? _defaults2.default.flip_padding_x : 0;
 	};
 	
 	// --------------------------------------------------------------------------------------------------------
 	
 	_event2.default.listen('addDeckEl', function (data) {
 	
-		applyChangedParameters(data.params, data.deckData, data.deck);
+		applyChangedParameters(data);
 	
 		var _deckDomElement = (0, _elRender2.default)('<div>');
 	
 		var _params = {
-			transform: 'rotate(' + (data.params.rotate | 0) + 'deg)',
-			width: _defaults2.default.card.width + 'px',
-			height: _defaults2.default.card.height + 'px',
-			left: data.params.x + 'px',
-			top: data.params.y + 'px'
+			'transform': 'rotate(' + (data.params.rotate | 0) + 'deg)',
+			'width': _defaults2.default.card.width + 'px',
+			'height': _defaults2.default.card.height + 'px',
+			'left': data.params.x + 'px',
+			'top': data.params.y + 'px',
+			'display': data.deck.visible ? 'block' : 'none'
 		};
-	
-		_params.display = data.deck.visible ? 'block' : 'none';
 	
 		(0, _elRender2.default)(_deckDomElement).css(_params).addClass('el').attr({
 			id: data.deck.id
 		});
 	
 		if (data.deckData.showSlot) {
-	
 			(0, _elRender2.default)(_deckDomElement).addClass('slot');
 		}
 	
 		if (data.deckData.class) {
-	
 			(0, _elRender2.default)(_deckDomElement).addClass(data.deckData.class);
 		}
 	
@@ -8736,39 +8761,23 @@ var SolitaireEngine =
 			return false;
 		};
 	
-		if (data.deckData) {
-	
-			applyChangedParameters(data.params, data.deckData, data.deck);
-	
-			if (data.deckData.paddingX) {
-				_share2.default.get('padding_x', data.deckData.paddingX);
-			}
-	
-			if (data.deckData.flipPaddingX) {
-				_share2.default.get('flip_padding_x', data.deckData.flipPaddingX);
-			}
-	
-			if (data.deckData.paddingY) {
-				_share2.default.get('padding_y', data.deckData.paddingY);
-			}
-	
-			if (data.deckData.flipPaddingY) {
-				_share2.default.get('flip_padding_y', data.deckData.flipPaddingY);
-			}
+		if (data && data.deckData && data.deck && data.params) {
+			applyChangedParameters(data);
 		}
 	
 		// перерисовка стопки
 		var _params = {
-			transform: 'rotate(' + (data.params.rotate | 0) + 'deg)',
-			left: data.params.x + 'px',
-			top: data.params.y + 'px'
+			'transform': 'rotate(' + (data.params.rotate | 0) + 'deg)',
+			'left': data.params.x + 'px',
+			'top': data.params.y + 'px',
+			'display': data.deck.visible ? 'block' : 'none'
 		};
-	
-		_params.display = data.deck.visible ? 'block' : 'none';
 	
 		var _deckDomElement = _share2.default.get('domElement:' + data.deck.id);
 	
 		(0, _elRender2.default)(_deckDomElement).css(_params);
+	
+		console.log('redraw cards for', data.deck.name, data.cards);
 	
 		// перерисовка карт
 		for (var i in data.cards) {
@@ -8783,10 +8792,9 @@ var SolitaireEngine =
 				'transform': 'rotate(' + (data.params.rotate | 0) + 'deg)',
 				'left': _card_position.x + 'px',
 				'top': _card_position.y + 'px',
-				'z-index': _zIndex
+				'z-index': _zIndex,
+				'display': data.deck.visible ? 'block' : 'none'
 			};
-	
-			_params2.display = data.deck.visible ? 'block' : 'none';
 	
 			var _cardDomElement = _share2.default.get('domElement:' + data.cards[i].id);
 	
@@ -8942,6 +8950,12 @@ var SolitaireEngine =
 	var _elRender2 = _interopRequireDefault(_elRender);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	/*
+	 * moveDragDeck
+	 * moveDragDeckDone
+	 * dragDeck
+	 */
 	
 	var angleValidate = function angleValidate(_angle) {
 	

@@ -11,33 +11,35 @@ import groupRedraw    from 'groupRedraw';
 import groupGenerator from 'groupGenerator';
 
 const params = {
-	"paddingType"  : {type : "any"}                    ,
-	"flip"         : {type : "any"}                    ,
-	"showSlot"     : {type : "any"}                    ,
-	"takeRules"    : {type : "any"}                    ,
-	"putRules"     : {type : "any"}                    ,
-	"fillRule"     : {type : "any"}                    ,
-	"autoHide"     : {type : "any"}                    ,
-	"paddingX"     : {type : "any"}                    ,
-	"paddingY"     : {type : "any"}                    ,
-	"flipPaddingX" : {type : "any"}                    ,
-	"flipPaddingY" : {type : "any"}                    ,
-	"actions"      : {type : "any"}                    ,
-	"save"         : {type : "boolean", default : true}
-	// "longStep"     : {type : "boolean", default : false}
+	"paddingType"  : {"type" : "any"},
+	"flip"         : {"type" : "any"},
+	"showSlot"     : {"type" : "any"},
+	"takeRules"    : {"type" : "any"},
+	"putRules"     : {"type" : "any"},
+	"fillRule"     : {"type" : "any"},
+	"autoHide"     : {"type" : "any"},
+	"paddingX"     : {"type" : "any"},
+	"paddingY"     : {"type" : "any"},
+	"flipPaddingX" : {"type" : "any"},
+	"flipPaddingY" : {"type" : "any"},
+	"actions"      : {"type" : "any"},
+	"save"         : {
+		"type"    : "boolean",
+		"default" : true
+	}
 };
 
 class groupClass {
 	
-	constructor(data, _id) {
+	constructor(data, id) {
 		
 		this.type = 'group';
 		
-		this.id = _id
+		this.id = id
 
 		this.name = data.name && typeof data.name == 'string' 
 			? data.name 
-			: ('name_' + _id);
+			: ('name_' + id);
 		
 		this.position = {
 			x : data.position && data.position.x && typeof data.position.x == 'number' 
@@ -112,9 +114,9 @@ class groupClass {
 		let _index = 0;
 		
 		if(
-			data.groupIndex                                                                 &&
+			data.groupIndex                                                                    &&
 			decks[ this.deckIndex[data.groupIndex - 1] ].this.deckIndex == data.this.deckIndex &&
-			typeof data.groupIndex == 'number'                                              &&
+			typeof data.groupIndex == 'number'                                                 &&
 			this.deckIndex[data.groupIndex - 1]
 		) {
 			console.warn('Warning: duplicate groupIndex', data.groupIndex, 'changed to null');
@@ -159,7 +161,6 @@ class groupClass {
 		
 		// смещаем координаты колод относиткльно координад группы
 		if(this.placement) {
-
 
 			if(this.placement.x) {
 				data.position.x = (this.placement.x + defaults.card.width)  * (_index);
@@ -237,8 +238,8 @@ class groupClass {
 	}
 
 	// Redraw group
-	Redraw(_a) {
-		groupRedraw(this, _a);
+	Redraw(data) {
+		groupRedraw(this, data);
 	}
 
 	hasDeck(deckName) {
@@ -264,9 +265,13 @@ let add = function(data) {
 		return false;
 	}
 
-	let _id = 'group_' + common.genId();
+	if(!data.decks) {
+		return false;
+	}
 
-	let _el_group = new groupClass(data, _id);
+	let id = 'group_' + common.genId();
+
+	let _el_group = new groupClass(data, id);
 
 	if(data.decks) {
 
@@ -277,7 +282,7 @@ let add = function(data) {
 					"count" : data.decks
 				}
 			};
-		};
+		}
 
 		if(data.decks.generator) {
 
@@ -297,7 +302,7 @@ let add = function(data) {
 
 			data.placement = null;
 
-		};
+		}
 
 		// relations TO <-> FROM
 		// if( data.backRelations ) TODO
@@ -326,10 +331,10 @@ let add = function(data) {
 		for(let d in data.decks) {
 			_el_group.addDeck(data.decks[d]);
 		};
-	};
+	}
 
 	let _elements = share.get('elements');
-	_elements[_id] = _el_group;
+	_elements[id] = _el_group;
 	share.set('elements', _elements);
 	
 	// fill group
@@ -344,11 +349,11 @@ let add = function(data) {
 	return _el_group;
 };
 
-let getGroup = function(name) {
+let getByName = function(name) {// TODO rename to "getByName"
 	return common.getElementsByName(name, 'group')[0];
 };
 	
 export default {
-	add,
-	getGroup
+	getByName,
+	add
 };

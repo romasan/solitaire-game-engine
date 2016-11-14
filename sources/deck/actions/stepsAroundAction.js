@@ -33,7 +33,7 @@ class stepsAroundAction extends deckAction {
 		common.curLock();
 		
 		let _relations = deck.getRelationsByName('around', {from: null});
-		let _tips = Tips.getTips();
+		// let _tips = Tips.getTips();
 
 		// выполняется для всех вокруг
 		// ход не делается

@@ -7,6 +7,12 @@ import defaults from 'defaults';
 
 import elRender from 'elRender';
 
+/*
+ * moveDragDeck
+ * moveDragDeckDone
+ * dragDeck
+ */
+
 let angleValidate = (_angle) => {
 
 	if(_angle < 0  ) { _angle += 360; }
@@ -25,7 +31,7 @@ event.listen('moveDragDeck', (data) => {
 
 		let _position = data.destination.padding(data.destination.cards.length - 1 + (i | 0));
 
-		let departureAngle   = angleValidate(data.departure	.rotate), 
+		let departureAngle   = angleValidate(data.departure	 .rotate), 
 		    destinationAngle = angleValidate(data.destination.rotate);
 
 		let _cardDomElement = share.get('domElement:' + data.moveDeck[i].card.id);
