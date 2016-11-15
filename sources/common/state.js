@@ -10,6 +10,13 @@ import getDeckById from 'getDeckById';
 
 // let stateModel = {};
 
+let cardModel = [
+	'parent' ,
+	'visible',
+	'flip'   ,
+	'filled'
+];
+
 class stateManager {
 	
 	constructor() {
@@ -58,13 +65,23 @@ class stateManager {
 			let _cards = [];
 
 			for(let cardId in _decks[deckId].cards) {
-				_cards.push({
+
+				let _card = {
 					'name'    : _decks[deckId].cards[cardId].name   ,
-					'id'      : _decks[deckId].cards[cardId].id     ,
-					'visible' : _decks[deckId].cards[cardId].visible,
-					'flip'    : _decks[deckId].cards[cardId].flip   ,
-					'parent'  : _decks[deckId].cards[cardId].parent
-				});
+					'id'      : _decks[deckId].cards[cardId].id
+
+					// 'parent'  : _decks[deckId].cards[cardId].parent ,
+					// 'visible' : _decks[deckId].cards[cardId].visible,
+					// 'flip'    : _decks[deckId].cards[cardId].flip   ,
+					// 'filled'  : _decks[deckId].cards[cardId].filled
+				};
+
+				for(let i in cardModel) {
+					let _name = cardModel[i];
+					_card[_name] = _decks[deckId].cards[cardId][name];
+				}
+
+				_cards.push(_card);
 			}
 
 			this._state.model[deckId] = {
@@ -109,9 +126,15 @@ class stateManager {
 
 				if(_card.name == this._state.model[deckId].cards[i].name) {
 					
-					_card.parent  = this._state.model[deckId].cards[i].parent;
-					_card.visible = this._state.model[deckId].cards[i].visible;
-					_card.flip    = this._state.model[deckId].cards[i].flip;
+					// _card.parent  = this._state.model[deckId].cards[i].parent;
+					// _card.visible = this._state.model[deckId].cards[i].visible;
+					// _card.flip    = this._state.model[deckId].cards[i].flip;
+					// _card.filled  = this._state.model[deckId].cards[i].filled;
+
+					for(let i in cardModel) {
+						let _name = cardModel[i];
+						_card[_name] = this._state.model[deckId].cards[i][name];
+					}
 					
 					_cards.push(_card);
 				} else {

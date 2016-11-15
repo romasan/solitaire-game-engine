@@ -15,7 +15,7 @@ let fillRules = {
 
 		let card = deck.getTopCard();
 		
-		return card && common.validateCardName(card).rank;
+		return card && common.validateCardName(card);
 	},
 
 	_prev_next_desc_ask : (deck, type, callback) => {
@@ -29,7 +29,10 @@ let fillRules = {
 			let _deck = Deck.getDeck(_prev);
 			    _card = _deck.getTopCard();
 			
-			_check = _check && _card && callback(common.validateCardName(_topCard).value, common.validateCardName(_card).value|0);
+			_check = _check && _card && callback(
+				common.validateCardName(_topCard).value    ,
+				common.validateCardName(_card)   .value | 0
+			);
 			
 			_topCard = _card;
 			_prev = getBeside(_deck)[type];
@@ -57,12 +60,14 @@ let fillRules = {
 
 	topAce : (deck) => {
 
-		return fillRules._top(deck) == defaults.card.ranks[0];
+		return fillRules._top(deck).rank == defaults.card.ranks[0];
 	},
 
 	topKing : (deck) => {
 
-		return fillRules._top(deck) == defaults.card.ranks[defaults.card.ranks.length - 1];
+		let lastIndex = defaults.card.ranks.length - 1
+
+		return fillRules._top(deck).rank == defaults.card.ranks[lastIndex];
 	},
 
 	//  prevDescOne: (deck) => {

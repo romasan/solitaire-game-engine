@@ -37,6 +37,7 @@ export default function(name) {// TODO
 			type    : 'card' ,
 			visible : true   ,
 			flip    : false  ,
+			filled  : false  ,
 			parent  : this.id
 		};
 		

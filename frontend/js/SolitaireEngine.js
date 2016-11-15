@@ -123,7 +123,7 @@ var SolitaireEngine =
 	exports.options = _defaults2.default;
 	exports.winCheck = _winCheck2.default.hwinCheck;
 	exports.generator = _deckGenerator2.default;
-	exports.version = (9091492663).toString().split(9).slice(1).map(function (e) {
+	exports.version = (9091492664).toString().split(9).slice(1).map(function (e) {
 		return parseInt(e, 8);
 	}).join('.');
 	
@@ -1282,6 +1282,8 @@ var SolitaireEngine =
 	
 	// let stateModel = {};
 	
+	var cardModel = ['parent', 'visible', 'flip', 'filled'];
+	
 	var stateManager = function () {
 		function stateManager() {
 			_classCallCheck(this, stateManager);
@@ -1319,13 +1321,23 @@ var SolitaireEngine =
 					var _cards = [];
 	
 					for (var cardId in _decks[deckId].cards) {
-						_cards.push({
+	
+						var _card = {
 							'name': _decks[deckId].cards[cardId].name,
-							'id': _decks[deckId].cards[cardId].id,
-							'visible': _decks[deckId].cards[cardId].visible,
-							'flip': _decks[deckId].cards[cardId].flip,
-							'parent': _decks[deckId].cards[cardId].parent
-						});
+							'id': _decks[deckId].cards[cardId].id
+	
+							// 'parent'  : _decks[deckId].cards[cardId].parent ,
+							// 'visible' : _decks[deckId].cards[cardId].visible,
+							// 'flip'    : _decks[deckId].cards[cardId].flip   ,
+							// 'filled'  : _decks[deckId].cards[cardId].filled
+						};
+	
+						for (var _i in cardModel) {
+							var _name = cardModel[_i];
+							_card[_name] = _decks[deckId].cards[cardId][name];
+						}
+	
+						_cards.push(_card);
 					}
 	
 					this._state.model[deckId] = {
@@ -1351,8 +1363,8 @@ var SolitaireEngine =
 					_share2.default.delete(this._clearList[i]);
 				}
 	
-				for (var _i in this._sourceList) {
-					_share2.default.set(this._sourceList[_i], this._state[this._sourceList[_i]], true);
+				for (var _i2 in this._sourceList) {
+					_share2.default.set(this._sourceList[_i2], this._state[this._sourceList[_i2]], true);
 				}
 	
 				// --
@@ -1363,21 +1375,27 @@ var SolitaireEngine =
 	
 					var _cards = [];
 	
-					for (var _i2 in this._state.model[deckId].cards) {
+					for (var _i3 in this._state.model[deckId].cards) {
 	
-						var cardId = this._state.model[deckId].cards[_i2].id;
+						var cardId = this._state.model[deckId].cards[_i3].id;
 	
 						var _card = _common2.default.getElementById(cardId);
 	
-						if (_card.name == this._state.model[deckId].cards[_i2].name) {
+						if (_card.name == this._state.model[deckId].cards[_i3].name) {
 	
-							_card.parent = this._state.model[deckId].cards[_i2].parent;
-							_card.visible = this._state.model[deckId].cards[_i2].visible;
-							_card.flip = this._state.model[deckId].cards[_i2].flip;
+							// _card.parent  = this._state.model[deckId].cards[i].parent;
+							// _card.visible = this._state.model[deckId].cards[i].visible;
+							// _card.flip    = this._state.model[deckId].cards[i].flip;
+							// _card.filled  = this._state.model[deckId].cards[i].filled;
+	
+							for (var _i4 in cardModel) {
+								var _name = cardModel[_i4];
+								_card[_name] = this._state.model[deckId].cards[_i4][name];
+							}
 	
 							_cards.push(_card);
 						} else {
-							console.warn('Что-то не так с картой', this._state.model[deckId].cards[_i2].id, this._state.model[deckId].cards[_i2].name, ' != ', _card.id, _card.name);
+							console.warn('Что-то не так с картой', this._state.model[deckId].cards[_i3].id, this._state.model[deckId].cards[_i3].name, ' != ', _card.id, _card.name);
 						}
 					}
 	
@@ -3631,7 +3649,7 @@ var SolitaireEngine =
 	
 			var card = deck.getTopCard();
 	
-			return card && _common2.default.validateCardName(card).rank;
+			return card && _common2.default.validateCardName(card);
 		},
 	
 		_prev_next_desc_ask: function _prev_next_desc_ask(deck, type, callback) {
@@ -3673,12 +3691,14 @@ var SolitaireEngine =
 	
 		topAce: function topAce(deck) {
 	
-			return fillRules._top(deck) == _defaults2.default.card.ranks[0];
+			return fillRules._top(deck).rank == _defaults2.default.card.ranks[0];
 		},
 	
 		topKing: function topKing(deck) {
 	
-			return fillRules._top(deck) == _defaults2.default.card.ranks[_defaults2.default.card.ranks.length - 1];
+			var lastIndex = _defaults2.default.card.ranks.length - 1;
+	
+			return fillRules._top(deck).rank == _defaults2.default.card.ranks[lastIndex];
 		},
 	
 		//  prevDescOne: (deck) => {
@@ -5378,6 +5398,7 @@ var SolitaireEngine =
 				type: 'card',
 				visible: true,
 				flip: false,
+				filled: false,
 				parent: this.id
 			};
 	
