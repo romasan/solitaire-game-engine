@@ -15,8 +15,8 @@ export default function(cardId) {
 
 	rulesCorrect = rulesCorrect && !this.locked;
 	
-	if(typeof this.fill == "boolean") {
-		rulesCorrect = rulesCorrect && !this.fill;
+	if(typeof this.full == "boolean") {
+		rulesCorrect = rulesCorrect && !this.full;
 	}
 
 	// берём карту/стопку

@@ -16,7 +16,7 @@ const params = {
 	"showSlot"     : {"type" : "any"},
 	"takeRules"    : {"type" : "any"},
 	"putRules"     : {"type" : "any"},
-	"fillRule"     : {"type" : "any"},
+	"fullRules"    : {"type" : "any"},
 	"autoHide"     : {"type" : "any"},
 	"paddingX"     : {"type" : "any"},
 	"paddingY"     : {"type" : "any"},
@@ -75,6 +75,8 @@ class groupClass {
 		};
 		
 		this.deckIndex = [];
+
+		this.tags = data.tags;
 
 	}
 

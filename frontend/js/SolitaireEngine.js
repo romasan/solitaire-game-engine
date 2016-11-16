@@ -123,7 +123,7 @@ var SolitaireEngine =
 	exports.options = _defaults2.default;
 	exports.winCheck = _winCheck2.default.hwinCheck;
 	exports.generator = _deckGenerator2.default;
-	exports.version = (9091492664).toString().split(9).slice(1).map(function (e) {
+	exports.version = (9091492672).toString().split(9).slice(1).map(function (e) {
 		return parseInt(e, 8);
 	}).join('.');
 	
@@ -1282,7 +1282,7 @@ var SolitaireEngine =
 	
 	// let stateModel = {};
 	
-	var cardModel = ['parent', 'visible', 'flip', 'filled'];
+	var cardModel = ['parent', 'visible', 'flip'];
 	
 	var stateManager = function () {
 		function stateManager() {
@@ -1325,11 +1325,6 @@ var SolitaireEngine =
 						var _card = {
 							'name': _decks[deckId].cards[cardId].name,
 							'id': _decks[deckId].cards[cardId].id
-	
-							// 'parent'  : _decks[deckId].cards[cardId].parent ,
-							// 'visible' : _decks[deckId].cards[cardId].visible,
-							// 'flip'    : _decks[deckId].cards[cardId].flip   ,
-							// 'filled'  : _decks[deckId].cards[cardId].filled
 						};
 	
 						for (var _i in cardModel) {
@@ -1382,11 +1377,6 @@ var SolitaireEngine =
 						var _card = _common2.default.getElementById(cardId);
 	
 						if (_card.name == this._state.model[deckId].cards[_i3].name) {
-	
-							// _card.parent  = this._state.model[deckId].cards[i].parent;
-							// _card.visible = this._state.model[deckId].cards[i].visible;
-							// _card.flip    = this._state.model[deckId].cards[i].flip;
-							// _card.filled  = this._state.model[deckId].cards[i].filled;
 	
 							for (var _i4 in cardModel) {
 								var _name = cardModel[_i4];
@@ -2046,6 +2036,12 @@ var SolitaireEngine =
 	// 	}
 	// }
 	
+	/*
+	 * create
+	 * Redraw
+	 * clear
+	 */
+	
 	var Field = function () {
 		function Field() {
 			_classCallCheck(this, Field);
@@ -2294,7 +2290,7 @@ var SolitaireEngine =
 		"showSlot": { "type": "any" },
 		"takeRules": { "type": "any" },
 		"putRules": { "type": "any" },
-		"fillRule": { "type": "any" },
+		"fullRules": { "type": "any" },
 		"autoHide": { "type": "any" },
 		"paddingX": { "type": "any" },
 		"paddingY": { "type": "any" },
@@ -2341,6 +2337,8 @@ var SolitaireEngine =
 			};
 	
 			this.deckIndex = [];
+	
+			this.tags = data.tags;
 		}
 	
 		// --------------------------------------------------------------------
@@ -2672,9 +2670,9 @@ var SolitaireEngine =
 	
 	var _readyTakeRules2 = _interopRequireDefault(_readyTakeRules);
 	
-	var _fillRules = __webpack_require__(19);
+	var _fullRules = __webpack_require__(19);
 	
-	var _fillRules2 = _interopRequireDefault(_fillRules);
+	var _fullRules2 = _interopRequireDefault(_fullRules);
 	
 	var _paddingTypes = __webpack_require__(20);
 	
@@ -2740,7 +2738,7 @@ var SolitaireEngine =
 	
 			// parameters
 			this.type = 'deck';
-			this.fill = false;
+			this.full = false;
 	
 			this.id = id;
 	
@@ -2793,16 +2791,12 @@ var SolitaireEngine =
 			// можно ли взять карту/стопку
 			this.takeRules = data.takeRules;
 	
-			// ------------- FILL -------------
+			// ------------- FULL -------------
 	
-			this.fillRules = null;
+			this.fullRules = null;
 	
-			if (data.fillRule && !data.fillRules) {
-				data.fillRules = [data.fillRule];
-			}
-	
-			if (data.fillRules) {
-				this.fillRules = data.fillRules;
+			if (data.fullRules) {
+				this.fullRules = data.fullRules;
 			}
 	
 			// ------------- PADDING -------------
@@ -2853,8 +2847,9 @@ var SolitaireEngine =
 					return;
 				}
 	
-				_this.checkFill();
+				_this.checkFull();
 			};
+	
 			_event2.default.listen('moveDragDeck', _callback);
 		}
 	
@@ -2911,21 +2906,21 @@ var SolitaireEngine =
 				_event2.default.dispatch('redrawDeckFlip', this);
 			}
 		}, {
-			key: 'checkFill',
-			value: function checkFill() {
+			key: 'checkFull',
+			value: function checkFull() {
 	
-				if (!this.fill) {
+				if (!this.full) {
 	
 					var notFill = true;
 	
-					for (var ruleName in this.fillRules) {
+					for (var ruleName in this.fullRules) {
 	
-						if (_fillRules2.default[ruleName]) {
-							notFill = notFill && !_fillRules2.default[ruleName](this);
+						if (_fullRules2.default[ruleName]) {
+							notFill = notFill && !_fullRules2.default[ruleName](this);
 						}
 					}
 	
-					this.fill = !notFill;
+					this.full = !notFill;
 				}
 			}
 		}, {
@@ -3641,7 +3636,7 @@ var SolitaireEngine =
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
-	var fillRules = {
+	var fullRules = {
 	
 		// Internal use (filters)
 	
@@ -3691,14 +3686,14 @@ var SolitaireEngine =
 	
 		topAce: function topAce(deck) {
 	
-			return fillRules._top(deck).rank == _defaults2.default.card.ranks[0];
+			return fullRules._top(deck).rank == _defaults2.default.card.ranks[0];
 		},
 	
 		topKing: function topKing(deck) {
 	
 			var lastIndex = _defaults2.default.card.ranks.length - 1;
 	
-			return fillRules._top(deck).rank == _defaults2.default.card.ranks[lastIndex];
+			return fullRules._top(deck).rank == _defaults2.default.card.ranks[lastIndex];
 		},
 	
 		//  prevDescOne: (deck) => {
@@ -3725,62 +3720,62 @@ var SolitaireEngine =
 	
 		prevDescOne: function prevDescOne(deck) {
 	
-			return fillRules._prev_next_desc_ask(deck, 'prev', function (up, down) {
+			return fullRules._prev_next_desc_ask(deck, 'prev', function (up, down) {
 				return up == (down | 0) + 1;
 			});
 		},
 	
 		prevAscOne: function prevAscOne(deck) {
 	
-			return fillRules._prev_next_desc_ask(deck, 'prev', function (up, down) {
+			return fullRules._prev_next_desc_ask(deck, 'prev', function (up, down) {
 				return (up | 0) + 1 == down;
 			});
 		},
 	
 		nextDescOne: function nextDescOne(deck) {
 	
-			return fillRules._prev_next_desc_ask(deck, 'next', function (up, down) {
+			return fullRules._prev_next_desc_ask(deck, 'next', function (up, down) {
 				return up == (down | 0) + 1;
 			});
 		},
 	
 		nextAscOne: function nextAscOne(deck) {
 	
-			return fillRules._prev_next_desc_ask(deck, 'next', function (up, down) {
+			return fullRules._prev_next_desc_ask(deck, 'next', function (up, down) {
 				return (up | 0) + 1 == down;
 			});
 		},
 	
 		prevDesc: function prevDesc(deck) {
 	
-			return fillRules._prev_next_desc_ask(deck, 'prev', function (up, down) {
+			return fullRules._prev_next_desc_ask(deck, 'prev', function (up, down) {
 				return up > down;
 			});
 		},
 	
 		prevAsc: function prevAsc(deck) {
 	
-			return fillRules._prev_next_desc_ask(deck, 'prev', function (up, down) {
+			return fullRules._prev_next_desc_ask(deck, 'prev', function (up, down) {
 				return up < down;
 			});
 		},
 	
 		nextDesc: function nextDesc(deck) {
 	
-			return fillRules._prev_next_desc_ask(deck, 'next', function (up, down) {
+			return fullRules._prev_next_desc_ask(deck, 'next', function (up, down) {
 				return up > down;
 			});
 		},
 	
 		nextAsc: function nextAsc(deck) {
 	
-			return fillRules._prev_next_desc_ask(deck, 'next', function (up, down) {
+			return fullRules._prev_next_desc_ask(deck, 'next', function (up, down) {
 				return up < down;
 			});
 		}
 	};
 	
-	exports.default = fillRules;
+	exports.default = fullRules;
 
 /***/ },
 /* 20 */
@@ -5185,8 +5180,8 @@ var SolitaireEngine =
 	
 		rulesCorrect = rulesCorrect && !this.locked;
 	
-		if (typeof this.fill == "boolean") {
-			rulesCorrect = rulesCorrect && !this.fill;
+		if (typeof this.full == "boolean") {
+			rulesCorrect = rulesCorrect && !this.full;
 		}
 	
 		// берём карту/стопку
@@ -5398,7 +5393,7 @@ var SolitaireEngine =
 				type: 'card',
 				visible: true,
 				flip: false,
-				filled: false,
+				// filled  : false  ,
 				parent: this.id
 			};
 	
@@ -5527,7 +5522,7 @@ var SolitaireEngine =
 		// if(data.unflip) {
 		// };
 	
-		// if(data.fill) {
+		// if(data.full) {
 		// };
 	
 		// LOCK
@@ -5610,7 +5605,7 @@ var SolitaireEngine =
 		// if(data.flip) {
 		// };
 	
-		// if(data.fill) {
+		// if(data.full) {
 		// 	// TODO
 		// };
 	
@@ -9151,7 +9146,7 @@ var SolitaireEngine =
 	
 	_event2.default.listen('moveDragDeckDone', function (data) {
 	
-		if (!data.deck.fill) {
+		if (!data.deck.full) {
 			return;
 		}
 	

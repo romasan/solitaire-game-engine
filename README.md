@@ -3,11 +3,12 @@
 	npm install
 **Сборка:**
 	npm run build
+**Отладка:**
+	npm run dev
 **Иннициирование и запуск игры:**
 
 	SolitaireEngine.init(Field);
 
-<!-- Примеры: -->
 ---
 	Field - JSON обьект описания пасьянса
 	    zoom - масштабирование
@@ -23,6 +24,8 @@
 			по умолчанию "#map"
 		winCheck - правила окончания игры
 			тип WinCheck
+		autoSteps - ...
+			тип [Autostep]
 		groups - группы
 			тип {Group} | GroupGenerator
 		decks - стопки
@@ -39,6 +42,10 @@
 			]
 		tipsParams - ...
 			тип TipsParams
+		startZIndex - ...
+		animationTime - ...
+		preferences - пользовательские настройки
+			тип {Preference}
 ---
 	InputParams - параметры убравления (мышь)
 		doubleClick - ... 
@@ -56,6 +63,24 @@
 	WinCheck :
 	   rules - правила выигрыша
 	       тип {Win rules}
+---
+	Preference
+		title - заголовок
+			тип string
+		value - параметр по умолччанию
+			тип var
+		options - опции
+			title - заголовок
+				тип string
+			value - параметр
+				тип var
+---
+	Autostep
+		event - событие по которому вызывается
+			тип string
+		dispatch - событие которое генерирует по окончании
+			тип string
+		_-- values --_
 ---
 	Vector2d
 	   x
@@ -89,16 +114,18 @@
 		   тип [string/take rule name]
 		putRules - ...
 		   тип string/put rule name | [string/put rule name]
-		fillRule - ...
+		fullRules - ...
 		   тип [string/card name]
 		autoHide - ...
 		   тип boolean
-	   actions - ...
+		actions - ...
 		   тип {Action}
-	   fill - ...
+		fill - ...
 		   тип [string/card name] | [[string/card name]]
-	   decks - ...
+		decks - ...
 		   тип [Deck]
+		tags - ...
+		    тип [string]
 ---
 	Deck
 		name - имя стопки
@@ -127,7 +154,7 @@
 			putRules - ...
 			тип string/put rule name | [string/put rule name]
 			по умолчанию "any"
-		fillRule - ...
+		fullRules - ...
 			тип [string/card name]
 			autoHide - ...
 			тип boolean

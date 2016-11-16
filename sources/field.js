@@ -21,6 +21,12 @@ import storage      from 'storage';
 // 	}
 // }
 
+/*
+ * create
+ * Redraw
+ * clear
+ */
+
 class Field {
 
 	constructor() {

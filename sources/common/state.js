@@ -13,8 +13,7 @@ import getDeckById from 'getDeckById';
 let cardModel = [
 	'parent' ,
 	'visible',
-	'flip'   ,
-	'filled'
+	'flip'
 ];
 
 class stateManager {
@@ -67,13 +66,8 @@ class stateManager {
 			for(let cardId in _decks[deckId].cards) {
 
 				let _card = {
-					'name'    : _decks[deckId].cards[cardId].name   ,
+					'name'    : _decks[deckId].cards[cardId].name,
 					'id'      : _decks[deckId].cards[cardId].id
-
-					// 'parent'  : _decks[deckId].cards[cardId].parent ,
-					// 'visible' : _decks[deckId].cards[cardId].visible,
-					// 'flip'    : _decks[deckId].cards[cardId].flip   ,
-					// 'filled'  : _decks[deckId].cards[cardId].filled
 				};
 
 				for(let i in cardModel) {
@@ -125,11 +119,6 @@ class stateManager {
 				let _card = common.getElementById(cardId);
 
 				if(_card.name == this._state.model[deckId].cards[i].name) {
-					
-					// _card.parent  = this._state.model[deckId].cards[i].parent;
-					// _card.visible = this._state.model[deckId].cards[i].visible;
-					// _card.flip    = this._state.model[deckId].cards[i].flip;
-					// _card.filled  = this._state.model[deckId].cards[i].filled;
 
 					for(let i in cardModel) {
 						let _name = cardModel[i];

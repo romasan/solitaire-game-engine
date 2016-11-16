@@ -8,7 +8,7 @@ import common         from 'common';
 import flipTypes      from 'flipTypes';
 import readyPutRules  from 'readyPutRules';
 import readyTakeRules from 'readyTakeRules';
-import fillRules      from 'fillRules';
+import fullRules      from 'fullRules';
 import paddingTypes   from 'paddingTypes';
 import deckActions    from 'deckActions';
 import Take           from 'deckTake';
@@ -36,7 +36,7 @@ class Deck {
 		
 		// parameters
 		this.type = 'deck';
-		this.fill = false;
+		this.full = false;
 
 		this.id = id;
 
@@ -73,15 +73,15 @@ class Deck {
 		};
 
 		this.rotate = this._params.rotate;
-		
+
 		// ------------- FLIP -------------
-		
+
 		let flipType = data.flip && typeof data.flip == 'string' 
 			? data.flip 
 			: defaults.flip_type;
-		
+
 		this.cardFlipCheck = flipTypes[flipType];
-		
+
 		// ------------- PUT -------------
 
 		this.putRules = data.putRules 
@@ -102,20 +102,16 @@ class Deck {
 		// можно ли взять карту/стопку
 		this.takeRules = data.takeRules;
 
-		// ------------- FILL -------------
+		// ------------- FULL -------------
 
-		this.fillRules = null;
+		this.fullRules = null;
 
-		if(data.fillRule && !data.fillRules) {
-			data.fillRules = [data.fillRule];
+		if(data.fullRules) {
+			this.fullRules = data.fullRules;
 		}
 
-		if(data.fillRules) {
-			this.fillRules = data.fillRules;
-		}
-		
 		// ------------- PADDING -------------
-		
+
 		// порядок карт в колоде
 		let padding = data.paddingX || data.paddingY
 			? paddingTypes.special 
@@ -131,7 +127,7 @@ class Deck {
 			
 			return _padding;
 		}
-		
+
 		this.actions = [];
 		if(data.actions) {
 			this.actions = data.actions;
@@ -168,8 +164,9 @@ class Deck {
 				return;
 			}
 
-			this.checkFill();
+			this.checkFull();
 		};
+
 		event.listen('moveDragDeck', _callback);
 	}
 
@@ -219,20 +216,20 @@ class Deck {
 		event.dispatch('redrawDeckFlip', this);
 	}
 	
-	checkFill() {
+	checkFull() {
 
-		if(!this.fill) {
+		if(!this.full) {
 
 			let notFill = true;
 			
-			for(let ruleName in this.fillRules) {
+			for(let ruleName in this.fullRules) {
 
-				if(fillRules[ruleName]) {
-					notFill = notFill && !fillRules[ruleName](this);
+				if(fullRules[ruleName]) {
+					notFill = notFill && !fullRules[ruleName](this);
 				}
 			}
 			
-			this.fill = !notFill;
+			this.full = !notFill;
 		}
 	}
 

@@ -7,7 +7,7 @@ import Deck      from 'deck';
 import Tips      from 'tips';
 import getBeside from 'getBeside';
 
-let fillRules = {
+let fullRules = {
 
 	// Internal use (filters)
 
@@ -60,14 +60,14 @@ let fillRules = {
 
 	topAce : (deck) => {
 
-		return fillRules._top(deck).rank == defaults.card.ranks[0];
+		return fullRules._top(deck).rank == defaults.card.ranks[0];
 	},
 
 	topKing : (deck) => {
 
 		let lastIndex = defaults.card.ranks.length - 1
 
-		return fillRules._top(deck).rank == defaults.card.ranks[lastIndex];
+		return fullRules._top(deck).rank == defaults.card.ranks[lastIndex];
 	},
 
 	//  prevDescOne: (deck) => {
@@ -94,59 +94,59 @@ let fillRules = {
 
 	prevDescOne : (deck) => {
 
-		return fillRules._prev_next_desc_ask(deck, 'prev', (up, down) => {
+		return fullRules._prev_next_desc_ask(deck, 'prev', (up, down) => {
 			return up == (down|0) + 1;
 		});
 	},
 
 	prevAscOne : (deck) => {
 
-		return fillRules._prev_next_desc_ask(deck, 'prev', (up, down) => {
+		return fullRules._prev_next_desc_ask(deck, 'prev', (up, down) => {
 			return (up|0) + 1 == down;
 		});
 	},
 
 	nextDescOne : (deck) => {
 
-		return fillRules._prev_next_desc_ask(deck, 'next', (up, down) => {
+		return fullRules._prev_next_desc_ask(deck, 'next', (up, down) => {
 			return up == (down|0) + 1;
 		});
 	},
 
 	nextAscOne : (deck) => {
 
-		return fillRules._prev_next_desc_ask(deck, 'next', (up, down) => {
+		return fullRules._prev_next_desc_ask(deck, 'next', (up, down) => {
 			return (up|0) + 1 == down;
 		});
 	},
 
 	prevDesc : (deck) => {
 
-		return fillRules._prev_next_desc_ask(deck, 'prev', (up, down) => {
+		return fullRules._prev_next_desc_ask(deck, 'prev', (up, down) => {
 			return up > down;
 		});
 	},
 
 	prevAsc : (deck) => {
 
-		return fillRules._prev_next_desc_ask(deck, 'prev', (up, down) => {
+		return fullRules._prev_next_desc_ask(deck, 'prev', (up, down) => {
 			return up < down;
 		});
 	},
 
 	nextDesc : (deck) => {
 
-		return fillRules._prev_next_desc_ask(deck, 'next', (up, down) => {
+		return fullRules._prev_next_desc_ask(deck, 'next', (up, down) => {
 			return up > down;
 		});
 	},
 
 	nextAsc : (deck) => {
 
-		return fillRules._prev_next_desc_ask(deck, 'next', (up, down) => {
+		return fullRules._prev_next_desc_ask(deck, 'next', (up, down) => {
 			return up < down;
 		});
 	},
 };
 
-export default fillRules;
+export default fullRules;

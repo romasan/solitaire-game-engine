@@ -35,7 +35,7 @@ let _undo = (data) => {
 	// if(data.unflip) {
 	// };
 	
-	// if(data.fill) {
+	// if(data.full) {
 	// };
 
 	// LOCK
@@ -131,7 +131,7 @@ let _redo = (data) => {
 	// if(data.flip) {
 	// };
 	
-	// if(data.fill) {
+	// if(data.full) {
 	// 	// TODO
 	// };
 

@@ -93,7 +93,7 @@ event.listen('moveDragDeck', (data) => {
 
 event.listen('moveDragDeckDone', (data) => {
 
-	if(!data.deck.fill) {
+	if(!data.deck.full) {
 		return;
 	}
 
