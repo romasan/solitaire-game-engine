@@ -20,7 +20,7 @@ Field - JSON обьект описания пасьянса
 	* тип **Int**, (px)
 	* по умолчанию 0,
 * **inputParams** - ...
-	* тип [InputParams](#inputparams)
+	* тип **[InputParams](#inputparams)**
 * **field** - элемент страницы, который будет содержать в себе игровое поле
 	* тип **string**/**CSS Selector** | **HTML DOM Element Object**
 	* по умолчанию "#map"
@@ -76,7 +76,7 @@ TipsParams - параметры подсказок
 ### WinCheck
 WinCheck - ...
 * **rules** - правила выигрыша
-	* тип *[Win rules](#win-rules)*
+	* тип **[Win rules](#win-rules)**
 
 ---
 ### Preference
@@ -146,7 +146,7 @@ Group - группа
 * **fill** - ...
 	* тип [string/card name] | [[string/card name]]
 * **decks** - ...
-	* тип **\[[Deck](#deck)\]
+	* тип **\[[Deck](#deck)\]**
 * **tags** - ...
 	* тип **[string]**
 
