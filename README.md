@@ -7,9 +7,10 @@
 	npm run dev
 **Иннициирование и запуск игры:**
 
-	SolitaireEngine.init(Field);
+	SolitaireEngine.init([Field](#field));
 
 ---
+### Field
 	Field - JSON обьект описания пасьянса
 	    zoom - масштабирование
 			тип float
@@ -18,7 +19,7 @@
 			тип Int, (px)
 			по умолчанию 0,
 		inputParams - ...
-			тип InputParams
+			тип [InputParams](#inputparams)
 		field - элемент страницы, который будет содержать в себе игровое поле
 			тип string/CSS Selector | HTML DOM Element Object
 			по умолчанию "#map"
@@ -47,6 +48,7 @@
 		preferences - пользовательские настройки
 			тип {Preference}
 ---
+### InputParams
 	InputParams - параметры убравления (мышь)
 		doubleClick - ... 
 			тип boolean
