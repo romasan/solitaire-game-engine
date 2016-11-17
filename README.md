@@ -7,7 +7,7 @@
 	npm run dev
 **Иннициирование и запуск игры:**
 
-	SolitaireEngine.init([Field](#field));
+	SolitaireEngine.init\([Field](#field)\);
 
 ---
 ### Field
@@ -24,13 +24,13 @@
 			тип string/CSS Selector | HTML DOM Element Object
 			по умолчанию "#map"
 		winCheck - правила окончания игры
-			тип WinCheck
+			тип [WinCheck](#wincheck)
 		autoSteps - ...
-			тип [Autostep]
+			тип \[[Autostep](#autostep)\]
 		groups - группы
-			тип {Group} | GroupGenerator
+			тип [Group](#group) | GroupGenerator
 		decks - стопки
-			тип [Deck]
+			тип \[[Deck](#deck)\]
 		fill - ...
 			тип [string/card name] | [[string/card name]]
 			примеры:
@@ -42,11 +42,11 @@
 				["c4", "c5", "c6"]
 			]
 		tipsParams - ...
-			тип TipsParams
+			тип [TipsParams](#tipsparams)
 		startZIndex - ...
 		animationTime - ...
 		preferences - пользовательские настройки
-			тип {Preference}
+			тип [Preference](#preference)
 ---
 ### InputParams
 	InputParams - параметры убравления (мышь)
@@ -54,6 +54,7 @@
 			тип boolean
 			по умолчанию false
 ---
+### TipsParams
 	TipsParams - параметры подсказок
 		hideOnEmpty - ...
 			тип boolean
@@ -62,10 +63,12 @@
 			тип boolean
 			по умолчанию true
 ---
+### WinCheck
 	WinCheck :
 	   rules - правила выигрыша
 	       тип {Win rules}
 ---
+### Preference
 	Preference
 		title - заголовок
 			тип string
@@ -77,6 +80,7 @@
 			value - параметр
 				тип var
 ---
+### Autostep
 	Autostep
 		event - событие по которому вызывается
 			тип string
@@ -84,17 +88,19 @@
 			тип string
 		_-- values --_
 ---
+### Vector2d
 	Vector2d
 	   x
 		   тип Int
 	   y
 		   тип Int
 ---
+### Group
 	Group - группа
 	   name - имя группы
 		   тип string
 	   position - ...
-		   тип Vector2d
+		   тип [Vector2d](#vector2d)
 	       по умолчанию {x : 0, y : 0}
 	   _-- deck --_
 	   paddingType - ...
@@ -121,7 +127,7 @@
 		autoHide - ...
 		   тип boolean
 		actions - ...
-		   тип {Action}
+		   тип Action
 		fill - ...
 		   тип [string/card name] | [[string/card name]]
 		decks - ...
@@ -129,6 +135,7 @@
 		tags - ...
 		    тип [string]
 ---
+### Deck
 	Deck
 		name - имя стопки
 			тип string
@@ -162,7 +169,7 @@
 			тип boolean
 			по умолчанию false
 		actions - ...
-			тип {Action}
+			тип Action
 			locked - ...
 			тип boolean
 			по умолчанию false
@@ -181,9 +188,11 @@
 		relations - связи с другими стопками
 			тип [Relation]
 ---
+### Relation
 	Relation - связь с другими стопками
 		_См. deck relations._
 ---
+### GroupGenerator
 	GroupGenerator - ...
 		generator :
 			type - ...
@@ -191,12 +200,12 @@
 			_-- values --_
 				_См. group generators._
 ---
-	deck relations:
+### Deck relations:
 		around - ...
 		beside - ...
 		fall   - ...
 ---
-	group generators:
+### Group generators:
 		count - ...
 			_-- values --_
 			count - ...
@@ -220,10 +229,10 @@
 				тип Vector2d
 				по умолчанию {x : 0, y : 0}
 ---
-	Win rules:
+### Win rules:
 		lego : Lego //TODO
 ---
-**Описание структур:**
+## Описание структур:
 	take rules names:
 		"not"      - ...
 		"notFirst" - ...
