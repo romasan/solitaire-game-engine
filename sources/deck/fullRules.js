@@ -3,6 +3,7 @@
 import defaults  from 'defaults';
 import common    from 'common';
 
+import Group     from 'group';
 import Deck      from 'deck';
 import Tips      from 'tips';
 import getBeside from 'getBeside';
@@ -39,6 +40,46 @@ let fullRules = {
 		}
 
 		return _check;
+	},
+
+	_query : (deck, data) => {
+
+		// query : {
+		// 	all : {
+		// 		groups : ["matGroup1", "matGroup2", "matGroup3", "matGroup4"],
+		// 		excludeParent : true,
+		// 		select : "first",
+		// 	},
+		// 	rules : ["topAce"]
+		// }
+
+		let groupName = deck.parent;
+		let currentGroup = Group.getByName(groupName);
+
+		// all | any
+		if(data.all) {
+			for(let i in data.all.groups) {
+				let _group = Group.getByName(data.all.groups[i])
+				if(data.all.excludeParent && data.all.groups[i] == groupName) {
+
+				} else {
+					if(data.all.select == "first") {
+						// TODO select deck with index 1
+					} else
+					if(data.all.select == "second") {} else
+					if(data.all.select == "last") {}
+				}
+			}
+		}
+		if(data.any) {}
+		// groups
+		// 	select: first | second | last | all
+		// decks
+		// rules
+		for(let i in data.rules) {
+
+		}
+		return false;
 	},
 
 	// Rules

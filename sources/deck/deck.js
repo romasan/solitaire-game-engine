@@ -222,10 +222,21 @@ class Deck {
 
 			let notFill = true;
 			
-			for(let ruleName in this.fullRules) {
+			for(let ruleIndex in this.fullRules) {
 
-				if(fullRules[ruleName]) {
-					notFill = notFill && !fullRules[ruleName](this);
+				let _rule = fullRules[ruleIndex];
+				
+				if(
+					typeof _rule == "string"
+				) {
+					notFill = notFill                                   &&
+					          typeof fullRules[ruleIndex] == "function" &&
+					          !fullRules[ruleIndex](this);
+				} else {
+					
+					if(_rule.query) {
+						fillRules._query(this, _rule.query)
+					}
 				}
 			}
 			
