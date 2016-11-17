@@ -8,6 +8,7 @@
 #### Иннициирование и запуск игры:
 Пример:
 SolitaireEngine.init([Field](#field));
+
 ---
 ### Field
 Field - JSON обьект описания пасьянса
@@ -53,12 +54,14 @@ Field - JSON обьект описания пасьянса
 	* по умолчанию: 600 (мс)
 * **preferences** - пользовательские настройки
 	* тип **[Preference](#preference)**
+
 ---
 ### InputParams
 InputParams - параметры убравления (мышь)
 * **doubleClick** - ... 
 	* тип **boolean**
 	* по умолчанию false
+
 ---
 ### TipsParams
 TipsParams - параметры подсказок
@@ -68,11 +71,13 @@ TipsParams - параметры подсказок
 * **excludeHomeGroups** - ...
 	* тип **boolean**
 	* по умолчанию true
+
 ---
 ### WinCheck
 WinCheck - ...
 * **rules** - правила выигрыша
 	* тип *[Win rules](#win-rules)*
+
 ---
 ### Preference
 Preference - ...
@@ -85,6 +90,7 @@ Preference - ...
 			* тип **string**
 		* **value** - параметр
 			* тип **var**
+
 ---
 ### Autostep
 Autostep - ...
@@ -94,6 +100,7 @@ Autostep - ...
 	* тип **string**
 
 	_-- values --_
+
 ---
 ### Vector2d
 Vector2d - ...
@@ -101,6 +108,7 @@ Vector2d - ...
 	* тип **Int**
 * **y**
 	* тип **Int**
+
 ---
 ### Group
 Group - группа
@@ -141,6 +149,7 @@ Group - группа
 	* тип **\[[Deck](#deck)\]
 * **tags** - ...
 	* тип **[string]**
+
 ---
 ### Deck
 Deck - ...
@@ -194,6 +203,7 @@ Deck - ...
 	* тип **[string]** | **[[string]]**
 * **relations** - связи с другими стопками
 	* тип **\[[Relation](#deck-relations)\]**
+
 ---
 ### GroupGenerator
 GroupGenerator - ...
@@ -204,11 +214,14 @@ GroupGenerator - ...
         _-- values --_
 		
         _[См. group generators.](#group-generators)_
+
+
 ---
 ### Deck relations
 * **around** - ...
 * **beside** - ...
 * **fall**   - ...
+
 ---
 ### Group generators
 * **count** - ...
@@ -236,6 +249,7 @@ GroupGenerator - ...
 	* **center** - ...
 		* тип **[Vector2d](#vector2d)**
 		* по умолчанию {x : 0, y : 0}
+
 ---
 ### Action
 Action - ...
@@ -248,6 +262,7 @@ Action - ...
 * **notFirst** - ...
 * **any**      - ...
 * **onlytop**  - ...
+
 ---
 #### put rules names
 * **stripped**    - ...
@@ -267,15 +282,18 @@ Action - ...
 * **ascendOne**   - ...
 * **ascdescOne**  - ...
 * **summ14**      - ...
+
 ---
 #### cardnames
 * suit name + rank name, like: "h" + "9" -> "h9"
+
 ---
 #### suit names
 * **h** - hearts
 * **c** - clubs
 * **d** - diamonds
 * **s** - spides
+
 ---
 #### ranks names
 * **1...9** - cards
