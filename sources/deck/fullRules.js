@@ -14,7 +14,9 @@ let fullRules = {
 
 	_top : (deck) => {
 
+
 		let card = deck.getTopCard();
+		console.log('_top', deck, card);
 		
 		return card && common.validateCardName(card);
 	},
@@ -56,33 +58,63 @@ let fullRules = {
 		let groupName = deck.parent;
 		let currentGroup = Group.getByName(groupName);
 
+		let _correct = true;
+
 		// all | any
 		if(data.all) {
-			for(let i in data.all.groups) {
-				let _group = Group.getByName(data.all.groups[i])
-				if(data.all.excludeParent && data.all.groups[i] == groupName) {
 
+			let _decks = [];
+
+			// Groups
+			for(let i in data.all.groups) {
+
+				let _group = Group.getByName(data.all.groups[i])
+
+				if(data.all.excludeParent && data.all.groups[i] == groupName) {
+					//  do nothing
 				} else {
+
+					// 	select: first | second | last | all
 					if(data.all.select == "first") {
-						// TODO select deck with index 1
-					} else
-					if(data.all.select == "second") {} else
-					if(data.all.select == "last") {}
+						// TODO select deck with index 0
+						let _deck = _group.getDeckByIndex(0);
+
+						_decks.push(_deck);
+					} else if(data.all.select == "second") {
+						// --//-- index 0
+					} else if(data.all.select == "last") {
+						// --//-- max index
+					} else {
+						// all
+					}
+
+				}
+			}
+
+			// Decks
+			for(let i in data.all.decks) {
+				// get decks by name
+			}
+
+			// let _check = true;
+
+			// Rules
+			for(let deckIndex in _decks) {
+
+				for(let ruleIndex in data.rules) {
+
+					let _rule = data.rules[ruleIndex]
+
+					if(fullRules[_rule]) {
+						_correct = _correct && fullRules[_rule](_decks[deckIndex]);
+					}
 				}
 			}
 		}
-		if(data.any) {}
-		// groups
-		// 	select: first | second | last | all
-		// decks
-		// rules
-		for(let i in data.rules) {
 
-		}
-		return false;
+		return _correct;
 	},
 
-	// Rules
 
 	deckLength : (deck) => {
 		

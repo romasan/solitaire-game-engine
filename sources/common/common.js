@@ -160,7 +160,7 @@ let getElementsByName = (name, type) => {
 let validateCardName = (name, nolog) => {
 	
 	if(typeof name != 'string') {
-		console.warn('Warning: validate name must have string type', name);
+		console.warn('Warning: validate name must have string type "' + name + '"');
 		// throw new Error('z');
 		return false;
 	}

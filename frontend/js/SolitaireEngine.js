@@ -123,7 +123,7 @@ var SolitaireEngine =
 	exports.options = _defaults2.default;
 	exports.winCheck = _winCheck2.default.hwinCheck;
 	exports.generator = _deckGenerator2.default;
-	exports.version = (9091492672).toString().split(9).slice(1).map(function (e) {
+	exports.version = (9091492673).toString().split(9).slice(1).map(function (e) {
 		return parseInt(e, 8);
 	}).join('.');
 	
@@ -1119,7 +1119,7 @@ var SolitaireEngine =
 	var validateCardName = function validateCardName(name, nolog) {
 	
 		if (typeof name != 'string') {
-			console.warn('Warning: validate name must have string type', name);
+			console.warn('Warning: validate name must have string type "' + name + '"');
 			// throw new Error('z');
 			return false;
 		}
@@ -2394,6 +2394,7 @@ var SolitaireEngine =
 						if (placement) {
 	
 							var _index2 = this.deckIndex[data.groupIndex - 1];
+	
 							var _elements = _share2.default.get('elements');
 	
 							if (placement.x) {
@@ -2409,10 +2410,12 @@ var SolitaireEngine =
 	
 						this.deckIndex[_index] = this.deckIndex[data.groupIndex - 1];
 						this.deckIndex[data.groupIndex - 1] = true;
+	
 						_index = data.groupIndex - 1;
 					} else {
 	
 						this.deckIndex[data.groupIndex - 1] = true;
+	
 						_index = data.groupIndex - 1;
 					}
 				} else {
@@ -2420,7 +2423,7 @@ var SolitaireEngine =
 					this.deckIndex[_index] = true;
 				}
 	
-				// смещаем координаты колод относиткльно координад группы
+				// смещаем координаты колод относительно координад группы
 				if (this.placement) {
 	
 					if (this.placement.x) {
@@ -2449,6 +2452,8 @@ var SolitaireEngine =
 					}
 				};
 	
+				data.deckIndex = typeof data.deckIndex == "number" ? data.deckIndex : _index;
+	
 				var _el = _deck2.default.addDeck(data);
 	
 				this.deckIndex[_index] = _el.id;
@@ -2466,6 +2471,31 @@ var SolitaireEngine =
 			key: 'getDeckById',
 			value: function getDeckById(id) {
 				return this.decks[id];
+			}
+		}, {
+			key: 'getDeckIndexById',
+			value: function getDeckIndexById(id) {
+	
+				for (var i in this.deckIndex) {
+					if (this.deckIndex[i] == id) {
+						return i;
+					}
+				}
+	
+				return null;
+			}
+		}, {
+			key: 'getDeckIdByIndex',
+			value: function getDeckIdByIndex(index) {
+				return this.deckIndex[index];
+			}
+		}, {
+			key: 'getDeckByIndex',
+			value: function getDeckByIndex(index) {
+	
+				var id = this.getDeckIdByIndex(index);
+	
+				return this.getDeckById(id);
 			}
 		}, {
 			key: 'getDecksByName',
@@ -2913,10 +2943,17 @@ var SolitaireEngine =
 	
 					var notFill = true;
 	
-					for (var ruleName in this.fullRules) {
+					for (var ruleIndex in this.fullRules) {
 	
-						if (_fullRules2.default[ruleName]) {
-							notFill = notFill && !_fullRules2.default[ruleName](this);
+						var _rule = this.fullRules[ruleIndex];
+	
+						if (typeof _rule == "string") {
+							notFill = notFill && typeof _fullRules2.default[ruleIndex] == "function" && !_fullRules2.default[ruleIndex](this);
+						} else {
+	
+							if (_rule.query) {
+								_fullRules2.default._query(this, _rule.query);
+							}
 						}
 					}
 	
@@ -3622,6 +3659,10 @@ var SolitaireEngine =
 	
 	var _common2 = _interopRequireDefault(_common);
 	
+	var _group2 = __webpack_require__(13);
+	
+	var _group3 = _interopRequireDefault(_group2);
+	
 	var _deck2 = __webpack_require__(14);
 	
 	var _deck3 = _interopRequireDefault(_deck2);
@@ -3643,6 +3684,7 @@ var SolitaireEngine =
 		_top: function _top(deck) {
 	
 			var card = deck.getTopCard();
+			console.log('_top', deck, card);
 	
 			return card && _common2.default.validateCardName(card);
 		},
@@ -3667,7 +3709,75 @@ var SolitaireEngine =
 			return _check;
 		},
 	
-		// Rules
+		_query: function _query(deck, data) {
+	
+			// query : {
+			// 	all : {
+			// 		groups : ["matGroup1", "matGroup2", "matGroup3", "matGroup4"],
+			// 		excludeParent : true,
+			// 		select : "first",
+			// 	},
+			// 	rules : ["topAce"]
+			// }
+	
+			var groupName = deck.parent;
+			var currentGroup = _group3.default.getByName(groupName);
+	
+			var _correct = true;
+	
+			// all | any
+			if (data.all) {
+	
+				var _decks = [];
+	
+				// Groups
+				for (var i in data.all.groups) {
+	
+					var _group = _group3.default.getByName(data.all.groups[i]);
+	
+					if (data.all.excludeParent && data.all.groups[i] == groupName) {
+						//  do nothing
+					} else {
+	
+						// 	select: first | second | last | all
+						if (data.all.select == "first") {
+							// TODO select deck with index 0
+							var _deck = _group.getDeckByIndex(0);
+	
+							_decks.push(_deck);
+						} else if (data.all.select == "second") {
+							// --//-- index 0
+						} else if (data.all.select == "last") {
+							// --//-- max index
+						} else {
+								// all
+							}
+					}
+				}
+	
+				// Decks
+				for (var _i in data.all.decks) {}
+				// get decks by name
+	
+	
+				// let _check = true;
+	
+				// Rules
+				for (var deckIndex in _decks) {
+	
+					for (var ruleIndex in data.rules) {
+	
+						var _rule = data.rules[ruleIndex];
+	
+						if (fullRules[_rule]) {
+							_correct = _correct && fullRules[_rule](_decks[deckIndex]);
+						}
+					}
+				}
+			}
+	
+			return _correct;
+		},
 	
 		deckLength: function deckLength(deck) {
 	

@@ -224,7 +224,7 @@ class Deck {
 			
 			for(let ruleIndex in this.fullRules) {
 
-				let _rule = fullRules[ruleIndex];
+				let _rule = this.fullRules[ruleIndex];
 				
 				if(
 					typeof _rule == "string"
@@ -235,7 +235,7 @@ class Deck {
 				} else {
 					
 					if(_rule.query) {
-						fillRules._query(this, _rule.query)
+						fullRules._query(this, _rule.query)
 					}
 				}
 			}

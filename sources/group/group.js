@@ -134,6 +134,7 @@ class groupClass {
 				if(placement) {
 					
 					let _index    = this.deckIndex[data.groupIndex - 1];
+					
 					let _elements = share.get('elements');
 					
 					if(placement.x) {
@@ -149,10 +150,12 @@ class groupClass {
 
 				this.deckIndex[_index] = this.deckIndex[data.groupIndex - 1];
 				this.deckIndex[data.groupIndex - 1] = true;
+				
 				_index = data.groupIndex - 1
 			} else {
 				
 				this.deckIndex[data.groupIndex - 1] = true;
+				
 				_index = data.groupIndex - 1
 			}
 
@@ -161,7 +164,7 @@ class groupClass {
 			this.deckIndex[_index] = true;
 		}
 		
-		// смещаем координаты колод относиткльно координад группы
+		// смещаем координаты колод относительно координад группы
 		if(this.placement) {
 
 			if(this.placement.x) {
@@ -193,6 +196,10 @@ class groupClass {
 			}
 		};
 
+		data.deckIndex = typeof data.deckIndex == "number"
+			? data.deckIndex
+			:_index;
+
 		let _el = Deck.addDeck(data);
 		
 		this.deckIndex[_index]  = _el.id;
@@ -206,6 +213,28 @@ class groupClass {
 
 	getDeckById(id) {
 		return this.decks[id];
+	}
+
+	getDeckIndexById(id) {
+
+		for(let i in this.deckIndex) {
+			if(this.deckIndex[i] == id) {
+				return i;
+			}
+		}
+
+		return null;
+	}
+
+	getDeckIdByIndex(index) {
+		return this.deckIndex[index];
+	}
+	
+	getDeckByIndex(index) {
+
+		let id = this.getDeckIdByIndex(index);
+
+		return this.getDeckById(id);
 	}
 
 	getDecksByName(name) {
