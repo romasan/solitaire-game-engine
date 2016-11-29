@@ -7,7 +7,7 @@ import common          from 'common';
 import winCheckMethods from 'winCheckMethods';
 import Deck            from 'deck';
 
-let winCheck = (params) => {
+let winCheck = params => {
 
 	let rulesCorrect = true;
 	let _hasMetods = false;
@@ -56,7 +56,7 @@ let winCheck = (params) => {
 };
 
 // hidden check
-let hwinCheck = (params) => {
+let hwinCheck = params => {
 	
 	if(!params) {
 		params = {};
@@ -71,6 +71,6 @@ let hwinCheck = (params) => {
 };
 
 export default {
-	winCheck, 
+	winCheck , 
 	hwinCheck
 };

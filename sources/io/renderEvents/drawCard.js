@@ -8,7 +8,7 @@ import common   from 'common';
 import Field    from 'field';
 import elRender from 'elRender';
 
-event.listen('addCardEl', (data) => {
+event.listen('addCardEl', data => {
 	
 	let _card = {
 		width  : defaults.card.width .toFixed(3) * 1,

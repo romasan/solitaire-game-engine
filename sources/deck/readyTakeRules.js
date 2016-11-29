@@ -3,22 +3,13 @@
 export default {
 				
 	// SimpleRules
-	not      : (data) => {
-		return false;
-	},
+	not      : data => false,
 
-	notFirst : (data) => {
-		return data.cardIndex > 0;
-	},
+	notFirst : data => data.cardIndex > 0,
 
-	any      : (data) => {
-		return true;
-	},
+	any      : data => true,
 
-	onlytop  : (data) => {
-
-		return data.cardIndex == data.deckLength - 1;
-	}
+	onlytop  : data => data.cardIndex == data.deckLength - 1
 	
 	// TODO rules
 	

@@ -22,21 +22,21 @@ class inputs {
 
 		try {
 
-			document.onmousedown = (e) => {
+			document.onmousedown = data => {
 				
-				if(e.button !== 0) {
+				if(data.button !== 0) {
 					return;
 				}
 				
-				this.take(e.target, e.clientX, e.clientY);
+				this.take(data.target, data.clientX, data.clientY);
 			};
 
-			document.onmousemove = (e) => {
-				this.drag(e.clientX, e.clientY);
+			document.onmousemove = data => {
+				this.drag(data.clientX, data.clientY);
 			};
 
-			document.onmouseup = (e) => {
-				this.put(e.target, e.clientX, e.clientY);
+			document.onmouseup = data => {
+				this.put(data.target, data.clientX, data.clientY);
 			};
 
 			// TODO
@@ -59,33 +59,33 @@ class inputs {
 			// 	common.curUnLock();
 			// };
 
-			document.ondblclick = (e) => {
+			document.ondblclick = data => {
 
 				event.dispatch('stopAnimations');
 				
-				this.take(e.target, e.clientX, e.clientY);
-				this.put(e.target, e.clientX, e.clientY, true);
+				this.take(data.target, data.clientX, data.clientY);
+				this.put(data.target, data.clientX, data.clientY, true);
 				
 				common.curUnLock();
 			};
 
-			document.addEventListener('touchstart', (e) => {
-				// e.preventDefault()
-				this.take(e.target, e.touches[0].clientX, e.touches[0].clientY)
+			document.addEventListener('touchstart', data => {
+				// data.preventDefault()
+				this.take(data.target, data.touches[0].clientX, data.touches[0].clientY)
 			}, false);
 
-			document.addEventListener('touchmove', (e) => {
+			document.addEventListener('touchmove', data => {
 
 				if(share.startCursor) {
-					e.preventDefault();
+					data.preventDefault();
 				}
 
-				this.drag(e.touches[0].clientX, e.touches[0].clientY)
+				this.drag(data.touches[0].clientX, data.touches[0].clientY)
 			}, false);
 
-			document.addEventListener('touchend', (e) => {
-				// e.preventDefault()
-				this.put(e.changedTouches[0].target, e.changedTouches[0].clientX, e.changedTouches[0].clientY);
+			document.addEventListener('touchend', data => {
+				// data.preventDefault()
+				this.put(data.changedTouches[0].target, data.changedTouches[0].clientX, data.changedTouches[0].clientY);
 			}, false);
 		} catch(e) {}
 	

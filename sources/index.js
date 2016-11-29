@@ -32,19 +32,19 @@ exports.winCheck  = winCheck.hwinCheck;
 exports.generator = deckGenerator;
 exports.version   = version.toString().split(9).slice(1).map(e => parseInt(e, 8)).join('.');
 
-exports.onload = (f) => {
-	preloadCallback = f;
+exports.onload = callback => {
+	preloadCallback = callback;
 };
 
-exports.onChangePreferences = (f) => {
-	share.set('changePreferencesCallback', f);
+exports.onChangePreferences = callback => {
+	share.set('changePreferencesCallback', callback);
 };
 
 // exports.getPreferences = () => {
 // 	let _pref = storage.get('pref');
 // };
 
-exports.init = (gameConfig) => {
+exports.init = gameConfig => {
 
 	event.dispatch('gameInit', {firstInit});
 	

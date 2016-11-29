@@ -29,27 +29,27 @@ let _actions = {
 let _decksActions  = [],
     _events        = [];
 
-event.listen('initField', () => {
+event.listen('initField', e => {
 	_decksActions = [];
 	_events       = [];
 })
 
-let addActionEvent = (_event) => {
+let addActionEvent = eventName => {
 
 	event.listen(
 
 		// event name
-		_event, 
+		eventName, 
 		
 		// callback
-		(data) => {
+		data => {
 
 			for(let i in _decksActions) {
-				if(_decksActions[i].event == _event) {
+				if(_decksActions[i].event == eventName) {
 					
 					let _actionName = _decksActions[i].action;
 
-					let _canRun = _event == 'click'
+					let _canRun = eventName == 'click'
 					    ? data.to.name == _decksActions[i].deck.name
 					    : true;
 					
@@ -63,7 +63,7 @@ let addActionEvent = (_event) => {
 							{
 								actionData : _decksActions[i].deck.actions[_actionName],
 								eventData  : data,
-								eventName  : _event
+								eventName
 							}
 						);
 					};
@@ -72,12 +72,12 @@ let addActionEvent = (_event) => {
 		},
 
 		// context
-		'addActionEvent:' + _event
+		'addActionEvent:' + eventName
 	);
 
 };
 
-let add = function(deck) {
+let add = deck => {
 
 	for(let actionName in deck.actions) {
 
@@ -114,7 +114,7 @@ let add = function(deck) {
 	autoRunActions(deck);
 };
 
-let autoRunActions = (deck) => {// bind this deck
+let autoRunActions = deck => {
 
 	common.animationDefault();
 
@@ -122,9 +122,9 @@ let autoRunActions = (deck) => {// bind this deck
 		if(deck.actions[actionName].autorun) {
 			if(_actions[actionName]) {
 				_actions[actionName].run(
-					
+
 					deck, 
-					
+
 					{
 						actionData : deck.actions[actionName],
 						eventData  : null,

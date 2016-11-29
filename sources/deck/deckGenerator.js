@@ -2,11 +2,11 @@
 
 import defaults from 'defaults';
 
-let shuffle = (a) => {
-	for(let j, x, i = a.length; i; j = Math.floor(Math.random() * i), x = a[--i], a[i] = a[j], a[j] = x) {};
+let shuffle = deck => {
+	for(let j, x, i = deck.length; i; j = Math.floor(Math.random() * i), x = deck[--i], deck[i] = deck[j], deck[j] = x) {};
 }
 
-export default (data) => {
+export default data => {
 
 	let default_type = 'all';
 
@@ -34,7 +34,9 @@ export default (data) => {
 	let _ranks = _deckCount == 36 ? defaults.card.ranks36 : defaults.card.ranks;
 	
 	if(data && data.ranks) {
+
 		_ranks = []
+
 		for(i in data.ranks) {
 			if(defaults.card.rank.indexOf(data.ranks[i].toString()) >= 0) {
 				_ranks.push(data.ranks[i].toString())
@@ -44,53 +46,67 @@ export default (data) => {
 
 	let genTypes = {
 		
-		all    : () => {
-			return genType(defaults.card.suits, _ranks);
-		},
+		all    : e => genType(defaults.card.suits, _ranks),
 		
-		black  : () => {
+		black  : e => {
+
 			let _cardsSuits = defaults.card.colors.black;
+
 			return genType(_cardsSuits, _ranks);
 		},
 		
-		red    : () => {
+		red    : e => {
+
 			let _cardsSuits = defaults.card.colors.red;
+
 			return genType(_cardsSuits, _ranks);
 		},
 		
-		black_and_red  : () => {
+		black_and_red  : e => {
+
 			let _cardsSuits = [
 				defaults.card.colors.red[(Math.random() * defaults.card.colors.red.length)|0], 
 				defaults.card.colors.black[(Math.random() * defaults.card.colors.black.length)|0]
 			];
+
 			return genType(_cardsSuits, _ranks);
 		},
 		
-		h_only : () => {
+		h_only : e => {
+
 			let _cardsSuits = ['h'];
+
 			return genType(_cardsSuits, _ranks);
 		}, 
 		
-		d_only : () => {
+		d_only : e => {
+
 			let _cardsSuits = ['d'];
+
 			return genType(_cardsSuits, _ranks);
 		}, 
 		
-		c_only : () => {
+		c_only : e => {
+
 			let _cardsSuits = ['c'];
+
 			return genType(_cardsSuits, _ranks);
 		},
 		
-		s_only : () => {
+		s_only : e => {
+
 			let _cardsSuits = ['s'];
+
 			return genType(_cardsSuits, _ranks);
 		},
 		
-		one_rank_only : () => {
+		one_rank_only : e => {
+
 			let _cardsSuits = [defaults.card.solors[(Math.random() * defaults.card.solors.length)|0]];
+
 			return genType(_cardsSuits, _ranks);
 		}
-	}
+	};
 
 	genTypes.hearts   = genTypes.h_only;
 	genTypes.diamonds = genTypes.d_only;

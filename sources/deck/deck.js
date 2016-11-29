@@ -26,14 +26,12 @@ class Deck {
 
 	constructor(data, id) {
 
-		// console.log('%cADD DECK', 'background: orange;');
-
 		if(!data) {
 			return false;
 		}
 
 		this.cards = [];
-		
+
 		// parameters
 		this.type = 'deck';
 		this.full = false;
@@ -43,15 +41,14 @@ class Deck {
 		let _parent_el   = Group.getByName(data.parent)                  ,
 			_parent_name = _parent_el ? _parent_el.name : 'no_parent_'   ,
 			_new_id      = _parent_el ? _parent_el.getDecks().length : id;
-		
+
 		this.name = typeof data.name == 'string' 
 			? data.name
 			: (_parent_name + '_' + _new_id);
-		
+
 		this.locked     = data.locked ? true : false;
 		this.save       = data.save   ? true : false;
-		// this.longStep   = data.longStep ? true : false;
-		this.visible    = typeof data.visible    == 'boolean' ? data.visible    : true;// default true
+		this.visible    = typeof data.visible    == 'boolean' ? data.visible    : true;
 		this.groupIndex = typeof data.groupIndex == 'number'  ? data.groupIndex : null;
 		this.parent     = typeof data.parent     == 'string'  ? data.parent     : 'field';
 		this.autoHide   = typeof data.autoHide   == 'boolean' ? data.autoHide   : defaults.autohide;
@@ -74,16 +71,14 @@ class Deck {
 
 		this.rotate = this._params.rotate;
 
-		// ------------- FLIP -------------
-
+		// Flip
 		let flipType = data.flip && typeof data.flip == 'string' 
 			? data.flip 
 			: defaults.flip_type;
 
 		this.cardFlipCheck = flipTypes[flipType];
 
-		// ------------- PUT -------------
-
+		// Put
 		this.putRules = data.putRules 
 			? typeof data.putRules == 'function' 
 				? data.putRules
@@ -91,27 +86,23 @@ class Deck {
 					? readyPutRules[data.putRules] 
 						? readyPutRules[data.putRules]
 						: readyPutRules[defaults.putRule]
-					// : typeof data.putRules === 'object' 
 					: data.putRules.constructor == Array 
 						? data.putRules
 						: readyPutRules[defaults.putRule]
 			: readyPutRules[defaults.putRule];
 
-		// ------------- TAKE -------------
-		
+		// Take
 		// можно ли взять карту/стопку
 		this.takeRules = data.takeRules;
 
-		// ------------- FULL -------------
-
+		// Full
 		this.fullRules = null;
 
 		if(data.fullRules) {
 			this.fullRules = data.fullRules;
 		}
 
-		// ------------- PADDING -------------
-
+		// Padding
 		// порядок карт в колоде
 		let padding = data.paddingX || data.paddingY
 			? paddingTypes.special 
@@ -121,12 +112,7 @@ class Deck {
 					: paddingTypes.none
 				: paddingTypes[defaults.paddingType];
 
-		this.padding = function(index) {
-			
-			let _padding = padding(this._params, this.cards[index], index, this.cards.length, this.cards);
-			
-			return _padding;
-		}
+		this.padding = index => padding(this._params, this.cards[index], index, this.cards.length, this.cards);
 
 		this.actions = [];
 		if(data.actions) {
@@ -134,20 +120,16 @@ class Deck {
 			deckActions.add(this);
 		}
 
-		// ------------ RELATIONS ------------
-
+		// Relations
 		if(data.relations) {
 			this.relations = data.relations;
 		} else {
 			this.relations = [];
 		}
 
-		// --
-
+		// Tags
 		this.tags = data.tags ? data.tags : [];
 		
-		// --
-
 		event.dispatch('addDeckEl', {
 			deckData : data, 
 			deck     : this,
@@ -155,11 +137,11 @@ class Deck {
 		});
 
 		// Подписывается на перетаскивание стопки/карты
-		let _callback = (data) => {
+		let _callback = data => {
 
 			// TODO
 			// проверять fill только для тех стопок котрые участвовали в Action
-			
+
 			if(data.destination.name != this.name) {
 				return;
 			}
@@ -193,39 +175,37 @@ class Deck {
 		if(this.cards.length === 0) {
 			return false;
 		}
-		
+
 		return this.cards[this.cards.length - 1];
 	}
 
 	lock() {
-		
 		this.locked = true;
 	}
 
 	unlock() {
-
 		this.locked = false;
 	}
 
 	flipCheck() {
-			
-		for(var i in this.cards) {
+
+		for(let i in this.cards) {
 			this.cardFlipCheck(this.cards[i], i|0, this.cards.length);
 		}
-		
+
 		event.dispatch('redrawDeckFlip', this);
 	}
-	
+
 	checkFull() {
 
 		if(!this.full) {
 
 			let notFill = true;
-			
+
 			for(let ruleIndex in this.fullRules) {
 
 				let _rule = this.fullRules[ruleIndex];
-				
+
 				if(
 					typeof _rule == "string"
 				) {
@@ -233,13 +213,22 @@ class Deck {
 					          typeof fullRules[ruleIndex] == "function" &&
 					          !fullRules[ruleIndex](this);
 				} else {
-					
-					if(_rule.query) {
-						fullRules._query(this, _rule.query)
+
+					for(let subRule in _rule) {
+						if(
+							typeof subRule == "string"             &&
+							typeof fullRules[subRule] == "function"
+						) {
+							notFill = notFill && fullRules[subRule](this, _rule[subRule]);
+						}
 					}
+
+					// if(_rule.query) {
+					// 	fullRules._query(this, _rule.query)
+					// }
 				}
 			}
-			
+
 			this.full = !notFill;
 		}
 	}
@@ -252,15 +241,19 @@ class Deck {
 	}
 
 	clear() {
+
 		for(let i in this.cards) {
 			event.dispatch('removeEl', this.cards[i]);
 			this.cards[i] = null;
 		}
+
 		this.cards = [];
+
 		event.dispatch('removeEl', this);
 	}
 
-	Push(deck) {// , parentName) {
+	Push(deck) {
+
 		for(let i in deck) {
 			deck[i].parent = this.id;
 			this.cards.push(deck[i]);
@@ -268,7 +261,7 @@ class Deck {
 	}
 
 	Pop(count, clearParent) {
-			
+
 		if(this.cards.length < count) {
 			return false;
 		}
@@ -283,10 +276,13 @@ class Deck {
 		_deck.reverse();
 
 		// что делать если вынули все карты
-		if(this.autoHide && this.cards.length === 0) {
+		if(
+			this.autoHide           && 
+			this.cards.length === 0
+		) {
 			this.hide();
 		}
-		
+
 		this.Redraw();
 
 		return _deck;
@@ -296,13 +292,13 @@ class Deck {
 		return Take.call(this, cardId);// ??? .call(this, attributes);
 	}
 
-// проверяем, можем ли положить стопку/карту
-// возвращает true, если согласно правилам сюда можно положить карту
+	// проверяем, можем ли положить стопку/карту
+	// возвращает true, если согласно правилам сюда можно положить карту
 	Put(putDeck) {
 		return Put.call(this, putDeck);//(deckConstructor);
 	}
 
-// создать карту
+	// создать карту
 	genCardByName(name) {
 		return genCardByName.call(this, name);
 	}
@@ -348,27 +344,27 @@ class Deck {
 	// }
 
 	hideCards() {
-		for(var i in this.cards) {
+		for(let i in this.cards) {
 			this.cards[i].visible = false;
 			event.dispatch('hideCard', this.cards[i]);
 		}
 	}
 
 	showCards() {
-		for(var i in this.cards) {
+		for(let i in this.cards) {
 			this.cards[i].visible = true;
 			event.dispatch('showCard', this.cards[i]);
 		}
 	}
 
 	getCardsNames() {
-		
-		var _cardsNames = [];
-		
-		for(var i in this.cards) {
+
+		let _cardsNames = [];
+
+		for(let i in this.cards) {
 			_cardsNames.push(this.cards[i].name);
 		}
-		
+
 		return _cardsNames;
 	}
 
@@ -416,35 +412,34 @@ class Deck {
 
 		return false;
 	}
-
 }
 
-let addDeck = (data) => {
+let addDeck = data => {
 
 	if(!data) {
 		return false;
 	}
-	
+
 	let id = 'deck_' + common.genId();
-	
-	let _el_deck = new Deck(data, id);
+
+	let _deck = new Deck(data, id);
 
 	// fill deck
 	if(data.fill) {
 		for(let i in data.fill) {
 			if(typeof data.fill[i] == 'string') {
-				_el_deck.genCardByName(data.fill[i]);
+				_deck.genCardByName(data.fill[i]);
 			}
 		}
 	}
-	
+
 	let _elements = share.get('elements');
 
-	_elements[id] = _el_deck;
-	
+	_elements[id] = _deck;
+
 	share.set('elements', _elements);
 
-	return _el_deck;
+	return _deck;
 };
 
 // ------------------------------------------------------------------------------------------------------------------------------------------

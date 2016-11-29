@@ -2,7 +2,7 @@
 
 import mapCommon from 'mapCommon';
 
-export default (e) => {// {x, y, map, mapSize, el, data}
+export default data => {// {x, y, map, mapSize, el, data}
 
 	let _relations = [];
 
@@ -10,13 +10,13 @@ export default (e) => {// {x, y, map, mapSize, el, data}
 
 		if(
 			mapCommon.inMap(
-				e.x + mapCommon.aroundRelations[i].x,
-				e.y + mapCommon.aroundRelations[i].y, e.mapSize
+				data.x + mapCommon.aroundRelations[i].x,
+				data.y + mapCommon.aroundRelations[i].y, data.mapSize
 			) &&
-			e.map[e.y + mapCommon.aroundRelations[i].y][e.x + mapCommon.aroundRelations[i].x]
+			data.map[data.y + mapCommon.aroundRelations[i].y][data.x + mapCommon.aroundRelations[i].x]
 		) {
 			_relations.push({
-				to   : e.map[e.y + mapCommon.aroundRelations[i].y][e.x + mapCommon.aroundRelations[i].x].name,
+				to   : data.map[data.y + mapCommon.aroundRelations[i].y][data.x + mapCommon.aroundRelations[i].x].name,
 				type : mapCommon.aroundRelations[i].type                                                     ,
 				id   : mapCommon.aroundRelations[i].id                                                       ,
 				name : 'around'

@@ -133,7 +133,7 @@ let Move = (moveDeck, to, cursorMove) => {
 					departure   : _deck_departure  ,
 					destination : _deck_destination,
 					moveDeck    : moveDeck         ,
-					callback    : () => {
+					callback    : e => {
 
 						if(
 							!event.has('moveEnd', {
@@ -150,11 +150,11 @@ let Move = (moveDeck, to, cursorMove) => {
 							to       : _deck_destination    ,
 							moveDeck : moveDeck             ,
 							stepType : share.get('stepType'),
-							before   : (e) => {
-								if(e && typeof e.stepType == "string") {
+							before   : data => {
+								if(data && typeof data.stepType == "string") {
 									event.dispatch('addStep', {
 										'redo': {
-											'stepType': e.stepType
+											'stepType': data.stepType
 										}
 									})
 								}
@@ -210,6 +210,6 @@ let Move = (moveDeck, to, cursorMove) => {
 	}
 };
 
-event.listen('Move', (e) => {
-	Move(e.moveDeck, e.to, e.cursorMove);
+event.listen('Move', data => {
+	Move(data.moveDeck, data.to, data.cursorMove);
 });

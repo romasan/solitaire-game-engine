@@ -13,15 +13,15 @@ import elRender from 'elRender';
  * dragDeck
  */
 
-let angleValidate = (_angle) => {
+let angleValidate = angle => {
 
-	if(_angle < 0  ) { _angle += 360; }
-	if(_angle > 360) { _angle -= 360; }
+	if(angle < 0  ) { angle += 360; }
+	if(angle > 360) { angle -= 360; }
 
-	return _angle;
+	return angle;
 };
 
-event.listen('moveDragDeck', (data) => {
+event.listen('moveDragDeck', data => {
 
 	common.curLock();
 
@@ -91,7 +91,7 @@ event.listen('moveDragDeck', (data) => {
 
 // --------------------------------------------------------------------------------------------------------
 
-event.listen('moveDragDeckDone', (data) => {
+event.listen('moveDragDeckDone', data => {
 
 	if(!data.deck.full) {
 		return;
@@ -110,7 +110,7 @@ event.listen('moveDragDeckDone', (data) => {
 
 // --------------------------------------------------------------------------------------------------------
 
-event.listen('dragDeck', (data) => {// {x, y, _dragDeck, _startCursor, _deck}
+event.listen('dragDeck', data => {// {x, y, _dragDeck, _startCursor, _deck}
 
 	for(let i in data._dragDeck) {
 			let _position = data._deck.padding(data._dragDeck[i].index);

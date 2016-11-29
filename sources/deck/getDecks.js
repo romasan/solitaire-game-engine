@@ -2,7 +2,7 @@
 
 import share from 'share';
 
-export default (data) => {
+export default data => {
 
 	let _decks = {};
 
@@ -23,8 +23,7 @@ export default (data) => {
 				_decks[deckId] = _elements[deckId];
 			};
 		};
-		// return _elements;
 	}
-	
+
 	return _decks;
 }

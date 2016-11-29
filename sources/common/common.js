@@ -21,14 +21,14 @@ import defaultPreferences from 'defaultPreferences';
 // 	console.log('%cshareChange:curLockState', 'background-color: blue;color: white;', e);
 // });
 
-event.listen('gameInit', (e) => {
+event.listen('gameInit', data => {
 
 	share.set('stepType', defaults.stepType);
 	share.delete('sessionStarted');
 
 	curUnLock();
 	
-	if(!e.firstInit) {
+	if(!data.firstInit) {
 		return;
 	};
 	
@@ -36,7 +36,7 @@ event.listen('gameInit', (e) => {
 	preferencesEvents();
 });
 
-event.listen('gameInited', () => {
+event.listen('gameInited', e => {
 	defaultPreferences();
 });
 
@@ -45,20 +45,20 @@ event.listen('gameInited', () => {
 // 	share.set('prevStepType', e.from);
 // });
 
-event.listen('moveEnd', () => {
+event.listen('moveEnd', e => {
 	Tips.checkTips();
 });
 
-event.listen('actionBreak', () => {
+event.listen('actionBreak', e => {
 	Tips.checkTips();
 });
 
-event.listen('startSession', () => {
+event.listen('startSession', e => {
 	share.set('sessionStarted', true);
 	state.backup();
 });
 
-event.listen('stopSession', () => {
+event.listen('stopSession', e => {
 	share.set('sessionStarted', false);
 	// state.backup();
 });
@@ -91,15 +91,15 @@ let sqr = i => i * i;
 
 let _inputStack = [];
 
-let isCurLock = () => {
+let isCurLock = e => {
 	return share.get('curLockState');
 };
 
-let curLock = () => {
+let curLock = e => {
 	share.set('curLockState', true);
 };
 
-let curUnLock = () => {
+let curUnLock = e => {
 	
 	share.set('curLockState', false);
 	
@@ -121,11 +121,11 @@ let curUnLock = () => {
 
 // getters
 
-let getElements = () => {
+let getElements = e => {
 	return share.get('elements');
 }
 
-let getElementById = (id) => {
+let getElementById = id => {
 	
 	let _elements = share.get('elements');
 	
@@ -157,24 +157,28 @@ let getElementsByName = (name, type) => {
 
 // validator
 
-let validateCardName = (name, nolog) => {
-	
+let validateCardName = name => {
+
 	if(typeof name != 'string') {
-		console.warn('Warning: validate name must have string type "' + name + '"');
-		// throw new Error('z');
+
+		console.warn('Warning: validate name must have string type "' + name + '"', name);
+
+		// throw new Error('validateCardName');
+
 		return false;
 	}
-	
-	let suit  = name.slice(0, 1),
-		rank  = name.slice(1, 3),
-		color = null,
+
+	let suit  = name.slice(0, 1)                                       ,
+		rank  = name.slice(1, 3)                                       ,
+		color = null                                                   ,
 		value = defaults.card.values[defaults.card.ranks.indexOf(rank)];
+
 	for(let colorName in defaults.card.colors) {
 		if(defaults.card.colors[colorName].indexOf(suit) >= 0) {
 			color = colorName;
 		}
 	}
-	
+
 	if( 
 		defaults.card.suits.indexOf(suit) >= 0 &&
 		defaults.card.ranks.indexOf(rank) >= 0
@@ -205,19 +209,19 @@ let genId = () => {
 
 share.set('animation', defaults.animation);
 
-let animationOn = () => {
+let animationOn = e => {
 	share.set('animation', true);
 }
 
-let animationDefault = () => {
+let animationDefault = e => {
 	share.set('animation', defaults.animation);
 }
 
-let animationOff = () => {
+let animationOff = e => {
 	share.set('animation', false);
 }
 
-event.listen('newGame', () => {
+event.listen('newGame', e => {
 	// TODO
 	// из-за отключения анимации 
 	// на время восстановления ходов из истории приходится костылять
@@ -229,7 +233,7 @@ event.listen('newGame', () => {
 
 // --
 
-event.listen('historyReapeater', (data) => {
+event.listen('historyReapeater', data => {
 	if(data) {
 		share.set('noRedraw', true);
 		share.set('noTips', true);
@@ -244,6 +248,7 @@ event.listen('historyReapeater', (data) => {
 // --
 
 let deckInGroups = (deck, groups) => {
+
 	for(let groupName in groups) {
 		Group.getByName(groupName).hasDeck();
 	}
@@ -254,14 +259,6 @@ let deckInGroups = (deck, groups) => {
 // });
 
 share.set('stepType', defaults.stepType);
-
-// let clearInput = ()=>{
-//     share.set('dragDeck',    null);
-//     share.set('startCursor', null);
-// 		console.log('clearInput');
-// }
-
-// share.set('lang', defaults.lang);
 
 export default {
 //	isLock           ,

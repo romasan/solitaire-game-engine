@@ -2,7 +2,6 @@
  * генерация стопок в группах
  */
 
-
 'use strict';
 
 import countGenerator from "countGenerator";

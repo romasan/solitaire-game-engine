@@ -7,7 +7,7 @@ import common from 'common';
 import Deck from 'deck';
 import Tips from 'tips';
 
-let forceMove = (data) => {// {from, to, deck, <flip>, <callback>}
+let forceMove = data => {// {from, to, deck, <flip>, <callback>}
 
 	// console.log('forceMove', data);
 
@@ -84,12 +84,12 @@ let forceMove = (data) => {// {from, to, deck, <flip>, <callback>}
 		};
 
 		if(typeof data.callback == "function") {
-			moveDragDeckParams.callback = () => {
+			moveDragDeckParams.callback = e => {
 				event.dispatch('forceMoveEnd');
 				data.callback();
 			}
 		} else {
-			moveDragDeckParams.callback = () => {
+			moveDragDeckParams.callback = e => {
 				event.dispatch('forceMoveEnd');
 			}
 		}
@@ -100,7 +100,7 @@ let forceMove = (data) => {// {from, to, deck, <flip>, <callback>}
 	}
 };
 
-event.listen('forceMove', (data) => {
+event.listen('forceMove', data => {
 	forceMove(data);
 });
 

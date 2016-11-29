@@ -14,64 +14,81 @@ import elRender from 'elRender';
  * redrawDeck
  */
 
-let applyChangedParameters = (data) => {
+let applyChangedParameters = data => {
 
-	data.params.x = ((data.deckData.position &&
-	                typeof data.deckData.position.x == 'number'
-	                	? data.deckData.position.x
-	                	: 0) | 0) +
-					((data.deckData.parentPosition &&
-					typeof data.deckData.parentPosition.x == 'number'
-						? data.deckData.parentPosition.x
-						: 0) | 0);
+	data.params.x = (
+			(data.deckData.position                     &&
+			typeof data.deckData.position.x == 'number'
+				? data.deckData.position.x
+				: 0) | 0
+		) +
+		(
+			(data.deckData.parentPosition                     &&
+			typeof data.deckData.parentPosition.x == 'number'
+				? data.deckData.parentPosition.x
+				: 0) | 0
+		);
 
-	data.params.y = ((data.deckData.position &&
-	                typeof data.deckData.position.y == 'number'
-	                	? data.deckData.position.y
-	                	: 0) | 0) +
-					((data.deckData.parentPosition &&
-					typeof data.deckData.parentPosition.y == 'number'
-						? data.deckData.parentPosition.y
-						: 0) | 0);
+	data.params.y = (
+			(data.deckData.position                     &&
+			typeof data.deckData.position.y == 'number'
+				? data.deckData.position.y
+				: 0) | 0
+		) +
+		(
+			(data.deckData.parentPosition                     &&
+			typeof data.deckData.parentPosition.y == 'number'
+				? data.deckData.parentPosition.y
+				: 0) | 0
+		);
 
-	data.deck.rotate = data.params.rotate = data.deckData.rotate &&
-	                                        typeof data.deckData.rotate == 'number'
-	                                        	? data.deckData.rotate
-	                                        	: 0;
-
-	data.params.padding_y = data.deckData.paddingY && typeof data.deckData.paddingY == 'number' 
-		? data.deckData.paddingY 
-		: data.deckData.paddingType
-			? defaults.padding_y      
+	data.deck.rotate = data.params.rotate = 
+		data.deckData.rotate                    &&
+		typeof data.deckData.rotate == 'number'
+			? data.deckData.rotate
 			: 0;
 
-	data.params.padding_x = data.deckData.paddingX && typeof data.deckData.paddingX == 'number' 
-		? data.deckData.paddingX 
-		: data.deckData.paddingType
-			? defaults.padding_x      
-			: 0;
+	data.params.padding_y = 
+		data.deckData.paddingY                    &&
+		typeof data.deckData.paddingY == 'number' 
+			? data.deckData.paddingY 
+			: data.deckData.paddingType
+				? defaults.padding_y      
+				: 0;
 
-	data.params.flip_padding_y = data.deckData.flipPaddingY && typeof data.deckData.flipPaddingY == 'number' 
-		? data.deckData.flipPaddingY 
-		: data.deckData.paddingType
-			? defaults.flip_padding_y 
-			: 0;
+	data.params.padding_x = 
+		data.deckData.paddingX                    &&
+		typeof data.deckData.paddingX == 'number' 
+			? data.deckData.paddingX 
+			: data.deckData.paddingType
+				? defaults.padding_x      
+				: 0;
 
-	data.params.flip_padding_x = data.deckData.flipPaddingX && typeof data.deckData.flipPaddingX == 'number' 
-		? data.deckData.flipPaddingX 
-		: data.deckData.paddingType
-			? defaults.flip_padding_x 
-			: 0;
+	data.params.flip_padding_y = 
+		data.deckData.flipPaddingY                    &&
+		typeof data.deckData.flipPaddingY == 'number' 
+			? data.deckData.flipPaddingY 
+			: data.deckData.paddingType
+				? defaults.flip_padding_y 
+				: 0;
+
+	data.params.flip_padding_x = 
+		data.deckData.flipPaddingX                    &&
+		typeof data.deckData.flipPaddingX == 'number' 
+			? data.deckData.flipPaddingX 
+			: data.deckData.paddingType
+				? defaults.flip_padding_x 
+				: 0;
 };
 
 // --------------------------------------------------------------------------------------------------------
 
-event.listen('addDeckEl', (data) => {
+event.listen('addDeckEl', data => {
 
 	applyChangedParameters(data);
 
 	let _deckDomElement = 
-		elRender('<div>')
+		elRender('<div>');
 
 	let _params = {
 		'transform' : 'rotate(' + (data.params.rotate|0) + 'deg)',
@@ -109,7 +126,7 @@ event.listen('addDeckEl', (data) => {
 
 // --------------------------------------------------------------------------------------------------------
 
-event.listen('redrawDeckFlip', (data) => {
+event.listen('redrawDeckFlip', data => {
 
 	if(!data || !data.cards) {
 		return;
@@ -136,7 +153,7 @@ event.listen('redrawDeckFlip', (data) => {
 
 // --------------------------------------------------------------------------------------------------------
 
-event.listen('redrawDeckIndexes', (data) => {
+event.listen('redrawDeckIndexes', data => {
 
 	if(!data || !data.cards) {
 		return;
@@ -154,7 +171,7 @@ event.listen('redrawDeckIndexes', (data) => {
 
 // --------------------------------------------------------------------------------------------------------
 
-event.listen('redrawDeck', (data) => {
+event.listen('redrawDeck', data => {
 
 	if(share.get('noRedraw')) {
 		return false;

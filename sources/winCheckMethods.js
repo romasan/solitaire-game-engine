@@ -11,12 +11,12 @@
 import common   from 'common';
 import defaults from 'defaults';
 
-let wcm = {
+let winCheckMethods = {
 	
 	// Filters
 
 	// возвращает колоды определённой группы/групп
-	group : (data) => {
+	group : data => {
 
 		if(!data.filter || !data.filterArgs) {
 			return false;
@@ -46,11 +46,9 @@ let wcm = {
 		return _decks.length;
 	},
 
-	groups : (data) => {
-		return wcm.group(data);
-	},
+	groups : data => winCheckMethods.group(data),
 
-	deck: (data) => {
+	deck: data => {
 		
 		if(!data.filter || !data.filterArgs) {
 			return false;
@@ -72,13 +70,11 @@ let wcm = {
 		return _decks.length;
 	},
 	
-	decks: (data) => {
-		return wcm.deck(data);
-	},
+	decks: data => winCheckMethods.deck(data),
 
 	// Tag filters
 
-	firstEmpty: (data) => {
+	firstEmpty: data => {
 
 		let _decks = [];
 		
@@ -95,7 +91,7 @@ let wcm = {
 
 	// Internal use
 
-	_asc_desk : (data) => {
+	_asc_desk : data => {
 
 		if(!data || typeof data.asc_desk != 'number') {
 			return false;
@@ -129,7 +125,7 @@ let wcm = {
 
 	// Simple rules
 
-	newerWin : () => {
+	newerWin : data => {
 		
 		console.warn("You use 'newerWin' rule for checking Win. Maybe arguments in 'winCheck.rule' have incorrect rule name.")
 		
@@ -138,7 +134,7 @@ let wcm = {
 
 	// все колоды пусты
 
-	allEmpty : (data) => {
+	allEmpty : data => {
 
 		let _correct = true;
 		
@@ -149,14 +145,14 @@ let wcm = {
 		return _correct;
 	},
 	
-	empty: (data) => {
-		wcm.allEmpty(data);
+	empty: data => {
+		winCheckMethods.allEmpty(data);
 	},
 
 	// Combined rules (use like filter)
 
 	// все карты в одной колоде
-	allInOne : (data) => {
+	allInOne : data => {
 
 		let _emptyDecksCount = 0,
 			_decksLength     = 0,
@@ -182,98 +178,99 @@ let wcm = {
 
 	// step by step 1, 2, 3
 	// во всех колодах карты по возрастанию
-	allAscend : (data) => {
+	allAscend : data => {
 
 		data.asc_desk = -1;
 		
-		return wcm._asc_desk(data);
+		return winCheckMethods._asc_desk(data);
 	},
 	
 	// step by step 3, 2, 1
 	// во всех колодах карты по убыванию
-	allDescent : (data) => {
+	allDescent : data => {
 			
 		data.asc_desk = 1;
 		
-		return wcm._asc_desk(data);
+		return winCheckMethods._asc_desk(data);
 	},
 
 	// Composite rules (input arguments)
 	// комбинированное правило
 		
-	lego : (_a) => {
-		
-		if(!_a || !_a.rulesArgs) {
+	lego : legoData => {
+
+		if(!legoData || !legoData.rulesArgs) {
 			return false;
 		}
-		
+
 		let _correct = true;
 		
 		// apply filters
-		for(let next in _a.rulesArgs) {
+		for(let next in legoData.rulesArgs) {
 
 			let _decksClone = {};
-			for(let i in _a.decks) {
-				_decksClone[i] = _a.decks[i];
+
+			for(let i in legoData.decks) {
+				_decksClone[i] = legoData.decks[i];
 			}
+
 			let data = {
-				// filters : _a[next].filters,
-				// rules   : _a[next].rules,
+				// filters : legoData[next].filters,
+				// rules   : legoData[next].rules,
 				decks   : _decksClone
 			};
 
 			// применяем фильтры, оставляем только интересующие колоды
-			
-			if(_correct && _a.rulesArgs[next].filters) {
+			if(_correct && legoData.rulesArgs[next].filters) {
 
 				data.filter = true;
 
-				for(let i in _a.rulesArgs[next].filters) {
-					if(typeof _a.rulesArgs[next].filters[i] == 'string' && wcm[_a.rulesArgs[next].filters[i]]) {
+				for(let i in legoData.rulesArgs[next].filters) {
+					if(typeof legoData.rulesArgs[next].filters[i] == 'string' && winCheckMethods[legoData.rulesArgs[next].filters[i]]) {
+
 						data.filterArgs = null;
-						_correct = _correct && wcm[_a.rulesArgs[next].filters[i]](data);
+						_correct = _correct && winCheckMethods[legoData.rulesArgs[next].filters[i]](data);
 					} else {
-						// if(typeof _a.rulesArgs[next].filters[i] == 'object') {
+
+						// if(typeof legoData.rulesArgs[next].filters[i] == 'object') {
 						if (
-							_a.rulesArgs[next].filters[i]                                 &&
-							_a.rulesArgs[next].filters[i].toString() == "[object Object]"
+							legoData.rulesArgs[next].filters[i]                                 &&
+							legoData.rulesArgs[next].filters[i].toString() == "[object Object]"
 						) {
-							for(let filterName in _a.rulesArgs[next].filters[i]) {
-								if(wcm[filterName]) {
-									data.filterArgs = _a.rulesArgs[next].filters[i][filterName]
-									_correct = _correct && wcm[filterName](data);
+
+							for(let filterName in legoData.rulesArgs[next].filters[i]) {
+								if(winCheckMethods[filterName]) {
+									data.filterArgs = legoData.rulesArgs[next].filters[i][filterName]
+									_correct = _correct && winCheckMethods[filterName](data);
 								} else {
-									_correct = _correct && wcm.newerWin();
+									_correct = _correct && winCheckMethods.newerWin();
 								}
 							}
 						} else {
-							_correct = _correct && wcm.newerWin();
+							_correct = _correct && winCheckMethods.newerWin();
 						}
-						
-			
 					}
 				}
-				
+
 				data.filter = false;
 			}
 
 			// применяем правила к оставшимся колодам
+			if(legoData.rulesArgs[next].rules) {
 
-			if(_a.rulesArgs[next].rules) {
-				
-				for(let i in _a.rulesArgs[next].rules) {
-					if(wcm[_a.rulesArgs[next].rules[i]]) {
-						_correct = _correct && wcm[_a.rulesArgs[next].rules[i]](data);
+				for(let i in legoData.rulesArgs[next].rules) {
+					if(winCheckMethods[legoData.rulesArgs[next].rules[i]]) {
+						_correct = _correct && winCheckMethods[legoData.rulesArgs[next].rules[i]](data);
 					} else {
-						_correct = _correct && wcm.newerWin();
+						_correct = _correct && winCheckMethods.newerWin();
 					}
 				}
 			}
-			
+
 		}
 
 		return _correct;
 	}
 }
 
-export default wcm;
+export default winCheckMethods;

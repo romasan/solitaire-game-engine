@@ -18,7 +18,7 @@ const opposite = [
 	{down  : 'up'   }
 ];
 
-export default (data) => {// {x, y, map, mapSize, el, data}
+export default data => {// {x, y, map, mapSize, el, data}
 
 	let _relations = [];
 

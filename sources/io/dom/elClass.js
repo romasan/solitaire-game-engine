@@ -6,11 +6,11 @@ import defaults from 'defaults';
 
 export default class elClass {
 
-	constructor(e) {
+	constructor(data) {
 
-		this.el = e;
+		this.el = data;
 		
-		if(!e) {
+		if(!data) {
 			// if(window._debug) throw new Error("test");
 			this.el = null;
 		}
@@ -161,7 +161,7 @@ export default class elClass {
 			typeof callback      == "string"    && (animationName = callback, callback = null);
 
 			// Thread
-			setTimeout(() => {
+			setTimeout(e => {
 
 				if(_animation) {
 					this.css({
@@ -171,16 +171,16 @@ export default class elClass {
 
 				let counter = 0;
 
-				let reType = (e) => {// crutch
+				let reType = (data) => {// crutch
 
-					let _e = e + '';
+					let _e = data + '';
 
 					let _px = _e.split('px')
 					if(_px.length == 2) {
 						return (_px[0] | 0) + 'px'
 					}
 
-					return e;
+					return data;
 				};
 
 				for(let attrName in params) {

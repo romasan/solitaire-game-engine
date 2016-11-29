@@ -6,7 +6,7 @@
 
 import defaults from 'defaults';
 
-export default function(e) {
+export default function(data) {
 
 	// {
 	// 	type   : "fan",
@@ -29,26 +29,26 @@ export default function(e) {
 	// a.``.......+:
 	//        A     y 90deg
 
-	var _decks  = [];
-	var _count  = typeof e.count == "number" ? e.count : 3;//16
-	var _step   = 180 / _count;
-	var _radius = typeof e.radius == "number" ? e.radius : 100;//405;
-	var _center = 
-		typeof e.center   != "undefined" && 
-		typeof e.center.x != "undefined" && 
-		typeof e.center.y != "undefined"
-			? e.center 
+	let _decks  = [];
+	let _count  = typeof data.count == "number" ? data.count : 3;//16
+	let _step   = 180 / _count;
+	let _radius = typeof data.radius == "number" ? data.radius : 100;//405;
+	let _center = 
+		typeof data.center   != "undefined" && 
+		typeof data.center.x != "undefined" && 
+		typeof data.center.y != "undefined"
+			? data.center 
 			: {
 				"x" : 0,
 				"y" : 0
 			};
-	var _angle  = _step / 2 + 270;
-	var _deg    = Math.PI / 180;
-	
-	for(var deckIndex = 0; deckIndex < _count; deckIndex += 1) {
+	let _angle  = _step / 2 + 270;
+	let _deg    = Math.PI / 180;
 
-		var _a = Math.sin(_angle * _deg) * _radius;
-		var _b = Math.cos(_angle * _deg) * _radius;
+	for(let deckIndex = 0; deckIndex < _count; deckIndex += 1) {
+
+		let _a = Math.sin(_angle * _deg) * _radius;
+		let _b = Math.cos(_angle * _deg) * _radius;
 		if(_angle > 360) _angle -= 360;
 		_decks.push({
 			"name"     : this.name + "_deck" + deckIndex,

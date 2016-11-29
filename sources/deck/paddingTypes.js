@@ -32,27 +32,27 @@ export default {
 		}
 	},
 	
-	twindeck_typeA : (params, card, index, length, deck) => {
+	// twindeck_typeA : (params, card, index, length, deck) => {
 
-		let twindeck_max_cards       = 24,
-			twindeck_deck_length     = 3;
+	// 	let twindeck_max_cards       = 24,
+	// 		twindeck_deck_length     = 3;
 
-		let _padding = {
-			x : 2,
-			y : 1
-		}
+	// 	let _padding = {
+	// 		x : 2,
+	// 		y : 1
+	// 	}
 
-		let _depth = (length / twindeck_max_cards * twindeck_deck_length)|0;
-		if(_depth >= twindeck_deck_length) _depth = twindeck_deck_length - 1;
+	// 	let _depth = (length / twindeck_max_cards * twindeck_deck_length)|0;
+	// 	if(_depth >= twindeck_deck_length) _depth = twindeck_deck_length - 1;
 
-		let _plus = index - (length - _depth - 1);
-		if(_plus < 0) _plus = 0;
+	// 	let _plus = index - (length - _depth - 1);
+	// 	if(_plus < 0) _plus = 0;
 
-		return {
-			x : params.x + _padding.x * _plus, 
-			y : params.y + _padding.y * _plus
-		};
-	},
+	// 	return {
+	// 		x : params.x + _padding.x * _plus, 
+	// 		y : params.y + _padding.y * _plus
+	// 	};
+	// },
 	
 	radial : (params, card, index, length, deck) => {
 

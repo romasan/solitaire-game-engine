@@ -10,16 +10,7 @@ import getBeside from 'getBeside';
 
 let fullRules = {
 
-	// Internal use (filters)
-
-	_top : (deck) => {
-
-
-		let card = deck.getTopCard();
-		console.log('_top', deck, card);
-		
-		return card && common.validateCardName(card);
-	},
+	// Internal use
 
 	_prev_next_desc_ask : (deck, type, callback) => {
 
@@ -28,15 +19,15 @@ let fullRules = {
 		let _topCard = deck.getTopCard();
 
 		for(;_prev && _check;) {
-			
+
 			let _deck = Deck.getDeck(_prev);
 			    _card = _deck.getTopCard();
-			
+
 			_check = _check && _card && callback(
-				common.validateCardName(_topCard).value    ,
+				common.validateCardName(_topCard).value | 0,
 				common.validateCardName(_card)   .value | 0
 			);
-			
+
 			_topCard = _card;
 			_prev = getBeside(_deck)[type];
 		}
@@ -44,7 +35,11 @@ let fullRules = {
 		return _check;
 	},
 
-	_query : (deck, data) => {
+	// Filters
+
+	query : (deck, data) => {
+
+		console.log('%c_query:', 'font-weight: bold; color: red;', deck, data);
 
 		// query : {
 		// 	all : {
@@ -55,22 +50,31 @@ let fullRules = {
 		// 	rules : ["topAce"]
 		// }
 
+		// TODO
+
 		let groupName = deck.parent;
 		let currentGroup = Group.getByName(groupName);
 
 		let _correct = true;
 
+		let _decks = [];
+		
+		if(!data.excludeCurrent) {
+			_decks.push(deck);
+		}
+		
 		// all | any
 		if(data.all) {
-
-			let _decks = [];
 
 			// Groups
 			for(let i in data.all.groups) {
 
 				let _group = Group.getByName(data.all.groups[i])
 
-				if(data.all.excludeParent && data.all.groups[i] == groupName) {
+				if(
+					data.all.excludeParent          &&
+					data.all.groups[i] == groupName
+				) {
 					//  do nothing
 				} else {
 
@@ -81,9 +85,9 @@ let fullRules = {
 
 						_decks.push(_deck);
 					} else if(data.all.select == "second") {
-						// --//-- index 0
+						// --/-- index 0
 					} else if(data.all.select == "last") {
-						// --//-- max index
+						// --/-- max index
 					} else {
 						// all
 					}
@@ -93,10 +97,14 @@ let fullRules = {
 
 			// Decks
 			for(let i in data.all.decks) {
-				// get decks by name
-			}
 
-			// let _check = true;
+				// get decks by name
+				let _deck = Deck.getDeck(data.all.decks[i]);
+
+				if(_deck) {
+					_decks.push(_deck);
+				}
+			}
 
 			// Rules
 			for(let deckIndex in _decks) {
@@ -106,120 +114,70 @@ let fullRules = {
 					let _rule = data.rules[ruleIndex]
 
 					if(fullRules[_rule]) {
+
+						console.log('fullRule >>>', _rule, 'deck:', _decks[deckIndex].name, deckIndex);
+
 						_correct = _correct && fullRules[_rule](_decks[deckIndex]);
 					}
 				}
+
+				let _anyCorrect = false;
+
+				for(let ruleIndex in data.anyRule) {
+
+					let _rule = data.anyRule[ruleIndex]
+
+					if(fullRules[_rule]) {
+						_anyCorrect = _anyCorrect || fullRules[_rule](_decks[deckIndex]);
+					}
+				}
+
+				_correct = _correct && _anyCorrect;
 			}
 		}
 
 		return _correct;
 	},
 
+	// Rules
 
-	deckLength : (deck) => {
-		
-		return defaults.card.ranks.length <= deck.cards.length;
-	},
-	
-	not : () => {
-		
-		return false;
-	},
+	deckLength : deck => defaults.card.ranks.length <= deck.cards.length,
 
-	noMoves : (deck) => {
+	not : e => false,
 
-		return !Tips.checkFrom(deck.name);
-	},
+	noMoves : deck => !Tips.checkFrom(deck.name),
 
-	topAce : (deck) => {
+	topAce : deck => {
 
-		return fullRules._top(deck).rank == defaults.card.ranks[0];
+		let _card = deck.getTopCard();
+
+		return _card && _card.rank == defaults.card.ranks[0];
 	},
 
-	topKing : (deck) => {
+	topKing : deck => {
 
-		let lastIndex = defaults.card.ranks.length - 1
+		let lastIndex = defaults.card.ranks.length - 1;
 
-		return fullRules._top(deck).rank == defaults.card.ranks[lastIndex];
+		let _card = deck.getTopCard();
+
+		return _card && _card.rank == defaults.card.ranks[lastIndex];
 	},
 
-	//  prevDescOne: (deck) => {
+	prevDescOne : deck => fullRules._prev_next_desc_ask(deck, 'prev', (up, down) => up == (down | 0) + 1),
 
-	// 	let _check = true;
-	// 	let _prev = getBeside(a.to).prev;
-	// 	let _topCard = deck.getTopCard();
+	prevAscOne  : deck => fullRules._prev_next_desc_ask(deck, 'prev', (up, down) => (up | 0) + 1 == down),
 
-	// 	for(;_prev && _check;) {
-			
-	// 		let _deck = Deck.Deck(_prev);
-			
-	// 		_card = _deck.getTopCard();
-			
-	// 		_check = _check && _card && common.validateCardName(_topCard).value == (common.validateCardName(_card).value|0) + 1;
-			
-	// 		_topCard = _card;
+	nextDescOne : deck => fullRules._prev_next_desc_ask(deck, 'next', (up, down) => up == (down | 0) + 1),
 
-	// 		_prev = getBeside(_deck).prev;
-	// 	}
+	nextAscOne  : deck => fullRules._prev_next_desc_ask(deck, 'next', (up, down) => (up | 0) + 1 == down),
 
-	// 	return _check;
-	// }
+	prevDesc    : deck => fullRules._prev_next_desc_ask(deck, 'prev', (up, down) => up > down)           ,
 
-	prevDescOne : (deck) => {
+	prevAsc     : deck => fullRules._prev_next_desc_ask(deck, 'prev', (up, down) => up < down)           ,
 
-		return fullRules._prev_next_desc_ask(deck, 'prev', (up, down) => {
-			return up == (down|0) + 1;
-		});
-	},
+	nextDesc    : deck => fullRules._prev_next_desc_ask(deck, 'next', (up, down) => up > down)           ,
 
-	prevAscOne : (deck) => {
-
-		return fullRules._prev_next_desc_ask(deck, 'prev', (up, down) => {
-			return (up|0) + 1 == down;
-		});
-	},
-
-	nextDescOne : (deck) => {
-
-		return fullRules._prev_next_desc_ask(deck, 'next', (up, down) => {
-			return up == (down|0) + 1;
-		});
-	},
-
-	nextAscOne : (deck) => {
-
-		return fullRules._prev_next_desc_ask(deck, 'next', (up, down) => {
-			return (up|0) + 1 == down;
-		});
-	},
-
-	prevDesc : (deck) => {
-
-		return fullRules._prev_next_desc_ask(deck, 'prev', (up, down) => {
-			return up > down;
-		});
-	},
-
-	prevAsc : (deck) => {
-
-		return fullRules._prev_next_desc_ask(deck, 'prev', (up, down) => {
-			return up < down;
-		});
-	},
-
-	nextDesc : (deck) => {
-
-		return fullRules._prev_next_desc_ask(deck, 'next', (up, down) => {
-			return up > down;
-		});
-	},
-
-	nextAsc : (deck) => {
-
-		return fullRules._prev_next_desc_ask(deck, 'next', (up, down) => {
-			return up < down;
-		});
-	},
+	nextAsc     : deck => fullRules._prev_next_desc_ask(deck, 'next', (up, down) => up < down)           ,
 };
 
 export default fullRules;

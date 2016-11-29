@@ -55,7 +55,7 @@ class stepsAroundAction extends deckAction {
 
 			let _counter = _runStack.length;
 
-			let _callback = () => {
+			let _callback = e => {
 					
 				_counter -= 1;
 				if(_counter === 0) {
@@ -95,7 +95,7 @@ class stepsAroundAction extends deckAction {
 		// выполняется после хода 
 		} else {
 			
-			let _callback = () => {
+			let _callback = e => {
 
 				if(share.get('stepType') == stepType) {
 					this.end();

@@ -86,6 +86,6 @@ class allToAll {
 
 let _allToAll = new allToAll();
 
-export default (data) => {
+export default data => {
 	return _allToAll.get(data);
 };

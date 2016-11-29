@@ -16,7 +16,7 @@ import field     from 'field';
 
 // ---------------------------------------- UNDO ----------------------------------------
 
-let _undo = (data) => {
+let _undo = data => {
 
 	if(share.get('sessionStarted')) {
 
@@ -122,7 +122,7 @@ event.listen('undo', function(_a) {
 
 // ---------------------------------------- REDO ----------------------------------------
 
-let _redo = (data) => {
+let _redo = data => {
 
 	// for(let i in _redoMethods) {
 	// 	_redoMethods[i](data);

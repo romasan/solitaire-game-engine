@@ -59,7 +59,7 @@ class shareClass {
 				forceClone = data;
 			}
 
-			for(var _name in name) {
+			for(let _name in name) {
 
 				event.dispatch('shareChange:' + name, {
 					from : this._data[_name],

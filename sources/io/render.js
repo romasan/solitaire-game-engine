@@ -15,24 +15,24 @@ import fieldThemesSet from 'fieldThemesSet';
 
 // common
 
-event.listen('removeEl', (e) => {
+event.listen('removeEl', data => {
 
-	let _elDomElement = share.get('domElement:' + e.id);
+	let _elDomElement = share.get('domElement:' + data.id);
 
 	_elDomElement.remove();
 
-	share.delete('domElement:' + e.id);
+	share.delete('domElement:' + data.id);
 });
 
-event.listen('showCard', (target) => {
+event.listen('showCard', target => {
 	elRender(target).show();
 });
 
-event.listen('hideCard', (target) => {
+event.listen('hideCard', target => {
 	elRender(target).hide();
 });
 
-event.listen('stopAnimations', () => {
+event.listen('stopAnimations', e => {
 	// TODO
 	// elRender.stopAnimations();
 });
