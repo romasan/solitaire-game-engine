@@ -72,7 +72,7 @@ exports.init = gameConfig => {
 
 	event.dispatch('gameInited');
 
-	exports.Redraw = function(data) {
+	exports.Redraw = data => {
 		Field.Redraw(data);
 	}
 };

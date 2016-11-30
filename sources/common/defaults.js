@@ -54,7 +54,7 @@ export default {
 		doubleClick : false
 	},
 
-// Group
+// Group ---------------------------------------------------------------------------------
 
 	flip                : null, // param for deck
 	actions             : null, // param for deck

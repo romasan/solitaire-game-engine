@@ -6,7 +6,7 @@
 
 import relationsGenerator from 'relationsGenerator';
 
-export default function(e) {
+export default (group, data) => {
 	
 	// {
 	// 	type	 : "line",
@@ -18,11 +18,11 @@ export default function(e) {
 	
 	// direction <- placement: {x, y}
 
-	let _count = e.count;
+	let _count = data.count;
 	let _decks = [];
 	
 	for(let deckIndex = 0; deckIndex < _count; deckIndex += 1) {
-		let _deckName = this.name + "_deck" + (deckIndex + 1);
+		let _deckName = group.name + "_deck" + (deckIndex + 1);
 		
 		let _deck = {
 			name : _deckName
@@ -31,23 +31,23 @@ export default function(e) {
 		_decks.push(_deck);
 	}
 
-	if(e.first) {
+	if(data.first) {
 		
 		let _deck = _decks[0];
 		
-		for(let propName in e.first) {
-			_deck[propName] = e.first[propName];
+		for(let propName in data.first) {
+			_deck[propName] = data.first[propName];
 		}
 	}
 
 	_decks[0].tag = 'first';
 
-	if(e.last) {
+	if(data.last) {
 
 		let _deck = _decks[_decks.length - 1];
 		
-		for(let propName in e.first) {
-			_deck[propName] = e.first[propName];
+		for(let propName in data.first) {
+			_deck[propName] = data.first[propName];
 		}
 	}
 
@@ -61,17 +61,17 @@ export default function(e) {
 			"beside" : "lineBesideRelations"
 		};
 
-		if(e.relations) {
+		if(data.relations) {
 
 			for(let relGenName in _relGenerators) {
 
 				// TODO
-				if(e.relations[relGenName]) {
+				if(data.relations[relGenName]) {
 					_relations = _relations.concat(relationsGenerator[_relGenerators[relGenName]]({
 						deckIndex,
 						count     : _count,
 						decks     : _decks,
-						data      : e.relations[relGenName]
+						data      : data.relations[relGenName]
 					}));
 				};
 			};

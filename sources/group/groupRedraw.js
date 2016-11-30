@@ -2,7 +2,7 @@
 
 import defaults from 'defaults';
 
-export default function(group, data) {
+export default (group, data) => {
 
 	if(!group || !data) {
 		return;

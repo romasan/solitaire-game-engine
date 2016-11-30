@@ -3,7 +3,6 @@
 import event    from 'event';
 import defaults from 'defaults';
 
-// export default new function() {
 class shareClass {
 
 	constructor() {

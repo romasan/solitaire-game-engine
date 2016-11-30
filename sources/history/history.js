@@ -91,28 +91,28 @@ let _undo = data => {
 
 };
 
-event.listen('undo', function(_a) {
+event.listen('undo', undoData => {
 
 	// elRender.animationsEnd();
 	event.dispatch('stopAnimations');
 	
-	if(!_a) {
+	if(!undoData) {
 		return;
 	};
 
 	// Обратная совместимость
-	if(_a instanceof Array) {
+	if(undoData instanceof Array) {
 
-		_a.reverse();
+		undoData.reverse();
 		
-		for(let _i in _a) {
-			let data = _a[_i];
+		for(let _i in undoData) {
+			let data = undoData[_i];
 			_undo(data);
 		}
 		
 	} else {
 		
-		_undo(_a);
+		_undo(undoData);
 		
 	}
 
@@ -188,25 +188,25 @@ let _redo = data => {
 	}
 };
 
-event.listen('redo', function(_a) {
+event.listen('redo', redoData => {
 
 	// elRender.animationsEnd();
 	event.dispatch('stopAnimations');
 	
 
-	if(!_a) {
+	if(!redoData) {
 		return;
 	}
 
 	// Обратная совместимость
-	if(_a instanceof Array) {
-		_a.reverse();
-		for(let _i in _a) {
-			let data = _a[_i];
+	if(redoData instanceof Array) {
+		redoData.reverse();
+		for(let _i in redoData) {
+			let data = redoData[_i];
 			_redo(data);
 		}
 	} else {
-		_redo(_a);
+		_redo(redoData);
 	}
 
 	Tips.checkTips();
@@ -268,11 +268,11 @@ class history {
 
 let _history = new history();
 
-event.listen('addStep', (e)=>{
-	_history.add(e)
+event.listen('addStep', data => {
+	_history.add(data)
 });
 
-event.listen('saveSteps', ()=>{
+event.listen('saveSteps', e => {
 
 	// save steps to client history
 	event.dispatch('makeStep', _history.get());

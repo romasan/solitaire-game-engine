@@ -12,6 +12,15 @@ let fullRules = {
 
 	// Internal use
 
+	_topCard : deck => {
+
+		let _card = deck.getTopCard();
+
+		return _card && common.validateCardName(_card.name);
+	},
+
+	// _firstCard : deck => {}
+
 	_prev_next_desc_ask : (deck, type, callback) => {
 
 		let _check = true;
@@ -39,7 +48,7 @@ let fullRules = {
 
 	query : (deck, data) => {
 
-		console.log('%c_query:', 'font-weight: bold; color: red;', deck, data);
+		// console.log('%c_query:', 'font-weight: bold; color: red;', deck, data);
 
 		// query : {
 		// 	all : {
@@ -114,25 +123,25 @@ let fullRules = {
 					let _rule = data.rules[ruleIndex]
 
 					if(fullRules[_rule]) {
-
-						console.log('fullRule >>>', _rule, 'deck:', _decks[deckIndex].name, deckIndex);
-
 						_correct = _correct && fullRules[_rule](_decks[deckIndex]);
 					}
 				}
 
-				let _anyCorrect = false;
+				if(data.anyRule) {
 
-				for(let ruleIndex in data.anyRule) {
+					let _anyCorrect = false;
 
-					let _rule = data.anyRule[ruleIndex]
+					for(let ruleIndex in data.anyRule) {
 
-					if(fullRules[_rule]) {
-						_anyCorrect = _anyCorrect || fullRules[_rule](_decks[deckIndex]);
+						let _rule = data.anyRule[ruleIndex]
+
+						if(fullRules[_rule]) {
+							_anyCorrect = _anyCorrect || fullRules[_rule](_decks[deckIndex]);
+						}
 					}
-				}
 
-				_correct = _correct && _anyCorrect;
+					_correct = _correct && _anyCorrect;
+				}
 			}
 		}
 
@@ -149,16 +158,16 @@ let fullRules = {
 
 	topAce : deck => {
 
-		let _card = deck.getTopCard();
+		let _card = fullRules._topCard(deck);
 
 		return _card && _card.rank == defaults.card.ranks[0];
 	},
 
 	topKing : deck => {
 
-		let lastIndex = defaults.card.ranks.length - 1;
+		let _card = fullRules._topCard(deck);
 
-		let _card = deck.getTopCard();
+		let lastIndex = defaults.card.ranks.length - 1;
 
 		return _card && _card.rank == defaults.card.ranks[lastIndex];
 	},

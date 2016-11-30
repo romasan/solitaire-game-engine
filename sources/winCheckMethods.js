@@ -2,7 +2,7 @@
 
 /*
  * Client-server application for planning biomechanical stimulation =)
- * version: 1.0
+ * version: 1.0.0
  * author: Romasan
  * date: 05.05.2016
  */
@@ -48,7 +48,7 @@ let winCheckMethods = {
 
 	groups : data => winCheckMethods.group(data),
 
-	deck: data => {
+	deck : data => {
 		
 		if(!data.filter || !data.filterArgs) {
 			return false;
@@ -70,11 +70,11 @@ let winCheckMethods = {
 		return _decks.length;
 	},
 	
-	decks: data => winCheckMethods.deck(data),
+	decks : data => winCheckMethods.deck(data),
 
 	// Tag filters
 
-	firstEmpty: data => {
+	firstEmpty : data => {
 
 		let _decks = [];
 		
@@ -93,7 +93,10 @@ let winCheckMethods = {
 
 	_asc_desk : data => {
 
-		if(!data || typeof data.asc_desk != 'number') {
+		if(
+			!data                            ||
+			typeof data.asc_desk != 'number'
+		) {
 			return false;
 		}
 
@@ -139,13 +142,13 @@ let winCheckMethods = {
 		let _correct = true;
 		
 		for(let _i in data.decks) {
-			_correct = _correct && data.decks[_i].cards.length === 0;
+			_correct = _correct && data.decks[_i].cards.length == 0;
 		}
 		
 		return _correct;
 	},
 	
-	empty: data => {
+	empty : data => {
 		winCheckMethods.allEmpty(data);
 	},
 
@@ -159,7 +162,7 @@ let winCheckMethods = {
 			_fillIndex       = 0;
 		
 		for(let i in data.decks) {
-			if(data.decks[i].cards.length === 0) {
+			if(data.decks[i].cards.length == 0) {
 				_emptyDecksCount += 1;
 			} else {
 				_fillIndex = i;
@@ -197,50 +200,50 @@ let winCheckMethods = {
 	// Composite rules (input arguments)
 	// комбинированное правило
 		
-	lego : legoData => {
+	query : queryData => {
 
-		if(!legoData || !legoData.rulesArgs) {
+		if(!queryData || !queryData.rulesArgs) {
 			return false;
 		}
 
 		let _correct = true;
 		
 		// apply filters
-		for(let next in legoData.rulesArgs) {
+		for(let next in queryData.rulesArgs) {
 
 			let _decksClone = {};
 
-			for(let i in legoData.decks) {
-				_decksClone[i] = legoData.decks[i];
+			for(let i in queryData.decks) {
+				_decksClone[i] = queryData.decks[i];
 			}
 
 			let data = {
-				// filters : legoData[next].filters,
-				// rules   : legoData[next].rules,
-				decks   : _decksClone
+				// filters : queryData[next].filters,
+				// rules   : queryData[next].rules,
+				decks : _decksClone
 			};
 
 			// применяем фильтры, оставляем только интересующие колоды
-			if(_correct && legoData.rulesArgs[next].filters) {
+			if(_correct && queryData.rulesArgs[next].filters) {
 
 				data.filter = true;
 
-				for(let i in legoData.rulesArgs[next].filters) {
-					if(typeof legoData.rulesArgs[next].filters[i] == 'string' && winCheckMethods[legoData.rulesArgs[next].filters[i]]) {
+				for(let i in queryData.rulesArgs[next].filters) {
+					if(typeof queryData.rulesArgs[next].filters[i] == 'string' && winCheckMethods[queryData.rulesArgs[next].filters[i]]) {
 
 						data.filterArgs = null;
-						_correct = _correct && winCheckMethods[legoData.rulesArgs[next].filters[i]](data);
+						_correct = _correct && winCheckMethods[queryData.rulesArgs[next].filters[i]](data);
 					} else {
 
-						// if(typeof legoData.rulesArgs[next].filters[i] == 'object') {
+						// if(typeof queryData.rulesArgs[next].filters[i] == 'object') {
 						if (
-							legoData.rulesArgs[next].filters[i]                                 &&
-							legoData.rulesArgs[next].filters[i].toString() == "[object Object]"
+							queryData.rulesArgs[next].filters[i]                                 &&
+							queryData.rulesArgs[next].filters[i].toString() == "[object Object]"
 						) {
 
-							for(let filterName in legoData.rulesArgs[next].filters[i]) {
+							for(let filterName in queryData.rulesArgs[next].filters[i]) {
 								if(winCheckMethods[filterName]) {
-									data.filterArgs = legoData.rulesArgs[next].filters[i][filterName]
+									data.filterArgs = queryData.rulesArgs[next].filters[i][filterName]
 									_correct = _correct && winCheckMethods[filterName](data);
 								} else {
 									_correct = _correct && winCheckMethods.newerWin();
@@ -256,11 +259,11 @@ let winCheckMethods = {
 			}
 
 			// применяем правила к оставшимся колодам
-			if(legoData.rulesArgs[next].rules) {
+			if(queryData.rulesArgs[next].rules) {
 
-				for(let i in legoData.rulesArgs[next].rules) {
-					if(winCheckMethods[legoData.rulesArgs[next].rules[i]]) {
-						_correct = _correct && winCheckMethods[legoData.rulesArgs[next].rules[i]](data);
+				for(let i in queryData.rulesArgs[next].rules) {
+					if(winCheckMethods[queryData.rulesArgs[next].rules[i]]) {
+						_correct = _correct && winCheckMethods[queryData.rulesArgs[next].rules[i]](data);
 					} else {
 						_correct = _correct && winCheckMethods.newerWin();
 					}
@@ -270,7 +273,9 @@ let winCheckMethods = {
 		}
 
 		return _correct;
-	}
+	},
+
+	lego : data => winCheckMethods.query(data)
 }
 
 export default winCheckMethods;

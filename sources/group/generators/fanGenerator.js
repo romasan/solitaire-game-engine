@@ -6,7 +6,7 @@
 
 import defaults from 'defaults';
 
-export default function(data) {
+export default (group, data) => {
 
 	// {
 	// 	type   : "fan",
@@ -18,7 +18,7 @@ export default function(data) {
 	// 	}
 	// }
 
-	this.placement = {
+	group.placement = {
 		x : 0,
 		y : 0
 	};
@@ -51,7 +51,7 @@ export default function(data) {
 		let _b = Math.cos(_angle * _deg) * _radius;
 		if(_angle > 360) _angle -= 360;
 		_decks.push({
-			"name"     : this.name + "_deck" + deckIndex,
+			"name"     : group.name + "_deck" + deckIndex,
 			"rotate"   : _angle,
 			"position" : {
 				"x" : _center.x + _a - defaults.card.width  / 2,

@@ -247,12 +247,12 @@ event.listen('historyReapeater', data => {
 
 // --
 
-let deckInGroups = (deck, groups) => {
+// let deckInGroups = (deck, groups) => {
 
-	for(let groupName in groups) {
-		Group.getByName(groupName).hasDeck();
-	}
-}
+// 	for(let groupName in groups) {
+// 		Group.getByName(groupName).hasDeck(deck.name);
+// 	}
+// }
 
 // event.listen('makeStep', function(e) {
 	// share.set('animation', defaults.animation);
@@ -275,6 +275,5 @@ export default {
 	animationOn      ,
 	animationOff     ,
 	animationDefault ,
-	deckInGroups     ,
 	sqr              
 };

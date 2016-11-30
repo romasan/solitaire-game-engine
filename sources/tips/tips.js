@@ -38,7 +38,7 @@ let checkTips = e => {
 	});
 
 	if(
-		_tips.length === 0                         &&
+		_tips.length == 0                          &&
 		share.get('stepType') == defaults.stepType
 	) {
 		

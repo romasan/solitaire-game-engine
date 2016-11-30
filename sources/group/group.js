@@ -32,15 +32,15 @@ const params = {
 class groupClass {
 	
 	constructor(data, id) {
-		
+
 		this.type = 'group';
-		
+
 		this.id = id
 
 		this.name = data.name && typeof data.name == 'string' 
 			? data.name 
 			: ('name_' + id);
-		
+
 		this.position = {
 			x : data.position && data.position.x && typeof data.position.x == 'number' 
 				? data.position.x 
@@ -62,7 +62,7 @@ class groupClass {
 			: null
 
 		this.decks = {};
-		
+
 		// сохраняем атрибуты чтобы прокинуть их колодам
 		this.parameters = {};
 		for(let paramName in params) {
@@ -73,14 +73,12 @@ class groupClass {
 				// this.parameters[paramName] = typeof data[paramName] == "boolean" ? data[paramName] : defaults[paramName];
 			}
 		};
-		
+
 		this.deckIndex = [];
 
 		this.tags = data.tags;
 
 	}
-
-// --------------------------------------------------------------------
 
 	// Add deck to group
 	addDeck(data) {
@@ -88,7 +86,7 @@ class groupClass {
 		if(!data) {
 			return;
 		}
-		
+
 		if(!data.position) {
 			data.position = {
 				'x' : 0, 
@@ -97,24 +95,24 @@ class groupClass {
 		}
 
 		// сортировка элементов в группе по заданному индексу и порядку добавления
-		
+
 		// if(!data.position.x) { data.position.x = 0; }
 		// if(!data.position.y) { data.position.y = 0; }
 
 		if(!data.parent) {
 			data.parent = this.name;
 		}
-		
+
 		data.parentPosition = {
 			x : this.position.x, 
 			y : this.position.y
 		};
-		
+
 		// расставляем колоды в группе
 		// 1 приоретет отдаётся параметру groupIndex
 		// остальные вставляются в промежутки или добавляются в конец
 		let _index = 0;
-		
+
 		if(
 			data.groupIndex                                                                    &&
 			decks[ this.deckIndex[data.groupIndex - 1] ].this.deckIndex == data.this.deckIndex &&
@@ -128,34 +126,34 @@ class groupClass {
 		if(data.groupIndex && typeof data.groupIndex == 'number') {
 
 			if(this.deckIndex[data.groupIndex - 1]) {
-				
+
 				for(;typeof this.deckIndex[_index] != 'undefined';_index += 1) {}
-				
+
 				if(placement) {
-					
+
 					let _index    = this.deckIndex[data.groupIndex - 1];
-					
+
 					let _elements = share.get('elements');
-					
+
 					if(placement.x) {
 						_elements[_index].x( this.position.x + (placement.x + defaults.card.width) * _index );
 					}
-					
+
 					if(placement.y) {
 						_elements[_index].y( this.position.y + (placement.y + defaults.card.width) * _index );
 					}
-					
+
 					share.set('elements', _elements);
 				}
 
 				this.deckIndex[_index] = this.deckIndex[data.groupIndex - 1];
 				this.deckIndex[data.groupIndex - 1] = true;
-				
+
 				_index = data.groupIndex - 1
 			} else {
-				
+
 				this.deckIndex[data.groupIndex - 1] = true;
-				
+
 				_index = data.groupIndex - 1
 			}
 
@@ -163,14 +161,14 @@ class groupClass {
 			for(;typeof this.deckIndex[_index] != 'undefined';_index += 1) {};
 			this.deckIndex[_index] = true;
 		}
-		
+
 		// смещаем координаты колод относительно координад группы
 		if(this.placement) {
 
 			if(this.placement.x) {
 				data.position.x = (this.placement.x + defaults.card.width)  * (_index);
 			}
-			
+
 			if(this.placement.y) {
 				data.position.y = (this.placement.y + defaults.card.height) * (_index);
 			}
@@ -178,7 +176,7 @@ class groupClass {
 
 		// прокидываем некоторые атрибуты всем колодам группы (у атрибутов заданных колоде приоритет выше)
 		for(let paramName in params) {
-			
+
 			if(params[paramName].type == "any") {
 				if(
 					this.parameters[paramName]        &&
@@ -201,14 +199,14 @@ class groupClass {
 			:_index;
 
 		let _el = Deck.addDeck(data);
-		
+
 		this.deckIndex[_index]  = _el.id;
 		this.decks[_el.id] = _el;
 	}
 
 	// Fill group
 	Fill(cardNames) {
-		groupFill.call(this, cardNames);
+		groupFill(this, cardNames);
 	}
 
 	getDeckById(id) {
@@ -229,7 +227,7 @@ class groupClass {
 	getDeckIdByIndex(index) {
 		return this.deckIndex[index];
 	}
-	
+
 	getDeckByIndex(index) {
 
 		let id = this.getDeckIdByIndex(index);
@@ -238,23 +236,23 @@ class groupClass {
 	}
 
 	getDecksByName(name) {
-		
+
 		let _decks = {};
-		
+
 		for(let d in this.decks) {
 			if(this.decks[d].name == name) {
 				_decks[d] = decks[d];
 			}
 		}
-		
+
 		return _decks;
 	}
 
 	// Get decks from group
 	getDecks(data) {
-		
+
 		let _decks = [];
-		
+
 		for(let i in this.decks) {
 			if(data && data.visible) {
 				if(this.decks[i].visible) {
@@ -264,7 +262,7 @@ class groupClass {
 				_decks.push(this.decks[i]);
 			}
 		}
-		
+
 		return _decks;
 	}
 
@@ -274,23 +272,22 @@ class groupClass {
 	}
 
 	hasDeck(deckName) {
-		
+
 		let has = false;
-		
+
 		for(let deckId in decks) {
 			if(decks[deckId].name == deckName) {
 				has = true;
 			}
 		}
-		
+
 		return has;
 	}
-
 }
 
 // -----------------------------------------------------------------------------------------------------------------------
 
-let add = function(data) {
+let add = data => {
 
 	if(!data) {
 		return false;
@@ -321,7 +318,7 @@ let add = function(data) {
 
 				if(groupGenerator[data.decks.generator.type]) {
 
-					data.decks = groupGenerator[data.decks.generator.type].call(_el_group, data.decks.generator);
+					data.decks = groupGenerator[data.decks.generator.type](_el_group, data.decks.generator);
 				} else {
 					console.warn('Deck generator type "' + data.decks.generator.type + '" not found.');
 					return;
@@ -349,7 +346,7 @@ let add = function(data) {
 				}
 
 				for(let from in data.decks) {
-					
+
 					if(data.decks[from].name == _relation.to) {
 						_relation.to = null;
 						_relation.from = data.decks[to].name;
@@ -367,7 +364,7 @@ let add = function(data) {
 	let _elements = share.get('elements');
 	_elements[id] = _el_group;
 	share.set('elements', _elements);
-	
+
 	// fill group
 	if(data && data.fill) {
 
@@ -380,10 +377,9 @@ let add = function(data) {
 	return _el_group;
 };
 
-let getByName = function(name) {// TODO rename to "getByName"
-	return common.getElementsByName(name, 'group')[0];
-};
-	
+// TODO rename to "getByName"
+let getByName = name => common.getElementsByName(name, 'group')[0];
+
 export default {
 	getByName,
 	add

@@ -1,6 +1,5 @@
 'use strict';
 
-// module.exports = function(main, share) {
 import share        from 'share';
 import event        from 'event';
 import defaults     from 'defaults';

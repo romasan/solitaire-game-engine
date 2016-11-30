@@ -7,7 +7,7 @@ import Field    from 'field';
 import Deck     from 'deck';
 import putRules from 'readyPutRules';
 
-export default function(putDeck) {
+export default (deck, putDeck) => {
 
 	let _stepType = share.get('stepType');
 
@@ -16,7 +16,7 @@ export default function(putDeck) {
 	let _deckId         = putDeck[0].card.parent;
 	let _deck_departure = Deck.getDeckById(_deckId);
 
-	rulesCorrect = rulesCorrect && !this.locked;
+	rulesCorrect = rulesCorrect && !deck.locked;
 
 	if(_stepType != defaults.stepType) {
 
@@ -24,15 +24,15 @@ export default function(putDeck) {
 		rulesCorrect = rulesCorrect && Field.autoSteps && Field.autoSteps[_stepType]
 			? Field.autoSteps[_stepType].manual({
 				putDeck,
-				to: this
+				to : deck
 			})
 			: false;
 	} else {
 
 		let _link = null;// deckName
-		let _deck = this;
+		let _deck = deck;
 
-		for(let ruleIndex in this.putRules) {
+		for(let ruleIndex in deck.putRules) {
 			
 			if(rulesCorrect) {
 
@@ -40,7 +40,7 @@ export default function(putDeck) {
 					_deck = Deck.getDeck(_link);
 				}
 
-				let ruleName = this.putRules[ruleIndex];
+				let ruleName = deck.putRules[ruleIndex];
 
 				if(putRules[ruleName]) {
 

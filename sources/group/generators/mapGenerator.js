@@ -15,7 +15,7 @@ import mapCommon          from "mapCommon";
 
 // -------------------------------------------------------------------------------------------------------------------
 
-export default function(e) {
+export default (group, data) => {
 
 	// {
 	// 	type            : "map",
@@ -40,54 +40,54 @@ export default function(e) {
 	};
 
 	let _placement = 
-		this.placement
+		group.placement
 			? {
-				x : typeof this.placement.x != "undefined" ? this.placement.x : _default_placement.x,
-				y : typeof this.placement.y != "undefined" ? this.placement.y : _default_placement.y
+				x : typeof group.placement.x != "undefined" ? group.placement.x : _default_placement.x,
+				y : typeof group.placement.y != "undefined" ? group.placement.y : _default_placement.y
 			}
 			: _default_placement;
 
-	this.placement = {x : 0, y : 0};
+	group.placement = {x : 0, y : 0};
 
 	let _index = 1;
 
-	let _mapSize = mapCommon.mapSize(e.map);
+	let _mapSize = mapCommon.mapSize(data.map);
 
 	// {name: 'groupName_deck_0_0'}
-	for(let y in e.map) {
-		for(let x in e.map[y]) {
+	for(let y in data.map) {
+		for(let x in data.map[y]) {
 
 			if(
-				typeof e.map[y][x] == "boolean" && e.map[y][x]     ||
-				typeof e.map[y][x] == "number"  && e.map[y][x] > 0
+				typeof data.map[y][x] == "boolean" && data.map[y][x]     ||
+				typeof data.map[y][x] == "number"  && data.map[y][x] > 0
 			) {
-				e.map[y][x] = {};
+				data.map[y][x] = {};
 			};
 
-			if(typeof e.map[y][x] == "string") {
-				e.map[y][x] = {name: e.map[y][x]};
+			if(typeof data.map[y][x] == "string") {
+				data.map[y][x] = {name: data.map[y][x]};
 			} else if(
-				e.map[y][x]                            &&
-				typeof e.map[y][x]      != "undefined" &&
-				typeof e.map[y][x].name != "string"
+				data.map[y][x]                            &&
+				typeof data.map[y][x]      != "undefined" &&
+				typeof data.map[y][x].name != "string"
 			) {
-				e.map[y][x].name = this.name + "_deck_" + x + "_" + y;
+				data.map[y][x].name = group.name + "_deck_" + x + "_" + y;
 			};
 		}
 	}
 
-	for(let _y in e.map) {
-		for(let _x in e.map[_y]) {
+	for(let _y in data.map) {
+		for(let _x in data.map[_y]) {
 
 			let x = _x | 0,
 				y = _y | 0;
 
-			let _el = e.map[y][x];
+			let _el = data.map[y][x];
 			
 			if(_el) {
 				
 				let _deck = {
-					"name"     : e.map[y][x].name,// (this.name + "_deck" + _index) OR (this.name + '_' + e.map[y][x])
+					"name"     : data.map[y][x].name,// (group.name + "_deck" + _index) OR (group.name + '_' + data.map[y][x])
 					"position" : {
 						"x" : x * ((defaults.card.width  | 0) + (_placement.x | 0)),
 						"y" : y * ((defaults.card.height | 0) + (_placement.y | 0))
@@ -103,17 +103,17 @@ export default function(e) {
 					"fall"   : "mapFallRelations"
 				};
 
-				if(e.relations) {
+				if(data.relations) {
 
 					for(let relGenName in _relGenerators) {
 
-						if(e.relations[relGenName]) {
+						if(data.relations[relGenName]) {
 							_relations = _relations.concat(relationsGenerator[_relGenerators[relGenName]]({
 								x, y, 
-								map     : e.map,
+								map     : data.map,
 								mapSize : _mapSize,
 								el      : _el,
-								data    : e.relations[relGenName]
+								data    : data.relations[relGenName]
 							}));
 						};
 					};

@@ -18,7 +18,7 @@ export default data => {
 	let _iterations = data && data.iterations && typeof data.iterations == 'number' && data.iterations < max_iterations ? data.iterations : 1;
 	let _shuffle    = data && data.shuffle    && typeof data.shuffle    != 'undefuned'                                  ? data.shuffle    : default_shuffle;
 
-	let genType = function(_cardsColors, _cardsRanks) {
+	let genType = (_cardsColors, _cardsRanks) => {
 		
 		let _deck = [];
 		
@@ -124,5 +124,4 @@ export default data => {
 	}
 
 	return _deck;
-
 };

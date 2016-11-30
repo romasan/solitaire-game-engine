@@ -6,17 +6,17 @@ import common   from 'common';
 
 import takeRules from 'readyTakeRules';
 
-export default function(cardId) {
+export default (deck, cardId) => {
 
 	// Нестандартный ход (autosteps)
 	// if(share.get('stepType') != defaults.stepType) {return false;};
 
 	let rulesCorrect = true;//!common.isLock();
 
-	rulesCorrect = rulesCorrect && !this.locked;
+	rulesCorrect = rulesCorrect && !deck.locked;
 	
-	if(typeof this.full == "boolean") {
-		rulesCorrect = rulesCorrect && !this.full;
+	if(typeof deck.full == "boolean") {
+		rulesCorrect = rulesCorrect && !deck.full;
 	}
 
 	// берём карту/стопку
@@ -25,18 +25,18 @@ export default function(cardId) {
 	let cardName   = null; 
 	let cardSuit   = null; 
 	let cardRank   = null; 
-	let deckLength = this.cards.length;
+	let deckLength = deck.cards.length;
 
 	// проверяем не является ли перевернутой
 
 	let takeDeck = []
 
-	for(let i in this.cards) {
+	for(let i in deck.cards) {
 
-		if(this.cards[i].id == cardId) {
+		if(deck.cards[i].id == cardId) {
 			
 			cardIndex = i|0;
-			cardName  = this.cards[i].name;
+			cardName  = deck.cards[i].name;
 			
 			let _name = common.validateCardName(cardName);
 			
@@ -49,8 +49,8 @@ export default function(cardId) {
 			}
 			
 			rulesCorrect = rulesCorrect && (
-				!this.cards[i].flip                        &&
-				this.cards[i].flip == defaults.canMoveFlip
+				!deck.cards[i].flip                        &&
+				deck.cards[i].flip == defaults.canMoveFlip
 			);
 		}
 
@@ -58,7 +58,7 @@ export default function(cardId) {
 			
 			takeDeck.push({
 				index : i,
-				card  : this.cards[i]
+				card  : deck.cards[i]
 			});
 		}
 	}
@@ -72,9 +72,9 @@ export default function(cardId) {
 		deckLength : deckLength
 	}
 
-	for(let ruleIndex in this.takeRules) {
+	for(let ruleIndex in deck.takeRules) {
 		
-		let ruleName = this.takeRules[ruleIndex];
+		let ruleName = deck.takeRules[ruleIndex];
 		
 		if(takeRules[ruleName]) {
 			rulesCorrect = rulesCorrect && takeRules[ruleName](_attrs);

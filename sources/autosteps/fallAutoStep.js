@@ -24,7 +24,7 @@ export default class fallAutoStep extends autoStep {
 
 		let _tips = Tips.getTips();
 
-		if(_tips.length === 0) {
+		if(_tips.length == 0) {
 
 			this.end();
 			// Tips.checkTips();

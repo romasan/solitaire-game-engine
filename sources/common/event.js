@@ -1,9 +1,6 @@
 'use strict';
 
-// var events = {};
-
 class Event {
-// export default new function() {
 
 	constructor() {
 
@@ -165,7 +162,4 @@ class Event {
 	// log() {}
 };
 
-// let _event = new Event();
-// _event.listen = console.log;
-// export default _event;
 export default new Event();

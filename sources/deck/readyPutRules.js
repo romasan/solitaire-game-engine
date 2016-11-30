@@ -109,7 +109,7 @@ let readyPutRules = {
 
 	notForEmpty : deck => deck.cards.length > 0,
 
-	onlyEmpty   : deck => deck.cards.length === 0,
+	onlyEmpty   : deck => deck.cards.length == 0,
 
 	oneRank     : deck => {
 

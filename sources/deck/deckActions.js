@@ -55,7 +55,6 @@ let addActionEvent = eventName => {
 					
 					if(_canRun) {
 						
-						// _actions[_actionName].call(
 						_actions[_actionName].run(
 							
 							_decksActions[i].deck, 

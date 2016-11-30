@@ -172,7 +172,7 @@ class Deck {
 
 	getTopCard() {
 
-		if(this.cards.length === 0) {
+		if(this.cards.length == 0) {
 			return false;
 		}
 
@@ -198,9 +198,13 @@ class Deck {
 
 	checkFull() {
 
-		if(!this.full) {
+		if(
+			!this.full                &&
+			this.fullRules            &&
+			this.fullRules.length > 0
+		) {
 
-			let notFill = true;
+			let full = true;
 
 			for(let ruleIndex in this.fullRules) {
 
@@ -209,7 +213,7 @@ class Deck {
 				if(
 					typeof _rule == "string"
 				) {
-					notFill = notFill                                   &&
+					full = full                                   &&
 					          typeof fullRules[ruleIndex] == "function" &&
 					          !fullRules[ruleIndex](this);
 				} else {
@@ -219,7 +223,7 @@ class Deck {
 							typeof subRule == "string"             &&
 							typeof fullRules[subRule] == "function"
 						) {
-							notFill = notFill && fullRules[subRule](this, _rule[subRule]);
+							full = full && fullRules[subRule](this, _rule[subRule]);
 						}
 					}
 
@@ -229,7 +233,7 @@ class Deck {
 				}
 			}
 
-			this.full = !notFill;
+			this.full = full;
 		}
 	}
 
@@ -278,7 +282,7 @@ class Deck {
 		// что делать если вынули все карты
 		if(
 			this.autoHide           && 
-			this.cards.length === 0
+			this.cards.length == 0
 		) {
 			this.hide();
 		}
@@ -289,18 +293,18 @@ class Deck {
 	}
 
 	Take(cardId) {
-		return Take.call(this, cardId);// ??? .call(this, attributes);
+		return Take(this, cardId);
 	}
 
 	// проверяем, можем ли положить стопку/карту
 	// возвращает true, если согласно правилам сюда можно положить карту
 	Put(putDeck) {
-		return Put.call(this, putDeck);//(deckConstructor);
+		return Put(this, putDeck);
 	}
 
 	// создать карту
 	genCardByName(name) {
-		return genCardByName.call(this, name);
+		return genCardByName(this, name);
 	}
 
 	hide() {
