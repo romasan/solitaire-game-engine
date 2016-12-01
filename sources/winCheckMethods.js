@@ -202,7 +202,12 @@ let winCheckMethods = {
 		
 	query : queryData => {
 
-		if(!queryData || !queryData.rulesArgs) {
+		console.log('winCheck query');
+
+		if(
+			!queryData           ||
+			!queryData.rulesArgs
+		) {
 			return false;
 		}
 
