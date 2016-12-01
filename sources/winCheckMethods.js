@@ -101,21 +101,23 @@ let winCheckMethods = {
 		}
 
 		let _correct = true;
-		
+
 		for(let d in data.decks) {
 
 			if(!_correct) {
 				return false;
 			}
-			
+
 			let _cards = data.decks[d].cards;
+
 			for(let c in _cards) {
-				if(c > 0) {	
+				if(c > 0) {
+
 					let down = common.validateCardName(_cards[(c|0) - 1].name),
-						  up   = common.validateCardName(_cards[(c|0)].name);
+						  up = common.validateCardName(_cards[(c|0)].name);
+
 					let _cardsRankS = defaults.card.ranks;
 					_correct = _correct && down && up && _cardsRankS.indexOf(down.rank) == (_cardsRankS.indexOf(up.rank) + data.asc_desk);
-					
 				}
 			}
 
@@ -129,25 +131,24 @@ let winCheckMethods = {
 	// Simple rules
 
 	newerWin : data => {
-		
+
 		console.warn("You use 'newerWin' rule for checking Win. Maybe arguments in 'winCheck.rule' have incorrect rule name.")
-		
+
 		return false;
 	},
 
 	// все колоды пусты
-
 	allEmpty : data => {
 
 		let _correct = true;
-		
+
 		for(let _i in data.decks) {
 			_correct = _correct && data.decks[_i].cards.length == 0;
 		}
-		
+
 		return _correct;
 	},
-	
+
 	empty : data => {
 		winCheckMethods.allEmpty(data);
 	},
@@ -160,7 +161,7 @@ let winCheckMethods = {
 		let _emptyDecksCount = 0,
 			_decksLength     = 0,
 			_fillIndex       = 0;
-		
+
 		for(let i in data.decks) {
 			if(data.decks[i].cards.length == 0) {
 				_emptyDecksCount += 1;
@@ -169,9 +170,9 @@ let winCheckMethods = {
 			}
 			_decksLength += 1;
 		}
-		
+
 		let _correct = _emptyDecksCount == _decksLength - 1;
-		
+
 		if(data.filter) {
 			data.decks = _correct ? [data.decks[_fillIndex]] : [];
 		}
@@ -184,22 +185,22 @@ let winCheckMethods = {
 	allAscend : data => {
 
 		data.asc_desk = -1;
-		
+
 		return winCheckMethods._asc_desk(data);
 	},
-	
+
 	// step by step 3, 2, 1
 	// во всех колодах карты по убыванию
 	allDescent : data => {
-			
+
 		data.asc_desk = 1;
-		
+
 		return winCheckMethods._asc_desk(data);
 	},
 
 	// Composite rules (input arguments)
+
 	// комбинированное правило
-		
 	query : queryData => {
 
 		console.log('winCheck query');
@@ -212,7 +213,7 @@ let winCheckMethods = {
 		}
 
 		let _correct = true;
-		
+
 		// apply filters
 		for(let next in queryData.rulesArgs) {
 

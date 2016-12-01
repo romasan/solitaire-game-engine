@@ -4,7 +4,7 @@ const webpack = require("webpack");
 const path = require('path');
 const ExtractTextPlugin = require("extract-text-webpack-plugin");
 
-var WebpackNotifierPlugin = require('webpack-notifier');
+let WebpackNotifierPlugin = require('webpack-notifier');
 
 const gen = process.env.MODE == 'gen';
 const dev = process.env.MODE == 'dev' || gen;
@@ -14,20 +14,23 @@ console.log('MODE:', process.env.MODE ? process.env.MODE : 'prod');
 let _file = './package.json';
 let _json = require(_file);
 
-let version = parseInt('9' + _json.version.split('.').map((e)=>{return parseInt(e).toString(8);}).join(9));
+let version = parseInt('9' + _json.version.split('.').map(e => parseInt(e).toString(8)).join(9));
 
-let dirTree = require('directory-tree');
-let tree    = dirTree('./sources/');
-let ftree   = (e) => {
+let directoryTree = require('directory-tree');
+let getTree = data => {
+
 	let pathTree = [];
-	for(let i in e.children) {
-		if(e.children[i].children) {
-			pathTree.push('./' + e.children[i].path);
-			pathTree = pathTree.concat(ftree(e.children[i]));
+
+	for(let i in data.children) {
+		if(data.children[i].children) {
+			pathTree.push('./' + data.children[i].path);
+			pathTree = pathTree.concat(getTree(data.children[i]));
 		}
 	}
+
 	return pathTree;
-}
+};
+let dirTree = ['./sources/'].concat(getTree(directoryTree('./sources/')));
 
 let config = {
 	entry: "index",
@@ -37,7 +40,7 @@ let config = {
 		library  : "SolitaireEngine"
 	},
 	resolve: {
-		modulesDirectories : ['./sources/'].concat(ftree(tree)),
+		modulesDirectories : dirTree,
 		extensions         : ['', '.js']
 	},
 	module: {
