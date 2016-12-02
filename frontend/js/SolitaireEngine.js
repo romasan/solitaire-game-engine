@@ -111,7 +111,7 @@ var SolitaireEngine =
 	exports.options = _defaults2.default;
 	exports.winCheck = _winCheck2.default.hwinCheck;
 	exports.generator = _deckGenerator2.default;
-	exports.version = (9091493021).toString().split(9).slice(1).map(function (e) {
+	exports.version = (9091493022).toString().split(9).slice(1).map(function (e) {
 		return parseInt(e, 8);
 	}).join('.');
 	
@@ -9535,7 +9535,7 @@ var SolitaireEngine =
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
-	var shuffle = function shuffle(deck) {
+	var shuffleArray = function shuffleArray(deck) {
 		for (var j, x, _i = deck.length; _i; j = Math.floor(Math.random() * _i), x = deck[--_i], deck[_i] = deck[j], deck[j] = x) {};
 	};
 	
@@ -9595,79 +9595,79 @@ var SolitaireEngine =
 	
 	var genTypes = {
 	
-		all: function all(_ranks) {
-			return genType(_defaults2.default.card.suits, _ranks);
+		all: function all(ranks) {
+			return genType(_defaults2.default.card.suits, ranks);
 		},
 	
-		black: function black(_ranks) {
+		black: function black(ranks) {
 	
 			var _cardsSuits = _defaults2.default.card.colors.black;
 	
-			return genType(_cardsSuits, _ranks);
+			return genType(_cardsSuits, ranks);
 		},
 	
-		red: function red(_ranks) {
+		red: function red(ranks) {
 	
 			var _cardsSuits = _defaults2.default.card.colors.red;
 	
-			return genType(_cardsSuits, _ranks);
+			return genType(_cardsSuits, ranks);
 		},
 	
-		black_and_red: function black_and_red(_ranks) {
+		black_and_red: function black_and_red(ranks) {
 	
 			var _cardsSuits = [_defaults2.default.card.colors.red[Math.random() * _defaults2.default.card.colors.red.length | 0], _defaults2.default.card.colors.black[Math.random() * _defaults2.default.card.colors.black.length | 0]];
 	
-			return genType(_cardsSuits, _ranks);
+			return genType(_cardsSuits, ranks);
 		},
 	
-		h_only: function h_only(_ranks) {
+		h_only: function h_only(ranks) {
 	
 			var _cardsSuits = ['h'];
 	
-			return genType(_cardsSuits, _ranks);
+			return genType(_cardsSuits, ranks);
 		},
 	
-		d_only: function d_only(_ranks) {
+		d_only: function d_only(ranks) {
 	
 			var _cardsSuits = ['d'];
 	
-			return genType(_cardsSuits, _ranks);
+			return genType(_cardsSuits, ranks);
 		},
 	
-		c_only: function c_only(_ranks) {
+		c_only: function c_only(ranks) {
 	
 			var _cardsSuits = ['c'];
 	
-			return genType(_cardsSuits, _ranks);
+			return genType(_cardsSuits, ranks);
 		},
 	
-		s_only: function s_only(_ranks) {
+		s_only: function s_only(ranks) {
 	
 			var _cardsSuits = ['s'];
 	
-			return genType(_cardsSuits, _ranks);
+			return genType(_cardsSuits, ranks);
 		},
 	
-		one_rank_only: function one_rank_only(_ranks) {
+		one_rank_only: function one_rank_only(ranks) {
 	
 			var _cardsSuits = [_defaults2.default.card.solors[Math.random() * _defaults2.default.card.solors.length | 0]];
 	
-			return genType(_cardsSuits, _ranks);
+			return genType(_cardsSuits, ranks);
 		},
 	
-		hearts: function hearts(_ranks) {
+		hearts: function hearts(ranks) {
 			return genTypes.h_only();
 		},
 	
-		diamonds: function diamonds(_ranks) {
+		diamonds: function diamonds(ranks) {
 			return genTypes.d_only();
 		},
 	
-		clubs: function clubs(_ranks) {
+		clubs: function clubs(ranks) {
 			return genTypes.c_only();
 		},
 	
-		spades: function spades(_ranks) {
+		spades: function spades(ranks) {
 			return genTypes.s_only();
 		}
 	};
@@ -9680,11 +9680,11 @@ var SolitaireEngine =
 		var max_iterations = 10;
 	
 		var type = data && data.type && typeof data.type == 'string' ? data.type : default_type;
-		var _deckCount = data && data.deckCount && typeof data.deckCount == 'number' ? data.deckCount : 52;
-		var _iterations = data && data.iterations && typeof data.iterations == 'number' && data.iterations < max_iterations ? data.iterations : 1;
-		var _shuffle = data && data.shuffle && typeof data.shuffle != 'undefuned' ? data.shuffle : default_shuffle;
+		var deckCount = data && data.deckCount && typeof data.deckCount == 'number' ? data.deckCount : 52;
+		var iterations = data && data.iterations && typeof data.iterations == 'number' && data.iterations < max_iterations ? data.iterations : 1;
+		var shuffle = data && data.shuffle && typeof data.shuffle != 'undefuned' ? data.shuffle : default_shuffle;
 	
-		var _ranks = _deckCount == 36 ? _defaults2.default.card.ranks36 : _defaults2.default.card.ranks;
+		var _ranks = deckCount == 36 ? _defaults2.default.card.ranks36 : _defaults2.default.card.ranks;
 	
 		if (data && data.ranks) {
 	
@@ -9699,12 +9699,12 @@ var SolitaireEngine =
 	
 		var _deck = [];
 	
-		for (; _iterations > 0; _iterations -= 1) {
+		for (; iterations > 0; iterations -= 1) {
 			_deck = _deck.concat(genTypes[type](_ranks));
 		}
 	
-		if (_shuffle) {
-			shuffle(_deck);
+		if (shuffle) {
+			shuffleArray(_deck);
 		}
 	
 		return _deck;
