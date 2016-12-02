@@ -13,5 +13,5 @@ class deckAction {
 		event.dispatch('stopSession');
 	}
 
-	break() {}
+	// break() {}
 }

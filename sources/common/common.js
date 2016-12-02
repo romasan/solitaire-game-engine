@@ -174,14 +174,14 @@ let validateCardName = name => {
 		value = defaults.card.values[defaults.card.ranks.indexOf(rank)];
 
 	for(let colorName in defaults.card.colors) {
-		if(defaults.card.colors[colorName].indexOf(suit) >= 0) {
+		if(defaults.card.colors[colorName].includes(suit)) {
 			color = colorName;
 		}
 	}
 
 	if( 
-		defaults.card.suits.indexOf(suit) >= 0 &&
-		defaults.card.ranks.indexOf(rank) >= 0
+		defaults.card.suits.includes(suit) &&
+		defaults.card.ranks.includes(rank)
 	) {
 		return {
 			color,

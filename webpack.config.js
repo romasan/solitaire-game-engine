@@ -24,13 +24,13 @@ let getTree = data => {
 	for(let i in data.children) {
 		if(data.children[i].children) {
 			pathTree.push('./' + data.children[i].path);
-			pathTree = pathTree.concat(getTree(data.children[i]));
+			pathTree = [...pathTree, ...getTree(data.children[i])];
 		}
 	}
 
 	return pathTree;
 };
-let dirTree = ['./sources/'].concat(getTree(directoryTree('./sources/')));
+let dirTree = ['./sources/', ...getTree(directoryTree('./sources/'))];
 
 let config = {
 	entry: "index",

@@ -96,7 +96,7 @@ let add = deck => {
 			});
 
 			// создаём событие если оно еще не создано
-			if(_events.indexOf(deck.actions[actionName].event) < 0) {
+			if(!_events.includes(deck.actions[actionName].event)) {
 				
 				// сохраняем событие в список с уже созданными
 				_events.push(deck.actions[actionName].event);

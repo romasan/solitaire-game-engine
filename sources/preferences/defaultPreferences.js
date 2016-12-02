@@ -14,7 +14,7 @@ export default e => {
 		
 		if(defaults.themes[prefName]) {
 
-			if(defaults.themes[prefName].indexOf(pref[prefName]) < 0) {
+			if(!defaults.themes[prefName].includes(pref[prefName])) {
 				pref[prefName] = defaults.pref[prefName];
 			}
 

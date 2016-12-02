@@ -8,6 +8,36 @@ import Deck      from 'deck';
 import Tips      from 'tips';
 import getBeside from 'getBeside';
 
+/*
+
+Internal use:
+
+ * _topCard
+ * _firstCard
+
+Filters:
+
+ * query
+
+Rules:
+
+ * deckLength
+ * not
+ * noMoves
+ * topAce
+ * topKing
+ * prevDescOne
+ * prevAscOne
+ * nextDescOne
+ * nextAscOne
+ * prevDesc
+ * prevAsc
+ * nextDesc
+ * nextAsc
+ * test
+
+ */
+
 let fullRules = {
 
 	// Internal use
@@ -187,6 +217,11 @@ let fullRules = {
 	nextDesc    : deck => fullRules._prev_next_desc_ask(deck, 'next', (up, down) => up > down)           ,
 
 	nextAsc     : deck => fullRules._prev_next_desc_ask(deck, 'next', (up, down) => up < down)           ,
+
+	test        : deck => {
+		console.log('test fullRule', deck.name);
+		return false;
+	}
 };
 
 export default fullRules;

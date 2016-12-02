@@ -56,14 +56,14 @@ let checkTips = e => {
 			// TODO инициализировать "hideTipsInDom" в Field.js 
 			if(
 				(
-					_tips[i].to.count === 0                             &&
+					_tips[i].to.count === 0                         &&
 					Field.tipsParams.hideOnEmpty
-				)                                                       ||
+				)                                                   ||
 				(
-					Field.tipsParams.excludeHomeGroups                 &&
-					_homeGroups                                         &&
-					_homeGroups.length                                  &&
-					_homeGroups.indexOf(_tips[i].from.deck.parent) >= 0
+					Field.tipsParams.excludeHomeGroups              &&
+					_homeGroups                                     &&
+					_homeGroups.length                              &&
+					_homeGroups.includes(_tips[i].from.deck.parent)
 				)
 			) {
 				// ?#$%&!
@@ -76,7 +76,7 @@ let checkTips = e => {
 				
 			}
 			
-			if(_homeGroups.indexOf(_tips[i].to.deck.parent) >= 0) {
+			if(_homeGroups.includes(_tips[i].to.deck.parent)) {
 				event.dispatch('showTip', {
 					el   : _tips[i].from.card, 
 					type : 'tipToHome'

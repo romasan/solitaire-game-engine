@@ -1,5 +1,16 @@
 'use strict';
 
+/*
+
+Rules:
+
+ * not
+ * notFirst
+ * any
+ * onlytop
+ 
+ */
+
 export default {
 				
 	// SimpleRules

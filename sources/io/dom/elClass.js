@@ -30,7 +30,7 @@ export default class elClass {
 		try {
 
 			let _classes = this.el.className.split(' ');
-			return _classes.indexOf(className) >= 0;
+			return _classes.includes(className);
 		} catch(e) {}
 	}
 // --	

@@ -1,5 +1,18 @@
 'use strict';
 
+/*
+
+Types:
+
+ * none
+ * last_three_min
+ * radial
+ * special
+ * vertical
+ * horizontal
+
+ */
+
 export default {
 
 	none : (params, card, index, length, deck) => {

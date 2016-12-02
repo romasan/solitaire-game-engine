@@ -189,6 +189,9 @@ class groupClass {
 				//	typeof this.parameters[paramName] != "undefined" &&
 				//	typeof data[paramName] == "undefined"
 				// ) {
+
+				// TODO в данном случае у "boolean" параметров приоритет будет выше чем у "any" для генератора
+
 				data[paramName] = this.parameters[paramName];
 				// }			
 			}

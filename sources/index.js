@@ -16,12 +16,6 @@ import winCheck      from 'winCheck';
 import History       from 'history';
 import Tips          from 'tips';
 import deckGenerator from 'deckGenerator';
-// import storage       from 'storage';
-
-// styles DOM
-import 'common.scss';
-import 'default_theme.scss';
-import 'alternative_theme.scss';
 
 let preloadCallback = null,
     firstInit       = true;
@@ -47,23 +41,24 @@ exports.onChangePreferences = callback => {
 exports.init = gameConfig => {
 
 	event.dispatch('gameInit', {firstInit});
-	
+
 	event.clearByTag(event.tags.inGame);
-	event.setTag(event.tags.inGame);
+	event.setTag    (event.tags.inGame);
 
 	Field.clear();
 	Field.create(gameConfig);
-	
+
 	if(firstInit) {
-		
+
 		firstInit = false;
-		
+
 		if(typeof preloadCallback == "function") {
 			let _data = share.get('gamePreferencesData');
 			preloadCallback(_data);
 		}
 
 		let changePreferencesCallback = share.get('changePreferencesCallback');
+
 		if(typeof changePreferencesCallback == "function") {
 			let _data = share.get('gamePreferencesData');
 			changePreferencesCallback(_data);

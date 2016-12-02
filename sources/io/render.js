@@ -13,6 +13,11 @@ import moveDragDeck   from 'moveDragDeck';
 import moveCardToHome from 'moveCardToHome';
 import fieldThemesSet from 'fieldThemesSet';
 
+// styles DOM
+import 'common.scss';
+import 'default_theme.scss';
+import 'alternative_theme.scss';
+
 // common
 
 event.listen('removeEl', data => {

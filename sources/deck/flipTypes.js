@@ -1,5 +1,20 @@
 'use strict';
 
+
+/*
+
+Types:
+
+ * none
+ * all
+ * notlast
+ * first_1
+ * first_2
+ * first_3
+ * bee
+
+ */
+
 export default {
 	
 	none    : (card, i, length) => {

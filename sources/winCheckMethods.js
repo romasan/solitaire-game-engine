@@ -11,6 +11,36 @@
 import common   from 'common';
 import defaults from 'defaults';
 
+/*
+
+Filters:
+
+ * group / groups
+ * deck / decks
+
+Tag filters:
+
+ * firstEmpty
+
+Internal use:
+
+ * _asc_desk
+
+Simple rules:
+
+ * newerWin
+ * allEmpty
+ * empty
+ * allInOne
+ * allAscend
+ * allDescent
+
+Conposite rules:
+
+ * query / lego
+
+ */
+
 let winCheckMethods = {
 	
 	// Filters
@@ -33,8 +63,8 @@ let winCheckMethods = {
 					data.decks[_i].parent  == data.filterArgs
 				) ||
 				(
-			 		data.filterArgs.length                           &&
-			 		data.filterArgs.indexOf(data.decks[_i].parent) >= 0
+			 		data.filterArgs.length                          &&
+			 		data.filterArgs.includes(data.decks[_i].parent)
 			 	)
 			) {
 				_decks.push(data.decks[_i]);
@@ -58,9 +88,9 @@ let winCheckMethods = {
 
 		for(let _i in data.decks) {
 			if(
-				typeof data.filterArgs == "string"             &&
-				data.decks[_i].name == data.filterArgs            ||
-				data.filterArgs.indexOf(data.decks[_i].name) >= 0
+				typeof data.filterArgs == "string"            &&
+				data.decks[_i].name == data.filterArgs        ||
+				data.filterArgs.includes(data.decks[_i].name)
 			) {
 				_decks.push(data.decks[_i]);
 			}
@@ -79,7 +109,7 @@ let winCheckMethods = {
 		let _decks = [];
 		
 		for(let _i in data.decks) {
-			if(data.decks[_i].tags.indexOf('last') >= 0) {
+			if(data.decks[_i].tags.includes('last')) {
 				_decks.push(data.decks[_i]);
 			}
 		}
@@ -201,13 +231,11 @@ let winCheckMethods = {
 	// Composite rules (input arguments)
 
 	// комбинированное правило
-	query : queryData => {
-
-		console.log('winCheck query');
+	query : data => {
 
 		if(
-			!queryData           ||
-			!queryData.rulesArgs
+			!data           ||
+			!data.rulesArgs
 		) {
 			return false;
 		}
@@ -215,42 +243,42 @@ let winCheckMethods = {
 		let _correct = true;
 
 		// apply filters
-		for(let next in queryData.rulesArgs) {
+		for(let next in data.rulesArgs) {
 
 			let _decksClone = {};
 
-			for(let i in queryData.decks) {
-				_decksClone[i] = queryData.decks[i];
+			for(let i in data.decks) {
+				_decksClone[i] = data.decks[i];
 			}
 
-			let data = {
-				// filters : queryData[next].filters,
-				// rules   : queryData[next].rules,
+			let queryData = {
+				// filters : data[next].filters,
+				// rules   : data[next].rules,
 				decks : _decksClone
 			};
 
 			// применяем фильтры, оставляем только интересующие колоды
-			if(_correct && queryData.rulesArgs[next].filters) {
+			if(_correct && data.rulesArgs[next].filters) {
 
-				data.filter = true;
+				queryData.filter = true;
 
-				for(let i in queryData.rulesArgs[next].filters) {
-					if(typeof queryData.rulesArgs[next].filters[i] == 'string' && winCheckMethods[queryData.rulesArgs[next].filters[i]]) {
+				for(let i in data.rulesArgs[next].filters) {
+					if(typeof data.rulesArgs[next].filters[i] == 'string' && winCheckMethods[data.rulesArgs[next].filters[i]]) {
 
-						data.filterArgs = null;
-						_correct = _correct && winCheckMethods[queryData.rulesArgs[next].filters[i]](data);
+						queryData.filterArgs = null;
+						_correct = _correct && winCheckMethods[data.rulesArgs[next].filters[i]](queryData);
 					} else {
 
-						// if(typeof queryData.rulesArgs[next].filters[i] == 'object') {
+						// if(typeof data.rulesArgs[next].filters[i] == 'object') {
 						if (
-							queryData.rulesArgs[next].filters[i]                                 &&
-							queryData.rulesArgs[next].filters[i].toString() == "[object Object]"
+							data.rulesArgs[next].filters[i]                                 &&
+							data.rulesArgs[next].filters[i].toString() == "[object Object]"
 						) {
 
-							for(let filterName in queryData.rulesArgs[next].filters[i]) {
+							for(let filterName in data.rulesArgs[next].filters[i]) {
 								if(winCheckMethods[filterName]) {
-									data.filterArgs = queryData.rulesArgs[next].filters[i][filterName]
-									_correct = _correct && winCheckMethods[filterName](data);
+									queryData.filterArgs = data.rulesArgs[next].filters[i][filterName]
+									_correct = _correct && winCheckMethods[filterName](queryData);
 								} else {
 									_correct = _correct && winCheckMethods.newerWin();
 								}
@@ -261,15 +289,15 @@ let winCheckMethods = {
 					}
 				}
 
-				data.filter = false;
+				queryData.filter = false;
 			}
 
 			// применяем правила к оставшимся колодам
-			if(queryData.rulesArgs[next].rules) {
+			if(data.rulesArgs[next].rules) {
 
-				for(let i in queryData.rulesArgs[next].rules) {
-					if(winCheckMethods[queryData.rulesArgs[next].rules[i]]) {
-						_correct = _correct && winCheckMethods[queryData.rulesArgs[next].rules[i]](data);
+				for(let i in data.rulesArgs[next].rules) {
+					if(winCheckMethods[data.rulesArgs[next].rules[i]]) {
+						_correct = _correct && winCheckMethods[data.rulesArgs[next].rules[i]](queryData);
 					} else {
 						_correct = _correct && winCheckMethods.newerWin();
 					}

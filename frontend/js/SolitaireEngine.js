@@ -1,10 +1,10200 @@
-/*
- * Solitaire game engine
- * Author     : Roman Bauer - <kotapesic@gmail.com>
- * Version    : 0.12.1525
- * Build time : Thu, 01 Dec 2016 14:50:07 GMT
- */
-var SolitaireEngine=function(e){function t(a){if(n[a])return n[a].exports;var r=n[a]={exports:{},id:a,loaded:!1};return e[a].call(r.exports,r,r.exports,t),r.loaded=!0,r.exports}var n={};return t.m=e,t.c=n,t.p="",t(0)}([function(e,t,n){"use strict";function a(e){return e&&e.__esModule?e:{"default":e}}var r=n(1),i=a(r),o=n(2),u=a(o),l=n(3),s=a(l),d=n(4),f=(a(d),n(60)),c=(a(f),n(25)),p=(a(c),n(63)),v=(a(p),n(12)),h=a(v),y=n(5),m=(a(y),n(61)),k=a(m),g=n(35),_=(a(g),n(9)),b=(a(_),n(74)),x=a(b);n(75),n(76),n(77);var w=null,O=!0;t.event=u["default"],t.options=s["default"],t.winCheck=k["default"].hwinCheck,t.generator=x["default"],t.version="9091492765".split(9).slice(1).map(function(e){return parseInt(e,8)}).join("."),t.onload=function(e){w=e},t.onChangePreferences=function(e){i["default"].set("changePreferencesCallback",e)},t.init=function(e){if(u["default"].dispatch("gameInit",{firstInit:O}),u["default"].clearByTag(u["default"].tags.inGame),u["default"].setTag(u["default"].tags.inGame),h["default"].clear(),h["default"].create(e),O){if(O=!1,"function"==typeof w){var n=i["default"].get("gamePreferencesData");w(n)}var a=i["default"].get("changePreferencesCallback");if("function"==typeof a){var r=i["default"].get("gamePreferencesData");a(r)}}u["default"].dispatch("gameInited"),t.Redraw=function(e){h["default"].Redraw(e)}}},function(e,t,n){"use strict";function a(e){return e&&e.__esModule?e:{"default":e}}function r(e,t){if(!(e instanceof t))throw new TypeError("Cannot call a class as a function")}Object.defineProperty(t,"__esModule",{value:!0});var i="function"==typeof Symbol&&"symbol"==typeof Symbol.iterator?function(e){return typeof e}:function(e){return e&&"function"==typeof Symbol&&e.constructor===Symbol?"symbol":typeof e},o=function(){function e(e,t){for(var n=0;n<t.length;n++){var a=t[n];a.enumerable=a.enumerable||!1,a.configurable=!0,"value"in a&&(a.writable=!0),Object.defineProperty(e,a.key,a)}}return function(t,n,a){return n&&e(t.prototype,n),a&&e(t,a),t}}(),u=n(2),l=a(u),s=n(3),d=(a(s),function(){function e(){r(this,e),this._data={}}return o(e,[{key:"get",value:function(e){return void 0!==this._data[e]?(l["default"].dispatch("shareGet:"+e,this._data[e]),this._data[e]):null}},{key:"set",value:function(e,t){var n=!(arguments.length<=2||void 0===arguments[2])&&arguments[2];if("string"==typeof e){if(l["default"].dispatch("shareChange:"+e,{from:this._data[e],to:t}),"boolean"==typeof n&&n)try{this._data[e]=["string","number","boolean"].indexOf(void 0===t?"undefined":i(t))>=0?t:t instanceof Array?Object.assign([],t):Object.assign({},t)}catch(a){this._data[e]=t}else this._data[e]=t;l["default"].dispatch("shareSet:"+e,t)}else if(e instanceof Object){"boolean"==typeof t&&(n=t);for(var r in e){if(l["default"].dispatch("shareChange:"+e,{from:this._data[r],to:e[r]}),"boolean"==typeof n&&n)try{this._data[r]=["string","number","boolean"].indexOf(i(e[r]))>=0?e[r]:e[r]instanceof Array?Object.assign([],e[r]):Object.assign({},e[r])}catch(a){this._data[r]=e[r]}else this._data[r]=e[r];l["default"].dispatch("shareSet:"+r,e[r])}}}},{key:"getAll",value:function(){return this._data}},{key:"delete",value:function(e){delete this._data[e]}}]),e}());t["default"]=new d},function(e,t){"use strict";function n(e,t){if(!(e instanceof t))throw new TypeError("Cannot call a class as a function")}Object.defineProperty(t,"__esModule",{value:!0});var a=function(){function e(e,t){for(var n=0;n<t.length;n++){var a=t[n];a.enumerable=a.enumerable||!1,a.configurable=!0,"value"in a&&(a.writable=!0),Object.defineProperty(e,a.key,a)}}return function(t,n,a){return n&&e(t.prototype,n),a&&e(t,a),t}}(),r=function(){function e(){n(this,e),this.tags={preInit:"preInit",inGame:"inGame"},this._tag=this.tags.preInit,this._events={}}return a(e,[{key:"listen",value:function(e,t,n){"function"==typeof t&&"string"==typeof e&&(this._events[e]?this._events[e].push({tag:this._tag,context:n,callback:t}):this._events[e]=[{tag:this._tag,callback:t}])}},{key:"dispatch",value:function(e,t){if(this._events[e])for(var n in this._events[e])this._events[e][n]&&this._events[e][n].callback(t,{eventInfo:{eventName:e,index:n,count:this._events[e].length}})}},{key:"clear",value:function(){this._events={}}},{key:"setTag",value:function(e){this._tag=e}},{key:"clearByTag",value:function(e){for(var t in this._events)for(var n in this._events[t])this._events[t][n]&&this._events[t][n].tag==e&&(this._events[t]=this._events[t].slice(0,n).concat(this._events[t].slice((0|n)+1)))}},{key:"get",value:function(e,t){if(t){var n=[];for(var a in this._events[e]){var r=!0;for(var i in t)r=r&&this._events[e][a][i]==t[i];r&&n.push(this._events[e][a])}return n}return this._events[e]}},{key:"has",value:function(e,t){if(t){var n=0;for(var a in this._events[e]){var r=!0;for(var i in t)r=r&&this._events[e][a][i]==t[i];r&&(n+=1)}return n}return this._events[e]?this._events[e].length:0}}]),e}();t["default"]=new r},function(e,t){"use strict";Object.defineProperty(t,"__esModule",{value:!0}),t["default"]={themes:{field:["default_field","alternative_field"],face:["default_face","alternative_face"],back:["default_back","alternative_back"]},pref:{field:"default_field",face:"alternative_face",back:"default_back"},showTips:!0,showTipsDestination:!1,showTipPriority:!1,canMoveFlip:!1,tipsParams:{hideOnEmpty:!1,excludeHomeGroups:!0},zoom:1,locale:"ru",animation:!0,animationTime:600,inputParams:{doubleClick:!1},flip:null,actions:null,can_move_flip:!1,showSlot:!0,autohide:!1,paddingType:"none",flip_type:"none",rotate:0,takeRules:["onlytop"],putRule:"any",moveDistance:0,padding_y:0,padding_x:0,flip_padding_y:0,flip_padding_x:0,move_distance:10,debugLabels:!1,startZIndex:100,topZIndex:900,card:{width:71,height:96,suits:["h","d","c","s"],colors:{red:["h","d"],black:["c","s"]},ranks:["1","2","3","4","5","6","7","8","9","10","j","q","k"],values:[1,2,3,4,5,6,7,8,9,10,11,12,13],ranks36:["1","6","7","8","9","10","j","q","k"]},stepType:"default",forceClone:!0}},function(e,t,n){"use strict";function a(e){return e&&e.__esModule?e:{"default":e}}function r(e,t){if(!(e instanceof t))throw new TypeError("Cannot call a class as a function")}var i=function(){function e(e,t){for(var n=0;n<t.length;n++){var a=t[n];a.enumerable=a.enumerable||!1,a.configurable=!0,"value"in a&&(a.writable=!0),Object.defineProperty(e,a.key,a)}}return function(t,n,a){return n&&e(t.prototype,n),a&&e(t,a),t}}(),o=n(1),u=a(o),l=n(2),s=a(l),d=n(3),f=a(d),c=n(5),p=a(c),v=n(14),h=a(v),y=n(9),m=a(y),k=function(){function e(){var t=this;r(this,e),u["default"].set("dragDeck",null),u["default"].set("startCursor",null),s["default"].listen("undo",this._inputUndoRedo()),s["default"].listen("redo",this._inputUndoRedo());try{document.onmousedown=function(e){0===e.button&&t.take(e.target,e.clientX,e.clientY)},document.onmousemove=function(e){t.drag(e.clientX,e.clientY)},document.onmouseup=function(e){t.put(e.target,e.clientX,e.clientY)},document.ondblclick=function(e){s["default"].dispatch("stopAnimations"),t.take(e.target,e.clientX,e.clientY),t.put(e.target,e.clientX,e.clientY,!0),p["default"].curUnLock()},document.addEventListener("touchstart",function(e){t.take(e.target,e.touches[0].clientX,e.touches[0].clientY)},!1),document.addEventListener("touchmove",function(e){u["default"].startCursor&&e.preventDefault(),t.drag(e.touches[0].clientX,e.touches[0].clientY)},!1),document.addEventListener("touchend",function(e){t.put(e.changedTouches[0].target,e.changedTouches[0].clientX,e.changedTouches[0].clientY)},!1)}catch(n){}}return i(e,[{key:"_inputUndoRedo",value:function(){var e=u["default"].get("dragDeck");if(e&&e[0]&&e[0].card&&e[0].card.parent){var t=h["default"].getDeckById(e[0].card.parent);t&&t.Redraw()}u["default"].set("dragDeck",null),u["default"].set("startCursor",null),p["default"].curUnLock()}},{key:"take",value:function(e,t,n){if(u["default"].set("dragDeck",null),u["default"].set("startCursor",null),!p["default"].isCurLock()&&!u["default"].get("sessionStarted")){if(e.className.split(" ").indexOf("slot")>=0){var a=e.id,r=p["default"].getElementById(a);r&&s["default"].dispatch("click",{to:r})}if(e.className.split(" ").indexOf("draggable")>=0){var i=e.id,o=i?p["default"].getElementById(i):null,l=o&&o.parent?o.parent:null,d=l?h["default"].getDeckById(l):null;d&&s["default"].dispatch("click",{to:d});var f=d?d.Take(i):null;u["default"].set("dragDeck",f),f&&(u["default"].set("startCursor",{x:t,y:n}),m["default"].tipsDestination({currentCard:o}))}}}},{key:"drag",value:function(e,t){if(!p["default"].isCurLock()){var n=u["default"].get("startCursor"),a=u["default"].get("dragDeck");if(a&&n){var r=p["default"].getElementById(a[0].card.parent);s["default"].dispatch("dragDeck",{x:e,y:t,_dragDeck:a,_startCursor:n,_deck:r})}}}},{key:"put",value:function(e,t,n,a){if(!p["default"].isCurLock()){var r=u["default"].get("startCursor"),i=u["default"].get("dragDeck");if(i&&r){var o=p["default"].getElementById(i[0].card.parent),l=o.padding(i[0].index),d=Math.sqrt(p["default"].sqr(t-r.x)+p["default"].sqr(n-r.y)),c={distance:d,dbclick:!!a,direction:{x:t-r.x,y:n-r.y,right:t>r.x,left:t<r.x,down:n>r.y,up:n<r.y},lastPosition:{x:t,y:n},deckPosition:{x:l.x+(t-r.x),y:l.y+(n-r.y)}};u["default"].set("lastCursorMove",c,f["default"].forceClone),s["default"].dispatch("hideCard",e);var v=document.elementFromPoint(t,n);s["default"].dispatch("showCard",e),s["default"].dispatch("Move",{moveDeck:i,to:v.id,cursorMove:c}),u["default"].set("dragDeck",null),u["default"].set("startCursor",null)}}}}]),e}();new k},function(e,t,n){"use strict";function a(e){return e&&e.__esModule?e:{"default":e}}Object.defineProperty(t,"__esModule",{value:!0});var r=n(1),i=a(r),o=n(2),u=a(o),l=n(3),s=a(l),d=n(6),f=a(d),c=n(9),p=a(c),v=n(12),h=a(v),y=n(35),m=(a(y),n(55)),k=a(m),g=n(57),_=a(g),b=n(59),x=a(b);u["default"].listen("gameInit",function(e){i["default"].set("stepType",s["default"].stepType),i["default"]["delete"]("sessionStarted"),T(),e.firstInit&&((0,k["default"])(),(0,_["default"])())}),u["default"].listen("gameInited",function(e){(0,x["default"])()}),u["default"].listen("moveEnd",function(e){p["default"].checkTips()}),u["default"].listen("actionBreak",function(e){p["default"].checkTips()}),u["default"].listen("startSession",function(e){i["default"].set("sessionStarted",!0),f["default"].backup()}),u["default"].listen("stopSession",function(e){i["default"].set("sessionStarted",!1)});var w=function(e){return e*e},O=[],P=function(e){return i["default"].get("curLockState")},D=function(e){i["default"].set("curLockState",!0)},T=function(e){i["default"].set("curLockState",!1);for(var t in O)"function"==typeof O[t]&&O[t]();O=[]},j=function(e){return i["default"].get("elements")},C=function(e){var t=i["default"].get("elements");return t[e]},M=function(e,t){var n=[],a=i["default"].get("elements");for(var r in a)a[r].name&&"string"==typeof a[r].name&&a[r].name==e&&(t&&"string"==typeof a[r].type&&t&&a[r].type==t?n.push(a[r]):n.push(a[r]));return n},E=function(e){if("string"!=typeof e)return!1;var t=e.slice(0,1),n=e.slice(1,3),a=null,r=s["default"].card.values[s["default"].card.ranks.indexOf(n)];for(var i in s["default"].card.colors)s["default"].card.colors[i].indexOf(t)>=0&&(a=i);return s["default"].card.suits.indexOf(t)>=0&&s["default"].card.ranks.indexOf(n)>=0&&{color:a,value:r,name:e,suit:t,rank:n}},S=0,I=function(){return S+=1};i["default"].set("animation",s["default"].animation);var R=function(e){i["default"].set("animation",!0)},N=function(e){i["default"].set("animation",s["default"].animation)},B=function(e){i["default"].set("animation",!1)};u["default"].listen("newGame",function(e){B()}),u["default"].listen("historyReapeater",function(e){e?(i["default"].set("noRedraw",!0),i["default"].set("noTips",!0)):(i["default"].set("noRedraw",!1),h["default"].Redraw(),i["default"].set("noTips",!1),p["default"].checkTips())}),i["default"].set("stepType",s["default"].stepType),t["default"]={isCurLock:P,curLock:D,curUnLock:T,getElements:j,getElementById:C,getElementsByName:M,validateCardName:E,genId:I,animationOn:R,animationOff:B,animationDefault:N,sqr:w}},function(e,t,n){"use strict";function a(e){return e&&e.__esModule?e:{"default":e}}function r(e,t){if(!(e instanceof t))throw new TypeError("Cannot call a class as a function")}Object.defineProperty(t,"__esModule",{value:!0});var i="function"==typeof Symbol&&"symbol"==typeof Symbol.iterator?function(e){return typeof e}:function(e){return e&&"function"==typeof Symbol&&e.constructor===Symbol?"symbol":typeof e},o=function(){function e(e,t){for(var n=0;n<t.length;n++){var a=t[n];a.enumerable=a.enumerable||!1,a.configurable=!0,"value"in a&&(a.writable=!0),Object.defineProperty(e,a.key,a)}}return function(t,n,a){return n&&e(t.prototype,n),a&&e(t,a),t}}(),u=n(1),l=a(u),s=n(2),d=(a(s),n(3)),f=(a(d),n(5)),c=a(f),p=n(7),v=a(p),h=n(8),y=a(h),m=["parent","visible","flip"],k=function(){function e(){r(this,e),this._state=null,this._sourceList=["stepType"],this._clearList=["animatedCallback","animatedElements","animatedElementsStack","curLockState","sessionStarted","startCursor","lastCursorMove"]}return o(e,[{key:"backup",value:function(){this._state={};for(var e in this._sourceList){var t=l["default"].get(this._sourceList[e]);this._state[this._sourceList[e]]=["string","number","boolean"].indexOf(void 0===t?"undefined":i(t))>=0?t:t instanceof Array?Object.assign([],t):Object.assign({},t)}this._state.model={};var n=(0,v["default"])();for(var a in n){var r=[];for(var o in n[a].cards){var u={name:n[a].cards[o].name,id:n[a].cards[o].id};for(var s in m){var d=m[s];u[d]=n[a].cards[o][name]}r.push(u)}this._state.model[a]={name:n[a].name,cards:r,group:n[a].parent}}}},{key:"restore",value:function(){if(this._state){for(var e in this._clearList)l["default"]["delete"](this._clearList[e]);for(var t in this._sourceList)l["default"].set(this._sourceList[t],this._state[this._sourceList[t]],!0);for(var n in this._state.model){var a=(0,y["default"])(n),r=[];for(var i in this._state.model[n].cards){var o=this._state.model[n].cards[i].id,u=c["default"].getElementById(o);if(u.name==this._state.model[n].cards[i].name){for(var s in m){var d=m[s];u[d]=this._state.model[n].cards[s][name]}r.push(u)}}a.cards=r,a.Redraw()}}}},{key:"get",value:function(){return this._state}}]),e}();t["default"]=new k},function(e,t,n){"use strict";function a(e){return e&&e.__esModule?e:{"default":e}}Object.defineProperty(t,"__esModule",{value:!0});var r=n(1),i=a(r);t["default"]=function(e){var t={},n=i["default"].get("elements");if(e&&e.visible)for(var a in n)"deck"==n[a].type&&n[a].visible&&(t[a]=n[a]);else for(var r in n)"deck"==n[r].type&&(t[r]=n[r]);return t}},function(e,t,n){"use strict";function a(e){return e&&e.__esModule?e:{"default":e}}Object.defineProperty(t,"__esModule",{value:!0});var r=n(1),i=a(r);t["default"]=function(e){var t=i["default"].get("elements");return!(!t[e]||"deck"!=t[e].type)&&t[e]}},function(e,t,n){"use strict";function a(e){return e&&e.__esModule?e:{"default":e}}Object.defineProperty(t,"__esModule",{value:!0});var r=n(2),i=a(r),o=n(1),u=a(o),l=n(3),s=a(l),d=n(5),f=(a(d),n(10)),c=a(f),p=n(11),v=a(p),h=n(14),y=a(h),m=n(12),k=a(m),g=s["default"].showTips,_=["tip","tipTo","tipPriority","tipToHome"],b=[],x=function(e){return b},w=function(e){if(u["default"].get("noTips"))return!1;i["default"].dispatch("hideTips");var t=y["default"].getDecks({visible:!0});if(b=(0,c["default"])({decks:t}),0==b.length&&u["default"].get("stepType")==s["default"].stepType&&i["default"].dispatch("noTips"),g){var n=k["default"].homeGroups;for(var a in b)0===b[a].to.count&&k["default"].tipsParams.hideOnEmpty||k["default"].tipsParams.excludeHomeGroups&&n&&n.length&&n.indexOf(b[a].from.deck.parent)>=0||i["default"].dispatch("showTip",{el:b[a].from.card,type:"tip"}),n.indexOf(b[a].to.deck.parent)>=0&&i["default"].dispatch("showTip",{el:b[a].from.card,type:"tipToHome"})}};i["default"].listen("makeStep",w),i["default"].listen("checkTips",w);var O=function(e){g=!0,e&&e.init||w()};i["default"].listen("tipsON",O);var P=function(e){g=!1,e&&e.init||w()};i["default"].listen("tipsOFF",P);var D=function(e){if(u["default"].get("showTipPriority")&&(i["default"].dispatch("hideTips",{types:["tipPriority"]}),u["default"].showTipPriority&&e&&e.moveDeck&&e.cursorMove&&e.cursorMove.distance&&e.cursorMove.distance>=u["default"].moveDistance)){var t=(0,v["default"])(e.moveDeck,e.cursorMove);t&&i["default"].dispatch("showTip",{el:t.to.deck,type:"tipPriority"})}},T=function(e){if(u["default"].get("showTipsDestination")&&(i["default"].dispatch("hideTips"),e&&e.currentCard&&e.currentCard.id))for(var t in b)b[t].from.card.id==e.currentCard.id&&i["default"].dispatch("showTip",{el:b[t].to.deck,type:"tipTo"})},j=function(e){for(var t in b)if(b[t].from.deck.name==e)return!0;return!1},C=function(e,t){for(var n in b)if(b[n].from.deck.name==e&&b[n].to.deck.name==t)return!0;return!1};t["default"]={tipTypes:_,getTips:x,checkTips:w,showTips:O,hideTips:P,tipsMove:D,checkFrom:j,fromTo:C,tipsDestination:T}},function(e,t){"use strict";function n(e,t){if(!(e instanceof t))throw new TypeError("Cannot call a class as a function")}Object.defineProperty(t,"__esModule",{value:!0});var a=function(){function e(e,t){for(var n=0;n<t.length;n++){var a=t[n];a.enumerable=a.enumerable||!1,a.configurable=!0,"value"in a&&(a.writable=!0),Object.defineProperty(e,a.key,a)}}return function(t,n,a){return n&&e(t.prototype,n),a&&e(t,a),t}}(),r=function(){function e(){n(this,e),this._decks=null,this._moves=[]}return a(e,[{key:"get",value:function(e){this._decks=e.decks,this._moves=[];for(var t in this._decks){var n=this._decks[t].cards;this.cardsInTakeDeck(n,t)}return this._moves}},{key:"cardsInTakeDeck",value:function(e,t){for(var n in e){var a=e[n].id,r=this._decks[t].Take(a);r&&this.decksToPut(e,r,t,n)}}},{key:"decksToPut",value:function(e,t,n,a){for(var r in this._decks)if(n!=r){var i=this._decks[r].Put(t);i&&this.put(r,n,a,e)}}},{key:"put",value:function(e,t,n,a){var r=this._decks[e].cards,i=r.length?r[r.length-1]:null;this._moves.push({from:{deck:this._decks[t],card:a[n],count:a.length},to:{deck:this._decks[e],lastCard:i,count:r.length}})}}]),e}(),i=new r;t["default"]=function(e){return i.get(e)}},function(e,t,n){"use strict";function a(e){return e&&e.__esModule?e:{"default":e}}Object.defineProperty(t,"__esModule",{value:!0});var r=n(1),i=(a(r),n(3)),o=a(i),u=n(5),l=a(u),s=n(9),d=a(s),f=n(12),c=a(f);t["default"]=function(e,t){var n=[],a=d["default"].getTips();for(var r in a)a[r].from.card.id==e[0].card.id&&n.push(a[r]);if(0==n.length)return!1;var i=0,u=0,s=-1,f=c["default"].homeGroups;if(f){var p=[];for(var v in f)for(var h in n)n[h].to.deck.parent==f[v]&&p.push(n[h]);p.length&&(n=p)}if(n.length>1){for(var y=0;y<n.length;y+=1){var m=[];n[y].to.deck.cardsCount()&&m.push(n[y]),m.length&&(n=m)}for(var k in n){var g={x:t.deckPosition.x+(o["default"].card.width/2|0),y:t.deckPosition.y+(o["default"].card.height/2|0)},_=n[k].to.deck.padding(n[k].to.deck.cards.length),b={x:_.x+(o["default"].card.width/2|0),y:_.y+(o["default"].card.height/2|0)};n[k].distance=Math.sqrt(l["default"].sqr(g.x-b.x)+l["default"].sqr(g.y-b.y)),n[k].inDirection=!1,(t.direction.x>0&&b.x>g.x||t.direction.x<0&&b.x<g.x)&&(n[k].inDirection=!0,u+=1)}for(var x in n)"-1"==s?0==u?s=n[x].distance:n[x].inDirection&&(s=n[x].distance,i=x):n[x].distance<s&&(0==u?(s=n[x].distance,i=x):n[x].inDirection&&(s=n[x].distance,i=x))}return n[i]}},function(e,t,n){"use strict";function a(e){return e&&e.__esModule?e:{"default":e}}function r(e,t){if(!(e instanceof t))throw new TypeError("Cannot call a class as a function")}Object.defineProperty(t,"__esModule",{value:!0});var i=function(){function e(e,t){for(var n=0;n<t.length;n++){var a=t[n];a.enumerable=a.enumerable||!1,a.configurable=!0,"value"in a&&(a.writable=!0),Object.defineProperty(e,a.key,a)}}return function(t,n,a){return n&&e(t.prototype,n),a&&e(t,a),t}}(),o=n(1),u=a(o),l=n(2),s=a(l),d=n(3),f=a(d),c=n(5),p=(a(c),n(13)),v=a(p),h=n(14),y=a(h),m=n(9),k=a(m),g=n(51),_=a(g),b=n(54),x=a(b),w=function(){function e(){r(this,e),u["default"].set("elements",{}),this.tipsParams={},this.inputParams={}}return i(e,[{key:"create",value:function(e){if(this.homeGroups=e.homeGroups?e.homeGroups:[],"boolean"==typeof e.showTips&&e.showTips?k["default"].showTips({init:!0}):k["default"].hideTips({init:!0}),u["default"].set("stepType",f["default"].stepType),u["default"].set("showTipsDestination","boolean"==typeof e.showTipsDestination?e.showTipsDestination:f["default"].showTipsDestination),u["default"].set("showTipPriority","boolean"==typeof e.showTipPriority?e.showTipPriority:f["default"].showTipPriority),u["default"].set("moveDistance",e.moveDistance&&"number"==typeof e.moveDistance?e.moveDistance:f["default"].moveDistance),u["default"].set("winCheck",e.winCheck),u["default"].set("zoom",e.zoom&&"number"==typeof e.zoom?e.zoom:f["default"].zoom),e.preferences){var t=x["default"].get("pref"),n={},a={};for(var r in e.preferences)"string"==typeof r&&(n[r]=e.preferences[r],a[r]=t&&void 0!==t[r]?t[r]:e.preferences[r].value);u["default"].set("gamePreferences",n),u["default"].set("gamePreferencesData",a)}else u["default"].set("gamePreferences",{});u["default"].set({animationTime:"number"==typeof e.animationTime?e.animationTime:f["default"].animationTime});for(var i in f["default"].tipsParams)this.tipsParams[i]=e.tipsParams&&void 0!==e.tipsParams[i]?e.tipsParams[i]:f["default"].tipsParams[i];for(var o in f["default"].inputParams)this.inputParams[o]=e.inputParams&&void 0!==e.inputParams[o]?e.inputParams[o]:f["default"].inputParams[o];if(e.startZIndex&&"number"==typeof e.startZIndex&&u["default"].set("start_z_index",e.startZIndex),e.autoSteps&&(this.autoSteps=(0,_["default"])(e.autoSteps)),s["default"].dispatch("initField",e),e.groups)for(var l in e.groups)e.groups[l].name=l,v["default"].add(e.groups[l]);if(e.decks)for(var d in e.decks)y["default"].addDeck(e.decks[d]);if(e.fill){var c=y["default"].getDecks(),p=null;try{p=Object.assign([],e.fill)}catch(d){p=e.fill}for(;p.length;)for(var h in c)if(p.length){var m=p.shift();c[h].Fill([m])}}k["default"].checkTips(),s["default"].dispatch("newGame")}},{key:"Redraw",value:function(e){if(e){for(var t in e.groups){var n=v["default"].getByName(t);n&&n.Redraw(e.groups[t])}for(var a in e.decks){var r=y["default"].getDeck(e.decks[a].name);r&&r.Redraw(e.decks[a])}}else{var i=y["default"].getDecks();for(var o in i)i[o].Redraw()}}},{key:"clear",value:function(){var e=u["default"].get("elements");for(var t in e)"deck"==e[t].type?(e[t].clear(),e[t]=null):"group"==e[t].type&&(e[t]=null);u["default"].set("elements",{})}}]),e}();t["default"]=new w},function(e,t,n){"use strict";function a(e){return e&&e.__esModule?e:{"default":e}}function r(e,t){if(!(e instanceof t))throw new TypeError("Cannot call a class as a function")}Object.defineProperty(t,"__esModule",{value:!0});var i=function(){function e(e,t){for(var n=0;n<t.length;n++){var a=t[n];a.enumerable=a.enumerable||!1,a.configurable=!0,"value"in a&&(a.writable=!0),Object.defineProperty(e,a.key,a)}}return function(t,n,a){return n&&e(t.prototype,n),a&&e(t,a),t}}(),o=n(2),u=(a(o),n(1)),l=a(u),s=n(3),d=a(s),f=n(5),c=a(f),p=n(14),v=a(p),h=n(38),y=a(h),m=n(39),k=a(m),g=n(40),_=a(g),b={paddingType:{type:"any"},flip:{type:"any"},showSlot:{type:"any"},takeRules:{type:"any"},putRules:{type:"any"},fullRules:{type:"any"},autoHide:{type:"any"},paddingX:{type:"any"},paddingY:{type:"any"},flipPaddingX:{type:"any"},flipPaddingY:{type:"any"},actions:{type:"any"},save:{type:"boolean","default":!0}},x=function(){function e(t,n){r(this,e),this.type="group",this.id=n,this.name=t.name&&"string"==typeof t.name?t.name:"name_"+n,this.position={x:t.position&&t.position.x&&"number"==typeof t.position.x?t.position.x:0,y:t.position&&t.position.y&&"number"==typeof t.position.y?t.position.y:0},this.placement=t.placement?{x:t.placement.x?t.placement.x:0,y:t.placement.y?t.placement.y:0}:null,this.decks={},this.parameters={};for(var a in b)"any"==b[a].type?this.parameters[a]=t[a]?t[a]:d["default"][a]:"boolean"==b[a].type&&(this.parameters[a]="boolean"==typeof t[a]?t[a]:b[a]["default"]);this.deckIndex=[],this.tags=t.tags}return i(e,[{key:"addDeck",value:function(e){if(e){e.position||(e.position={x:0,y:0}),e.parent||(e.parent=this.name),e.parentPosition={x:this.position.x,y:this.position.y};var t=0;if(e.groupIndex&&decks[this.deckIndex[e.groupIndex-1]]["this"].deckIndex==e["this"].deckIndex&&"number"==typeof e.groupIndex&&this.deckIndex[e.groupIndex-1]&&(e.groupIndex=null),e.groupIndex&&"number"==typeof e.groupIndex)if(this.deckIndex[e.groupIndex-1]){for(;void 0!==this.deckIndex[t];t+=1);if(placement){var n=this.deckIndex[e.groupIndex-1],a=l["default"].get("elements");placement.x&&a[n].x(this.position.x+(placement.x+d["default"].card.width)*n),placement.y&&a[n].y(this.position.y+(placement.y+d["default"].card.width)*n),l["default"].set("elements",a)}this.deckIndex[t]=this.deckIndex[e.groupIndex-1],this.deckIndex[e.groupIndex-1]=!0,t=e.groupIndex-1}else this.deckIndex[e.groupIndex-1]=!0,t=e.groupIndex-1;else{for(;void 0!==this.deckIndex[t];t+=1);this.deckIndex[t]=!0}this.placement&&(this.placement.x&&(e.position.x=(this.placement.x+d["default"].card.width)*t),this.placement.y&&(e.position.y=(this.placement.y+d["default"].card.height)*t));for(var r in b)"any"==b[r].type?this.parameters[r]&&void 0===e[r]&&(e[r]=this.parameters[r]):"boolean"==b[r].type&&(e[r]=this.parameters[r]);e.deckIndex="number"==typeof e.deckIndex?e.deckIndex:t;var i=v["default"].addDeck(e);this.deckIndex[t]=i.id,this.decks[i.id]=i}}},{key:"Fill",value:function(e){(0,y["default"])(this,e)}},{key:"getDeckById",value:function(e){return this.decks[e]}},{key:"getDeckIndexById",value:function(e){for(var t in this.deckIndex)if(this.deckIndex[t]==e)return t;return null}},{key:"getDeckIdByIndex",value:function(e){return this.deckIndex[e]}},{key:"getDeckByIndex",value:function(e){var t=this.getDeckIdByIndex(e);return this.getDeckById(t)}},{key:"getDecksByName",value:function(e){var t={};for(var n in this.decks)this.decks[n].name==e&&(t[n]=decks[n]);return t}},{key:"getDecks",value:function(e){var t=[];for(var n in this.decks)e&&e.visible?this.decks[n].visible&&t.push(this.decks[n]):t.push(this.decks[n]);return t}},{key:"Redraw",value:function(e){(0,k["default"])(this,e)}},{key:"hasDeck",value:function(e){var t=!1;for(var n in decks)decks[n].name==e&&(t=!0);return t}}]),e}(),w=function(e){if(!e)return!1;if(!e.decks)return!1;var t="group_"+c["default"].genId(),n=new x(e,t);if(e.decks){if("number"==typeof e.decks&&(e.decks={generator:{type:"count",count:e.decks}}),e.decks.generator){if(!e.decks.generator.type)return;if(!_["default"][e.decks.generator.type])return;e.decks=_["default"][e.decks.generator.type](n,e.decks.generator),e.placement=null}for(var a in e.decks)for(var r in e.decks[a].relations){var i=null;try{i=Object.assign({},e.decks[a].relations[r])}catch(o){i=e.decks[a].relations[r]}for(var u in e.decks)e.decks[u].name==i.to&&(i.to=null,i.from=e.decks[a].name,e.decks[u].relations.push(i))}for(var s in e.decks)n.addDeck(e.decks[s])}var d=l["default"].get("elements");if(d[t]=n,l["default"].set("elements",d),e&&e.fill){var f=e.fill.length;f&&n.Fill(e.fill)}return n},O=function(e){return c["default"].getElementsByName(e,"group")[0]};t["default"]={getByName:O,add:w}},function(e,t,n){"use strict";function a(e){return e&&e.__esModule?e:{"default":e}}function r(e,t){if(!(e instanceof t))throw new TypeError("Cannot call a class as a function")}Object.defineProperty(t,"__esModule",{value:!0});var i=function(){function e(e,t){for(var n=0;n<t.length;n++){var a=t[n];a.enumerable=a.enumerable||!1,a.configurable=!0,"value"in a&&(a.writable=!0),Object.defineProperty(e,a.key,a)}}return function(t,n,a){return n&&e(t.prototype,n),a&&e(t,a),t}}(),o=n(2),u=a(o),l=n(1),s=a(l),d=n(3),f=a(d),c=n(5),p=a(c),v=n(15),h=a(v),y=n(16),m=a(y),k=n(18),g=(a(k),n(19)),_=a(g),b=n(20),x=a(b),w=n(21),O=a(w),P=n(32),D=a(P),T=n(33),j=a(T),C=n(34),M=a(C),E=n(13),S=a(E),I=n(35),R=a(I),N=n(7),B=a(N),A=n(8),L=a(A),F=n(36),X=a(F),Y=n(37),z=a(Y),G=function(){function e(t,n){var a=this;if(r(this,e),!t)return!1;this.cards=[],this.type="deck",this.full=!1,this.id=n;var i=S["default"].getByName(t.parent),o=i?i.name:"no_parent_",l=i?i.getDecks().length:n;this.name="string"==typeof t.name?t.name:o+"_"+l,this.locked=!!t.locked,this.save=!!t.save,this.visible="boolean"!=typeof t.visible||t.visible,this.groupIndex="number"==typeof t.groupIndex?t.groupIndex:null,this.parent="string"==typeof t.parent?t.parent:"field",this.autoHide="boolean"==typeof t.autoHide?t.autoHide:f["default"].autohide,void 0===t.showSlot&&(t.showSlot=f["default"].showSlot),this._params={padding_y:"number"==typeof t.paddingY?t.paddingY:f["default"].padding_y,flip_padding_y:"number"==typeof t.flipPaddingY?t.flipPaddingY:f["default"].flip_padding_y,padding_x:"number"==typeof t.paddingX?t.paddingX:f["default"].padding_x,flip_padding_x:"number"==typeof t.flipPaddingX?t.flipPaddingX:f["default"].flip_padding_x,startZIndex:"number"==typeof t.startZIndex?t.startZIndex:f["default"].startZIndex,rotate:"number"==typeof t.rotate?t.rotate:f["default"].rotate,x:0,y:0},this.rotate=this._params.rotate;var s=t.flip&&"string"==typeof t.flip?t.flip:f["default"].flip_type;this.cardFlipCheck=h["default"][s],this.putRules=t.putRules?"function"==typeof t.putRules?t.putRules:"string"==typeof t.putRules?m["default"][t.putRules]?m["default"][t.putRules]:m["default"][f["default"].putRule]:t.putRules.constructor==Array?t.putRules:m["default"][f["default"].putRule]:m["default"][f["default"].putRule],this.takeRules=t.takeRules,this.fullRules=null,t.fullRules&&(this.fullRules=t.fullRules);var d=t.paddingX||t.paddingY?x["default"].special:t.paddingType?"string"==typeof t.paddingType&&x["default"][t.paddingType]?x["default"][t.paddingType]:x["default"].none:x["default"][f["default"].paddingType];this.padding=function(e){return d(a._params,a.cards[e],e,a.cards.length,a.cards)},this.actions=[],t.actions&&(this.actions=t.actions,O["default"].add(this)),t.relations?this.relations=t.relations:this.relations=[],this.tags=t.tags?t.tags:[],u["default"].dispatch("addDeckEl",{deckData:t,deck:this,params:this._params});var c=function(e){e.destination.name==a.name&&a.checkFull()};u["default"].listen("moveDragDeck",c)}return i(e,[{key:"Redraw",value:function(e){u["default"].dispatch("redrawDeck",{deck:this,deckData:e,params:this._params,cards:this.cards}),u["default"].dispatch("redrawDeckFlip",{cards:this.cards})}},{key:"getTopCard",value:function(){return 0!=this.cards.length&&this.cards[this.cards.length-1]}},{key:"lock",value:function(){this.locked=!0}},{key:"unlock",value:function(){this.locked=!1}},{key:"flipCheck",value:function(){for(var e in this.cards)this.cardFlipCheck(this.cards[e],0|e,this.cards.length);u["default"].dispatch("redrawDeckFlip",this)}},{key:"checkFull",value:function(){if(!this.full&&this.fullRules&&this.fullRules.length>0){var e=!0;for(var t in this.fullRules){var n=this.fullRules[t];if("string"==typeof n)e=e&&"function"==typeof _["default"][t]&&!_["default"][t](this);else for(var a in n)"string"==typeof a&&"function"==typeof _["default"][a]&&(e=e&&_["default"][a](this,n[a]))}this.full=e}}},{key:"Fill",value:function(e){for(var t in e)this.genCardByName(e[t])}},{key:"clear",value:function(){for(var e in this.cards)u["default"].dispatch("removeEl",this.cards[e]),this.cards[e]=null;this.cards=[],u["default"].dispatch("removeEl",this)}},{key:"Push",value:function(e){for(var t in e)e[t].parent=this.id,this.cards.push(e[t])}},{key:"Pop",value:function(e,t){if(this.cards.length<e)return!1;for(var n=[];e;e-=1){var a=this.cards.pop();t&&(a.parent=null),n.push(a),n[n.length-1].parent=null}return n.reverse(),this.autoHide&&0==this.cards.length&&this.hide(),this.Redraw(),n}},{key:"Take",value:function(e){return(0,D["default"])(this,e)}},{key:"Put",value:function(e){return(0,j["default"])(this,e)}},{key:"genCardByName",value:function(e){return(0,M["default"])(this,e)}},{key:"hide",value:function(){this.visible=!1,R["default"].add({
-hideDeck:this.name}),this.Redraw()}},{key:"show",value:function(){this.visible=!1,R["default"].add({showDeck:this.name}),this.Redraw()}},{key:"hideCards",value:function(){for(var e in this.cards)this.cards[e].visible=!1,u["default"].dispatch("hideCard",this.cards[e])}},{key:"showCards",value:function(){for(var e in this.cards)this.cards[e].visible=!0,u["default"].dispatch("showCard",this.cards[e])}},{key:"getCardsNames",value:function(){var e=[];for(var t in this.cards)e.push(this.cards[t].name);return e}},{key:"cardsCount",value:function(){return this.cards.length}},{key:"getRelationsByName",value:function(e,t){var n=[];for(var a in this.relations)if(this.relations[a].name==e)if(t){var r=0,i=0;for(var o in t)i+=1,this.relations[a][o]==t[o]&&(r+=1);r==i&&n.push(this.relations[a])}else n.push(this.relations[a]);return n}},{key:"hasTag",value:function(e){for(var t in this.tags)if(this.tags[t]==e)return!0;return!1}}]),e}(),H=function(e){if(!e)return!1;var t="deck_"+p["default"].genId(),n=new G(e,t);if(e.fill)for(var a in e.fill)"string"==typeof e.fill[a]&&n.genCardByName(e.fill[a]);var r=s["default"].get("elements");return r[t]=n,s["default"].set("elements",r),n};t["default"]={deckCardNames:X["default"],addDeck:H,getDeck:z["default"],getDecks:B["default"],getDeckById:L["default"]}},function(e,t){"use strict";Object.defineProperty(t,"__esModule",{value:!0}),t["default"]={none:function(e,t,n){e.flip=!1},all:function(e,t,n){e.flip=!0},notlast:function(e,t,n){e.flip=t<n-1},first_1:function(e,t,n){e.flip=t<1},first_2:function(e,t,n){e.flip=t<2},first_3:function(e,t,n){e.flip=t<3},bee:function(e,t,n){e.flip=t!=n-1&&t%2==0}}},function(e,t,n){"use strict";function a(e){return e&&e.__esModule?e:{"default":e}}Object.defineProperty(t,"__esModule",{value:!0});var r=n(5),i=a(r),o=n(3),u=a(o),l=n(14),s=a(l),d=n(17),f=a(d),c={linePrev:function(e){var t=(0,f["default"])(e.to).prev;return!!t&&(e.link=t.to,!0)},lineNext:function(e){var t=(0,f["default"])(e.to).next;return!!t&&(e.link=t.to,!0)},_down_up_cards:function(e){if(0==e.cards.length)return!1;var t=i["default"].validateCardName(e.cards[e.cards.length-1].name),n=i["default"].validateCardName(e.putDeck[0].card.name);return!(!t||!n)&&{up:n,down:t}},_down_up_rank_num:function(e){var t=c._down_up_cards(e);return!!t&&{down:u["default"].card.ranks.indexOf(t.down.rank),up:u["default"].card.ranks.indexOf(t.up.rank)}},_isFirst:function(e,t){if(0==e.cards.length){var n=null;return(n=i["default"].validateCardName(e.putDeck[0].card.name))&&n.rank==t}return!0},striped:function(e){if(0==e.cards.length)return!0;var t=i["default"].validateCardName(e.cards[e.cards.length-1].name).color,n=null,a=null;return(a=i["default"].validateCardName(e.putDeck[0].card.name))&&(n=a.color),t!=n},firstAce:function(e){return c._isFirst(e,u["default"].card.ranks[0])},firstKing:function(e){return c._isFirst(e,u["default"].card.ranks[u["default"].card.ranks.length-1])},notForEmpty:function(e){return e.cards.length>0},onlyEmpty:function(e){return 0==e.cards.length},oneRank:function(e){if(0==e.cards.length)return!0;var t=c._down_up_cards(e);return t&&t.up.rank==t.down.rank},oneSuit:function(e){if(0==e.cards.length)return!0;var t=c._down_up_cards(e);return t&&t.up.suit==t.down.suit},any:function(e){return!0},not:function(e){return!1},ascendDeck:function(e){if(1==e.putDeck.length)return!0;var t=!0;for(var n in e.putDeck)if(n>0){var a=u["default"].card.ranks.indexOf(i["default"].validateCardName(e.putDeck[n-1].card.name).rank),r=u["default"].card.ranks.indexOf(i["default"].validateCardName(e.putDeck[n].card.name).rank);t=t&&1+a==r}return t},descendDeck:function(e){if(1==e.putDeck.length)return!0;var t=!0;for(var n in e.putDeck)if(n>0){var a=u["default"].card.ranks.indexOf(i["default"].validateCardName(e.putDeck[n-1].card.name).rank),r=u["default"].card.ranks.indexOf(i["default"].validateCardName(e.putDeck[n].card.name).rank);t=t&&a==1+r}return t},oneRankDeck:function(e){if(1==e.putDeck.length)return!0;var t=!0;for(var n in e.putDeck)if(n>0){var a=i["default"].validateCardName(e.putDeck[n-1].card.name).suit,r=i["default"].validateCardName(e.putDeck[n].card.name).suit;t=t&&a==r}return t},ascend:function(e){if(0==e.cards.length)return!0;var t=c._down_up_rank_num(e);return t&&t.down<t.up},descent:function(e){if(0==e.cards.length)return!0;var t=c._down_up_rank_num(e);return t&&t.down>t.up},descentOne:function(e){if(0==e.cards.length)return!0;var t=c._down_up_rank_num(e);return t&&t.down==1+t.up},ascendOne:function(e){if(0==e.cards.length)return!0;var t=c._down_up_rank_num(e);return t&&1+t.down==t.up},ascdescOne:function(e){if(0==e.cards.length)return!0;var t=c._down_up_rank_num(e);return t&&1==Math.abs(t.down-t.up)},sum14:function(e){if(0==e.cards.length)return!0;var t=c._down_up_cards(e),n=t.down.value+t.up.value;return 14==n},around:function(e){if(0==e.cards.length)return!0;var t=e.from.deck.getRelationsByName("around",{from:null}),n=s["default"].getDeckById(e.cards[0].parent);for(var a in t)if(t[a].to==n.name)return!0;return!1}};t["default"]=c},function(e,t){"use strict";Object.defineProperty(t,"__esModule",{value:!0}),t["default"]=function(e){var t=e.getRelationsByName("beside",{from:null,type:"prev"})[0],n=e.getRelationsByName("beside",{from:null,type:"next"})[0];return{prev:t,next:n}}},function(e,t){"use strict";Object.defineProperty(t,"__esModule",{value:!0}),t["default"]={not:function(e){return!1},notFirst:function(e){return e.cardIndex>0},any:function(e){return!0},onlytop:function(e){return e.cardIndex==e.deckLength-1}}},function(e,t,n){"use strict";function r(e){return e&&e.__esModule?e:{"default":e}}Object.defineProperty(t,"__esModule",{value:!0});var i=n(3),o=r(i),u=n(5),l=r(u),s=n(13),d=r(s),f=n(14),c=r(f),p=n(9),v=r(p),h=n(17),y=r(h),m={_topCard:function(e){var t=e.getTopCard();return t&&l["default"].validateCardName(t.name)},_prev_next_desc_ask:function(e,t,n){for(var r=!0,i=(0,y["default"])(a.to)[t],o=e.getTopCard();i&&r;){var u=c["default"].getDeck(i);_card=u.getTopCard(),r=r&&_card&&n(0|l["default"].validateCardName(o).value,0|l["default"].validateCardName(_card).value),o=_card,i=(0,y["default"])(u)[t]}return r},query:function(e,t){var n=e.parent,a=(d["default"].getByName(n),!0),r=[];if(t.excludeCurrent||r.push(e),t.all){for(var i in t.all.groups){var o=d["default"].getByName(t.all.groups[i]);if(t.all.excludeParent&&t.all.groups[i]==n);else if("first"==t.all.select){var u=o.getDeckByIndex(0);r.push(u)}else"second"==t.all.select||"last"==t.all.select}for(var l in t.all.decks){var s=c["default"].getDeck(t.all.decks[l]);s&&r.push(s)}for(var f in r){for(var p in t.rules){var v=t.rules[p];m[v]&&(a=a&&m[v](r[f]))}if(t.anyRule){var h=!1;for(var y in t.anyRule){var k=t.anyRule[y];m[k]&&(h=h||m[k](r[f]))}a=a&&h}}}return a},deckLength:function(e){return o["default"].card.ranks.length<=e.cards.length},not:function(e){return!1},noMoves:function(e){return!v["default"].checkFrom(e.name)},topAce:function(e){var t=m._topCard(e);return t&&t.rank==o["default"].card.ranks[0]},topKing:function(e){var t=m._topCard(e),n=o["default"].card.ranks.length-1;return t&&t.rank==o["default"].card.ranks[n]},prevDescOne:function(e){return m._prev_next_desc_ask(e,"prev",function(e,t){return e==(0|t)+1})},prevAscOne:function(e){return m._prev_next_desc_ask(e,"prev",function(e,t){return(0|e)+1==t})},nextDescOne:function(e){return m._prev_next_desc_ask(e,"next",function(e,t){return e==(0|t)+1})},nextAscOne:function(e){return m._prev_next_desc_ask(e,"next",function(e,t){return(0|e)+1==t})},prevDesc:function(e){return m._prev_next_desc_ask(e,"prev",function(e,t){return e>t})},prevAsc:function(e){return m._prev_next_desc_ask(e,"prev",function(e,t){return e<t})},nextDesc:function(e){return m._prev_next_desc_ask(e,"next",function(e,t){return e>t})},nextAsc:function(e){return m._prev_next_desc_ask(e,"next",function(e,t){return e<t})}};t["default"]=m},function(e,t){"use strict";Object.defineProperty(t,"__esModule",{value:!0}),t["default"]={none:function(e,t,n,a,r){return{x:e.x,y:e.y}},last_three_min:function(e,t,n,a,r){return n>a-3?a>3?{x:e.x-2*(a-3-n),y:e.y-(a-3-n)}:{x:e.x+2*n,y:e.y+(0|n)}:{x:x,y:y}},radial:function(e,t,n,a,r){var i=1,o=n*i,u=e.rotate,l=Math.PI/180,s=Math.sin(u*l)*o,d=Math.cos(u*l)*o;return{x:e.x+s,y:e.y-d}},special:function(e,t,n,a,r){for(var i=e.y,o=e.x,u=0;u<n;u+=1)i+=r[u]&&r[u].flip?e.flip_padding_y:e.padding_y,o+=r[u]&&r[u].flip?e.flip_padding_x:e.padding_x;return{x:o,y:i}},vertical:function(e,t,n,a,r){for(var i=e.y,o=0;o<n;o+=1)i+=r[o]&&r[o].flip?e.flip_padding_y:e.padding_y;var u={x:e.x,y:i};return u},horizontal:function(e,t,n,a,r){for(var i=e.x,o=0;o<n;o+=1)i+=r[o]&&r[o].flip?e.flip_padding_x:e.padding_x;var u={x:i,y:e.y};return u}}},function(e,t,n){"use strict";function a(e){return e&&e.__esModule?e:{"default":e}}Object.defineProperty(t,"__esModule",{value:!0});var r=n(2),i=a(r),o=n(1),u=(a(o),n(3)),l=(a(u),n(5)),s=a(l),d=n(22),f=a(d),c=n(24),p=a(c),v=n(26),h=a(v),y=n(27),m=a(y),k=n(28),g=a(k),_=n(29),b=a(_),x=n(31),w=a(x),O={twindeck:f["default"],dealerdeck:p["default"],kick:h["default"],stepsAround:m["default"],changeStepType:g["default"],lock:b["default"],unlock:w["default"]},P=[],D=[];i["default"].listen("initField",function(e){P=[],D=[]});var T=function(e){i["default"].listen(e,function(t){for(var n in P)if(P[n].event==e){var a=P[n].action,r="click"!=e||t.to.name==P[n].deck.name;r&&O[a].run(P[n].deck,{actionData:P[n].deck.actions[a],eventData:t,eventName:e})}},"addActionEvent:"+e)},j=function(e){for(var t in e.actions)e.actions[t].event||(e.actions[t].event="click"),O[t]&&(P.push({deck:e,event:e.actions[t].event,action:t}),D.indexOf(e.actions[t].event)<0&&(D.push(e.actions[t].event),T(e.actions[t].event)));C(e)},C=function(e){s["default"].animationDefault();for(var t in e.actions)e.actions[t].autorun&&O[t]&&O[t].run(e,{actionData:e.actions[t],eventData:null,eventName:e.actions[t].event})};t["default"]={add:j}},function(e,t,n){"use strict";function a(e){return e&&e.__esModule?e:{"default":e}}function r(e,t){if(!(e instanceof t))throw new TypeError("Cannot call a class as a function")}function i(e,t){if(!e)throw new ReferenceError("this hasn't been initialised - super() hasn't been called");return!t||"object"!=typeof t&&"function"!=typeof t?e:t}function o(e,t){if("function"!=typeof t&&null!==t)throw new TypeError("Super expression must either be null or a function, not "+typeof t);e.prototype=Object.create(t&&t.prototype,{constructor:{value:e,enumerable:!1,writable:!0,configurable:!0}}),t&&(Object.setPrototypeOf?Object.setPrototypeOf(e,t):e.__proto__=t)}Object.defineProperty(t,"__esModule",{value:!0});var u=function(){function e(e,t){for(var n=0;n<t.length;n++){var a=t[n];a.enumerable=a.enumerable||!1,a.configurable=!0,"value"in a&&(a.writable=!0),Object.defineProperty(e,a.key,a)}}return function(t,n,a){return n&&e(t.prototype,n),a&&e(t,a),t}}(),l=function c(e,t,n){null===e&&(e=Function.prototype);var a=Object.getOwnPropertyDescriptor(e,t);if(void 0===a){var r=Object.getPrototypeOf(e);return null===r?void 0:c(r,t,n)}if("value"in a)return a.value;var i=a.get;if(void 0!==i)return i.call(n)},s=n(23),d=a(s),f=function(e){function t(){return r(this,t),i(this,(t.__proto__||Object.getPrototypeOf(t)).call(this))}return o(t,e),u(t,[{key:"run",value:function(e,n){l(t.prototype.__proto__||Object.getPrototypeOf(t.prototype),"end",this).call(this)}}]),t}(d["default"]);t["default"]=new f},function(e,t,n){"use strict";function a(e){return e&&e.__esModule?e:{"default":e}}function r(e,t){if(!(e instanceof t))throw new TypeError("Cannot call a class as a function")}Object.defineProperty(t,"__esModule",{value:!0});var i=function(){function e(e,t){for(var n=0;n<t.length;n++){var a=t[n];a.enumerable=a.enumerable||!1,a.configurable=!0,"value"in a&&(a.writable=!0),Object.defineProperty(e,a.key,a)}}return function(t,n,a){return n&&e(t.prototype,n),a&&e(t,a),t}}(),o=n(2),u=a(o),l=function(){function e(){r(this,e)}return i(e,[{key:"run",value:function(){}},{key:"end",value:function(){u["default"].dispatch("stopSession")}},{key:"break",value:function(){}}]),e}();t["default"]=l},function(e,t,n){"use strict";function a(e){return e&&e.__esModule?e:{"default":e}}function r(e,t){if(!(e instanceof t))throw new TypeError("Cannot call a class as a function")}function i(e,t){if(!e)throw new ReferenceError("this hasn't been initialised - super() hasn't been called");return!t||"object"!=typeof t&&"function"!=typeof t?e:t}function o(e,t){if("function"!=typeof t&&null!==t)throw new TypeError("Super expression must either be null or a function, not "+typeof t);e.prototype=Object.create(t&&t.prototype,{constructor:{value:e,enumerable:!1,writable:!0,configurable:!0}}),t&&(Object.setPrototypeOf?Object.setPrototypeOf(e,t):e.__proto__=t)}Object.defineProperty(t,"__esModule",{value:!0});var u=function(){function e(e,t){for(var n=0;n<t.length;n++){var a=t[n];a.enumerable=a.enumerable||!1,a.configurable=!0,"value"in a&&(a.writable=!0),Object.defineProperty(e,a.key,a)}}return function(t,n,a){return n&&e(t.prototype,n),a&&e(t,a),t}}(),l=function w(e,t,n){null===e&&(e=Function.prototype);var a=Object.getOwnPropertyDescriptor(e,t);if(void 0===a){var r=Object.getPrototypeOf(e);return null===r?void 0:w(r,t,n)}if("value"in a)return a.value;var i=a.get;if(void 0!==i)return i.call(n)},s=n(2),d=a(s),f=n(1),c=a(f),p=n(3),v=a(p),h=n(5),y=a(h),m=n(25),k=a(m),g=n(23),_=a(g),b="dealerdeckStepType",x=function(e){function t(){return r(this,t),i(this,(t.__proto__||Object.getPrototypeOf(t)).call(this))}return o(t,e),u(t,[{key:"run",value:function(e,n){if("string"==typeof n.actionData.stepType&&n.actionData.stepType!=c["default"].get("stepType"))return void l(t.prototype.__proto__||Object.getPrototypeOf(t.prototype),"break",this).call(this);c["default"].set("stepType",b);var a="string"==typeof n.actionData.from?Deck.getDeck(n.actionData.from):e;if(0==a.cards.length)return c["default"].set("stepType",v["default"].stepType),d["default"].dispatch("actionBreak"),d["default"].dispatch("dealEnd"),void l(t.prototype.__proto__||Object.getPrototypeOf(t.prototype),"end",this).call(this);var r=[];if(n.actionData.toGroup&&!n.actionData.to&&(n.actionData.to=n.actionData.toGroup),n.actionData.to)if("string"==typeof n.actionData.to){var i=y["default"].getElementsByName(n.actionData.to);for(var o in i){if("group"==i[o].type)for(var u in i[o].decks)r.push(i[o].decks[u]);"deck"==i[o].type&&r.push(_el)}}else for(var s in n.actionData.to){var f=y["default"].getElementsByName(n.actionData.to[s]);for(var p in f){if("group"==f[p].type)for(var h in f[p].decks)r.push(f[p].decks[h]);"deck"==f[p].type&&r.push(f[p])}}y["default"].animationDefault();var m=!1;for(var g in r){var _=a.getTopCard(),x=!n.actionData.onlyEmpty||0==r[g].cards.length;if(x&&_){m=!0;var w=_.name,O=function(){d["default"].dispatch("checkTips")};(0,k["default"])({from:a.name,to:r[g].name,deck:[w],flip:!0,callback:O},!0),r[g].flipCheck(),d["default"].dispatch("dealEnd"),d["default"].dispatch("addStep",{move:{from:a.name,to:r[g].name,deck:[w],flip:!0,stepType:{undo:c["default"].get("stepType"),redo:n.actionData.dispatch?c["default"].get("stepType"):v["default"].stepType},context:"dealerdeckAction"}})}}m&&d["default"].dispatch("saveSteps"),n.actionData.dispatch?d["default"].dispatch(n.actionData.dispatch,!m):(l(t.prototype.__proto__||Object.getPrototypeOf(t.prototype),"end",this).call(this),c["default"].set("stepType",v["default"].stepType))}}]),t}(_["default"]);t["default"]=new x},function(e,t,n){"use strict";function a(e){return e&&e.__esModule?e:{"default":e}}Object.defineProperty(t,"__esModule",{value:!0});var r=n(2),i=a(r),o=n(1),u=(a(o),n(5)),l=(a(u),n(14)),s=a(l),d=n(9),f=(a(d),function(e){if(e.from&&e.to&&e.deck&&e.deck.length){var t="string"==typeof e.from?s["default"].getDeck(e.from):e.from,n="string"==typeof e.to?s["default"].getDeck(e.to):e.to;if(t&&"deck"==t.type&&n&&"deck"==n.type){var a=!0,r=t.cards;for(var o in r)if(o>=r.length-e.deck.length){var u=o-(0|r.length)+(0|e.deck.length);e.deck[u]&&r[o].name!=e.deck[u]&&(a=!1)}if(a){var l=t.Pop(e.deck.length);if(e.flip)for(var d in l)l[d].flip=!l[d].flip;n.Push(l);var f=[];for(var c in l)f.push({card:l[c]});var p={moveDeck:f,departure:t,destination:n};"function"==typeof e.callback?p.callback=function(t){i["default"].dispatch("forceMoveEnd"),e.callback()}:p.callback=function(e){i["default"].dispatch("forceMoveEnd")},i["default"].dispatch("moveDragDeck",p)}}}});i["default"].listen("forceMove",function(e){f(e)}),t["default"]=f},function(e,t,n){"use strict";function a(e){return e&&e.__esModule?e:{"default":e}}function r(e,t){if(!(e instanceof t))throw new TypeError("Cannot call a class as a function")}function i(e,t){if(!e)throw new ReferenceError("this hasn't been initialised - super() hasn't been called");return!t||"object"!=typeof t&&"function"!=typeof t?e:t}function o(e,t){if("function"!=typeof t&&null!==t)throw new TypeError("Super expression must either be null or a function, not "+typeof t);e.prototype=Object.create(t&&t.prototype,{constructor:{value:e,enumerable:!1,writable:!0,configurable:!0}}),t&&(Object.setPrototypeOf?Object.setPrototypeOf(e,t):e.__proto__=t)}Object.defineProperty(t,"__esModule",{value:!0});var u=function(){function e(e,t){for(var n=0;n<t.length;n++){var a=t[n];a.enumerable=a.enumerable||!1,a.configurable=!0,"value"in a&&(a.writable=!0),Object.defineProperty(e,a.key,a)}}return function(t,n,a){return n&&e(t.prototype,n),a&&e(t,a),t}}(),l=function b(e,t,n){null===e&&(e=Function.prototype);var a=Object.getOwnPropertyDescriptor(e,t);if(void 0===a){var r=Object.getPrototypeOf(e);return null===r?void 0:b(r,t,n)}if("value"in a)return a.value;var i=a.get;if(void 0!==i)return i.call(n)},s=n(2),d=a(s),f=n(1),c=a(f),p=n(5),v=a(p),h=n(3),y=a(h),m=n(23),k=a(m),g="kickStepType",_=function(e){function t(){return r(this,t),i(this,(t.__proto__||Object.getPrototypeOf(t)).call(this))}return o(t,e),u(t,[{key:"run",value:function(e,n){var a=this;if(c["default"].get("stepType")!=y["default"].stepType)return l(t.prototype.__proto__||Object.getPrototypeOf(t.prototype),"break",this).call(this),!1;if("string"==typeof n.eventData.stepType&&n.eventData.stepType!=y["default"].stepType)return l(t.prototype.__proto__||Object.getPrototypeOf(t.prototype),"break",this).call(this),!1;if(n.eventData.to.name!=e.name)return l(t.prototype.__proto__||Object.getPrototypeOf(t.prototype),"break",this).call(this),!1;c["default"].set("stepType",g),v["default"].animationDefault();var r=n.eventData.to,i=r.getCardsNames(),o=function(e){var o=function(e){d["default"].dispatch("addStep",{move:{from:r.name,to:e.actionData.to,deck:i,flip:!0,stepType:{undo:e.undo,redo:e.redo},context:"kickAction"}})};c["default"].set("stepType",y["default"].stepType),n.actionData.dispatch?d["default"].dispatch(n.actionData.dispatch,{before:function(e){o({undo:g,redo:e.stepType}),d["default"].dispatch("saveSteps")}}):(o({undo:g,redo:n.actionData.dispatch?c["default"].get("stepType"):y["default"].stepType}),d["default"].dispatch("saveSteps"),l(t.prototype.__proto__||Object.getPrototypeOf(t.prototype),"end",a).call(a))},u={from:r,to:n.actionData.to,deck:i,flip:!0,callback:o};d["default"].dispatch("forceMove",u)}}]),t}(k["default"]);t["default"]=new _},function(e,t,n){"use strict";function a(e){return e&&e.__esModule?e:{"default":e}}function r(e,t){if(!(e instanceof t))throw new TypeError("Cannot call a class as a function")}function i(e,t){if(!e)throw new ReferenceError("this hasn't been initialised - super() hasn't been called");return!t||"object"!=typeof t&&"function"!=typeof t?e:t}function o(e,t){if("function"!=typeof t&&null!==t)throw new TypeError("Super expression must either be null or a function, not "+typeof t);e.prototype=Object.create(t&&t.prototype,{constructor:{value:e,enumerable:!1,writable:!0,configurable:!0}}),t&&(Object.setPrototypeOf?Object.setPrototypeOf(e,t):e.__proto__=t)}Object.defineProperty(t,"__esModule",{value:!0});var u=function(){function e(e,t){for(var n=0;n<t.length;n++){var a=t[n];a.enumerable=a.enumerable||!1,a.configurable=!0,"value"in a&&(a.writable=!0),Object.defineProperty(e,a.key,a)}}return function(t,n,a){return n&&e(t.prototype,n),a&&e(t,a),t}}(),l=function O(e,t,n){null===e&&(e=Function.prototype);var a=Object.getOwnPropertyDescriptor(e,t);if(void 0===a){var r=Object.getPrototypeOf(e);return null===r?void 0:O(r,t,n)}if("value"in a)return a.value;var i=a.get;if(void 0!==i)return i.call(n)},s=n(2),d=a(s),f=n(1),c=a(f),p=n(5),v=a(p),h=n(3),y=a(h),m=n(23),k=a(m),g=n(9),_=a(g),b=n(14),x=(a(b),"stepsAround"),w=function(e){function t(){return r(this,t),i(this,(t.__proto__||Object.getPrototypeOf(t)).call(this))}return o(t,e),u(t,[{key:"run",value:function(e,n){var a=this,r=c["default"].get("stepType");if(r!=y["default"].stepType)return void l(t.prototype.__proto__||Object.getPrototypeOf(t.prototype),"break",this).call(this);c["default"].set("stepType",x),v["default"].curLock();var i=e.getRelationsByName("around",{from:null});if("string"==typeof n.actionData.run)!function(){var t="boolean"!=typeof n.actionData.central||n.actionData.central,r=[];for(var o in i)_["default"].fromTo(e.name,i[o].to)&&r.push(i[o]);var u=r.length,l=function(e){u-=1,0===u&&a.end()};0===u?a.end():t&&(u+=1,d["default"].dispatch(n.actionData.run,{to:e.name,callback:l}));for(var s in r){var f=null;try{f=Object.assign({},r[s])}catch(c){f=r[s]}f.callback=l,d["default"].dispatch(n.actionData.run,f)}}();else{var o=function(e){c["default"].get("stepType")==x&&a.end()};d["default"].listen("makeStep",o)}}},{key:"end",value:function(){c["default"].set("stepType",y["default"].stepType),v["default"].curUnLock(),data.actionData.dispatch&&d["default"].dispatch(data.actionData.dispatch,data.eventData),l(t.prototype.__proto__||Object.getPrototypeOf(t.prototype),"end",this).call(this)}}]),t}(k["default"]);t["default"]=new w},function(e,t,n){"use strict";function a(e){return e&&e.__esModule?e:{"default":e}}function r(e,t){if(!(e instanceof t))throw new TypeError("Cannot call a class as a function")}function i(e,t){if(!e)throw new ReferenceError("this hasn't been initialised - super() hasn't been called");return!t||"object"!=typeof t&&"function"!=typeof t?e:t}function o(e,t){if("function"!=typeof t&&null!==t)throw new TypeError("Super expression must either be null or a function, not "+typeof t);e.prototype=Object.create(t&&t.prototype,{constructor:{value:e,enumerable:!1,writable:!0,configurable:!0}}),t&&(Object.setPrototypeOf?Object.setPrototypeOf(e,t):e.__proto__=t)}Object.defineProperty(t,"__esModule",{value:!0});var u=function(){function e(e,t){for(var n=0;n<t.length;n++){var a=t[n];a.enumerable=a.enumerable||!1,a.configurable=!0,"value"in a&&(a.writable=!0),Object.defineProperty(e,a.key,a)}}return function(t,n,a){return n&&e(t.prototype,n),a&&e(t,a),t}}(),l=function m(e,t,n){null===e&&(e=Function.prototype);var a=Object.getOwnPropertyDescriptor(e,t);if(void 0===a){var r=Object.getPrototypeOf(e);return null===r?void 0:m(r,t,n)}if("value"in a)return a.value;var i=a.get;if(void 0!==i)return i.call(n)},s=n(2),d=(a(s),n(1)),f=a(d),c=n(3),p=(a(c),n(5)),v=(a(p),n(23)),h=a(v),y=function(e){function t(){return r(this,t),i(this,(t.__proto__||Object.getPrototypeOf(t)).call(this))}return o(t,e),u(t,[{key:"run",value:function(e,n){return n.eventData.to.name==e.name&&("string"!=typeof n.actionData.to?void l(t.prototype.__proto__||Object.getPrototypeOf(t.prototype),"end",this).call(this):(l(t.prototype.__proto__||Object.getPrototypeOf(t.prototype),"end",this).call(this),void f["default"].set("stepType",n.actionData.to)))}}]),t}(h["default"]);t["default"]=new y},function(e,t,n){"use strict";function a(e){return e&&e.__esModule?e:{"default":e}}function r(e,t){if(!(e instanceof t))throw new TypeError("Cannot call a class as a function")}function i(e,t){if(!e)throw new ReferenceError("this hasn't been initialised - super() hasn't been called");return!t||"object"!=typeof t&&"function"!=typeof t?e:t}function o(e,t){if("function"!=typeof t&&null!==t)throw new TypeError("Super expression must either be null or a function, not "+typeof t);e.prototype=Object.create(t&&t.prototype,{constructor:{value:e,enumerable:!1,writable:!0,configurable:!0}}),t&&(Object.setPrototypeOf?Object.setPrototypeOf(e,t):e.__proto__=t)}Object.defineProperty(t,"__esModule",{value:!0});var u=function(){function e(e,t){for(var n=0;n<t.length;n++){var a=t[n];a.enumerable=a.enumerable||!1,a.configurable=!0,"value"in a&&(a.writable=!0),Object.defineProperty(e,a.key,a)}}return function(t,n,a){return n&&e(t.prototype,n),a&&e(t,a),t}}(),l=function k(e,t,n){null===e&&(e=Function.prototype);var a=Object.getOwnPropertyDescriptor(e,t);if(void 0===a){var r=Object.getPrototypeOf(e);return null===r?void 0:k(r,t,n)}if("value"in a)return a.value;var i=a.get;if(void 0!==i)return i.call(n)},s=n(2),d=(a(s),n(1)),f=(a(d),n(3)),c=(a(f),n(5)),p=(a(c),n(23)),v=a(p),h=n(30),y=a(h),m=function(e){function t(){return r(this,t),i(this,(t.__proto__||Object.getPrototypeOf(t)).call(this))}return o(t,e),u(t,[{key:"run",value:function(e,n){return n.eventData.to.name==e.name&&((0,y["default"])(n.actionData,"lock",e.name),void l(t.prototype.__proto__||Object.getPrototypeOf(t.prototype),"end",this).call(this))}}]),t}(v["default"]);t["default"]=new m},function(e,t,n){"use strict";function a(e){return e&&e.__esModule?e:{"default":e}}Object.defineProperty(t,"__esModule",{value:!0});var r=n(2),i=a(r),o=n(1),u=(a(o),n(3)),l=(a(u),n(5)),s=a(l);t["default"]=function(e,t,n){var a=[];if("string"!=typeof e.source)if(e.source&&e.source.constructor==Array)for(var r in e.source)a.push(e.source[r]);else a=[n];else a=[e.source];if(e.save){var o={};o[t]=a,i["default"].dispatch("addStep",o),i["default"].dispatch("saveSteps")}for(var u in a){var l=s["default"].getElementsByName(a[u])[0];if("group"==l.type){var d=l.getDecks();for(var f in d)d[f][t]()}"deck"==l.type&&l[t]()}}},function(e,t,n){"use strict";function a(e){return e&&e.__esModule?e:{"default":e}}function r(e,t){if(!(e instanceof t))throw new TypeError("Cannot call a class as a function")}function i(e,t){if(!e)throw new ReferenceError("this hasn't been initialised - super() hasn't been called");return!t||"object"!=typeof t&&"function"!=typeof t?e:t}function o(e,t){if("function"!=typeof t&&null!==t)throw new TypeError("Super expression must either be null or a function, not "+typeof t);e.prototype=Object.create(t&&t.prototype,{constructor:{value:e,enumerable:!1,writable:!0,configurable:!0}}),t&&(Object.setPrototypeOf?Object.setPrototypeOf(e,t):e.__proto__=t)}Object.defineProperty(t,"__esModule",{value:!0});var u=function(){function e(e,t){for(var n=0;n<t.length;n++){var a=t[n];a.enumerable=a.enumerable||!1,a.configurable=!0,"value"in a&&(a.writable=!0),Object.defineProperty(e,a.key,a)}}return function(t,n,a){return n&&e(t.prototype,n),a&&e(t,a),t}}(),l=function k(e,t,n){null===e&&(e=Function.prototype);var a=Object.getOwnPropertyDescriptor(e,t);if(void 0===a){var r=Object.getPrototypeOf(e);return null===r?void 0:k(r,t,n)}if("value"in a)return a.value;var i=a.get;if(void 0!==i)return i.call(n)},s=n(2),d=(a(s),n(1)),f=(a(d),n(3)),c=(a(f),n(5)),p=(a(c),n(23)),v=a(p),h=n(30),y=a(h),m=function(e){function t(){return r(this,t),i(this,(t.__proto__||Object.getPrototypeOf(t)).call(this))}return o(t,e),u(t,[{key:"run",value:function(e,n){return n.eventData.to.name==e.name&&((0,y["default"])(n.actionData,"unlock",e.name),void l(t.prototype.__proto__||Object.getPrototypeOf(t.prototype),"end",this).call(this))}}]),t}(v["default"]);t["default"]=new m},function(e,t,n){"use strict";function a(e){return e&&e.__esModule?e:{"default":e}}Object.defineProperty(t,"__esModule",{value:!0});var r=n(1),i=(a(r),n(3)),o=a(i),u=n(5),l=a(u),s=n(18),d=a(s);t["default"]=function(e,t){var n=!0;//!common.isLock();
-n=n&&!e.locked,"boolean"==typeof e.full&&(n=n&&!e.full);var a=-1,r=null,i=null,u=null,s=e.cards.length,f=[];for(var c in e.cards){if(e.cards[c].id==t){a=0|c,r=e.cards[c].name;var p=l["default"].validateCardName(r);n=n&&p,p&&(i=p.suit,u=p.rank),n=n&&!e.cards[c].flip&&e.cards[c].flip==o["default"].canMoveFlip}a>=0&&f.push({index:c,card:e.cards[c]})}var v={cardId:t,cardName:r,cardSuit:i,cardRank:u,cardIndex:a,deckLength:s};for(var h in e.takeRules){var y=e.takeRules[h];n=!!d["default"][y]&&(n&&d["default"][y](v))}return n=n&&a>=0,n=n&&f}},function(e,t,n){"use strict";function a(e){return e&&e.__esModule?e:{"default":e}}Object.defineProperty(t,"__esModule",{value:!0});var r=n(1),i=a(r),o=n(3),u=a(o),l=n(12),s=a(l),d=n(14),f=a(d),c=n(16),p=a(c);t["default"]=function(e,t){var n=i["default"].get("stepType"),a=!0,r=t[0].card.parent,o=f["default"].getDeckById(r);if(a=a&&!e.locked,n!=u["default"].stepType)a=!!(a&&s["default"].autoSteps&&s["default"].autoSteps[n])&&s["default"].autoSteps[n].manual({putDeck:t,to:e});else{var l=null,d=e;for(var c in e.putRules)if(a){l&&(d=f["default"].getDeck(l));var v=e.putRules[c];if(p["default"][v]){var h={from:{deckId:r,deck:o},putDeck:t,cards:d.cards,to:d,link:l};a=a&&p["default"][v](h),l=h.link}else a=!1}}return a}},function(e,t,n){"use strict";function a(e){return e&&e.__esModule?e:{"default":e}}Object.defineProperty(t,"__esModule",{value:!0});var r=n(2),i=a(r),o=n(1),u=a(o),l=n(5),s=a(l);t["default"]=function(e,t){var n=s["default"].validateCardName(t);if(n){var a="card_"+s["default"].genId(),r={id:a,name:t,type:"card",visible:!0,flip:!1,parent:e.id};i["default"].dispatch("addCardEl",r);var o=u["default"].get("elements");return o[a]=r,u["default"].set("elements",o),e.Push([r]),e.flipCheck(),e.Redraw(),r}return!1}},function(e,t,n){"use strict";function a(e){return e&&e.__esModule?e:{"default":e}}function r(e,t){if(!(e instanceof t))throw new TypeError("Cannot call a class as a function")}Object.defineProperty(t,"__esModule",{value:!0});var i=function(){function e(e,t){for(var n=0;n<t.length;n++){var a=t[n];a.enumerable=a.enumerable||!1,a.configurable=!0,"value"in a&&(a.writable=!0),Object.defineProperty(e,a.key,a)}}return function(t,n,a){return n&&e(t.prototype,n),a&&e(t,a),t}}(),o=n(2),u=a(o),l=n(1),s=a(l),d=n(5),f=a(d),c=n(6),p=a(c),v=n(25),h=a(v),y=n(14),m=(a(y),n(9)),k=a(m),g=n(12),_=(a(g),function(e){if(s["default"].get("sessionStarted")&&(u["default"].dispatch("stopAnimations"),p["default"].restore()),void 0!==e.lock)for(var t in e.lock){var n=f["default"].getElementsByName(e.lock[t]);for(var a in n)n[a].unlock()}if(void 0!==e.unlock)for(var r in e.lock){var i=f["default"].getElementsByName(e.lock[r]);for(var o in i)i[o].lock()}void 0!==e.move&&void 0!==e.move.from&&void 0!==e.move.to&&void 0!==e.move.deck&&(e.move.stepType&&("string"==typeof e.move.stepType&&s["default"].set("stepType",e.move.stepType),"string"==typeof e.move.stepType.undo&&s["default"].set("stepType",e.move.stepType.undo)),(0,h["default"])({from:e.move.to,to:e.move.from,deck:e.move.deck,flip:e.move.flip}))});u["default"].listen("undo",function(e){if(u["default"].dispatch("stopAnimations"),e){if(e instanceof Array){e.reverse();for(var t in e){var n=e[t];_(n)}}else _(e);k["default"].checkTips()}});var b=function(e){if(void 0!==e.lock)for(var t in e.lock){var n=f["default"].getElementsByName(e.lock[t]);for(var a in n)n[a].lock()}if(void 0!==e.unlock)for(var r in e.unlock){var i=f["default"].getElementsByName(e.lock[r]);for(var o in i)i[o].unlock()}void 0!==e.move&&void 0!==e.move.from&&void 0!==e.move.to&&void 0!==e.move.deck&&(e.move.stepType&&("string"==typeof e.move.stepType&&s["default"].set("stepType",e.move.stepType),"string"==typeof e.move.stepType.redo&&s["default"].set("stepType",e.move.stepType.redo)),(0,h["default"])(e.move)),e.redo&&"string"==typeof e.redo.stepType&&s["default"].set("stepType",e.redo.stepType)};u["default"].listen("redo",function(e){if(u["default"].dispatch("stopAnimations"),e){if(e instanceof Array){e.reverse();for(var t in e){var n=e[t];b(n)}}else b(e);k["default"].checkTips()}});var x=function(){function e(){r(this,e),this.steps=[]}return i(e,[{key:"reset",value:function(){this.steps=[]}},{key:"add",value:function(e){this.steps.push(e)}},{key:"get",value:function(){var e=arguments.length<=0||void 0===arguments[0]||arguments[0],t=this.steps;return e&&this.reset(),t}},{key:"log",value:function(){}},{key:"count",value:function(){return this.steps.length}}]),e}(),w=new x;u["default"].listen("addStep",function(e){w.add(e)}),u["default"].listen("saveSteps",function(e){u["default"].dispatch("makeStep",w.get())}),t["default"]=w},function(e,t){"use strict";Object.defineProperty(t,"__esModule",{value:!0}),t["default"]=function(e){var t=[];for(var n in e)e[n].card&&e[n].card.name?t.push(e[n].card.name):e[n].name&&t.push(e[n].name);return t}},function(e,t,n){"use strict";function a(e){return e&&e.__esModule?e:{"default":e}}Object.defineProperty(t,"__esModule",{value:!0});var r=n(5),i=a(r);t["default"]=function(e,t){var n=i["default"].getElementsByName(e,"deck");if(t&&"string"==typeof t){for(var a in n){var r=i["default"].getElementById(n[a].parent());if(r&&r.name&&r.name==t)return n[a]}return!1}return n[0]}},function(e,t){"use strict";Object.defineProperty(t,"__esModule",{value:!0}),t["default"]=function(e,t){var n=[],a=0;for(var r in e.decks)a+=1,n.push(null);for(var i in e.decks)e.decks[i].groupIndex&&e.decks[i].groupIndex<=a&&(n[e.decks[i].groupIndex-1]=!0);for(var o in e.decks)if(!e.decks[o].groupIndex){for(var u=0;null!=n[u];u+=1);n[u]=e.decks[o].id}for(var l in e.decks)e.decks[l].groupIndex&&e.decks[l].groupIndex<=a&&(n[e.decks[l].groupIndex-1]=e.decks[l].id);var s={};for(var d in e.decks)e.decks[d].groupIndex&&e.decks[d].groupIndex>a&&(s[e.decks[d].groupIndex-1]=e.decks[d].id);for(var f in s){for(var c=0;null!=n[c];c+=1);n[c]=e.decks[s[f]].id}var p=!0;for(var v in t)p=p&&"string"==typeof t[v];if(p)for(var h in t){var y=n[h%n.length];e.decks[y].genCardByName(t[h])}else for(var m in t)m<n.length&&e.decks[n[m]].Fill(t[m])}},function(e,t,n){"use strict";function a(e){return e&&e.__esModule?e:{"default":e}}Object.defineProperty(t,"__esModule",{value:!0});var r=n(3),i=a(r);t["default"]=function(e,t){if(e&&t){var n=e.getDecks();void 0!==t.decks&&"number"!=typeof t.decks||(t.decks=[]);for(var a in n)t.decks[a]||(t.decks[a]={}),t.position&&t.decks[a].parentPosition&&(t.decks[a].parentPosition={x:t.position.x,y:t.position.y}),"number"==typeof t.paddingX&&(t.decks[a].paddingX=t.paddingX),"number"==typeof t.paddingY&&(t.decks[a].paddingY=t.paddingY),"number"==typeof t.flipPaddingX&&(t.decks[a].flipPaddingX=t.flipPaddingX),"number"==typeof t.flipPaddingY&&(t.decks[a].flipPaddingY=t.flipPaddingY),void 0===t.decks[a].position&&(t.decks[a].position={}),t.decks[a].parentPosition={},"number"==typeof t.rotate&&(t.decks[a].parentRotate=t.rotate),t.position&&"number"==typeof t.position.x&&(t.decks[a].parentPosition.x=t.position.x),t.position&&"number"==typeof t.position.y&&(t.decks[a].parentPosition.y=t.position.y),t.placement&&(t.placement.x&&(t.decks[a].position.x=(t.placement.x+i["default"].card.width)*a),t.placement.y&&(t.decks[a].position.y=(t.placement.y+i["default"].card.height)*a)),!t.decks[a].rotate&&t.rotate&&"number"==typeof t.rotate&&(t.decks[a].rotate=t.rotate),!t.decks[a].paddingX&&t.paddingX&&"number"==typeof t.paddingX&&(t.decks[a].paddingX=t.paddingX),!t.decks[a].paddingY&&t.paddingY&&"number"==typeof t.paddingY&&(t.decks[a].paddingY=t.paddingY),!t.decks[a].flipPaddingX&&t.flipPaddingX&&"number"==typeof t.flipPaddingX&&(t.decks[a].flipPaddingX=t.flipPaddingX),!t.decks[a].flipPaddingY&&t.flipPaddingY&&"number"==typeof t.flipPaddingY&&(t.decks[a].flipPaddingY=t.flipPaddingY),n[a].Redraw(t.decks[a])}}},function(e,t,n){"use strict";function a(e){return e&&e.__esModule?e:{"default":e}}Object.defineProperty(t,"__esModule",{value:!0});var r=n(41),i=a(r),o=n(42),u=a(o),l=n(43),s=a(l),d=n(50),f=a(d);t["default"]={count:i["default"],fan:u["default"],map:s["default"],line:f["default"]}},function(e,t){"use strict";Object.defineProperty(t,"__esModule",{value:!0}),t["default"]=function(e,t){for(var n=t.count,a=[],r=0;r<n;r+=1){var i=e.name+"_deck"+(r+1);a.push({name:i})}return a}},function(e,t,n){"use strict";function a(e){return e&&e.__esModule?e:{"default":e}}Object.defineProperty(t,"__esModule",{value:!0});var r=n(3),i=a(r);t["default"]=function(e,t){e.placement={x:0,y:0};for(var n=[],a="number"==typeof t.count?t.count:3,r=180/a,o="number"==typeof t.radius?t.radius:100,u=void 0!==t.center&&void 0!==t.center.x&&void 0!==t.center.y?t.center:{x:0,y:0},l=r/2+270,s=Math.PI/180,d=0;d<a;d+=1){var f=Math.sin(l*s)*o,c=Math.cos(l*s)*o;l>360&&(l-=360),n.push({name:e.name+"_deck"+d,rotate:l,position:{x:u.x+f-i["default"].card.width/2,y:u.y-c-i["default"].card.height/2}}),l+=r}return n}},function(e,t,n){"use strict";function a(e){return e&&e.__esModule?e:{"default":e}}Object.defineProperty(t,"__esModule",{value:!0});var r=n(3),i=a(r),o=n(44),u=a(o),l=n(46),s=a(l);t["default"]=function(e,t){var n=[],a={x:0,y:0},r=e.placement?{x:void 0!==e.placement.x?e.placement.x:a.x,y:void 0!==e.placement.y?e.placement.y:a.y}:a;e.placement={x:0,y:0};var o=1,l=s["default"].mapSize(t.map);for(var d in t.map)for(var f in t.map[d])("boolean"==typeof t.map[d][f]&&t.map[d][f]||"number"==typeof t.map[d][f]&&t.map[d][f]>0)&&(t.map[d][f]={}),"string"==typeof t.map[d][f]?t.map[d][f]={name:t.map[d][f]}:t.map[d][f]&&void 0!==t.map[d][f]&&"string"!=typeof t.map[d][f].name&&(t.map[d][f].name=e.name+"_deck_"+f+"_"+d);for(var c in t.map)for(var p in t.map[c]){var v=0|p,h=0|c,y=t.map[h][v];if(y){var m={name:t.map[h][v].name,position:{x:v*((0|i["default"].card.width)+(0|r.x)),y:h*((0|i["default"].card.height)+(0|r.y))}},k=[],g={around:"mapAroundRelations",beside:"mapBesideRelations",fall:"mapFallRelations"};if(t.relations)for(var _ in g)t.relations[_]&&(k=k.concat(u["default"][g[_]]({x:v,y:h,map:t.map,mapSize:l,el:y,data:t.relations[_]})));m.relations=k,n.push(m),o+=1}}return n}},function(e,t,n){"use strict";function a(e){return e&&e.__esModule?e:{"default":e}}Object.defineProperty(t,"__esModule",{value:!0});var r=n(45),i=a(r),o=n(47),u=a(o),l=n(48),s=a(l),d=n(49),f=a(d);t["default"]={mapFallRelations:i["default"],mapAroundRelations:u["default"],mapBesideRelations:s["default"],lineBesideRelations:f["default"]}},function(e,t,n){"use strict";function a(e){return e&&e.__esModule?e:{"default":e}}Object.defineProperty(t,"__esModule",{value:!0});var r=n(46),i=a(r),o=[{left:"right"},{right:"left"},{up:"down"},{down:"up"}];t["default"]=function(e){var t=[],n=[];for(var a in e.data.directions)n.indexOf(e.data.directions[a])<0&&n.indexOf(o[e.data.directions[a]])<0&&n.push(e.data.directions[a]);for(var r in n){var u=null,l=null;switch(n[r]){case"left":u=(0|e.x)+i["default"].beSide.left.x,l=(0|e.y)+i["default"].beSide.left.y,i["default"].exist(u,l,e.mapSize,e.map)&&t.push({name:"fall",direction:"left",to:e.map[l][u].name});break;case"right":u=(0|e.x)+i["default"].beSide.right.x,l=(0|e.y)+i["default"].beSide.right.y,i["default"].exist(u,l,e.mapSize,e.map)&&t.push({name:"fall",direction:"right",to:e.map[l][u].name});break;case"up":u=(0|e.x)+i["default"].beSide.up.x,l=(0|e.y)+i["default"].beSide.up.y,i["default"].exist(u,l,e.mapSize,e.map)&&t.push({name:"fall",direction:"up",to:e.map[l][u].name});break;case"down":u=(0|e.x)+i["default"].beSide.down.x,l=(0|e.y)+i["default"].beSide.down.y,i["default"].exist(u,l,e.mapSize,e.map)&&t.push({name:"fall",direction:"down",to:e.map[l][u].name})}}return t}},function(e,t){"use strict";Object.defineProperty(t,"__esModule",{value:!0});var n={left:{x:-1,y:0},right:{x:1,y:0},up:{x:0,y:-1},down:{x:0,y:1}},a=function(e,t,n){return e>=0&&t>=0&&e<n.width&&t<n.height},r=function(e,t,n,r){return a(e,t,n)&&r[t][e]},i=function(e){var t={width:e[0].length,height:e.length};return e.forEach(function(e){t.width=Math.max(t.width,e.length)}),t},o=[{x:-1,y:-1,type:"corn",id:"clt"},{x:0,y:-1,type:"side",id:"top"},{x:1,y:-1,type:"corn",id:"crt"},{x:-1,y:0,type:"side",id:"lft"},{x:1,y:0,type:"side",id:"rgt"},{x:-1,y:1,type:"corn",id:"clb"},{x:0,y:1,type:"side",id:"btm"},{x:1,y:1,type:"corn",id:"crb"}];t["default"]={beSide:n,mapSize:i,inMap:a,aroundRelations:o,exist:r}},function(e,t,n){"use strict";function a(e){return e&&e.__esModule?e:{"default":e}}Object.defineProperty(t,"__esModule",{value:!0});var r=n(46),i=a(r);t["default"]=function(e){var t=[];for(var n in i["default"].aroundRelations)i["default"].inMap(e.x+i["default"].aroundRelations[n].x,e.y+i["default"].aroundRelations[n].y,e.mapSize)&&e.map[e.y+i["default"].aroundRelations[n].y][e.x+i["default"].aroundRelations[n].x]&&t.push({to:e.map[e.y+i["default"].aroundRelations[n].y][e.x+i["default"].aroundRelations[n].x].name,type:i["default"].aroundRelations[n].type,id:i["default"].aroundRelations[n].id,name:"around"});return t}},function(e,t,n){"use strict";function a(e){return e&&e.__esModule?e:{"default":e}}Object.defineProperty(t,"__esModule",{value:!0});var r=n(46);a(r);t["default"]=function(e){var t=[];return t}},function(e,t,n){"use strict";function a(e){return e&&e.__esModule?e:{"default":e}}Object.defineProperty(t,"__esModule",{value:!0});var r=n(46);a(r);t["default"]=function(e){var t=[],n=e.deckIndex>0?e.decks[(0|e.deckIndex)-1].name:null;n&&t.push({name:"beside",type:"prev",to:n});var a=e.deckIndex<e.count-1?e.decks[(0|e.deckIndex)+1].name:null;return a&&t.push({name:"beside",type:"next",to:a}),t}},function(e,t,n){"use strict";function a(e){return e&&e.__esModule?e:{"default":e}}Object.defineProperty(t,"__esModule",{value:!0});var r=n(44),i=a(r);t["default"]=function(e,t){for(var n=t.count,a=[],r=0;r<n;r+=1){var o=e.name+"_deck"+(r+1),u={name:o};a.push(u)}if(a[0].tag="first",t.first){var l=a[0];for(var s in t.first)l[s]=t.first[s]}if(a[a.length-1].tag="last",t.last){var d=a[a.length-1];for(var f in t.last)d[f]=t.last[f]}for(var c in a){var p=[],v={beside:"lineBesideRelations"};if(t.relations)for(var h in v)t.relations[h]&&(p=p.concat(i["default"][v[h]]({deckIndex:c,count:n,decks:a,data:t.relations[h]})));a[c].relations=p}return a}},function(e,t,n){"use strict";function a(e){return e&&e.__esModule?e:{"default":e}}Object.defineProperty(t,"__esModule",{value:!0});var r=n(52),i=a(r),o={fallAutoStep:i["default"]};t["default"]=function(e){var t={};for(var n in e)if(o[n]){var a=new o[n](e[n]);a.init(n),t[n]=a}return t}},function(e,t,n){"use strict";function a(e){return e&&e.__esModule?e:{"default":e}}function r(e,t){if(!(e instanceof t))throw new TypeError("Cannot call a class as a function")}function i(e,t){if(!e)throw new ReferenceError("this hasn't been initialised - super() hasn't been called");return!t||"object"!=typeof t&&"function"!=typeof t?e:t}function o(e,t){if("function"!=typeof t&&null!==t)throw new TypeError("Super expression must either be null or a function, not "+typeof t);e.prototype=Object.create(t&&t.prototype,{constructor:{value:e,enumerable:!1,writable:!0,configurable:!0}}),t&&(Object.setPrototypeOf?Object.setPrototypeOf(e,t):e.__proto__=t)}Object.defineProperty(t,"__esModule",{value:!0});var u=function(){function e(e,t){for(var n=0;n<t.length;n++){var a=t[n];a.enumerable=a.enumerable||!1,a.configurable=!0,"value"in a&&(a.writable=!0),Object.defineProperty(e,a.key,a)}}return function(t,n,a){return n&&e(t.prototype,n),a&&e(t,a),t}}(),l=n(1),s=(a(l),n(3)),d=(a(s),n(2)),f=(a(d),n(53)),c=a(f),p=n(14),v=a(p),h=n(9),y=a(h),m=function(e){function t(e){return r(this,t),i(this,(t.__proto__||Object.getPrototypeOf(t)).call(this,e))}return o(t,e),u(t,[{key:"check",value:function(){y["default"].checkTips();var e=y["default"].getTips();0==e.length&&this.end()}},{key:"auto",value:function(){}},{key:"manual",value:function(e){var t=v["default"].getDeckById(e.putDeck[0].card.parent),n=e.to,a=t.getRelationsByName("fall",{from:null});for(var r in a)if(a[r].to==n.name&&0===n.cardsCount())return!0;return!1}}]),t}(c["default"]);t["default"]=m},function(e,t,n){"use strict";function a(e){return e&&e.__esModule?e:{"default":e}}function r(e,t){if(!(e instanceof t))throw new TypeError("Cannot call a class as a function")}Object.defineProperty(t,"__esModule",{value:!0});var i=function(){function e(e,t){for(var n=0;n<t.length;n++){var a=t[n];a.enumerable=a.enumerable||!1,a.configurable=!0,"value"in a&&(a.writable=!0),Object.defineProperty(e,a.key,a)}}return function(t,n,a){return n&&e(t.prototype,n),a&&e(t,a),t}}(),o=n(2),u=a(o),l=n(1),s=a(l),d=n(5),f=a(d),c=n(3),p=a(c),v=function(){function e(t){r(this,e),void 0!==t.groups&&(this.groups=t.groups),"string"==typeof t.event&&(this.event=t.event),"string"==typeof t.dispatch&&(this.dispatch=t.dispatch),"boolean"==typeof t.autoStep&&(this.autoStep=t.autoStep)}return i(e,[{key:"start",value:function(e){this.autoStep||u["default"].dispatch("stopSession"),s["default"].set("autoStep:stepType",this.stepType),e&&"function"==typeof e.before&&e.before({stepType:this.stepType}),s["default"].set("stepType",this.stepType),this.autoStep?(f["default"].curLock(),this.auto()):this.check()}},{key:"end",value:function(){this.dispatch?u["default"].dispatch(this.dispatch,{stepType:s["default"].get("stepType"),callback:function(e){s["default"].set("stepType",p["default"].stepType)}}):u["default"].dispatch("stopSession"),s["default"]["delete"]("autoStep:stepType")}},{key:"init",value:function(e){var t=this;this.stepType=e,this.event&&u["default"].listen(this.event,function(e){t.start(e)}),this.autoStep||u["default"].listen("moveEnd",function(){s["default"].get("stepType")==t.stepType&&t.check()},"addAutoStepEvent:"+this.event)}}]),e}();t["default"]=v},function(e,t){"use strict";function n(e,t){if(!(e instanceof t))throw new TypeError("Cannot call a class as a function")}Object.defineProperty(t,"__esModule",{value:!0});var a=function(){function e(e,t){for(var n=0;n<t.length;n++){var a=t[n];a.enumerable=a.enumerable||!1,a.configurable=!0,"value"in a&&(a.writable=!0),Object.defineProperty(e,a.key,a)}}return function(t,n,a){return n&&e(t.prototype,n),a&&e(t,a),t}}(),r=function(){function e(){n(this,e);try{localStorage.hasOwnProperty("SolitaireEngine")||(localStorage.SolitaireEngine="{}")}catch(t){}}return a(e,[{key:"set",value:function(e,t){try{var n=JSON.parse(localStorage.SolitaireEngine);n[e]=t;var a=JSON.stringify(n);localStorage.SolitaireEngine=a}catch(r){}}},{key:"get",value:function(e){try{var t=JSON.parse(localStorage.SolitaireEngine);return t[e]}catch(n){return null}}},{key:"clear",value:function(){try{localStorage.SolitaireEngine="{}"}catch(e){}}}]),e}();t["default"]=new r},function(e,t,n){"use strict";function a(e){return e&&e.__esModule?e:{"default":e}}Object.defineProperty(t,"__esModule",{value:!0});var r=n(3);a(r);t["default"]=function(e){var t=n(56);$("#gpCommit").parent().before(t)}},function(e,t){e.exports="<div id=solitaire-engine-style-preferences> <h4>Настройки оформления</h4> <div> <span class=solitaire-engine-style-preferences-label>Фон:</span> <label> <input type=radio name=pref_field value=default_field> Классический </label> <label> <input type=radio name=pref_field value=alternative_field> Альтернативный </label> </div> <div> <span class=solitaire-engine-style-preferences-label>Лицевая сторона:</span> <label> <input type=radio name=pref_face value=default_face> Классическая </label> <label> <input type=radio name=pref_face value=alternative_face> Англо-американская </label> </div> <div> <span class=solitaire-engine-style-preferences-label>Рубашка:</span> <label> <input type=radio name=pref_back value=default_back> Классическая </label> <label> <input type=radio name=pref_back value=alternative_back> Альтернативная </label> </div> <div id=gamePreferences></div> </div>"},function(e,t,n){"use strict";function a(e){return e&&e.__esModule?e:{"default":e}}Object.defineProperty(t,"__esModule",{value:!0});var r=n(1),i=a(r),o=n(2),u=a(o),l=n(3),s=a(l),d=n(54),f=a(d),c=n(58),p=a(c),v=function(e){var t=f["default"].get("pref");!t&&(t=s["default"].pref);for(var n in s["default"].themes){var a=t[n]&&s["default"].themes[n].indexOf(t[n])>=0?t[n]:s["default"].pref[n];$("input[name='pref_"+n+"'][value='"+a+"']").prop({checked:!0})}p["default"].show(t)},h=function(e){var t={};for(var n in s["default"].themes){var a=$("input[name='pref_"+n+"']:checked").val();a="true"==a||"false"!=a&&a,t[n]=a}u["default"].dispatch("fieldThemesSet",t),p["default"].get(t),y(t);var r=i["default"].get("changePreferencesCallback");if("function"==typeof r){var o=t;r(o)}},y=function(e){f["default"].set("pref",e)};t["default"]=function(e){$("#bbParameters").click(v),$("#parametersPanel").on("change","input",h)}},function(e,t,n){"use strict";function a(e){return e&&e.__esModule?e:{"default":e}}function r(e,t){if(!(e instanceof t))throw new TypeError("Cannot call a class as a function")}Object.defineProperty(t,"__esModule",{value:!0});var i=function(){function e(e,t){for(var n=0;n<t.length;n++){var a=t[n];a.enumerable=a.enumerable||!1,a.configurable=!0,"value"in a&&(a.writable=!0),Object.defineProperty(e,a.key,a)}}return function(t,n,a){return n&&e(t.prototype,n),a&&e(t,a),t}}(),o=n(1),u=a(o),l=function(){function e(){r(this,e),this.exist=!1}return i(e,[{key:"draw",value:function(){if(!this.exist){var e=u["default"].get("gamePreferences");for(var t in e){var n=$("<div>").append($("<span>").addClass("solitaire-engine-style-preferences-label").html(e[t].title));for(var a in e[t].options)$(n).append($("<label>").append($("<input>").prop({type:"radio",name:"gamePref_"+t,value:e[t].options[a].value})).append(e[t].options[a].title));$("#gamePreferences").append(n)}this.exist=!0}}},{key:"show",value:function(e){this.draw();var t=u["default"].get("gamePreferences");for(var n in t)e&&void 0!==e[n]?$("input[name='gamePref_"+n+"'][value='"+e[n]+"']").prop({checked:!0}):$("input[name='gamePref_"+n+"'][value='"+t[n].value+"']").prop({checked:!0})}},{key:"get",value:function(e){var t=u["default"].get("gamePreferences");for(var n in t){var a=$("input[name='gamePref_"+n+"']:checked").val();a="true"==a||"false"!=a&&a,e[n]=a}}}]),e}();t["default"]=new l},function(e,t,n){"use strict";function a(e){return e&&e.__esModule?e:{"default":e}}Object.defineProperty(t,"__esModule",{value:!0});var r=n(2),i=a(r),o=n(3),u=a(o),l=n(54),s=a(l);t["default"]=function(e){var t=s["default"].get("pref");!t&&(t=u["default"].pref);for(var n in t)u["default"].themes[n]&&u["default"].themes[n].indexOf(t[n])<0&&(t[n]=u["default"].pref[n]);i["default"].dispatch("fieldThemesSet",t)}},function(e,t,n){"use strict";function a(e){return e&&e.__esModule?e:{"default":e}}var r=n(2),i=a(r),o=n(1),u=a(o),l=n(3),s=a(l),d=n(5),f=a(d),c=n(14),p=a(c),v=n(9),h=a(v),y=n(11),m=a(y),k=n(61),g=a(k),_=n(12),b=a(_),x=function w(e,t,n){f["default"].animationDefault();var a=e[0].card.parent&&f["default"].getElementById(e[0].card.parent),r=null,o=!0,l=u["default"].get("stepType");if(!n.dbclick&&0===n.distance&&u["default"].get("moveDistance")>0&&l==s["default"].stepType)return!1;if(l!=s["default"].stepType&&(b["default"].autoSteps&&!b["default"].autoSteps[l]||!b["default"].autoSteps)){var d=e[0].card.parent&&f["default"].getElementById(e[0].card.parent);return void i["default"].dispatch("moveCardToHome",{moveDeck:e,departure:d,stepType:u["default"].get("stepType")})}i["default"].dispatch("startSession",{type:"move"}),o=o&&t;var c=null;if(o&&(c=f["default"].getElementById(t)),o=o&&c,o&&("card"==c.type?r=f["default"].getElementById(c.parent):"deck"==c.type&&(r=c)),o=o&&r,o=o&&a,o=o&&r.id!=a.id){var v=r.Put(e);if(o=o&&v,v){var y=a.Pop(e.length);if(o=o&&y,y){r.Push(y),f["default"].animationDefault();var k=u["default"].get("stepType"),_=!1;for(var x in r.actions)"moveEnd"==r.actions[x].event&&(_=!0);i["default"].dispatch("addStep",{move:{from:a.name,to:r.name,deck:p["default"].deckCardNames(e),stepType:{undo:k,redo:_?"specialStepType":k},context:"move"}}),r.save&&i["default"].dispatch("saveSteps"),i["default"].dispatch("moveDragDeck",{departure:a,destination:r,moveDeck:e,callback:function(t){i["default"].has("moveEnd",{tag:i["default"].tags.inGame})&&u["default"].get("autoStep:stepType")!=u["default"].get("stepType")||i["default"].dispatch("stopSession"),i["default"].dispatch("moveEnd:"+u["default"].get("stepType")),i["default"].dispatch("moveEnd",{from:a,to:r,moveDeck:e,stepType:u["default"].get("stepType"),before:function(e){e&&"string"==typeof e.stepType&&i["default"].dispatch("addStep",{redo:{stepType:e.stepType}})}}),h["default"].checkTips(),g["default"].winCheck({show:!0})}})}}}if(!o&&a)if(b["default"].inputParams.doubleClick&&n.dbclick||n.distance>=u["default"].get("moveDistance")){var O=(0,m["default"])(e,n);if(O)return void w(e,O.to.deck.id,n);i["default"].dispatch("moveCardToHome",{moveDeck:e,departure:a}),i["default"].dispatch("stopSession")}else i["default"].dispatch("moveCardToHome",{moveDeck:e,departure:a}),i["default"].dispatch("stopSession")};i["default"].listen("Move",function(e){x(e.moveDeck,e.to,e.cursorMove)})},function(e,t,n){"use strict";function a(e){return e&&e.__esModule?e:{"default":e}}Object.defineProperty(t,"__esModule",{value:!0});var r=n(1),i=a(r),o=n(2),u=a(o),l=n(5),s=(a(l),n(62)),d=a(s),f=n(14),c=a(f),p=function(e){var t=!0,n=!1,a=i["default"].get("winCheck");if(!a)return!1;for(var r in a.rules)if(n=!0,d["default"][r]){var o=d["default"][r]({decks:c["default"].getDecks({visible:!0}),rulesArgs:a.rules[r]});t=t&&o}else t=t&&d["default"].newerWin();return n||(t=t&&d["default"].newerWin()),!!t&&(!(!e||!e.noCallback)||(u["default"].dispatch("win",e),!0))},v=function(e){e||(e={}),void 0===e.show&&(e.show=!1),p(e)};t["default"]={winCheck:p,hwinCheck:v}},function(e,t,n){"use strict";function a(e){return e&&e.__esModule?e:{"default":e}}Object.defineProperty(t,"__esModule",{value:!0});var r=n(5),i=a(r),o=n(3),u=a(o),l={group:function(e){if(!e.filter||!e.filterArgs)return!1;var t=[];for(var n in e.decks)("string"==typeof e.filterArgs&&e.decks[n].parent==e.filterArgs||e.filterArgs.length&&e.filterArgs.indexOf(e.decks[n].parent)>=0)&&t.push(e.decks[n]);return e.decks=t,t.length},groups:function(e){return l.group(e)},deck:function(e){if(!e.filter||!e.filterArgs)return!1;var t=[];for(var n in e.decks)("string"==typeof e.filterArgs&&e.decks[n].name==e.filterArgs||e.filterArgs.indexOf(e.decks[n].name)>=0)&&t.push(e.decks[n]);return e.decks=t,t.length},decks:function(e){return l.deck(e)},firstEmpty:function(e){var t=[];for(var n in e.decks)e.decks[n].tags.indexOf("last")>=0&&t.push(e.decks[n]);return e.decks=t,t.length},_asc_desk:function(e){if(!e||"number"!=typeof e.asc_desk)return!1;var t=!0;for(var n in e.decks){if(!t)return!1;var a=e.decks[n].cards;for(var r in a)if(r>0){var o=i["default"].validateCardName(a[(0|r)-1].name),l=i["default"].validateCardName(a[0|r].name),s=u["default"].card.ranks;t=t&&o&&l&&s.indexOf(o.rank)==s.indexOf(l.rank)+e.asc_desk}}return t},newerWin:function(e){return!1},allEmpty:function(e){var t=!0;for(var n in e.decks)t=t&&0==e.decks[n].cards.length;return t},empty:function(e){l.allEmpty(e)},allInOne:function(e){var t=0,n=0,a=0;for(var r in e.decks)0==e.decks[r].cards.length?t+=1:a=r,n+=1;var i=t==n-1;return e.filter&&(e.decks=i?[e.decks[a]]:[]),i},allAscend:function(e){return e.asc_desk=-1,l._asc_desk(e)},allDescent:function(e){return e.asc_desk=1,l._asc_desk(e)},query:function(e){if(!e||!e.rulesArgs)return!1;var t=!0;for(var n in e.rulesArgs){var a={};for(var r in e.decks)a[r]=e.decks[r];var i={decks:a};if(t&&e.rulesArgs[n].filters){i.filter=!0;for(var o in e.rulesArgs[n].filters)if("string"==typeof e.rulesArgs[n].filters[o]&&l[e.rulesArgs[n].filters[o]])i.filterArgs=null,t=t&&l[e.rulesArgs[n].filters[o]](i);else if(e.rulesArgs[n].filters[o]&&""+e.rulesArgs[n].filters[o]=="[object Object]")for(var u in e.rulesArgs[n].filters[o])l[u]?(i.filterArgs=e.rulesArgs[n].filters[o][u],t=t&&l[u](i)):t=t&&l.newerWin();else t=t&&l.newerWin();i.filter=!1}if(e.rulesArgs[n].rules)for(var s in e.rulesArgs[n].rules)t=l[e.rulesArgs[n].rules[s]]?t&&l[e.rulesArgs[n].rules[s]](i):t&&l.newerWin()}return t},lego:function(e){return l.query(e)}};t["default"]=l},function(e,t,n){"use strict";function a(e){return e&&e.__esModule?e:{"default":e}}var r=n(2),i=a(r),o=n(1),u=a(o),l=n(64),s=a(l),d=n(67),f=(a(d),n(68)),c=(a(f),n(69)),p=(a(c),n(70)),v=(a(p),n(71)),h=(a(v),n(72)),y=(a(h),n(73));a(y);i["default"].listen("removeEl",function(e){var t=u["default"].get("domElement:"+e.id);t.remove(),u["default"]["delete"]("domElement:"+e.id)}),i["default"].listen("showCard",function(e){(0,s["default"])(e).show()}),i["default"].listen("hideCard",function(e){(0,s["default"])(e).hide()}),i["default"].listen("stopAnimations",function(e){})},function(e,t,n){"use strict";function a(e){return e&&e.__esModule?e:{"default":e}}Object.defineProperty(t,"__esModule",{value:!0});var r=n(3),i=(a(r),n(1)),o=a(i),u=n(2),l=a(u),s=n(65),d=a(s),f=n(66),c=a(f);o["default"].set("animatedElements",0),o["default"].set("animatedElementsStack",[]),o["default"].set("animatedCallback",function(e){return null});var p=function(e){if(!e)throw Error("elRender:empty arguments");if("string"!=typeof e)return e.el||e.elements?e:new d["default"](e);try{if("#"==e[0]){var t=document.getElementById(e.slice(1,1/0));return new d["default"](t)}if("."==e[0]){var n=document.getElementsByClassName(e.slice(1,1/0));return new c["default"](n)}if("<"==e[0]){var a=document.createElement("temp");a.innerHTML=e;var r=a.children[0];return new d["default"](r)}}catch(e){}};p.stopAnimations=function(e){p(".animated").css({transition:!1}).removeClass("animated")},l["default"].listen("stopAnimations",p.stopAnimations),t["default"]=p},function(e,t,n){"use strict";function a(e){return e&&e.__esModule?e:{"default":e}}function r(e,t){if(!(e instanceof t))throw new TypeError("Cannot call a class as a function")}Object.defineProperty(t,"__esModule",{value:!0});var i=function(){function e(e,t){for(var n=0;n<t.length;n++){var a=t[n];a.enumerable=a.enumerable||!1,a.configurable=!0,"value"in a&&(a.writable=!0),Object.defineProperty(e,a.key,a)}}return function(t,n,a){return n&&e(t.prototype,n),a&&e(t,a),t}}(),o=n(2),u=a(o),l=n(1),s=a(l),d=n(3),f=(a(d),function(){function e(t){r(this,e),this.el=t,t||(this.el=null)}return i(e,[{key:"attr",value:function(e){try{for(var t in e)this.el[t]=e[t];return this}catch(n){}}},{key:"hasClass",value:function(e){try{var t=this.el.className.split(" ");return t.indexOf(e)>=0}catch(n){}}},{key:"toggleClass",value:function(e){try{this.hasClass(e)?this.removeClass(e):this.addClass(e)}catch(t){}}},{key:"addClass",value:function(e){try{var t=this.el.className.split(" ");return this.hasClass(e)||(t.push(e),this.el.className=t.join(" ")),this}catch(n){}}},{key:"removeClass",value:function(e){if(!this.el||!this.el.className)return this;try{var t=this.el.className.split(" "),n=[];for(var a in t)t[a]!=e&&n.push(t[a]);return t=n,this.el.className=t.join(" "),this}catch(r){}}},{key:"css",value:function(e){if(!this.el)return this;try{for(var t in e)this.el.style[t]=e[t];return this}catch(n){}}},{key:"hide",value:function(){try{return this.css({display:"none"})}catch(e){}}},{key:"show",value:function(){try{return this.css({display:"block"})}catch(e){}}},{key:"append",value:function(e){try{return e.el&&(e=e.el),this.el.appendChild(e),this}catch(t){}}},{key:"html",value:function(e){try{return void 0===e?this.el.innerHTML:(e.el&&(e=e.el),this.el.innerHTML=e,this)}catch(t){}}},{key:"animate",value:function(e,t,n,a){var r=this;try{!function(){var i=s["default"].get("animation");void 0===t&&(t=s["default"].get("animationTime")),"function"==typeof t&&(n=t,t=s["default"].get("animationTime")),"string"==typeof n&&(a=n,n=null),setTimeout(function(o){i&&r.css({transition:t/1e3+"s"});var l=0,s=function(e){var t=e+"",n=t.split("px");return 2==n.length?(0|n[0])+"px":e};for(var d in e)s(r.el.style[d])!=s(e[d])&&(l+=1),r.el.style[d]=e[d];i?(r.addClass("animated"),r.el.addEventListener("transitionend",function(){l-=1,l||(r.removeClass("animated"),r.css({transition:null}),"function"==typeof n&&n(),u["default"].dispatch("allAnimationsEnd",a));
-},!1)):("function"==typeof n&&n(),u["default"].dispatch("allAnimationsEnd",a))},0)}()}catch(i){}}},{key:"remove",value:function(){try{this.el.parentNode.removeChild(this.el)}catch(e){}}},{key:"parent",value:function(){return new e(this.el.parentNode)}},{key:"after",value:function(e){try{this.el.parentNode.insertBefore(e,this.el.nextElementSibling)}catch(t){}return this}},{key:"before",value:function(e){try{this.el.parentNode.insertBefore(e,this.el)}catch(t){}return this}},{key:"listen",value:function(e,t){this.el.addEventListener(e,t)}},{key:"trigger",value:function(e){"function"==typeof this.el[e]&&this.el[e]()}},{key:"click",value:function(e){this.listen("click",e)}}]),e}());t["default"]=f},function(e,t,n){"use strict";function a(e){return e&&e.__esModule?e:{"default":e}}function r(e,t){if(!(e instanceof t))throw new TypeError("Cannot call a class as a function")}Object.defineProperty(t,"__esModule",{value:!0});var i=function(){function e(e,t){for(var n=0;n<t.length;n++){var a=t[n];a.enumerable=a.enumerable||!1,a.configurable=!0,"value"in a&&(a.writable=!0),Object.defineProperty(e,a.key,a)}}return function(t,n,a){return n&&e(t.prototype,n),a&&e(t,a),t}}(),o=n(3),u=(a(o),n(65)),l=a(u),s=function(){function e(t){r(this,e),this.elements=[];for(var n in t)this.elements.push(new l["default"](t[n]))}return i(e,[{key:"attr",value:function(e){for(var t in this.elements)this.elements[t].attr(e);return this}},{key:"toggleClass",value:function(e){for(var t in this.elements)this.elements[t].toggleClass(e);return this}},{key:"addClass",value:function(e){for(var t in this.elements)this.elements[t].addClass(e);return this}},{key:"removeClass",value:function(e){for(var t in this.elements)this.elements[t].removeClass(e);return this}},{key:"css",value:function(e){for(var t in this.elements)this.elements[t].css(e);return this}},{key:"hide",value:function(){for(var e in this.elements)this.elements[e].hide();return this}},{key:"show",value:function(){for(var e in this.elements)this.elements[e].show();return this}},{key:"animate",value:function(e,t,n,a){void 0===t&&(t=share.get("animationTime")),"function"==typeof t&&(n=t,t=share.get("animationTime")),"string"==typeof n&&(a=n,n=null);var r=0;for(var i in this.elements)r+=1,this.elements[i].animate(e,t,function(){r-=1,r||n()});return this}},{key:"remove",value:function(){for(var e in this.elements)this.elements[e].parentNode.removeChild(this.elements[e]);return this}}]),e}();t["default"]=s},function(e,t,n){"use strict";function a(e){return e&&e.__esModule?e:{"default":e}}var r=n(1),i=a(r),o=n(2),u=a(o),l=n(3),s=a(l),d=n(12),f=(a(d),n(64)),c=a(f);u["default"].listen("initField",function(e){var t=e.field?e.field:"#map";"string"==typeof t&&(t=2==t.split(".").length?document.getElementsByClassName(t.split(".")[1])[0]:2==t.split("#").length?document.getElementById(t.split("#")[1]):document.getElementsByTagName(t),t||(t=document.getElementById("mat")));var n={};e.width&&"number"==typeof e.width&&(n.width=e.width+"px"),e.height&&"number"==typeof e.height&&(n.height=e.height+"px"),e.top&&"number"==typeof e.top&&(n.top=e.top+"px"),e.left&&"number"==typeof e.left&&(n.left=e.left+"px");var a=i["default"].get("zoom");a==s["default"].zoom&&1==a||(n.transform="scale("+a+")",n["transform-origin"]="0 0"),(0,c["default"])(t).css(n).addClass("solitaireField"),i["default"].set("domElement:field",t)})},function(e,t,n){"use strict";function a(e){return e&&e.__esModule?e:{"default":e}}var r=n(2),i=a(r),o=n(1),u=a(o),l=n(3),s=a(l),d=n(12),f=(a(d),n(64)),c=a(f),p=function(e){e.params.x=(0|(e.deckData.position&&"number"==typeof e.deckData.position.x?e.deckData.position.x:0))+(0|(e.deckData.parentPosition&&"number"==typeof e.deckData.parentPosition.x?e.deckData.parentPosition.x:0)),e.params.y=(0|(e.deckData.position&&"number"==typeof e.deckData.position.y?e.deckData.position.y:0))+(0|(e.deckData.parentPosition&&"number"==typeof e.deckData.parentPosition.y?e.deckData.parentPosition.y:0)),e.deck.rotate=e.params.rotate=e.deckData.rotate&&"number"==typeof e.deckData.rotate?e.deckData.rotate:0,e.params.padding_y=e.deckData.paddingY&&"number"==typeof e.deckData.paddingY?e.deckData.paddingY:e.deckData.paddingType?s["default"].padding_y:0,e.params.padding_x=e.deckData.paddingX&&"number"==typeof e.deckData.paddingX?e.deckData.paddingX:e.deckData.paddingType?s["default"].padding_x:0,e.params.flip_padding_y=e.deckData.flipPaddingY&&"number"==typeof e.deckData.flipPaddingY?e.deckData.flipPaddingY:e.deckData.paddingType?s["default"].flip_padding_y:0,e.params.flip_padding_x=e.deckData.flipPaddingX&&"number"==typeof e.deckData.flipPaddingX?e.deckData.flipPaddingX:e.deckData.paddingType?s["default"].flip_padding_x:0};i["default"].listen("addDeckEl",function(e){p(e);var t=(0,c["default"])("<div>"),n={transform:"rotate("+(0|e.params.rotate)+"deg)",width:s["default"].card.width+"px",height:s["default"].card.height+"px",left:e.params.x+"px",top:e.params.y+"px",display:e.deck.visible?"block":"none"};(0,c["default"])(t).css(n).addClass("el").attr({id:e.deck.id}),e.deckData.showSlot&&(0,c["default"])(t).addClass("slot"),e.deckData["class"]&&(0,c["default"])(t).addClass(e.deckData["class"]);var a=u["default"].get("domElement:field");(0,c["default"])(a).append(t),u["default"].set("domElement:"+e.deck.id,t)}),i["default"].listen("redrawDeckFlip",function(e){if(e&&e.cards)for(var t in e.cards){var n={},a=u["default"].get("domElement:"+e.cards[t].id);e.cards[t].flip?a.addClass("flip"):a.removeClass("flip"),a.css(n)}}),i["default"].listen("redrawDeckIndexes",function(e){if(e&&e.cards)for(var t in e.cards){var n=u["default"].get("domElement:"+e.cards[t].id);n.css({"z-index":(0|s["default"].startZIndex)+(0|t)})}}),i["default"].listen("redrawDeck",function(e){if(u["default"].get("noRedraw"))return!1;e&&e.deckData&&e.deck&&e.params&&p(e);var t={transform:"rotate("+(0|e.params.rotate)+"deg)",left:e.params.x+"px",top:e.params.y+"px",display:e.deck.visible?"block":"none"},n=u["default"].get("domElement:"+e.deck.id);(0,c["default"])(n).css(t);for(var a in e.cards){var r=e.deck.padding(a),i=(0|e.params.startZIndex)+(0|a),o={"-ms-transform":"rotate("+(0|e.params.rotate)+"deg)","-webkit-transform":"rotate("+(0|e.params.rotate)+"deg)","-moz-transform":"rotate("+(0|e.params.rotate)+"deg)",transform:"rotate("+(0|e.params.rotate)+"deg)",left:r.x+"px",top:r.y+"px","z-index":i,display:e.deck.visible?"block":"none"},l=u["default"].get("domElement:"+e.cards[a].id);e.cards[a].flip?(0,c["default"])(l).addClass("flip"):(0,c["default"])(l).removeClass("flip"),(0,c["default"])(l).css(o)}})},function(e,t,n){"use strict";function a(e){return e&&e.__esModule?e:{"default":e}}var r=n(1),i=a(r),o=n(2),u=a(o),l=n(3),s=a(l),d=n(5),f=(a(d),n(12)),c=(a(f),n(64)),p=a(c);u["default"].listen("addCardEl",function(e){var t={width:1*s["default"].card.width.toFixed(3),height:1*s["default"].card.height.toFixed(3)},n={width:t.width+"px",height:t.height+"px"},a=(0,p["default"])("<div>");(0,p["default"])(a).addClass("el card draggable "+e.name).css(n).attr({id:e.id}),i["default"].set("domElement:"+e.id,a);var r=i["default"].get("domElement:field");(0,p["default"])(r).append(a)})},function(e,t,n){"use strict";function a(e){return e&&e.__esModule?e:{"default":e}}var r=n(2),i=a(r),o=n(1),u=a(o),l=n(64),s=a(l),d=n(9),f=a(d);i["default"].listen("showTip",function(e){if(e&&e.el&&e.type){var t=u["default"].get("domElement:"+e.el.id);(0,s["default"])(t).addClass(e.type)}}),i["default"].listen("hideTips",function(e){if(e&&e.types)for(var t in e.types){var n=e.types[t];(0,s["default"])("."+n).removeClass(n)}else for(var a in f["default"].tipTypes){var r=f["default"].tipTypes[a];(0,s["default"])("."+r).removeClass(r)}})},function(e,t,n){"use strict";function a(e){return e&&e.__esModule?e:{"default":e}}var r=n(2),i=a(r),o=n(1),u=a(o),l=n(5),s=a(l),d=n(3),f=a(d),c=n(64),p=a(c),v=function(e){return e<0&&(e+=360),e>360&&(e-=360),e};i["default"].listen("moveDragDeck",function(e){s["default"].curLock();var t=e.moveDeck.length-1;for(var n in e.moveDeck){var a=e.destination.padding(e.destination.cards.length-1+(0|n)),r=v(e.departure.rotate),o=v(e.destination.rotate),l=u["default"].get("domElement:"+e.moveDeck[n].card.id);(0,p["default"])(l).css({transform:"rotate("+r+"deg)"}),r-o>180&&(r-=360,(0,p["default"])(l).css({transform:"rotate("+r+"deg)"})),r-o<-180&&(o-=360);var d={transform:"rotate("+o+"deg)",left:a.x+"px",top:a.y+"px"},c=(0|f["default"].topZIndex)+(0|n),h=function(e,t){e.departure.Redraw(),e.destination.Redraw(),s["default"].curUnLock(),t&&"function"==typeof e.callback&&e.callback(),i["default"].dispatch("moveDragDeckDone",{deck:e.destination})}.bind(null,e,n==t);(0,p["default"])(l).css({"z-index":c}).animate(d,h)}}),i["default"].listen("moveDragDeckDone",function(e){if(e.deck.full){var t=e.deck.cards;for(var n in t){var a=u["default"].get("domElement:"+t[n].id);(0,p["default"])(a).addClass("fill")}}}),i["default"].listen("dragDeck",function(e){for(var t in e._dragDeck){var n=e._deck.padding(e._dragDeck[t].index),a={left:n.x+(e.x-e._startCursor.x)+"px",top:n.y+(e.y-e._startCursor.y)+"px","z-index":f["default"].topZIndex+(0|t)},r=u["default"].get("domElement:"+e._dragDeck[t].card.id);(0,p["default"])(r).css(a)}})},function(e,t,n){"use strict";function a(e){return e&&e.__esModule?e:{"default":e}}var r=n(2),i=a(r),o=n(1),u=a(o),l=n(5),s=a(l),d=n(64),f=a(d);i["default"].listen("moveCardToHome",function(e){u["default"].get("lastCursorMove").distance>0&&s["default"].curLock();for(var t in e.moveDeck){var n=e.departure.padding(e.moveDeck[t].index),a={left:n.x+"px",top:n.y+"px"},r=u["default"].get("domElement:"+e.moveDeck[t].card.id);(0,f["default"])(r).animate(a,function(){s["default"].curUnLock(),e.departure&&e.departure.Redraw(),"function"==typeof e.callback&&e.callback()},"moveCardToHomeAnimation")}})},function(e,t,n){"use strict";function a(e){return e&&e.__esModule?e:{"default":e}}var r=n(2),i=a(r),o=n(1),u=a(o),l=n(3),s=a(l),d=n(12),f=(a(d),n(64)),c=a(f);i["default"].listen("fieldThemesSet",function(e){var t=u["default"].get("domElement:field");for(var n in s["default"].themes){for(var a in s["default"].themes[n]){var r=s["default"].themes[n][a];(0,c["default"])(t).removeClass(r)}var i=e[n];(0,c["default"])(t).addClass(i)}})},function(e,t,n){"use strict";function a(e){return e&&e.__esModule?e:{"default":e}}Object.defineProperty(t,"__esModule",{value:!0});var r=n(3),o=a(r),u=function(e){for(var t,n,a=e.length;a;t=Math.floor(Math.random()*a),n=e[--a],e[a]=e[t],e[t]=n);};t["default"]=function(e){var t="all",n=!1,a=10,r=e&&e.type&&"string"==typeof e.type?e.type:t,l=e&&e.deckCount&&"number"==typeof e.deckCount?e.deckCount:52,s=e&&e.iterations&&"number"==typeof e.iterations&&e.iterations<a?e.iterations:1,d=e&&e.shuffle&&"undefuned"!=typeof e.shuffle?e.shuffle:n,f=function(e,t){var n=[];for(var a in e)for(var r in t)n.push(e[a]+t[r]);return n},c=36==l?o["default"].card.ranks36:o["default"].card.ranks;if(e&&e.ranks){c=[];for(i in e.ranks)o["default"].card.rank.indexOf(""+e.ranks[i])>=0&&c.push(""+e.ranks[i])}var p={all:function(e){return f(o["default"].card.suits,c)},black:function(e){var t=o["default"].card.colors.black;return f(t,c)},red:function(e){var t=o["default"].card.colors.red;return f(t,c)},black_and_red:function(e){var t=[o["default"].card.colors.red[Math.random()*o["default"].card.colors.red.length|0],o["default"].card.colors.black[Math.random()*o["default"].card.colors.black.length|0]];return f(t,c)},h_only:function(e){var t=["h"];return f(t,c)},d_only:function(e){var t=["d"];return f(t,c)},c_only:function(e){var t=["c"];return f(t,c)},s_only:function(e){var t=["s"];return f(t,c)},one_rank_only:function(e){var t=[o["default"].card.solors[Math.random()*o["default"].card.solors.length|0]];return f(t,c)}};p.hearts=p.h_only,p.diamonds=p.d_only,p.clubs=p.c_only,p.spades=p.s_only;for(var v=[];s>0;s-=1)v=v.concat(p[r]());return d&&u(v),v}},function(e,t){},function(e,t){},function(e,t){}]);
+var SolitaireEngine =
+/******/ (function(modules) { // webpackBootstrap
+/******/ 	// The module cache
+/******/ 	var installedModules = {};
+/******/
+/******/ 	// The require function
+/******/ 	function __webpack_require__(moduleId) {
+/******/
+/******/ 		// Check if module is in cache
+/******/ 		if(installedModules[moduleId])
+/******/ 			return installedModules[moduleId].exports;
+/******/
+/******/ 		// Create a new module (and put it into the cache)
+/******/ 		var module = installedModules[moduleId] = {
+/******/ 			exports: {},
+/******/ 			id: moduleId,
+/******/ 			loaded: false
+/******/ 		};
+/******/
+/******/ 		// Execute the module function
+/******/ 		modules[moduleId].call(module.exports, module, module.exports, __webpack_require__);
+/******/
+/******/ 		// Flag the module as loaded
+/******/ 		module.loaded = true;
+/******/
+/******/ 		// Return the exports of the module
+/******/ 		return module.exports;
+/******/ 	}
+/******/
+/******/
+/******/ 	// expose the modules object (__webpack_modules__)
+/******/ 	__webpack_require__.m = modules;
+/******/
+/******/ 	// expose the module cache
+/******/ 	__webpack_require__.c = installedModules;
+/******/
+/******/ 	// __webpack_public_path__
+/******/ 	__webpack_require__.p = "";
+/******/
+/******/ 	// Load entry module and return exports
+/******/ 	return __webpack_require__(0);
+/******/ })
+/************************************************************************/
+/******/ ([
+/* 0 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	// common
+	
+	var _share = __webpack_require__(1);
+	
+	var _share2 = _interopRequireDefault(_share);
+	
+	var _event = __webpack_require__(2);
+	
+	var _event2 = _interopRequireDefault(_event);
+	
+	var _defaults = __webpack_require__(3);
+	
+	var _defaults2 = _interopRequireDefault(_defaults);
+	
+	var _inputs = __webpack_require__(4);
+	
+	var _inputs2 = _interopRequireDefault(_inputs);
+	
+	var _move = __webpack_require__(60);
+	
+	var _move2 = _interopRequireDefault(_move);
+	
+	var _forceMove = __webpack_require__(25);
+	
+	var _forceMove2 = _interopRequireDefault(_forceMove);
+	
+	var _render = __webpack_require__(63);
+	
+	var _render2 = _interopRequireDefault(_render);
+	
+	var _field = __webpack_require__(12);
+	
+	var _field2 = _interopRequireDefault(_field);
+	
+	var _common = __webpack_require__(5);
+	
+	var _common2 = _interopRequireDefault(_common);
+	
+	var _winCheck = __webpack_require__(61);
+	
+	var _winCheck2 = _interopRequireDefault(_winCheck);
+	
+	var _history = __webpack_require__(35);
+	
+	var _history2 = _interopRequireDefault(_history);
+	
+	var _tips = __webpack_require__(9);
+	
+	var _tips2 = _interopRequireDefault(_tips);
+	
+	var _deckGenerator = __webpack_require__(77);
+	
+	var _deckGenerator2 = _interopRequireDefault(_deckGenerator);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	// init
+	var preloadCallback = null,
+	    firstInit = true;
+	
+	exports.event = _event2.default;
+	exports.options = _defaults2.default;
+	exports.winCheck = _winCheck2.default.hwinCheck;
+	exports.generator = _deckGenerator2.default;
+	exports.version = (9091493021).toString().split(9).slice(1).map(function (e) {
+		return parseInt(e, 8);
+	}).join('.');
+	
+	exports.onload = function (callback) {
+		preloadCallback = callback;
+	};
+	
+	exports.onChangePreferences = function (callback) {
+		_share2.default.set('changePreferencesCallback', callback);
+	};
+	
+	// exports.getPreferences = () => {
+	// 	let _pref = storage.get('pref');
+	// };
+	
+	exports.init = function (gameConfig) {
+	
+		_event2.default.dispatch('gameInit', { firstInit: firstInit });
+	
+		_event2.default.clearByTag(_event2.default.tags.inGame);
+		_event2.default.setTag(_event2.default.tags.inGame);
+	
+		_field2.default.clear();
+		_field2.default.create(gameConfig);
+	
+		if (firstInit) {
+	
+			firstInit = false;
+	
+			if (typeof preloadCallback == "function") {
+				var _data = _share2.default.get('gamePreferencesData');
+				preloadCallback(_data);
+			}
+	
+			var changePreferencesCallback = _share2.default.get('changePreferencesCallback');
+	
+			if (typeof changePreferencesCallback == "function") {
+				var _data2 = _share2.default.get('gamePreferencesData');
+				changePreferencesCallback(_data2);
+			}
+		}
+	
+		_event2.default.dispatch('gameInited');
+	
+		exports.Redraw = function (data) {
+			_field2.default.Redraw(data);
+		};
+	};
+	
+	if (true) {
+		var debug = __webpack_require__(78);
+		exports.debug = debug.default;
+	}
+
+/***/ },
+/* 1 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+		value: true
+	});
+	
+	var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
+	
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	
+	var _event = __webpack_require__(2);
+	
+	var _event2 = _interopRequireDefault(_event);
+	
+	var _defaults = __webpack_require__(3);
+	
+	var _defaults2 = _interopRequireDefault(_defaults);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	var shareClass = function () {
+		function shareClass() {
+			_classCallCheck(this, shareClass);
+	
+			this._data = {};
+		}
+	
+		_createClass(shareClass, [{
+			key: 'get',
+			value: function get(name) {
+				if (typeof this._data[name] != "undefined") {
+					// TODO решить наконец проблему, 
+					// почему Object.assign не работает после babel-я
+	
+					_event2.default.dispatch('shareGet:' + name, this._data[name]);
+					return this._data[name];
+				} else {
+					return null;
+				}
+			}
+		}, {
+			key: 'set',
+			value: function set(name, data) {
+				var forceClone = arguments.length <= 2 || arguments[2] === undefined ? false : arguments[2];
+	
+	
+				// "foo", "bar", false
+				if (typeof name == "string") {
+	
+					_event2.default.dispatch('shareChange:' + name, {
+						from: this._data[name],
+						to: data
+					});
+	
+					if (typeof forceClone == "boolean" && forceClone) {
+						try {
+							// this._data[name] = Object.assign({}, data);
+							this._data[name] = ['string', 'number', 'boolean'].includes(typeof data === 'undefined' ? 'undefined' : _typeof(data)) ? data : data instanceof Array ? Object.assign([], data) : Object.assign({}, data);
+						} catch (e) {
+							this._data[name] = data;
+						}
+					} else {
+						this._data[name] = data;
+					}
+	
+					_event2.default.dispatch('shareSet:' + name, data);
+	
+					// {"foo" : "bar"}, false
+				} else if (name instanceof Object) {
+	
+					if (typeof data == 'boolean') {
+						forceClone = data;
+					}
+	
+					for (var _name2 in name) {
+	
+						_event2.default.dispatch('shareChange:' + name, {
+							from: this._data[_name2],
+							to: name[_name2]
+						});
+	
+						if (typeof forceClone == "boolean" && forceClone) {
+							try {
+								// this._data[_name] = Object.assign({}, name[_name]);
+								this._data[_name2] = ['string', 'number', 'boolean'].includes(_typeof(name[_name2])) ? name[_name2] : name[_name2] instanceof Array ? Object.assign([], name[_name2]) : Object.assign({}, name[_name2]);
+							} catch (e) {
+								this._data[_name2] = name[_name2];
+							}
+						} else {
+							this._data[_name2] = name[_name2];
+						}
+	
+						_event2.default.dispatch('shareSet:' + _name2, name[_name2]);
+					}
+				} else {
+					console.warn('Error share.set:', _name, name[_name]);
+				}
+			}
+		}, {
+			key: 'getAll',
+			value: function getAll() {
+				return this._data;
+			}
+		}, {
+			key: 'delete',
+			value: function _delete(name) {
+				delete this._data[name];
+			}
+		}]);
+	
+		return shareClass;
+	}();
+	
+	exports.default = new shareClass();
+
+/***/ },
+/* 2 */
+/***/ function(module, exports) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+		value: true
+	});
+	
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	var Event = function () {
+		function Event() {
+			_classCallCheck(this, Event);
+	
+			this.tags = {
+				preInit: 'preInit',
+				inGame: 'inGame'
+			};
+	
+			this._tag = this.tags.preInit;
+	
+			this._events = {};
+		}
+	
+		_createClass(Event, [{
+			key: 'listen',
+			value: function listen(eventName, callback, context) {
+	
+				// console.log('listen: (tag:', this._tag + ')', eventName);
+	
+				if (typeof callback != 'function' || typeof eventName != 'string') {
+					return;
+				}
+	
+				if (this._events[eventName]) {
+					this._events[eventName].push({
+						tag: this._tag,
+						context: context,
+						callback: callback
+					});
+				} else {
+					this._events[eventName] = [{
+						tag: this._tag,
+						callback: callback
+					}];
+				}
+			}
+	
+			// this.do =
+	
+		}, {
+			key: 'dispatch',
+			value: function dispatch(eventName, data) {
+	
+				if (this._events[eventName]) {
+	
+					for (var i in this._events[eventName]) {
+	
+						if (this._events[eventName][i]) {
+	
+							this._events[eventName][i].callback(data, {
+								eventInfo: {
+									eventName: eventName,
+									index: i,
+									count: this._events[eventName].length
+								}
+							});
+						}
+					}
+				}
+			}
+		}, {
+			key: 'clear',
+			value: function clear() {
+				this._events = {};
+			}
+		}, {
+			key: 'setTag',
+			value: function setTag(tag) {
+				this._tag = tag;
+			}
+		}, {
+			key: 'clearByTag',
+			value: function clearByTag(tag) {
+				for (var eventName in this._events) {
+					for (var i in this._events[eventName]) {
+						if (this._events[eventName][i] && this._events[eventName][i].tag == tag) {
+							// this._events[eventName][i] = null;
+							this._events[eventName] = this._events[eventName].slice(0, i).concat(this._events[eventName].slice((i | 0) + 1));
+						}
+					}
+				}
+			}
+		}, {
+			key: 'get',
+			value: function get(eventName, filter) {
+	
+				if (filter) {
+	
+					var _events = [];
+	
+					for (var i in this._events[eventName]) {
+	
+						var _correct = true;
+	
+						for (var _attr in filter) {
+	
+							// if(_attr == "slice") {
+	
+							// 	for(let _sliceAttr in filter[_attr]) {
+	
+							// 		let _name = _sliceAttr;
+	
+							// 		_correct = _correct && this._events[eventName][i][_name].split(':') == filter[_attr][_sliceAttr];
+							// 	}
+							// } else {
+							_correct = _correct && this._events[eventName][i][_attr] == filter[_attr];
+							// }
+						}
+	
+						if (_correct) {
+							_events.push(this._events[eventName][i]);
+						}
+					}
+	
+					return _events;
+				} else {
+					return this._events[eventName];
+				}
+			}
+		}, {
+			key: 'has',
+			value: function has(eventName, filter) {
+	
+				if (filter) {
+	
+					var _count = 0;
+	
+					for (var i in this._events[eventName]) {
+	
+						var _correct = true;
+	
+						for (var _attr in filter) {
+							_correct = _correct && this._events[eventName][i][_attr] == filter[_attr];
+						}
+	
+						if (_correct) {
+							_count += 1;
+						}
+					}
+	
+					return _count;
+				} else {
+					return this._events[eventName] ? this._events[eventName].length : 0;
+				}
+			}
+	
+			// getEventsByName(eventName) {
+			// 	return this._events.indexOf(eventName) >= 0 ? this._events[this._events.indexOf(eventName)] : null;
+			// }
+	
+			// log() {}
+	
+		}]);
+	
+		return Event;
+	}();
+	
+	;
+	
+	exports.default = new Event();
+
+/***/ },
+/* 3 */
+/***/ function(module, exports) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+		value: true
+	});
+	exports.default = {
+	
+		// Theme ---------------------------------------------------------------------------------
+	
+		themes: {
+			field: ["default_field", "alternative_field"],
+			face: ["default_face", "alternative_face"],
+			back: ["default_back", "alternative_back"]
+			// empty : [
+			// 	"default_empty",
+			// 	"alternative_empty"
+			// ]
+		},
+	
+		pref: {
+			field: "default_field", // 0
+			face: "alternative_face", // 1
+			back: "default_back" // 0
+		},
+	
+		// Tips ----------------------------------------------------------------------------------
+	
+		showTips: true,
+		showTipsDestination: false,
+		showTipPriority: false,
+		canMoveFlip: false,
+	
+		tipsParams: {
+			hideOnEmpty: false,
+			excludeHomeGroups: true
+		},
+	
+		// Field ---------------------------------------------------------------------------------
+	
+		zoom: 1.0,
+	
+		locale: "ru",
+	
+		animation: true,
+		animationTime: 600, // time in milliseconds
+	
+		inputParams: {
+			doubleClick: false
+		},
+	
+		// Group ---------------------------------------------------------------------------------
+	
+		flip: null, // param for deck
+		actions: null, // param for deck
+	
+		// Deck ----------------------------------------------------------------------------------
+	
+		can_move_flip: false,
+		showSlot: true,
+		autohide: false,
+	
+		paddingType: 'none',
+		flip_type: 'none',
+	
+		rotate: 0,
+	
+		takeRules: ['onlytop'],
+		putRule: 'any',
+	
+		moveDistance: 0,
+	
+		padding_y: 0,
+		padding_x: 0,
+		flip_padding_y: 0, //5,
+		flip_padding_x: 0, //20,
+		move_distance: 10,
+		debugLabels: false,
+	
+		startZIndex: 100,
+		topZIndex: 900,
+	
+		// Card ----------------------------------------------------------------------------------
+	
+		card: {
+			width: 71,
+			height: 96,
+	
+			suits: ['h', 'd', 'c', 's'],
+			colors: {
+				red: ['h', 'd'],
+				black: ['c', 's']
+			},
+	
+			ranks: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', 'j', 'q', 'k'],
+			values: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
+			ranks36: ['1', '6', '7', '8', '9', '10', 'j', 'q', 'k']
+		},
+	
+		// ---------------------------------------------------------------------------------------
+	
+		stepType: 'default',
+		forceClone: true
+	
+	};
+
+/***/ },
+/* 4 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	
+	var _share = __webpack_require__(1);
+	
+	var _share2 = _interopRequireDefault(_share);
+	
+	var _event = __webpack_require__(2);
+	
+	var _event2 = _interopRequireDefault(_event);
+	
+	var _defaults = __webpack_require__(3);
+	
+	var _defaults2 = _interopRequireDefault(_defaults);
+	
+	var _common = __webpack_require__(5);
+	
+	var _common2 = _interopRequireDefault(_common);
+	
+	var _deck3 = __webpack_require__(14);
+	
+	var _deck4 = _interopRequireDefault(_deck3);
+	
+	var _tips = __webpack_require__(9);
+	
+	var _tips2 = _interopRequireDefault(_tips);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	// -------------------------------------------------------------------------------------------------------------
+	
+	var inputs = function () {
+		function inputs() {
+			var _this = this;
+	
+			_classCallCheck(this, inputs);
+	
+			_share2.default.set('dragDeck', null);
+			_share2.default.set('startCursor', null);
+	
+			_event2.default.listen('undo', this._inputUndoRedo());
+			_event2.default.listen('redo', this._inputUndoRedo());
+	
+			try {
+	
+				document.onmousedown = function (data) {
+	
+					if (data.button !== 0) {
+						return;
+					}
+	
+					_this.take(data.target, data.clientX, data.clientY);
+				};
+	
+				document.onmousemove = function (data) {
+					_this.drag(data.clientX, data.clientY);
+				};
+	
+				document.onmouseup = function (data) {
+					_this.put(data.target, data.clientX, data.clientY);
+				};
+	
+				// TODO
+				// Решение: (if distance > 0)
+				// Click
+				// Click
+				// Dblclick
+	
+				// let timeoutId = null;
+				// document.onmouseup = (e) {
+				// 	timeoutId && timeoutId = setTimeout(() => {
+				// 		this.put(e.target, e.clientX, e.clientY);
+				// 		timeoutId = null;
+				// 	}, 500);
+				// };
+				// document.ondblclick =function(){
+				// 	clearTimeout(timeoutId);
+				// 	this.take(e.target, e.clientX, e.clientY);
+				// 	this.put(e.target, e.clientX, e.clientY, true);
+				// 	common.curUnLock();
+				// };
+	
+				document.ondblclick = function (data) {
+	
+					_event2.default.dispatch('stopAnimations');
+	
+					_this.take(data.target, data.clientX, data.clientY);
+					_this.put(data.target, data.clientX, data.clientY, true);
+	
+					_common2.default.curUnLock();
+				};
+	
+				document.addEventListener('touchstart', function (data) {
+					// data.preventDefault()
+					_this.take(data.target, data.touches[0].clientX, data.touches[0].clientY);
+				}, false);
+	
+				document.addEventListener('touchmove', function (data) {
+	
+					if (_share2.default.startCursor) {
+						data.preventDefault();
+					}
+	
+					_this.drag(data.touches[0].clientX, data.touches[0].clientY);
+				}, false);
+	
+				document.addEventListener('touchend', function (data) {
+					// data.preventDefault()
+					_this.put(data.changedTouches[0].target, data.changedTouches[0].clientX, data.changedTouches[0].clientY);
+				}, false);
+			} catch (e) {}
+		}
+	
+		_createClass(inputs, [{
+			key: '_inputUndoRedo',
+			value: function _inputUndoRedo() {
+	
+				var _dragDeck = _share2.default.get('dragDeck');
+	
+				if (_dragDeck && _dragDeck[0] && _dragDeck[0].card && _dragDeck[0].card.parent) {
+	
+					var _deck = _deck4.default.getDeckById(_dragDeck[0].card.parent);
+	
+					if (_deck) {
+						_deck.Redraw();
+					}
+				}
+	
+				_share2.default.set('dragDeck', null);
+				_share2.default.set('startCursor', null);
+	
+				_common2.default.curUnLock();
+			}
+		}, {
+			key: 'take',
+			value: function take(target, x, y) {
+	
+				_share2.default.set('dragDeck', null);
+				_share2.default.set('startCursor', null);
+	
+				if (_common2.default.isCurLock() || _share2.default.get('sessionStarted')) {
+					return;
+				}
+	
+				if (target.className.split(' ').includes('slot')) {
+	
+					var _id = target.id,
+					    _deck = _common2.default.getElementById(_id);
+	
+					if (_deck) {
+						_event2.default.dispatch('click', {
+							to: _deck
+						});
+					}
+				}
+	
+				if (target.className.split(' ').includes('draggable')) {
+	
+					var _id2 = target.id,
+					    _card = _id2 ? _common2.default.getElementById(_id2) : null,
+					    _parent = _card && _card.parent ? _card.parent : null,
+					    _deck2 = _parent ? _deck4.default.getDeckById(_parent) : null;
+	
+					if (_deck2) {
+						_event2.default.dispatch('click', {
+							to: _deck2
+						});
+					}
+	
+					// _deck.runActions();
+	
+					// TODO
+					// в данной ситуации обрабатывается только клик по карте, пустые колоды никак не обрабатываются
+	
+					var _dragDeck = _deck2 ? _deck2.Take(_id2) : null;
+	
+					_share2.default.set('dragDeck', _dragDeck);
+	
+					if (_dragDeck) {
+	
+						_share2.default.set('startCursor', { x: x, y: y });
+	
+						// ???
+						_tips2.default.tipsDestination({ currentCard: _card });
+					}
+				}
+			}
+	
+			// -------------------------------------------------------------------------------------------------------------
+	
+		}, {
+			key: 'drag',
+			value: function drag(x, y) {
+	
+				if (_common2.default.isCurLock()) {
+					return;
+				}
+	
+				var _startCursor = _share2.default.get('startCursor'),
+				    _dragDeck = _share2.default.get('dragDeck');
+	
+				if (!_dragDeck || !_startCursor) {
+					return;
+				}
+	
+				// let _distance = _startCursor 
+				// 	? Math.sqrt(common.sqr(x - _startCursor.x) + common.sqr(y - _startCursor.y)) 
+				// 	: 0;
+	
+				// console.log(x - _startCursor.x, y - _startCursor.y);
+	
+				var _deck = _common2.default.getElementById(_dragDeck[0].card.parent);
+	
+				// let _position = _deck.padding(_dragDeck[_dragDeck.length - 1].index);
+	
+				_event2.default.dispatch('dragDeck', {
+					x: x, y: y,
+					_dragDeck: _dragDeck,
+					_startCursor: _startCursor,
+					_deck: _deck
+				});
+	
+				// подсказка лучшего хода до отпускания
+	
+				// let cursorMove = {
+				// 	distance     : _distance,
+				// 	direction    : {
+				// 		x     : x - _startCursor.x,// (+) rigth / (-) left
+				// 		y     : y - _startCursor.y,// (+) down  / (-) up
+				// 		right : x > _startCursor.x,
+				// 		left  : x < _startCursor.x,
+				// 		down  : y > _startCursor.y,
+				// 		up    : y < _startCursor.y
+				// 	},
+				// 	lastPosition : {x, y},
+				// 	deckPosition : {
+				// 		x : (_position.x + (x - _startCursor.x)),
+				// 		y : (_position.y + (y - _startCursor.y))
+				// 	}
+				// };
+	
+				// Tips.tipsMove({
+				// 	moveDeck   : _dragDeck, 
+				// 	cursorMove : cursorMove
+				// });
+			}
+	
+			// -------------------------------------------------------------------------------------------------------------
+	
+		}, {
+			key: 'put',
+			value: function put(target, x, y, dbclick) {
+	
+				if (_common2.default.isCurLock()) {
+					return;
+				}
+	
+				var _startCursor = _share2.default.get('startCursor'),
+				    // начальная позиция курсора
+				_dragDeck = _share2.default.get('dragDeck'); // 
+	
+				if (!_dragDeck || !_startCursor) {
+					return;
+				}
+	
+				var _deck = _common2.default.getElementById(_dragDeck[0].card.parent);
+	
+				var _position = _deck.padding(_dragDeck[0].index);
+	
+				var _distance = Math.sqrt(_common2.default.sqr(x - _startCursor.x) + _common2.default.sqr(y - _startCursor.y));
+				// console.log('>>> distance:', _distance, x - _startCursor.x, y - _startCursor.y);
+	
+				var cursorMove = {
+					distance: _distance,
+					dbclick: !!dbclick,
+					direction: {
+						x: x - _startCursor.x, // (+) rigth / (-) left
+						y: y - _startCursor.y, // (+) down  / (-) up
+						right: x > _startCursor.x,
+						left: x < _startCursor.x,
+						down: y > _startCursor.y,
+						up: y < _startCursor.y
+					},
+					lastPosition: { x: x, y: y },
+					deckPosition: {
+						x: _position.x + (x - _startCursor.x),
+						y: _position.y + (y - _startCursor.y)
+					}
+				};
+	
+				_share2.default.set('lastCursorMove', cursorMove, _defaults2.default.forceClone);
+	
+				_event2.default.dispatch('hideCard', target);
+				var _dop = document.elementFromPoint(x, y);
+				_event2.default.dispatch('showCard', target);
+				// if(_dop) {
+	
+				// Move(_dragDeck, _dop, cursorMove);
+				_event2.default.dispatch('Move', {
+					moveDeck: _dragDeck,
+					to: _dop.id,
+					cursorMove: cursorMove
+				});
+				// }
+	
+				// event.dispatch('redrawDeckIndexes', _deck);
+	
+				_share2.default.set('dragDeck', null);
+				_share2.default.set('startCursor', null);
+			}
+		}]);
+	
+		return inputs;
+	}();
+	
+	// let _inputs = new inputs();
+	
+	
+	new inputs();
+
+/***/ },
+/* 5 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+		value: true
+	});
+	
+	var _share = __webpack_require__(1);
+	
+	var _share2 = _interopRequireDefault(_share);
+	
+	var _event = __webpack_require__(2);
+	
+	var _event2 = _interopRequireDefault(_event);
+	
+	var _defaults = __webpack_require__(3);
+	
+	var _defaults2 = _interopRequireDefault(_defaults);
+	
+	var _state = __webpack_require__(6);
+	
+	var _state2 = _interopRequireDefault(_state);
+	
+	var _tips = __webpack_require__(9);
+	
+	var _tips2 = _interopRequireDefault(_tips);
+	
+	var _field = __webpack_require__(12);
+	
+	var _field2 = _interopRequireDefault(_field);
+	
+	var _history = __webpack_require__(35);
+	
+	var _history2 = _interopRequireDefault(_history);
+	
+	var _drawPreferences = __webpack_require__(55);
+	
+	var _drawPreferences2 = _interopRequireDefault(_drawPreferences);
+	
+	var _preferencesEvents = __webpack_require__(57);
+	
+	var _preferencesEvents2 = _interopRequireDefault(_preferencesEvents);
+	
+	var _defaultPreferences = __webpack_require__(59);
+	
+	var _defaultPreferences2 = _interopRequireDefault(_defaultPreferences);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	// event.listen('shareChange:stepType', (e) => {
+	// 	console.log('%cshareChange:stepType', 'background-color: green;color: white;', e);
+	// });
+	
+	// event.listen('shareChange:curLockState', (e) => {
+	// 	console.log('%cshareChange:curLockState', 'background-color: blue;color: white;', e);
+	// });
+	
+	_event2.default.listen('gameInit', function (data) {
+	
+		_share2.default.set('stepType', _defaults2.default.stepType);
+		_share2.default.delete('sessionStarted');
+	
+		curUnLock();
+	
+		if (!data.firstInit) {
+			return;
+		};
+	
+		(0, _drawPreferences2.default)();
+		(0, _preferencesEvents2.default)();
+	});
+	
+	_event2.default.listen('gameInited', function (e) {
+		(0, _defaultPreferences2.default)();
+	});
+	
+	// share.set('prevStepType', defaults.stepType);
+	// event.listen('shareChange:stepType', (e) => {
+	// 	share.set('prevStepType', e.from);
+	// });
+	
+	_event2.default.listen('moveEnd', function (e) {
+		_tips2.default.checkTips();
+	});
+	
+	_event2.default.listen('actionBreak', function (e) {
+		_tips2.default.checkTips();
+	});
+	
+	_event2.default.listen('startSession', function (e) {
+		_share2.default.set('sessionStarted', true);
+		_state2.default.backup();
+	});
+	
+	_event2.default.listen('stopSession', function (e) {
+		_share2.default.set('sessionStarted', false);
+		// state.backup();
+	});
+	
+	// --
+	
+	var sqr = function sqr(i) {
+		return i * i;
+	};
+	
+	// --
+	
+	// Lock/Unlock
+	
+	// let _lock = false;
+	
+	// let isLock = function() {
+	// 	return _lock;
+	// };
+	
+	// let lock = function() {
+	// 	_lock = true;
+	// }
+	// event.listen('lock', lock);
+	
+	// let unlock = function() {
+	// 	lock = false;
+	// }
+	// event.listen('unlock', unlock);
+	
+	// --
+	
+	var _inputStack = [];
+	
+	var isCurLock = function isCurLock(e) {
+		return _share2.default.get('curLockState');
+	};
+	
+	var curLock = function curLock(e) {
+		_share2.default.set('curLockState', true);
+	};
+	
+	var curUnLock = function curUnLock(e) {
+	
+		_share2.default.set('curLockState', false);
+	
+		for (var i in _inputStack) {
+			if (typeof _inputStack[i] == "function") {
+				_inputStack[i]();
+			}
+		}
+		_inputStack = [];
+	};
+	
+	// let input = (callback) => {
+	// 	if(!isCurLock()) {
+	// 		callback();
+	// 	} else {
+	// 		_inputStack.push(callback);
+	// 	}
+	// }
+	
+	// getters
+	
+	var getElements = function getElements(e) {
+		return _share2.default.get('elements');
+	};
+	
+	var getElementById = function getElementById(id) {
+	
+		var _elements = _share2.default.get('elements');
+	
+		return _elements[id];
+	};
+	
+	var getElementsByName = function getElementsByName(name, type) {
+	
+		var response = [];
+	
+		var _elements = _share2.default.get('elements');
+	
+		for (var i in _elements) {
+			if (_elements[i].name && typeof _elements[i].name == 'string' && _elements[i].name == name) {
+				if (type && typeof _elements[i].type == 'string') {
+					if (type && _elements[i].type == type) {
+						response.push(_elements[i]);
+					} else {
+						response.push(_elements[i]);
+					}
+				} else {
+					response.push(_elements[i]);
+				}
+			}
+		}
+	
+		return response;
+	};
+	
+	// validator
+	
+	var validateCardName = function validateCardName(name) {
+	
+		if (typeof name != 'string') {
+	
+			console.warn('Warning: validate name must have string type "' + name + '"', name);
+	
+			// throw new Error('validateCardName');
+	
+			return false;
+		}
+	
+		var suit = name.slice(0, 1),
+		    rank = name.slice(1, 3),
+		    color = null,
+		    value = _defaults2.default.card.values[_defaults2.default.card.ranks.indexOf(rank)];
+	
+		for (var colorName in _defaults2.default.card.colors) {
+			if (_defaults2.default.card.colors[colorName].includes(suit)) {
+				color = colorName;
+			}
+		}
+	
+		if (_defaults2.default.card.suits.includes(suit) && _defaults2.default.card.ranks.includes(rank)) {
+			return {
+				color: color,
+				value: value,
+				name: name,
+				suit: suit,
+				rank: rank
+			};
+		} else {
+			console.warn('Warning: validate name:', name, '- incorrect');
+			// throw new Error();
+			return false;
+		}
+	};
+	
+	// ID generator
+	
+	var _id = 0;
+	
+	var genId = function genId() {
+		return _id += 1;
+	};
+	
+	// --
+	
+	_share2.default.set('animation', _defaults2.default.animation);
+	
+	var animationOn = function animationOn(e) {
+		_share2.default.set('animation', true);
+	};
+	
+	var animationDefault = function animationDefault(e) {
+		_share2.default.set('animation', _defaults2.default.animation);
+	};
+	
+	var animationOff = function animationOff(e) {
+		_share2.default.set('animation', false);
+	};
+	
+	_event2.default.listen('newGame', function (e) {
+		// TODO
+		// из-за отключения анимации 
+		// на время восстановления ходов из истории приходится костылять
+		// и везде где нужна анимация ставить common.animationDefault();
+		// надо исправить когда из истории можно будет получить
+		// не только историю ходов
+		animationOff();
+	});
+	
+	// --
+	
+	_event2.default.listen('historyReapeater', function (data) {
+		if (data) {
+			_share2.default.set('noRedraw', true);
+			_share2.default.set('noTips', true);
+		} else {
+			_share2.default.set('noRedraw', false);
+			_field2.default.Redraw();
+			_share2.default.set('noTips', false);
+			_tips2.default.checkTips();
+		}
+	});
+	
+	// --
+	
+	// let deckInGroups = (deck, groups) => {
+	
+	// 	for(let groupName in groups) {
+	// 		Group.getByName(groupName).hasDeck(deck.name);
+	// 	}
+	// }
+	
+	// event.listen('makeStep', function(e) {
+	// share.set('animation', defaults.animation);
+	// });
+	
+	_share2.default.set('stepType', _defaults2.default.stepType);
+	
+	exports.default = {
+		//	isLock           ,
+		//	lock             ,
+		//	unlock           ,
+		isCurLock: isCurLock,
+		curLock: curLock,
+		curUnLock: curUnLock,
+		getElements: getElements,
+		getElementById: getElementById,
+		getElementsByName: getElementsByName,
+		validateCardName: validateCardName,
+		genId: genId,
+		animationOn: animationOn,
+		animationOff: animationOff,
+		animationDefault: animationDefault,
+		sqr: sqr
+	};
+
+/***/ },
+/* 6 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+		value: true
+	});
+	
+	var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
+	
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	
+	var _share = __webpack_require__(1);
+	
+	var _share2 = _interopRequireDefault(_share);
+	
+	var _event = __webpack_require__(2);
+	
+	var _event2 = _interopRequireDefault(_event);
+	
+	var _defaults = __webpack_require__(3);
+	
+	var _defaults2 = _interopRequireDefault(_defaults);
+	
+	var _common = __webpack_require__(5);
+	
+	var _common2 = _interopRequireDefault(_common);
+	
+	var _getDecks = __webpack_require__(7);
+	
+	var _getDecks2 = _interopRequireDefault(_getDecks);
+	
+	var _getDeckById = __webpack_require__(8);
+	
+	var _getDeckById2 = _interopRequireDefault(_getDeckById);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	// let stateModel = {};
+	
+	var cardModel = ['parent', 'visible', 'flip'];
+	
+	var stateManager = function () {
+		function stateManager() {
+			_classCallCheck(this, stateManager);
+	
+			this._state = null;
+	
+			this._sourceList = [
+			// 'elements',
+			'stepType'];
+	
+			this._clearList = ['animatedCallback', 'animatedElements', 'animatedElementsStack', 'curLockState', 'sessionStarted', 'startCursor', 'lastCursorMove'];
+		}
+	
+		_createClass(stateManager, [{
+			key: 'backup',
+			value: function backup() {
+	
+				this._state = {};
+	
+				for (var i in this._sourceList) {
+	
+					var _element = _share2.default.get(this._sourceList[i]);
+	
+					this._state[this._sourceList[i]] = ['string', 'number', 'boolean'].includes(typeof _element === 'undefined' ? 'undefined' : _typeof(_element)) ? _element : _element instanceof Array ? Object.assign([], _element) : Object.assign({}, _element);
+				}
+	
+				// --
+	
+				this._state.model = {};
+	
+				var _decks = (0, _getDecks2.default)();
+	
+				for (var deckId in _decks) {
+	
+					var _cards = [];
+	
+					for (var cardId in _decks[deckId].cards) {
+	
+						var _card = {
+							'name': _decks[deckId].cards[cardId].name,
+							'id': _decks[deckId].cards[cardId].id
+						};
+	
+						for (var _i in cardModel) {
+							var _name = cardModel[_i];
+							_card[_name] = _decks[deckId].cards[cardId][name];
+						}
+	
+						_cards.push(_card);
+					}
+	
+					this._state.model[deckId] = {
+						'name': _decks[deckId].name,
+						'cards': _cards,
+						'group': _decks[deckId].parent
+					};
+				}
+			}
+		}, {
+			key: 'restore',
+			value: function restore() {
+	
+				if (!this._state) {
+	
+					console.warn('Restore fail. Store is empty.');
+	
+					return;
+				}
+	
+				// restore share
+				for (var i in this._clearList) {
+					_share2.default.delete(this._clearList[i]);
+				}
+	
+				for (var _i2 in this._sourceList) {
+					_share2.default.set(this._sourceList[_i2], this._state[this._sourceList[_i2]], true);
+				}
+	
+				// --
+	
+				for (var deckId in this._state.model) {
+	
+					var _deck = (0, _getDeckById2.default)(deckId);
+	
+					var _cards = [];
+	
+					for (var _i3 in this._state.model[deckId].cards) {
+	
+						var cardId = this._state.model[deckId].cards[_i3].id;
+	
+						var _card = _common2.default.getElementById(cardId);
+	
+						if (_card.name == this._state.model[deckId].cards[_i3].name) {
+	
+							for (var _i4 in cardModel) {
+								var _name = cardModel[_i4];
+								_card[_name] = this._state.model[deckId].cards[_i4][name];
+							}
+	
+							_cards.push(_card);
+						} else {
+							console.warn('Что-то не так с картой', this._state.model[deckId].cards[_i3].id, this._state.model[deckId].cards[_i3].name, ' != ', _card.id, _card.name);
+						}
+					}
+	
+					_deck.cards = _cards;
+					_deck.Redraw();
+				}
+			}
+		}, {
+			key: 'get',
+			value: function get() {
+				return this._state;
+			}
+		}]);
+	
+		return stateManager;
+	}();
+	
+	exports.default = new stateManager();
+
+/***/ },
+/* 7 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+		value: true
+	});
+	
+	var _share = __webpack_require__(1);
+	
+	var _share2 = _interopRequireDefault(_share);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	exports.default = function (data) {
+	
+		var _decks = {};
+	
+		var _elements = _share2.default.get('elements');
+	
+		if (data && data.visible) {
+	
+			for (var deckId in _elements) {
+				if (_elements[deckId].type == 'deck') {
+					if (_elements[deckId].visible) {
+						_decks[deckId] = _elements[deckId];
+					}
+				};
+			};
+		} else {
+			for (var _deckId in _elements) {
+				if (_elements[_deckId].type == 'deck') {
+					_decks[_deckId] = _elements[_deckId];
+				};
+			};
+		}
+	
+		return _decks;
+	};
+
+/***/ },
+/* 8 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+		value: true
+	});
+	
+	var _share = __webpack_require__(1);
+	
+	var _share2 = _interopRequireDefault(_share);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	exports.default = function (id) {
+	
+		var _elements = _share2.default.get('elements');
+	
+		return _elements[id] && _elements[id].type == 'deck' ? _elements[id] : false;
+	};
+
+/***/ },
+/* 9 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+		value: true
+	});
+	
+	var _event = __webpack_require__(2);
+	
+	var _event2 = _interopRequireDefault(_event);
+	
+	var _share = __webpack_require__(1);
+	
+	var _share2 = _interopRequireDefault(_share);
+	
+	var _defaults = __webpack_require__(3);
+	
+	var _defaults2 = _interopRequireDefault(_defaults);
+	
+	var _common = __webpack_require__(5);
+	
+	var _common2 = _interopRequireDefault(_common);
+	
+	var _allToAll = __webpack_require__(10);
+	
+	var _allToAll2 = _interopRequireDefault(_allToAll);
+	
+	var _bestTip = __webpack_require__(11);
+	
+	var _bestTip2 = _interopRequireDefault(_bestTip);
+	
+	var _deck = __webpack_require__(14);
+	
+	var _deck2 = _interopRequireDefault(_deck);
+	
+	var _field = __webpack_require__(12);
+	
+	var _field2 = _interopRequireDefault(_field);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	var _showTips = _defaults2.default.showTips;
+	
+	var tipTypes = ['tip', 'tipTo', 'tipPriority', 'tipToHome'];
+	
+	var _tips = [];
+	
+	var getTips = function getTips(e) {
+		return _tips;
+	};
+	
+	var checkTips = function checkTips(e) {
+	
+		if (_share2.default.get('noTips')) {
+			return false;
+		}
+	
+		_event2.default.dispatch('hideTips');
+	
+		var _decks = _deck2.default.getDecks({ visible: true });
+	
+		_tips = (0, _allToAll2.default)({
+			decks: _decks
+		});
+	
+		if (_tips.length == 0 && _share2.default.get('stepType') == _defaults2.default.stepType) {
+	
+			_event2.default.dispatch('noTips');
+			console.log('No possible moves.');
+		}
+	
+		// let _showTips = share.get('showTips')
+		if (_showTips) {
+	
+			var _homeGroups = _field2.default.homeGroups;
+	
+			for (var i in _tips) {
+	
+				// TODO инициализировать "hideTipsInDom" в Field.js 
+				if (_tips[i].to.count === 0 && _field2.default.tipsParams.hideOnEmpty || _field2.default.tipsParams.excludeHomeGroups && _homeGroups && _homeGroups.length && _homeGroups.includes(_tips[i].from.deck.parent)) {
+					// ?#$%&!
+				} else {
+	
+					_event2.default.dispatch('showTip', {
+						el: _tips[i].from.card,
+						type: 'tip'
+					});
+				}
+	
+				if (_homeGroups.includes(_tips[i].to.deck.parent)) {
+					_event2.default.dispatch('showTip', {
+						el: _tips[i].from.card,
+						type: 'tipToHome'
+					});
+				}
+			}
+		}
+	};
+	
+	_event2.default.listen('makeStep', checkTips);
+	_event2.default.listen('checkTips', checkTips);
+	
+	// --------------------------------------------------------
+	
+	var showTips = function showTips(data) {
+	
+		_showTips = true;
+	
+		if (data && data.init) {
+			return;
+		}
+	
+		checkTips();
+	};
+	_event2.default.listen('tipsON', showTips);
+	
+	var hideTips = function hideTips(data) {
+	
+		_showTips = false;
+	
+		if (data && data.init) {
+			return;
+		}
+	
+		checkTips();
+	};
+	_event2.default.listen('tipsOFF', hideTips);
+	
+	// --------------------------------------------------------
+	
+	var tipsMove = function tipsMove(data) {
+	
+		if (!_share2.default.get('showTipPriority')) {
+			return;
+		}
+	
+		_event2.default.dispatch('hideTips', { types: ['tipPriority'] });
+	
+		if (_share2.default.showTipPriority && data && data.moveDeck && data.cursorMove && data.cursorMove.distance && data.cursorMove.distance >= _share2.default.moveDistance) {
+	
+			var Tip = (0, _bestTip2.default)(data.moveDeck, data.cursorMove);
+	
+			if (Tip) {
+	
+				_event2.default.dispatch('showTip', {
+					el: Tip.to.deck,
+					type: 'tipPriority'
+				});
+			}
+		}
+	};
+	
+	// --------------------------------------------------------
+	
+	var tipsDestination = function tipsDestination(data) {
+	
+		if (_share2.default.get('showTipsDestination')) {
+	
+			_event2.default.dispatch('hideTips');
+	
+			if (data && data.currentCard && data.currentCard.id) {
+				for (var i in _tips) {
+					if (_tips[i].from.card.id == data.currentCard.id) {
+	
+						_event2.default.dispatch('showTip', {
+							'el': _tips[i].to.deck,
+							'type': 'tipTo'
+						});
+					}
+				}
+			}
+		}
+	};
+	
+	var checkFrom = function checkFrom(from) {
+	
+		for (var i in _tips) {
+			if (_tips[i].from.deck.name == from) {
+				return true;
+			}
+		}
+	
+		return false;
+	};
+	
+	var fromTo = function fromTo(from, to) {
+	
+		for (var i in _tips) {
+			if (_tips[i].from.deck.name == from && _tips[i].to.deck.name == to) {
+				return true;
+			}
+		}
+	
+		return false;
+	};
+	
+	exports.default = {
+		tipTypes: tipTypes,
+		getTips: getTips,
+		checkTips: checkTips,
+		showTips: showTips,
+		hideTips: hideTips,
+		tipsMove: tipsMove,
+		checkFrom: checkFrom,
+		fromTo: fromTo,
+		tipsDestination: tipsDestination
+	};
+
+/***/ },
+/* 10 */
+/***/ function(module, exports) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+		value: true
+	});
+	
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	var allToAll = function () {
+		function allToAll() {
+			_classCallCheck(this, allToAll);
+	
+			this._decks = null;
+			this._moves = [];
+		}
+	
+		// 1)
+		// пробегаем все колоды
+	
+	
+		_createClass(allToAll, [{
+			key: 'get',
+			value: function get(data) {
+	
+				this._decks = data.decks;
+				this._moves = [];
+	
+				for (var deckIndex in this._decks) {
+	
+					var _cards = this._decks[deckIndex].cards;
+					// each cards in  current deck
+					this.cardsInTakeDeck(_cards, deckIndex);
+				};
+	
+				return this._moves;
+			}
+	
+			// 2)
+			// выбираем карты из колоды
+			// патаемся взять карту
+	
+		}, {
+			key: 'cardsInTakeDeck',
+			value: function cardsInTakeDeck(_cards, deckIndex) {
+	
+				for (var cardIndex in _cards) {
+	
+					var _id = _cards[cardIndex].id;
+	
+					var _take = this._decks[deckIndex].Take(_id);
+	
+					if (_take) {
+						this.decksToPut(_cards, _take, deckIndex, cardIndex);
+					};
+				};
+			}
+	
+			// 3)
+			// пробегаем все остальные колоды и пробуем положить на них то что взяли
+	
+		}, {
+			key: 'decksToPut',
+			value: function decksToPut(_cards, _take, deckIndex, cardIndex) {
+	
+				for (var deckIndex_2 in this._decks) {
+	
+					if (deckIndex != deckIndex_2) {
+	
+						var _put = this._decks[deckIndex_2].Put(_take);
+						if (_put) {
+							this.put(deckIndex_2, deckIndex, cardIndex, _cards);
+						};
+					};
+				};
+			}
+	
+			// 4)
+			// если получилось положить карты (с текущими правилами) записываем как возможный ход
+	
+		}, {
+			key: 'put',
+			value: function put(deckIndex_2, deckIndex, cardIndex, _cards) {
+	
+				var _cards_to = this._decks[deckIndex_2].cards,
+				    _card_to = _cards_to.length ? _cards_to[_cards_to.length - 1] : null;
+	
+				this._moves.push({
+	
+					from: {
+						deck: this._decks[deckIndex],
+						card: _cards[cardIndex], // firstCard of moved deck
+						count: _cards.length
+						// deckName : this._decks[deckIndex].name
+					},
+	
+					to: {
+						deck: this._decks[deckIndex_2],
+						lastCard: _card_to,
+						count: _cards_to.length
+						// deckName : this._decks[deckIndex_2].name
+					}
+				});
+			}
+		}]);
+	
+		return allToAll;
+	}();
+	
+	;
+	
+	var _allToAll = new allToAll();
+	
+	exports.default = function (data) {
+		return _allToAll.get(data);
+	};
+
+/***/ },
+/* 11 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+		value: true
+	});
+	
+	var _share = __webpack_require__(1);
+	
+	var _share2 = _interopRequireDefault(_share);
+	
+	var _defaults = __webpack_require__(3);
+	
+	var _defaults2 = _interopRequireDefault(_defaults);
+	
+	var _common = __webpack_require__(5);
+	
+	var _common2 = _interopRequireDefault(_common);
+	
+	var _tips4 = __webpack_require__(9);
+	
+	var _tips5 = _interopRequireDefault(_tips4);
+	
+	var _field = __webpack_require__(12);
+	
+	var _field2 = _interopRequireDefault(_field);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	exports.default = function (moveDeck, cursorMove) {
+	
+		var _autoTips = [];
+	
+		// выбрать подсказки для стопки из кторорой взяли карты
+		var _tips = _tips5.default.getTips();
+		for (var i in _tips) {
+			if (_tips[i].from.card.id == moveDeck[0].card.id) {
+				_autoTips.push(_tips[i]);
+			}
+		}
+	
+		if (_autoTips.length == 0) {
+			return false;
+		}
+	
+		// move card to closest deck of a possible move
+		var _tip_index = 0,
+		    _in_direction_count = 0,
+		    _min_distance = -1;
+	
+		// Приоритет для homeGroups
+		var _homeGroups = _field2.default.homeGroups;
+	
+		if (_homeGroups) {
+	
+			var _tips2 = [];
+	
+			for (var homeGroupIndex in _homeGroups) {
+	
+				for (var _i in _autoTips) {
+					if (_autoTips[_i].to.deck.parent == _homeGroups[homeGroupIndex]) {
+						_tips2.push(_autoTips[_i]);
+					}
+				}
+			}
+	
+			// есть подсказки ведущие в homeGroups
+			if (_tips2.length) {
+				_autoTips = _tips2;
+			}
+		}
+	
+		// вариантов несколько
+		if (_autoTips.length > 1) {
+	
+			// у пустых стопок назначения приоритет меньше
+			for (var _i2 = 0; _i2 < _autoTips.length; _i2 += 1) {
+	
+				var _tips3 = [];
+	
+				if (_autoTips[_i2].to.deck.cardsCount()) {
+					_tips3.push(_autoTips[_i2]);
+				}
+	
+				if (_tips3.length) {
+					_autoTips = _tips3;
+				}
+			}
+	
+			for (var _i3 in _autoTips) {
+	
+				// координаты центра перетаскиваемой карты/стопки
+				var center_from = {
+					x: cursorMove.deckPosition.x + (_defaults2.default.card.width / 2 | 0),
+					y: cursorMove.deckPosition.y + (_defaults2.default.card.height / 2 | 0)
+				};
+	
+				var _destination_deck_last_card_position = _autoTips[_i3].to.deck.padding(_autoTips[_i3].to.deck.cards.length);
+				// координаты центра стопки назначения
+				var center_to = {
+					x: _destination_deck_last_card_position.x + (_defaults2.default.card.width / 2 | 0),
+					y: _destination_deck_last_card_position.y + (_defaults2.default.card.height / 2 | 0)
+				};
+	
+				// расстояние между стопкой и перетаскиваемой картой/стопкой
+				_autoTips[_i3].distance = Math.sqrt(_common2.default.sqr(center_from.x - center_to.x) + _common2.default.sqr(center_from.y - center_to.y));
+	
+				// смотрим находится ли стопка назначения в направлении движения
+				_autoTips[_i3].inDirection = false;
+				if (cursorMove.direction.x > 0 && center_to.x > center_from.x || cursorMove.direction.x < 0 && center_to.x < center_from.x) {
+					_autoTips[_i3].inDirection = true;
+					_in_direction_count += 1;
+				}
+			}
+	
+			// ищем ближайшую стопку среди из подсказок
+			for (var _i4 in _autoTips) {
+	
+				// первая итерация
+				if (_min_distance == '-1') {
+	
+					// нет подсказок в направлении движения
+					if (_in_direction_count == 0) {
+						_min_distance = _autoTips[_i4].distance;
+	
+						// есть подсказки в направлении движения
+					} else {
+						if (_autoTips[_i4].inDirection) {
+							_min_distance = _autoTips[_i4].distance;
+							_tip_index = _i4;
+						}
+					}
+				} else {
+	
+					// нашли меньше
+					if (_autoTips[_i4].distance < _min_distance) {
+	
+						// нет подсказок в направлении движения
+						if (_in_direction_count == 0) {
+							_min_distance = _autoTips[_i4].distance;
+							_tip_index = _i4;
+	
+							// есть подсказки в направлении движения
+						} else {
+							if (_autoTips[_i4].inDirection) {
+								_min_distance = _autoTips[_i4].distance;
+								_tip_index = _i4;
+							}
+						}
+					}
+				}
+			}
+			// _tip_index - номер ближайшей стопки в направлении движения
+		}
+	
+		return _autoTips[_tip_index];
+	};
+
+/***/ },
+/* 12 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+		value: true
+	});
+	
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	
+	var _share = __webpack_require__(1);
+	
+	var _share2 = _interopRequireDefault(_share);
+	
+	var _event = __webpack_require__(2);
+	
+	var _event2 = _interopRequireDefault(_event);
+	
+	var _defaults = __webpack_require__(3);
+	
+	var _defaults2 = _interopRequireDefault(_defaults);
+	
+	var _common = __webpack_require__(5);
+	
+	var _common2 = _interopRequireDefault(_common);
+	
+	var _group2 = __webpack_require__(13);
+	
+	var _group3 = _interopRequireDefault(_group2);
+	
+	var _deck2 = __webpack_require__(14);
+	
+	var _deck3 = _interopRequireDefault(_deck2);
+	
+	var _tips = __webpack_require__(9);
+	
+	var _tips2 = _interopRequireDefault(_tips);
+	
+	var _addAutoSteps = __webpack_require__(51);
+	
+	var _addAutoSteps2 = _interopRequireDefault(_addAutoSteps);
+	
+	var _storage = __webpack_require__(54);
+	
+	var _storage2 = _interopRequireDefault(_storage);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	// Model
+	// let values = {
+	// 	"homeGroups": {
+	// 		"type": ["array", "string"],
+	// 		"value": [],
+	// 		"dest": "array"
+	// 	}
+	// }
+	
+	/*
+	 * create
+	 * Redraw
+	 * clear
+	 */
+	
+	var Field = function () {
+		function Field() {
+			_classCallCheck(this, Field);
+	
+			_share2.default.set('elements', {});
+	
+			this.tipsParams = {};
+			this.inputParams = {};
+		}
+	
+		_createClass(Field, [{
+			key: 'create',
+			value: function create(data) {
+	
+				this.homeGroups = data.homeGroups ? data.homeGroups : [];
+	
+				// вкл./выкл. подсказок
+				if (typeof data.showTips == 'boolean' && data.showTips) {
+					_tips2.default.showTips({ init: true });
+				} else {
+					_tips2.default.hideTips({ init: true });
+				}
+	
+				// устанвливаем тип хода по умолчанию
+				_share2.default.set('stepType', _defaults2.default.stepType);
+	
+				// Альтернативные подсказки
+				_share2.default.set('showTipsDestination', typeof data.showTipsDestination == 'boolean' ? data.showTipsDestination : _defaults2.default.showTipsDestination);
+	
+				_share2.default.set('showTipPriority', typeof data.showTipPriority == 'boolean' ? data.showTipPriority : _defaults2.default.showTipPriority);
+	
+				_share2.default.set('moveDistance', data.moveDistance && typeof data.moveDistance == 'number' ? data.moveDistance : _defaults2.default.moveDistance);
+	
+				// условие выигрыша
+				_share2.default.set('winCheck', data.winCheck);
+	
+				// масштаб отображения
+				_share2.default.set('zoom', data.zoom && typeof data.zoom == 'number' ? data.zoom : _defaults2.default.zoom);
+	
+				// Настройки игры
+				if (data.preferences) {
+	
+					var _pref = _storage2.default.get('pref'),
+					    _preferences = {},
+					    _prefData = {};
+	
+					for (var prefName in data.preferences) {
+						if (typeof prefName == "string") {
+	
+							_preferences[prefName] = data.preferences[prefName];
+	
+							_prefData[prefName] = _pref && typeof _pref[prefName] != "undefined" ? _pref[prefName] : data.preferences[prefName].value;
+						}
+					}
+	
+					_share2.default.set('gamePreferences', _preferences);
+					_share2.default.set('gamePreferencesData', _prefData);
+				} else {
+					_share2.default.set('gamePreferences', {});
+				}
+	
+				// время анимации
+				_share2.default.set({
+					animationTime: typeof data.animationTime == "number" ? data.animationTime : _defaults2.default.animationTime
+				});
+	
+				// параметры отображения подсказок
+				for (var tipParamName in _defaults2.default.tipsParams) {
+					this.tipsParams[tipParamName] = data.tipsParams && typeof data.tipsParams[tipParamName] != "undefined" ? data.tipsParams[tipParamName] : _defaults2.default.tipsParams[tipParamName];
+				}
+	
+				// параметры ввода
+				for (var inputParamName in _defaults2.default.inputParams) {
+					this.inputParams[inputParamName] = data.inputParams && typeof data.inputParams[inputParamName] != "undefined" ? data.inputParams[inputParamName] : _defaults2.default.inputParams[inputParamName];
+				}
+	
+				// дополнительные параметры отображения
+				// начальная позиция порядка отображения элементов
+				if (data.startZIndex && typeof data.startZIndex == 'number') {
+					_share2.default.set('start_z_index', data.startZIndex);
+				}
+	
+				// инициализация автоходов
+				if (data.autoSteps) {
+					this.autoSteps = (0, _addAutoSteps2.default)(data.autoSteps);
+				}
+	
+				// NOTE: на событие подписан deckActions
+				// если ставить позже отрисовки элементов, переделать
+				_event2.default.dispatch('initField', data);
+	
+				// Отрисовка элементов
+				if (data.groups) {
+					for (var groupName in data.groups) {
+						data.groups[groupName].name = groupName;
+						_group3.default.add(data.groups[groupName]);
+					}
+				}
+	
+				if (data.decks) {
+					for (var e in data.decks) {
+						_deck3.default.addDeck(data.decks[e]);
+					}
+				}
+	
+				if (data.fill) {
+	
+					var _decks = _deck3.default.getDecks();
+					var _fill = null;
+					try {
+						_fill = Object.assign([], data.fill);
+					} catch (e) {
+						_fill = data.fill;
+					}
+	
+					for (; _fill.length;) {
+						for (var deckId in _decks) {
+							if (_fill.length) {
+								var _card = _fill.shift();
+								_decks[deckId].Fill([_card]);
+							}
+						}
+					}
+				}
+	
+				// Найти возможные ходы
+				_tips2.default.checkTips();
+	
+				// событие: игра началась
+				_event2.default.dispatch('newGame');
+			}
+		}, {
+			key: 'Redraw',
+			value: function Redraw(data) {
+	
+				// прокидываеем <новую> конфигурацию
+				if (data) {
+	
+					// ерерисовываем все группы и стопки в них
+					for (var _groupName in data.groups) {
+	
+						var _group = _group3.default.getByName(_groupName);
+	
+						if (_group) {
+							_group.Redraw(data.groups[_groupName]);
+						}
+					}
+	
+					// перерисовываем отдельно стоящие стопки
+					for (var i in data.decks) {
+	
+						var _deck = _deck3.default.getDeck(data.decks[i].name);
+	
+						if (_deck) {
+							_deck.Redraw(data.decks[i]);
+						}
+					}
+	
+					// перерисовка без конфигурации
+				} else {
+	
+					// получаем все существующие стопки
+					var _decks = _deck3.default.getDecks();
+	
+					// перерисовываем каждую
+					for (var _i in _decks) {
+						_decks[_i].Redraw();
+					}
+				}
+			}
+		}, {
+			key: 'clear',
+			value: function clear() {
+	
+				var _elements = _share2.default.get('elements');
+	
+				for (var i in _elements) {
+					if (_elements[i].type == 'deck') {
+						_elements[i].clear();
+						_elements[i] = null;
+					} else if (_elements[i].type == 'group') {
+						_elements[i] = null;
+					}
+				}
+	
+				_share2.default.set('elements', {});
+			}
+		}]);
+	
+		return Field;
+	}();
+	
+	exports.default = new Field();
+
+/***/ },
+/* 13 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+		value: true
+	});
+	
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	
+	var _event = __webpack_require__(2);
+	
+	var _event2 = _interopRequireDefault(_event);
+	
+	var _share = __webpack_require__(1);
+	
+	var _share2 = _interopRequireDefault(_share);
+	
+	var _defaults = __webpack_require__(3);
+	
+	var _defaults2 = _interopRequireDefault(_defaults);
+	
+	var _common = __webpack_require__(5);
+	
+	var _common2 = _interopRequireDefault(_common);
+	
+	var _deck = __webpack_require__(14);
+	
+	var _deck2 = _interopRequireDefault(_deck);
+	
+	var _groupFill = __webpack_require__(38);
+	
+	var _groupFill2 = _interopRequireDefault(_groupFill);
+	
+	var _groupRedraw = __webpack_require__(39);
+	
+	var _groupRedraw2 = _interopRequireDefault(_groupRedraw);
+	
+	var _groupGenerator = __webpack_require__(40);
+	
+	var _groupGenerator2 = _interopRequireDefault(_groupGenerator);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	var params = {
+		"paddingType": { "type": "any" },
+		"flip": { "type": "any" },
+		"showSlot": { "type": "any" },
+		"takeRules": { "type": "any" },
+		"putRules": { "type": "any" },
+		"fullRules": { "type": "any" },
+		"autoHide": { "type": "any" },
+		"paddingX": { "type": "any" },
+		"paddingY": { "type": "any" },
+		"flipPaddingX": { "type": "any" },
+		"flipPaddingY": { "type": "any" },
+		"actions": { "type": "any" },
+		"save": {
+			"type": "boolean",
+			"default": true
+		}
+	};
+	
+	var groupClass = function () {
+		function groupClass(data, id) {
+			_classCallCheck(this, groupClass);
+	
+			this.type = 'group';
+	
+			this.id = id;
+	
+			this.name = data.name && typeof data.name == 'string' ? data.name : 'name_' + id;
+	
+			this.position = {
+				x: data.position && data.position.x && typeof data.position.x == 'number' ? data.position.x : 0,
+				y: data.position && data.position.y && typeof data.position.y == 'number' ? data.position.y : 0
+			};
+	
+			this.placement = data.placement ? {
+				x: data.placement.x ? data.placement.x : 0,
+				y: data.placement.y ? data.placement.y : 0
+			} : null;
+	
+			this.decks = {};
+	
+			// сохраняем атрибуты чтобы прокинуть их колодам
+			this.parameters = {};
+			for (var paramName in params) {
+				if (params[paramName].type == "any") {
+					this.parameters[paramName] = data[paramName] ? data[paramName] : _defaults2.default[paramName];
+				} else if (params[paramName].type == "boolean") {
+					this.parameters[paramName] = typeof data[paramName] == "boolean" ? data[paramName] : params[paramName].default;
+					// this.parameters[paramName] = typeof data[paramName] == "boolean" ? data[paramName] : defaults[paramName];
+				}
+			};
+	
+			this.deckIndex = [];
+	
+			this.tags = data.tags;
+		}
+	
+		// Add deck to group
+	
+	
+		_createClass(groupClass, [{
+			key: 'addDeck',
+			value: function addDeck(data) {
+	
+				if (!data) {
+					return;
+				}
+	
+				if (!data.position) {
+					data.position = {
+						'x': 0,
+						'y': 0
+					};
+				}
+	
+				// сортировка элементов в группе по заданному индексу и порядку добавления
+	
+				// if(!data.position.x) { data.position.x = 0; }
+				// if(!data.position.y) { data.position.y = 0; }
+	
+				if (!data.parent) {
+					data.parent = this.name;
+				}
+	
+				data.parentPosition = {
+					x: this.position.x,
+					y: this.position.y
+				};
+	
+				// расставляем колоды в группе
+				// 1 приоретет отдаётся параметру groupIndex
+				// остальные вставляются в промежутки или добавляются в конец
+				var _index = 0;
+	
+				if (data.groupIndex && decks[this.deckIndex[data.groupIndex - 1]].this.deckIndex == data.this.deckIndex && typeof data.groupIndex == 'number' && this.deckIndex[data.groupIndex - 1]) {
+					console.warn('Warning: duplicate groupIndex', data.groupIndex, 'changed to null');
+					data.groupIndex = null;
+				}
+	
+				if (data.groupIndex && typeof data.groupIndex == 'number') {
+	
+					if (this.deckIndex[data.groupIndex - 1]) {
+	
+						for (; typeof this.deckIndex[_index] != 'undefined'; _index += 1) {}
+	
+						if (placement) {
+	
+							var _index2 = this.deckIndex[data.groupIndex - 1];
+	
+							var _elements = _share2.default.get('elements');
+	
+							if (placement.x) {
+								_elements[_index2].x(this.position.x + (placement.x + _defaults2.default.card.width) * _index2);
+							}
+	
+							if (placement.y) {
+								_elements[_index2].y(this.position.y + (placement.y + _defaults2.default.card.width) * _index2);
+							}
+	
+							_share2.default.set('elements', _elements);
+						}
+	
+						this.deckIndex[_index] = this.deckIndex[data.groupIndex - 1];
+						this.deckIndex[data.groupIndex - 1] = true;
+	
+						_index = data.groupIndex - 1;
+					} else {
+	
+						this.deckIndex[data.groupIndex - 1] = true;
+	
+						_index = data.groupIndex - 1;
+					}
+				} else {
+					for (; typeof this.deckIndex[_index] != 'undefined'; _index += 1) {};
+					this.deckIndex[_index] = true;
+				}
+	
+				// смещаем координаты колод относительно координад группы
+				if (this.placement) {
+	
+					if (this.placement.x) {
+						data.position.x = (this.placement.x + _defaults2.default.card.width) * _index;
+					}
+	
+					if (this.placement.y) {
+						data.position.y = (this.placement.y + _defaults2.default.card.height) * _index;
+					}
+				}
+	
+				// прокидываем некоторые атрибуты всем колодам группы (у атрибутов заданных колоде приоритет выше)
+				for (var paramName in params) {
+	
+					if (params[paramName].type == "any") {
+						if (this.parameters[paramName] && typeof data[paramName] == "undefined") {
+							data[paramName] = this.parameters[paramName];
+						};
+					} else if (params[paramName].type == "boolean") {
+						// if(
+						//	typeof this.parameters[paramName] != "undefined" &&
+						//	typeof data[paramName] == "undefined"
+						// ) {
+	
+						// TODO в данном случае у "boolean" параметров приоритет будет выше чем у "any" для генератора
+	
+						data[paramName] = this.parameters[paramName];
+						// }			
+					}
+				};
+	
+				data.deckIndex = typeof data.deckIndex == "number" ? data.deckIndex : _index;
+	
+				var _el = _deck2.default.addDeck(data);
+	
+				this.deckIndex[_index] = _el.id;
+				this.decks[_el.id] = _el;
+			}
+	
+			// Fill group
+	
+		}, {
+			key: 'Fill',
+			value: function Fill(cardNames) {
+				(0, _groupFill2.default)(this, cardNames);
+			}
+		}, {
+			key: 'getDeckById',
+			value: function getDeckById(id) {
+				return this.decks[id];
+			}
+		}, {
+			key: 'getDeckIndexById',
+			value: function getDeckIndexById(id) {
+	
+				for (var i in this.deckIndex) {
+					if (this.deckIndex[i] == id) {
+						return i;
+					}
+				}
+	
+				return null;
+			}
+		}, {
+			key: 'getDeckIdByIndex',
+			value: function getDeckIdByIndex(index) {
+				return this.deckIndex[index];
+			}
+		}, {
+			key: 'getDeckByIndex',
+			value: function getDeckByIndex(index) {
+	
+				var id = this.getDeckIdByIndex(index);
+	
+				return this.getDeckById(id);
+			}
+		}, {
+			key: 'getDecksByName',
+			value: function getDecksByName(name) {
+	
+				var _decks = {};
+	
+				for (var d in this.decks) {
+					if (this.decks[d].name == name) {
+						_decks[d] = decks[d];
+					}
+				}
+	
+				return _decks;
+			}
+	
+			// Get decks from group
+	
+		}, {
+			key: 'getDecks',
+			value: function getDecks(data) {
+	
+				var _decks = [];
+	
+				for (var i in this.decks) {
+					if (data && data.visible) {
+						if (this.decks[i].visible) {
+							_decks.push(this.decks[i]);
+						}
+					} else {
+						_decks.push(this.decks[i]);
+					}
+				}
+	
+				return _decks;
+			}
+	
+			// Redraw group
+	
+		}, {
+			key: 'Redraw',
+			value: function Redraw(data) {
+				(0, _groupRedraw2.default)(this, data);
+			}
+		}, {
+			key: 'hasDeck',
+			value: function hasDeck(deckName) {
+	
+				var has = false;
+	
+				for (var deckId in decks) {
+					if (decks[deckId].name == deckName) {
+						has = true;
+					}
+				}
+	
+				return has;
+			}
+		}]);
+	
+		return groupClass;
+	}();
+	
+	// -----------------------------------------------------------------------------------------------------------------------
+	
+	var add = function add(data) {
+	
+		if (!data) {
+			return false;
+		}
+	
+		if (!data.decks) {
+			return false;
+		}
+	
+		var id = 'group_' + _common2.default.genId();
+	
+		var _el_group = new groupClass(data, id);
+	
+		if (data.decks) {
+	
+			if (typeof data.decks == 'number') {
+				data.decks = {
+					"generator": {
+						"type": "count",
+						"count": data.decks
+					}
+				};
+			}
+	
+			if (data.decks.generator) {
+	
+				if (data.decks.generator.type) {
+	
+					if (_groupGenerator2.default[data.decks.generator.type]) {
+	
+						data.decks = _groupGenerator2.default[data.decks.generator.type](_el_group, data.decks.generator);
+					} else {
+						console.warn('Deck generator type "' + data.decks.generator.type + '" not found.');
+						return;
+					}
+				} else {
+					console.warn('Deck generator type is null.');
+					return;
+				};
+	
+				data.placement = null;
+			}
+	
+			// relations TO <-> FROM
+			// if( data.backRelations ) TODO
+			for (var to in data.decks) {
+	
+				for (var relId in data.decks[to].relations) {
+	
+					var _relation = null;
+					try {
+						_relation = Object.assign({}, data.decks[to].relations[relId]);
+					} catch (e) {
+						_relation = data.decks[to].relations[relId];
+					}
+	
+					for (var from in data.decks) {
+	
+						if (data.decks[from].name == _relation.to) {
+							_relation.to = null;
+							_relation.from = data.decks[to].name;
+							data.decks[from].relations.push(_relation);
+						}
+					}
+				}
+			}
+	
+			for (var d in data.decks) {
+				_el_group.addDeck(data.decks[d]);
+			};
+		}
+	
+		var _elements = _share2.default.get('elements');
+		_elements[id] = _el_group;
+		_share2.default.set('elements', _elements);
+	
+		// fill group
+		if (data && data.fill) {
+	
+			var _checkFillDeck = data.fill.length;
+			if (_checkFillDeck) {
+				_el_group.Fill(data.fill);
+			}
+		}
+	
+		return _el_group;
+	};
+	
+	// TODO rename to "getByName"
+	var getByName = function getByName(name) {
+		return _common2.default.getElementsByName(name, 'group')[0];
+	};
+	
+	exports.default = {
+		getByName: getByName,
+		add: add
+	};
+
+/***/ },
+/* 14 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+		value: true
+	});
+	
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	
+	var _event = __webpack_require__(2);
+	
+	var _event2 = _interopRequireDefault(_event);
+	
+	var _share = __webpack_require__(1);
+	
+	var _share2 = _interopRequireDefault(_share);
+	
+	var _defaults = __webpack_require__(3);
+	
+	var _defaults2 = _interopRequireDefault(_defaults);
+	
+	var _common = __webpack_require__(5);
+	
+	var _common2 = _interopRequireDefault(_common);
+	
+	var _flipTypes = __webpack_require__(15);
+	
+	var _flipTypes2 = _interopRequireDefault(_flipTypes);
+	
+	var _readyPutRules = __webpack_require__(16);
+	
+	var _readyPutRules2 = _interopRequireDefault(_readyPutRules);
+	
+	var _readyTakeRules = __webpack_require__(18);
+	
+	var _readyTakeRules2 = _interopRequireDefault(_readyTakeRules);
+	
+	var _fullRules = __webpack_require__(19);
+	
+	var _fullRules2 = _interopRequireDefault(_fullRules);
+	
+	var _paddingTypes = __webpack_require__(20);
+	
+	var _paddingTypes2 = _interopRequireDefault(_paddingTypes);
+	
+	var _deckActions = __webpack_require__(21);
+	
+	var _deckActions2 = _interopRequireDefault(_deckActions);
+	
+	var _deckTake = __webpack_require__(32);
+	
+	var _deckTake2 = _interopRequireDefault(_deckTake);
+	
+	var _deckPut = __webpack_require__(33);
+	
+	var _deckPut2 = _interopRequireDefault(_deckPut);
+	
+	var _genCardByName2 = __webpack_require__(34);
+	
+	var _genCardByName3 = _interopRequireDefault(_genCardByName2);
+	
+	var _group = __webpack_require__(13);
+	
+	var _group2 = _interopRequireDefault(_group);
+	
+	var _history = __webpack_require__(35);
+	
+	var _history2 = _interopRequireDefault(_history);
+	
+	var _getDecks = __webpack_require__(7);
+	
+	var _getDecks2 = _interopRequireDefault(_getDecks);
+	
+	var _getDeckById = __webpack_require__(8);
+	
+	var _getDeckById2 = _interopRequireDefault(_getDeckById);
+	
+	var _deckCardNames = __webpack_require__(36);
+	
+	var _deckCardNames2 = _interopRequireDefault(_deckCardNames);
+	
+	var _getDeck = __webpack_require__(37);
+	
+	var _getDeck2 = _interopRequireDefault(_getDeck);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	var Deck = function () {
+		function Deck(data, id) {
+			var _this = this;
+	
+			_classCallCheck(this, Deck);
+	
+			if (!data) {
+				return false;
+			}
+	
+			this.cards = [];
+	
+			// parameters
+			this.type = 'deck';
+			this.full = false;
+	
+			this.id = id;
+	
+			var _parent_el = _group2.default.getByName(data.parent),
+			    _parent_name = _parent_el ? _parent_el.name : 'no_parent_',
+			    _new_id = _parent_el ? _parent_el.getDecks().length : id;
+	
+			this.name = typeof data.name == 'string' ? data.name : _parent_name + '_' + _new_id;
+	
+			this.locked = data.locked ? true : false;
+			this.save = data.save ? true : false;
+			this.visible = typeof data.visible == 'boolean' ? data.visible : true;
+			this.groupIndex = typeof data.groupIndex == 'number' ? data.groupIndex : null;
+			this.parent = typeof data.parent == 'string' ? data.parent : 'field';
+			this.autoHide = typeof data.autoHide == 'boolean' ? data.autoHide : _defaults2.default.autohide;
+	
+			// changed parameters
+			if (typeof data.showSlot == "undefined") {
+				data.showSlot = _defaults2.default.showSlot;
+			}
+	
+			this._params = {
+				padding_y: typeof data.paddingY == 'number' ? data.paddingY : _defaults2.default.padding_y,
+				flip_padding_y: typeof data.flipPaddingY == 'number' ? data.flipPaddingY : _defaults2.default.flip_padding_y,
+				padding_x: typeof data.paddingX == 'number' ? data.paddingX : _defaults2.default.padding_x,
+				flip_padding_x: typeof data.flipPaddingX == 'number' ? data.flipPaddingX : _defaults2.default.flip_padding_x,
+				startZIndex: typeof data.startZIndex == 'number' ? data.startZIndex : _defaults2.default.startZIndex,
+				rotate: typeof data.rotate == 'number' ? data.rotate : _defaults2.default.rotate,
+				x: 0,
+				y: 0
+			};
+	
+			this.rotate = this._params.rotate;
+	
+			// Flip
+			var flipType = data.flip && typeof data.flip == 'string' ? data.flip : _defaults2.default.flip_type;
+	
+			this.cardFlipCheck = _flipTypes2.default[flipType];
+	
+			// Put
+			this.putRules = data.putRules ? typeof data.putRules == 'function' ? data.putRules : typeof data.putRules == 'string' ? _readyPutRules2.default[data.putRules] ? _readyPutRules2.default[data.putRules] : _readyPutRules2.default[_defaults2.default.putRule] : data.putRules.constructor == Array ? data.putRules : _readyPutRules2.default[_defaults2.default.putRule] : _readyPutRules2.default[_defaults2.default.putRule];
+	
+			// Take
+			// можно ли взять карту/стопку
+			this.takeRules = data.takeRules;
+	
+			// Full
+			this.fullRules = null;
+	
+			if (data.fullRules) {
+				this.fullRules = data.fullRules;
+			}
+	
+			// Padding
+			// порядок карт в колоде
+			var padding = data.paddingX || data.paddingY ? _paddingTypes2.default.special : data.paddingType ? typeof data.paddingType == 'string' && _paddingTypes2.default[data.paddingType] ? _paddingTypes2.default[data.paddingType] : _paddingTypes2.default.none : _paddingTypes2.default[_defaults2.default.paddingType];
+	
+			this.padding = function (index) {
+				return padding(_this._params, _this.cards[index], index, _this.cards.length, _this.cards);
+			};
+	
+			this.actions = [];
+			if (data.actions) {
+				this.actions = data.actions;
+				_deckActions2.default.add(this);
+			}
+	
+			// Relations
+			if (data.relations) {
+				this.relations = data.relations;
+			} else {
+				this.relations = [];
+			}
+	
+			// Tags
+			this.tags = data.tags ? data.tags : [];
+	
+			_event2.default.dispatch('addDeckEl', {
+				deckData: data,
+				deck: this,
+				params: this._params
+			});
+	
+			// Подписывается на перетаскивание стопки/карты
+			var _callback = function _callback(data) {
+	
+				// TODO
+				// проверять fill только для тех стопок котрые участвовали в Action
+	
+				if (data.destination.name != _this.name) {
+					return;
+				}
+	
+				_this.checkFull();
+			};
+	
+			_event2.default.listen('moveDragDeck', _callback);
+		}
+	
+		// -------------------------------------------------------------------------------------------------
+	
+		// перерисовка стопки
+	
+	
+		_createClass(Deck, [{
+			key: 'Redraw',
+			value: function Redraw(data) {
+	
+				_event2.default.dispatch('redrawDeck', {
+					deck: this,
+					deckData: data,
+					params: this._params,
+					cards: this.cards
+				});
+	
+				_event2.default.dispatch('redrawDeckFlip', {
+					cards: this.cards
+				});
+			}
+		}, {
+			key: 'getTopCard',
+			value: function getTopCard() {
+	
+				if (this.cards.length == 0) {
+					return false;
+				}
+	
+				return this.cards[this.cards.length - 1];
+			}
+		}, {
+			key: 'lock',
+			value: function lock() {
+				this.locked = true;
+			}
+		}, {
+			key: 'unlock',
+			value: function unlock() {
+				this.locked = false;
+			}
+		}, {
+			key: 'flipCheck',
+			value: function flipCheck() {
+	
+				for (var i in this.cards) {
+					this.cardFlipCheck(this.cards[i], i | 0, this.cards.length);
+				}
+	
+				_event2.default.dispatch('redrawDeckFlip', this);
+			}
+		}, {
+			key: 'checkFull',
+			value: function checkFull() {
+	
+				if (!this.full && this.fullRules && this.fullRules.length > 0) {
+	
+					var full = true;
+	
+					for (var ruleIndex in this.fullRules) {
+	
+						var _rule = this.fullRules[ruleIndex];
+	
+						if (typeof _rule == "string") {
+							full = full && typeof _fullRules2.default[ruleIndex] == "function" && !_fullRules2.default[ruleIndex](this);
+						} else {
+	
+							for (var subRule in _rule) {
+								if (typeof subRule == "string" && typeof _fullRules2.default[subRule] == "function") {
+									full = full && _fullRules2.default[subRule](this, _rule[subRule]);
+								}
+							}
+	
+							// if(_rule.query) {
+							// 	fullRules._query(this, _rule.query)
+							// }
+						}
+					}
+	
+					this.full = full;
+				}
+			}
+		}, {
+			key: 'Fill',
+			value: function Fill(cardNames) {
+	
+				for (var i in cardNames) {
+					this.genCardByName(cardNames[i]);
+				}
+			}
+		}, {
+			key: 'clear',
+			value: function clear() {
+	
+				for (var i in this.cards) {
+					_event2.default.dispatch('removeEl', this.cards[i]);
+					this.cards[i] = null;
+				}
+	
+				this.cards = [];
+	
+				_event2.default.dispatch('removeEl', this);
+			}
+		}, {
+			key: 'Push',
+			value: function Push(deck) {
+	
+				for (var i in deck) {
+					deck[i].parent = this.id;
+					this.cards.push(deck[i]);
+				}
+			}
+		}, {
+			key: 'Pop',
+			value: function Pop(count, clearParent) {
+	
+				if (this.cards.length < count) {
+					return false;
+				}
+	
+				var _deck = [];
+				for (; count; count -= 1) {
+					var _pop = this.cards.pop();
+					if (clearParent) _pop.parent = null;
+					_deck.push(_pop);
+					_deck[_deck.length - 1].parent = null;
+				}
+				_deck.reverse();
+	
+				// что делать если вынули все карты
+				if (this.autoHide && this.cards.length == 0) {
+					this.hide();
+				}
+	
+				this.Redraw();
+	
+				return _deck;
+			}
+		}, {
+			key: 'Take',
+			value: function Take(cardId) {
+				return (0, _deckTake2.default)(this, cardId);
+			}
+	
+			// проверяем, можем ли положить стопку/карту
+			// возвращает true, если согласно правилам сюда можно положить карту
+	
+		}, {
+			key: 'Put',
+			value: function Put(putDeck) {
+				return (0, _deckPut2.default)(this, putDeck);
+			}
+	
+			// создать карту
+	
+		}, {
+			key: 'genCardByName',
+			value: function genCardByName(name) {
+				return (0, _genCardByName3.default)(this, name);
+			}
+		}, {
+			key: 'hide',
+			value: function hide() {
+				this.visible = false;
+				_history2.default.add({ hideDeck: this.name });
+				this.Redraw();
+			}
+		}, {
+			key: 'show',
+			value: function show() {
+				this.visible = false;
+				_history2.default.add({ showDeck: this.name });
+				this.Redraw();
+			}
+	
+			// getCardsByName(cardName) {
+			// 	var _cards = [];
+			// 	for(var i in this.cards) {
+			// 		if(this.cards[i].name == cardName) {
+			// 			_cards.push(this.cards[i]);
+			// 		}
+			// 	}
+			// 	return _cards;
+			// }
+	
+			// Card(cardName) {
+			// 	return this.getCardsByName(cardName)[0];
+			// }
+	
+			// getCards() {
+	
+			// 	let _cards = [];
+	
+			// 	for(let i in this.cards) {
+	
+			// 		let _card = common.getElementById(this.cards[i]);
+	
+			// 		_cards.push(_card);
+			// 	}
+	
+			// 	return _cards;
+			// }
+	
+		}, {
+			key: 'hideCards',
+			value: function hideCards() {
+				for (var i in this.cards) {
+					this.cards[i].visible = false;
+					_event2.default.dispatch('hideCard', this.cards[i]);
+				}
+			}
+		}, {
+			key: 'showCards',
+			value: function showCards() {
+				for (var i in this.cards) {
+					this.cards[i].visible = true;
+					_event2.default.dispatch('showCard', this.cards[i]);
+				}
+			}
+		}, {
+			key: 'getCardsNames',
+			value: function getCardsNames() {
+	
+				var _cardsNames = [];
+	
+				for (var i in this.cards) {
+					_cardsNames.push(this.cards[i].name);
+				}
+	
+				return _cardsNames;
+			}
+		}, {
+			key: 'cardsCount',
+			value: function cardsCount() {
+				return this.cards.length;
+			}
+		}, {
+			key: 'getRelationsByName',
+			value: function getRelationsByName(relationName, filter) {
+	
+				var _relations = [];
+	
+				for (var i in this.relations) {
+					if (this.relations[i].name == relationName) {
+	
+						if (filter) {
+	
+							var _checked = 0,
+							    _count = 0;
+	
+							for (var attr in filter) {
+								_count += 1;
+								if (this.relations[i][attr] == filter[attr]) {
+									_checked += 1;
+								}
+							}
+	
+							if (_checked == _count) {
+								_relations.push(this.relations[i]);
+							}
+						} else {
+							_relations.push(this.relations[i]);
+						}
+					}
+				}
+	
+				return _relations;
+			}
+		}, {
+			key: 'hasTag',
+			value: function hasTag(tagName) {
+	
+				for (var i in this.tags) {
+					if (this.tags[i] == tagName) {
+						return true;
+					}
+				}
+	
+				return false;
+			}
+		}]);
+	
+		return Deck;
+	}();
+	
+	var addDeck = function addDeck(data) {
+	
+		if (!data) {
+			return false;
+		}
+	
+		var id = 'deck_' + _common2.default.genId();
+	
+		var _deck = new Deck(data, id);
+	
+		// fill deck
+		if (data.fill) {
+			for (var i in data.fill) {
+				if (typeof data.fill[i] == 'string') {
+					_deck.genCardByName(data.fill[i]);
+				}
+			}
+		}
+	
+		var _elements = _share2.default.get('elements');
+	
+		_elements[id] = _deck;
+	
+		_share2.default.set('elements', _elements);
+	
+		return _deck;
+	};
+	
+	// ------------------------------------------------------------------------------------------------------------------------------------------
+	
+	exports.default = {
+		deckCardNames: _deckCardNames2.default,
+		addDeck: addDeck,
+		getDeck: _getDeck2.default,
+		getDecks: _getDecks2.default,
+		getDeckById: _getDeckById2.default
+	};
+
+/***/ },
+/* 15 */
+/***/ function(module, exports) {
+
+	'use strict';
+	
+	/*
+	
+	Types:
+	
+	 * none
+	 * all
+	 * notlast
+	 * first_1
+	 * first_2
+	 * first_3
+	 * bee
+	
+	 */
+	
+	Object.defineProperty(exports, "__esModule", {
+		value: true
+	});
+	exports.default = {
+	
+		none: function none(card, i, length) {
+			card.flip = false;
+		},
+	
+		all: function all(card, i, length) {
+			card.flip = true;
+		},
+	
+		notlast: function notlast(card, i, length) {
+			card.flip = i < length - 1 ? true : false;
+		},
+	
+		first_1: function first_1(card, i, length) {
+			card.flip = i < 1 ? true : false;
+		},
+	
+		first_2: function first_2(card, i, length) {
+			card.flip = i < 2 ? true : false;
+		},
+	
+		first_3: function first_3(card, i, length) {
+			card.flip = i < 3 ? true : false;
+		},
+	
+		bee: function bee(card, i, length) {
+			card.flip = i == length - 1 ? false : i % 2 == 0 ? true : false;
+		}
+	};
+
+/***/ },
+/* 16 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+		value: true
+	});
+	
+	var _common = __webpack_require__(5);
+	
+	var _common2 = _interopRequireDefault(_common);
+	
+	var _defaults = __webpack_require__(3);
+	
+	var _defaults2 = _interopRequireDefault(_defaults);
+	
+	var _deck = __webpack_require__(14);
+	
+	var _deck2 = _interopRequireDefault(_deck);
+	
+	var _getBeside = __webpack_require__(17);
+	
+	var _getBeside2 = _interopRequireDefault(_getBeside);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	/*
+	
+	Relations filters:
+	
+	 * linePrev
+	 * lineNext
+	
+	Internal use:
+	
+	 * _down_up_cards
+	 * _down_up_rank_num
+	
+	Rules:
+	
+	 * striped
+	 * firstAce
+	 * firstKing
+	 * notForEmpty
+	 * onlyEmpty
+	 * oneRank
+	 * oneSuit
+	 * any
+	 * not
+	 * ascendDeck
+	 * descendDeck
+	 * oneRankDeck
+	 * ascend
+	 * descent
+	 * descentOne
+	 * ascendOne
+	 * ascdescOne
+	 * sum14
+	 * around
+	 
+	 */
+	
+	var readyPutRules = {
+	
+		// Relations filters
+	
+		linePrev: function linePrev(deck) {
+	
+			var prev = (0, _getBeside2.default)(deck.to).prev;
+	
+			if (prev) {
+	
+				deck.link = prev.to;
+	
+				return true;
+			}
+	
+			return false;
+		},
+	
+		lineNext: function lineNext(deck) {
+	
+			var next = (0, _getBeside2.default)(deck.to).next;
+	
+			if (next) {
+	
+				deck.link = next.to;
+	
+				return true;
+			}
+	
+			return false;
+		},
+	
+		// Internal use
+	
+		_down_up_cards: function _down_up_cards(deck) {
+	
+			if (deck.cards.length == 0) {
+				return false;
+			}
+	
+			var down = _common2.default.validateCardName(deck.cards[deck.cards.length - 1].name);
+			var up = _common2.default.validateCardName(deck.putDeck[0].card.name);
+	
+			if (!down || !up) {
+				return false;
+			}
+	
+			return {
+				up: up,
+				down: down
+			};
+		},
+	
+		_down_up_rank_num: function _down_up_rank_num(deck) {
+	
+			var du = readyPutRules._down_up_cards(deck);
+	
+			return du ? {
+				down: _defaults2.default.card.ranks.indexOf(du.down.rank),
+				up: _defaults2.default.card.ranks.indexOf(du.up.rank)
+			} : false;
+		},
+	
+		_isFirst: function _isFirst(deck, _name) {
+	
+			if (deck.cards.length == 0) {
+	
+				var _validate = null;
+	
+				return (_validate = _common2.default.validateCardName(deck.putDeck[0].card.name)) && _validate.rank == _name;
+			}
+	
+			return true;
+		},
+	
+		// Rules
+	
+		striped: function striped(deck) {
+	
+			if (deck.cards.length == 0) {
+				return true;
+			}
+	
+			var color_A = _common2.default.validateCardName(deck.cards[deck.cards.length - 1].name).color,
+			    color_B = null,
+			    _validate = null;
+	
+			if (_validate = _common2.default.validateCardName(deck.putDeck[0].card.name)) {
+				color_B = _validate.color;
+			}
+	
+			return color_A != color_B;
+		},
+	
+		firstAce: function firstAce(deck) {
+			return readyPutRules._isFirst(deck, _defaults2.default.card.ranks[0]);
+		},
+	
+		firstKing: function firstKing(deck) {
+			return readyPutRules._isFirst(deck, _defaults2.default.card.ranks[_defaults2.default.card.ranks.length - 1]);
+		},
+	
+		notForEmpty: function notForEmpty(deck) {
+			return deck.cards.length > 0;
+		},
+	
+		onlyEmpty: function onlyEmpty(deck) {
+			return deck.cards.length == 0;
+		},
+	
+		oneRank: function oneRank(deck) {
+	
+			if (deck.cards.length == 0) {
+				return true;
+			}
+	
+			var du = readyPutRules._down_up_cards(deck);
+	
+			return du && du.up.rank == du.down.rank;
+		},
+	
+		oneSuit: function oneSuit(deck) {
+	
+			if (deck.cards.length == 0) {
+				return true;
+			}
+	
+			var du = readyPutRules._down_up_cards(deck);
+	
+			return du && du.up.suit == du.down.suit;
+		},
+	
+		any: function any(deck) {
+			return true;
+		},
+	
+		not: function not(deck) {
+			return false;
+		},
+	
+		ascendDeck: function ascendDeck(deck) {
+			//ascend deck by step
+	
+			if (deck.putDeck.length == 1) {
+				return true;
+			}
+	
+			var ruleCorrect = true;
+	
+			for (var i in deck.putDeck) {
+	
+				if (i > 0) {
+	
+					var down = _defaults2.default.card.ranks.indexOf(_common2.default.validateCardName(deck.putDeck[i - 1].card.name).rank),
+					    up = _defaults2.default.card.ranks.indexOf(_common2.default.validateCardName(deck.putDeck[i].card.name).rank);
+	
+					ruleCorrect = ruleCorrect && 1 + down == up;
+				};
+			};
+	
+			return ruleCorrect;
+		},
+	
+		descendDeck: function descendDeck(deck) {
+			//ascend deck by step
+	
+			if (deck.putDeck.length == 1) {
+				return true;
+			}
+	
+			var ruleCorrect = true;
+	
+			for (var i in deck.putDeck) {
+	
+				if (i > 0) {
+	
+					var down = _defaults2.default.card.ranks.indexOf(_common2.default.validateCardName(deck.putDeck[i - 1].card.name).rank),
+					    up = _defaults2.default.card.ranks.indexOf(_common2.default.validateCardName(deck.putDeck[i].card.name).rank);
+	
+					ruleCorrect = ruleCorrect && down == 1 + up;
+				};
+			};
+	
+			return ruleCorrect;
+		},
+	
+		oneRankDeck: function oneRankDeck(deck) {
+	
+			if (deck.putDeck.length == 1) {
+				return true;
+			}
+	
+			var ruleCorrect = true;
+	
+			for (var i in deck.putDeck) {
+	
+				if (i > 0) {
+	
+					var down = _common2.default.validateCardName(deck.putDeck[i - 1].card.name).suit,
+					    up = _common2.default.validateCardName(deck.putDeck[i].card.name).suit;
+	
+					ruleCorrect = ruleCorrect && down == up;
+				}
+			};
+	
+			return ruleCorrect;
+		},
+	
+		ascend: function ascend(deck) {
+	
+			if (deck.cards.length == 0) {
+				return true;
+			}
+	
+			var da = readyPutRules._down_up_rank_num(deck);
+	
+			return da && da.down < da.up;
+		},
+	
+		descent: function descent(deck) {
+	
+			if (deck.cards.length == 0) {
+				return true;
+			}
+	
+			var da = readyPutRules._down_up_rank_num(deck);
+	
+			return da && da.down > da.up;
+		},
+	
+		descentOne: function descentOne(deck) {
+			// one step
+	
+			if (deck.cards.length == 0) {
+				return true;
+			}
+	
+			var da = readyPutRules._down_up_rank_num(deck);
+	
+			return da && da.down == 1 + da.up;
+		},
+	
+		ascendOne: function ascendOne(deck) {
+			// one step
+	
+			if (deck.cards.length == 0) {
+				return true;
+			}
+	
+			var da = readyPutRules._down_up_rank_num(deck);
+	
+			return da && 1 + da.down == da.up;
+		},
+	
+		ascdescOne: function ascdescOne(deck) {
+	
+			if (deck.cards.length == 0) {
+				return true;
+			}
+	
+			var da = readyPutRules._down_up_rank_num(deck);
+	
+			return da && Math.abs(da.down - da.up) == 1;
+		},
+	
+		sum14: function sum14(deck) {
+	
+			if (deck.cards.length == 0) {
+				return true;
+			}
+	
+			var du = readyPutRules._down_up_cards(deck);
+			var _sum = du.down.value + du.up.value;
+	
+			return _sum == 14;
+		},
+	
+		// TODO rules with params ??? or atom rules
+	
+		around: function around(deck) {
+			// {from, putDeck, cards}
+	
+			if (deck.cards.length == 0) {
+				return true;
+			}
+	
+			var _around = deck.from.deck.getRelationsByName('around', { from: null });
+			var _parent = _deck2.default.getDeckById(deck.cards[0].parent);
+	
+			for (var i in _around) {
+	
+				if (_around[i].to == _parent.name) {
+					return true;
+				}
+			}
+	
+			return false;
+		}
+	
+	};
+	
+	exports.default = readyPutRules;
+
+/***/ },
+/* 17 */
+/***/ function(module, exports) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+		value: true
+	});
+	
+	exports.default = function (deck) {
+		// {deck}
+	
+		var prev = deck.getRelationsByName('beside', {
+			from: null,
+			type: "prev"
+		})[0];
+	
+		var next = deck.getRelationsByName('beside', {
+			from: null,
+			type: "next"
+		})[0];
+	
+		return { prev: prev, next: next };
+	};
+
+/***/ },
+/* 18 */
+/***/ function(module, exports) {
+
+	'use strict';
+	
+	/*
+	
+	Rules:
+	
+	 * not
+	 * notFirst
+	 * any
+	 * onlytop
+	 
+	 */
+	
+	Object.defineProperty(exports, "__esModule", {
+		value: true
+	});
+	exports.default = {
+	
+		// SimpleRules
+		not: function not(data) {
+			return false;
+		},
+	
+		notFirst: function notFirst(data) {
+			return data.cardIndex > 0;
+		},
+	
+		any: function any(data) {
+			return true;
+		},
+	
+		onlytop: function onlytop(data) {
+			return data.cardIndex == data.deckLength - 1;
+		}
+	
+		// TODO rules
+	
+		// ask : function(data) {
+		// 	return true;
+		// },
+	
+		// desc : function(data) {
+		// 	return true;
+		// }
+	};
+
+/***/ },
+/* 19 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+		value: true
+	});
+	
+	var _defaults = __webpack_require__(3);
+	
+	var _defaults2 = _interopRequireDefault(_defaults);
+	
+	var _common = __webpack_require__(5);
+	
+	var _common2 = _interopRequireDefault(_common);
+	
+	var _group2 = __webpack_require__(13);
+	
+	var _group3 = _interopRequireDefault(_group2);
+	
+	var _deck3 = __webpack_require__(14);
+	
+	var _deck4 = _interopRequireDefault(_deck3);
+	
+	var _tips = __webpack_require__(9);
+	
+	var _tips2 = _interopRequireDefault(_tips);
+	
+	var _getBeside = __webpack_require__(17);
+	
+	var _getBeside2 = _interopRequireDefault(_getBeside);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	/*
+	
+	Internal use:
+	
+	 * _topCard
+	 * _firstCard
+	
+	Filters:
+	
+	 * query
+	
+	Rules:
+	
+	 * deckLength
+	 * not
+	 * noMoves
+	 * topAce
+	 * topKing
+	 * prevDescOne
+	 * prevAscOne
+	 * nextDescOne
+	 * nextAscOne
+	 * prevDesc
+	 * prevAsc
+	 * nextDesc
+	 * nextAsc
+	 * test
+	
+	 */
+	
+	var fullRules = {
+	
+		// Internal use
+	
+		_topCard: function _topCard(deck) {
+	
+			var _card = deck.getTopCard();
+	
+			return _card && _common2.default.validateCardName(_card.name);
+		},
+	
+		// _firstCard : deck => {}
+	
+		_prev_next_desc_ask: function _prev_next_desc_ask(deck, type, callback) {
+	
+			var _check = true;
+			var _prev = (0, _getBeside2.default)(a.to)[type];
+			var _topCard = deck.getTopCard();
+	
+			for (; _prev && _check;) {
+	
+				var _deck = _deck4.default.getDeck(_prev);
+				_card = _deck.getTopCard();
+	
+				_check = _check && _card && callback(_common2.default.validateCardName(_topCard).value | 0, _common2.default.validateCardName(_card).value | 0);
+	
+				_topCard = _card;
+				_prev = (0, _getBeside2.default)(_deck)[type];
+			}
+	
+			return _check;
+		},
+	
+		// Filters
+	
+		query: function query(deck, data) {
+	
+			// console.log('%c_query:', 'font-weight: bold; color: red;', deck, data);
+	
+			// query : {
+			// 	all : {
+			// 		groups : ["matGroup1", "matGroup2", "matGroup3", "matGroup4"],
+			// 		excludeParent : true,
+			// 		select : "first",
+			// 	},
+			// 	rules : ["topAce"]
+			// }
+	
+			// TODO
+	
+			var groupName = deck.parent;
+			var currentGroup = _group3.default.getByName(groupName);
+	
+			var _correct = true;
+	
+			var _decks = [];
+	
+			if (!data.excludeCurrent) {
+				_decks.push(deck);
+			}
+	
+			// all | any
+			if (data.all) {
+	
+				// Groups
+				for (var i in data.all.groups) {
+	
+					var _group = _group3.default.getByName(data.all.groups[i]);
+	
+					if (data.all.excludeParent && data.all.groups[i] == groupName) {
+						//  do nothing
+					} else {
+	
+						// 	select: first | second | last | all
+						if (data.all.select == "first") {
+							// TODO select deck with index 0
+							var _deck = _group.getDeckByIndex(0);
+	
+							_decks.push(_deck);
+						} else if (data.all.select == "second") {
+							// --/-- index 0
+						} else if (data.all.select == "last") {
+							// --/-- max index
+						} else {
+								// all
+							}
+					}
+				}
+	
+				// Decks
+				for (var _i in data.all.decks) {
+	
+					// get decks by name
+					var _deck2 = _deck4.default.getDeck(data.all.decks[_i]);
+	
+					if (_deck2) {
+						_decks.push(_deck2);
+					}
+				}
+	
+				// Rules
+				for (var deckIndex in _decks) {
+	
+					for (var ruleIndex in data.rules) {
+	
+						var _rule = data.rules[ruleIndex];
+	
+						if (fullRules[_rule]) {
+							_correct = _correct && fullRules[_rule](_decks[deckIndex]);
+						}
+					}
+	
+					if (data.anyRule) {
+	
+						var _anyCorrect = false;
+	
+						for (var _ruleIndex in data.anyRule) {
+	
+							var _rule2 = data.anyRule[_ruleIndex];
+	
+							if (fullRules[_rule2]) {
+								_anyCorrect = _anyCorrect || fullRules[_rule2](_decks[deckIndex]);
+							}
+						}
+	
+						_correct = _correct && _anyCorrect;
+					}
+				}
+			}
+	
+			return _correct;
+		},
+	
+		// Rules
+	
+		deckLength: function deckLength(deck) {
+			return _defaults2.default.card.ranks.length <= deck.cards.length;
+		},
+	
+		not: function not(e) {
+			return false;
+		},
+	
+		noMoves: function noMoves(deck) {
+			return !_tips2.default.checkFrom(deck.name);
+		},
+	
+		topAce: function topAce(deck) {
+	
+			var _card = fullRules._topCard(deck);
+	
+			return _card && _card.rank == _defaults2.default.card.ranks[0];
+		},
+	
+		topKing: function topKing(deck) {
+	
+			var _card = fullRules._topCard(deck);
+	
+			var lastIndex = _defaults2.default.card.ranks.length - 1;
+	
+			return _card && _card.rank == _defaults2.default.card.ranks[lastIndex];
+		},
+	
+		prevDescOne: function prevDescOne(deck) {
+			return fullRules._prev_next_desc_ask(deck, 'prev', function (up, down) {
+				return up == (down | 0) + 1;
+			});
+		},
+	
+		prevAscOne: function prevAscOne(deck) {
+			return fullRules._prev_next_desc_ask(deck, 'prev', function (up, down) {
+				return (up | 0) + 1 == down;
+			});
+		},
+	
+		nextDescOne: function nextDescOne(deck) {
+			return fullRules._prev_next_desc_ask(deck, 'next', function (up, down) {
+				return up == (down | 0) + 1;
+			});
+		},
+	
+		nextAscOne: function nextAscOne(deck) {
+			return fullRules._prev_next_desc_ask(deck, 'next', function (up, down) {
+				return (up | 0) + 1 == down;
+			});
+		},
+	
+		prevDesc: function prevDesc(deck) {
+			return fullRules._prev_next_desc_ask(deck, 'prev', function (up, down) {
+				return up > down;
+			});
+		},
+	
+		prevAsc: function prevAsc(deck) {
+			return fullRules._prev_next_desc_ask(deck, 'prev', function (up, down) {
+				return up < down;
+			});
+		},
+	
+		nextDesc: function nextDesc(deck) {
+			return fullRules._prev_next_desc_ask(deck, 'next', function (up, down) {
+				return up > down;
+			});
+		},
+	
+		nextAsc: function nextAsc(deck) {
+			return fullRules._prev_next_desc_ask(deck, 'next', function (up, down) {
+				return up < down;
+			});
+		},
+	
+		test: function test(deck) {
+			console.log('test fullRule', deck.name);
+			return false;
+		}
+	};
+	
+	exports.default = fullRules;
+
+/***/ },
+/* 20 */
+/***/ function(module, exports) {
+
+	'use strict';
+	
+	/*
+	
+	Types:
+	
+	 * none
+	 * last_three_min
+	 * radial
+	 * special
+	 * vertical
+	 * horizontal
+	
+	 */
+	
+	Object.defineProperty(exports, "__esModule", {
+		value: true
+	});
+	exports.default = {
+	
+		none: function none(params, card, index, length, deck) {
+	
+			return {
+				x: params.x,
+				y: params.y
+			};
+		},
+	
+		last_three_min: function last_three_min(params, card, index, length, deck) {
+	
+			if (index > length - 3) {
+				if (length > 3) {
+					return {
+						x: params.x - (length - 3 - index) * 2,
+						y: params.y - (length - 3 - index)
+					};
+				} else {
+					return {
+						x: params.x + index * 2,
+						y: params.y + (index | 0)
+					};
+				}
+			} else {
+				return {
+					x: x,
+					y: y
+				};
+			}
+		},
+	
+		// twindeck_typeA : (params, card, index, length, deck) => {
+	
+		// 	let twindeck_max_cards       = 24,
+		// 		twindeck_deck_length     = 3;
+	
+		// 	let _padding = {
+		// 		x : 2,
+		// 		y : 1
+		// 	}
+	
+		// 	let _depth = (length / twindeck_max_cards * twindeck_deck_length)|0;
+		// 	if(_depth >= twindeck_deck_length) _depth = twindeck_deck_length - 1;
+	
+		// 	let _plus = index - (length - _depth - 1);
+		// 	if(_plus < 0) _plus = 0;
+	
+		// 	return {
+		// 		x : params.x + _padding.x * _plus, 
+		// 		y : params.y + _padding.y * _plus
+		// 	};
+		// },
+	
+		radial: function radial(params, card, index, length, deck) {
+	
+			//              b
+			//       C  ..`:   A = sin(b) * C
+			//     ...``   :B  B = cos(b) * C
+			// a.``.......+:
+			//        A     y 90deg
+			var _depth = 1,
+			    _radius = index * _depth,
+	
+			// _step   = 180 / 16,
+			// _card   = defaults.card,
+			_angle = params.rotate,
+			    //_step / 2 + 270;
+			_deg = Math.PI / 180,
+			    _a = Math.sin(_angle * _deg) * _radius,
+			    _b = Math.cos(_angle * _deg) * _radius;
+			// if(_angle > 360) _angle -= 360;
+	
+			return {
+				x: params.x + _a, // - _card.width  / 2,
+				y: params.y - _b // - _card.height / 2
+			};
+		},
+	
+		special: function special(params, card, index, length, deck) {
+	
+			var _y = params.y,
+			    _x = params.x;
+	
+			for (var i = 0; i < index; i += 1) {
+				_y += deck[i] && deck[i].flip ? params.flip_padding_y : params.padding_y;
+				_x += deck[i] && deck[i].flip ? params.flip_padding_x : params.padding_x;
+			}
+	
+			return {
+				x: _x,
+				y: _y
+			};
+		},
+	
+		vertical: function vertical(params, card, index, length, deck) {
+	
+			var _y = params.y;
+	
+			for (var i = 0; i < index; i += 1) {
+				_y += deck[i] && deck[i].flip ? params.flip_padding_y : params.padding_y;
+			}
+	
+			var _return = {
+				x: params.x,
+				y: _y
+			};
+	
+			return _return;
+		},
+	
+		horizontal: function horizontal(params, card, index, length, deck) {
+	
+			var _x = params.x;
+	
+			for (var i = 0; i < index; i += 1) {
+				_x += deck[i] && deck[i].flip ? params.flip_padding_x : params.padding_x;
+			}
+	
+			var _return = {
+				x: _x,
+				y: params.y
+			};
+	
+			return _return;
+		}
+	};
+
+/***/ },
+/* 21 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+		value: true
+	});
+	
+	var _event = __webpack_require__(2);
+	
+	var _event2 = _interopRequireDefault(_event);
+	
+	var _share = __webpack_require__(1);
+	
+	var _share2 = _interopRequireDefault(_share);
+	
+	var _defaults = __webpack_require__(3);
+	
+	var _defaults2 = _interopRequireDefault(_defaults);
+	
+	var _common = __webpack_require__(5);
+	
+	var _common2 = _interopRequireDefault(_common);
+	
+	var _twindeckAction = __webpack_require__(22);
+	
+	var _twindeckAction2 = _interopRequireDefault(_twindeckAction);
+	
+	var _dealerdeckAction = __webpack_require__(24);
+	
+	var _dealerdeckAction2 = _interopRequireDefault(_dealerdeckAction);
+	
+	var _kickAction = __webpack_require__(26);
+	
+	var _kickAction2 = _interopRequireDefault(_kickAction);
+	
+	var _stepsAroundAction = __webpack_require__(27);
+	
+	var _stepsAroundAction2 = _interopRequireDefault(_stepsAroundAction);
+	
+	var _changeStepTypeAction = __webpack_require__(28);
+	
+	var _changeStepTypeAction2 = _interopRequireDefault(_changeStepTypeAction);
+	
+	var _lockAction = __webpack_require__(29);
+	
+	var _lockAction2 = _interopRequireDefault(_lockAction);
+	
+	var _unlockAction = __webpack_require__(31);
+	
+	var _unlockAction2 = _interopRequireDefault(_unlockAction);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	var _actions = {
+		"twindeck": _twindeckAction2.default,
+		"dealerdeck": _dealerdeckAction2.default,
+		"kick": _kickAction2.default,
+		"stepsAround": _stepsAroundAction2.default,
+		"changeStepType": _changeStepTypeAction2.default,
+		"lock": _lockAction2.default,
+		"unlock": _unlockAction2.default
+	};
+	
+	// ------------------------------------------------------------------------------------------
+	
+	// Actions
+	var _decksActions = [],
+	    _events = [];
+	
+	_event2.default.listen('initField', function (e) {
+		_decksActions = [];
+		_events = [];
+	});
+	
+	var addActionEvent = function addActionEvent(eventName) {
+	
+		_event2.default.listen(
+	
+		// event name
+		eventName,
+	
+		// callback
+		function (data) {
+	
+			for (var i in _decksActions) {
+				if (_decksActions[i].event == eventName) {
+	
+					var _actionName = _decksActions[i].action;
+	
+					var _canRun = eventName == 'click' ? data.to.name == _decksActions[i].deck.name : true;
+	
+					if (_canRun) {
+	
+						_actions[_actionName].run(_decksActions[i].deck, {
+							actionData: _decksActions[i].deck.actions[_actionName],
+							eventData: data,
+							eventName: eventName
+						});
+					};
+				}
+			}
+		},
+	
+		// context
+		'addActionEvent:' + eventName);
+	};
+	
+	var add = function add(deck) {
+	
+		for (var actionName in deck.actions) {
+	
+			// если не описано событие выполнять по клику
+			if (!deck.actions[actionName].event) {
+				deck.actions[actionName].event = 'click';
+			}
+	
+			// если такой action существует
+			if (_actions[actionName]) {
+	
+				// сохраняем action
+				_decksActions.push({
+					deck: deck,
+					event: deck.actions[actionName].event,
+					action: actionName
+				});
+	
+				// создаём событие если оно еще не создано
+				if (!_events.includes(deck.actions[actionName].event)) {
+	
+					// сохраняем событие в список с уже созданными
+					_events.push(deck.actions[actionName].event);
+	
+					// вешаем событие
+					addActionEvent(deck.actions[actionName].event);
+				}
+			} else {
+				console.warn('Action', actionName, 'for', deck.name, 'not found.');
+			};
+		}
+	
+		autoRunActions(deck);
+	};
+	
+	var autoRunActions = function autoRunActions(deck) {
+	
+		_common2.default.animationDefault();
+	
+		for (var actionName in deck.actions) {
+			if (deck.actions[actionName].autorun) {
+				if (_actions[actionName]) {
+					_actions[actionName].run(deck, {
+						actionData: deck.actions[actionName],
+						eventData: null,
+						eventName: deck.actions[actionName].event
+					});
+				}
+			}
+		}
+		// Tips.checkTips();
+	};
+	
+	exports.default = {
+		add: add
+	};
+
+/***/ },
+/* 22 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+		value: true
+	});
+	
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	
+	var _get = function get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
+	
+	var _deckAction2 = __webpack_require__(23);
+	
+	var _deckAction3 = _interopRequireDefault(_deckAction2);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+	
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+	
+	var stepType = 'twindeckStepType';
+	
+	var twindeckAction = function (_deckAction) {
+		_inherits(twindeckAction, _deckAction);
+	
+		function twindeckAction() {
+			_classCallCheck(this, twindeckAction);
+	
+			return _possibleConstructorReturn(this, (twindeckAction.__proto__ || Object.getPrototypeOf(twindeckAction)).call(this));
+		}
+	
+		// TODO переделать
+	
+	
+		_createClass(twindeckAction, [{
+			key: 'run',
+			value: function run(deck, data) {
+	
+				// !data.actionData.dispatch
+				_get(twindeckAction.prototype.__proto__ || Object.getPrototypeOf(twindeckAction.prototype), 'end', this).call(this);
+			}
+		}]);
+	
+		return twindeckAction;
+	}(_deckAction3.default);
+	
+	exports.default = new twindeckAction();
+
+/***/ },
+/* 23 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+		value: true
+	});
+	
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	
+	var _event = __webpack_require__(2);
+	
+	var _event2 = _interopRequireDefault(_event);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	var deckAction = function () {
+		function deckAction() {
+			_classCallCheck(this, deckAction);
+		}
+	
+		_createClass(deckAction, [{
+			key: 'run',
+			value: function run() {}
+		}, {
+			key: 'end',
+			value: function end() {
+				_event2.default.dispatch('stopSession');
+			}
+	
+			// break() {}
+	
+		}]);
+	
+		return deckAction;
+	}();
+	
+	exports.default = deckAction;
+
+/***/ },
+/* 24 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+		value: true
+	});
+	
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	
+	var _get = function get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
+	
+	var _event = __webpack_require__(2);
+	
+	var _event2 = _interopRequireDefault(_event);
+	
+	var _share = __webpack_require__(1);
+	
+	var _share2 = _interopRequireDefault(_share);
+	
+	var _defaults = __webpack_require__(3);
+	
+	var _defaults2 = _interopRequireDefault(_defaults);
+	
+	var _common = __webpack_require__(5);
+	
+	var _common2 = _interopRequireDefault(_common);
+	
+	var _forceMove = __webpack_require__(25);
+	
+	var _forceMove2 = _interopRequireDefault(_forceMove);
+	
+	var _deckAction2 = __webpack_require__(23);
+	
+	var _deckAction3 = _interopRequireDefault(_deckAction2);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+	
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+	
+	var stepType = 'dealerdeckStepType';
+	
+	var dealerdeckAction = function (_deckAction) {
+		_inherits(dealerdeckAction, _deckAction);
+	
+		function dealerdeckAction() {
+			_classCallCheck(this, dealerdeckAction);
+	
+			return _possibleConstructorReturn(this, (dealerdeckAction.__proto__ || Object.getPrototypeOf(dealerdeckAction)).call(this));
+		}
+	
+		_createClass(dealerdeckAction, [{
+			key: 'run',
+			value: function run(deck, data) {
+				// data.actionData, e
+	
+				// default data.actionData.onlyEmpty - false
+				// default data.actionData.from      - deck.name
+				// default data.actionData.stepType  - NULL
+	
+				// console.log('dealerdeckAction:', deck.name, data);
+	
+				if (typeof data.actionData.stepType == "string" && data.actionData.stepType != _share2.default.get('stepType')) {
+	
+					_get(dealerdeckAction.prototype.__proto__ || Object.getPrototypeOf(dealerdeckAction.prototype), 'break', this).call(this);
+	
+					return;
+				}
+	
+				// меняем тип хода
+				_share2.default.set('stepType', stepType);
+	
+				var dealDeck = typeof data.actionData.from == "string" ? Deck.getDeck(data.actionData.from) : deck;
+	
+				// смотрим остались ли карты
+				if (dealDeck.cards.length == 0) {
+	
+					_share2.default.set('stepType', _defaults2.default.stepType);
+	
+					_event2.default.dispatch('actionBreak');
+					_event2.default.dispatch('dealEnd');
+	
+					_get(dealerdeckAction.prototype.__proto__ || Object.getPrototypeOf(dealerdeckAction.prototype), 'end', this).call(this);
+	
+					return;
+				}
+	
+				// карты для раздачи
+				var _decks = [];
+	
+				// to == toGroup ???
+				if (data.actionData.toGroup && !data.actionData.to) {
+	
+					data.actionData.to = data.actionData.toGroup;
+				};
+	
+				// есть куда раздать
+				if (data.actionData.to) {
+	
+					// передали имя
+					if (typeof data.actionData.to == "string") {
+	
+						// ищем элементы с таким именем
+						var _elements = _common2.default.getElementsByName(data.actionData.to);
+						for (var i in _elements) {
+	
+							// это группа
+							if (_elements[i].type == "group") {
+	
+								// _decks = _decks.concat(Group.Group(data.actionData.to).decks);
+								// let __decks = Group.Group(data.actionData.to).decks;
+	
+								// берём колоды из группы
+								for (var deckIndex in _elements[i].decks) {
+									_decks.push(_elements[i].decks[deckIndex]);
+								}
+							};
+	
+							// это колода, добавляем её в список
+							if (_elements[i].type == "deck") {
+								_decks.push(_el);
+							};
+						}
+	
+						// передали массив
+					} else {
+	
+						for (var _i in data.actionData.to) {
+	
+							var _elements2 = _common2.default.getElementsByName(data.actionData.to[_i]);
+	
+							for (var elIndex in _elements2) {
+	
+								if (_elements2[elIndex].type == "group") {
+									// _decks = _decks.concat(Group.Group(data.actionData.to[i]).decks);
+									// let __decks = Group.Group(data.actionData.to[i]).decks;
+									for (var _deckIndex in _elements2[elIndex].decks) {
+										_decks.push(_elements2[elIndex].decks[_deckIndex]);
+									}
+								};
+	
+								if (_elements2[elIndex].type == "deck") {
+									_decks.push(_elements2[elIndex]);
+								};
+							}
+						}
+					}
+				};
+	
+				// вкл/выкл анимации по умолчанию
+				_common2.default.animationDefault();
+	
+				// флаг, что раздача удалась
+				var _makeStep = false;
+	
+				// пробегаем колоды из списка
+				for (var deckId in _decks) {
+	
+					// берём верхнюю карту
+					var _card = dealDeck.getTopCard();
+	
+					// флаг что такой ход возможен
+					var _canStep = data.actionData.onlyEmpty ? _decks[deckId].cards.length == 0 : true;
+	
+					if (_canStep && _card) {
+	
+						_makeStep = true;
+	
+						var _cardName = _card.name;
+	
+						var _callback = function _callback() {
+	
+							_event2.default.dispatch('checkTips');
+						};
+	
+						(0, _forceMove2.default)({
+							from: dealDeck.name,
+							to: _decks[deckId].name,
+							deck: [_cardName],
+							flip: true,
+							callback: _callback
+						}, true);
+	
+						_decks[deckId].flipCheck();
+						// _decks[deckId].Redraw();
+	
+						_event2.default.dispatch('dealEnd');
+	
+						_event2.default.dispatch('addStep', {
+							'move': {
+								from: dealDeck.name,
+								to: _decks[deckId].name,
+								deck: [_cardName],
+								flip: true,
+								stepType: {
+									undo: _share2.default.get('stepType'),
+									redo: data.actionData.dispatch ? _share2.default.get('stepType') : _defaults2.default.stepType
+								},
+								context: "dealerdeckAction"
+							}
+						});
+					};
+				};
+	
+				if (_makeStep) {
+	
+					// сохраняем если паздача удалась
+					_event2.default.dispatch('saveSteps');
+				};
+	
+				if (data.actionData.dispatch) {
+	
+					_event2.default.dispatch(data.actionData.dispatch, !_makeStep);
+				} else {
+	
+					_get(dealerdeckAction.prototype.__proto__ || Object.getPrototypeOf(dealerdeckAction.prototype), 'end', this).call(this);
+					// сохраняем если ничего не вызываем
+					_share2.default.set('stepType', _defaults2.default.stepType);
+				}
+			}
+		}]);
+	
+		return dealerdeckAction;
+	}(_deckAction3.default);
+	
+	exports.default = new dealerdeckAction();
+
+/***/ },
+/* 25 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+		value: true
+	});
+	
+	var _event = __webpack_require__(2);
+	
+	var _event2 = _interopRequireDefault(_event);
+	
+	var _share = __webpack_require__(1);
+	
+	var _share2 = _interopRequireDefault(_share);
+	
+	var _common = __webpack_require__(5);
+	
+	var _common2 = _interopRequireDefault(_common);
+	
+	var _deck = __webpack_require__(14);
+	
+	var _deck2 = _interopRequireDefault(_deck);
+	
+	var _tips = __webpack_require__(9);
+	
+	var _tips2 = _interopRequireDefault(_tips);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	var forceMove = function forceMove(data) {
+		// {from, to, deck, <flip>, <callback>}
+	
+		// console.log('forceMove', data);
+	
+		if (!data.from || !data.to || !data.deck) {
+			return;
+		}
+	
+		if (!data.deck.length) {
+			return;
+		}
+	
+		var deckFrom = typeof data.from == "string" ? _deck2.default.getDeck(data.from) : data.from;
+	
+		var deckTo = typeof data.to == "string" ? _deck2.default.getDeck(data.to) : data.to;
+	
+		if (!deckFrom || deckFrom.type != "deck" || !deckTo || deckTo.type != "deck") {
+			return;
+		}
+	
+		var _check = true;
+	
+		var deckFromCards = deckFrom.cards;
+	
+		for (var i in deckFromCards) {
+	
+			if (i >= deckFromCards.length - data.deck.length) {
+	
+				var _id = i - (deckFromCards.length | 0) + (data.deck.length | 0);
+	
+				if (data.deck[_id] && deckFromCards[i].name != data.deck[_id]) {
+					_check = false;
+				}
+			}
+		}
+	
+		if (_check) {
+	
+			var cardsPop = deckFrom.Pop(data.deck.length);
+	
+			// перевернуть карты во время хода
+			if (data.flip) {
+				for (var _i in cardsPop) {
+					cardsPop[_i].flip = !cardsPop[_i].flip;
+				}
+			}
+	
+			deckTo.Push(cardsPop);
+	
+			var cardsMove = [];
+	
+			for (var _i2 in cardsPop) {
+				cardsMove.push({
+					card: cardsPop[_i2]
+				});
+			}
+	
+			var moveDragDeckParams = {
+				moveDeck: cardsMove,
+				departure: deckFrom,
+				destination: deckTo
+			};
+	
+			if (typeof data.callback == "function") {
+				moveDragDeckParams.callback = function (e) {
+					_event2.default.dispatch('forceMoveEnd');
+					data.callback();
+				};
+			} else {
+				moveDragDeckParams.callback = function (e) {
+					_event2.default.dispatch('forceMoveEnd');
+				};
+			}
+	
+			_event2.default.dispatch('moveDragDeck', moveDragDeckParams);
+		} else {
+			console.warn("forceMove:Ход невозможен", data);
+		}
+	};
+	
+	_event2.default.listen('forceMove', function (data) {
+		forceMove(data);
+	});
+	
+	exports.default = forceMove;
+
+/***/ },
+/* 26 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+		value: true
+	});
+	
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	
+	var _get = function get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
+	
+	var _event = __webpack_require__(2);
+	
+	var _event2 = _interopRequireDefault(_event);
+	
+	var _share = __webpack_require__(1);
+	
+	var _share2 = _interopRequireDefault(_share);
+	
+	var _common = __webpack_require__(5);
+	
+	var _common2 = _interopRequireDefault(_common);
+	
+	var _defaults = __webpack_require__(3);
+	
+	var _defaults2 = _interopRequireDefault(_defaults);
+	
+	var _deckAction2 = __webpack_require__(23);
+	
+	var _deckAction3 = _interopRequireDefault(_deckAction2);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+	
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+	
+	var stepType = 'kickStepType';
+	
+	var kickAction = function (_deckAction) {
+		_inherits(kickAction, _deckAction);
+	
+		function kickAction() {
+			_classCallCheck(this, kickAction);
+	
+			return _possibleConstructorReturn(this, (kickAction.__proto__ || Object.getPrototypeOf(kickAction)).call(this));
+		}
+	
+		_createClass(kickAction, [{
+			key: 'run',
+			value: function run(deck, data) {
+				var _this2 = this;
+	
+				// если тип хода не стандартный не выполнять кик
+				if (_share2.default.get('stepType') != _defaults2.default.stepType) {
+	
+					_get(kickAction.prototype.__proto__ || Object.getPrototypeOf(kickAction.prototype), 'break', this).call(this);
+	
+					return false;
+				}
+	
+				// TODO спорный момент
+				if (typeof data.eventData.stepType == "string" && data.eventData.stepType != _defaults2.default.stepType) {
+	
+					_get(kickAction.prototype.__proto__ || Object.getPrototypeOf(kickAction.prototype), 'break', this).call(this);
+	
+					return false;
+				}
+	
+				if (data.eventData.to.name != deck.name) {
+					// data.eventData.to - куда мы перетащили карты
+	
+					_get(kickAction.prototype.__proto__ || Object.getPrototypeOf(kickAction.prototype), 'break', this).call(this);
+	
+					return false;
+				}
+	
+				_share2.default.set('stepType', stepType);
+	
+				_common2.default.animationDefault();
+	
+				var _from = data.eventData.to,
+				    //Deck.Deck(_name),
+				_deck = _from.getCardsNames();
+	
+				var _callback = function _callback(e) {
+	
+					var _addStep = function _addStep(data) {
+	
+						_event2.default.dispatch('addStep', {
+							"move": {
+								from: _from.name,
+								to: data.actionData.to,
+								deck: _deck,
+								flip: true,
+								stepType: {
+									undo: data.undo,
+									redo: data.redo
+								},
+								context: "kickAction"
+							}
+						});
+					};
+	
+					_share2.default.set('stepType', _defaults2.default.stepType);
+	
+					if (data.actionData.dispatch) {
+	
+						_event2.default.dispatch(data.actionData.dispatch, {
+							before: function before(data) {
+	
+								_addStep({
+									undo: stepType,
+									redo: data.stepType
+								});
+	
+								_event2.default.dispatch('saveSteps');
+							}
+						});
+					} else {
+	
+						_addStep({
+							undo: stepType, // share.get('stepType'),
+							redo: data.actionData.dispatch ? _share2.default.get('stepType') : _defaults2.default.stepType
+						});
+	
+						_event2.default.dispatch('saveSteps');
+	
+						_get(kickAction.prototype.__proto__ || Object.getPrototypeOf(kickAction.prototype), 'end', _this2).call(_this2);
+					}
+				};
+	
+				// TODO interval
+				var forceMoveParams = {
+					from: _from,
+					to: data.actionData.to,
+					deck: _deck,
+					flip: true,
+					callback: _callback
+				};
+	
+				// forceMove(forceMoveParams);
+				_event2.default.dispatch('forceMove', forceMoveParams);
+			}
+		}]);
+	
+		return kickAction;
+	}(_deckAction3.default);
+	
+	exports.default = new kickAction();
+
+/***/ },
+/* 27 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+		value: true
+	});
+	
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	
+	var _get = function get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
+	
+	var _event = __webpack_require__(2);
+	
+	var _event2 = _interopRequireDefault(_event);
+	
+	var _share = __webpack_require__(1);
+	
+	var _share2 = _interopRequireDefault(_share);
+	
+	var _common = __webpack_require__(5);
+	
+	var _common2 = _interopRequireDefault(_common);
+	
+	var _defaults = __webpack_require__(3);
+	
+	var _defaults2 = _interopRequireDefault(_defaults);
+	
+	var _deckAction2 = __webpack_require__(23);
+	
+	var _deckAction3 = _interopRequireDefault(_deckAction2);
+	
+	var _tips = __webpack_require__(9);
+	
+	var _tips2 = _interopRequireDefault(_tips);
+	
+	var _deck = __webpack_require__(14);
+	
+	var _deck2 = _interopRequireDefault(_deck);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+	
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+	
+	var stepType = 'stepsAround';
+	
+	var stepsAroundAction = function (_deckAction) {
+		_inherits(stepsAroundAction, _deckAction);
+	
+		function stepsAroundAction() {
+			_classCallCheck(this, stepsAroundAction);
+	
+			return _possibleConstructorReturn(this, (stepsAroundAction.__proto__ || Object.getPrototypeOf(stepsAroundAction)).call(this));
+		}
+	
+		_createClass(stepsAroundAction, [{
+			key: 'run',
+			value: function run(deck, data) {
+				var _this2 = this;
+	
+				// {actionData, eventData, eventName}
+	
+				var _stepType = _share2.default.get('stepType');
+	
+				if (_stepType != _defaults2.default.stepType) {
+	
+					_get(stepsAroundAction.prototype.__proto__ || Object.getPrototypeOf(stepsAroundAction.prototype), 'break', this).call(this);
+	
+					return;
+				};
+	
+				_share2.default.set('stepType', stepType);
+				// stop Drag'n'Drop
+				_common2.default.curLock();
+	
+				var _relations = deck.getRelationsByName('around', { from: null });
+				// let _tips = Tips.getTips();
+	
+				// выполняется для всех вокруг
+				// ход не делается
+				// вместо хода выполняется едействие для текущей стопки (если _central, по умолчанию true)
+				if (typeof data.actionData.run == "string") {
+					(function () {
+	
+						var _central = typeof data.actionData.central == "boolean" ? data.actionData.central : true;
+	
+						var _runStack = [];
+	
+						for (var i in _relations) {
+	
+							if (_tips2.default.fromTo(deck.name, _relations[i].to)) {
+								_runStack.push(_relations[i]);
+							}
+						}
+	
+						var _counter = _runStack.length;
+	
+						var _callback = function _callback(e) {
+	
+							_counter -= 1;
+							if (_counter === 0) {
+	
+								_this2.end();
+								// event.dispatch(data.actionData.dispatch)
+							}
+						};
+	
+						if (_counter === 0) {
+	
+							_this2.end();
+						} else if (_central) {
+	
+							_counter += 1;
+	
+							_event2.default.dispatch(data.actionData.run, {
+								to: deck.name,
+								callback: _callback
+							});
+						}
+	
+						for (var _i in _runStack) {
+	
+							var _data = null;
+							try {
+								_data = Object.assign({}, _runStack[_i]);
+							} catch (e) {
+								_data = _runStack[_i];
+							}
+	
+							_data.callback = _callback;
+							_event2.default.dispatch(data.actionData.run, _data);
+						}
+	
+						// выполняется после хода 
+					})();
+				} else {
+	
+					var _callback2 = function _callback2(e) {
+	
+						if (_share2.default.get('stepType') == stepType) {
+							_this2.end();
+						}
+					};
+	
+					_event2.default.listen('makeStep', _callback2);
+					// event.dispatch(data.actionData.dispatch)
+				}
+			}
+		}, {
+			key: 'end',
+			value: function end() {
+	
+				_share2.default.set('stepType', _defaults2.default.stepType);
+				_common2.default.curUnLock();
+				// Tips.checkTips();
+	
+				if (data.actionData.dispatch) {
+					_event2.default.dispatch(data.actionData.dispatch, data.eventData);
+				}
+	
+				_get(stepsAroundAction.prototype.__proto__ || Object.getPrototypeOf(stepsAroundAction.prototype), 'end', this).call(this);
+			}
+		}]);
+	
+		return stepsAroundAction;
+	}(_deckAction3.default);
+	
+	exports.default = new stepsAroundAction();
+
+/***/ },
+/* 28 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+		value: true
+	});
+	
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	
+	var _get = function get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
+	
+	var _event = __webpack_require__(2);
+	
+	var _event2 = _interopRequireDefault(_event);
+	
+	var _share = __webpack_require__(1);
+	
+	var _share2 = _interopRequireDefault(_share);
+	
+	var _defaults = __webpack_require__(3);
+	
+	var _defaults2 = _interopRequireDefault(_defaults);
+	
+	var _common = __webpack_require__(5);
+	
+	var _common2 = _interopRequireDefault(_common);
+	
+	var _deckAction2 = __webpack_require__(23);
+	
+	var _deckAction3 = _interopRequireDefault(_deckAction2);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+	
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+	
+	var changeStepTypeAction = function (_deckAction) {
+		_inherits(changeStepTypeAction, _deckAction);
+	
+		function changeStepTypeAction() {
+			_classCallCheck(this, changeStepTypeAction);
+	
+			return _possibleConstructorReturn(this, (changeStepTypeAction.__proto__ || Object.getPrototypeOf(changeStepTypeAction)).call(this));
+		}
+	
+		_createClass(changeStepTypeAction, [{
+			key: 'run',
+			value: function run(deck, data) {
+	
+				if (data.eventData.to.name != deck.name) {
+					return false;
+				}
+	
+				if (typeof data.actionData.to != "string") {
+	
+					// !data.actionData.dispatch
+					_get(changeStepTypeAction.prototype.__proto__ || Object.getPrototypeOf(changeStepTypeAction.prototype), 'end', this).call(this);
+	
+					return;
+				} else {
+	
+					// !data.actionData.dispatch
+					_get(changeStepTypeAction.prototype.__proto__ || Object.getPrototypeOf(changeStepTypeAction.prototype), 'end', this).call(this);
+	
+					_share2.default.set('stepType', data.actionData.to);
+				}
+			}
+		}]);
+	
+		return changeStepTypeAction;
+	}(_deckAction3.default);
+	
+	exports.default = new changeStepTypeAction();
+
+/***/ },
+/* 29 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+		value: true
+	});
+	
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	
+	var _get = function get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
+	
+	var _event = __webpack_require__(2);
+	
+	var _event2 = _interopRequireDefault(_event);
+	
+	var _share = __webpack_require__(1);
+	
+	var _share2 = _interopRequireDefault(_share);
+	
+	var _defaults = __webpack_require__(3);
+	
+	var _defaults2 = _interopRequireDefault(_defaults);
+	
+	var _common = __webpack_require__(5);
+	
+	var _common2 = _interopRequireDefault(_common);
+	
+	var _deckAction2 = __webpack_require__(23);
+	
+	var _deckAction3 = _interopRequireDefault(_deckAction2);
+	
+	var _lockActionCommon = __webpack_require__(30);
+	
+	var _lockActionCommon2 = _interopRequireDefault(_lockActionCommon);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+	
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+	
+	var lockAction = function (_deckAction) {
+		_inherits(lockAction, _deckAction);
+	
+		function lockAction() {
+			_classCallCheck(this, lockAction);
+	
+			return _possibleConstructorReturn(this, (lockAction.__proto__ || Object.getPrototypeOf(lockAction)).call(this));
+		}
+	
+		_createClass(lockAction, [{
+			key: 'run',
+			value: function run(deck, data) {
+	
+				if (data.eventData.to.name != deck.name) {
+					return false;
+				}
+	
+				(0, _lockActionCommon2.default)(data.actionData, 'lock', deck.name);
+	
+				// !data.actionData.dispatch
+				_get(lockAction.prototype.__proto__ || Object.getPrototypeOf(lockAction.prototype), 'end', this).call(this);
+			}
+		}]);
+	
+		return lockAction;
+	}(_deckAction3.default);
+	
+	exports.default = new lockAction();
+
+/***/ },
+/* 30 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+		value: true
+	});
+	
+	var _event = __webpack_require__(2);
+	
+	var _event2 = _interopRequireDefault(_event);
+	
+	var _share = __webpack_require__(1);
+	
+	var _share2 = _interopRequireDefault(_share);
+	
+	var _defaults = __webpack_require__(3);
+	
+	var _defaults2 = _interopRequireDefault(_defaults);
+	
+	var _common = __webpack_require__(5);
+	
+	var _common2 = _interopRequireDefault(_common);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	exports.default = function (data, method, me) {
+	
+		var sources = [];
+		if (typeof data.source != "string") {
+			if (data.source && data.source.constructor == Array) {
+				for (var i in data.source) {
+					sources.push(data.source[i]);
+				}
+			} else {
+				sources = [me];
+			}
+		} else {
+			sources = [data.source];
+		}
+	
+		if (data.save) {
+			var _step = {};
+			_step[method] = sources;
+			_event2.default.dispatch('addStep', _step);
+			_event2.default.dispatch('saveSteps');
+		}
+	
+		for (var _i in sources) {
+	
+			var current = _common2.default.getElementsByName(sources[_i])[0];
+	
+			if (current.type == "group") {
+				var decks = current.getDecks();
+				for (var deckIndex in decks) {
+					decks[deckIndex][method]();
+				}
+			}
+	
+			if (current.type == "deck") {
+				current[method]();
+			}
+		}
+	};
+
+/***/ },
+/* 31 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+		value: true
+	});
+	
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	
+	var _get = function get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
+	
+	var _event = __webpack_require__(2);
+	
+	var _event2 = _interopRequireDefault(_event);
+	
+	var _share = __webpack_require__(1);
+	
+	var _share2 = _interopRequireDefault(_share);
+	
+	var _defaults = __webpack_require__(3);
+	
+	var _defaults2 = _interopRequireDefault(_defaults);
+	
+	var _common = __webpack_require__(5);
+	
+	var _common2 = _interopRequireDefault(_common);
+	
+	var _deckAction2 = __webpack_require__(23);
+	
+	var _deckAction3 = _interopRequireDefault(_deckAction2);
+	
+	var _lockActionCommon = __webpack_require__(30);
+	
+	var _lockActionCommon2 = _interopRequireDefault(_lockActionCommon);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+	
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+	
+	var unlockAction = function (_deckAction) {
+		_inherits(unlockAction, _deckAction);
+	
+		function unlockAction() {
+			_classCallCheck(this, unlockAction);
+	
+			return _possibleConstructorReturn(this, (unlockAction.__proto__ || Object.getPrototypeOf(unlockAction)).call(this));
+		}
+	
+		_createClass(unlockAction, [{
+			key: 'run',
+			value: function run(deck, data) {
+	
+				if (data.eventData.to.name != deck.name) {
+					return false;
+				}
+	
+				(0, _lockActionCommon2.default)(data.actionData, 'unlock', deck.name);
+	
+				// !data.actionData.dispatch
+				_get(unlockAction.prototype.__proto__ || Object.getPrototypeOf(unlockAction.prototype), 'end', this).call(this);
+			}
+		}]);
+	
+		return unlockAction;
+	}(_deckAction3.default);
+	
+	exports.default = new unlockAction();
+
+/***/ },
+/* 32 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+		value: true
+	});
+	
+	var _share = __webpack_require__(1);
+	
+	var _share2 = _interopRequireDefault(_share);
+	
+	var _defaults = __webpack_require__(3);
+	
+	var _defaults2 = _interopRequireDefault(_defaults);
+	
+	var _common = __webpack_require__(5);
+	
+	var _common2 = _interopRequireDefault(_common);
+	
+	var _readyTakeRules = __webpack_require__(18);
+	
+	var _readyTakeRules2 = _interopRequireDefault(_readyTakeRules);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	exports.default = function (deck, cardId) {
+	
+		// Нестандартный ход (autosteps)
+		// if(share.get('stepType') != defaults.stepType) {return false;};
+	
+		var rulesCorrect = true; //!common.isLock();
+	
+		rulesCorrect = rulesCorrect && !deck.locked;
+	
+		if (typeof deck.full == "boolean") {
+			rulesCorrect = rulesCorrect && !deck.full;
+		}
+	
+		// берём карту/стопку
+	
+		var cardIndex = -1;
+		var cardName = null;
+		var cardSuit = null;
+		var cardRank = null;
+		var deckLength = deck.cards.length;
+	
+		// проверяем не является ли перевернутой
+	
+		var takeDeck = [];
+	
+		for (var i in deck.cards) {
+	
+			if (deck.cards[i].id == cardId) {
+	
+				cardIndex = i | 0;
+				cardName = deck.cards[i].name;
+	
+				var _name = _common2.default.validateCardName(cardName);
+	
+				rulesCorrect = rulesCorrect && _name;
+	
+				if (_name) {
+					cardSuit = _name.suit;
+					cardRank = _name.rank;
+				}
+	
+				rulesCorrect = rulesCorrect && !deck.cards[i].flip && deck.cards[i].flip == _defaults2.default.canMoveFlip;
+			}
+	
+			if (cardIndex >= 0) {
+	
+				takeDeck.push({
+					index: i,
+					card: deck.cards[i]
+				});
+			}
+		}
+	
+		var _attrs = {
+			cardId: cardId,
+			cardName: cardName,
+			cardSuit: cardSuit,
+			cardRank: cardRank,
+			cardIndex: cardIndex,
+			deckLength: deckLength
+		};
+	
+		for (var ruleIndex in deck.takeRules) {
+	
+			var ruleName = deck.takeRules[ruleIndex];
+	
+			if (_readyTakeRules2.default[ruleName]) {
+				rulesCorrect = rulesCorrect && _readyTakeRules2.default[ruleName](_attrs);
+			} else {
+				console.warn('Incorrect take rule:', ruleName);
+				rulesCorrect = false;
+			}
+		}
+	
+		// возвращает массив ID карт которые можно будет перетащить
+		// записывает их как активные
+	
+		rulesCorrect = rulesCorrect && cardIndex >= 0;
+	
+		rulesCorrect = rulesCorrect && takeDeck;
+	
+		return rulesCorrect;
+	};
+
+/***/ },
+/* 33 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+		value: true
+	});
+	
+	var _share = __webpack_require__(1);
+	
+	var _share2 = _interopRequireDefault(_share);
+	
+	var _defaults = __webpack_require__(3);
+	
+	var _defaults2 = _interopRequireDefault(_defaults);
+	
+	var _field = __webpack_require__(12);
+	
+	var _field2 = _interopRequireDefault(_field);
+	
+	var _deck2 = __webpack_require__(14);
+	
+	var _deck3 = _interopRequireDefault(_deck2);
+	
+	var _readyPutRules = __webpack_require__(16);
+	
+	var _readyPutRules2 = _interopRequireDefault(_readyPutRules);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	exports.default = function (deck, putDeck) {
+	
+		var _stepType = _share2.default.get('stepType');
+	
+		var rulesCorrect = true;
+	
+		var _deckId = putDeck[0].card.parent;
+		var _deck_departure = _deck3.default.getDeckById(_deckId);
+	
+		rulesCorrect = rulesCorrect && !deck.locked;
+	
+		if (_stepType != _defaults2.default.stepType) {
+	
+			// Нестандартный ход (autosteps)
+			rulesCorrect = rulesCorrect && _field2.default.autoSteps && _field2.default.autoSteps[_stepType] ? _field2.default.autoSteps[_stepType].manual({
+				putDeck: putDeck,
+				to: deck
+			}) : false;
+		} else {
+	
+			var _link = null; // deckName
+			var _deck = deck;
+	
+			for (var ruleIndex in deck.putRules) {
+	
+				if (rulesCorrect) {
+	
+					if (_link) {
+						_deck = _deck3.default.getDeck(_link);
+					}
+	
+					var ruleName = deck.putRules[ruleIndex];
+	
+					if (_readyPutRules2.default[ruleName]) {
+	
+						var _param = {
+							from: {
+								deckId: _deckId,
+								deck: _deck_departure
+							},
+							putDeck: putDeck,
+							cards: _deck.cards,
+							to: _deck,
+							link: _link
+							// rulesArgs : putRules[ruleName]
+						};
+						rulesCorrect = rulesCorrect && _readyPutRules2.default[ruleName](_param);
+						_link = _param.link;
+					} else {
+						console.warn('putRule:', ruleName, 'not exists');
+						rulesCorrect = false;
+					}
+				}
+			}
+		}
+	
+		return rulesCorrect;
+	};
+
+/***/ },
+/* 34 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+		value: true
+	});
+	
+	var _event = __webpack_require__(2);
+	
+	var _event2 = _interopRequireDefault(_event);
+	
+	var _share = __webpack_require__(1);
+	
+	var _share2 = _interopRequireDefault(_share);
+	
+	var _common = __webpack_require__(5);
+	
+	var _common2 = _interopRequireDefault(_common);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	// class card {
+	
+	// 	constructor(e) {
+	// 		deck.id      = e.id;
+	// 		deck.name    = e.name;
+	// 		deck.type    = 'card';
+	// 		deck.visible = true;
+	// 		deck.flip    = false;
+	// 	}
+	
+	// 	set domElement(e) {
+	
+	// 	}
+	
+	// 	get domElement() {
+	// 		return null;
+	// 	}
+	// };
+	
+	exports.default = function (deck, name) {
+	
+		var _name = _common2.default.validateCardName(name); // {color, rank}
+	
+		if (_name) {
+	
+			var _id = 'card_' + _common2.default.genId();
+	
+			var _card = {
+				id: _id,
+				name: name,
+				type: 'card',
+				visible: true,
+				flip: false,
+				// filled  : false  ,
+				parent: deck.id
+			};
+	
+			_event2.default.dispatch('addCardEl', _card);
+	
+			var _elements = _share2.default.get('elements');
+			_elements[_id] = _card;
+			_share2.default.set('elements', _elements);
+	
+			deck.Push([_card]);
+			deck.flipCheck();
+			deck.Redraw();
+	
+			return _card;
+		}
+	
+		return false;
+	};
+
+/***/ },
+/* 35 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+		value: true
+	});
+	
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	
+	var _event = __webpack_require__(2);
+	
+	var _event2 = _interopRequireDefault(_event);
+	
+	var _share = __webpack_require__(1);
+	
+	var _share2 = _interopRequireDefault(_share);
+	
+	var _common = __webpack_require__(5);
+	
+	var _common2 = _interopRequireDefault(_common);
+	
+	var _state = __webpack_require__(6);
+	
+	var _state2 = _interopRequireDefault(_state);
+	
+	var _forceMove = __webpack_require__(25);
+	
+	var _forceMove2 = _interopRequireDefault(_forceMove);
+	
+	var _deck = __webpack_require__(14);
+	
+	var _deck2 = _interopRequireDefault(_deck);
+	
+	var _tips = __webpack_require__(9);
+	
+	var _tips2 = _interopRequireDefault(_tips);
+	
+	var _field = __webpack_require__(12);
+	
+	var _field2 = _interopRequireDefault(_field);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	// import elRender  from 'elRender';
+	
+	// let _undoMethods = {};
+	// let _redoMethods = {};
+	
+	// ---------------------------------------- UNDO ----------------------------------------
+	
+	var _undo = function _undo(data) {
+	
+		if (_share2.default.get('sessionStarted')) {
+	
+			_event2.default.dispatch('stopAnimations');
+	
+			_state2.default.restore();
+		}
+	
+		// for(let i in _undoMethods) {
+		// 	_undoMethods[i](data);
+		// }
+	
+		// if(data.flip) {
+		// };
+	
+		// if(data.unflip) {
+		// };
+	
+		// if(data.full) {
+		// };
+	
+		// LOCK
+		if (typeof data.lock != "undefined") {
+			// Deck.Deck(data.lock).unlock();
+			// TODO сделать также в оставшихся местах
+			for (var i in data.lock) {
+				var _elements = _common2.default.getElementsByName(data.lock[i]);
+				for (var elNum in _elements) {
+					_elements[elNum].unlock();
+				}
+			}
+		}
+	
+		if (typeof data.unlock != "undefined") {
+			// Deck.Deck(data.unlock).lock();
+			for (var _i2 in data.lock) {
+				var _elements2 = _common2.default.getElementsByName(data.lock[_i2]);
+				for (var _elNum in _elements2) {
+					_elements2[_elNum].lock();
+				}
+			}
+		}
+	
+		// MOVE
+		if (typeof data.move != "undefined" && typeof data.move.from != "undefined" && typeof data.move.to != "undefined" && typeof data.move.deck != "undefined") {
+	
+			if (data.move.stepType) {
+				if (typeof data.move.stepType == "string") {
+					_share2.default.set('stepType', data.move.stepType);
+				}
+				if (typeof data.move.stepType.undo == "string") {
+					_share2.default.set('stepType', data.move.stepType.undo);
+				}
+			}
+	
+			(0, _forceMove2.default)({
+				from: data.move.to, // from ->
+				to: data.move.from, //      <- to
+				deck: data.move.deck,
+				flip: data.move.flip
+			});
+		}
+	};
+	
+	_event2.default.listen('undo', function (undoData) {
+	
+		// elRender.animationsEnd();
+		_event2.default.dispatch('stopAnimations');
+	
+		if (!undoData) {
+			return;
+		};
+	
+		// Обратная совместимость
+		if (undoData instanceof Array) {
+	
+			undoData.reverse();
+	
+			for (var _i in undoData) {
+				var data = undoData[_i];
+				_undo(data);
+			}
+		} else {
+	
+			_undo(undoData);
+		}
+	
+		_tips2.default.checkTips();
+	});
+	
+	// ---------------------------------------- REDO ----------------------------------------
+	
+	var _redo = function _redo(data) {
+	
+		// for(let i in _redoMethods) {
+		// 	_redoMethods[i](data);
+		// }
+	
+		// if(data.flip) {
+		// };
+	
+		// if(data.full) {
+		// 	// TODO
+		// };
+	
+		// LOCK
+		if (typeof data.lock != "undefined") {
+			// Deck.Deck(data.lock).lock();
+			for (var i in data.lock) {
+				var _elements = _common2.default.getElementsByName(data.lock[i]);
+				for (var elNum in _elements) {
+					_elements[elNum].lock();
+				}
+			}
+		}
+	
+		if (typeof data.unlock != "undefined") {
+			// Deck.Deck(data.unlock).unlock();
+			for (var _i3 in data.unlock) {
+				var _elements3 = _common2.default.getElementsByName(data.lock[_i3]);
+				for (var _elNum2 in _elements3) {
+					_elements3[_elNum2].unlock();
+				}
+			}
+		}
+	
+		// MOVE
+		if (typeof data.move != "undefined" && typeof data.move.from != "undefined" && typeof data.move.to != "undefined" && typeof data.move.deck != "undefined") {
+	
+			if (data.move.stepType) {
+				if (typeof data.move.stepType == "string") {
+					_share2.default.set('stepType', data.move.stepType);
+				}
+				if (typeof data.move.stepType.redo == "string") {
+					_share2.default.set('stepType', data.move.stepType.redo);
+				}
+			}
+	
+			(0, _forceMove2.default)(data.move);
+		}
+	
+		if (data.redo && typeof data.redo.stepType == "string") {
+			_share2.default.set('stepType', data.redo.stepType);
+		}
+	};
+	
+	_event2.default.listen('redo', function (redoData) {
+	
+		// elRender.animationsEnd();
+		_event2.default.dispatch('stopAnimations');
+	
+		if (!redoData) {
+			return;
+		}
+	
+		// Обратная совместимость
+		if (redoData instanceof Array) {
+			redoData.reverse();
+			for (var _i in redoData) {
+				var data = redoData[_i];
+				_redo(data);
+			}
+		} else {
+			_redo(redoData);
+		}
+	
+		_tips2.default.checkTips();
+	});
+	
+	// ----------------------------------------------
+	
+	var history = function () {
+		function history() {
+			_classCallCheck(this, history);
+	
+			this.steps = [];
+		}
+	
+		_createClass(history, [{
+			key: 'reset',
+			value: function reset() {
+				this.steps = [];
+			}
+		}, {
+			key: 'add',
+			value: function add(step) {
+	
+				// for(let i in step) {
+				this.steps.push(step);
+				// }
+			}
+	
+			// get steps and reset
+	
+		}, {
+			key: 'get',
+			value: function get() {
+				var reset = arguments.length <= 0 || arguments[0] === undefined ? true : arguments[0];
+	
+	
+				var _req = this.steps;
+	
+				if (reset) {
+					this.reset();
+				}
+	
+				return _req;
+			}
+		}, {
+			key: 'log',
+			value: function log() {
+				console.log(this.steps);
+			}
+		}, {
+			key: 'count',
+			value: function count() {
+				return this.steps.length;
+			}
+	
+			// addUndoMethods(data) {
+			// 	for(let i in data) {
+			// 		_undoMethods[i] = data[i];
+			// 	}
+			// }
+	
+			// addRedoMethods(data) {
+			// 	for(let i in data) {
+			// 		_redoMethods[i] = data[i];
+			// 	}
+			// }
+	
+		}]);
+	
+		return history;
+	}();
+	
+	var _history = new history();
+	
+	_event2.default.listen('addStep', function (data) {
+		_history.add(data);
+	});
+	
+	_event2.default.listen('saveSteps', function (e) {
+	
+		// save steps to client history
+		_event2.default.dispatch('makeStep', _history.get());
+	});
+	
+	exports.default = _history;
+
+/***/ },
+/* 36 */
+/***/ function(module, exports) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+		value: true
+	});
+	
+	exports.default = function (data) {
+		// Take deck [{card, index}]
+	
+		var _deck = [];
+	
+		for (var i in data) {
+			if (data[i].card && data[i].card.name) {
+				_deck.push(data[i].card.name);
+			} else if (data[i].name) {
+				_deck.push(data[i].name);
+			};
+		};
+	
+		return _deck;
+	};
+
+/***/ },
+/* 37 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+		value: true
+	});
+	
+	var _common = __webpack_require__(5);
+	
+	var _common2 = _interopRequireDefault(_common);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	exports.default = function (name, groupName) {
+	
+		var _decks = _common2.default.getElementsByName(name, 'deck');
+	
+		if (groupName && typeof groupName == 'string') {
+			for (var i in _decks) {
+	
+				var _group = _common2.default.getElementById(_decks[i].parent());
+				if (_group && _group.name && _group.name == groupName) {
+					return _decks[i];
+				}
+			}
+			return false;
+		} else {
+			return _decks[0];
+		}
+	};
+
+/***/ },
+/* 38 */
+/***/ function(module, exports) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+		value: true
+	});
+	
+	exports.default = function (group, cardNames) {
+	
+		var deckIndex = [];
+		var _decksLength = 0;
+	
+		// создаём карты из списка cardNames в порядке очерёдности колод (по одной карте)
+		for (var i in group.decks) {
+			_decksLength += 1;
+			deckIndex.push(null);
+		};
+	
+		// если параметр groupIndex не выходит за рамки занимаем соответствующий порядковый номер
+		for (var _i in group.decks) {
+			if (group.decks[_i].groupIndex && group.decks[_i].groupIndex <= _decksLength) {
+				deckIndex[group.decks[_i].groupIndex - 1] = true;
+			};
+		};
+	
+		// если нет параметра groupIndex (начинается с 1) ставим первый свободный порядковый номер
+		for (var _i2 in group.decks) {
+			if (!group.decks[_i2].groupIndex) {
+				var _index = 0;
+				for (; deckIndex[_index] != null; _index += 1) {}
+				deckIndex[_index] = group.decks[_i2].id;
+			};
+		};
+	
+		// если параметр groupIndex не выходит за рамки ставим соответствующий порядковый номер
+		for (var _i3 in group.decks) {
+			if (group.decks[_i3].groupIndex && group.decks[_i3].groupIndex <= _decksLength) {
+				deckIndex[group.decks[_i3].groupIndex - 1] = group.decks[_i3].id;
+			};
+		};
+	
+		// если параметр groupIndex выходит за рамки запоминаем...
+		var _decksWithBigIndex = {};
+		for (var _i4 in group.decks) {
+			if (group.decks[_i4].groupIndex && group.decks[_i4].groupIndex > _decksLength) {
+				_decksWithBigIndex[group.decks[_i4].groupIndex - 1] = group.decks[_i4].id;
+			};
+		};
+		// ...и сортируем
+		for (var _i5 in _decksWithBigIndex) {
+			var _index2 = 0;
+			for (; deckIndex[_index2] != null; _index2 += 1) {}
+			deckIndex[_index2] = group.decks[_decksWithBigIndex[_i5]].id;
+		};
+	
+		// сморим являются ли элементы названиями карт (строкой)
+		var _checkDeck = true;
+		for (var _i6 in cardNames) {
+			_checkDeck = _checkDeck && typeof cardNames[_i6] == 'string';
+		};
+	
+		// циклично добавляет карты в колоды в группе (в порядке добавления)
+		if (_checkDeck) {
+	
+			for (var _i7 in cardNames) {
+	
+				var _index3 = deckIndex[_i7 % deckIndex.length];
+	
+				group.decks[_index3].genCardByName(cardNames[_i7]);
+			}
+			// если нужно добавить несколько групп карт
+		} else {
+	
+			for (var _i8 in cardNames) {
+				if (_i8 < deckIndex.length) {
+	
+					// console.log('fillDeck', deckIndex[i].name, cardNames[i]);
+	
+					group.decks[deckIndex[_i8]].Fill(cardNames[_i8]);
+				};
+			};
+		};
+	};
+
+/***/ },
+/* 39 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+		value: true
+	});
+	
+	var _defaults = __webpack_require__(3);
+	
+	var _defaults2 = _interopRequireDefault(_defaults);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	exports.default = function (group, data) {
+	
+		if (!group || !data) {
+			return;
+		}
+	
+		// получаем стопки текущей группы
+		var decks = group.getDecks();
+	
+		if (typeof data.decks == 'undefined' || typeof data.decks == 'number') {
+			data.decks = [];
+		}
+	
+		// прокидываем конфигурацию для стопок
+		for (var i in decks) {
+	
+			// иннициируем конфигурацию стопки если отсутствует
+			if (!data.decks[i]) {
+				data.decks[i] = {};
+			};
+	
+			// прокидываем информацию о координатах группы
+			if (data.position && data.decks[i].parentPosition) {
+				data.decks[i].parentPosition = {
+					x: data.position.x,
+					y: data.position.y
+				};
+			};
+	
+			// прокидываем остальные параметры (параметры группы приоритетнее)
+			if (typeof data.paddingX == "number") {
+				data.decks[i].paddingX = data.paddingX;
+			};
+			if (typeof data.paddingY == "number") {
+				data.decks[i].paddingY = data.paddingY;
+			};
+	
+			if (typeof data.flipPaddingX == "number") {
+				data.decks[i].flipPaddingX = data.flipPaddingX;
+			};
+			if (typeof data.flipPaddingY == "number") {
+				data.decks[i].flipPaddingY = data.flipPaddingY;
+			};
+	
+			if (typeof data.decks[i].position == "undefined") {
+				data.decks[i].position = {};
+			};
+	
+			data.decks[i].parentPosition = {};
+	
+			if (typeof data.rotate == "number") {
+				data.decks[i].parentRotate = data.rotate;
+			};
+	
+			if (data.position && typeof data.position.x == 'number') {
+				data.decks[i].parentPosition.x = data.position.x;
+			};
+	
+			if (data.position && typeof data.position.y == 'number') {
+				data.decks[i].parentPosition.y = data.position.y;
+			};
+	
+			// расстановка стопок
+			if (data.placement) {
+				if (data.placement.x) {
+					data.decks[i].position.x = (data.placement.x + _defaults2.default.card.width) * i;
+				}
+				if (data.placement.y) {
+					data.decks[i].position.y = (data.placement.y + _defaults2.default.card.height) * i;
+				}
+			};
+	
+			if (!data.decks[i].rotate && data.rotate && typeof data.rotate == 'number') {
+				data.decks[i].rotate = data.rotate;
+			};
+			if (!data.decks[i].paddingX && data.paddingX && typeof data.paddingX == 'number') {
+				data.decks[i].paddingX = data.paddingX;
+			};
+			if (!data.decks[i].paddingY && data.paddingY && typeof data.paddingY == 'number') {
+				data.decks[i].paddingY = data.paddingY;
+			};
+			if (!data.decks[i].flipPaddingX && data.flipPaddingX && typeof data.flipPaddingX == 'number') {
+				data.decks[i].flipPaddingX = data.flipPaddingX;
+			};
+			if (!data.decks[i].flipPaddingY && data.flipPaddingY && typeof data.flipPaddingY == 'number') {
+				data.decks[i].flipPaddingY = data.flipPaddingY;
+			};
+	
+			decks[i].Redraw(data.decks[i]);
+		};
+	};
+
+/***/ },
+/* 40 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/*
+	 * генерация стопок в группах
+	 */
+	
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+		value: true
+	});
+	
+	var _countGenerator = __webpack_require__(41);
+	
+	var _countGenerator2 = _interopRequireDefault(_countGenerator);
+	
+	var _fanGenerator = __webpack_require__(42);
+	
+	var _fanGenerator2 = _interopRequireDefault(_fanGenerator);
+	
+	var _mapGenerator = __webpack_require__(43);
+	
+	var _mapGenerator2 = _interopRequireDefault(_mapGenerator);
+	
+	var _lineGenerator = __webpack_require__(50);
+	
+	var _lineGenerator2 = _interopRequireDefault(_lineGenerator);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	exports.default = {
+		"count": _countGenerator2.default,
+		"fan": _fanGenerator2.default,
+		"map": _mapGenerator2.default,
+		"line": _lineGenerator2.default
+	};
+
+/***/ },
+/* 41 */
+/***/ function(module, exports) {
+
+	/*
+	 * сгенерировать ряд из N карт
+	 */
+	
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+		value: true
+	});
+	
+	exports.default = function (group, data) {
+	
+		// {
+		// 	type   : "count",
+		// 	count  : int,
+		// }
+	
+		var _count = data.count;
+		var _decks = [];
+	
+		for (var deckIndex = 0; deckIndex < _count; deckIndex += 1) {
+	
+			var _deckName = group.name + "_deck" + (deckIndex + 1);
+	
+			_decks.push({
+				name: _deckName
+			});
+		}
+	
+		return _decks;
+	};
+
+/***/ },
+/* 42 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/*
+	 * сгенерировать группу для полумесяца
+	 */
+	
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+		value: true
+	});
+	
+	var _defaults = __webpack_require__(3);
+	
+	var _defaults2 = _interopRequireDefault(_defaults);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	exports.default = function (group, data) {
+	
+		// {
+		// 	type   : "fan",
+		// 	count  : int,
+		// 	radius : int,
+		// 	center : {
+		// 		x : int,
+		// 		y : int
+		// 	}
+		// }
+	
+		group.placement = {
+			x: 0,
+			y: 0
+		};
+	
+		//              b
+		//       C  ..`:   A = sin(b) * C
+		//     ...``   :B  B = cos(b) * C
+		// a.``.......+:
+		//        A     y 90deg
+	
+		var _decks = [];
+		var _count = typeof data.count == "number" ? data.count : 3; //16
+		var _step = 180 / _count;
+		var _radius = typeof data.radius == "number" ? data.radius : 100; //405;
+		var _center = typeof data.center != "undefined" && typeof data.center.x != "undefined" && typeof data.center.y != "undefined" ? data.center : {
+			"x": 0,
+			"y": 0
+		};
+		var _angle = _step / 2 + 270;
+		var _deg = Math.PI / 180;
+	
+		for (var deckIndex = 0; deckIndex < _count; deckIndex += 1) {
+	
+			var _a = Math.sin(_angle * _deg) * _radius;
+			var _b = Math.cos(_angle * _deg) * _radius;
+			if (_angle > 360) _angle -= 360;
+			_decks.push({
+				"name": group.name + "_deck" + deckIndex,
+				"rotate": _angle,
+				"position": {
+					"x": _center.x + _a - _defaults2.default.card.width / 2,
+					"y": _center.y - _b - _defaults2.default.card.height / 2
+				}
+			});
+			_angle += _step;
+		}
+	
+		return _decks;
+	};
+
+/***/ },
+/* 43 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/*
+	 * сгенерировать группу из матрицы
+	 */
+	
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+		value: true
+	});
+	
+	var _defaults = __webpack_require__(3);
+	
+	var _defaults2 = _interopRequireDefault(_defaults);
+	
+	var _relationsGenerator = __webpack_require__(44);
+	
+	var _relationsGenerator2 = _interopRequireDefault(_relationsGenerator);
+	
+	var _mapCommon = __webpack_require__(46);
+	
+	var _mapCommon2 = _interopRequireDefault(_mapCommon);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	// let getName = (el)=>{
+	// 	return typeof el == "string" ? el : typeof el != "undefined" && typeof el.name == "string" ? el.name : null;
+	// };
+	
+	// -------------------------------------------------------------------------------------------------------------------
+	
+	exports.default = function (group, data) {
+	
+		// {
+		// 	type            : "map",
+		// 	map             : [[string|{name, next, prev}]],
+		// 	relations       : {
+		// 		around : true,
+		// 		beside : ???,
+		// 		fall   : {
+		// 			directories : [
+		// 				"down",
+		// 				"right"
+		// 			]
+		// 		}
+		// 	}
+		// }
+	
+		var _decks = [];
+	
+		var _default_placement = {
+			x: 0,
+			y: 0
+		};
+	
+		var _placement = group.placement ? {
+			x: typeof group.placement.x != "undefined" ? group.placement.x : _default_placement.x,
+			y: typeof group.placement.y != "undefined" ? group.placement.y : _default_placement.y
+		} : _default_placement;
+	
+		group.placement = { x: 0, y: 0 };
+	
+		var _index = 1;
+	
+		var _mapSize = _mapCommon2.default.mapSize(data.map);
+	
+		// {name: 'groupName_deck_0_0'}
+		for (var y in data.map) {
+			for (var x in data.map[y]) {
+	
+				if (typeof data.map[y][x] == "boolean" && data.map[y][x] || typeof data.map[y][x] == "number" && data.map[y][x] > 0) {
+					data.map[y][x] = {};
+				};
+	
+				if (typeof data.map[y][x] == "string") {
+					data.map[y][x] = { name: data.map[y][x] };
+				} else if (data.map[y][x] && typeof data.map[y][x] != "undefined" && typeof data.map[y][x].name != "string") {
+					data.map[y][x].name = group.name + "_deck_" + x + "_" + y;
+				};
+			}
+		}
+	
+		for (var _y in data.map) {
+			for (var _x in data.map[_y]) {
+	
+				var _x2 = _x | 0,
+				    _y2 = _y | 0;
+	
+				var _el = data.map[_y2][_x2];
+	
+				if (_el) {
+	
+					var _deck = {
+						"name": data.map[_y2][_x2].name, // (group.name + "_deck" + _index) OR (group.name + '_' + data.map[y][x])
+						"position": {
+							"x": _x2 * ((_defaults2.default.card.width | 0) + (_placement.x | 0)),
+							"y": _y2 * ((_defaults2.default.card.height | 0) + (_placement.y | 0))
+						}
+					};
+	
+					//  ---------------------------------------------------------
+					var _relations = [];
+	
+					var _relGenerators = {
+						"around": "mapAroundRelations",
+						"beside": "mapBesideRelations",
+						"fall": "mapFallRelations"
+					};
+	
+					if (data.relations) {
+	
+						for (var relGenName in _relGenerators) {
+	
+							if (data.relations[relGenName]) {
+								_relations = _relations.concat(_relationsGenerator2.default[_relGenerators[relGenName]]({
+									x: _x2, y: _y2,
+									map: data.map,
+									mapSize: _mapSize,
+									el: _el,
+									data: data.relations[relGenName]
+								}));
+							};
+						};
+					};
+	
+					_deck.relations = _relations;
+					//  ---------------------------------------------------------
+	
+					_decks.push(_deck);
+					_index += 1;
+				}
+			}
+		}
+	
+		return _decks;
+	};
+
+/***/ },
+/* 44 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+		value: true
+	});
+	
+	var _mapFallRelations = __webpack_require__(45);
+	
+	var _mapFallRelations2 = _interopRequireDefault(_mapFallRelations);
+	
+	var _mapAroundRelations = __webpack_require__(47);
+	
+	var _mapAroundRelations2 = _interopRequireDefault(_mapAroundRelations);
+	
+	var _mapBesideRelations = __webpack_require__(48);
+	
+	var _mapBesideRelations2 = _interopRequireDefault(_mapBesideRelations);
+	
+	var _lineBesideRelations = __webpack_require__(49);
+	
+	var _lineBesideRelations2 = _interopRequireDefault(_lineBesideRelations);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	exports.default = {
+		mapFallRelations: _mapFallRelations2.default,
+		mapAroundRelations: _mapAroundRelations2.default,
+		mapBesideRelations: _mapBesideRelations2.default,
+		lineBesideRelations: _lineBesideRelations2.default
+	};
+
+/***/ },
+/* 45 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+		value: true
+	});
+	
+	var _mapCommon = __webpack_require__(46);
+	
+	var _mapCommon2 = _interopRequireDefault(_mapCommon);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	// map froup generator fall relations
+	
+	// const directions = [
+	// 	'left' ,
+	// 	'rigth',
+	// 	'up'   ,
+	// 	'down'
+	// ];
+	
+	var opposite = [{ left: 'right' }, { right: 'left' }, { up: 'down' }, { down: 'up' }];
+	
+	exports.default = function (data) {
+		// {x, y, map, mapSize, el, data}
+	
+		var _relations = [];
+	
+		var _directions = [];
+	
+		for (var i in data.data.directions) {
+			if (!_directions.includes(data.data.directions[i]) && // этого направления ещё не было
+			!_directions.includes(opposite[data.data.directions[i]]) // противоположного направления тоже не было
+			) {
+					_directions.push(data.data.directions[i]);
+				}
+		}
+	
+		for (var _i in _directions) {
+	
+			var x = null,
+			    y = null;
+	
+			switch (_directions[_i]) {
+	
+				case 'left':
+	
+					x = (data.x | 0) + _mapCommon2.default.beSide.left.x;
+					y = (data.y | 0) + _mapCommon2.default.beSide.left.y;
+	
+					if (_mapCommon2.default.exist(x, y, data.mapSize, data.map)) {
+						_relations.push({
+							name: 'fall',
+							direction: 'left',
+							to: data.map[y][x].name
+						});
+					}
+	
+					break;
+	
+				case 'right':
+	
+					x = (data.x | 0) + _mapCommon2.default.beSide.right.x;
+					y = (data.y | 0) + _mapCommon2.default.beSide.right.y;
+	
+					if (_mapCommon2.default.exist(x, y, data.mapSize, data.map)) {
+						_relations.push({
+							name: 'fall',
+							direction: 'right',
+							to: data.map[y][x].name
+						});
+					}
+	
+					break;
+	
+				case 'up':
+	
+					x = (data.x | 0) + _mapCommon2.default.beSide.up.x;
+					y = (data.y | 0) + _mapCommon2.default.beSide.up.y;
+	
+					if (_mapCommon2.default.exist(x, y, data.mapSize, data.map)) {
+						_relations.push({
+							name: 'fall',
+							direction: 'up',
+							to: data.map[y][x].name
+						});
+					}
+	
+					break;
+	
+				case 'down':
+	
+					x = (data.x | 0) + _mapCommon2.default.beSide.down.x;
+					y = (data.y | 0) + _mapCommon2.default.beSide.down.y;
+	
+					if (_mapCommon2.default.exist(x, y, data.mapSize, data.map)) {
+						_relations.push({
+							name: 'fall',
+							direction: 'down',
+							to: data.map[y][x].name
+						});
+					}
+	
+					break;
+			}
+		}
+	
+		return _relations;
+	};
+
+/***/ },
+/* 46 */
+/***/ function(module, exports) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+		value: true
+	});
+	var beSide = {
+		left: { x: -1, y: 0 },
+		right: { x: 1, y: 0 },
+		up: { x: 0, y: -1 },
+		down: { x: 0, y: 1 }
+	};
+	
+	var inMap = function inMap(x, y, mapSize) {
+		return x >= 0 && y >= 0 && x < mapSize.width && y < mapSize.height;
+	};
+	
+	var exist = function exist(x, y, mapSize, map) {
+		return inMap(x, y, mapSize) && map[y][x];
+	};
+	
+	var mapSize = function mapSize(map) {
+	
+		var _mapSize = {
+			width: map[0].length, //MAX LENGTH
+			height: map.length
+		};
+	
+		map.forEach(function (data) {
+			_mapSize.width = Math.max(_mapSize.width, data.length);
+		});
+	
+		return _mapSize;
+	};
+	
+	// IDs             TYPEs
+	// CLT TOP CRT ... CORN SIDE CORN
+	// LFT     RGT ... SIDE      SIDE
+	// CLB BTM CRB ... CORN SIDE CORN
+	var aroundRelations = [{ x: -1, y: -1, type: 'corn', id: 'clt' }, { x: 0, y: -1, type: 'side', id: 'top' }, { x: 1, y: -1, type: 'corn', id: 'crt' }, { x: -1, y: 0, type: 'side', id: 'lft' }, { x: 1, y: 0, type: 'side', id: 'rgt' }, { x: -1, y: 1, type: 'corn', id: 'clb' }, { x: 0, y: 1, type: 'side', id: 'btm' }, { x: 1, y: 1, type: 'corn', id: 'crb' }];
+	
+	exports.default = {
+		beSide: beSide,
+		mapSize: mapSize,
+		inMap: inMap,
+		aroundRelations: aroundRelations,
+		exist: exist
+	};
+
+/***/ },
+/* 47 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+		value: true
+	});
+	
+	var _mapCommon = __webpack_require__(46);
+	
+	var _mapCommon2 = _interopRequireDefault(_mapCommon);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	exports.default = function (data) {
+		// {x, y, map, mapSize, el, data}
+	
+		var _relations = [];
+	
+		for (var i in _mapCommon2.default.aroundRelations) {
+	
+			if (_mapCommon2.default.inMap(data.x + _mapCommon2.default.aroundRelations[i].x, data.y + _mapCommon2.default.aroundRelations[i].y, data.mapSize) && data.map[data.y + _mapCommon2.default.aroundRelations[i].y][data.x + _mapCommon2.default.aroundRelations[i].x]) {
+				_relations.push({
+					to: data.map[data.y + _mapCommon2.default.aroundRelations[i].y][data.x + _mapCommon2.default.aroundRelations[i].x].name,
+					type: _mapCommon2.default.aroundRelations[i].type,
+					id: _mapCommon2.default.aroundRelations[i].id,
+					name: 'around'
+				});
+			}
+		}
+	
+		return _relations;
+	};
+
+/***/ },
+/* 48 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+		value: true
+	});
+	
+	var _mapCommon = __webpack_require__(46);
+	
+	var _mapCommon2 = _interopRequireDefault(_mapCommon);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	// let getBeside = (_x, _y, mapSize, map, el, type)=>{
+	
+	// 	if(typeof el[type] == "string") {
+	
+	// 		switch(el[type]) {
+	// 			case 'left':
+	// 				var x = _x + mapCommon.beSide.left.x,
+	// 					y = _y + mapCommon.beSide.left.y;
+	// 				return mapCommon.exist(x, y, mapSize, map)
+	// 			 		? map[y][x].name
+	// 			 		: null;
+	// 			case 'rigth':
+	// 				var x = _x + mapCommon.beSide.rigth.x,
+	// 					y = _y + mapCommon.beSide.rigth.y;
+	// 				return mapCommon.exist(x, y, mapSize, map)
+	// 			 		? map[y][x].name
+	// 			 		: null;
+	// 			case 'up':
+	// 				var x = _x + mapCommon.beSide.up.x,
+	// 					y = _y + mapCommon.beSide.up.y;
+	// 				return mapCommon.exist(x, y, mapSize, map)
+	// 			 		? map[y][x].name
+	// 			 		: null;
+	// 			case 'down':
+	// 				var x = _x + mapCommon.beSide.down.x,
+	// 					y = _y + mapCommon.beSide.down.y;
+	// 				return mapCommon.exist(x, y, mapSize, map)
+	// 			 		? map[y][x].name
+	// 			 		: null;
+	// 			default:
+	// 				return null;
+	// 		}
+	// 	};
+	// 	return null;
+	// };
+	
+	exports.default = function (data) {
+		// {x, y, map, mapSize, el, data}
+	
+		var _relations = [];
+	
+		// var _next = getBeside(data.x, data.y, data.mapSize, data.map, data.el, 'next') && (
+		// 	_relations.push({name: 'next', to: _next})
+		// );
+		// var _prev = getBeside(data.x, data.y, data.mapSize, data.map, data.el, 'prev') && (
+		// 	_relations.push({name: 'prev', to: _prev})
+		// );
+	
+		return _relations;
+	};
+
+/***/ },
+/* 49 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+		value: true
+	});
+	
+	var _mapCommon = __webpack_require__(46);
+	
+	var _mapCommon2 = _interopRequireDefault(_mapCommon);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	exports.default = function (data) {
+		// {deckIndex, count, decks, data}
+	
+		var _relations = [];
+	
+		var _prev = data.deckIndex > 0 ? data.decks[(data.deckIndex | 0) - 1].name : null;
+	
+		if (_prev) {
+			_relations.push({
+				name: 'beside',
+				type: 'prev',
+				to: _prev
+			});
+		}
+	
+		var _next = data.deckIndex < data.count - 1 ? data.decks[(data.deckIndex | 0) + 1].name : null;
+	
+		if (_next) {
+			_relations.push({
+				name: 'beside',
+				type: 'next',
+				to: _next
+			});
+		}
+	
+		return _relations;
+	};
+
+/***/ },
+/* 50 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/*
+	 * сгенерировать ряд из N карт
+	 */
+	
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+		value: true
+	});
+	
+	var _relationsGenerator = __webpack_require__(44);
+	
+	var _relationsGenerator2 = _interopRequireDefault(_relationsGenerator);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	exports.default = function (group, data) {
+	
+		// {
+		// 	type	 : "line",
+		// 	count	: int,
+		// 	relations : {
+		// 		"beside" : true
+		// 	}
+		// }
+	
+		// direction <- placement: {x, y}
+	
+		var _count = data.count;
+		var _decks = [];
+	
+		for (var deckIndex = 0; deckIndex < _count; deckIndex += 1) {
+	
+			var _deckName = group.name + "_deck" + (deckIndex + 1);
+	
+			var _deck = {
+				name: _deckName
+			};
+	
+			_decks.push(_deck);
+		}
+	
+		// first/last
+	
+		_decks[0].tag = 'first';
+	
+		if (data.first) {
+	
+			var _deck2 = _decks[0];
+	
+			for (var propName in data.first) {
+				_deck2[propName] = data.first[propName];
+			}
+		}
+	
+		_decks[_decks.length - 1].tag = 'last';
+	
+		if (data.last) {
+	
+			var _deck3 = _decks[_decks.length - 1];
+	
+			for (var _propName in data.last) {
+				_deck3[_propName] = data.last[_propName];
+			}
+		}
+	
+		// Generate relations
+		for (var _deckIndex in _decks) {
+	
+			var _relations = [];
+	
+			var _relGenerators = {
+				"beside": "lineBesideRelations"
+			};
+	
+			if (data.relations) {
+	
+				for (var relGenName in _relGenerators) {
+	
+					// TODO
+					if (data.relations[relGenName]) {
+						_relations = _relations.concat(_relationsGenerator2.default[_relGenerators[relGenName]]({
+							deckIndex: _deckIndex,
+							count: _count,
+							decks: _decks,
+							data: data.relations[relGenName]
+						}));
+					};
+				};
+			};
+	
+			_decks[_deckIndex].relations = _relations;
+		}
+	
+		return _decks;
+	};
+
+/***/ },
+/* 51 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+		value: true
+	});
+	
+	var _fallAutoStep = __webpack_require__(52);
+	
+	var _fallAutoStep2 = _interopRequireDefault(_fallAutoStep);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	var autosteps = {
+		fallAutoStep: _fallAutoStep2.default
+	};
+	
+	exports.default = function (autoStepsParams) {
+	
+		var _autosteps = {};
+	
+		for (var autoStepName in autoStepsParams) {
+	
+			if (autosteps[autoStepName]) {
+	
+				var _autostep = new autosteps[autoStepName](autoStepsParams[autoStepName]);
+				_autostep.init(autoStepName);
+	
+				_autosteps[autoStepName] = _autostep;
+			} else {
+				console.warn('Autostep \'' + autoStepName + '\' is not exist.');
+			}
+		}
+	
+		return _autosteps;
+	};
+
+/***/ },
+/* 52 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+		value: true
+	});
+	
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	
+	var _share = __webpack_require__(1);
+	
+	var _share2 = _interopRequireDefault(_share);
+	
+	var _defaults = __webpack_require__(3);
+	
+	var _defaults2 = _interopRequireDefault(_defaults);
+	
+	var _event = __webpack_require__(2);
+	
+	var _event2 = _interopRequireDefault(_event);
+	
+	var _autoStep2 = __webpack_require__(53);
+	
+	var _autoStep3 = _interopRequireDefault(_autoStep2);
+	
+	var _deck = __webpack_require__(14);
+	
+	var _deck2 = _interopRequireDefault(_deck);
+	
+	var _tips2 = __webpack_require__(9);
+	
+	var _tips3 = _interopRequireDefault(_tips2);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+	
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+	
+	var fallAutoStep = function (_autoStep) {
+		_inherits(fallAutoStep, _autoStep);
+	
+		function fallAutoStep(params) {
+			_classCallCheck(this, fallAutoStep);
+	
+			return _possibleConstructorReturn(this, (fallAutoStep.__proto__ || Object.getPrototypeOf(fallAutoStep)).call(this, params));
+	
+			// event.listen('fallAutoStepCheck', this.check);
+		}
+	
+		// есть ли ещё ходы этого типа
+	
+	
+		_createClass(fallAutoStep, [{
+			key: 'check',
+			value: function check() {
+	
+				_tips3.default.checkTips();
+	
+				var _tips = _tips3.default.getTips();
+	
+				if (_tips.length == 0) {
+	
+					this.end();
+					// Tips.checkTips();
+				}
+			}
+	
+			// start() {
+			// 	super.start();
+			// 	console.log('FALL AUTO STEP');
+			// }
+	
+		}, {
+			key: 'auto',
+			value: function auto() {
+	
+				console.log('-- fallAutoStep:auto, curLockState -', _share2.default.get('curLockState'));
+				// fall lines auto
+	
+				// get groups
+				// 	get fall directions ???
+				// 	get decks
+				// 	get fall relations
+	
+				// OR getTips + random ???
+			}
+	
+			// manual если autostep = false
+			// если click = true, вручную отрабатываем перемещения карт возвращаем false
+			// если click = false то отрабатывается move а здесь проверка возможен ли ход
+	
+		}, {
+			key: 'manual',
+			value: function manual(data) {
+	
+				// empty
+				// check fall
+				// this.check();
+				var _from = _deck2.default.getDeckById(data.putDeck[0].card.parent),
+				    _to = data.to;
+	
+				var _relations = _from.getRelationsByName('fall', { from: null });
+	
+				for (var i in _relations) {
+					if (_relations[i].to == _to.name && _to.cardsCount() === 0) {
+						return true;
+					}
+				}
+	
+				return false;
+			}
+		}]);
+	
+		return fallAutoStep;
+	}(_autoStep3.default);
+	
+	exports.default = fallAutoStep;
+
+/***/ },
+/* 53 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+		value: true
+	});
+	
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	
+	var _event = __webpack_require__(2);
+	
+	var _event2 = _interopRequireDefault(_event);
+	
+	var _share = __webpack_require__(1);
+	
+	var _share2 = _interopRequireDefault(_share);
+	
+	var _common = __webpack_require__(5);
+	
+	var _common2 = _interopRequireDefault(_common);
+	
+	var _defaults = __webpack_require__(3);
+	
+	var _defaults2 = _interopRequireDefault(_defaults);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	var _class = function () {
+		function _class(params) {
+			_classCallCheck(this, _class);
+	
+			if (typeof params.groups != "undefined") {
+				this.groups = params.groups;
+			}
+	
+			if (typeof params.event == "string") {
+				this.event = params.event;
+			}
+	
+			if (typeof params.dispatch == "string") {
+				this.dispatch = params.dispatch;
+			}
+	
+			if (typeof params.autoStep == "boolean") {
+				this.autoStep = params.autoStep;
+			}
+		}
+	
+		_createClass(_class, [{
+			key: 'start',
+			value: function start(e) {
+	
+				if (!this.autoStep) {
+					_event2.default.dispatch('stopSession');
+				}
+	
+				_share2.default.set('autoStep:stepType', this.stepType);
+	
+				if (e && typeof e.before == "function") {
+					e.before({
+						stepType: this.stepType
+					});
+				}
+	
+				_share2.default.set('stepType', this.stepType);
+	
+				if (this.autoStep) {
+	
+					_common2.default.curLock();
+					this.auto();
+				} else {
+	
+					this.check();
+				}
+			}
+		}, {
+			key: 'end',
+			value: function end() {
+	
+				if (this.dispatch) {
+					_event2.default.dispatch(this.dispatch, {
+						stepType: _share2.default.get('stepType'),
+						callback: function callback(e) {
+							_share2.default.set('stepType', _defaults2.default.stepType);
+						}
+					});
+				} else {
+					// share.set('stepType', defaults.stepType);
+					_event2.default.dispatch('stopSession');
+				}
+	
+				_share2.default.delete('autoStep:stepType');
+			}
+		}, {
+			key: 'init',
+			value: function init(stepType) {
+				var _this = this;
+	
+				this.stepType = stepType;
+	
+				if (this.event) {
+					_event2.default.listen(this.event, function (data) {
+						_this.start(data);
+					});
+				}
+	
+				if (!this.autoStep) {
+	
+					_event2.default.listen('moveEnd', function () {
+	
+						if (_share2.default.get('stepType') != _this.stepType) {
+							return;
+						}
+	
+						_this.check();
+					},
+	
+					// this
+					'addAutoStepEvent:' + this.event);
+				}
+			}
+		}]);
+
+		return _class;
+	}();
+
+	exports.default = _class;
+
+/***/ },
+/* 54 */
+/***/ function(module, exports) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+		value: true
+	});
+	
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	var storage = function () {
+	
+		// TODO настройки сохраняются для всех игр,
+		// возможно нужно будет для каждой отдельно,
+		// тогда в конфигурацию нужно будет включить gameId
+	
+		function storage() {
+			_classCallCheck(this, storage);
+	
+			try {
+				if (!localStorage.hasOwnProperty('SolitaireEngine')) {
+					localStorage.SolitaireEngine = "{}";
+				}
+			} catch (e) {}
+		}
+	
+		_createClass(storage, [{
+			key: 'set',
+			value: function set(key, data) {
+	
+				try {
+					var _ls = JSON.parse(localStorage.SolitaireEngine);
+					_ls[key] = data;
+					var _data = JSON.stringify(_ls);
+					localStorage.SolitaireEngine = _data;
+				} catch (e) {}
+			}
+		}, {
+			key: 'get',
+			value: function get(key) {
+	
+				try {
+					var _ls = JSON.parse(localStorage.SolitaireEngine);
+					return _ls[key];
+				} catch (e) {
+					return null;
+				}
+			}
+		}, {
+			key: 'clear',
+			value: function clear() {
+	
+				try {
+					localStorage.SolitaireEngine = "{}";
+				} catch (e) {}
+			}
+		}]);
+	
+		return storage;
+	}();
+	
+	exports.default = new storage();
+
+/***/ },
+/* 55 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	// import share from 'share';
+	
+	Object.defineProperty(exports, "__esModule", {
+		value: true
+	});
+	
+	var _defaults = __webpack_require__(3);
+	
+	var _defaults2 = _interopRequireDefault(_defaults);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	// import gamePreferences from 'gamePreferences';
+	
+	// import elRender from 'elRender';
+	
+	exports.default = function (e) {
+	
+		// let _locale = require('json!locales.json')[defaults.locale];
+	
+		// let Tpl = require("./preferncesTemplate.hamlc");//
+	
+		// let _values = {
+		// 	locale: _locale,
+		// 	preferences: []
+		// };
+	
+		// for(let propName in defaults.themes) {
+	
+		// 	let _pref = {
+		// 		title   : _locale["label_" + propName],
+		// 		options : []
+		// 	};
+	
+		// 	for(let i in defaults.themes[propName]) {
+		// 		_pref.options.push({
+		// 			value : defaults.themes[propName][i],
+		// 			label : _locale[defaults.themes[propName][i]]
+		// 		});
+		// 	}
+	
+		// 	_values.preferences.push(_pref);
+		// };
+	
+		// let _html = Tpl(_values);
+	
+		// --
+	
+		var _html = __webpack_require__(56);
+	
+		$("#gpCommit").parent().before(_html);
+	
+		// gamePreferences.draw();
+	};
+
+/***/ },
+/* 56 */
+/***/ function(module, exports) {
+
+	module.exports = "<div id=\"solitaire-engine-style-preferences\">\n    <h4>Настройки оформления</h4>\n    <div>\n\t    <span class=\"solitaire-engine-style-preferences-label\">Фон:</span>\n\t    <!-- <select id=\"pref_field\" class=\"solitaire-engine-style-preferences-element\"> -->\n        <label>\n        \t<input type=\"radio\" name=\"pref_field\" value=\"default_field\">\n        \tКлассический\n    \t</label>\n        <label>\n        \t<input type=\"radio\" name=\"pref_field\" value=\"alternative_field\">\n        \tАльтернативный\n    \t</label>\n\t    <!-- </select> -->\n\t</div>\n\t<div>\n\t    <span class=\"solitaire-engine-style-preferences-label\">Лицевая сторона:</span>\n\t    <!-- <select id=\"pref_face\" class=\"solitaire-engine-style-preferences-element\"> -->\n        <label>\n        \t<input type=\"radio\" name=\"pref_face\" value=\"default_face\">\n        \tКлассическая\n    \t</label>\n        <label>\n        \t<input type=\"radio\" name=\"pref_face\" value=\"alternative_face\">\n        \tАнгло-американская\n    \t</label>\n\t    <!-- </select> -->\n\t</div>\n    <div>\n\t    <span class=\"solitaire-engine-style-preferences-label\">Рубашка:</span>\n\t    <!-- <select id=\"pref_back\" class=\"solitaire-engine-style-preferences-element\"> -->\n        <label>\n        \t<input type=\"radio\" name=\"pref_back\" value=\"default_back\">\n        \tКлассическая\n    \t</label>\n        <label>\n        \t<input type=\"radio\" name=\"pref_back\" value=\"alternative_back\">\n        \tАльтернативная\n    \t</label>\n        <!-- <label>\n        \t<input type=\"radio\" name=\"pref_back\" value=\"red_back\">\n        \tКрасная\n    \t</label>\n        <label>\n        \t<input type=\"radio\" name=\"pref_back\" value=\"blue_back\">\n        \tСиняя\n    \t</label> -->\n\t    <!-- </select> -->\n\t</div>\n    <div id=\"gamePreferences\"></div>\n    <!-- <div>\n\t    <span class=\"solitaire-engine-style-preferences-label\">Пустая ячейка:</span>\n\t    <select id=\"pref_empty\" class=\"solitaire-engine-style-preferences-element\">\n\t        <option value=0>Классическая</option>\n\t        <option value=1>С обводкой</option>\n\t    </select>\n\t</div> -->\n\n</div>";
+
+/***/ },
+/* 57 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+		value: true
+	});
+	
+	var _share = __webpack_require__(1);
+	
+	var _share2 = _interopRequireDefault(_share);
+	
+	var _event = __webpack_require__(2);
+	
+	var _event2 = _interopRequireDefault(_event);
+	
+	var _defaults = __webpack_require__(3);
+	
+	var _defaults2 = _interopRequireDefault(_defaults);
+	
+	var _storage = __webpack_require__(54);
+	
+	var _storage2 = _interopRequireDefault(_storage);
+	
+	var _gamePreferences = __webpack_require__(58);
+	
+	var _gamePreferences2 = _interopRequireDefault(_gamePreferences);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	var onShowParameters = function onShowParameters(e) {
+	
+		var pref = _storage2.default.get('pref');
+		!pref && (pref = _defaults2.default.pref);
+	
+		for (var prefName in _defaults2.default.themes) {
+	
+			var _pref = pref[prefName] && _defaults2.default.themes[prefName].includes(pref[prefName]) ? pref[prefName] : _defaults2.default.pref[prefName];
+	
+			$('input[name=\'pref_' + prefName + '\'][value=\'' + _pref.toString() + '\']').prop({ checked: true });
+		}
+	
+		_gamePreferences2.default.show(pref);
+	};
+	
+	var applyParameters = function applyParameters(e) {
+	
+		var pref = {};
+	
+		for (var prefName in _defaults2.default.themes) {
+			var _value = $('input[name=\'pref_' + prefName + '\']:checked').val();
+			_value = _value == "true" ? true : _value == "false" ? false : _value;
+			pref[prefName] = _value;
+		}
+	
+		_event2.default.dispatch('fieldThemesSet', pref);
+	
+		_gamePreferences2.default.get(pref);
+	
+		// event.dispatch('changeGameParameters', pref);
+	
+		saveParameters(pref);
+	
+		var changePreferencesCallback = _share2.default.get('changePreferencesCallback');
+		if (typeof changePreferencesCallback == "function") {
+			var _data = pref;
+			changePreferencesCallback(_data);
+		}
+	};
+	
+	var saveParameters = function saveParameters(pref) {
+		_storage2.default.set('pref', pref);
+	};
+	
+	exports.default = function (e) {
+	
+		// TODO переделать без jQuery
+	
+		$("#bbParameters").click(onShowParameters);
+		// event.dispatch('addDomEvent', {
+		// 	"event"    : "click"
+		// 	"element"  : "#bbParameters",
+		// 	"callback" : onShowParameters
+		// });
+	
+		// $("#gpCommit").click(saveParameters);
+	
+		$('#parametersPanel').on('change', 'input', applyParameters);
+		// $("#solitaire-engine-style-preferences input").change(applyParameters);
+	
+		// event.dispatch('addDomEvent', {
+		// 	"event"    : "change"
+		// 	"element"  : ".solitaire-engine-style-preferences-element",
+		// 	"callback" : applyParameters
+		// });
+	};
+
+/***/ },
+/* 58 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+		value: true
+	});
+	
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	
+	var _share = __webpack_require__(1);
+	
+	var _share2 = _interopRequireDefault(_share);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	var gamePreferences = function () {
+		function gamePreferences() {
+			_classCallCheck(this, gamePreferences);
+	
+			this.exist = false;
+		}
+	
+		_createClass(gamePreferences, [{
+			key: 'draw',
+			value: function draw() {
+	
+				if (this.exist) {
+					return;
+				}
+	
+				var _preferences = _share2.default.get('gamePreferences');
+	
+				for (var prefName in _preferences) {
+	
+					var _label = $('<div>').append($('<span>').addClass('solitaire-engine-style-preferences-label').html(_preferences[prefName].title));
+	
+					for (var i in _preferences[prefName].options) {
+						$(_label).append($('<label>').append($('<input>').prop({
+							type: 'radio',
+							name: 'gamePref_' + prefName,
+							value: _preferences[prefName].options[i].value
+						})).append(_preferences[prefName].options[i].title));
+					}
+					$('#gamePreferences').append(_label);
+				}
+	
+				this.exist = true;
+			}
+		}, {
+			key: 'show',
+			value: function show(pref) {
+	
+				this.draw();
+	
+				var _preferences = _share2.default.get('gamePreferences');
+	
+				for (var prefName in _preferences) {
+					if (pref && typeof pref[prefName] != "undefined") {
+						$('input[name=\'gamePref_' + prefName + '\'][value=\'' + pref[prefName].toString() + '\']').prop({ checked: true });
+					} else {
+						console.log('2>', 'input[name=\'gamePref_' + prefName + '\'][value=\'' + _preferences[prefName].value.toString() + '\']');
+						$('input[name=\'gamePref_' + prefName + '\'][value=\'' + _preferences[prefName].value.toString() + '\']').prop({ checked: true });
+					}
+				}
+			}
+		}, {
+			key: 'get',
+			value: function get(pref) {
+	
+				var _preferences = _share2.default.get('gamePreferences');
+	
+				for (var prefName in _preferences) {
+	
+					var _value = $('input[name=\'gamePref_' + prefName + '\']:checked').val();
+					_value = _value == "true" ? true : _value == "false" ? false : _value;
+					pref[prefName] = _value;
+				}
+			}
+		}]);
+	
+		return gamePreferences;
+	}();
+	
+	exports.default = new gamePreferences();
+
+/***/ },
+/* 59 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+		value: true
+	});
+	
+	var _event = __webpack_require__(2);
+	
+	var _event2 = _interopRequireDefault(_event);
+	
+	var _defaults = __webpack_require__(3);
+	
+	var _defaults2 = _interopRequireDefault(_defaults);
+	
+	var _storage = __webpack_require__(54);
+	
+	var _storage2 = _interopRequireDefault(_storage);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	exports.default = function (e) {
+	
+		var pref = _storage2.default.get('pref');
+		!pref && (pref = _defaults2.default.pref);
+	
+		for (var prefName in pref) {
+	
+			if (_defaults2.default.themes[prefName]) {
+	
+				if (!_defaults2.default.themes[prefName].includes(pref[prefName])) {
+					pref[prefName] = _defaults2.default.pref[prefName];
+				}
+			}
+		}
+	
+		_event2.default.dispatch('fieldThemesSet', pref);
+	};
+
+/***/ },
+/* 60 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	var _event = __webpack_require__(2);
+	
+	var _event2 = _interopRequireDefault(_event);
+	
+	var _share = __webpack_require__(1);
+	
+	var _share2 = _interopRequireDefault(_share);
+	
+	var _defaults = __webpack_require__(3);
+	
+	var _defaults2 = _interopRequireDefault(_defaults);
+	
+	var _common = __webpack_require__(5);
+	
+	var _common2 = _interopRequireDefault(_common);
+	
+	var _deck = __webpack_require__(14);
+	
+	var _deck2 = _interopRequireDefault(_deck);
+	
+	var _tips = __webpack_require__(9);
+	
+	var _tips2 = _interopRequireDefault(_tips);
+	
+	var _bestTip = __webpack_require__(11);
+	
+	var _bestTip2 = _interopRequireDefault(_bestTip);
+	
+	var _winCheck = __webpack_require__(61);
+	
+	var _winCheck2 = _interopRequireDefault(_winCheck);
+	
+	var _field = __webpack_require__(12);
+	
+	var _field2 = _interopRequireDefault(_field);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	var Move = function Move(moveDeck, to, cursorMove) {
+	
+		_common2.default.animationDefault();
+	
+		var _deck_departure = moveDeck[0].card.parent && _common2.default.getElementById(moveDeck[0].card.parent),
+		    // стопка из которой взяли
+		_deck_destination = null,
+		    // в которую положили
+		_success = true;
+	
+		var _stepType = _share2.default.get('stepType');
+	
+		if (!cursorMove.dbclick && cursorMove.distance === 0 && _share2.default.get('moveDistance') > 0 && _stepType == _defaults2.default.stepType) {
+			// кликнули один раз
+			// чтобы сделать ход нужно переместить карту стопку (moveDistance != 0)
+			return false;
+		}
+	
+		// выйти если не стандартный ход
+		if (_stepType != _defaults2.default.stepType && (_field2.default.autoSteps && !_field2.default.autoSteps[_stepType] || !_field2.default.autoSteps)) {
+	
+			var _deck_departure2 = moveDeck[0].card.parent && _common2.default.getElementById(moveDeck[0].card.parent);
+	
+			_event2.default.dispatch('moveCardToHome', {
+				moveDeck: moveDeck,
+				departure: _deck_departure2,
+				stepType: _share2.default.get('stepType')
+			});
+	
+			return;
+		}
+	
+		_event2.default.dispatch('startSession', { type: 'move' });
+	
+		_success = _success && to; // to - не пустой
+	
+		var _el = null;
+	
+		if (_success) {
+			_el = _common2.default.getElementById(to); // получаем карту/стопку
+		}
+	
+		_success = _success && _el;
+	
+		// если положили на карту узнаём из какой она стопки
+		if (_success) {
+			if (_el.type == 'card') {
+				_deck_destination = _common2.default.getElementById(_el.parent);
+			} else if (_el.type == 'deck') {
+				_deck_destination = _el;
+			}
+		}
+	
+		_success = _success && _deck_destination;
+	
+		// _deck_departure = moveDeck[0].card.parent && common.getElementById(moveDeck[0].card.parent);
+		_success = _success && _deck_departure;
+	
+		_success = _success && _deck_destination.id != _deck_departure.id;
+	
+		// смотрим не одна и та же ли эта стопка
+		if (_success) {
+	
+			// узнаём можно ли положить карты на папку назначения
+			var _put = _deck_destination.Put(moveDeck);
+			_success = _success && _put;
+			if (_put) {
+				// } && _deck_departure) {
+	
+				// если можно положить карты берём их из исходной стопки
+				var _pop = _deck_departure.Pop(moveDeck.length);
+				_success = _success && _pop;
+	
+				if (_pop) {
+	
+					// ложим карты в колоду назначения
+					_deck_destination.Push(_pop);
+	
+					// режим анимации по умолчанию
+					_common2.default.animationDefault();
+	
+					var _stepType2 = _share2.default.get('stepType');
+	
+					var _checkMoveEnd = false;
+	
+					for (var _actionName in _deck_destination.actions) {
+						if (_deck_destination.actions[_actionName].event == "moveEnd") {
+							_checkMoveEnd = true;
+						}
+					}
+	
+					_event2.default.dispatch('addStep', {
+						'move': {
+							from: _deck_departure.name,
+							to: _deck_destination.name,
+							deck: _deck2.default.deckCardNames(moveDeck),
+							stepType: {
+								undo: _stepType2,
+								redo: _checkMoveEnd ? "specialStepType" : _stepType2
+							},
+							context: "move"
+						}
+					});
+	
+					if (_deck_destination.save) {
+						_event2.default.dispatch('saveSteps');
+					}
+	
+					_event2.default.dispatch('moveDragDeck', {
+	
+						departure: _deck_departure,
+						destination: _deck_destination,
+						moveDeck: moveDeck,
+						callback: function callback(e) {
+	
+							if (!_event2.default.has('moveEnd', {
+								tag: _event2.default.tags.inGame
+							}) || _share2.default.get('autoStep:stepType') == _share2.default.get('stepType')) {
+								_event2.default.dispatch('stopSession');
+							}
+	
+							_event2.default.dispatch('moveEnd:' + _share2.default.get('stepType'));
+							_event2.default.dispatch('moveEnd', {
+								from: _deck_departure,
+								to: _deck_destination,
+								moveDeck: moveDeck,
+								stepType: _share2.default.get('stepType'),
+								before: function before(data) {
+									if (data && typeof data.stepType == "string") {
+										_event2.default.dispatch('addStep', {
+											'redo': {
+												'stepType': data.stepType
+											}
+										});
+									}
+								}
+							});
+	
+							_tips2.default.checkTips();
+	
+							_winCheck2.default.winCheck({ show: true });
+						}
+					});
+				}
+			}
+		}
+	
+		// если не кдалось положить карты, вернуть обратно
+		// или положить на лучшее возможное место
+		if (!_success && _deck_departure) {
+	
+			// достаточно ли перетащили (если клика не достаточно и не двойной клик)
+			if (_field2.default.inputParams.doubleClick && cursorMove.dbclick || cursorMove.distance >= _share2.default.get('moveDistance')) {
+				var Tip = (0, _bestTip2.default)(moveDeck, cursorMove);
+	
+				if (Tip) {
+	
+					Move(moveDeck, Tip.to.deck.id, cursorMove);
+	
+					return;
+				} else {
+	
+					_event2.default.dispatch('moveCardToHome', {
+						moveDeck: moveDeck,
+						departure: _deck_departure
+					});
+					// ^ callback
+					_event2.default.dispatch('stopSession');
+				}
+			} else {
+	
+				_event2.default.dispatch('moveCardToHome', {
+					moveDeck: moveDeck,
+					departure: _deck_departure
+				});
+				// ^ callback
+				_event2.default.dispatch('stopSession');
+			}
+		}
+	};
+	
+	_event2.default.listen('Move', function (data) {
+		Move(data.moveDeck, data.to, data.cursorMove);
+	});
+
+/***/ },
+/* 61 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+		value: true
+	});
+	
+	var _share = __webpack_require__(1);
+	
+	var _share2 = _interopRequireDefault(_share);
+	
+	var _event = __webpack_require__(2);
+	
+	var _event2 = _interopRequireDefault(_event);
+	
+	var _common = __webpack_require__(5);
+	
+	var _common2 = _interopRequireDefault(_common);
+	
+	var _winCheckMethods = __webpack_require__(62);
+	
+	var _winCheckMethods2 = _interopRequireDefault(_winCheckMethods);
+	
+	var _deck = __webpack_require__(14);
+	
+	var _deck2 = _interopRequireDefault(_deck);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	var winCheck = function winCheck(params) {
+	
+		var rulesCorrect = true;
+		var _hasMetods = false;
+		var _winCheck = _share2.default.get('winCheck');
+	
+		if (!_winCheck) {
+			return false;
+		}
+	
+		for (var ruleName in _winCheck.rules) {
+	
+			_hasMetods = true;
+	
+			if (_winCheckMethods2.default[ruleName]) {
+	
+				var _result = _winCheckMethods2.default[ruleName]({
+					decks: _deck2.default.getDecks({ visible: true }),
+					rulesArgs: _winCheck.rules[ruleName]
+				});
+	
+				rulesCorrect = rulesCorrect && _result;
+			} else {
+				rulesCorrect = rulesCorrect && _winCheckMethods2.default.newerWin();
+			}
+		}
+	
+		if (!_hasMetods) {
+			rulesCorrect = rulesCorrect && _winCheckMethods2.default.newerWin();
+		}
+	
+		if (rulesCorrect) {
+	
+			if (params && params.noCallback) {
+				return true;
+			}
+	
+			// show you win message
+			_event2.default.dispatch('win', params);
+	
+			console.log('WIN');
+	
+			return true;
+		}
+	
+		return false;
+	};
+	
+	// hidden check
+	var hwinCheck = function hwinCheck(params) {
+	
+		if (!params) {
+			params = {};
+		}
+	
+		if (typeof params.show == 'undefined') {
+			params.show = false;
+		}
+	
+		winCheck(params);
+		// return winCheck({noCallback : true});
+	};
+	
+	exports.default = {
+		winCheck: winCheck,
+		hwinCheck: hwinCheck
+	};
+
+/***/ },
+/* 62 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	/*
+	 * Client-server application for planning biomechanical stimulation =)
+	 * version: 1.0.0
+	 * author: Romasan
+	 * date: 05.05.2016
+	 */
+	
+	// import share    from 'share';
+	
+	Object.defineProperty(exports, "__esModule", {
+		value: true
+	});
+	
+	var _common = __webpack_require__(5);
+	
+	var _common2 = _interopRequireDefault(_common);
+	
+	var _defaults = __webpack_require__(3);
+	
+	var _defaults2 = _interopRequireDefault(_defaults);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	/*
+	
+	Filters:
+	
+	 * group / groups
+	 * deck / decks
+	
+	Tag filters:
+	
+	 * firstEmpty
+	
+	Internal use:
+	
+	 * _asc_desk
+	
+	Simple rules:
+	
+	 * newerWin
+	 * allEmpty
+	 * empty
+	 * allInOne
+	 * allAscend
+	 * allDescent
+	
+	Conposite rules:
+	
+	 * query / lego
+	
+	 */
+	
+	var winCheckMethods = {
+	
+		// Filters
+	
+		// возвращает колоды определённой группы/групп
+		group: function group(data) {
+	
+			if (!data.filter || !data.filterArgs) {
+				return false;
+			}
+	
+			var _decks = [];
+			for (var _i in data.decks) {
+	
+				// let _parent = data.decks[_i].parent
+				// if(data.filterArgs.indexOf(data.decks[_i].parent)) {
+				if (typeof data.filterArgs == "string" && data.decks[_i].parent == data.filterArgs || data.filterArgs.length && data.filterArgs.includes(data.decks[_i].parent)) {
+					_decks.push(data.decks[_i]);
+				}
+			}
+	
+			data.decks = _decks;
+	
+			return _decks.length;
+		},
+	
+		groups: function groups(data) {
+			return winCheckMethods.group(data);
+		},
+	
+		deck: function deck(data) {
+	
+			if (!data.filter || !data.filterArgs) {
+				return false;
+			}
+	
+			var _decks = [];
+	
+			for (var _i in data.decks) {
+				if (typeof data.filterArgs == "string" && data.decks[_i].name == data.filterArgs || data.filterArgs.includes(data.decks[_i].name)) {
+					_decks.push(data.decks[_i]);
+				}
+			}
+	
+			data.decks = _decks;
+			return _decks.length;
+		},
+	
+		decks: function decks(data) {
+			return winCheckMethods.deck(data);
+		},
+	
+		// Tag filters
+	
+		firstEmpty: function firstEmpty(data) {
+	
+			var _decks = [];
+	
+			for (var _i in data.decks) {
+				if (data.decks[_i].tags.includes('last')) {
+					_decks.push(data.decks[_i]);
+				}
+			}
+	
+			data.decks = _decks;
+	
+			return _decks.length;
+		},
+	
+		// Internal use
+	
+		_asc_desk: function _asc_desk(data) {
+	
+			if (!data || typeof data.asc_desk != 'number') {
+				return false;
+			}
+	
+			var _correct = true;
+	
+			for (var d in data.decks) {
+	
+				if (!_correct) {
+					return false;
+				}
+	
+				var _cards = data.decks[d].cards;
+	
+				for (var c in _cards) {
+					if (c > 0) {
+	
+						var down = _common2.default.validateCardName(_cards[(c | 0) - 1].name),
+						    up = _common2.default.validateCardName(_cards[c | 0].name);
+	
+						var _cardsRankS = _defaults2.default.card.ranks;
+						_correct = _correct && down && up && _cardsRankS.indexOf(down.rank) == _cardsRankS.indexOf(up.rank) + data.asc_desk;
+					}
+				}
+			}
+	
+			console.log('asc_desk', data.asc_desk, _correct);
+	
+			return _correct;
+		},
+	
+		// Simple rules
+	
+		newerWin: function newerWin(data) {
+	
+			console.warn("You use 'newerWin' rule for checking Win. Maybe arguments in 'winCheck.rule' have incorrect rule name.");
+	
+			return false;
+		},
+	
+		// все колоды пусты
+		allEmpty: function allEmpty(data) {
+	
+			var _correct = true;
+	
+			for (var _i in data.decks) {
+				_correct = _correct && data.decks[_i].cards.length == 0;
+			}
+	
+			return _correct;
+		},
+	
+		empty: function empty(data) {
+			winCheckMethods.allEmpty(data);
+		},
+	
+		// Combined rules (use like filter)
+	
+		// все карты в одной колоде
+		allInOne: function allInOne(data) {
+	
+			var _emptyDecksCount = 0,
+			    _decksLength = 0,
+			    _fillIndex = 0;
+	
+			for (var i in data.decks) {
+				if (data.decks[i].cards.length == 0) {
+					_emptyDecksCount += 1;
+				} else {
+					_fillIndex = i;
+				}
+				_decksLength += 1;
+			}
+	
+			var _correct = _emptyDecksCount == _decksLength - 1;
+	
+			if (data.filter) {
+				data.decks = _correct ? [data.decks[_fillIndex]] : [];
+			}
+	
+			return _correct;
+		},
+	
+		// step by step 1, 2, 3
+		// во всех колодах карты по возрастанию
+		allAscend: function allAscend(data) {
+	
+			data.asc_desk = -1;
+	
+			return winCheckMethods._asc_desk(data);
+		},
+	
+		// step by step 3, 2, 1
+		// во всех колодах карты по убыванию
+		allDescent: function allDescent(data) {
+	
+			data.asc_desk = 1;
+	
+			return winCheckMethods._asc_desk(data);
+		},
+	
+		// Composite rules (input arguments)
+	
+		// комбинированное правило
+		query: function query(data) {
+	
+			if (!data || !data.rulesArgs) {
+				return false;
+			}
+	
+			var _correct = true;
+	
+			// apply filters
+			for (var next in data.rulesArgs) {
+	
+				var _decksClone = {};
+	
+				for (var i in data.decks) {
+					_decksClone[i] = data.decks[i];
+				}
+	
+				var queryData = {
+					// filters : data[next].filters,
+					// rules   : data[next].rules,
+					decks: _decksClone
+				};
+	
+				// применяем фильтры, оставляем только интересующие колоды
+				if (_correct && data.rulesArgs[next].filters) {
+	
+					queryData.filter = true;
+	
+					for (var _i2 in data.rulesArgs[next].filters) {
+						if (typeof data.rulesArgs[next].filters[_i2] == 'string' && winCheckMethods[data.rulesArgs[next].filters[_i2]]) {
+	
+							queryData.filterArgs = null;
+							_correct = _correct && winCheckMethods[data.rulesArgs[next].filters[_i2]](queryData);
+						} else {
+	
+							// if(typeof data.rulesArgs[next].filters[i] == 'object') {
+							if (data.rulesArgs[next].filters[_i2] && data.rulesArgs[next].filters[_i2].toString() == "[object Object]") {
+	
+								for (var filterName in data.rulesArgs[next].filters[_i2]) {
+									if (winCheckMethods[filterName]) {
+										queryData.filterArgs = data.rulesArgs[next].filters[_i2][filterName];
+										_correct = _correct && winCheckMethods[filterName](queryData);
+									} else {
+										_correct = _correct && winCheckMethods.newerWin();
+									}
+								}
+							} else {
+								_correct = _correct && winCheckMethods.newerWin();
+							}
+						}
+					}
+	
+					queryData.filter = false;
+				}
+	
+				// применяем правила к оставшимся колодам
+				if (data.rulesArgs[next].rules) {
+	
+					for (var _i3 in data.rulesArgs[next].rules) {
+						if (winCheckMethods[data.rulesArgs[next].rules[_i3]]) {
+							_correct = _correct && winCheckMethods[data.rulesArgs[next].rules[_i3]](queryData);
+						} else {
+							_correct = _correct && winCheckMethods.newerWin();
+						}
+					}
+				}
+			}
+	
+			return _correct;
+		},
+	
+		lego: function lego(data) {
+			return winCheckMethods.query(data);
+		}
+	};
+	
+	exports.default = winCheckMethods;
+
+/***/ },
+/* 63 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	var _event = __webpack_require__(2);
+	
+	var _event2 = _interopRequireDefault(_event);
+	
+	var _share = __webpack_require__(1);
+	
+	var _share2 = _interopRequireDefault(_share);
+	
+	var _elRender = __webpack_require__(64);
+	
+	var _elRender2 = _interopRequireDefault(_elRender);
+	
+	var _initField = __webpack_require__(67);
+	
+	var _initField2 = _interopRequireDefault(_initField);
+	
+	var _drawDeck = __webpack_require__(68);
+	
+	var _drawDeck2 = _interopRequireDefault(_drawDeck);
+	
+	var _drawCard = __webpack_require__(69);
+	
+	var _drawCard2 = _interopRequireDefault(_drawCard);
+	
+	var _drawTip = __webpack_require__(70);
+	
+	var _drawTip2 = _interopRequireDefault(_drawTip);
+	
+	var _moveDragDeck = __webpack_require__(71);
+	
+	var _moveDragDeck2 = _interopRequireDefault(_moveDragDeck);
+	
+	var _moveCardToHome = __webpack_require__(72);
+	
+	var _moveCardToHome2 = _interopRequireDefault(_moveCardToHome);
+	
+	var _fieldThemesSet = __webpack_require__(73);
+	
+	var _fieldThemesSet2 = _interopRequireDefault(_fieldThemesSet);
+	
+	__webpack_require__(74);
+	
+	__webpack_require__(75);
+	
+	__webpack_require__(76);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	// common
+	
+	_event2.default.listen('removeEl', function (data) {
+	
+		var _elDomElement = _share2.default.get('domElement:' + data.id);
+	
+		_elDomElement.remove();
+	
+		_share2.default.delete('domElement:' + data.id);
+	});
+	
+	// styles DOM
+	
+	
+	_event2.default.listen('showCard', function (target) {
+		(0, _elRender2.default)(target).show();
+	});
+	
+	_event2.default.listen('hideCard', function (target) {
+		(0, _elRender2.default)(target).hide();
+	});
+	
+	_event2.default.listen('stopAnimations', function (e) {
+		// TODO
+		// elRender.stopAnimations();
+	});
+
+/***/ },
+/* 64 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	// let jquery = require("script!../../../frontend/js/jquery-2.2.4.min.js");
+	
+	// export default jquery;
+	
+	Object.defineProperty(exports, "__esModule", {
+		value: true
+	});
+	
+	var _defaults = __webpack_require__(3);
+	
+	var _defaults2 = _interopRequireDefault(_defaults);
+	
+	var _share = __webpack_require__(1);
+	
+	var _share2 = _interopRequireDefault(_share);
+	
+	var _event = __webpack_require__(2);
+	
+	var _event2 = _interopRequireDefault(_event);
+	
+	var _elClass = __webpack_require__(65);
+	
+	var _elClass2 = _interopRequireDefault(_elClass);
+	
+	var _allElClass = __webpack_require__(66);
+	
+	var _allElClass2 = _interopRequireDefault(_allElClass);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	_share2.default.set('animatedElements', 0);
+	_share2.default.set('animatedElementsStack', []);
+	_share2.default.set('animatedCallback', function (e) {
+		return null;
+	});
+	
+	var _allEl = function _allEl(data) {
+	
+		if (!data) {
+			throw new Error("elRender:empty arguments");
+		}
+	
+		if (typeof data == "string") {
+	
+			try {
+	
+				if (data[0] == "#") {
+	
+					var _element = document.getElementById(data.slice(1, Infinity));
+	
+					return new _elClass2.default(_element);
+				} else if (data[0] == ".") {
+	
+					var _elements = document.getElementsByClassName(data.slice(1, Infinity));
+	
+					return new _allElClass2.default(_elements);
+				} else if (data[0] == "<") {
+	
+					var _temp = document.createElement('temp');
+					_temp.innerHTML = data;
+					var _element2 = _temp.children[0];
+	
+					return new _elClass2.default(_element2);
+				}
+			} catch (data) {}
+		} else if (data.el || data.elements) {
+			return data;
+		} else {
+			return new _elClass2.default(data);
+		}
+	};
+	
+	_allEl.stopAnimations = function (e) {
+	
+		_allEl(".animated")
+		// .css({transition: '0s'})
+		.css({
+			'transition': false
+		}).removeClass("animated");
+	};
+	
+	_event2.default.listen('stopAnimations', _allEl.stopAnimations);
+	
+	exports.default = _allEl;
+
+/***/ },
+/* 65 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+		value: true
+	});
+	
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	
+	var _event = __webpack_require__(2);
+	
+	var _event2 = _interopRequireDefault(_event);
+	
+	var _share = __webpack_require__(1);
+	
+	var _share2 = _interopRequireDefault(_share);
+	
+	var _defaults = __webpack_require__(3);
+	
+	var _defaults2 = _interopRequireDefault(_defaults);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	var elClass = function () {
+		function elClass(data) {
+			_classCallCheck(this, elClass);
+	
+			this.el = data;
+	
+			if (!data) {
+				// if(window._debug) throw new Error("test");
+				this.el = null;
+			}
+		}
+		// --
+	
+	
+		_createClass(elClass, [{
+			key: 'attr',
+			value: function attr(attributes) {
+				try {
+					for (var attrName in attributes) {
+						this.el[attrName] = attributes[attrName];
+					}
+	
+					return this;
+				} catch (e) {}
+			}
+			// --	
+	
+		}, {
+			key: 'hasClass',
+			value: function hasClass(className) {
+				try {
+	
+					var _classes = this.el.className.split(' ');
+					return _classes.includes(className);
+				} catch (e) {}
+			}
+			// --	
+	
+		}, {
+			key: 'toggleClass',
+			value: function toggleClass(className) {
+				try {
+	
+					if (this.hasClass(className)) {
+						this.removeClass(className);
+					} else {
+						this.addClass(className);
+					}
+				} catch (e) {}
+			}
+			// --	
+	
+		}, {
+			key: 'addClass',
+			value: function addClass(className) {
+				try {
+	
+					var _classes = this.el.className.split(' ');
+					if (!this.hasClass(className)) {
+						_classes.push(className);
+						this.el.className = _classes.join(' ');
+					}
+	
+					return this;
+				} catch (e) {}
+			}
+			// --	
+	
+		}, {
+			key: 'removeClass',
+			value: function removeClass(className) {
+	
+				if (!this.el || !this.el.className) {
+					return this;
+				}
+	
+				try {
+	
+					var _classes = this.el.className.split(' ');
+	
+					// if(this.hasClass(className)) {
+					var _clone = [];
+	
+					for (var i in _classes) {
+						if (_classes[i] != className) {
+							_clone.push(_classes[i]);
+						}
+					}
+	
+					_classes = _clone;
+	
+					this.el.className = _classes.join(' ');
+					// }
+	
+					return this;
+				} catch (e) {}
+			}
+			// --	
+	
+		}, {
+			key: 'css',
+			value: function css(a) {
+	
+				if (!this.el) {
+					return this;
+				}
+	
+				try {
+	
+					for (var attrName in a) {
+						this.el.style[attrName] = a[attrName];
+					}
+	
+					return this;
+				} catch (e) {}
+			}
+			// --	
+	
+		}, {
+			key: 'hide',
+			value: function hide() {
+				try {
+					return this.css({
+						'display': 'none'
+					});
+				} catch (e) {}
+			}
+			// --	
+	
+		}, {
+			key: 'show',
+			value: function show() {
+				try {
+					return this.css({
+						'display': 'block'
+					});
+				} catch (e) {}
+			}
+			// --	
+	
+		}, {
+			key: 'append',
+			value: function append(el) {
+				try {
+	
+					if (el.el) {
+						el = el.el;
+					}
+	
+					this.el.appendChild(el);
+	
+					return this;
+				} catch (e) {}
+			}
+			// --	
+	
+		}, {
+			key: 'html',
+			value: function html(el) {
+				try {
+	
+					if (typeof el == "undefined") {
+						return this.el.innerHTML;
+					}
+	
+					if (el.el) {
+						el = el.el;
+					}
+	
+					this.el.innerHTML = el;
+	
+					return this;
+				} catch (e) {}
+			}
+			// --
+	
+		}, {
+			key: 'animate',
+			value: function animate(params, animationTime, callback, animationName) {
+				var _this = this;
+	
+				try {
+					(function () {
+	
+						var _animation = _share2.default.get('animation');
+	
+						typeof animationTime == "undefined" && (animationTime = _share2.default.get('animationTime'));
+						typeof animationTime == "function" && (callback = animationTime, animationTime = _share2.default.get('animationTime'));
+						typeof callback == "string" && (animationName = callback, callback = null);
+	
+						// Thread
+						setTimeout(function (e) {
+	
+							if (_animation) {
+								_this.css({
+									'transition': animationTime / 1000 + 's'
+								});
+							}
+	
+							var counter = 0;
+	
+							var reType = function reType(data) {
+								// crutch
+	
+								var _e = data + '';
+	
+								var _px = _e.split('px');
+								if (_px.length == 2) {
+									return (_px[0] | 0) + 'px';
+								}
+	
+								return data;
+							};
+	
+							for (var attrName in params) {
+	
+								if (reType(_this.el.style[attrName]) != reType(params[attrName])) {
+									counter += 1;
+								}
+	
+								_this.el.style[attrName] = params[attrName];
+							}
+	
+							if (_animation) {
+	
+								_this.addClass("animated");
+	
+								_this.el.addEventListener("transitionend", function () {
+	
+									counter -= 1;
+	
+									// event.dispatch('animationEnd', this);
+	
+									if (!counter) {
+	
+										_this.removeClass("animated");
+										_this.css({ transition: null });
+	
+										if (typeof callback == "function") {
+											callback();
+										}
+	
+										_event2.default.dispatch('allAnimationsEnd', animationName);
+									}
+								}, false);
+							} else {
+	
+								// event.dispatch('animationEnd', this);
+	
+								if (typeof callback == "function") {
+									callback();
+								}
+	
+								_event2.default.dispatch('allAnimationsEnd', animationName);
+							}
+						}, 0);
+					})();
+				} catch (e) {}
+			}
+			// --	
+	
+		}, {
+			key: 'remove',
+			value: function remove() {
+				try {
+					// this.el.remove();
+					this.el.parentNode.removeChild(this.el);
+				} catch (e) {}
+			}
+		}, {
+			key: 'parent',
+			value: function parent() {
+				return new elClass(this.el.parentNode);
+			}
+		}, {
+			key: 'after',
+			value: function after(html) {
+	
+				try {
+					this.el.parentNode.insertBefore(html, this.el.nextElementSibling);
+				} catch (e) {}
+	
+				return this;
+			}
+		}, {
+			key: 'before',
+			value: function before(html) {
+	
+				try {
+					this.el.parentNode.insertBefore(html, this.el);
+				} catch (e) {}
+	
+				return this;
+			}
+		}, {
+			key: 'listen',
+			value: function listen(eventName, callback) {
+				this.el.addEventListener(eventName, callback);
+			}
+		}, {
+			key: 'trigger',
+			value: function trigger(eventName) {
+				if (typeof this.el[eventName] == "function") {
+					this.el[eventName]();
+				}
+			}
+		}, {
+			key: 'click',
+			value: function click(callback) {
+				this.listen('click', callback);
+			}
+		}]);
+	
+		return elClass;
+	}();
+	
+	exports.default = elClass;
+
+/***/ },
+/* 66 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+		value: true
+	});
+	
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	
+	var _defaults = __webpack_require__(3);
+	
+	var _defaults2 = _interopRequireDefault(_defaults);
+	
+	var _elClass = __webpack_require__(65);
+	
+	var _elClass2 = _interopRequireDefault(_elClass);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	var allElClass = function () {
+		function allElClass(elements) {
+			_classCallCheck(this, allElClass);
+	
+			this.elements = [];
+	
+			for (var i in elements) {
+				this.elements.push(new _elClass2.default(elements[i]));
+			}
+		}
+		// --
+	
+	
+		_createClass(allElClass, [{
+			key: 'attr',
+			value: function attr(attributes) {
+				for (var i in this.elements) {
+					this.elements[i].attr(attributes);
+				}
+				return this;
+			}
+			// --
+	
+		}, {
+			key: 'toggleClass',
+			value: function toggleClass(className) {
+				for (var i in this.elements) {
+					this.elements[i].toggleClass(className);
+				}
+				return this;
+			}
+			// --
+	
+		}, {
+			key: 'addClass',
+			value: function addClass(className) {
+				for (var i in this.elements) {
+					this.elements[i].addClass(className);
+				}
+				return this;
+			}
+			// --
+	
+		}, {
+			key: 'removeClass',
+			value: function removeClass(className) {
+				for (var i in this.elements) {
+					this.elements[i].removeClass(className);
+				}
+				return this;
+			}
+			// --
+	
+		}, {
+			key: 'css',
+			value: function css(a) {
+				for (var i in this.elements) {
+					this.elements[i].css(a);
+				}
+				return this;
+			}
+			// --
+	
+		}, {
+			key: 'hide',
+			value: function hide() {
+				for (var i in this.elements) {
+					this.elements[i].hide();
+				}
+				return this;
+			}
+			// --
+	
+		}, {
+			key: 'show',
+			value: function show() {
+				for (var i in this.elements) {
+					this.elements[i].show();
+				}
+				return this;
+			}
+			// --
+	
+		}, {
+			key: 'animate',
+			value: function animate(params, animationTime, callback, animationName) {
+	
+				typeof animationTime == "undefined" && (animationTime = share.get('animationTime'));
+				typeof animationTime == "function" && (callback = animationTime, animationTime = share.get('animationTime'));
+				typeof callback == "string" && (animationName = callback, callback = null);
+	
+				var counter = 0;
+	
+				for (var i in this.elements) {
+					counter += 1;
+					this.elements[i].animate(params, animationTime, function () {
+						counter -= 1;
+						if (!counter) callback();
+					});
+				}
+				return this;
+			}
+			// --
+	
+		}, {
+			key: 'remove',
+			value: function remove() {
+				for (var i in this.elements) {
+					// this.elements[i].remove();
+					this.elements[i].parentNode.removeChild(this.elements[i]);
+				}
+				return this;
+			}
+		}]);
+	
+		return allElClass;
+	}();
+	
+	exports.default = allElClass;
+
+/***/ },
+/* 67 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	var _share = __webpack_require__(1);
+	
+	var _share2 = _interopRequireDefault(_share);
+	
+	var _event = __webpack_require__(2);
+	
+	var _event2 = _interopRequireDefault(_event);
+	
+	var _defaults = __webpack_require__(3);
+	
+	var _defaults2 = _interopRequireDefault(_defaults);
+	
+	var _field = __webpack_require__(12);
+	
+	var _field2 = _interopRequireDefault(_field);
+	
+	var _elRender = __webpack_require__(64);
+	
+	var _elRender2 = _interopRequireDefault(_elRender);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	_event2.default.listen('initField', function (data) {
+	
+		var domElement = data.field ? data.field : '#map';
+	
+		if (typeof domElement == 'string') {
+			if (domElement.split('.').length == 2) {
+				domElement = document.getElementsByClassName(domElement.split('.')[1])[0];
+			} else if (domElement.split('#').length == 2) {
+				domElement = document.getElementById(domElement.split('#')[1]);
+			} else {
+				domElement = document.getElementsByTagName(domElement);
+			}
+			if (!domElement) {
+				domElement = document.getElementById('mat');
+			}
+		};
+	
+		var _params = {};
+	
+		if (data.width && typeof data.width == 'number') {
+			_params.width = data.width + 'px';
+		}
+		if (data.height && typeof data.height == 'number') {
+			_params.height = data.height + 'px';
+		}
+		if (data.top && typeof data.top == 'number') {
+			_params.top = data.top + 'px';
+		}
+		if (data.left && typeof data.left == 'number') {
+			_params.left = data.left + 'px';
+		}
+	
+		var _zoom = _share2.default.get('zoom');
+		if (_zoom != _defaults2.default.zoom || _zoom != 1) {
+			_params.transform = 'scale(' + _zoom + ')';
+			_params['transform-origin'] = '0 0';
+		}
+	
+		(0, _elRender2.default)(domElement).css(_params).addClass('solitaireField');
+	
+		_share2.default.set('domElement:field', domElement);
+	});
+
+/***/ },
+/* 68 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	var _event = __webpack_require__(2);
+	
+	var _event2 = _interopRequireDefault(_event);
+	
+	var _share = __webpack_require__(1);
+	
+	var _share2 = _interopRequireDefault(_share);
+	
+	var _defaults = __webpack_require__(3);
+	
+	var _defaults2 = _interopRequireDefault(_defaults);
+	
+	var _field = __webpack_require__(12);
+	
+	var _field2 = _interopRequireDefault(_field);
+	
+	var _elRender = __webpack_require__(64);
+	
+	var _elRender2 = _interopRequireDefault(_elRender);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	/*
+	 * addDeckEl
+	 * redrawDeckFlip
+	 * redrawDeckIndexes
+	 * redrawDeck
+	 */
+	
+	var applyChangedParameters = function applyChangedParameters(data) {
+	
+		data.params.x = ((data.deckData.position && typeof data.deckData.position.x == 'number' ? data.deckData.position.x : 0) | 0) + ((data.deckData.parentPosition && typeof data.deckData.parentPosition.x == 'number' ? data.deckData.parentPosition.x : 0) | 0);
+	
+		data.params.y = ((data.deckData.position && typeof data.deckData.position.y == 'number' ? data.deckData.position.y : 0) | 0) + ((data.deckData.parentPosition && typeof data.deckData.parentPosition.y == 'number' ? data.deckData.parentPosition.y : 0) | 0);
+	
+		data.deck.rotate = data.params.rotate = data.deckData.rotate && typeof data.deckData.rotate == 'number' ? data.deckData.rotate : 0;
+	
+		data.params.padding_y = data.deckData.paddingY && typeof data.deckData.paddingY == 'number' ? data.deckData.paddingY : data.deckData.paddingType ? _defaults2.default.padding_y : 0;
+	
+		data.params.padding_x = data.deckData.paddingX && typeof data.deckData.paddingX == 'number' ? data.deckData.paddingX : data.deckData.paddingType ? _defaults2.default.padding_x : 0;
+	
+		data.params.flip_padding_y = data.deckData.flipPaddingY && typeof data.deckData.flipPaddingY == 'number' ? data.deckData.flipPaddingY : data.deckData.paddingType ? _defaults2.default.flip_padding_y : 0;
+	
+		data.params.flip_padding_x = data.deckData.flipPaddingX && typeof data.deckData.flipPaddingX == 'number' ? data.deckData.flipPaddingX : data.deckData.paddingType ? _defaults2.default.flip_padding_x : 0;
+	};
+	
+	// --------------------------------------------------------------------------------------------------------
+	
+	_event2.default.listen('addDeckEl', function (data) {
+	
+		applyChangedParameters(data);
+	
+		var _deckDomElement = (0, _elRender2.default)('<div>');
+	
+		var _params = {
+			'transform': 'rotate(' + (data.params.rotate | 0) + 'deg)',
+			'width': _defaults2.default.card.width + 'px',
+			'height': _defaults2.default.card.height + 'px',
+			'left': data.params.x + 'px',
+			'top': data.params.y + 'px',
+			'display': data.deck.visible ? 'block' : 'none'
+		};
+	
+		(0, _elRender2.default)(_deckDomElement).css(_params).addClass('el').attr({
+			id: data.deck.id
+		});
+	
+		if (data.deckData.showSlot) {
+			(0, _elRender2.default)(_deckDomElement).addClass('slot');
+		}
+	
+		if (data.deckData.class) {
+			(0, _elRender2.default)(_deckDomElement).addClass(data.deckData.class);
+		}
+	
+		var _fieldDomElement = _share2.default.get('domElement:field');
+	
+		(0, _elRender2.default)(_fieldDomElement).append(_deckDomElement);
+	
+		_share2.default.set('domElement:' + data.deck.id, _deckDomElement);
+	});
+	
+	// --------------------------------------------------------------------------------------------------------
+	
+	_event2.default.listen('redrawDeckFlip', function (data) {
+	
+		if (!data || !data.cards) {
+			return;
+		}
+	
+		for (var i in data.cards) {
+	
+			var _params = {};
+	
+			var _cardDomElement = _share2.default.get('domElement:' + data.cards[i].id);
+	
+			if (data.cards[i].flip) {
+	
+				_cardDomElement.addClass('flip');
+			} else {
+	
+				_cardDomElement.removeClass('flip');
+			}
+	
+			_cardDomElement.css(_params);
+		}
+	});
+	
+	// --------------------------------------------------------------------------------------------------------
+	
+	_event2.default.listen('redrawDeckIndexes', function (data) {
+	
+		if (!data || !data.cards) {
+			return;
+		}
+	
+		for (var i in data.cards) {
+	
+			var _cardDomElement = _share2.default.get('domElement:' + data.cards[i].id);
+	
+			_cardDomElement.css({
+				'z-index': (_defaults2.default.startZIndex | 0) + (i | 0)
+			});
+		}
+	});
+	
+	// --------------------------------------------------------------------------------------------------------
+	
+	_event2.default.listen('redrawDeck', function (data) {
+	
+		if (_share2.default.get('noRedraw')) {
+			return false;
+		};
+	
+		if (data && data.deckData && data.deck && data.params) {
+			applyChangedParameters(data);
+		}
+	
+		// перерисовка стопки
+		var _params = {
+			'transform': 'rotate(' + (data.params.rotate | 0) + 'deg)',
+			'left': data.params.x + 'px',
+			'top': data.params.y + 'px',
+			'display': data.deck.visible ? 'block' : 'none'
+		};
+	
+		var _deckDomElement = _share2.default.get('domElement:' + data.deck.id);
+	
+		(0, _elRender2.default)(_deckDomElement).css(_params);
+	
+		// console.log('redraw cards for', data.deck.name, data.cards);
+	
+		// перерисовка карт
+		for (var i in data.cards) {
+	
+			var _card_position = data.deck.padding(i);
+			var _zIndex = (data.params.startZIndex | 0) + (i | 0);
+	
+			var _params2 = {
+				'-ms-transform': 'rotate(' + (data.params.rotate | 0) + 'deg)',
+				'-webkit-transform': 'rotate(' + (data.params.rotate | 0) + 'deg)',
+				'-moz-transform': 'rotate(' + (data.params.rotate | 0) + 'deg)',
+				'transform': 'rotate(' + (data.params.rotate | 0) + 'deg)',
+				'left': _card_position.x + 'px',
+				'top': _card_position.y + 'px',
+				'z-index': _zIndex,
+				'display': data.deck.visible ? 'block' : 'none'
+			};
+	
+			var _cardDomElement = _share2.default.get('domElement:' + data.cards[i].id);
+	
+			if (data.cards[i].flip) {
+	
+				(0, _elRender2.default)(_cardDomElement).addClass('flip');
+			} else {
+	
+				(0, _elRender2.default)(_cardDomElement).removeClass('flip');
+			}
+	
+			(0, _elRender2.default)(_cardDomElement).css(_params2);
+		}
+	});
+
+/***/ },
+/* 69 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	var _share = __webpack_require__(1);
+	
+	var _share2 = _interopRequireDefault(_share);
+	
+	var _event = __webpack_require__(2);
+	
+	var _event2 = _interopRequireDefault(_event);
+	
+	var _defaults = __webpack_require__(3);
+	
+	var _defaults2 = _interopRequireDefault(_defaults);
+	
+	var _common = __webpack_require__(5);
+	
+	var _common2 = _interopRequireDefault(_common);
+	
+	var _field = __webpack_require__(12);
+	
+	var _field2 = _interopRequireDefault(_field);
+	
+	var _elRender = __webpack_require__(64);
+	
+	var _elRender2 = _interopRequireDefault(_elRender);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	_event2.default.listen('addCardEl', function (data) {
+	
+		var _card = {
+			width: _defaults2.default.card.width.toFixed(3) * 1,
+			height: _defaults2.default.card.height.toFixed(3) * 1
+		};
+	
+		var _params = {
+			"width": _card.width + 'px',
+			"height": _card.height + 'px'
+		};
+	
+		var _domElement = (0, _elRender2.default)('<div>');
+	
+		(0, _elRender2.default)(_domElement).addClass('el card draggable ' + data.name).css(_params).attr({
+			id: data.id
+		});
+	
+		_share2.default.set('domElement:' + data.id, _domElement);
+	
+		var _fieldDomElement = _share2.default.get('domElement:field');
+	
+		(0, _elRender2.default)(_fieldDomElement).append(_domElement);
+	});
+
+/***/ },
+/* 70 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	var _event = __webpack_require__(2);
+	
+	var _event2 = _interopRequireDefault(_event);
+	
+	var _share = __webpack_require__(1);
+	
+	var _share2 = _interopRequireDefault(_share);
+	
+	var _elRender = __webpack_require__(64);
+	
+	var _elRender2 = _interopRequireDefault(_elRender);
+	
+	var _tips = __webpack_require__(9);
+	
+	var _tips2 = _interopRequireDefault(_tips);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	_event2.default.listen('showTip', function (data) {
+	
+		if (data && data.el && data.type) {
+			// data && data.el && data.el.domElement && data.type
+	
+			var _elDomElement = _share2.default.get('domElement:' + data.el.id);
+	
+			(0, _elRender2.default)(_elDomElement).addClass(data.type);
+		}
+	});
+	
+	_event2.default.listen('hideTips', function (data) {
+	
+		if (data && data.types) {
+	
+			for (var i in data.types) {
+	
+				var typeName = data.types[i];
+	
+				(0, _elRender2.default)('.' + typeName).removeClass(typeName);
+			}
+		} else {
+	
+			for (var _i in _tips2.default.tipTypes) {
+	
+				var _typeName = _tips2.default.tipTypes[_i];
+	
+				(0, _elRender2.default)('.' + _typeName).removeClass(_typeName);
+			}
+		}
+	});
+
+/***/ },
+/* 71 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	var _event = __webpack_require__(2);
+	
+	var _event2 = _interopRequireDefault(_event);
+	
+	var _share = __webpack_require__(1);
+	
+	var _share2 = _interopRequireDefault(_share);
+	
+	var _common = __webpack_require__(5);
+	
+	var _common2 = _interopRequireDefault(_common);
+	
+	var _defaults = __webpack_require__(3);
+	
+	var _defaults2 = _interopRequireDefault(_defaults);
+	
+	var _elRender = __webpack_require__(64);
+	
+	var _elRender2 = _interopRequireDefault(_elRender);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	/*
+	 * moveDragDeck
+	 * moveDragDeckDone
+	 * dragDeck
+	 */
+	
+	var angleValidate = function angleValidate(angle) {
+	
+		if (angle < 0) {
+			angle += 360;
+		}
+		if (angle > 360) {
+			angle -= 360;
+		}
+	
+		return angle;
+	};
+	
+	_event2.default.listen('moveDragDeck', function (data) {
+	
+		_common2.default.curLock();
+	
+		var _lastIndex = data.moveDeck.length - 1;
+	
+		for (var i in data.moveDeck) {
+	
+			var _position = data.destination.padding(data.destination.cards.length - 1 + (i | 0));
+	
+			var departureAngle = angleValidate(data.departure.rotate),
+			    destinationAngle = angleValidate(data.destination.rotate);
+	
+			var _cardDomElement = _share2.default.get('domElement:' + data.moveDeck[i].card.id);
+	
+			(0, _elRender2.default)(_cardDomElement).css({
+				'transform': 'rotate(' + departureAngle + 'deg)'
+			});
+	
+			if (departureAngle - destinationAngle > 180) {
+	
+				departureAngle = departureAngle - 360;
+				(0, _elRender2.default)(_cardDomElement).css({
+					'transform': 'rotate(' + departureAngle + 'deg)'
+				});
+			};
+	
+			if (departureAngle - destinationAngle < -180) {
+				destinationAngle -= 360;
+			}
+	
+			var _params = {
+				'transform': 'rotate(' + destinationAngle + 'deg)',
+				'left': _position.x + 'px',
+				'top': _position.y + 'px'
+			};
+	
+			var _zIndex = (_defaults2.default.topZIndex | 0) + (i | 0);
+	
+			var _callback = function (data, _last) {
+	
+				data.departure.Redraw();
+				data.destination.Redraw();
+	
+				_common2.default.curUnLock();
+	
+				if (_last && typeof data.callback == "function") {
+					data.callback();
+				}
+	
+				_event2.default.dispatch('moveDragDeckDone', {
+					deck: data.destination
+				});
+			}.bind(null, data, i == _lastIndex);
+	
+			(0, _elRender2.default)(_cardDomElement).css({
+				'z-index': _zIndex
+			}).animate(_params, _callback);
+		}
+	});
+	
+	// --------------------------------------------------------------------------------------------------------
+	
+	_event2.default.listen('moveDragDeckDone', function (data) {
+	
+		if (!data.deck.full) {
+			return;
+		}
+	
+		var _deck = data.deck.cards;
+	
+		for (var i in _deck) {
+	
+			var _cardDomElement = _share2.default.get('domElement:' + _deck[i].id);
+	
+			(0, _elRender2.default)(_cardDomElement).addClass('fill');
+		}
+	});
+	
+	// --------------------------------------------------------------------------------------------------------
+	
+	_event2.default.listen('dragDeck', function (data) {
+		// {x, y, _dragDeck, _startCursor, _deck}
+	
+		for (var i in data._dragDeck) {
+			var _position = data._deck.padding(data._dragDeck[i].index);
+			var _params = {
+				'left': _position.x + (data.x - data._startCursor.x) + 'px',
+				'top': _position.y + (data.y - data._startCursor.y) + 'px',
+				'z-index': _defaults2.default.topZIndex + (i | 0)
+			};
+	
+			// Operations with DOM
+			var _cardDomElement = _share2.default.get('domElement:' + data._dragDeck[i].card.id);
+	
+			(0, _elRender2.default)(_cardDomElement).css(_params);
+		}
+	});
+
+/***/ },
+/* 72 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	var _event = __webpack_require__(2);
+	
+	var _event2 = _interopRequireDefault(_event);
+	
+	var _share = __webpack_require__(1);
+	
+	var _share2 = _interopRequireDefault(_share);
+	
+	var _common = __webpack_require__(5);
+	
+	var _common2 = _interopRequireDefault(_common);
+	
+	var _elRender = __webpack_require__(64);
+	
+	var _elRender2 = _interopRequireDefault(_elRender);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	// Move card to home
+	_event2.default.listen('moveCardToHome', function (data) {
+	
+		if (_share2.default.get('lastCursorMove').distance > 0) {
+			_common2.default.curLock();
+		}
+	
+		for (var i in data.moveDeck) {
+	
+			var _position = data.departure.padding(data.moveDeck[i].index);
+			var _params = {
+				left: _position.x + 'px',
+				top: _position.y + 'px'
+			};
+	
+			var _cardDomElement = _share2.default.get('domElement:' + data.moveDeck[i].card.id);
+	
+			(0, _elRender2.default)(_cardDomElement).animate(_params, function () {
+	
+				_common2.default.curUnLock();
+	
+				if (data.departure) {
+					data.departure.Redraw();
+				}
+	
+				if (typeof data.callback == "function") {
+					data.callback();
+				}
+			}, 'moveCardToHomeAnimation');
+		}
+	});
+
+/***/ },
+/* 73 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	var _event = __webpack_require__(2);
+	
+	var _event2 = _interopRequireDefault(_event);
+	
+	var _share = __webpack_require__(1);
+	
+	var _share2 = _interopRequireDefault(_share);
+	
+	var _defaults = __webpack_require__(3);
+	
+	var _defaults2 = _interopRequireDefault(_defaults);
+	
+	var _field = __webpack_require__(12);
+	
+	var _field2 = _interopRequireDefault(_field);
+	
+	var _elRender = __webpack_require__(64);
+	
+	var _elRender2 = _interopRequireDefault(_elRender);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	_event2.default.listen('fieldThemesSet', function (pref) {
+	
+		var _fieldDomElement = _share2.default.get('domElement:field'); //Field.domElement;
+	
+		for (var prefName in _defaults2.default.themes) {
+	
+			// Clear old themes
+			for (var i in _defaults2.default.themes[prefName]) {
+	
+				var themeName = _defaults2.default.themes[prefName][i];
+	
+				(0, _elRender2.default)(_fieldDomElement).removeClass(themeName);
+			}
+	
+			// Add new themes
+			var className = pref[prefName];
+			// let className = defaults.themes[prefName][pref[prefName]];
+	
+			(0, _elRender2.default)(_fieldDomElement).addClass(className);
+		}
+	});
+
+/***/ },
+/* 74 */
+/***/ function(module, exports) {
+
+	// removed by extract-text-webpack-plugin
+
+/***/ },
+/* 75 */
+/***/ function(module, exports) {
+
+	// removed by extract-text-webpack-plugin
+
+/***/ },
+/* 76 */
+/***/ function(module, exports) {
+
+	// removed by extract-text-webpack-plugin
+
+/***/ },
+/* 77 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+		value: true
+	});
+	
+	var _defaults = __webpack_require__(3);
+	
+	var _defaults2 = _interopRequireDefault(_defaults);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	var shuffle = function shuffle(deck) {
+		for (var j, x, _i = deck.length; _i; j = Math.floor(Math.random() * _i), x = deck[--_i], deck[_i] = deck[j], deck[j] = x) {};
+	};
+	
+	var genType = function genType(_cardsColors, _cardsRanks) {
+	
+		var _deck = [];
+	
+		var _iteratorNormalCompletion = true;
+		var _didIteratorError = false;
+		var _iteratorError = undefined;
+	
+		try {
+			for (var _iterator = _cardsColors[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+				var cardColor = _step.value;
+				var _iteratorNormalCompletion2 = true;
+				var _didIteratorError2 = false;
+				var _iteratorError2 = undefined;
+	
+				try {
+					for (var _iterator2 = _cardsRanks[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
+						var cardRank = _step2.value;
+	
+						_deck.push(cardColor + cardRank);
+					}
+				} catch (err) {
+					_didIteratorError2 = true;
+					_iteratorError2 = err;
+				} finally {
+					try {
+						if (!_iteratorNormalCompletion2 && _iterator2.return) {
+							_iterator2.return();
+						}
+					} finally {
+						if (_didIteratorError2) {
+							throw _iteratorError2;
+						}
+					}
+				}
+			}
+		} catch (err) {
+			_didIteratorError = true;
+			_iteratorError = err;
+		} finally {
+			try {
+				if (!_iteratorNormalCompletion && _iterator.return) {
+					_iterator.return();
+				}
+			} finally {
+				if (_didIteratorError) {
+					throw _iteratorError;
+				}
+			}
+		}
+	
+		return _deck;
+	};
+	
+	var genTypes = {
+	
+		all: function all(_ranks) {
+			return genType(_defaults2.default.card.suits, _ranks);
+		},
+	
+		black: function black(_ranks) {
+	
+			var _cardsSuits = _defaults2.default.card.colors.black;
+	
+			return genType(_cardsSuits, _ranks);
+		},
+	
+		red: function red(_ranks) {
+	
+			var _cardsSuits = _defaults2.default.card.colors.red;
+	
+			return genType(_cardsSuits, _ranks);
+		},
+	
+		black_and_red: function black_and_red(_ranks) {
+	
+			var _cardsSuits = [_defaults2.default.card.colors.red[Math.random() * _defaults2.default.card.colors.red.length | 0], _defaults2.default.card.colors.black[Math.random() * _defaults2.default.card.colors.black.length | 0]];
+	
+			return genType(_cardsSuits, _ranks);
+		},
+	
+		h_only: function h_only(_ranks) {
+	
+			var _cardsSuits = ['h'];
+	
+			return genType(_cardsSuits, _ranks);
+		},
+	
+		d_only: function d_only(_ranks) {
+	
+			var _cardsSuits = ['d'];
+	
+			return genType(_cardsSuits, _ranks);
+		},
+	
+		c_only: function c_only(_ranks) {
+	
+			var _cardsSuits = ['c'];
+	
+			return genType(_cardsSuits, _ranks);
+		},
+	
+		s_only: function s_only(_ranks) {
+	
+			var _cardsSuits = ['s'];
+	
+			return genType(_cardsSuits, _ranks);
+		},
+	
+		one_rank_only: function one_rank_only(_ranks) {
+	
+			var _cardsSuits = [_defaults2.default.card.solors[Math.random() * _defaults2.default.card.solors.length | 0]];
+	
+			return genType(_cardsSuits, _ranks);
+		},
+	
+		hearts: function hearts(_ranks) {
+			return genTypes.h_only();
+		},
+	
+		diamonds: function diamonds(_ranks) {
+			return genTypes.d_only();
+		},
+	
+		clubs: function clubs(_ranks) {
+			return genTypes.c_only();
+		},
+	
+		spades: function spades(_ranks) {
+			return genTypes.s_only();
+		}
+	};
+	
+	exports.default = function (data) {
+	
+		var default_type = 'all';
+	
+		var default_shuffle = false;
+		var max_iterations = 10;
+	
+		var type = data && data.type && typeof data.type == 'string' ? data.type : default_type;
+		var _deckCount = data && data.deckCount && typeof data.deckCount == 'number' ? data.deckCount : 52;
+		var _iterations = data && data.iterations && typeof data.iterations == 'number' && data.iterations < max_iterations ? data.iterations : 1;
+		var _shuffle = data && data.shuffle && typeof data.shuffle != 'undefuned' ? data.shuffle : default_shuffle;
+	
+		var _ranks = _deckCount == 36 ? _defaults2.default.card.ranks36 : _defaults2.default.card.ranks;
+	
+		if (data && data.ranks) {
+	
+			_ranks = [];
+	
+			for (i in data.ranks) {
+				if (_defaults2.default.card.rank.includes(data.ranks[i].toString())) {
+					_ranks.push(data.ranks[i].toString());
+				}
+			}
+		}
+	
+		var _deck = [];
+	
+		for (; _iterations > 0; _iterations -= 1) {
+			_deck = _deck.concat(genTypes[type](_ranks));
+		}
+	
+		if (_shuffle) {
+			shuffle(_deck);
+		}
+	
+		return _deck;
+	};
+
+/***/ },
+/* 78 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+		value: true
+	});
+	
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	
+	var _share = __webpack_require__(1);
+	
+	var _share2 = _interopRequireDefault(_share);
+	
+	var _event = __webpack_require__(2);
+	
+	var _event2 = _interopRequireDefault(_event);
+	
+	var _common = __webpack_require__(5);
+	
+	var _common2 = _interopRequireDefault(_common);
+	
+	var _defaults = __webpack_require__(3);
+	
+	var _defaults2 = _interopRequireDefault(_defaults);
+	
+	var _deckGenerator = __webpack_require__(77);
+	
+	var _deckGenerator2 = _interopRequireDefault(_deckGenerator);
+	
+	var _field = __webpack_require__(12);
+	
+	var _field2 = _interopRequireDefault(_field);
+	
+	var _elRender = __webpack_require__(64);
+	
+	var _elRender2 = _interopRequireDefault(_elRender);
+	
+	var _mapCommon = __webpack_require__(46);
+	
+	var _mapCommon2 = _interopRequireDefault(_mapCommon);
+	
+	var _history = __webpack_require__(35);
+	
+	var _history2 = _interopRequireDefault(_history);
+	
+	var _state = __webpack_require__(6);
+	
+	var _state2 = _interopRequireDefault(_state);
+	
+	var _renderTest = __webpack_require__(79);
+	
+	var _renderTest2 = _interopRequireDefault(_renderTest);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	// event.listen('addStep', (e) => {
+	// 	console.log('* Добавили данные для истории:', e.move ? e.move.stepType : 'none', e);
+	// 	if(e.move && !e.move.stepType) {
+	// 		throw new Error('debug');
+	// 	}
+	// });
+	
+	// event.listen('makeStep', (e) => {
+	// 	console.log('# Отправили данные на сохранение в историю:', e);
+	// }
+	
+	// -- LOG
+	
+	// $(document).ready(() => {
+	// 	$(document.body).append(
+	// 		$('<span>')
+	// 			.attr({id : 'log_1'})
+	// 			.css({
+	// 				'display'          : 'none'                                                            ,
+	// 				'width'            : '250px'                                                           ,
+	// 				'max-height'       : '70%'                                                             ,
+	// 				'position'         : 'absolute'                                                        ,
+	// 				'top'              : '0px'                                                             ,
+	// 				'right'            : '2px'                                                             ,
+	// 				'overflow'         : 'hidden'                                                          ,
+	// 				'zIndex'           : 999                                                               ,
+	// 				'background'       : 'rgba(0, 0, 0, .5)'                                               ,
+	// 				'padding'          : '4px'                                                             ,
+	// 				'border-radius'    : '0px 0px 5px 5px'                                                 ,
+	// 				'text-shadow'      : '#000 1px 0 0px, #000 0 1px 0px, #000 -1px 0 0px, #000 0 -1px 0px',
+	// 				'font-size'        : '10pt'                                                            ,
+	// 				'font-family'      : 'Tahoma, Verdana'
+	// 			})
+	// 			.dblclick(function() {
+	// 				setTimeout(() => {
+	// 					$(this)
+	// 						.hide()
+	// 						.empty();
+	// 				}, 100);
+	// 			})
+	// 	);
+	// });
+	
+	
+	var _log = function _log(text, color, e) {
+	
+		console.log('%c»%c' + text, 'color: white;',
+	
+		// 'background: rgba(0, 0, 0, .5);'                                                 +
+		'border-radius: 3px;' +
+		// 'text-shadow: #777 1px 0 0px, #777 0 1px 0px, #777 -1px 0 0px, #777 0 -1px 0px;' +
+		'padding: 2px;' +
+		// 'border: 1px solid black;'                                                       +
+		'background: ' + color + ';',
+		// 'font-weight: bold;'
+		// 'color: ' + color + ';'
+	
+		e ? e : '');
+	
+		// $('#log_1')
+		// 	.show()
+		// 	.append(
+		// 		$('<div>')
+		// 		.html(text)
+		// 		.css({
+		// 			color
+		// 		})
+		// 	)
+		// 	.prop({
+		// 		scrollTop : 1e10//log_1.scrollHeight - log_1.clientHeight
+		// 	})
+	};
+	
+	// event.listen('shareSet:stepType', (e) => {
+	// 	_log('stepType:' + e, 'yellow');
+	// })
+	
+	// event.listen('shareSet:curLockState', (e) => {
+	// 	_log('curLockState:' + e, '#aaffaa');
+	// });
+	
+	// event.listen('moveEnd', (e) => {
+	// 	_log('moveEnd', 'orange');
+	// });
+	
+	// event.listen('forceMoveEnd', (e) => {
+	// 	_log('forceMoveEnd', 'orange');
+	// });
+	
+	// event.listen('gameInit', (e, a) => {
+	// 	_log('gameInit (' + ((a.eventInfo.index | 0) + 1) + ', ' + a.eventInfo.count + ')', '#ff7777');
+	// });
+	
+	// event.listen('startSession', (e) => {
+	// 	_log('start', 'red', e);
+	// });
+	
+	// event.listen('stopSession', () => {
+	// 	_log('stop', 'green');
+	// });
+	
+	document.onwheel = function (e) {
+	
+		var area = null;
+		// if (e.target.id == 'log_1') {
+		// 	area = e.target;
+		// } else 
+		if (e.target.parentNode.id == 'log_1') {
+			area = e.target.parentNode;
+		} else {
+			return;
+		}
+	
+		var delta = e.deltaY || e.detail || e.wheelDelta;
+	
+		area.scrollTop = area.scrollTop + delta;
+	
+		// if (delta < 0 && area.scrollTop == 0) {
+		e.preventDefault();
+		// }
+	
+		// if (delta > 0 && area.scrollHeight - area.clientHeight - area.scrollTop <= 1) {
+		e.preventDefault();
+		// }
+	};
+	
+	// --
+	
+	var debugHistoryMgrClass = function () {
+		function debugHistoryMgrClass() {
+			_classCallCheck(this, debugHistoryMgrClass);
+	
+			this._history = [];
+			this._redo = [];
+		}
+	
+		_createClass(debugHistoryMgrClass, [{
+			key: 'record',
+			value: function record(data) {
+	
+				this._redo = [];
+				this._history.push(data);
+			}
+		}, {
+			key: 'undo',
+			value: function undo() {
+	
+				var _step = this._history.pop();
+				if (_step) {
+					this._redo.push(_step);
+				};
+				return _step;
+			}
+		}, {
+			key: 'redo',
+			value: function redo() {
+	
+				var _step = this._redo.pop();
+				if (_step) {
+					this._history.push(_step);
+				};
+				return _step;
+			}
+		}]);
+	
+		return debugHistoryMgrClass;
+	}();
+	
+	;
+	
+	var debugHistoryMgr = new debugHistoryMgrClass();
+	
+	// add buttons
+	
+	var _debugHistory = false;
+	var debugHistory = function debugHistory(a) {
+	
+		if (_debugHistory) {
+			return;
+		}
+		_debugHistory = true;
+	
+		_event2.default.listen('makeStep', debugHistoryMgr.record);
+	
+		if (a && a.drawButtons) (0, _elRender2.default)(document.body).append((0, _elRender2.default)("<div>").append($("<span>").addClass('awesome').text('UNDO').click(function () {
+			var _data = debugHistoryMgr.undo();
+			if (_data) {
+				SolitaireEngine.event.dispatch('undo', _data);
+			}
+		})).append($("<span>").addClass('awesome').text('REDO').click(function () {
+			var _data = debugHistoryMgr.redo();
+			if (_data) {
+				SolitaireEngine.event.dispatch('redo', _data);
+			}
+		})).css({
+			position: 'fixed',
+			top: '1px',
+			left: '1px'
+		}));
+	};
+	
+	// let runTests = ()=>{
+	// 	// renderTest();
+	// }
+	
+	// event.listen('gameInit', (e)=>{
+	// 	if(!e.firstInit) {return;};
+	// 	runTests();
+	// })
+	
+	exports.default = {
+		share: _share2.default,
+		deckGenerator: _deckGenerator2.default,
+		debugHistory: debugHistory,
+		debugHistoryMgr: debugHistoryMgr,
+		validateCardName: _common2.default.validateCardName,
+		elRender: _elRender2.default,
+		defaults: _defaults2.default,
+		state: _state2.default,
+		history: _history2.default,
+		field: _field2.default,
+		groupGenerators: {
+			mapCommon: _mapCommon2.default
+		}
+	};
+
+/***/ },
+/* 79 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+		value: true
+	});
+	
+	var _elRender = __webpack_require__(64);
+	
+	var _elRender2 = _interopRequireDefault(_elRender);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	exports.default = function () {
+	
+		/*	log("-- renderTests");
+	 // --
+	 	log("- startTest#1");
+	 	let _el_1 = elRender("<div>");
+	 	log(
+	 		"- renderTest#1-A",
+	 		_el_1
+	 	);
+	 	// log(
+	 	// 	"- renderTest#1-B",
+	 	// 	_el_1.elements[0].el.className
+	 	// );
+	 // --	log("-- renderTests");
+	 // --
+	 	log("- startTest#1");
+	 	let _el_1 = elRender("<div>");
+	 	log(
+	 		"- renderTest#1-A",
+	 		_el_1
+	 	);
+	 	// log(
+	 	// 	"- renderTest#1-B",
+	 	// 	_el_1.elements[0].el.className
+	 	// );
+	 // --
+	 	log("- startTest#2");
+	 	let _el_2 = elRender("#tbUndo");
+	 	log(
+	 		"- renderTest#2-A",
+	 		_el_2
+	 	);
+	 	// log(
+	 	// 	"- renderTest#2-B",
+	 	// 	_el_2.elements[0].el.className
+	 	// );
+	 // --
+	 	log("- startTest#3");
+	 	let _el_3 = elRender(".titleBandLink");
+	 	log(
+	 		"- renderTest#3 '.titleBandLink'",
+	 		_el_3
+	 	);
+	 	// log(
+	 	// 	"- renderTest#3-B",
+	 	// 	_el_3.elements[0].el.className
+	 	// );
+	 // --
+	 	log("- startTest#4");
+	 	let _el_4 = document.querySelector(".titleBandLink");
+	 	log(
+	 		"- renderTest#4-A",
+	 		elRender(_el_4)
+	 	);
+	 	// log(
+	 	// 	"- renderTest#4-B",
+	 	// 	_el_4.elements[0].el.className
+	 	// );
+	 // --
+	 	log("- startTest#5");
+	 	let _el_5 = document.querySelectorAll(".titleBandLink");
+	 	log(
+	 		"- renderTest#5 '.titleBandLink'",
+	 		_el_5
+	 	);
+	 	// log(
+	 	// 	"- renderTest#5-B",
+	 	// 	_el_5.elements[0].el.className
+	 	// );
+	 // --
+	 	log("- startTest#6");
+	 	let _el = elRender("#tbUndo");
+	 	let _el_6 = elRender(_el);
+	 	log(
+	 		"- renderTest#6-A",
+	 		_el_6
+	 	);
+	 	// log(
+	 	// 	"- renderTest#6-B",
+	 	// 	_el_6.elements[0].el.className
+	 	// );
+	 // --
+	 	log("- startTest#7");
+	 	let _elements = elRender(".titleBandLink");
+	 	let _el_7 = elRender(_elements);
+	 	log(
+	 		"- renderTest#7-A",
+	 		_el_7
+	 	);
+	 	// log(
+	 	// 	"- renderTest#7-B",
+	 	// 	_el_7.elements[0].el.className
+	 	// );
+	 // --
+	 	log("- startTest#8");
+	 	let _element = elRender("#tbUndo");
+	 	let _element2 = elRender("#tbRedo");
+	 	let _el_8 = elRender(_element)
+	 		.after(_element2);
+	 	log(
+	 		"- renderTest#8-A",
+	 		_el_8
+	 	);
+	 	log("- startTest#2");
+	 	let _el_2 = elRender("#tbUndo");
+	 	log(
+	 		"- renderTest#2-A",
+	 		_el_2
+	 	);
+	 	// log(
+	 	// 	"- renderTest#2-B",
+	 	// 	_el_2.elements[0].el.className
+	 	// );
+	 // --
+	 	log("- startTest#3");
+	 	let _el_3 = elRender(".titleBandLink");
+	 	log(
+	 		"- renderTest#3 '.titleBandLink'",
+	 		_el_3
+	 	);
+	 	// log(
+	 	// 	"- renderTest#3-B",
+	 	// 	_el_3.elements[0].el.className
+	 	// );
+	 // --
+	 	log("- startTest#4");
+	 	let _el_4 = document.querySelector(".titleBandLink");
+	 	log(
+	 		"- renderTest#4-A",
+	 		elRender(_el_4)
+	 	);
+	 	// log(
+	 	// 	"- renderTest#4-B",
+	 	// 	_el_4.elements[0].el.className
+	 	// );
+	 // --
+	 	log("- startTest#5");
+	 	let _el_5 = document.querySelectorAll(".titleBandLink");
+	 	log(
+	 		"- renderTest#5 '.titleBandLink'",
+	 		_el_5
+	 	);
+	 	// log(
+	 	// 	"- renderTest#5-B",
+	 	// 	_el_5.elements[0].el.className
+	 	// );
+	 // --
+	 	log("- startTest#6");
+	 	let _el = elRender("#tbUndo");
+	 	let _el_6 = elRender(_el);
+	 	log(
+	 		"- renderTest#6-A",
+	 		_el_6
+	 	);
+	 	// log(
+	 	// 	"- renderTest#6-B",
+	 	// 	_el_6.elements[0].el.className
+	 	// );
+	 // --
+	 	log("- startTest#7");
+	 	let _elements = elRender(".titleBandLink");
+	 	let _el_7 = elRender(_elements);
+	 	log(
+	 		"- renderTest#7-A",
+	 		_el_7
+	 	);
+	 	// log(
+	 	// 	"- renderTest#7-B",
+	 	// 	_el_7.elements[0].el.className
+	 	// );
+	 // --
+	 	log("- startTest#8");
+	 	let _element = elRender("#tbUndo");
+	 	let _element2 = elRender("#tbRedo");
+	 	let _el_8 = elRender(_element)
+	 		.after(_element2);
+	 	log(
+	 		"- renderTest#8-A",
+	 		_el_8
+	 	);*/
+	};
+
+/***/ }
+/******/ ]);
+//# sourceMappingURL=SolitaireEngine.js.map
