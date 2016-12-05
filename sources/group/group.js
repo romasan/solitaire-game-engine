@@ -67,9 +67,13 @@ class groupClass {
 		this.parameters = {};
 		for(let paramName in params) {
 			if(params[paramName].type == "any") {
-				this.parameters[paramName] = data[paramName] ? data[paramName] : defaults[paramName];
+				this.parameters[paramName] = data[paramName]
+					? data[paramName]
+					: defaults[paramName];
 			} else if(params[paramName].type == "boolean") {
-				this.parameters[paramName] = typeof data[paramName] == "boolean" ? data[paramName] : params[paramName].default;
+				this.parameters[paramName] = typeof data[paramName] == "boolean"
+					? data[paramName]
+					: params[paramName].default;
 				// this.parameters[paramName] = typeof data[paramName] == "boolean" ? data[paramName] : defaults[paramName];
 			}
 		};
@@ -77,7 +81,6 @@ class groupClass {
 		this.deckIndex = [];
 
 		this.tags = data.tags;
-
 	}
 
 	// Add deck to group
@@ -200,7 +203,7 @@ class groupClass {
 		data.deckIndex = typeof data.deckIndex == "number"
 			? data.deckIndex
 			:_index;
-
+		
 		let _el = Deck.addDeck(data);
 
 		this.deckIndex[_index]  = _el.id;
