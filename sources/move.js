@@ -104,7 +104,7 @@ let Move = (moveDeck, to, cursorMove) => {
 				let _stepType = share.get('stepType');
 
 				let _checkMoveEnd = false;
-				
+
 				for(let _actionName in _deck_destination.actions) {
 					if(_deck_destination.actions[_actionName].event == "moveEnd") {
 						_checkMoveEnd = true;
@@ -123,13 +123,13 @@ let Move = (moveDeck, to, cursorMove) => {
 						context  : "move"
 					}
 				});
-				
+
 				if(_deck_destination.save) {
 					event.dispatch('saveSteps');
 				}
 
 				event.dispatch('moveDragDeck', {
-					
+
 					departure   : _deck_departure  ,
 					destination : _deck_destination,
 					moveDeck    : moveDeck         ,
@@ -183,11 +183,10 @@ let Move = (moveDeck, to, cursorMove) => {
 				let Tip = bestTip(moveDeck, cursorMove);
 
 				if(Tip) {
-					
+
 					Move(moveDeck, Tip.to.deck.id, cursorMove);
-					
+
 					return;
-				
 				} else {
 
 					event.dispatch('moveCardToHome', {
@@ -199,7 +198,7 @@ let Move = (moveDeck, to, cursorMove) => {
 				}
 
 		} else {
-			
+
 			event.dispatch('moveCardToHome', {
 				moveDeck  : moveDeck       ,
 				departure : _deck_departure
@@ -212,4 +211,15 @@ let Move = (moveDeck, to, cursorMove) => {
 
 event.listen('Move', data => {
 	Move(data.moveDeck, data.to, data.cursorMove);
+});
+
+// --
+
+event.listen('autoStepToHome', e => {
+
+	let _tips = Tips.getTips();
+
+	// TODO
+
+	// Move(_moveDeck, _to, _cursorMove);
 });

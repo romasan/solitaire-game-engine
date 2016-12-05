@@ -13,7 +13,9 @@ class checkFullAction extends deckAction {
 		super();
 	}
 
-	run() {
+	run(data) {
+
+		console.log('deckAction:run', data);
 		// super.end();
 	}
 }

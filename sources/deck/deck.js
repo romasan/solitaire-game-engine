@@ -213,14 +213,14 @@ class Deck {
 				if(
 					typeof _rule == "string"
 				) {
-					full = full                                   &&
-					          typeof fullRules[_rule] == "function" &&
-					          !fullRules[_rule](this);
+					full = full                                  &&
+					       typeof fullRules[_rule] == "function" &&
+					       fullRules[_rule](this);
 				} else {
 
 					for(let subRule in _rule) {
 						if(
-							typeof subRule == "string"             &&
+							typeof subRule == "string"              &&
 							typeof fullRules[subRule] == "function"
 						) {
 							full = full && fullRules[subRule](this, _rule[subRule]);

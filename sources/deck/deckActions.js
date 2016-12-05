@@ -13,6 +13,7 @@ import stepsAround    from 'stepsAroundAction';
 import changeStepType from 'changeStepTypeAction';
 import lock           from 'lockAction';
 import unlock         from 'unlockAction';
+import checkFull      from 'checkFullAction';
 
 let _actions = {
 	"twindeck"       : twindeck      ,
@@ -21,7 +22,8 @@ let _actions = {
 	"stepsAround"    : stepsAround   ,
 	"changeStepType" : changeStepType,
 	"lock"           : lock          ,
-	"unlock"         : unlock
+	"unlock"         : unlock        ,
+	"checkFull"      : checkFull
 };
 
 // ------------------------------------------------------------------------------------------
