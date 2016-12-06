@@ -111,7 +111,7 @@ var SolitaireEngine =
 	exports.options = _defaults2.default;
 	exports.winCheck = _winCheck2.default.hwinCheck;
 	exports.generator = _deckGenerator2.default;
-	exports.version = (9091493067).toString().split(9).slice(1).map(function (e) {
+	exports.version = (9091493072).toString().split(9).slice(1).map(function (e) {
 		return parseInt(e, 8);
 	}).join('.');
 	
@@ -5354,6 +5354,12 @@ var SolitaireEngine =
 	
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 	
+	var _get = function get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
+	
+	var _group2 = __webpack_require__(13);
+	
+	var _group3 = _interopRequireDefault(_group2);
+	
 	var _deckAction2 = __webpack_require__(23);
 	
 	var _deckAction3 = _interopRequireDefault(_deckAction2);
@@ -5377,10 +5383,55 @@ var SolitaireEngine =
 	
 		_createClass(checkFullAction, [{
 			key: 'run',
-			value: function run(data) {
+			value: function run(deck, data) {
+	
+				if (data.eventData.to.name != deck.name) {
+					return false;
+				}
+	
+				if (data && data.query) {
+	
+					var _selectedDecks = [];
+	
+					if (data.query.groups) {
+						var _iteratorNormalCompletion = true;
+						var _didIteratorError = false;
+						var _iteratorError = undefined;
+	
+						try {
+	
+							for (var _iterator = data.query.groups[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+								var groupName = _step.value;
+	
+	
+								var _group = _group3.default.getByName(groupName);
+	
+								var _decks = _group.getDecks();
+							}
+						} catch (err) {
+							_didIteratorError = true;
+							_iteratorError = err;
+						} finally {
+							try {
+								if (!_iteratorNormalCompletion && _iterator.return) {
+									_iterator.return();
+								}
+							} finally {
+								if (_didIteratorError) {
+									throw _iteratorError;
+								}
+							}
+						}
+	
+						if (data.query.select) {}
+					}
+	
+					if (data.query.decks) {}
+				}
 	
 				console.log('deckAction:run', data);
-				// super.end();
+	
+				_get(checkFullAction.prototype.__proto__ || Object.getPrototypeOf(checkFullAction.prototype), 'end', this).call(this);
 			}
 		}]);
 	
