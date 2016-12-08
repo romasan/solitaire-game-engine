@@ -1,4 +1,5 @@
 # Пасьянсовый игровой движок
+
 #### Установака зависимостей:
 	npm install
 #### Сборка:
@@ -58,7 +59,7 @@ Field - JSON обьект описания пасьянса
 ---
 ### InputParams
 InputParams - параметры убравления (мышь)
-* **doubleClick** - ... 
+* **doubleClick** - ...
 	* тип **boolean**
 	* по умолчанию false
 
@@ -210,9 +211,9 @@ GroupGenerator - ...
 * **generator**
 	* **type** - ...
 		* тип **string**
-		
+
         _-- values --_
-		
+
         _[См. group generators.](#group-generators)_
 
 
@@ -225,12 +226,12 @@ GroupGenerator - ...
 ---
 ### Group generators
 * **count** - ...
-	
+
     _-- values --_
 	* **count** - ...
 		* тип **Int**
 * **map**   - ...
-	
+
     _-- values --_
 	* **map** - ...
 		* тип [[string | null]]
@@ -238,7 +239,7 @@ GroupGenerator - ...
 		* тип **boolean**
 		* по умолчанию false
 * **fan**   - ...
-	
+
     _-- values --_
 	* **count** - ...
 		* тип **Int**

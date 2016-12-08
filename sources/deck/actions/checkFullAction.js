@@ -20,23 +20,66 @@ class checkFullAction extends deckAction {
 			return false;
 		}
 
-		if(data && data.query) {
+		if(data && data.actionData && data.actionData.query) {
+
+			let _query = data.actionData.query;
 
 			let _selectedDecks = [];
 
-			if(data.query.groups) {
+			if(_query.groups) {
 
-				for(let groupName of data.query.groups) {
+				let _select = _query.select ? _query.select : 'all';
+
+				for(let groupName of _query.groups) {
 
 					let _group = Group.getByName(groupName);
 
-					let _decks = _group.getDecks();
+
+					if(_select == 'first') {
+
+						let _deck = _group.getDeckByIndex(1);
+
+						if(_deck) {
+							_selectedDecks.push(_decks[0]);
+						}
+
+					} else if(_select == 'last') {
+
+						let _index = _group.decksCount;
+
+						let _deck = _group.getDeckByIndex(_index);
+
+						if(_deck) {
+
+							let _index = _decks.length - 1;
+
+							_selectedDecks.push(_decks[_index]);
+						}
+					} else if(_select == 'all') {
+						
+						let _decks = _group.getDecks();
+						
+						_selectedDecks.concat(_decks);
+					}
 				}
 
-				if(data.query.select) {}
 			}
 
-			if(data.query.decks) {}
+			if(_query.decks) {
+
+				for(let deckName of _query.decks) {
+
+					let _deck = Deck.getByName(deckName);
+
+					if(_deck) {
+						_selectedDecks.push(_deck);
+					}
+				}
+			}
+
+			for(let deck of _selectedDecks) {
+				deck.checkFull();
+			}
 		}
 
 		console.log('deckAction:run', data);

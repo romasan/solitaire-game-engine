@@ -188,15 +188,13 @@ class groupClass {
 					data[paramName] = this.parameters[paramName];
 				};
 			} else if(params[paramName].type == "boolean") {
-				// if(
-				//	typeof this.parameters[paramName] != "undefined" &&
-				//	typeof data[paramName] == "undefined"
-				// ) {
 
-				// TODO в данном случае у "boolean" параметров приоритет будет выше чем у "any" для генератора
-
-				data[paramName] = this.parameters[paramName];
-				// }			
+				if(
+					typeof this.parameters[paramName] == "boolean" &&
+					typeof data[paramName] == "undefined"
+				) {
+					data[paramName] = this.parameters[paramName];
+				}			
 			}
 		};
 
@@ -232,6 +230,17 @@ class groupClass {
 
 	getDeckIdByIndex(index) {
 		return this.deckIndex[index];
+	}
+
+	get decksCount() {
+		
+		let _count = 0;
+
+		for(let i in this.decks) {
+			_count += 1;
+		}
+
+		return _count;
 	}
 
 	getDeckByIndex(index) {

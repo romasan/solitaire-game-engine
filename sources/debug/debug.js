@@ -95,6 +95,10 @@ let _log = (text, color, e) => {
 // 	_log('stepType:' + e, 'yellow');
 // })
 
+event.listen('saveSteps', e => {
+	_log('saveSteps', 'yellow');
+});
+
 // event.listen('shareSet:curLockState', (e) => {
 // 	_log('curLockState:' + e, '#aaffaa');
 // });

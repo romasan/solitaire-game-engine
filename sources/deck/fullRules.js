@@ -81,11 +81,8 @@ let fullRules = {
 		// console.log('%c_query:', 'font-weight: bold; color: red;', deck, data);
 
 		// query : {
-		// 	all : {
-		// 		groups : ["matGroup1", "matGroup2", "matGroup3", "matGroup4"],
-		// 		excludeParent : true,
-		// 		select : "first",
-		// 	},
+		// 	groups : ["matGroup1", "matGroup2", "matGroup3", "matGroup4"],
+		// 	select : "first",
 		// 	rules : ["topAce"]
 		// }
 
@@ -103,42 +100,37 @@ let fullRules = {
 		}
 		
 		// all | any
-		if(data.all) {
+		// if(data.all) {
 
-			// Groups
-			for(let i in data.all.groups) {
+		// Groups
+		for(let groupName of data.groups) {
 
-				let _group = Group.getByName(data.all.groups[i])
+			let _group = Group.getByName(groupName);
 
-				if(
-					data.all.excludeParent          &&
-					data.all.groups[i] == groupName
-				) {
-					//  do nothing
-				} else {
+			let _select = _query.select ? _query.select : 'all';
 
-					// 	select: first | second | last | all
-					if(data.all.select == "first") {
-						// TODO select deck with index 0
-						let _deck = _group.getDeckByIndex(0);
+			// 	select: first | second | last | all
+			if(_select == "first") {
+				// TODO select deck with index 0
+				let _deck = _group.getDeckByIndex(0);
 
-						_decks.push(_deck);
-					} else if(data.all.select == "second") {
-						// --/-- index 0
-					} else if(data.all.select == "last") {
-						// --/-- max index
-					} else {
-						// all
-					}
-
-				}
+				_decks.push(_deck);
+			} else if(_select == "second") {
+				// --/-- index 0
+			} else if(_select == "last") {
+				// --/-- max index
+			} else {
+				// all
 			}
 
-			// Decks
-			for(let i in data.all.decks) {
+			// }
+			// }
 
-				// get decks by name
-				let _deck = Deck.getDeck(data.all.decks[i]);
+			// Decks
+			for(let deckName of data.decks) {
+
+				// get deck by name
+				let _deck = Deck.getDeck(deckName);
 
 				if(_deck) {
 					_decks.push(_deck);
