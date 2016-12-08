@@ -59,7 +59,7 @@ let fullRules = {
 
 		for(;_prev && _check;) {
 
-			let _deck = Deck.getDeck(_prev);
+			let _deck = Deck.getDeck(_prev),
 			    _card = _deck.getTopCard();
 
 			_check = _check && _card && callback(
@@ -88,9 +88,6 @@ let fullRules = {
 
 		// TODO
 
-		let groupName = deck.parent;
-		let currentGroup = Group.getByName(groupName);
-
 		let _correct = true;
 
 		let _decks = [];
@@ -106,6 +103,9 @@ let fullRules = {
 		for(let groupName of data.groups) {
 
 			let _group = Group.getByName(groupName);
+
+			let _decks = _group.getDecks();
+			console.log('fullRules:query Group:', groupName, 'decks:', _decks);
 
 			let _select = _query.select ? _query.select : 'all';
 
@@ -142,7 +142,7 @@ let fullRules = {
 
 				for(let ruleIndex in data.rules) {
 
-					let _rule = data.rules[ruleIndex]
+					let _rule = data.rules[ruleIndex];
 
 					if(fullRules[_rule]) {
 						_correct = _correct && fullRules[_rule](_decks[deckIndex]);
@@ -155,7 +155,7 @@ let fullRules = {
 
 					for(let ruleIndex in data.anyRule) {
 
-						let _rule = data.anyRule[ruleIndex]
+						let _rule = data.anyRule[ruleIndex];
 
 						if(fullRules[_rule]) {
 							_anyCorrect = _anyCorrect || fullRules[_rule](_decks[deckIndex]);
