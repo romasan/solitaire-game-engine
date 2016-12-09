@@ -48,10 +48,10 @@ class Deck {
 
 		this.locked     = data.locked ? true : false;
 		this.save       = data.save   ? true : false;
-		this.visible    = typeof data.visible    == 'boolean' ? data.visible    : true;
-		this.groupIndex = typeof data.groupIndex == 'number'  ? data.groupIndex : null;
-		this.parent     = typeof data.parent     == 'string'  ? data.parent     : 'field';
-		this.autoHide   = typeof data.autoHide   == 'boolean' ? data.autoHide   : defaults.autohide;
+		this.visible    = typeof data.visible    == 'boolean' ? data.visible   : true;
+		this.deckIndex  = typeof data.deckIndex  == 'number'  ? data.deckIndex : null;
+		this.parent     = typeof data.parent     == 'string'  ? data.parent    : 'field';
+		this.autoHide   = typeof data.autoHide   == 'boolean' ? data.autoHide  : defaults.autohide;
 		
 		// changed parameters
 		if(typeof data.showSlot == "undefined") {

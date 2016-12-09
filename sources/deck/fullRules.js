@@ -100,33 +100,34 @@ let fullRules = {
 		// if(data.all) {
 
 		// Groups
-		for(let groupName of data.groups) {
+		if(data.groups) {
+			for(let groupName of data.groups) {
 
-			let _group = Group.getByName(groupName);
+				let _group = Group.getByName(groupName);
 
-			let _decks = _group.getDecks();
-			console.log('fullRules:query Group:', groupName, 'decks:', _decks);
+				let _decks = _group.getDecks();
+				// console.log('fullRules:query Group:', groupName, 'decks:', _decks);
 
-			let _select = _query.select ? _query.select : 'all';
+				let _select = data.select ? data.select : 'all';
 
-			// 	select: first | second | last | all
-			if(_select == "first") {
-				// TODO select deck with index 0
-				let _deck = _group.getDeckByIndex(0);
+				// 	select: first | second | last | all
+				if(_select == "first") {
+					// TODO select deck with index 0
+					let _deck = _group.getDeckByIndex(0);
 
-				_decks.push(_deck);
-			} else if(_select == "second") {
-				// --/-- index 0
-			} else if(_select == "last") {
-				// --/-- max index
-			} else {
-				// all
+					_decks.push(_deck);
+				} else if(_select == "second") {
+					// --/-- index 0
+				} else if(_select == "last") {
+					// --/-- max index
+				} else {
+					// all
+				}
 			}
-
-			// }
-			// }
-
-			// Decks
+		}
+		
+		// Decks
+		if(data.decks) {
 			for(let deckName of data.decks) {
 
 				// get deck by name
@@ -136,34 +137,33 @@ let fullRules = {
 					_decks.push(_deck);
 				}
 			}
+		}
 
-			// Rules
-			for(let deckIndex in _decks) {
+		// Rules
+		for(let deck of _decks) {
 
-				for(let ruleIndex in data.rules) {
+			for(let rule of data.rules) {
 
-					let _rule = data.rules[ruleIndex];
+				// TODO тут предполагается что все "подправила" будут только строковые
+				if(fullRules[rule]) {
+					_correct = _correct && fullRules[rule](deck);
+				}
+			}
+
+			if(data.anyRule) {
+
+				let _anyCorrect = false;
+
+				for(let ruleIndex in data.anyRule) {
+
+					let _rule = data.anyRule[ruleIndex];
 
 					if(fullRules[_rule]) {
-						_correct = _correct && fullRules[_rule](_decks[deckIndex]);
+						_anyCorrect = _anyCorrect || fullRules[_rule](_decks[deckIndex]);
 					}
 				}
 
-				if(data.anyRule) {
-
-					let _anyCorrect = false;
-
-					for(let ruleIndex in data.anyRule) {
-
-						let _rule = data.anyRule[ruleIndex];
-
-						if(fullRules[_rule]) {
-							_anyCorrect = _anyCorrect || fullRules[_rule](_decks[deckIndex]);
-						}
-					}
-
-					_correct = _correct && _anyCorrect;
-				}
+				_correct = _correct && _anyCorrect;
 			}
 		}
 
@@ -174,18 +174,18 @@ let fullRules = {
 
 	deckLength : deck => defaults.card.ranks.length <= deck.cards.length,
 
-	not : e => false,
+	not        : e => false,
 
-	noMoves : deck => !Tips.checkFrom(deck.name),
+	noMoves    : deck => !Tips.checkFrom(deck.name),
 
-	topAce : deck => {
+	topAce     : deck => {
 
 		let _card = fullRules._topCard(deck);
 
 		return _card && _card.rank == defaults.card.ranks[0];
 	},
 
-	topKing : deck => {
+	topKing    : deck => {
 
 		let _card = fullRules._topCard(deck);
 

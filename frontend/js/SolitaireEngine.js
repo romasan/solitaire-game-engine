@@ -111,7 +111,7 @@ var SolitaireEngine =
 	exports.options = _defaults2.default;
 	exports.winCheck = _winCheck2.default.hwinCheck;
 	exports.generator = _deckGenerator2.default;
-	exports.version = (9091493112).toString().split(9).slice(1).map(function (e) {
+	exports.version = (9091493147).toString().split(9).slice(1).map(function (e) {
 		return parseInt(e, 8);
 	}).join('.');
 	
@@ -2414,7 +2414,7 @@ var SolitaireEngine =
 					}
 				};
 	
-				data.deckIndex = typeof data.deckIndex == "number" ? data.deckIndex : _index;
+				data.deckIndex = typeof data.deckIndex == "number" ? data.deckIndex : (_index | 0) + 1;
 	
 				var _el = _deck2.default.addDeck(data);
 	
@@ -2449,7 +2449,7 @@ var SolitaireEngine =
 		}, {
 			key: 'getDeckIdByIndex',
 			value: function getDeckIdByIndex(index) {
-				return this.deckIndex[index];
+				return this.deckIndex[(index | 0) - 1];
 			}
 		}, {
 			key: 'getDeckByIndex',
@@ -2753,7 +2753,7 @@ var SolitaireEngine =
 			this.locked = data.locked ? true : false;
 			this.save = data.save ? true : false;
 			this.visible = typeof data.visible == 'boolean' ? data.visible : true;
-			this.groupIndex = typeof data.groupIndex == 'number' ? data.groupIndex : null;
+			this.deckIndex = typeof data.deckIndex == 'number' ? data.deckIndex : null;
 			this.parent = typeof data.parent == 'string' ? data.parent : 'field';
 			this.autoHide = typeof data.autoHide == 'boolean' ? data.autoHide : _defaults2.default.autohide;
 	
@@ -3681,9 +3681,9 @@ var SolitaireEngine =
 	
 	var _group3 = _interopRequireDefault(_group2);
 	
-	var _deck3 = __webpack_require__(14);
+	var _deck4 = __webpack_require__(14);
 	
-	var _deck4 = _interopRequireDefault(_deck3);
+	var _deck5 = _interopRequireDefault(_deck4);
 	
 	var _tips = __webpack_require__(9);
 	
@@ -3746,7 +3746,7 @@ var SolitaireEngine =
 	
 			for (; _prev && _check;) {
 	
-				var _deck = _deck4.default.getDeck(_prev),
+				var _deck = _deck5.default.getDeck(_prev),
 				    _card = _deck.getTopCard();
 	
 				_check = _check && _card && callback(_common2.default.validateCardName(_topCard).value | 0, _common2.default.validateCardName(_card).value | 0);
@@ -3784,112 +3784,152 @@ var SolitaireEngine =
 			// if(data.all) {
 	
 			// Groups
-			var _iteratorNormalCompletion = true;
-			var _didIteratorError = false;
-			var _iteratorError = undefined;
+			if (data.groups) {
+				var _iteratorNormalCompletion = true;
+				var _didIteratorError = false;
+				var _iteratorError = undefined;
 	
-			try {
-				for (var _iterator = data.groups[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
-					var groupName = _step.value;
-	
-	
-					var _group = _group3.default.getByName(groupName);
-	
-					var _decks2 = _group.getDecks();
-					console.log('fullRules:query Group:', groupName, 'decks:', _decks2);
-	
-					var _select = _query.select ? _query.select : 'all';
-	
-					// 	select: first | second | last | all
-					if (_select == "first") {
-						// TODO select deck with index 0
-						var _deck = _group.getDeckByIndex(0);
-	
-						_decks2.push(_deck);
-					} else if (_select == "second") {
-						// --/-- index 0
-					} else if (_select == "last") {
-						// --/-- max index
-					} else {}
-						// all
+				try {
+					for (var _iterator = data.groups[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+						var groupName = _step.value;
 	
 	
-						// }
-						// }
+						var _group = _group3.default.getByName(groupName);
 	
-						// Decks
-					var _iteratorNormalCompletion2 = true;
-					var _didIteratorError2 = false;
-					var _iteratorError2 = undefined;
+						var _decks2 = _group.getDecks();
+						// console.log('fullRules:query Group:', groupName, 'decks:', _decks);
 	
-					try {
-						for (var _iterator2 = data.decks[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
-							var deckName = _step2.value;
+						var _select = data.select ? data.select : 'all';
 	
+						// 	select: first | second | last | all
+						if (_select == "first") {
+							// TODO select deck with index 0
+							var _deck = _group.getDeckByIndex(0);
 	
-							// get deck by name
-							var _deck2 = _deck4.default.getDeck(deckName);
-	
-							if (_deck2) {
-								_decks2.push(_deck2);
+							_decks2.push(_deck);
+						} else if (_select == "second") {
+							// --/-- index 0
+						} else if (_select == "last") {
+							// --/-- max index
+						} else {
+								// all
 							}
-						}
-	
-						// Rules
-					} catch (err) {
-						_didIteratorError2 = true;
-						_iteratorError2 = err;
-					} finally {
-						try {
-							if (!_iteratorNormalCompletion2 && _iterator2.return) {
-								_iterator2.return();
-							}
-						} finally {
-							if (_didIteratorError2) {
-								throw _iteratorError2;
-							}
-						}
 					}
-	
-					for (var deckIndex in _decks2) {
-	
-						for (var ruleIndex in data.rules) {
-	
-							var _rule = data.rules[ruleIndex];
-	
-							if (fullRules[_rule]) {
-								_correct = _correct && fullRules[_rule](_decks2[deckIndex]);
-							}
+				} catch (err) {
+					_didIteratorError = true;
+					_iteratorError = err;
+				} finally {
+					try {
+						if (!_iteratorNormalCompletion && _iterator.return) {
+							_iterator.return();
 						}
-	
-						if (data.anyRule) {
-	
-							var _anyCorrect = false;
-	
-							for (var _ruleIndex in data.anyRule) {
-	
-								var _rule2 = data.anyRule[_ruleIndex];
-	
-								if (fullRules[_rule2]) {
-									_anyCorrect = _anyCorrect || fullRules[_rule2](_decks2[deckIndex]);
-								}
-							}
-	
-							_correct = _correct && _anyCorrect;
+					} finally {
+						if (_didIteratorError) {
+							throw _iteratorError;
 						}
 					}
 				}
+			}
+	
+			// Decks
+			if (data.decks) {
+				var _iteratorNormalCompletion2 = true;
+				var _didIteratorError2 = false;
+				var _iteratorError2 = undefined;
+	
+				try {
+					for (var _iterator2 = data.decks[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
+						var deckName = _step2.value;
+	
+	
+						// get deck by name
+						var _deck2 = _deck5.default.getDeck(deckName);
+	
+						if (_deck2) {
+							_decks.push(_deck2);
+						}
+					}
+				} catch (err) {
+					_didIteratorError2 = true;
+					_iteratorError2 = err;
+				} finally {
+					try {
+						if (!_iteratorNormalCompletion2 && _iterator2.return) {
+							_iterator2.return();
+						}
+					} finally {
+						if (_didIteratorError2) {
+							throw _iteratorError2;
+						}
+					}
+				}
+			}
+	
+			// Rules
+			var _iteratorNormalCompletion3 = true;
+			var _didIteratorError3 = false;
+			var _iteratorError3 = undefined;
+	
+			try {
+				for (var _iterator3 = _decks[Symbol.iterator](), _step3; !(_iteratorNormalCompletion3 = (_step3 = _iterator3.next()).done); _iteratorNormalCompletion3 = true) {
+					var _deck3 = _step3.value;
+					var _iteratorNormalCompletion4 = true;
+					var _didIteratorError4 = false;
+					var _iteratorError4 = undefined;
+	
+					try {
+	
+						for (var _iterator4 = data.rules[Symbol.iterator](), _step4; !(_iteratorNormalCompletion4 = (_step4 = _iterator4.next()).done); _iteratorNormalCompletion4 = true) {
+							var rule = _step4.value;
+	
+	
+							// TODO тут предполагается что все "подправила" будут только строковые
+							if (fullRules[rule]) {
+								_correct = _correct && fullRules[rule](_deck3);
+							}
+						}
+					} catch (err) {
+						_didIteratorError4 = true;
+						_iteratorError4 = err;
+					} finally {
+						try {
+							if (!_iteratorNormalCompletion4 && _iterator4.return) {
+								_iterator4.return();
+							}
+						} finally {
+							if (_didIteratorError4) {
+								throw _iteratorError4;
+							}
+						}
+					}
+	
+					if (data.anyRule) {
+	
+						var _anyCorrect = false;
+	
+						for (var ruleIndex in data.anyRule) {
+	
+							var _rule = data.anyRule[ruleIndex];
+	
+							if (fullRules[_rule]) {
+								_anyCorrect = _anyCorrect || fullRules[_rule](_decks[deckIndex]);
+							}
+						}
+	
+						_correct = _correct && _anyCorrect;
+					}
+				}
 			} catch (err) {
-				_didIteratorError = true;
-				_iteratorError = err;
+				_didIteratorError3 = true;
+				_iteratorError3 = err;
 			} finally {
 				try {
-					if (!_iteratorNormalCompletion && _iterator.return) {
-						_iterator.return();
+					if (!_iteratorNormalCompletion3 && _iterator3.return) {
+						_iterator3.return();
 					}
 				} finally {
-					if (_didIteratorError) {
-						throw _iteratorError;
+					if (_didIteratorError3) {
+						throw _iteratorError3;
 					}
 				}
 			}
@@ -5456,12 +5496,14 @@ var SolitaireEngine =
 	
 								var _group = _group3.default.getByName(groupName);
 	
+								var _decks = _group.getDecks();
+	
 								if (_select == 'first') {
 	
 									var _deck = _group.getDeckByIndex(1);
 	
 									if (_deck) {
-										_selectedDecks.push(_decks[0]);
+										_selectedDecks.push(_deck);
 									}
 								} else if (_select == 'last') {
 	
@@ -5471,9 +5513,11 @@ var SolitaireEngine =
 	
 									if (_deck2) {
 	
-										var _index2 = _decks.length - 1;
+										var _index2 = _group.decksCount;
 	
-										_selectedDecks.push(_decks[_index2]);
+										var _deck3 = _group.getDeckByIndex(_index2);
+	
+										_selectedDecks.push(_deck3);
 									}
 								} else if (_select == 'all') {
 	
@@ -5509,10 +5553,10 @@ var SolitaireEngine =
 								var deckName = _step2.value;
 	
 	
-								var _deck3 = Deck.getByName(deckName);
+								var _deck4 = Deck.getByName(deckName);
 	
-								if (_deck3) {
-									_selectedDecks.push(_deck3);
+								if (_deck4) {
+									_selectedDecks.push(_deck4);
 								}
 							}
 						} catch (err) {
@@ -5537,9 +5581,9 @@ var SolitaireEngine =
 	
 					try {
 						for (var _iterator3 = _selectedDecks[Symbol.iterator](), _step3; !(_iteratorNormalCompletion3 = (_step3 = _iterator3.next()).done); _iteratorNormalCompletion3 = true) {
-							var _deck4 = _step3.value;
+							var _deck5 = _step3.value;
 	
-							_deck4.checkFull();
+							_deck5.checkFull();
 						}
 					} catch (err) {
 						_didIteratorError3 = true;
@@ -5556,8 +5600,6 @@ var SolitaireEngine =
 						}
 					}
 				}
-	
-				console.log('deckAction:run', data);
 	
 				_get(checkFullAction.prototype.__proto__ || Object.getPrototypeOf(checkFullAction.prototype), 'end', this).call(this);
 			}

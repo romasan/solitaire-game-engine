@@ -34,13 +34,14 @@ class checkFullAction extends deckAction {
 
 					let _group = Group.getByName(groupName);
 
+					let _decks = _group.getDecks();
 
 					if(_select == 'first') {
 
 						let _deck = _group.getDeckByIndex(1);
 
 						if(_deck) {
-							_selectedDecks.push(_decks[0]);
+							_selectedDecks.push(_deck);
 						}
 
 					} else if(_select == 'last') {
@@ -51,18 +52,19 @@ class checkFullAction extends deckAction {
 
 						if(_deck) {
 
-							let _index = _decks.length - 1;
+							let _index = _group.decksCount;
 
-							_selectedDecks.push(_decks[_index]);
+							let _deck = _group.getDeckByIndex(_index);
+
+							_selectedDecks.push(_deck);
 						}
 					} else if(_select == 'all') {
-						
+
 						let _decks = _group.getDecks();
-						
+
 						_selectedDecks.concat(_decks);
 					}
 				}
-
 			}
 
 			if(_query.decks) {
@@ -81,8 +83,6 @@ class checkFullAction extends deckAction {
 				deck.checkFull();
 			}
 		}
-
-		console.log('deckAction:run', data);
 
 		super.end();
 	}

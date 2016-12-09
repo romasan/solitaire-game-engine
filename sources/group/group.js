@@ -200,7 +200,7 @@ class groupClass {
 
 		data.deckIndex = typeof data.deckIndex == "number"
 			? data.deckIndex
-			:_index;
+			:(_index | 0) + 1;
 		
 		let _el = Deck.addDeck(data);
 
@@ -229,7 +229,7 @@ class groupClass {
 	}
 
 	getDeckIdByIndex(index) {
-		return this.deckIndex[index];
+		return this.deckIndex[(index | 0) - 1];
 	}
 
 	get decksCount() {
