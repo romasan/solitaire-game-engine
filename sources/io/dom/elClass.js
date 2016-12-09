@@ -46,6 +46,7 @@ export default class elClass {
 	}
 // --	
 	addClass(className) {
+
 		try {
 
 			let _classes = this.el.className.split(' ');

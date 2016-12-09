@@ -136,7 +136,8 @@ let Move = (moveDeck, to, cursorMove) => {
 					callback    : e => {
 
 						if(
-							!event.has('moveEnd', {
+							// !event.has('moveEnd', {
+							!event.has('actionEvent:moveEnd:' + _deck_destination.name, {
 								tag: event.tags.inGame
 							}) ||
 							share.get('autoStep:stepType') == share.get('stepType')

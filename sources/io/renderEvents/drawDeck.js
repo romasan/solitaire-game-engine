@@ -186,6 +186,10 @@ event.listen('redrawDeck', data => {
 		applyChangedParameters(data);
 	}
 
+	if(data.deck.full) {
+		console.log('redrawDeck:', data.deck.name, data.deck.full);
+	}
+
 	// перерисовка стопки
 	let _params = {
 		'transform' : 'rotate(' + (data.params.rotate | 0) + 'deg)',
@@ -198,6 +202,18 @@ event.listen('redrawDeck', data => {
 	
 	elRender(_deckDomElement)
 		.css(_params);
+
+	// full deck (add class full to all cards in deck)
+	if(data.deck.full) {
+		let _cards = data.deck.getCards();
+		for(let i in _cards) {
+			let _cardDomElement = share.get('domElement:' + _cards[i].id);
+			if(_cardDomElement) {
+				elRender(_cardDomElement)
+					.addClass('full');
+			}
+		}
+	}
 
 	// console.log('redraw cards for', data.deck.name, data.cards);
 

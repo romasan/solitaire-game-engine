@@ -104,7 +104,7 @@ event.listen('moveDragDeckDone', data => {
 		let _cardDomElement = share.get('domElement:' + _deck[i].id);
 
 		elRender(_cardDomElement)
-			.addClass('fill')
+			.addClass('full')
 	}
 });
 

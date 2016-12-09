@@ -97,6 +97,8 @@ let add = deck => {
 				action : actionName
 			});
 
+			share.set('actionEvent:' + deck.name + ':' + deck.actions[actionName].event, true);
+			
 			// создаём событие если оно еще не создано
 			if(!_events.includes(deck.actions[actionName].event)) {
 				

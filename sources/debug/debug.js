@@ -96,6 +96,9 @@ let _log = (text, color, e) => {
 // })
 
 event.listen('saveSteps', e => {
+	if(window.xxx) {
+		throw new Error('saveSteps');
+	}
 	_log('saveSteps', 'yellow');
 });
 
@@ -115,13 +118,13 @@ event.listen('saveSteps', e => {
 // 	_log('gameInit (' + ((a.eventInfo.index | 0) + 1) + ', ' + a.eventInfo.count + ')', '#ff7777');
 // });
 
-// event.listen('startSession', (e) => {
-// 	_log('start', 'red', e);
-// });
+event.listen('startSession', (e) => {
+	_log('start', 'red', e);
+});
 
-// event.listen('stopSession', () => {
-// 	_log('stop', 'green');
-// });
+event.listen('stopSession', () => {
+	_log('stop', 'green');
+});
 
 document.onwheel = (e) => {
 

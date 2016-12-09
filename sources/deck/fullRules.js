@@ -54,17 +54,18 @@ let fullRules = {
 	_prev_next_desc_ask : (deck, type, callback) => {
 
 		let _check = true;
-		let _prev = getBeside(a.to)[type];
+		let _prev = getBeside(deck)[type];
 		let _topCard = deck.getTopCard();
+		console.log('_prev_next_desc_ask', _prev);
 
 		for(;_prev && _check;) {
 
-			let _deck = Deck.getDeck(_prev),
+			let _deck = Deck.getDeck(_prev.to),
 			    _card = _deck.getTopCard();
 
 			_check = _check && _card && callback(
-				common.validateCardName(_topCard).value | 0,
-				common.validateCardName(_card)   .value | 0
+				common.validateCardName(_topCard.name).value | 0,
+				common.validateCardName(_card   .name).value | 0
 			);
 
 			_topCard = _card;
@@ -90,11 +91,11 @@ let fullRules = {
 
 		let _correct = true;
 
-		let _decks = [];
+		let queryDecks = [];
 		
-		if(!data.excludeCurrent) {
-			_decks.push(deck);
-		}
+		// if(!data.excludeCurrent) {
+		// 	_decks.push(deck);
+		// }
 		
 		// all | any
 		// if(data.all) {
@@ -113,9 +114,10 @@ let fullRules = {
 				// 	select: first | second | last | all
 				if(_select == "first") {
 					// TODO select deck with index 0
-					let _deck = _group.getDeckByIndex(0);
+					let _deck = _group.getDeckByIndex(1);
+					// console.log('###', deck.name, _select, _deck.name);
 
-					_decks.push(_deck);
+					queryDecks.push(_deck);
 				} else if(_select == "second") {
 					// --/-- index 0
 				} else if(_select == "last") {
@@ -134,13 +136,13 @@ let fullRules = {
 				let _deck = Deck.getDeck(deckName);
 
 				if(_deck) {
-					_decks.push(_deck);
+					queryDecks.push(_deck);
 				}
 			}
 		}
 
 		// Rules
-		for(let deck of _decks) {
+		for(let deck of queryDecks) {
 
 			for(let rule of data.rules) {
 
@@ -159,7 +161,7 @@ let fullRules = {
 					let _rule = data.anyRule[ruleIndex];
 
 					if(fullRules[_rule]) {
-						_anyCorrect = _anyCorrect || fullRules[_rule](_decks[deckIndex]);
+						_anyCorrect = _anyCorrect || fullRules[_rule](deck);
 					}
 				}
 
@@ -209,6 +211,16 @@ let fullRules = {
 	nextDesc    : deck => fullRules._prev_next_desc_ask(deck, 'next', (up, down) => up > down)           ,
 
 	nextAsc     : deck => fullRules._prev_next_desc_ask(deck, 'next', (up, down) => up < down)           ,
+
+	prevOneSuit : deck => {
+		// TODO
+		return false;
+	},
+
+	prevFull    : deck => {
+		// TODO
+		return false;
+	},
 
 	test        : deck => {
 		console.log('test fullRule', deck.name);

@@ -1,9 +1,6 @@
 'use strict';
 
-// import event      from 'event';
-// import share      from 'share';
-// import defaults   from 'defaults';
-// import common     from 'common';
+import event      from 'event';
 
 import Group      from 'group';
 import deckAction from 'deckAction';
@@ -79,10 +76,17 @@ class checkFullAction extends deckAction {
 				}
 			}
 
-			for(let deck of _selectedDecks) {
-				deck.checkFull();
+			for(let deckIndex in _selectedDecks) {
+
+				let deck = _selectedDecks[deckIndex];
+
+				if( deck.checkFull() ) {
+					deck.Redraw();
+				}
 			}
 		}
+
+		event.dispatch('saveSteps');
 
 		super.end();
 	}

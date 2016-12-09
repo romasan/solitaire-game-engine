@@ -198,6 +198,8 @@ class Deck {
 
 	checkFull() {
 
+		console.log('checkFull', this.name, this.fullRules);
+
 		if(
 			!this.full                &&
 			this.fullRules            &&
@@ -213,6 +215,7 @@ class Deck {
 				if(
 					typeof _rule == "string"
 				) {
+					console.log('###', _rule, this.name);
 					full = full                                  &&
 					       typeof fullRules[_rule] == "function" &&
 					       fullRules[_rule](this);
@@ -235,6 +238,8 @@ class Deck {
 
 			this.full = full;
 		}
+
+		return this.full;
 	}
 
 	Fill(cardNames) {
@@ -333,19 +338,21 @@ class Deck {
 	// 	return this.getCardsByName(cardName)[0];
 	// }
 
-	// getCards() {
+	getCards() {
 
-	// 	let _cards = [];
+		return this.cards;
+
+		// let _cards = [];
 		
-	// 	for(let i in this.cards) {
+		// for(let i in this.cards) {
 			
-	// 		let _card = common.getElementById(this.cards[i]);
+		// 	let _card = common.getElementById(this.cards[i]);
 			
-	// 		_cards.push(_card);
-	// 	}
+		// 	_cards.push(_card);
+		// }
 
-	// 	return _cards;
-	// }
+		// return _cards;
+	}
 
 	hideCards() {
 		for(let i in this.cards) {
