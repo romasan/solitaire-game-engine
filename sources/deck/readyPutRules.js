@@ -315,6 +315,7 @@ let readyPutRules = {
 	},
 
 	// TODO rules with params ??? or atom rules
+	// query ?
 
 	around : deck => {// {from, putDeck, cards}
 

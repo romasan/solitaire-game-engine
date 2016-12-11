@@ -189,8 +189,8 @@ class Deck {
 
 	flipCheck() {
 
-		for(let i in this.cards) {
-			this.cardFlipCheck(this.cards[i], i|0, this.cards.length);
+		for(let cardIndex in this.cards) {
+			this.cardFlipCheck(this.cards[cardIndex], cardIndex | 0, this.cards.length);
 		}
 
 		event.dispatch('redrawDeckFlip', this);

@@ -7,7 +7,7 @@ export default data => {// {deckIndex, count, decks, data}
 	let _relations = [];
 
 	let _prev = data.deckIndex > 0
-		? data.decks[(data.deckIndex|0) - 1].name
+		? data.decks[(data.deckIndex | 0) - 1].name
 		: null;
 
 	if(_prev) {
@@ -19,7 +19,7 @@ export default data => {// {deckIndex, count, decks, data}
 	}
 
 	let _next = data.deckIndex < data.count - 1
-		? data.decks[(data.deckIndex|0) + 1].name
+		? data.decks[(data.deckIndex | 0) + 1].name
 		: null;
 
 	if(_next) {

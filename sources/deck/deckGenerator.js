@@ -37,11 +37,11 @@ let genTypes = {
 		return genType(_cardsSuits, ranks);
 	},
 
-	black_and_red  : ranks => {
+	black_and_red : ranks => {
 
 		let _cardsSuits = [
-			defaults.card.colors.red[(Math.random() * defaults.card.colors.red.length)|0], 
-			defaults.card.colors.black[(Math.random() * defaults.card.colors.black.length)|0]
+			defaults.card.colors.red  [(Math.random() * defaults.card.colors.red  .length) | 0], 
+			defaults.card.colors.black[(Math.random() * defaults.card.colors.black.length) | 0]
 		];
 
 		return genType(_cardsSuits, ranks);
@@ -77,7 +77,7 @@ let genTypes = {
 
 	one_rank_only : ranks => {
 
-		let _cardsSuits = [defaults.card.solors[(Math.random() * defaults.card.solors.length)|0]];
+		let _cardsSuits = [defaults.card.solors[(Math.random() * defaults.card.solors.length) | 0]];
 
 		return genType(_cardsSuits, ranks);
 	},

@@ -34,7 +34,7 @@ export default {
 			} else {
 				return {
 					x : params.x + (index * 2),
-					y : params.y + (index|0)
+					y : params.y + (index | 0)
 				};
 			}
 		} else {

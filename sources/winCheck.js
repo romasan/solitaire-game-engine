@@ -4,26 +4,31 @@ import share           from 'share';
 import event           from 'event';
 import common          from 'common';
 
-import winCheckMethods from 'winCheckMethods';
+import winCheckRules   from 'winCheckRules';
 import Deck            from 'deck';
 
 let winCheck = params => {
 
 	let rulesCorrect = true;
-	let _hasMetods = false;
+	let _hasRules = false;
+
 	let _winCheck = share.get('winCheck');
 
 	if(!_winCheck) {
 		return false;
 	}
 
+	// if(_winCheck.rules) {
+	// 	_winCheck = winCheck.rules;
+	// }
+
 	for(let ruleName in _winCheck.rules) {
 
-		_hasMetods = true;
+		_hasRules = true;
 
-		if(winCheckMethods[ruleName]) {
+		if(winCheckRules[ruleName]) {
 
-			let _result = winCheckMethods[ruleName]({
+			let _result = winCheckRules[ruleName]({
 				decks     : Deck.getDecks({visible : true}), 
 				rulesArgs : _winCheck.rules[ruleName]
 			});
@@ -31,12 +36,12 @@ let winCheck = params => {
 			rulesCorrect = rulesCorrect && _result;
 
 		} else {
-			rulesCorrect = rulesCorrect && winCheckMethods.newerWin();
+			rulesCorrect = rulesCorrect && winCheckRules.newerWin();
 		}
 	}
 
-	if(!_hasMetods) {
-		rulesCorrect = rulesCorrect && winCheckMethods.newerWin();
+	if(!_hasRules) {
+		rulesCorrect = rulesCorrect && winCheckRules.newerWin();
 	}
 
 	if(rulesCorrect) {

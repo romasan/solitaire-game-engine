@@ -35,7 +35,7 @@ export default (deck, cardId) => {
 
 		if(deck.cards[i].id == cardId) {
 			
-			cardIndex = i|0;
+			cardIndex = i | 0;
 			cardName  = deck.cards[i].name;
 			
 			let _name = common.validateCardName(cardName);

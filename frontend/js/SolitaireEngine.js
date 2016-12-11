@@ -111,7 +111,7 @@ var SolitaireEngine =
 	exports.options = _defaults2.default;
 	exports.winCheck = _winCheck2.default.hwinCheck;
 	exports.generator = _deckGenerator2.default;
-	exports.version = (9091493255).toString().split(9).slice(1).map(function (e) {
+	exports.version = (9091493303).toString().split(9).slice(1).map(function (e) {
 		return parseInt(e, 8);
 	}).join('.');
 	
@@ -2884,8 +2884,8 @@ var SolitaireEngine =
 			key: 'flipCheck',
 			value: function flipCheck() {
 	
-				for (var i in this.cards) {
-					this.cardFlipCheck(this.cards[i], i | 0, this.cards.length);
+				for (var cardIndex in this.cards) {
+					this.cardFlipCheck(this.cards[cardIndex], cardIndex | 0, this.cards.length);
 				}
 	
 				_event2.default.dispatch('redrawDeckFlip', this);
@@ -3566,6 +3566,7 @@ var SolitaireEngine =
 		},
 	
 		// TODO rules with params ??? or atom rules
+		// query ?
 	
 		around: function around(deck) {
 			// {from, putDeck, cards}
@@ -3708,7 +3709,10 @@ var SolitaireEngine =
 	Internal use:
 	
 	 * _topCard
-	 * _firstCard
+	 * _bottomCard
+	 * _besideTopCardRecoursive
+	 * _besideTopCard
+	 * _deckRecoursive
 	
 	Filters:
 	
@@ -3718,18 +3722,34 @@ var SolitaireEngine =
 	
 	 * deckLength
 	 * not
-	 * noMoves
 	 * topAce
 	 * topKing
-	 * prevDescOne
-	 * prevAscOne
-	 * nextDescOne
-	 * nextAscOne
-	 * prevDesc
-	 * prevAsc
-	 * nextDesc
-	 * nextAsc
-	 * test
+	 * bottomAce
+	 * bottomKing
+	 * prevDeckTopCardDescOne
+	 * prevDeckTopCardAscOne
+	 * nextDeckTopCardDescOne
+	 * nextDeckTopCardAscOne
+	 * prevDeckTopCardDesc
+	 * prevDeckTopCardAsc
+	 * nextDeckTopCardDesc
+	 * nextDeckTopCardAsc
+	 * recoursivePrevDeckTopCardDescOne
+	 * recoursivePrevDeckTopCardAscOne
+	 * recoursiveNextDeckTopCardDescOne
+	 * recoursiveNextDeckTopCardAscOne
+	 * recoursivePrevDeckTopCardDesc
+	 * recoursivePrevDeckTopCardAsc
+	 * recoursiveNextDeckTopCardDesc
+	 * recoursiveNextDeckTopCardAsc
+	 * descByOne
+	 * ascByOne
+	 * asc
+	 * desc
+	 * prevDeckTopCardOneSuit
+	 * nextDeckTopCardOneSuit
+	 * prevDeckFull
+	 * nextDeckFull
 	
 	 */
 	
@@ -3744,24 +3764,50 @@ var SolitaireEngine =
 			return _card && _common2.default.validateCardName(_card.name);
 		},
 	
-		// _firstCard : deck => {}
+		_bottomCard: function _bottomCard(deck) {
 	
-		_prev_next_desc_ask: function _prev_next_desc_ask(deck, type, callback) {
+			var _card = deck.getCards()[0];
+	
+			return _card && _common2.default.validateCardName(_card.name);
+		},
+	
+		_besideTopCardRecoursive: function _besideTopCardRecoursive(deck, direction, callback) {
 	
 			var _check = true;
-			var _prev = (0, _getBeside2.default)(deck)[type];
-			var _topCard = deck.getTopCard();
-			console.log('_prev_next_desc_ask', _prev);
 	
-			for (; _prev && _check;) {
+			var _deck = deck;
+			var _beside = (0, _getBeside2.default)(_deck)[direction];
 	
-				var _deck = _deck5.default.getDeck(_prev.to),
-				    _card = _deck.getTopCard();
+			for (; _beside && _check;) {
 	
-				_check = _check && _card && callback(_common2.default.validateCardName(_topCard.name).value | 0, _common2.default.validateCardName(_card.name).value | 0);
+				var besideDeck = _deck5.default.getDeck(_beside.to);
 	
-				_topCard = _card;
-				_prev = (0, _getBeside2.default)(_deck)[type];
+				_check = _check && callback(fullRules._topCard(deck), fullRules._topCard(besideDeck));
+	
+				_deck = besideDeck;
+				_beside = (0, _getBeside2.default)(besideDeck)[direction];
+			}
+	
+			return _check;
+		},
+	
+		_besideTopCard: function _besideTopCard(deck, direction, callback) {
+	
+			var _beside = (0, _getBeside2.default)(deck)[direction];
+			var besideDeck = _deck5.default.getDeck(_beside.to);
+	
+			return callback(fullRules._topCard(deck), fullRules._topCard(besideDeck));
+		},
+	
+		_deckRecoursive: function _deckRecoursive(deck, callback) {
+	
+			var _check = true;
+			var _cards = deck.getCards();
+	
+			var _cardsCount = _cards.length;
+	
+			for (var i = _cardsCount; i > 0; i -= 1) {
+				_check = _check && callback(_common2.default.validateCardName(_cards[i].name), _common2.default.validateCardName(_cards[i - 1].name));
 			}
 	
 			return _check;
@@ -3771,12 +3817,12 @@ var SolitaireEngine =
 	
 		query: function query(deck, data) {
 	
-			// console.log('%c_query:', 'font-weight: bold; color: red;', deck, data);
-	
 			// query : {
-			// 	groups : ["matGroup1", "matGroup2", "matGroup3", "matGroup4"],
+			// 	groups : ["group1", "group2"],
 			// 	select : "first",
-			// 	rules : ["topAce"]
+			//  decks : ["deck1", "deck2"],
+			// 	rules : ["rule1", "rule2"],
+			//  anyRules : ["rule1", "rule2"]
 			// }
 	
 			// TODO
@@ -3788,9 +3834,6 @@ var SolitaireEngine =
 			// if(!data.excludeCurrent) {
 			// 	_decks.push(deck);
 			// }
-	
-			// all | any
-			// if(data.all) {
 	
 			// Groups
 			if (data.groups) {
@@ -3806,7 +3849,6 @@ var SolitaireEngine =
 						var _group = _group3.default.getByName(groupName);
 	
 						var _decks = _group.getDecks();
-						// console.log('fullRules:query Group:', groupName, 'decks:', _decks);
 	
 						var _select = data.select ? data.select : 'all';
 	
@@ -3953,13 +3995,11 @@ var SolitaireEngine =
 			return _defaults2.default.card.ranks.length <= deck.cards.length;
 		},
 	
-		not: function not(e) {
+		not: function not(deck) {
 			return false;
 		},
 	
-		noMoves: function noMoves(deck) {
-			return !_tips2.default.checkFrom(deck.name);
-		},
+		// noMoves    : deck => !Tips.checkFrom(deck.name),
 	
 		topAce: function topAce(deck) {
 	
@@ -3977,67 +4017,158 @@ var SolitaireEngine =
 			return _card && _card.rank == _defaults2.default.card.ranks[lastIndex];
 		},
 	
-		prevDescOne: function prevDescOne(deck) {
-			return fullRules._prev_next_desc_ask(deck, 'prev', function (up, down) {
-				return up == (down | 0) + 1;
+		bottomAce: function bottomAce(deck) {
+	
+			var _card = fullRules._bottomCard(deck);
+	
+			return _card && _card.rank == _defaults2.default.card.ranks[0];
+		},
+	
+		bottomKing: function bottomKing(deck) {
+	
+			var _card = fullRules._bottomCard(deck);
+	
+			var lastIndex = _defaults2.default.card.ranks.length - 1;
+	
+			return _card && _card.rank == _defaults2.default.card.ranks[lastIndex];
+		},
+	
+		prevDeckTopCardDescOne: function prevDeckTopCardDescOne(deck) {
+			return fullRules._besideTopCard(deck, 'prev', function (from, to) {
+				return from.value == (to.value | 0) + 1;
 			});
 		},
 	
-		prevAscOne: function prevAscOne(deck) {
-			return fullRules._prev_next_desc_ask(deck, 'prev', function (up, down) {
-				return (up | 0) + 1 == down;
+		prevDeckTopCardAscOne: function prevDeckTopCardAscOne(deck) {
+			return fullRules._besideTopCard(deck, 'prev', function (from, to) {
+				return (from.value | 0) + 1 == to.value;
 			});
 		},
 	
-		nextDescOne: function nextDescOne(deck) {
-			return fullRules._prev_next_desc_ask(deck, 'next', function (up, down) {
-				return up == (down | 0) + 1;
+		nextDeckTopCardDescOne: function nextDeckTopCardDescOne(deck) {
+			return fullRules._besideTopCard(deck, 'next', function (from, to) {
+				return from.value == (to.value | 0) + 1;
 			});
 		},
 	
-		nextAscOne: function nextAscOne(deck) {
-			return fullRules._prev_next_desc_ask(deck, 'next', function (up, down) {
-				return (up | 0) + 1 == down;
+		nextDeckTopCardAscOne: function nextDeckTopCardAscOne(deck) {
+			return fullRules._besideTopCard(deck, 'next', function (from, to) {
+				return (from.value | 0) + 1 == to.value;
 			});
 		},
 	
-		prevDesc: function prevDesc(deck) {
-			return fullRules._prev_next_desc_ask(deck, 'prev', function (up, down) {
-				return up > down;
+		prevDeckTopCardDesc: function prevDeckTopCardDesc(deck) {
+			return fullRules._besideTopCard(deck, 'prev', function (from, to) {
+				return from.value > to.value;
 			});
 		},
 	
-		prevAsc: function prevAsc(deck) {
-			return fullRules._prev_next_desc_ask(deck, 'prev', function (up, down) {
-				return up < down;
+		prevDeckTopCardAsc: function prevDeckTopCardAsc(deck) {
+			return fullRules._besideTopCard(deck, 'prev', function (from, to) {
+				return from.value < to.value;
 			});
 		},
 	
-		nextDesc: function nextDesc(deck) {
-			return fullRules._prev_next_desc_ask(deck, 'next', function (up, down) {
-				return up > down;
+		nextDeckTopCardDesc: function nextDeckTopCardDesc(deck) {
+			return fullRules._besideTopCard(deck, 'next', function (from, to) {
+				return from.value > to.value;
 			});
 		},
 	
-		nextAsc: function nextAsc(deck) {
-			return fullRules._prev_next_desc_ask(deck, 'next', function (up, down) {
-				return up < down;
+		nextDeckTopCardAsc: function nextDeckTopCardAsc(deck) {
+			return fullRules._besideTopCard(deck, 'next', function (from, to) {
+				return from.value < to.value;
 			});
 		},
 	
-		prevOneSuit: function prevOneSuit(deck) {
-			// TODO
+		recoursivePrevDeckTopCardDescOne: function recoursivePrevDeckTopCardDescOne(deck) {
+			return fullRules._besideTopCardRecoursive(deck, 'prev', function (from, to) {
+				return from.value == (to.value | 0) + 1;
+			});
+		},
+	
+		recoursivePrevDeckTopCardAscOne: function recoursivePrevDeckTopCardAscOne(deck) {
+			return fullRules._besideTopCardRecoursive(deck, 'prev', function (from, to) {
+				return (from.value | 0) + 1 == to.value;
+			});
+		},
+	
+		recoursiveNextDeckTopCardDescOne: function recoursiveNextDeckTopCardDescOne(deck) {
+			return fullRules._besideTopCardRecoursive(deck, 'next', function (from, to) {
+				return from.value == (to.value | 0) + 1;
+			});
+		},
+	
+		recoursiveNextDeckTopCardAscOne: function recoursiveNextDeckTopCardAscOne(deck) {
+			return fullRules._besideTopCardRecoursive(deck, 'next', function (from, to) {
+				return (from.value | 0) + 1 == to.value;
+			});
+		},
+	
+		recoursivePrevDeckTopCardDesc: function recoursivePrevDeckTopCardDesc(deck) {
+			return fullRules._besideTopCardRecoursive(deck, 'prev', function (from, to) {
+				return from.value > to.value;
+			});
+		},
+	
+		recoursivePrevDeckTopCardAsc: function recoursivePrevDeckTopCardAsc(deck) {
+			return fullRules._besideTopCardRecoursive(deck, 'prev', function (from, to) {
+				return from.value < to.value;
+			});
+		},
+	
+		recoursiveNextDeckTopCardDesc: function recoursiveNextDeckTopCardDesc(deck) {
+			return fullRules._besideTopCardRecoursive(deck, 'next', function (from, to) {
+				return from.value > to.value;
+			});
+		},
+	
+		recoursiveNextDeckTopCardAsc: function recoursiveNextDeckTopCardAsc(deck) {
+			return fullRules._besideTopCardRecoursive(deck, 'next', function (from, to) {
+				return from.value < to.value;
+			});
+		},
+	
+		descByOne: function descByOne(deck) {
+			return fullRules._deckRecoursive(deck, function (up, down) {
+				return up.value == (down.value | 0) + 1;
+			});
+		},
+	
+		ascByOne: function ascByOne(deck) {
+			return fullRules._deckRecoursive(deck, function (up, down) {
+				return (up.value | 0) + 1 == down.value;
+			});
+		},
+	
+		asc: function asc(deck) {
+			return fullRules._deckRecoursive(deck, function (up, down) {
+				return up.value > down.value;
+			});
+		},
+	
+		desc: function desc(deck) {
+			return fullRules._deckRecoursive(deck, function (up, down) {
+				return up.value < down.value;
+			});
+		},
+	
+		prevDeckTopCardOneSuit: function prevDeckTopCardOneSuit(deck) {
+			return fullRules._besideTopCard(deck, 'prev', function (up, down) {
+				return up.suit == down.suit;
+			});
+		},
+	
+		nextDeckTopCardOneSuit: function nextDeckTopCardOneSuit(deck) {
 			return false;
 		},
 	
-		prevFull: function prevFull(deck) {
-			// TODO
-			return false;
+		prevDeckFull: function prevDeckFull(deck) {
+			return _deck5.default.getDeck((0, _getBeside2.default)(deck).prev.to).full;
 		},
 	
-		test: function test(deck) {
-			console.log('test fullRule', deck.name);
-			return false;
+		nextDeckFull: function nextDeckFull(deck) {
+			return _deck5.default.getDeck((0, _getBeside2.default)(deck).next.to).full;
 		}
 	};
 	
@@ -8121,9 +8252,9 @@ var SolitaireEngine =
 	
 	var _common2 = _interopRequireDefault(_common);
 	
-	var _winCheckMethods = __webpack_require__(63);
+	var _winCheckRules = __webpack_require__(63);
 	
-	var _winCheckMethods2 = _interopRequireDefault(_winCheckMethods);
+	var _winCheckRules2 = _interopRequireDefault(_winCheckRules);
 	
 	var _deck = __webpack_require__(14);
 	
@@ -8134,32 +8265,37 @@ var SolitaireEngine =
 	var winCheck = function winCheck(params) {
 	
 		var rulesCorrect = true;
-		var _hasMetods = false;
+		var _hasRules = false;
+	
 		var _winCheck = _share2.default.get('winCheck');
 	
 		if (!_winCheck) {
 			return false;
 		}
 	
+		// if(_winCheck.rules) {
+		// 	_winCheck = winCheck.rules;
+		// }
+	
 		for (var ruleName in _winCheck.rules) {
 	
-			_hasMetods = true;
+			_hasRules = true;
 	
-			if (_winCheckMethods2.default[ruleName]) {
+			if (_winCheckRules2.default[ruleName]) {
 	
-				var _result = _winCheckMethods2.default[ruleName]({
+				var _result = _winCheckRules2.default[ruleName]({
 					decks: _deck2.default.getDecks({ visible: true }),
 					rulesArgs: _winCheck.rules[ruleName]
 				});
 	
 				rulesCorrect = rulesCorrect && _result;
 			} else {
-				rulesCorrect = rulesCorrect && _winCheckMethods2.default.newerWin();
+				rulesCorrect = rulesCorrect && _winCheckRules2.default.newerWin();
 			}
 		}
 	
-		if (!_hasMetods) {
-			rulesCorrect = rulesCorrect && _winCheckMethods2.default.newerWin();
+		if (!_hasRules) {
+			rulesCorrect = rulesCorrect && _winCheckRules2.default.newerWin();
 		}
 	
 		if (rulesCorrect) {
@@ -8205,15 +8341,6 @@ var SolitaireEngine =
 
 	'use strict';
 	
-	/*
-	 * Client-server application for planning biomechanical stimulation =)
-	 * version: 1.0.0
-	 * author: Romasan
-	 * date: 05.05.2016
-	 */
-	
-	// import share    from 'share';
-	
 	Object.defineProperty(exports, "__esModule", {
 		value: true
 	});
@@ -8232,8 +8359,10 @@ var SolitaireEngine =
 	
 	Filters:
 	
-	 * group / groups
-	 * deck / decks
+	 * group
+	 * groups
+	 * deck
+	 * decks
 	
 	Tag filters:
 	
@@ -8254,11 +8383,12 @@ var SolitaireEngine =
 	
 	Conposite rules:
 	
-	 * query / lego
+	 * query
+	 * lego
 	
 	 */
 	
-	var winCheckMethods = {
+	var winCheckRules = {
 	
 		// Filters
 	
@@ -8285,7 +8415,7 @@ var SolitaireEngine =
 		},
 	
 		groups: function groups(data) {
-			return winCheckMethods.group(data);
+			return winCheckRules.group(data);
 		},
 	
 		deck: function deck(data) {
@@ -8307,7 +8437,7 @@ var SolitaireEngine =
 		},
 	
 		decks: function decks(data) {
-			return winCheckMethods.deck(data);
+			return winCheckRules.deck(data);
 		},
 	
 		// Tag filters
@@ -8337,21 +8467,22 @@ var SolitaireEngine =
 	
 			var _correct = true;
 	
-			for (var d in data.decks) {
+			for (var deckIndex in data.decks) {
 	
 				if (!_correct) {
 					return false;
 				}
 	
-				var _cards = data.decks[d].cards;
+				var _cards = data.decks[deckIndex].cards;
 	
-				for (var c in _cards) {
-					if (c > 0) {
+				for (var cardIndex in _cards) {
+					if (cardIndex > 0) {
 	
-						var down = _common2.default.validateCardName(_cards[(c | 0) - 1].name),
-						    up = _common2.default.validateCardName(_cards[c | 0].name);
+						var down = _common2.default.validateCardName(_cards[(cardIndex | 0) - 1].name),
+						    up = _common2.default.validateCardName(_cards[cardIndex | 0].name);
 	
 						var _cardsRankS = _defaults2.default.card.ranks;
+	
 						_correct = _correct && down && up && _cardsRankS.indexOf(down.rank) == _cardsRankS.indexOf(up.rank) + data.asc_desk;
 					}
 				}
@@ -8384,7 +8515,7 @@ var SolitaireEngine =
 		},
 	
 		empty: function empty(data) {
-			winCheckMethods.allEmpty(data);
+			winCheckRules.allEmpty(data);
 		},
 	
 		// Combined rules (use like filter)
@@ -8420,7 +8551,7 @@ var SolitaireEngine =
 	
 			data.asc_desk = -1;
 	
-			return winCheckMethods._asc_desk(data);
+			return winCheckRules._asc_desk(data);
 		},
 	
 		// step by step 3, 2, 1
@@ -8429,13 +8560,17 @@ var SolitaireEngine =
 	
 			data.asc_desk = 1;
 	
-			return winCheckMethods._asc_desk(data);
+			return winCheckRules._asc_desk(data);
 		},
 	
 		// Composite rules (input arguments)
 	
 		// комбинированное правило
 		query: function query(data) {
+			// {
+			// 	decks[],  - all visible decks
+			// 	rulesArgs
+			// }
 	
 			if (!data || !data.rulesArgs) {
 				return false;
@@ -8464,25 +8599,25 @@ var SolitaireEngine =
 					queryData.filter = true;
 	
 					for (var _i2 in data.rulesArgs[next].filters) {
-						if (typeof data.rulesArgs[next].filters[_i2] == 'string' && winCheckMethods[data.rulesArgs[next].filters[_i2]]) {
+						if (typeof data.rulesArgs[next].filters[_i2] == 'string' && winCheckRules[data.rulesArgs[next].filters[_i2]]) {
 	
 							queryData.filterArgs = null;
-							_correct = _correct && winCheckMethods[data.rulesArgs[next].filters[_i2]](queryData);
+							_correct = _correct && winCheckRules[data.rulesArgs[next].filters[_i2]](queryData);
 						} else {
 	
 							// if(typeof data.rulesArgs[next].filters[i] == 'object') {
 							if (data.rulesArgs[next].filters[_i2] && data.rulesArgs[next].filters[_i2].toString() == "[object Object]") {
 	
 								for (var filterName in data.rulesArgs[next].filters[_i2]) {
-									if (winCheckMethods[filterName]) {
+									if (winCheckRules[filterName]) {
 										queryData.filterArgs = data.rulesArgs[next].filters[_i2][filterName];
-										_correct = _correct && winCheckMethods[filterName](queryData);
+										_correct = _correct && winCheckRules[filterName](queryData);
 									} else {
-										_correct = _correct && winCheckMethods.newerWin();
+										_correct = _correct && winCheckRules.newerWin();
 									}
 								}
 							} else {
-								_correct = _correct && winCheckMethods.newerWin();
+								_correct = _correct && winCheckRules.newerWin();
 							}
 						}
 					}
@@ -8494,10 +8629,10 @@ var SolitaireEngine =
 				if (data.rulesArgs[next].rules) {
 	
 					for (var _i3 in data.rulesArgs[next].rules) {
-						if (winCheckMethods[data.rulesArgs[next].rules[_i3]]) {
-							_correct = _correct && winCheckMethods[data.rulesArgs[next].rules[_i3]](queryData);
+						if (winCheckRules[data.rulesArgs[next].rules[_i3]]) {
+							_correct = _correct && winCheckRules[data.rulesArgs[next].rules[_i3]](queryData);
 						} else {
-							_correct = _correct && winCheckMethods.newerWin();
+							_correct = _correct && winCheckRules.newerWin();
 						}
 					}
 				}
@@ -8507,11 +8642,11 @@ var SolitaireEngine =
 		},
 	
 		lego: function lego(data) {
-			return winCheckMethods.query(data);
+			return winCheckRules.query(data);
 		}
 	};
 	
-	exports.default = winCheckMethods;
+	exports.default = winCheckRules;
 
 /***/ },
 /* 64 */

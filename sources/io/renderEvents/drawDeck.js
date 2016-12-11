@@ -91,11 +91,11 @@ event.listen('addDeckEl', data => {
 		elRender('<div>');
 
 	let _params = {
-		'transform' : 'rotate(' + (data.params.rotate|0) + 'deg)',
-		'width'     : defaults.card.width  + 'px'                ,
- 		'height'    : defaults.card.height + 'px'                ,
-		'left'      : data.params.x        + 'px'                ,
-		'top'       : data.params.y        + 'px'                ,
+		'transform' : 'rotate(' + (data.params.rotate | 0) + 'deg)',
+		'width'     : defaults.card.width  + 'px'                  ,
+ 		'height'    : defaults.card.height + 'px'                  ,
+		'left'      : data.params.x        + 'px'                  ,
+		'top'       : data.params.y        + 'px'                  ,
 		'display'   : data.deck.visible ? 'block' : 'none'
 	};
 
@@ -221,7 +221,7 @@ event.listen('redrawDeck', data => {
 	for(let i in data.cards) {
 		
 		let _card_position = data.deck.padding(i);
-		let _zIndex        = (data.params.startZIndex|0) + (i|0);
+		let _zIndex        = (data.params.startZIndex | 0) + (i | 0);
 		
 		let _params = {
 			'-ms-transform'     : 'rotate(' + (data.params.rotate | 0) + 'deg)',

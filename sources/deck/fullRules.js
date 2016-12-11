@@ -13,7 +13,10 @@ import getBeside from 'getBeside';
 Internal use:
 
  * _topCard
- * _firstCard
+ * _bottomCard
+ * _besideTopCardRecoursive
+ * _besideTopCard
+ * _deckRecoursive
 
 Filters:
 
@@ -23,18 +26,34 @@ Rules:
 
  * deckLength
  * not
- * noMoves
  * topAce
  * topKing
- * prevDescOne
- * prevAscOne
- * nextDescOne
- * nextAscOne
- * prevDesc
- * prevAsc
- * nextDesc
- * nextAsc
- * test
+ * bottomAce
+ * bottomKing
+ * prevDeckTopCardDescOne
+ * prevDeckTopCardAscOne
+ * nextDeckTopCardDescOne
+ * nextDeckTopCardAscOne
+ * prevDeckTopCardDesc
+ * prevDeckTopCardAsc
+ * nextDeckTopCardDesc
+ * nextDeckTopCardAsc
+ * recoursivePrevDeckTopCardDescOne
+ * recoursivePrevDeckTopCardAscOne
+ * recoursiveNextDeckTopCardDescOne
+ * recoursiveNextDeckTopCardAscOne
+ * recoursivePrevDeckTopCardDesc
+ * recoursivePrevDeckTopCardAsc
+ * recoursiveNextDeckTopCardDesc
+ * recoursiveNextDeckTopCardAsc
+ * descByOne
+ * ascByOne
+ * asc
+ * desc
+ * prevDeckTopCardOneSuit
+ * nextDeckTopCardOneSuit
+ * prevDeckFull
+ * nextDeckFull
 
  */
 
@@ -49,27 +68,59 @@ let fullRules = {
 		return _card && common.validateCardName(_card.name);
 	},
 
-	// _firstCard : deck => {}
+	_bottomCard : deck => {
 
-	_prev_next_desc_ask : (deck, type, callback) => {
+		let _card = deck.getCards()[0];
 
-		let _check = true;
-		let _prev = getBeside(deck)[type];
-		let _topCard = deck.getTopCard();
-		console.log('_prev_next_desc_ask', _prev);
+		return _card && common.validateCardName(_card.name);
+	},
 
-		for(;_prev && _check;) {
+	_besideTopCardRecoursive : (deck, direction, callback) => {
 
-			let _deck = Deck.getDeck(_prev.to),
-			    _card = _deck.getTopCard();
+		let _check  = true;
 
-			_check = _check && _card && callback(
-				common.validateCardName(_topCard.name).value | 0,
-				common.validateCardName(_card   .name).value | 0
+		let _deck   = deck;
+		let _beside = getBeside(_deck)[direction];
+
+		for(;_beside && _check;) {
+
+			let besideDeck = Deck.getDeck(_beside.to);
+
+			_check = _check && callback(
+				fullRules._topCard(deck)      ,
+				fullRules._topCard(besideDeck)
 			);
 
-			_topCard = _card;
-			_prev = getBeside(_deck)[type];
+			_deck   = besideDeck;
+			_beside = getBeside(besideDeck)[direction];
+		}
+
+		return _check;
+	},
+	
+	_besideTopCard : (deck, direction, callback) => {
+
+		let _beside    = getBeside(deck)[direction];
+		let besideDeck = Deck.getDeck(_beside.to);
+
+		return callback(
+			fullRules._topCard(deck)      ,
+			fullRules._topCard(besideDeck)
+		);
+	},
+
+	_deckRecoursive : (deck, callback) => {
+
+		let _check = true;
+		let _cards = deck.getCards();
+
+		let _cardsCount = _cards.length;
+
+		for(let i = _cardsCount; i > 0; i -= 1) {
+			_check = _check && callback(
+				common.validateCardName(_cards[i]    .name),
+				common.validateCardName(_cards[i - 1].name)
+			);
 		}
 
 		return _check;
@@ -79,12 +130,12 @@ let fullRules = {
 
 	query : (deck, data) => {
 
-		// console.log('%c_query:', 'font-weight: bold; color: red;', deck, data);
-
 		// query : {
-		// 	groups : ["matGroup1", "matGroup2", "matGroup3", "matGroup4"],
+		// 	groups : ["group1", "group2"],
 		// 	select : "first",
-		// 	rules : ["topAce"]
+		//  decks : ["deck1", "deck2"],
+		// 	rules : ["rule1", "rule2"],
+		//  anyRules : ["rule1", "rule2"]
 		// }
 
 		// TODO
@@ -97,9 +148,6 @@ let fullRules = {
 		// 	_decks.push(deck);
 		// }
 		
-		// all | any
-		// if(data.all) {
-
 		// Groups
 		if(data.groups) {
 			for(let groupName of data.groups) {
@@ -107,7 +155,6 @@ let fullRules = {
 				let _group = Group.getByName(groupName);
 
 				let _decks = _group.getDecks();
-				// console.log('fullRules:query Group:', groupName, 'decks:', _decks);
 
 				let _select = data.select ? data.select : 'all';
 
@@ -176,9 +223,9 @@ let fullRules = {
 
 	deckLength : deck => defaults.card.ranks.length <= deck.cards.length,
 
-	not        : e => false,
+	not        : deck => false,
 
-	noMoves    : deck => !Tips.checkFrom(deck.name),
+	// noMoves    : deck => !Tips.checkFrom(deck.name),
 
 	topAce     : deck => {
 
@@ -196,36 +243,69 @@ let fullRules = {
 		return _card && _card.rank == defaults.card.ranks[lastIndex];
 	},
 
-	prevDescOne : deck => fullRules._prev_next_desc_ask(deck, 'prev', (up, down) => up == (down | 0) + 1),
+	bottomAce   : deck => {
 
-	prevAscOne  : deck => fullRules._prev_next_desc_ask(deck, 'prev', (up, down) => (up | 0) + 1 == down),
+		let _card = fullRules._bottomCard(deck);
 
-	nextDescOne : deck => fullRules._prev_next_desc_ask(deck, 'next', (up, down) => up == (down | 0) + 1),
-
-	nextAscOne  : deck => fullRules._prev_next_desc_ask(deck, 'next', (up, down) => (up | 0) + 1 == down),
-
-	prevDesc    : deck => fullRules._prev_next_desc_ask(deck, 'prev', (up, down) => up > down)           ,
-
-	prevAsc     : deck => fullRules._prev_next_desc_ask(deck, 'prev', (up, down) => up < down)           ,
-
-	nextDesc    : deck => fullRules._prev_next_desc_ask(deck, 'next', (up, down) => up > down)           ,
-
-	nextAsc     : deck => fullRules._prev_next_desc_ask(deck, 'next', (up, down) => up < down)           ,
-
-	prevOneSuit : deck => {
-		// TODO
-		return false;
+		return _card && _card.rank == defaults.card.ranks[0];
 	},
 
-	prevFull    : deck => {
-		// TODO
-		return false;
+	bottomKing  : deck => {
+
+		let _card = fullRules._bottomCard(deck);
+
+		let lastIndex = defaults.card.ranks.length - 1;
+
+		return _card && _card.rank == defaults.card.ranks[lastIndex];
 	},
 
-	test        : deck => {
-		console.log('test fullRule', deck.name);
-		return false;
-	}
+	prevDeckTopCardDescOne : deck => fullRules._besideTopCard(deck, 'prev', (from, to) => from.value == (to.value | 0) + 1),
+
+	prevDeckTopCardAscOne  : deck => fullRules._besideTopCard(deck, 'prev', (from, to) => (from.value | 0) + 1 == to.value),
+
+	nextDeckTopCardDescOne : deck => fullRules._besideTopCard(deck, 'next', (from, to) => from.value == (to.value | 0) + 1),
+
+	nextDeckTopCardAscOne  : deck => fullRules._besideTopCard(deck, 'next', (from, to) => (from.value | 0) + 1 == to.value),
+
+	prevDeckTopCardDesc    : deck => fullRules._besideTopCard(deck, 'prev', (from, to) => from.value > to.value)           ,
+
+	prevDeckTopCardAsc     : deck => fullRules._besideTopCard(deck, 'prev', (from, to) => from.value < to.value)           ,
+
+	nextDeckTopCardDesc    : deck => fullRules._besideTopCard(deck, 'next', (from, to) => from.value > to.value)           ,
+
+	nextDeckTopCardAsc     : deck => fullRules._besideTopCard(deck, 'next', (from, to) => from.value < to.value)           ,
+
+	recoursivePrevDeckTopCardDescOne : deck => fullRules._besideTopCardRecoursive(deck, 'prev', (from, to) => from.value == (to.value | 0) + 1),
+
+	recoursivePrevDeckTopCardAscOne  : deck => fullRules._besideTopCardRecoursive(deck, 'prev', (from, to) => (from.value | 0) + 1 == to.value),
+
+	recoursiveNextDeckTopCardDescOne : deck => fullRules._besideTopCardRecoursive(deck, 'next', (from, to) => from.value == (to.value | 0) + 1),
+
+	recoursiveNextDeckTopCardAscOne  : deck => fullRules._besideTopCardRecoursive(deck, 'next', (from, to) => (from.value | 0) + 1 == to.value),
+
+	recoursivePrevDeckTopCardDesc    : deck => fullRules._besideTopCardRecoursive(deck, 'prev', (from, to) => from.value > to.value)           ,
+
+	recoursivePrevDeckTopCardAsc     : deck => fullRules._besideTopCardRecoursive(deck, 'prev', (from, to) => from.value < to.value)           ,
+
+	recoursiveNextDeckTopCardDesc    : deck => fullRules._besideTopCardRecoursive(deck, 'next', (from, to) => from.value > to.value)           ,
+
+	recoursiveNextDeckTopCardAsc     : deck => fullRules._besideTopCardRecoursive(deck, 'next', (from, to) => from.value < to.value)           ,
+
+	descByOne : deck => fullRules._deckRecoursive(deck, (up, down) => up.value == (down.value | 0) + 1),
+
+	ascByOne  : deck => fullRules._deckRecoursive(deck, (up, down) => (up.value | 0) + 1 == down.value),
+
+	asc       : deck => fullRules._deckRecoursive(deck, (up, down) => up.value > down.value)           ,
+
+	desc      : deck => fullRules._deckRecoursive(deck, (up, down) => up.value < down.value)           ,
+
+	prevDeckTopCardOneSuit : deck => fullRules._besideTopCard(deck, 'prev', (up, down) => up.suit == down.suit),
+
+	nextDeckTopCardOneSuit : deck => false,
+
+	prevDeckFull           : deck => Deck.getDeck(getBeside(deck).prev.to).full,
+
+	nextDeckFull           : deck => Deck.getDeck(getBeside(deck).next.to).full
 };
 
 export default fullRules;

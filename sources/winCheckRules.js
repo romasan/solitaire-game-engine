@@ -1,13 +1,5 @@
 'use strict';
 
-/*
- * Client-server application for planning biomechanical stimulation =)
- * version: 1.0.0
- * author: Romasan
- * date: 05.05.2016
- */
-
-// import share    from 'share';
 import common   from 'common';
 import defaults from 'defaults';
 
@@ -15,8 +7,10 @@ import defaults from 'defaults';
 
 Filters:
 
- * group / groups
- * deck / decks
+ * group
+ * groups
+ * deck
+ * decks
 
 Tag filters:
 
@@ -37,11 +31,12 @@ Simple rules:
 
 Conposite rules:
 
- * query / lego
+ * query
+ * lego
 
  */
 
-let winCheckMethods = {
+let winCheckRules = {
 	
 	// Filters
 
@@ -76,7 +71,7 @@ let winCheckMethods = {
 		return _decks.length;
 	},
 
-	groups : data => winCheckMethods.group(data),
+	groups : data => winCheckRules.group(data),
 
 	deck : data => {
 		
@@ -100,7 +95,7 @@ let winCheckMethods = {
 		return _decks.length;
 	},
 	
-	decks : data => winCheckMethods.deck(data),
+	decks : data => winCheckRules.deck(data),
 
 	// Tag filters
 
@@ -132,21 +127,22 @@ let winCheckMethods = {
 
 		let _correct = true;
 
-		for(let d in data.decks) {
+		for(let deckIndex in data.decks) {
 
 			if(!_correct) {
 				return false;
 			}
 
-			let _cards = data.decks[d].cards;
+			let _cards = data.decks[deckIndex].cards;
 
-			for(let c in _cards) {
-				if(c > 0) {
+			for(let cardIndex in _cards) {
+				if(cardIndex > 0) {
 
-					let down = common.validateCardName(_cards[(c|0) - 1].name),
-						  up = common.validateCardName(_cards[(c|0)].name);
+					let down = common.validateCardName(_cards[(cardIndex | 0) - 1].name),
+					      up = common.validateCardName(_cards[(cardIndex | 0)]    .name);
 
 					let _cardsRankS = defaults.card.ranks;
+
 					_correct = _correct && down && up && _cardsRankS.indexOf(down.rank) == (_cardsRankS.indexOf(up.rank) + data.asc_desk);
 				}
 			}
@@ -180,7 +176,7 @@ let winCheckMethods = {
 	},
 
 	empty : data => {
-		winCheckMethods.allEmpty(data);
+		winCheckRules.allEmpty(data);
 	},
 
 	// Combined rules (use like filter)
@@ -216,7 +212,7 @@ let winCheckMethods = {
 
 		data.asc_desk = -1;
 
-		return winCheckMethods._asc_desk(data);
+		return winCheckRules._asc_desk(data);
 	},
 
 	// step by step 3, 2, 1
@@ -225,13 +221,17 @@ let winCheckMethods = {
 
 		data.asc_desk = 1;
 
-		return winCheckMethods._asc_desk(data);
+		return winCheckRules._asc_desk(data);
 	},
 
 	// Composite rules (input arguments)
 
 	// комбинированное правило
 	query : data => {
+	// {
+	// 	decks[],  - all visible decks
+	// 	rulesArgs
+	// }
 
 		if(
 			!data           ||
@@ -263,10 +263,10 @@ let winCheckMethods = {
 				queryData.filter = true;
 
 				for(let i in data.rulesArgs[next].filters) {
-					if(typeof data.rulesArgs[next].filters[i] == 'string' && winCheckMethods[data.rulesArgs[next].filters[i]]) {
+					if(typeof data.rulesArgs[next].filters[i] == 'string' && winCheckRules[data.rulesArgs[next].filters[i]]) {
 
 						queryData.filterArgs = null;
-						_correct = _correct && winCheckMethods[data.rulesArgs[next].filters[i]](queryData);
+						_correct = _correct && winCheckRules[data.rulesArgs[next].filters[i]](queryData);
 					} else {
 
 						// if(typeof data.rulesArgs[next].filters[i] == 'object') {
@@ -276,15 +276,15 @@ let winCheckMethods = {
 						) {
 
 							for(let filterName in data.rulesArgs[next].filters[i]) {
-								if(winCheckMethods[filterName]) {
+								if(winCheckRules[filterName]) {
 									queryData.filterArgs = data.rulesArgs[next].filters[i][filterName]
-									_correct = _correct && winCheckMethods[filterName](queryData);
+									_correct = _correct && winCheckRules[filterName](queryData);
 								} else {
-									_correct = _correct && winCheckMethods.newerWin();
+									_correct = _correct && winCheckRules.newerWin();
 								}
 							}
 						} else {
-							_correct = _correct && winCheckMethods.newerWin();
+							_correct = _correct && winCheckRules.newerWin();
 						}
 					}
 				}
@@ -296,10 +296,10 @@ let winCheckMethods = {
 			if(data.rulesArgs[next].rules) {
 
 				for(let i in data.rulesArgs[next].rules) {
-					if(winCheckMethods[data.rulesArgs[next].rules[i]]) {
-						_correct = _correct && winCheckMethods[data.rulesArgs[next].rules[i]](queryData);
+					if(winCheckRules[data.rulesArgs[next].rules[i]]) {
+						_correct = _correct && winCheckRules[data.rulesArgs[next].rules[i]](queryData);
 					} else {
-						_correct = _correct && winCheckMethods.newerWin();
+						_correct = _correct && winCheckRules.newerWin();
 					}
 				}
 			}
@@ -309,7 +309,7 @@ let winCheckMethods = {
 		return _correct;
 	},
 
-	lego : data => winCheckMethods.query(data)
+	lego : data => winCheckRules.query(data)
 }
 
-export default winCheckMethods;
+export default winCheckRules;

@@ -42,8 +42,8 @@ export default data => {// {x, y, map, mapSize, el, data}
 			
 			case 'left' :
 			
-				x = (data.x|0) + mapCommon.beSide.left.x;
-				y = (data.y|0) + mapCommon.beSide.left.y;
+				x = (data.x | 0) + mapCommon.beSide.left.x;
+				y = (data.y | 0) + mapCommon.beSide.left.y;
 			
 				if(mapCommon.exist(x, y, data.mapSize, data.map)) {
 					_relations.push({
@@ -57,8 +57,8 @@ export default data => {// {x, y, map, mapSize, el, data}
 			
 			case 'right':
 			
-				x = (data.x|0) + mapCommon.beSide.right.x;
-				y = (data.y|0) + mapCommon.beSide.right.y;
+				x = (data.x | 0) + mapCommon.beSide.right.x;
+				y = (data.y | 0) + mapCommon.beSide.right.y;
 			
 				if(mapCommon.exist(x, y, data.mapSize, data.map)) {
 					_relations.push({
@@ -72,8 +72,8 @@ export default data => {// {x, y, map, mapSize, el, data}
 			
 			case 'up'   :
 			
-				x = (data.x|0) + mapCommon.beSide.up.x;
-				y = (data.y|0) + mapCommon.beSide.up.y;
+				x = (data.x | 0) + mapCommon.beSide.up.x;
+				y = (data.y | 0) + mapCommon.beSide.up.y;
 			
 				if(mapCommon.exist(x, y, data.mapSize, data.map)) {
 					_relations.push({
@@ -87,8 +87,8 @@ export default data => {// {x, y, map, mapSize, el, data}
 			
 			case 'down' :
 			
-				x = (data.x|0) + mapCommon.beSide.down.x;
-				y = (data.y|0) + mapCommon.beSide.down.y;
+				x = (data.x | 0) + mapCommon.beSide.down.x;
+				y = (data.y | 0) + mapCommon.beSide.down.y;
 			
 				if(mapCommon.exist(x, y, data.mapSize, data.map)) {
 					_relations.push({
