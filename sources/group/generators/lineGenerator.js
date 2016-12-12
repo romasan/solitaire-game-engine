@@ -33,8 +33,8 @@ export default (group, data) => {
 	}
 
 	// first/last
-
-	_decks[0].tag = 'first';
+	// TODO надо поправить перекрытие тегов из генератора и группы
+	_decks[0].tags = ['first'];
 
 	if(data.first) {
 
@@ -44,8 +44,12 @@ export default (group, data) => {
 			_deck[propName] = data.first[propName];
 		}
 	}
+	
+	if(_decks[1]) {
+		_decks[1].tags = ['second'];
+	}
 
-	_decks[_decks.length - 1].tag = 'last';
+	_decks[_decks.length - 1].tags = ['last'];
 
 	if(data.last) {
 

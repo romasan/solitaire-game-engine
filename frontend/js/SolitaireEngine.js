@@ -111,7 +111,7 @@ var SolitaireEngine =
 	exports.options = _defaults2.default;
 	exports.winCheck = _winCheck2.default.hwinCheck;
 	exports.generator = _deckGenerator2.default;
-	exports.version = (9091493310).toString().split(9).slice(1).map(function (e) {
+	exports.version = (9091493336).toString().split(9).slice(1).map(function (e) {
 		return parseInt(e, 8);
 	}).join('.');
 	
@@ -2263,6 +2263,7 @@ var SolitaireEngine =
 		"flipPaddingX": { "type": "any" },
 		"flipPaddingY": { "type": "any" },
 		"actions": { "type": "any" },
+		"tags": { "type": "any" },
 		"save": {
 			"type": "boolean",
 			"default": true
@@ -3724,18 +3725,18 @@ var SolitaireEngine =
 	 * topKing
 	 * bottomAce
 	 * bottomKing
-	 * prevDeckTopCardDescOne
-	 * prevDeckTopCardAscOne
-	 * nextDeckTopCardDescOne
-	 * nextDeckTopCardAscOne
+	 * prevDeckTopCardDescStep
+	 * prevDeckTopCardAscStep
+	 * nextDeckTopCardDescStep
+	 * nextDeckTopCardAscStep
 	 * prevDeckTopCardDesc
 	 * prevDeckTopCardAsc
 	 * nextDeckTopCardDesc
 	 * nextDeckTopCardAsc
-	 * recoursivePrevDeckTopCardDescOne
-	 * recoursivePrevDeckTopCardAscOne
-	 * recoursiveNextDeckTopCardDescOne
-	 * recoursiveNextDeckTopCardAscOne
+	 * recoursivePrevDeckTopCardDescStep
+	 * recoursivePrevDeckTopCardAscStep
+	 * recoursiveNextDeckTopCardDescStep
+	 * recoursiveNextDeckTopCardAscStep
 	 * recoursivePrevDeckTopCardDesc
 	 * recoursivePrevDeckTopCardAsc
 	 * recoursiveNextDeckTopCardDesc
@@ -3744,8 +3745,8 @@ var SolitaireEngine =
 	 * ascByOne
 	 * asc
 	 * desc
-	 * prevDeckTopCardOneSuit
-	 * nextDeckTopCardOneSuit
+	 * prevDeckTopCardEquallySuit
+	 * nextDeckTopCardEquallySuit
 	 * prevDeckFull
 	 * nextDeckFull
 	
@@ -4031,25 +4032,25 @@ var SolitaireEngine =
 			return _card && _card.rank == _defaults2.default.card.ranks[lastIndex];
 		},
 	
-		prevDeckTopCardDescOne: function prevDeckTopCardDescOne(deck) {
+		prevDeckTopCardDescStep: function prevDeckTopCardDescStep(deck) {
 			return fullRules._besideTopCard(deck, 'prev', function (from, to) {
 				return from.value == (to.value | 0) + 1;
 			});
 		},
 	
-		prevDeckTopCardAscOne: function prevDeckTopCardAscOne(deck) {
+		prevDeckTopCardAscStep: function prevDeckTopCardAscStep(deck) {
 			return fullRules._besideTopCard(deck, 'prev', function (from, to) {
 				return (from.value | 0) + 1 == to.value;
 			});
 		},
 	
-		nextDeckTopCardDescOne: function nextDeckTopCardDescOne(deck) {
+		nextDeckTopCardDescStep: function nextDeckTopCardDescStep(deck) {
 			return fullRules._besideTopCard(deck, 'next', function (from, to) {
 				return from.value == (to.value | 0) + 1;
 			});
 		},
 	
-		nextDeckTopCardAscOne: function nextDeckTopCardAscOne(deck) {
+		nextDeckTopCardAscStep: function nextDeckTopCardAscStep(deck) {
 			return fullRules._besideTopCard(deck, 'next', function (from, to) {
 				return (from.value | 0) + 1 == to.value;
 			});
@@ -4079,25 +4080,25 @@ var SolitaireEngine =
 			});
 		},
 	
-		recoursivePrevDeckTopCardDescOne: function recoursivePrevDeckTopCardDescOne(deck) {
+		recoursivePrevDeckTopCardDescStep: function recoursivePrevDeckTopCardDescStep(deck) {
 			return fullRules._besideTopCardRecoursive(deck, 'prev', function (from, to) {
 				return from.value == (to.value | 0) + 1;
 			});
 		},
 	
-		recoursivePrevDeckTopCardAscOne: function recoursivePrevDeckTopCardAscOne(deck) {
+		recoursivePrevDeckTopCardAscStep: function recoursivePrevDeckTopCardAscStep(deck) {
 			return fullRules._besideTopCardRecoursive(deck, 'prev', function (from, to) {
 				return (from.value | 0) + 1 == to.value;
 			});
 		},
 	
-		recoursiveNextDeckTopCardDescOne: function recoursiveNextDeckTopCardDescOne(deck) {
+		recoursiveNextDeckTopCardDescStep: function recoursiveNextDeckTopCardDescStep(deck) {
 			return fullRules._besideTopCardRecoursive(deck, 'next', function (from, to) {
 				return from.value == (to.value | 0) + 1;
 			});
 		},
 	
-		recoursiveNextDeckTopCardAscOne: function recoursiveNextDeckTopCardAscOne(deck) {
+		recoursiveNextDeckTopCardAscStep: function recoursiveNextDeckTopCardAscStep(deck) {
 			return fullRules._besideTopCardRecoursive(deck, 'next', function (from, to) {
 				return (from.value | 0) + 1 == to.value;
 			});
@@ -4127,13 +4128,13 @@ var SolitaireEngine =
 			});
 		},
 	
-		descByOne: function descByOne(deck) {
+		descByStep: function descByStep(deck) {
 			return fullRules._deckRecoursive(deck, function (up, down) {
 				return up.value == (down.value | 0) + 1;
 			});
 		},
 	
-		ascByOne: function ascByOne(deck) {
+		ascByStep: function ascByStep(deck) {
 			return fullRules._deckRecoursive(deck, function (up, down) {
 				return (up.value | 0) + 1 == down.value;
 			});
@@ -4151,13 +4152,13 @@ var SolitaireEngine =
 			});
 		},
 	
-		prevDeckTopCardOneSuit: function prevDeckTopCardOneSuit(deck) {
+		prevDeckTopCardEquallySuit: function prevDeckTopCardEquallySuit(deck) {
 			return fullRules._besideTopCard(deck, 'prev', function (up, down) {
 				return up.suit == down.suit;
 			});
 		},
 	
-		nextDeckTopCardOneSuit: function nextDeckTopCardOneSuit(deck) {
+		nextDeckTopCardEquallySuit: function nextDeckTopCardEquallySuit(deck) {
 			return false;
 		},
 	
@@ -7272,8 +7273,8 @@ var SolitaireEngine =
 		}
 	
 		// first/last
-	
-		_decks[0].tag = 'first';
+		// TODO надо поправить перекрытие тегов из генератора и группы
+		_decks[0].tags = ['first'];
 	
 		if (data.first) {
 	
@@ -7284,7 +7285,11 @@ var SolitaireEngine =
 			}
 		}
 	
-		_decks[_decks.length - 1].tag = 'last';
+		if (_decks[1]) {
+			_decks[1].tags = ['second'];
+		}
+	
+		_decks[_decks.length - 1].tags = ['last'];
 	
 		if (data.last) {
 	
@@ -8252,9 +8257,9 @@ var SolitaireEngine =
 	
 	var _common2 = _interopRequireDefault(_common);
 	
-	var _winCheckRules = __webpack_require__(63);
+	var _winCheckRules2 = __webpack_require__(63);
 	
-	var _winCheckRules2 = _interopRequireDefault(_winCheckRules);
+	var _winCheckRules3 = _interopRequireDefault(_winCheckRules2);
 	
 	var _deck = __webpack_require__(14);
 	
@@ -8277,25 +8282,27 @@ var SolitaireEngine =
 		// 	_winCheck = winCheck.rules;
 		// }
 	
-		for (var ruleName in _winCheck.rules) {
+		var _winCheckRules = _winCheck.rules ? _winCheck.rules : _winCheck;
+	
+		for (var ruleName in _winCheckRules) {
 	
 			_hasRules = true;
 	
-			if (_winCheckRules2.default[ruleName]) {
+			if (_winCheckRules3.default[ruleName]) {
 	
-				var _result = _winCheckRules2.default[ruleName]({
+				var _result = _winCheckRules3.default[ruleName]({
 					decks: _deck2.default.getDecks({ visible: true }),
-					rulesArgs: _winCheck.rules[ruleName]
+					rulesArgs: _winCheckRules[ruleName]
 				});
 	
 				rulesCorrect = rulesCorrect && _result;
 			} else {
-				rulesCorrect = rulesCorrect && _winCheckRules2.default.newerWin();
+				rulesCorrect = rulesCorrect && _winCheckRules3.default.newerWin();
 			}
 		}
 	
 		if (!_hasRules) {
-			rulesCorrect = rulesCorrect && _winCheckRules2.default.newerWin();
+			rulesCorrect = rulesCorrect && _winCheckRules3.default.newerWin();
 		}
 	
 		if (rulesCorrect) {
@@ -8354,6 +8361,8 @@ var SolitaireEngine =
 	var _defaults2 = _interopRequireDefault(_defaults);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	// import Deck     from 'deck';
 	
 	/*
 	
@@ -8416,6 +8425,43 @@ var SolitaireEngine =
 	
 		groups: function groups(data) {
 			return winCheckRules.group(data);
+		},
+	
+		select: function select(data) {
+	
+			var _decks = [];
+	
+			var _iteratorNormalCompletion = true;
+			var _didIteratorError = false;
+			var _iteratorError = undefined;
+	
+			try {
+				for (var _iterator = data.decks[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+					var deck = _step.value;
+	
+					// let maxDeckIndex = Group.getGroup(deck.parent).decksCount();
+					if (deck.tags.includes(data.filterArgs)) {
+						_decks.push(deck);
+					}
+				}
+			} catch (err) {
+				_didIteratorError = true;
+				_iteratorError = err;
+			} finally {
+				try {
+					if (!_iteratorNormalCompletion && _iterator.return) {
+						_iterator.return();
+					}
+				} finally {
+					if (_didIteratorError) {
+						throw _iteratorError;
+					}
+				}
+			}
+	
+			data.decks = _decks;
+	
+			return _decks.length;
 		},
 	
 		deck: function deck(data) {
@@ -8609,6 +8655,7 @@ var SolitaireEngine =
 							if (data.rulesArgs[next].filters[_i2] && data.rulesArgs[next].filters[_i2].toString() == "[object Object]") {
 	
 								for (var filterName in data.rulesArgs[next].filters[_i2]) {
+									// console.log('>>> filterName', filterName, typeof winCheckRules[filterName]);
 									if (winCheckRules[filterName]) {
 										queryData.filterArgs = data.rulesArgs[next].filters[_i2][filterName];
 										_correct = _correct && winCheckRules[filterName](queryData);

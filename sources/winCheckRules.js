@@ -3,6 +3,8 @@
 import common   from 'common';
 import defaults from 'defaults';
 
+// import Deck     from 'deck';
+
 /*
 
 Filters:
@@ -72,6 +74,22 @@ let winCheckRules = {
 	},
 
 	groups : data => winCheckRules.group(data),
+
+	select : data => {
+
+		let _decks = [];
+
+		for(let deck of data.decks) {
+			// let maxDeckIndex = Group.getGroup(deck.parent).decksCount();
+			if(deck.tags.includes(data.filterArgs)) {
+				_decks.push(deck);
+			}
+		}
+
+		data.decks = _decks;
+
+		return _decks.length;
+	},
 
 	deck : data => {
 		
@@ -276,6 +294,7 @@ let winCheckRules = {
 						) {
 
 							for(let filterName in data.rulesArgs[next].filters[i]) {
+								// console.log('>>> filterName', filterName, typeof winCheckRules[filterName]);
 								if(winCheckRules[filterName]) {
 									queryData.filterArgs = data.rulesArgs[next].filters[i][filterName]
 									_correct = _correct && winCheckRules[filterName](queryData);

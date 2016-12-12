@@ -23,6 +23,7 @@ const params = {
 	"flipPaddingX" : {"type" : "any"},
 	"flipPaddingY" : {"type" : "any"},
 	"actions"      : {"type" : "any"},
+	"tags"         : {"type" : "any"},
 	"save"         : {
 		"type"    : "boolean",
 		"default" : true
