@@ -52,7 +52,7 @@ class kickAction extends deckAction {
 
 		let _callback = e => {
 
-			let _addStep = data => {
+			let _addStep = historyData => {
 
 				event.dispatch('addStep', {
 					"move" : {
@@ -61,8 +61,8 @@ class kickAction extends deckAction {
 						deck     : _deck,
 						flip     : true,
 						stepType : {
-							undo: data.undo,
-							redo: data.redo
+							undo: historyData.undo,
+							redo: historyData.redo
 						},
 						context  : "kickAction"
 					}

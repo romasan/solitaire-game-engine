@@ -159,7 +159,7 @@ let winCheckRules = {
 	newerWin : data => {
 
 		console.warn("You use 'newerWin' rule for checking Win. Maybe arguments in 'winCheck.rule' have incorrect rule name.")
-
+		throw new Error('Newer win');
 		return false;
 	},
 

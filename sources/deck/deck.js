@@ -198,8 +198,6 @@ class Deck {
 
 	checkFull() {
 
-		console.log('checkFull', this.name, this.fullRules);
-
 		if(
 			!this.full                &&
 			this.fullRules            &&

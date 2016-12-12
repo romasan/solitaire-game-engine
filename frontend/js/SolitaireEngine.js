@@ -111,7 +111,7 @@ var SolitaireEngine =
 	exports.options = _defaults2.default;
 	exports.winCheck = _winCheck2.default.hwinCheck;
 	exports.generator = _deckGenerator2.default;
-	exports.version = (9091493303).toString().split(9).slice(1).map(function (e) {
+	exports.version = (9091493310).toString().split(9).slice(1).map(function (e) {
 		return parseInt(e, 8);
 	}).join('.');
 	
@@ -2894,8 +2894,6 @@ var SolitaireEngine =
 			key: 'checkFull',
 			value: function checkFull() {
 	
-				console.log('checkFull', this.name, this.fullRules);
-	
 				if (!this.full && this.fullRules && this.fullRules.length > 0) {
 	
 					var full = true;
@@ -4586,9 +4584,11 @@ var SolitaireEngine =
 			value: function end() {
 				_event2.default.dispatch('stopSession');
 			}
-	
-			// break() {}
-	
+		}, {
+			key: 'break',
+			value: function _break() {
+				// TODO
+			}
 		}]);
 	
 		return deckAction;
@@ -5040,7 +5040,7 @@ var SolitaireEngine =
 	
 				var _callback = function _callback(e) {
 	
-					var _addStep = function _addStep(data) {
+					var _addStep = function _addStep(historyData) {
 	
 						_event2.default.dispatch('addStep', {
 							"move": {
@@ -5049,8 +5049,8 @@ var SolitaireEngine =
 								deck: _deck,
 								flip: true,
 								stepType: {
-									undo: data.undo,
-									redo: data.redo
+									undo: historyData.undo,
+									redo: historyData.redo
 								},
 								context: "kickAction"
 							}
@@ -8498,7 +8498,7 @@ var SolitaireEngine =
 		newerWin: function newerWin(data) {
 	
 			console.warn("You use 'newerWin' rule for checking Win. Maybe arguments in 'winCheck.rule' have incorrect rule name.");
-	
+			throw new Error('Newer win');
 			return false;
 		},
 	
