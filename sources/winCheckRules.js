@@ -75,7 +75,7 @@ let winCheckRules = {
 
 	groups : data => winCheckRules.group(data),
 
-	select : data => {
+	select : data => {// by Tag
 
 		let _decks = [];
 

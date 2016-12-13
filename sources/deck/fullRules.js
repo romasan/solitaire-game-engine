@@ -144,10 +144,6 @@ let fullRules = {
 
 		let queryDecks = [];
 		
-		// if(!data.excludeCurrent) {
-		// 	_decks.push(deck);
-		// }
-		
 		// Groups
 		if(data.groups) {
 			for(let groupName of data.groups) {
