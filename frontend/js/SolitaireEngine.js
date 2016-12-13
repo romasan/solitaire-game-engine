@@ -111,7 +111,7 @@ var SolitaireEngine =
 	exports.options = _defaults2.default;
 	exports.winCheck = _winCheck2.default.hwinCheck;
 	exports.generator = _deckGenerator2.default;
-	exports.version = (9091493336).toString().split(9).slice(1).map(function (e) {
+	exports.version = (9091493337).toString().split(9).slice(1).map(function (e) {
 		return parseInt(e, 8);
 	}).join('.');
 	
@@ -568,7 +568,8 @@ var SolitaireEngine =
 		// ---------------------------------------------------------------------------------------
 	
 		stepType: 'default',
-		forceClone: true
+		forceClone: true,
+		movesAnimation: "simple" // simple|byStep|not
 	
 	};
 
@@ -2046,6 +2047,9 @@ var SolitaireEngine =
 	
 				// масштаб отображения
 				_share2.default.set('zoom', data.zoom && typeof data.zoom == 'number' ? data.zoom : _defaults2.default.zoom);
+	
+				// movesAnimation
+				_share2.default.set('movesAnimation', data.movesAnimation && typeof data.movesAnimation == 'string' ? data.movesAnimation : _defaults2.default.movesAnimation);
 	
 				// Настройки игры
 				if (data.preferences) {
@@ -3829,10 +3833,6 @@ var SolitaireEngine =
 			var _correct = true;
 	
 			var queryDecks = [];
-	
-			// if(!data.excludeCurrent) {
-			// 	_decks.push(deck);
-			// }
 	
 			// Groups
 			if (data.groups) {
@@ -6131,6 +6131,9 @@ var SolitaireEngine =
 		// MOVE
 		if (typeof data.move != "undefined" && typeof data.move.from != "undefined" && typeof data.move.to != "undefined" && typeof data.move.deck != "undefined") {
 	
+			// TODO
+			var movesAnimation = _share2.default.get('movesAnimation');
+	
 			if (data.move.stepType) {
 				if (typeof data.move.stepType == "string") {
 					_share2.default.set('stepType', data.move.stepType);
@@ -8428,6 +8431,7 @@ var SolitaireEngine =
 		},
 	
 		select: function select(data) {
+			// by Tag
 	
 			var _decks = [];
 	

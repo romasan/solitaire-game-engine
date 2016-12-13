@@ -83,6 +83,14 @@ class Field {
 				: defaults.zoom
 		);
 
+		// movesAnimation
+		share.set(
+			'movesAnimation', 
+			data.movesAnimation && typeof data.movesAnimation == 'string'
+				? data.movesAnimation 
+				: defaults.movesAnimation
+		);
+
 		// Настройки игры
 		if(data.preferences) {
 			

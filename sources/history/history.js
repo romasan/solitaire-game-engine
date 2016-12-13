@@ -72,6 +72,9 @@ let _undo = data => {
 		typeof data.move.deck != "undefined"
 	) {
 
+		// TODO
+		let movesAnimation = share.get('movesAnimation');
+		
 		if(data.move.stepType) {
 			if(typeof data.move.stepType == "string") {
 				share.set('stepType', data.move.stepType);
