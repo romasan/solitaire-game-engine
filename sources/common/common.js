@@ -3,7 +3,7 @@
 import share              from 'share';
 import event              from 'event';
 import defaults           from 'defaults';
-import state              from 'state';
+import stateManager       from 'stateManager';
 
 import Tips               from 'tips';
 import Field              from 'field';
@@ -13,13 +13,35 @@ import drawPreferences    from 'drawPreferences';
 import preferencesEvents  from 'preferencesEvents';
 import defaultPreferences from 'defaultPreferences';
 
-// event.listen('shareChange:stepType', (e) => {
-// 	console.log('%cshareChange:stepType', 'background-color: green;color: white;', e);
-// });
+/*
 
-// event.listen('shareChange:curLockState', (e) => {
-// 	console.log('%cshareChange:curLockState', 'background-color: blue;color: white;', e);
-// });
+Listeners:
+
+ * gameInit
+ * gameInited
+ * moveEnd
+ * actionBreak
+ * startSession
+ * stopSession
+
+ * newGame
+ * historyReapeater
+
+Methods:
+
+ * isCurLock
+ * curLock
+ * curUnLock
+ * getElements
+ * getElementById
+ * getElementsByName
+ * validateCardName
+ * genId
+ * animationOn
+ * animationDefault
+ * animationOff
+
+ */
 
 event.listen('gameInit', data => {
 
@@ -40,11 +62,6 @@ event.listen('gameInited', e => {
 	defaultPreferences();
 });
 
-// share.set('prevStepType', defaults.stepType);
-// event.listen('shareChange:stepType', (e) => {
-// 	share.set('prevStepType', e.from);
-// });
-
 event.listen('moveEnd', e => {
 	Tips.checkTips();
 });
@@ -55,39 +72,13 @@ event.listen('actionBreak', e => {
 
 event.listen('startSession', e => {
 	share.set('sessionStarted', true);
-	state.backup();
+	stateManager.backup();
 });
 
 event.listen('stopSession', e => {
 	share.set('sessionStarted', false);
-	// state.backup();
+	// stateManager.backup();
 });
-
-// --
-
-let sqr = i => i * i;
-
-// --
-
-// Lock/Unlock
-
-// let _lock = false;
-
-// let isLock = function() {
-// 	return _lock;
-// };
-
-// let lock = function() {
-// 	_lock = true;
-// }
-// event.listen('lock', lock);
-
-// let unlock = function() {
-// 	lock = false;
-// }
-// event.listen('unlock', unlock);
-
-// --
 
 let _inputStack = [];
 
@@ -110,14 +101,6 @@ let curUnLock = e => {
 	}
 	_inputStack = [];
 }
-
-// let input = (callback) => {
-// 	if(!isCurLock()) {
-// 		callback();
-// 	} else {
-// 		_inputStack.push(callback);
-// 	}
-// }
 
 // getters
 
@@ -205,7 +188,7 @@ let genId = () => {
 	return _id += 1;
 };
 
-// --
+// animations
 
 share.set('animation', defaults.animation);
 
@@ -245,25 +228,9 @@ event.listen('historyReapeater', data => {
 	}
 });
 
-// --
-
-// let deckInGroups = (deck, groups) => {
-
-// 	for(let groupName in groups) {
-// 		Group.getByName(groupName).hasDeck(deck.name);
-// 	}
-// }
-
-// event.listen('makeStep', function(e) {
-	// share.set('animation', defaults.animation);
-// });
-
 share.set('stepType', defaults.stepType);
 
 export default {
-//	isLock           ,
-//	lock             ,
-//	unlock           ,
 	isCurLock        ,
 	curLock          ,
 	curUnLock        ,
@@ -274,6 +241,5 @@ export default {
 	genId            ,
 	animationOn      ,
 	animationOff     ,
-	animationDefault ,
-	sqr              
+	animationDefault
 };

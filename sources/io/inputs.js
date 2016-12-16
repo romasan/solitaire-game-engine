@@ -191,8 +191,6 @@ class inputs {
 		// 	? Math.sqrt(common.sqr(x - _startCursor.x) + common.sqr(y - _startCursor.y)) 
 		// 	: 0;
 
-		// console.log(x - _startCursor.x, y - _startCursor.y);
-
 		let _deck = common.getElementById(_dragDeck[0].card.parent);
 
 		// let _position = _deck.padding(_dragDeck[_dragDeck.length - 1].index);
@@ -248,8 +246,7 @@ class inputs {
 
 		let _position = _deck.padding(_dragDeck[0].index);
 		
-		let _distance = Math.sqrt(common.sqr(x - _startCursor.x) + common.sqr(y - _startCursor.y));
-		// console.log('>>> distance:', _distance, x - _startCursor.x, y - _startCursor.y);
+		let _distance = Math.sqrt((i => i * i)(x - _startCursor.x) + (i => i * i)(y - _startCursor.y));
 
 		let cursorMove = {
 			distance     : _distance,
@@ -274,22 +271,16 @@ class inputs {
 		event.dispatch('hideCard', target);
 		let _dop = document.elementFromPoint(x, y);
 		event.dispatch('showCard', target);
-		// if(_dop) {
 
-		// Move(_dragDeck, _dop, cursorMove);
 		event.dispatch('Move', {
 			moveDeck   : _dragDeck,
 			to         : _dop.id,
 			cursorMove
 		});
-		// }
-
-		// event.dispatch('redrawDeckIndexes', _deck);
 
 		share.set('dragDeck',    null);
 		share.set('startCursor', null);
 	}
 }
 
-// let _inputs = new inputs();
 new inputs();

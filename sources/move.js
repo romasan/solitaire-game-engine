@@ -15,9 +15,10 @@ let Move = (moveDeck, to, cursorMove) => {
 
 	common.animationDefault();
 
-	let _deck_departure   = moveDeck[0].card.parent && common.getElementById(moveDeck[0].card.parent),// стопка из которой взяли
-	    _deck_destination = null,                                                                     // в которую положили
-	    _success          = true;
+	let _deck_departure   = moveDeck[0].card.parent                        &&
+	                        common.getElementById(moveDeck[0].card.parent),   // стопка из которой взяли
+	    _deck_destination = null,                                             // в которую положили
+	    _success          = true;                                             // флаг возможности хода
 
 	let _stepType = share.get('stepType');
 
@@ -49,7 +50,7 @@ let Move = (moveDeck, to, cursorMove) => {
 			departure : _deck_departure      ,
 			stepType  : share.get('stepType')
 		});
-		
+
 		return;
 	}
 

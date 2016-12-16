@@ -43,7 +43,7 @@ Rules:
  */
 
 let readyPutRules = {
-			
+
 	// Relations filters
 
 	linePrev : deck => {
@@ -51,9 +51,9 @@ let readyPutRules = {
 		let prev = getBeside(deck.to).prev;
 
 		if(prev) {
-			
+
 			deck.link = prev.to;
-			
+
 			return true;
 		}
 
@@ -61,11 +61,11 @@ let readyPutRules = {
 	},
 
 	lineNext : deck => {
-		
+
 		let next = getBeside(deck.to).next;
 
 		if(next) {
-			
+
 			deck.link = next.to;
 
 			return true;
@@ -81,14 +81,14 @@ let readyPutRules = {
 		if(deck.cards.length == 0) {
 			return false;
 		}
-		
+
 		let down = common.validateCardName(deck.cards[deck.cards.length - 1].name);
 		let up   = common.validateCardName(deck.putDeck[0].card.name);
-		
+
 		if(!down || !up) {
 			return false;
 		}
-		
+
 		return {
 			up  ,
 			down
@@ -98,7 +98,7 @@ let readyPutRules = {
 	_down_up_rank_num : deck => {
 
 		let du = readyPutRules._down_up_cards(deck);
-		
+
 		return du ? {
 			down : defaults.card.ranks.indexOf(du.down.rank),
 			up   : defaults.card.ranks.indexOf(du.up.rank)
@@ -106,24 +106,24 @@ let readyPutRules = {
 	},
 
 	_isFirst: (deck, _name) => {
-		
+
 		if(deck.cards.length == 0) {
-		
+
 			let _validate = null;
-			
+
 			return (
 				(_validate = common.validateCardName(deck.putDeck[0].card.name)) &&
 				_validate.rank == _name
 			);
 		}
-	 	
-	 	return true;
+
+		return true;
 	},
 
 	// Rules
 
 	striped : deck => {
-		
+
 		if(deck.cards.length == 0) {
 			return true;
 		}
@@ -131,11 +131,11 @@ let readyPutRules = {
 		let color_A   = common.validateCardName(deck.cards[deck.cards.length - 1].name).color,
 			color_B   = null,
 			_validate = null;
-		
+
 		if(_validate = common.validateCardName(deck.putDeck[0].card.name)) {
 			color_B = _validate.color;
 		}
-		
+
 		return color_A != color_B;
 	},
 
@@ -152,20 +152,20 @@ let readyPutRules = {
 		if(deck.cards.length == 0) {
 			return true;
 		}
-		
+
 		let du = readyPutRules._down_up_cards(deck);
-		
+
 		return du && du.up.rank == du.down.rank;
 	},
-	
+
 	oneSuit      : deck => {
-		
+
 		if(deck.cards.length == 0) {
 			return true;
 		}
-		
+
 		let du = readyPutRules._down_up_cards(deck);
-		
+
 		return du && du.up.suit == du.down.suit;
 	},
 
@@ -174,63 +174,63 @@ let readyPutRules = {
 	not : deck => false,
 
 	ascendDeck : deck => {//ascend deck by step
-		
+
 		if(deck.putDeck.length == 1) {
 			return true;
 		}
-		
+
 		let ruleCorrect = true;
-		
+
 		for(let i in deck.putDeck) {
 
 			if(i > 0) {
 
 				let down = defaults.card.ranks.indexOf(
-						common.validateCardName(deck.putDeck[i - 1].card.name).rank
-					),
-					up   = defaults.card.ranks.indexOf(
-						common.validateCardName(deck.putDeck[i].card.name).rank
-					);
-				
+					common.validateCardName(deck.putDeck[i - 1].card.name).rank
+				),
+				    up   = defaults.card.ranks.indexOf(
+					common.validateCardName(deck.putDeck[i].card.name).rank
+				);
+
 				ruleCorrect = ruleCorrect && 1 + down == up;
 			};
 		};
-		
+
 		return ruleCorrect;
 	},
 
 	descendDeck : deck => {//ascend deck by step
-		
+
 		if(deck.putDeck.length == 1) {
 			return true;
 		}
-		
+
 		let ruleCorrect = true;
-		
+
 		for(let i in deck.putDeck) {
-			
+
 			if(i > 0) {
 
 				let down = defaults.card.ranks.indexOf(
-						common.validateCardName(deck.putDeck[i - 1].card.name).rank
-					),
-					up   = defaults.card.ranks.indexOf(
-						common.validateCardName(deck.putDeck[i].card.name).rank
-					);
-				
+					common.validateCardName(deck.putDeck[i - 1].card.name).rank
+				),
+				    up   = defaults.card.ranks.indexOf(
+					common.validateCardName(deck.putDeck[i].card.name).rank
+				);
+
 				ruleCorrect = ruleCorrect && down == 1 + up;
 			};
 		};
 
 		return ruleCorrect;
 	},
-	
+
 	oneRankDeck : deck => {
-		
+
 		if(deck.putDeck.length == 1) {
 			return true;
 		}
-		
+
 		let ruleCorrect = true;
 
 		for(let i in deck.putDeck) {
@@ -238,8 +238,8 @@ let readyPutRules = {
 			if(i > 0) {
 
 				let down = common.validateCardName(deck.putDeck[i - 1].card.name).suit,
-					up   = common.validateCardName(deck.putDeck[i].card.name).suit
-				
+				    up   = common.validateCardName(deck.putDeck[i].card.name).suit
+
 				ruleCorrect = ruleCorrect && down == up;
 			}
 		};
@@ -248,7 +248,7 @@ let readyPutRules = {
 	},
 
 	ascend : deck => {
-		
+
 		if(deck.cards.length == 0) {
 			return true;
 		}
@@ -259,7 +259,7 @@ let readyPutRules = {
 	},
 
 	descent : deck => {
-		
+
 		if(deck.cards.length == 0) {
 			return true;
 		}
@@ -270,7 +270,7 @@ let readyPutRules = {
 	},
 
 	descentOne : deck => {// one step
-		
+
 		if(deck.cards.length == 0) {
 			return true;
 		}
@@ -292,7 +292,7 @@ let readyPutRules = {
 	},
 
 	ascdescOne : deck => {
-		
+
 		if(deck.cards.length == 0) {
 			return true;
 		}
@@ -325,7 +325,7 @@ let readyPutRules = {
 
 		let _around = deck.from.deck.getRelationsByName('around', {from: null});
 		let _parent = Deck.getDeckById(deck.cards[0].parent);
-		
+
 		for(let i in _around) {
 
 			if(_around[i].to == _parent.name) {
@@ -333,9 +333,8 @@ let readyPutRules = {
 			}
 		}
 
-		return false;		
+		return false;
 	}
-
 };
 
 export default readyPutRules;

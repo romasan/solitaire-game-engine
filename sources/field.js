@@ -31,7 +31,7 @@ class Field {
 	constructor() {
 
 		share.set('elements', {});
-		
+
 		this.tipsParams  = {};
 		this.inputParams = {};
 	}
@@ -50,77 +50,50 @@ class Field {
 		// устанвливаем тип хода по умолчанию
 		share.set('stepType', defaults.stepType);
 
-		// Альтернативные подсказки
-		share.set(
-			'showTipsDestination', 
-			typeof data.showTipsDestination == 'boolean' 
-				? data.showTipsDestination 
-				: defaults.showTipsDestination
-		);
-		
-		share.set(
-			'showTipPriority', 
-			typeof data.showTipPriority == 'boolean' 
-				? data.showTipPriority 
-				: defaults.showTipPriority
-		);
+		let _values = {
+			"showTipsDestination" : "boolean", // Альтернативные подсказки
+			"showTipPriority"     : "boolean",
+			"moveDistance"        : "number" ,
+			"zoom"                : "number" , // масштаб отображения
+			"movesAnimation"      : "string" , // movesAnimation
+			"animationTime"       : "number"   // время анимации
+		};
 
-		share.set(
-			'moveDistance', 
-			data.moveDistance && typeof data.moveDistance == 'number' 
-				? data.moveDistance 
-				: defaults.moveDistance
-		);
+		for(let valueName in _values) {
+			share.set(
+				valueName, 
+				typeof data[valueName] == _values[valueName] 
+					? data[valueName] 
+					: defaults[valueName]
+			);	
+		}
 
 		// условие выигрыша
 		share.set('winCheck', data.winCheck);
 
-		// масштаб отображения
-		share.set(
-			'zoom', 
-			data.zoom && typeof data.zoom == 'number'
-				? data.zoom 
-				: defaults.zoom
-		);
-
-		// movesAnimation
-		share.set(
-			'movesAnimation', 
-			data.movesAnimation && typeof data.movesAnimation == 'string'
-				? data.movesAnimation 
-				: defaults.movesAnimation
-		);
-
 		// Настройки игры
 		if(data.preferences) {
-			
+
 			let _pref = storage.get('pref'),
 			    _preferences = {}          ,
 			    _prefData    = {}          ;
-			
+
 			for(let prefName in data.preferences) {
 				if(typeof prefName == "string") {
-					
+
 					_preferences[prefName] = data.preferences[prefName];
-					
+
 					_prefData[prefName] = _pref && typeof _pref[prefName] != "undefined"
 						? _pref[prefName]
 						: data.preferences[prefName].value;
 				}
 			}
-			
+
 			share.set('gamePreferences',     _preferences);
 			share.set('gamePreferencesData', _prefData);
 		} else {
 			share.set('gamePreferences', {});
 		}
-
-		// время анимации
-		share.set({
-			animationTime : typeof data.animationTime == "number"
-				? data.animationTime
-				: defaults.animationTime
-		});
 
 		// параметры отображения подсказок
 		for(let tipParamName in defaults.tipsParams) {
@@ -166,7 +139,7 @@ class Field {
 		}
 
 		if(data.fill) {
-			
+
 			let _decks = Deck.getDecks();
 			let _fill  = null;
 			try {
@@ -202,7 +175,7 @@ class Field {
 			for(let _groupName in data.groups) {
 
 				let _group = Group.getByName(_groupName);
-				
+
 				if(_group) {
 					_group.Redraw(data.groups[_groupName]);
 				}
@@ -210,9 +183,9 @@ class Field {
 
 			// перерисовываем отдельно стоящие стопки
 			for(let i in data.decks) {
-				
+
 				let _deck = Deck.getDeck(data.decks[i].name);
-				
+
 				if(_deck) {
 					_deck.Redraw(data.decks[i]);
 				}
@@ -220,7 +193,7 @@ class Field {
 
 		// перерисовка без конфигурации
 		} else {
-			
+
 			// получаем все существующие стопки
 			let _decks = Deck.getDecks();
 
@@ -234,7 +207,7 @@ class Field {
 	clear() {
 
 		let _elements = share.get('elements');
-		
+
 		for(let i in _elements) {
 			if(_elements[i].type == 'deck') {
 				_elements[i].clear();
@@ -243,7 +216,7 @@ class Field {
 				_elements[i] = null;
 			}
 		}
-		
+
 		share.set('elements', {});
 	}
 }

@@ -10,7 +10,7 @@ import field         from 'field'        ;
 import elRender      from 'elRender'     ;
 import mapCommon     from 'mapCommon'    ;
 import history       from 'history'      ;
-import state         from 'state'        ;
+import stateManager  from 'stateManager' ;
 
 import renderTest    from 'renderTest'   ;
 
@@ -249,7 +249,7 @@ export default {
 	validateCardName : common.validateCardName,
 	elRender                                  ,
 	defaults                                  ,
-	state                                     ,
+	stateManager                              ,
 	history                                   ,
 	field                                     ,
 	groupGenerators : {

@@ -8,9 +8,7 @@ import common      from 'common';
 import getDecks    from 'getDecks';
 import getDeckById from 'getDeckById';
 
-// let stateModel = {};
-
-let cardModel = [
+let cardAttributes = [
 	'parent' ,
 	'visible',
 	'flip'
@@ -23,7 +21,6 @@ class stateManager {
 		this._state = null;
 
 		this._sourceList = [
-			// 'elements',
 			'stepType'
 		];
 
@@ -53,8 +50,6 @@ class stateManager {
 					: Object.assign({}, _element);
 		}
 
-		// --
-
 		this._state.model = {};
 
 		let _decks = getDecks();
@@ -70,8 +65,8 @@ class stateManager {
 					'id'      : _decks[deckId].cards[cardId].id
 				};
 
-				for(let i in cardModel) {
-					let _name = cardModel[i];
+				for(let i in cardAttributes) {
+					let _name = cardAttributes[i];
 					_card[_name] = _decks[deckId].cards[cardId][name];
 				}
 
@@ -104,8 +99,6 @@ class stateManager {
 			share.set(this._sourceList[i], this._state[this._sourceList[i]], true);
 		}
 
-		// --
-
 		for(let deckId in this._state.model) {
 			
 			let _deck = getDeckById(deckId);
@@ -120,21 +113,21 @@ class stateManager {
 
 				if(_card.name == this._state.model[deckId].cards[i].name) {
 
-					for(let i in cardModel) {
-						let _name = cardModel[i];
+					for(let i in cardAttributes) {
+						let _name = cardAttributes[i];
 						_card[_name] = this._state.model[deckId].cards[i][name];
 					}
 					
 					_cards.push(_card);
 				} else {
-					console.warn(
-						'Что-то не так с картой'               ,
-						this._state.model[deckId].cards[i].id  ,
-						this._state.model[deckId].cards[i].name,
-						' != '                                 ,
-						_card.id                               ,
-						_card.name
-					);
+					// console.warn(
+					// 	'Что-то не так с картой'               ,
+					// 	this._state.model[deckId].cards[i].id  ,
+					// 	this._state.model[deckId].cards[i].name,
+					// 	' != '                                 ,
+					// 	_card.id                               ,
+					// 	_card.name
+					// );
 				}
 			}
 

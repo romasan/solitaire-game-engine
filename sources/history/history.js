@@ -1,66 +1,66 @@
 'use strict';
 
-import event     from 'event';
-import share     from 'share';
-import common    from 'common';
-import state     from 'state';
+import event        from 'event';
+import share        from 'share';
+import common       from 'common';
+import stateManager from 'stateManager';
 
-import forceMove from 'forceMove';
-import Deck      from 'deck';
-import Tips      from 'tips';
-import field     from 'field';
+import forceMove    from 'forceMove';
+import Deck         from 'deck';
+import Tips         from 'tips';
+import field        from 'field';
 // import elRender  from 'elRender';
 
 // let _undoMethods = {};
 // let _redoMethods = {};
 
+let _movesCallback = e => {
+	if(_undoMoveStack.length) {
+		_undoMoveStack.shift()();
+	} else {
+		// 
+	}
+};
+
+let _movesMoveStack = [];
+
 // ---------------------------------------- UNDO ----------------------------------------
+let historyStack = [];
 
 let _undo = data => {
 
 	if(share.get('sessionStarted')) {
-
+		// _undoMoveStack = [];
 		event.dispatch('stopAnimations');
-		
-		state.restore();
+		// stateManager.restore();
 	}
-
-	// for(let i in _undoMethods) {
-	// 	_undoMethods[i](data);
-	// }
 	
-	// if(data.flip) {
-	// };
+	// FLIP
+	// if(data.flip) {};
 	
-	// if(data.unflip) {
-	// };
+	// UNFLIP
+	// if(data.unflip) {};
 	
-	// if(data.full) {
-	// };
+	// FULL
+	// if(data.full) {};
 
 	// LOCK
 	if(
 		typeof data.lock != "undefined"
 	) {
-		// Deck.Deck(data.lock).unlock();
-		// TODO сделать также в оставшихся местах
 		for(let i in data.lock) {
-			let _elements = common.getElementsByName(data.lock[i]);
-			for(let elNum in _elements) {
-				_elements[elNum].unlock();
-			}
+			let _element = common.getElementsByName(data.lock[i])[0];
+			_element.unlock();
 		}
 	}
 
+	// UNLOCK
 	if(
 		typeof data.unlock != "undefined"
 	) {
-		// Deck.Deck(data.unlock).lock();
-		for(let i in data.lock) {
-			let _elements = common.getElementsByName(data.lock[i]);
-			for(let elNum in _elements) {
-				_elements[elNum].lock();
-			}
+		for(let i in data.unlock) {
+			let _element = common.getElementsByName(data.unlock[i])[0];
+			_element.lock();
 		}
 	}
 
@@ -76,27 +76,37 @@ let _undo = data => {
 		let movesAnimation = share.get('movesAnimation');
 		
 		if(data.move.stepType) {
+
 			if(typeof data.move.stepType == "string") {
 				share.set('stepType', data.move.stepType);
 			}
+
 			if(typeof data.move.stepType.undo == "string") {
 				share.set('stepType', data.move.stepType.undo);
 			}
 		}
 
-		forceMove({
-			from : data.move.to,   // from ->
-			to   : data.move.from, //      <- to
-			deck : data.move.deck,
-			flip : data.move.flip
-		});
-	}
+		_movesMoveStack.push(e => {
 
+			let forceMoveData = {
+				from     : data.move.to,   // from ->
+				to       : data.move.from, //      <- to
+				deck     : data.move.deck,
+				flip     : data.move.flip,
+			};
+			forceMoveData.callback = _movesCallback
+			forceMove(forceMoveData);
+
+		});
+
+		if(_movesMoveStack.length == 1) {
+			_movesMoveStack.shift()();
+		}
+	}
 };
 
 event.listen('undo', undoData => {
 
-	// elRender.animationsEnd();
 	event.dispatch('stopAnimations');
 	
 	if(!undoData) {
@@ -112,11 +122,8 @@ event.listen('undo', undoData => {
 			let data = undoData[_i];
 			_undo(data);
 		}
-		
 	} else {
-		
 		_undo(undoData);
-		
 	}
 
 	Tips.checkTips();
@@ -127,39 +134,38 @@ event.listen('undo', undoData => {
 
 let _redo = data => {
 
-	// for(let i in _redoMethods) {
-	// 	_redoMethods[i](data);
-	// }
+	if(share.get('sessionStarted')) {
+		// _undoMoveStack = [];
+		event.dispatch('stopAnimations');
+		// stateManager.restore();
+	}
 
-	// if(data.flip) {
-	// };
+	// FLIP
+	// if(data.flip) {};
+
+	// UNFLIP
+	// if(data.unflip) {};
 	
-	// if(data.full) {
-	// 	// TODO
-	// };
+	// FULL
+	// if(data.full) {};
 
 	// LOCK
 	if(
 		typeof data.lock != "undefined"
 	) {
-		// Deck.Deck(data.lock).lock();
 		for(let i in data.lock) {
-			let _elements = common.getElementsByName(data.lock[i]);
-			for(let elNum in _elements) {
-				_elements[elNum].lock();
-			}
+			let _element = common.getElementsByName(data.lock[i])[0];
+			_element.lock();
 		}
 	}
 
+	// UNLOCK
 	if(
 		typeof data.unlock != "undefined"
 	) {
-		// Deck.Deck(data.unlock).unlock();
 		for(let i in data.unlock) {
-			let _elements = common.getElementsByName(data.lock[i]);
-			for(let elNum in _elements) {
-				_elements[elNum].unlock();
-			}
+			let _element = common.getElementsByName(data.unlock[i])[0];
+			_element.unlock();
 		}
 	}
 
@@ -193,9 +199,7 @@ let _redo = data => {
 
 event.listen('redo', redoData => {
 
-	// elRender.animationsEnd();
 	event.dispatch('stopAnimations');
-	
 
 	if(!redoData) {
 		return;
@@ -203,7 +207,9 @@ event.listen('redo', redoData => {
 
 	// Обратная совместимость
 	if(redoData instanceof Array) {
+		
 		redoData.reverse();
+		
 		for(let _i in redoData) {
 			let data = redoData[_i];
 			_redo(data);
@@ -275,9 +281,8 @@ event.listen('addStep', data => {
 	_history.add(data)
 });
 
+// save steps to client history
 event.listen('saveSteps', e => {
-
-	// save steps to client history
 	event.dispatch('makeStep', _history.get());
 });
 

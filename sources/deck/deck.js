@@ -39,8 +39,8 @@ class Deck {
 		this.id = id;
 
 		let _parent_el   = Group.getByName(data.parent)                  ,
-			_parent_name = _parent_el ? _parent_el.name : 'no_parent_'   ,
-			_new_id      = _parent_el ? _parent_el.getDecks().length : id;
+		    _parent_name = _parent_el ? _parent_el.name : 'no_parent_'   ,
+		    _new_id      = _parent_el ? _parent_el.getDecks().length : id;
 
 		this.name = typeof data.name == 'string' 
 			? data.name
@@ -341,14 +341,10 @@ class Deck {
 		return this.cards;
 
 		// let _cards = [];
-		
 		// for(let i in this.cards) {
-			
 		// 	let _card = common.getElementById(this.cards[i]);
-			
 		// 	_cards.push(_card);
 		// }
-
 		// return _cards;
 	}
 

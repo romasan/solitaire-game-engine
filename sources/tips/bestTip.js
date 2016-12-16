@@ -83,7 +83,7 @@ export default (moveDeck, cursorMove) => {
 			}
 
 			// расстояние между стопкой и перетаскиваемой картой/стопкой
-			_autoTips[i].distance = Math.sqrt(common.sqr(center_from.x - center_to.x) + common.sqr(center_from.y - center_to.y));
+			_autoTips[i].distance = Math.sqrt((i => i * i)(center_from.x - center_to.x) + (i => i * i)(center_from.y - center_to.y));
 			
 			// смотрим находится ли стопка назначения в направлении движения
 			_autoTips[i].inDirection = false;
