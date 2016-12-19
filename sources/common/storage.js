@@ -1,5 +1,11 @@
 'use strict';
 
+/*
+ * set
+ * get
+ * clear
+ */
+
 class storage {
 
 	// TODO настройки сохраняются для всех игр,

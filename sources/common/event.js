@@ -1,5 +1,15 @@
 'use strict';
 
+/*
+ * listen
+ * dispatch
+ * clear
+ * setTag
+ * clearByTag
+ * get
+ * has
+ */
+
 class Event {
 
 	constructor() {

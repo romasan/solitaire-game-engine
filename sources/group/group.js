@@ -30,6 +30,20 @@ const params = {
 	}
 };
 
+/*
+ * addDeck
+ * Fill
+ * getDeckById
+ * getDeckIndexById
+ * getDeckIdByIndex
+ * decksCount
+ * getDeckByIndex
+ * getDecksByName
+ * getDecks
+ * Redraw
+ * hasDeck
+ */
+
 class groupClass {
 	
 	constructor(data, id) {

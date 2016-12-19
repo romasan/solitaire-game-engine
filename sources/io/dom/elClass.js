@@ -4,6 +4,27 @@ import event    from 'event';
 import share    from 'share';
 import defaults from 'defaults';
 
+/*
+ * attr
+ * hasClass
+ * toggleClass
+ * addClass
+ * removeClass
+ * css
+ * hide
+ * show
+ * append
+ * html
+ * animate
+ * remove
+ * parent
+ * after
+ * before
+ * listen
+ * trigger
+ * click
+ */
+
 export default class elClass {
 
 	constructor(data) {
@@ -15,7 +36,7 @@ export default class elClass {
 			this.el = null;
 		}
 	}
-// --
+
 	attr(attributes) {
 		try {
 			for(let attrName in attributes) {
@@ -25,7 +46,7 @@ export default class elClass {
 			return this;
 		} catch(e) {}
 	}
-// --	
+
 	hasClass(className) {
 		try {
 
@@ -33,7 +54,7 @@ export default class elClass {
 			return _classes.includes(className);
 		} catch(e) {}
 	}
-// --	
+
 	toggleClass(className) {
 		try {
 
@@ -44,7 +65,7 @@ export default class elClass {
 			}
 		} catch(e) {}
 	}
-// --	
+
 	addClass(className) {
 
 		try {
@@ -58,7 +79,7 @@ export default class elClass {
 			return this;
 		} catch(e) {}
 	}
-// --	
+
 	removeClass(className) {
 
 		if(!this.el || !this.el.className) {
@@ -86,7 +107,7 @@ export default class elClass {
 			return this;
 		} catch(e) {}
 	}
-// --	
+
 	css(a) {
 
 		if(!this.el) {
@@ -102,7 +123,7 @@ export default class elClass {
 			return this;
 		} catch(e) {}
 	}
-// --	
+
 	hide() {
 		try {
 			return this.css({
@@ -110,7 +131,7 @@ export default class elClass {
 			});
 		} catch(e) {}
 	}
-// --	
+
 	show() {
 		try {
 			return this.css({
@@ -118,7 +139,7 @@ export default class elClass {
 			});
 		} catch(e) {}
 	}
-// --	
+
 	append(el) {
 		try {
 
@@ -132,7 +153,7 @@ export default class elClass {
 
 		} catch(e) {}
 	}
-// --	
+
 	html(el) {
 		try {
 	
@@ -150,7 +171,7 @@ export default class elClass {
 
 		} catch(e) {}
 	}
-// --
+
 	animate(params, animationTime, callback, animationName) {
 
 		try {
@@ -231,7 +252,7 @@ export default class elClass {
 			}, 0);
 		} catch(e) {}
 	}
-// --	
+
 	remove() {
 		try {
 			// this.el.remove();

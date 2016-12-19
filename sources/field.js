@@ -51,12 +51,13 @@ class Field {
 		share.set('stepType', defaults.stepType);
 
 		let _values = {
-			"showTipsDestination" : "boolean", // Альтернативные подсказки
-			"showTipPriority"     : "boolean",
-			"moveDistance"        : "number" ,
-			"zoom"                : "number" , // масштаб отображения
-			"movesAnimation"      : "string" , // movesAnimation
-			"animationTime"       : "number"   // время анимации
+			"showTipsDestination"  : "boolean", // Альтернативные подсказки
+			"showTipPriority"      : "boolean",
+			"moveDistance"         : "number" ,
+			"zoom"                 : "number" , // масштаб отображения
+			// "movesAnimation"       : "string" ,
+			"animationTime"        : "number" , // время анимации
+			"showHistoryAnimation" : "boolean"
 		};
 
 		for(let valueName in _values) {

@@ -14,6 +14,12 @@ let cardAttributes = [
 	'flip'
 ];
 
+/*
+ * backup
+ * restore
+ * get
+ */
+
 class stateManager {
 	
 	constructor() {

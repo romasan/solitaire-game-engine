@@ -3,6 +3,13 @@
 import event    from 'event';
 import defaults from 'defaults';
 
+/*
+ * get
+ * set
+ * getAll
+ * delete
+ */
+
 class shareClass {
 
 	constructor() {

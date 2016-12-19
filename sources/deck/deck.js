@@ -22,6 +22,31 @@ import getDeckById    from 'getDeckById';
 import deckCardNames  from 'deckCardNames';
 import getDeck        from 'getDeck';
 
+/*
+ * Redraw
+ * getTopCard
+ * lock
+ * unlock
+ * flipCheck
+ * checkFull
+ * Fill
+ * clear
+ * Push
+ * Pop
+ * Take
+ * Put
+ * genCardByName
+ * hide
+ * show
+ * getCards
+ * hideCards
+ * showCards
+ * getCardsNames
+ * cardsCount
+ * getRelationsByName
+ * hasTag
+ */
+
 class Deck {
 
 	constructor(data, id) {

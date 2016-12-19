@@ -104,8 +104,9 @@ export default {
 
 // ---------------------------------------------------------------------------------------
 
-	stepType         : 'default',
-	forceClone       : true,
-	movesAnimation   : "simple"// simple|byStep|not
+	stepType             : 'default',
+	forceClone           : true,
+	// movesAnimation       : "simple" // simple|byStep|not
+	showHistoryAnimation : true
 
 };

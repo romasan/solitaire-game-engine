@@ -17,8 +17,8 @@ class inputs {
 		share.set('dragDeck',    null);
 		share.set('startCursor', null);
 
-		event.listen('undo', this._inputUndoRedo());
-		event.listen('redo', this._inputUndoRedo());
+		// event.listen('undo', this._inputUndoRedo());
+		// event.listen('redo', this._inputUndoRedo());
 
 		try {
 
@@ -91,7 +91,7 @@ class inputs {
 	
 	}
 
-	_inputUndoRedo() {
+	break() {
 
 		let _dragDeck = share.get('dragDeck');
 		
@@ -236,7 +236,7 @@ class inputs {
 		}
 
 		let _startCursor = share.get('startCursor'),// начальная позиция курсора
-		    _dragDeck    = share.get('dragDeck');   // 
+		    _dragDeck    = share.get('dragDeck');
 
 		if(!_dragDeck || !_startCursor) {
 			return;
@@ -283,4 +283,4 @@ class inputs {
 	}
 }
 
-new inputs();
+export default new inputs();

@@ -80,8 +80,6 @@ event.listen('stopSession', e => {
 	// stateManager.backup();
 });
 
-let _inputStack = [];
-
 let isCurLock = e => {
 	return share.get('curLockState');
 };
@@ -90,16 +88,8 @@ let curLock = e => {
 	share.set('curLockState', true);
 };
 
-let curUnLock = e => {
-	
+let curUnLock = e => {	
 	share.set('curLockState', false);
-	
-	for(let i in _inputStack) {
-		if(typeof _inputStack[i] == "function") {
-			_inputStack[i]();
-		}
-	}
-	_inputStack = [];
 }
 
 // getters

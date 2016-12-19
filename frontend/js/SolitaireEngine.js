@@ -111,7 +111,7 @@ var SolitaireEngine =
 	exports.options = _defaults2.default;
 	exports.winCheck = _winCheck2.default.hwinCheck;
 	exports.generator = _deckGenerator2.default;
-	exports.version = (9091493346).toString().split(9).slice(1).map(function (e) {
+	exports.version = (9091493351).toString().split(9).slice(1).map(function (e) {
 		return parseInt(e, 8);
 	}).join('.');
 	
@@ -191,6 +191,13 @@ var SolitaireEngine =
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	/*
+	 * get
+	 * set
+	 * getAll
+	 * delete
+	 */
 	
 	var shareClass = function () {
 		function shareClass() {
@@ -292,6 +299,16 @@ var SolitaireEngine =
 /***/ function(module, exports) {
 
 	'use strict';
+	
+	/*
+	 * listen
+	 * dispatch
+	 * clear
+	 * setTag
+	 * clearByTag
+	 * get
+	 * has
+	 */
 	
 	Object.defineProperty(exports, "__esModule", {
 		value: true
@@ -569,7 +586,8 @@ var SolitaireEngine =
 	
 		stepType: 'default',
 		forceClone: true,
-		movesAnimation: "simple" // simple|byStep|not
+		// movesAnimation       : "simple" // simple|byStep|not
+		showHistoryAnimation: true
 	
 	};
 
@@ -578,6 +596,10 @@ var SolitaireEngine =
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+		value: true
+	});
 	
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 	
@@ -620,8 +642,8 @@ var SolitaireEngine =
 			_share2.default.set('dragDeck', null);
 			_share2.default.set('startCursor', null);
 	
-			_event2.default.listen('undo', this._inputUndoRedo());
-			_event2.default.listen('redo', this._inputUndoRedo());
+			// event.listen('undo', this._inputUndoRedo());
+			// event.listen('redo', this._inputUndoRedo());
 	
 			try {
 	
@@ -694,8 +716,8 @@ var SolitaireEngine =
 		}
 	
 		_createClass(inputs, [{
-			key: '_inputUndoRedo',
-			value: function _inputUndoRedo() {
+			key: 'break',
+			value: function _break() {
 	
 				var _dragDeck = _share2.default.get('dragDeck');
 	
@@ -837,7 +859,7 @@ var SolitaireEngine =
 	
 				var _startCursor = _share2.default.get('startCursor'),
 				    // начальная позиция курсора
-				_dragDeck = _share2.default.get('dragDeck'); // 
+				_dragDeck = _share2.default.get('dragDeck');
 	
 				if (!_dragDeck || !_startCursor) {
 					return;
@@ -891,7 +913,7 @@ var SolitaireEngine =
 		return inputs;
 	}();
 	
-	new inputs();
+	exports.default = new inputs();
 
 /***/ },
 /* 5 */
@@ -1012,8 +1034,6 @@ var SolitaireEngine =
 		// stateManager.backup();
 	});
 	
-	var _inputStack = [];
-	
 	var isCurLock = function isCurLock(e) {
 		return _share2.default.get('curLockState');
 	};
@@ -1023,15 +1043,7 @@ var SolitaireEngine =
 	};
 	
 	var curUnLock = function curUnLock(e) {
-	
 		_share2.default.set('curLockState', false);
-	
-		for (var i in _inputStack) {
-			if (typeof _inputStack[i] == "function") {
-				_inputStack[i]();
-			}
-		}
-		_inputStack = [];
 	};
 	
 	// getters
@@ -1216,6 +1228,12 @@ var SolitaireEngine =
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 	
 	var cardAttributes = ['parent', 'visible', 'flip'];
+	
+	/*
+	 * backup
+	 * restore
+	 * get
+	 */
 	
 	var stateManager = function () {
 		function stateManager() {
@@ -2002,8 +2020,9 @@ var SolitaireEngine =
 					"showTipPriority": "boolean",
 					"moveDistance": "number",
 					"zoom": "number", // масштаб отображения
-					"movesAnimation": "string", // movesAnimation
-					"animationTime": "number" // время анимации
+					// "movesAnimation"       : "string" ,
+					"animationTime": "number", // время анимации
+					"showHistoryAnimation": "boolean"
 				};
 	
 				for (var valueName in _values) {
@@ -2230,6 +2249,20 @@ var SolitaireEngine =
 			"default": true
 		}
 	};
+	
+	/*
+	 * addDeck
+	 * Fill
+	 * getDeckById
+	 * getDeckIndexById
+	 * getDeckIdByIndex
+	 * decksCount
+	 * getDeckByIndex
+	 * getDecksByName
+	 * getDecks
+	 * Redraw
+	 * hasDeck
+	 */
 	
 	var groupClass = function () {
 		function groupClass(data, id) {
@@ -2687,6 +2720,31 @@ var SolitaireEngine =
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	/*
+	 * Redraw
+	 * getTopCard
+	 * lock
+	 * unlock
+	 * flipCheck
+	 * checkFull
+	 * Fill
+	 * clear
+	 * Push
+	 * Pop
+	 * Take
+	 * Put
+	 * genCardByName
+	 * hide
+	 * show
+	 * getCards
+	 * hideCards
+	 * showCards
+	 * getCardsNames
+	 * cardsCount
+	 * getRelationsByName
+	 * hasTag
+	 */
 	
 	var Deck = function () {
 		function Deck(data, id) {
@@ -4524,6 +4582,11 @@ var SolitaireEngine =
 	
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 	
+	/*
+	 * run
+	 * end
+	 * break
+	 */
 	var deckAction = function () {
 		function deckAction() {
 			_classCallCheck(this, deckAction);
@@ -6025,6 +6088,10 @@ var SolitaireEngine =
 	
 	var _field2 = _interopRequireDefault(_field);
 	
+	var _inputs = __webpack_require__(4);
+	
+	var _inputs2 = _interopRequireDefault(_inputs);
+	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -6035,16 +6102,29 @@ var SolitaireEngine =
 	// let _redoMethods = {};
 	
 	var _movesCallback = function _movesCallback(e) {
-		if (_undoMoveStack.length) {
-			_undoMoveStack.shift()();
+		if (_movesStack.length) {
+			_movesStack.shift()();
 		} else {
 			// 
 		}
 	};
 	
-	var _movesMoveStack = [];
+	var _movesStack = [];
+	
+	// --
+	
+	var _stepsCallback = function _stepsCallback(e) {
+		if (_stepsStack.length) {
+			_stepsStack.shift()();
+		} else {
+			// 
+		}
+	};
+	
+	var _stepsStack = [];
 	
 	// ---------------------------------------- UNDO ----------------------------------------
+	
 	var historyStack = [];
 	
 	var _undo = function _undo(data) {
@@ -6052,7 +6132,7 @@ var SolitaireEngine =
 		if (_share2.default.get('sessionStarted')) {
 			// _undoMoveStack = [];
 			_event2.default.dispatch('stopAnimations');
-			// stateManager.restore();
+			_stateManager2.default.restore();
 		}
 	
 		// FLIP
@@ -6097,25 +6177,36 @@ var SolitaireEngine =
 				}
 			}
 	
-			_movesMoveStack.push(function (e) {
+			// TODO
+			// _movesStack.push(e => {
 	
-				var forceMoveData = {
-					from: data.move.to, // from ->
-					to: data.move.from, //      <- to
-					deck: data.move.deck,
-					flip: data.move.flip
+			var forceMoveData = {
+				from: data.move.to, // from ->
+				to: data.move.from, //      <- to
+				deck: data.move.deck,
+				flip: data.move.flip
+			};
+	
+			if (!_share2.default.get('showHistoryAnimation')) {
+				_common2.default.animationOff();
+				forceMoveData.callback = function (e) {
+					_common2.default.animationOn();
 				};
-				forceMoveData.callback = _movesCallback;
-				(0, _forceMove2.default)(forceMoveData);
-			});
-	
-			if (_movesMoveStack.length == 1) {
-				_movesMoveStack.shift()();
 			}
+			// forceMoveData.callback = _movesCallback
+			(0, _forceMove2.default)(forceMoveData);
+	
+			// });
+	
+			// if(_movesStack.length == 1) {
+			// _movesStack.shift()();
+			// }
 		}
 	};
 	
 	_event2.default.listen('undo', function (undoData) {
+	
+		_inputs2.default.break();
 	
 		_event2.default.dispatch('stopAnimations');
 	
@@ -6146,7 +6237,7 @@ var SolitaireEngine =
 		if (_share2.default.get('sessionStarted')) {
 			// _undoMoveStack = [];
 			_event2.default.dispatch('stopAnimations');
-			// stateManager.restore();
+			_stateManager2.default.restore();
 		}
 	
 		// FLIP
@@ -6195,6 +6286,8 @@ var SolitaireEngine =
 	};
 	
 	_event2.default.listen('redo', function (redoData) {
+	
+		_inputs2.default.break();
 	
 		_event2.default.dispatch('stopAnimations');
 	
@@ -7597,6 +7690,12 @@ var SolitaireEngine =
 
 	'use strict';
 	
+	/*
+	 * set
+	 * get
+	 * clear
+	 */
+	
 	Object.defineProperty(exports, "__esModule", {
 		value: true
 	});
@@ -8859,6 +8958,27 @@ var SolitaireEngine =
 	
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 	
+	/*
+	 * attr
+	 * hasClass
+	 * toggleClass
+	 * addClass
+	 * removeClass
+	 * css
+	 * hide
+	 * show
+	 * append
+	 * html
+	 * animate
+	 * remove
+	 * parent
+	 * after
+	 * before
+	 * listen
+	 * trigger
+	 * click
+	 */
+	
 	var elClass = function () {
 		function elClass(data) {
 			_classCallCheck(this, elClass);
@@ -8870,8 +8990,6 @@ var SolitaireEngine =
 				this.el = null;
 			}
 		}
-		// --
-	
 	
 		_createClass(elClass, [{
 			key: 'attr',
@@ -8884,8 +9002,6 @@ var SolitaireEngine =
 					return this;
 				} catch (e) {}
 			}
-			// --	
-	
 		}, {
 			key: 'hasClass',
 			value: function hasClass(className) {
@@ -8895,8 +9011,6 @@ var SolitaireEngine =
 					return _classes.includes(className);
 				} catch (e) {}
 			}
-			// --	
-	
 		}, {
 			key: 'toggleClass',
 			value: function toggleClass(className) {
@@ -8909,8 +9023,6 @@ var SolitaireEngine =
 					}
 				} catch (e) {}
 			}
-			// --	
-	
 		}, {
 			key: 'addClass',
 			value: function addClass(className) {
@@ -8926,8 +9038,6 @@ var SolitaireEngine =
 					return this;
 				} catch (e) {}
 			}
-			// --	
-	
 		}, {
 			key: 'removeClass',
 			value: function removeClass(className) {
@@ -8957,8 +9067,6 @@ var SolitaireEngine =
 					return this;
 				} catch (e) {}
 			}
-			// --	
-	
 		}, {
 			key: 'css',
 			value: function css(a) {
@@ -8976,8 +9084,6 @@ var SolitaireEngine =
 					return this;
 				} catch (e) {}
 			}
-			// --	
-	
 		}, {
 			key: 'hide',
 			value: function hide() {
@@ -8987,8 +9093,6 @@ var SolitaireEngine =
 					});
 				} catch (e) {}
 			}
-			// --	
-	
 		}, {
 			key: 'show',
 			value: function show() {
@@ -8998,8 +9102,6 @@ var SolitaireEngine =
 					});
 				} catch (e) {}
 			}
-			// --	
-	
 		}, {
 			key: 'append',
 			value: function append(el) {
@@ -9014,8 +9116,6 @@ var SolitaireEngine =
 					return this;
 				} catch (e) {}
 			}
-			// --	
-	
 		}, {
 			key: 'html',
 			value: function html(el) {
@@ -9034,8 +9134,6 @@ var SolitaireEngine =
 					return this;
 				} catch (e) {}
 			}
-			// --
-	
 		}, {
 			key: 'animate',
 			value: function animate(params, animationTime, callback, animationName) {
@@ -9119,8 +9217,6 @@ var SolitaireEngine =
 					})();
 				} catch (e) {}
 			}
-			// --	
-	
 		}, {
 			key: 'remove',
 			value: function remove() {

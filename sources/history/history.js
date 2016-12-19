@@ -9,22 +9,36 @@ import forceMove    from 'forceMove';
 import Deck         from 'deck';
 import Tips         from 'tips';
 import field        from 'field';
+import inputs       from 'inputs';
 // import elRender  from 'elRender';
 
 // let _undoMethods = {};
 // let _redoMethods = {};
 
 let _movesCallback = e => {
-	if(_undoMoveStack.length) {
-		_undoMoveStack.shift()();
+	if(_movesStack.length) {
+		_movesStack.shift()();
 	} else {
 		// 
 	}
 };
 
-let _movesMoveStack = [];
+let _movesStack = [];
+
+// --
+
+let _stepsCallback = e => {
+	if(_stepsStack.length) {
+		_stepsStack.shift()();
+	} else {
+		// 
+	}
+};
+
+let _stepsStack = [];
 
 // ---------------------------------------- UNDO ----------------------------------------
+
 let historyStack = [];
 
 let _undo = data => {
@@ -32,7 +46,7 @@ let _undo = data => {
 	if(share.get('sessionStarted')) {
 		// _undoMoveStack = [];
 		event.dispatch('stopAnimations');
-		// stateManager.restore();
+		stateManager.restore();
 	}
 	
 	// FLIP
@@ -86,26 +100,36 @@ let _undo = data => {
 			}
 		}
 
-		_movesMoveStack.push(e => {
+		// TODO
+		// _movesStack.push(e => {
 
-			let forceMoveData = {
-				from     : data.move.to,   // from ->
-				to       : data.move.from, //      <- to
-				deck     : data.move.deck,
-				flip     : data.move.flip,
-			};
-			forceMoveData.callback = _movesCallback
-			forceMove(forceMoveData);
+		let forceMoveData = {
+			from     : data.move.to,   // from ->
+			to       : data.move.from, //      <- to
+			deck     : data.move.deck,
+			flip     : data.move.flip,
+		};
 
-		});
-
-		if(_movesMoveStack.length == 1) {
-			_movesMoveStack.shift()();
+		if(!share.get('showHistoryAnimation')) {
+			common.animationOff();
+			forceMoveData.callback = e => {
+				common.animationOn();
+			}
 		}
+		// forceMoveData.callback = _movesCallback
+		forceMove(forceMoveData);
+
+		// });
+
+		// if(_movesStack.length == 1) {
+			// _movesStack.shift()();
+		// }
 	}
 };
 
 event.listen('undo', undoData => {
+
+	inputs.break();
 
 	event.dispatch('stopAnimations');
 	
@@ -137,7 +161,7 @@ let _redo = data => {
 	if(share.get('sessionStarted')) {
 		// _undoMoveStack = [];
 		event.dispatch('stopAnimations');
-		// stateManager.restore();
+		stateManager.restore();
 	}
 
 	// FLIP
@@ -198,6 +222,8 @@ let _redo = data => {
 };
 
 event.listen('redo', redoData => {
+
+	inputs.break();
 
 	event.dispatch('stopAnimations');
 
