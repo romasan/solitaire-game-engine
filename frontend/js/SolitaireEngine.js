@@ -111,7 +111,7 @@ var SolitaireEngine =
 	exports.options = _defaults2.default;
 	exports.winCheck = _winCheck2.default.hwinCheck;
 	exports.generator = _deckGenerator2.default;
-	exports.version = (9091493370).toString().split(9).slice(1).map(function (e) {
+	exports.version = (9091493372).toString().split(9).slice(1).map(function (e) {
 		return parseInt(e, 8);
 	}).join('.');
 	
@@ -10454,13 +10454,13 @@ var SolitaireEngine =
 	// 	_log('gameInit (' + ((a.eventInfo.index | 0) + 1) + ', ' + a.eventInfo.count + ')', '#ff7777');
 	// });
 	
-	_event2.default.listen('startSession', function (e) {
-		_log('start', 'red', e);
-	});
+	// event.listen('startSession', (e) => {
+	// 	_log('start', 'red', e);
+	// });
 	
-	_event2.default.listen('stopSession', function () {
-		_log('stop', 'green');
-	});
+	// event.listen('stopSession', () => {
+	// 	_log('stop', 'green');
+	// });
 	
 	// document.onwheel = (e) => {
 	
