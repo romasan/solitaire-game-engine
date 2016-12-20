@@ -125,9 +125,7 @@ let Move = (moveDeck, to, cursorMove) => {
 					}
 				});
 
-				if(_deck_destination.save) {
-					event.dispatch('saveSteps');
-				}
+				let issetMoves = null;
 
 				event.dispatch('moveDragDeck', {
 
@@ -146,6 +144,16 @@ let Move = (moveDeck, to, cursorMove) => {
 							event.dispatch('stopSession');
 						}
 
+						Tips.checkTips();
+
+						let _tips = Tips.getTips();
+						if(
+							_deck_destination.save                             ||
+							_tips.length > 0 && _stepType != defaults.stepType
+						) {
+							event.dispatch('saveSteps');
+						}
+
 						event.dispatch('moveEnd:' + share.get('stepType'));
 						event.dispatch('moveEnd', {
 							from     : _deck_departure      ,
@@ -162,8 +170,6 @@ let Move = (moveDeck, to, cursorMove) => {
 								}
 							}
 						});
-
-						Tips.checkTips();
 
 						winCheck.winCheck({show : true});
 					}

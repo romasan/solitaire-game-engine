@@ -111,7 +111,7 @@ var SolitaireEngine =
 	exports.options = _defaults2.default;
 	exports.winCheck = _winCheck2.default.hwinCheck;
 	exports.generator = _deckGenerator2.default;
-	exports.version = (9091493351).toString().split(9).slice(1).map(function (e) {
+	exports.version = (9091493370).toString().split(9).slice(1).map(function (e) {
 		return parseInt(e, 8);
 	}).join('.');
 	
@@ -493,101 +493,101 @@ var SolitaireEngine =
 	
 		// Theme ---------------------------------------------------------------------------------
 	
-		themes: {
-			field: ["default_field", "alternative_field"],
-			face: ["default_face", "alternative_face"],
-			back: ["default_back", "alternative_back"]
+		"themes": {
+			"field": ["default_field", "alternative_field"],
+			"face": ["default_face", "alternative_face"],
+			"back": ["default_back", "alternative_back"]
 			// empty : [
 			// 	"default_empty",
 			// 	"alternative_empty"
 			// ]
 		},
 	
-		pref: {
-			field: "default_field", // 0
-			face: "alternative_face", // 1
-			back: "default_back" // 0
+		"pref": {
+			"field": "default_field", // 0
+			"face": "alternative_face", // 1
+			"back": "default_back" // 0
 		},
 	
 		// Tips ----------------------------------------------------------------------------------
 	
-		showTips: true,
-		showTipsDestination: false,
-		showTipPriority: false,
-		canMoveFlip: false,
+		"showTips": true,
+		"showTipsDestination": false,
+		"showTipPriority": false,
+		"canMoveFlip": false,
 	
-		tipsParams: {
-			hideOnEmpty: false,
-			excludeHomeGroups: true
+		"tipsParams": {
+			"hideOnEmpty": false,
+			"excludeHomeGroups": true
 		},
 	
 		// Field ---------------------------------------------------------------------------------
 	
-		zoom: 1.0,
+		"zoom": 1.0,
 	
-		locale: "ru",
+		"locale": "ru",
 	
-		animation: true,
-		animationTime: 600, // time in milliseconds
+		"animation": true,
+		"animationTime": 600, // time in milliseconds
 	
-		inputParams: {
-			doubleClick: false
+		"inputParams": {
+			"doubleClick": false
 		},
 	
 		// Group ---------------------------------------------------------------------------------
 	
-		flip: null, // param for deck
-		actions: null, // param for deck
+		"flip": null, // param for deck
+		"actions": null, // param for deck
 	
 		// Deck ----------------------------------------------------------------------------------
 	
-		can_move_flip: false,
-		showSlot: true,
-		autohide: false,
+		"can_move_flip": false,
+		"showSlot": true,
+		"autohide": false,
 	
-		paddingType: 'none',
-		flip_type: 'none',
+		"paddingType": 'none',
+		"flip_type": 'none',
 	
-		rotate: 0,
+		"rotate": 0,
 	
-		takeRules: ['onlytop'],
-		putRule: 'any',
+		"takeRules": ['onlytop'],
+		"putRule": 'any',
 	
-		moveDistance: 0,
+		"moveDistance": 0,
 	
-		padding_y: 0,
-		padding_x: 0,
-		flip_padding_y: 0, //5,
-		flip_padding_x: 0, //20,
-		move_distance: 10,
-		debugLabels: false,
+		"padding_y": 0,
+		"padding_x": 0,
+		"flip_padding_y": 0, // 5,
+		"flip_padding_x": 0, // 20,
+		"move_distance": 10,
+		"debugLabels": false,
 	
-		startZIndex: 100,
-		topZIndex: 900,
+		"startZIndex": 100,
+		"topZIndex": 900,
 	
 		// Card ----------------------------------------------------------------------------------
 	
-		card: {
-			width: 71,
-			height: 96,
+		"card": {
+			"width": 71,
+			"height": 96,
 	
-			suits: ['h', 'd', 'c', 's'],
-			colors: {
-				red: ['h', 'd'],
-				black: ['c', 's']
-			},
+			"suits": ['h', 'd', 'c', 's'],
+			"ranks": ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', 'j', 'q', 'k'],
+			"values": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
+			"ranks36": ['1', '6', '7', '8', '9', '10', 'j', 'q', 'k'],
 	
-			ranks: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', 'j', 'q', 'k'],
-			values: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
-			ranks36: ['1', '6', '7', '8', '9', '10', 'j', 'q', 'k']
+			"colors": {
+				"red": ['h', 'd'],
+				"black": ['c', 's']
+			}
 		},
 	
 		// ---------------------------------------------------------------------------------------
 	
-		stepType: 'default',
-		forceClone: true,
-		// movesAnimation       : "simple" // simple|byStep|not
-		showHistoryAnimation: true
+		"stepType": 'default',
+		"forceClone": true,
+		// "movesAnimation"    : "simple" // simple|byStep|not
+		"showHistoryAnimation": true
 	
 	};
 
@@ -6188,7 +6188,9 @@ var SolitaireEngine =
 			};
 	
 			if (!_share2.default.get('showHistoryAnimation')) {
+	
 				_common2.default.animationOff();
+	
 				forceMoveData.callback = function (e) {
 					_common2.default.animationOn();
 				};
@@ -6269,15 +6271,33 @@ var SolitaireEngine =
 		if (typeof data.move != "undefined" && typeof data.move.from != "undefined" && typeof data.move.to != "undefined" && typeof data.move.deck != "undefined") {
 	
 			if (data.move.stepType) {
+	
 				if (typeof data.move.stepType == "string") {
 					_share2.default.set('stepType', data.move.stepType);
 				}
+	
 				if (typeof data.move.stepType.redo == "string") {
 					_share2.default.set('stepType', data.move.stepType.redo);
 				}
 			}
 	
-			(0, _forceMove2.default)(data.move);
+			var forceMoveData = {
+				from: data.move.from,
+				to: data.move.to,
+				deck: data.move.deck,
+				flip: data.move.flip
+			};
+	
+			if (!_share2.default.get('showHistoryAnimation')) {
+	
+				_common2.default.animationOff();
+	
+				forceMoveData.callback = function (e) {
+					_common2.default.animationOn();
+				};
+			}
+	
+			(0, _forceMove2.default)(forceMoveData);
 		}
 	
 		if (data.redo && typeof data.redo.stepType == "string") {
@@ -8173,77 +8193,82 @@ var SolitaireEngine =
 				_success = _success && _pop;
 	
 				if (_pop) {
+					(function () {
 	
-					// ложим карты в колоду назначения
-					_deck_destination.Push(_pop);
+						// ложим карты в колоду назначения
+						_deck_destination.Push(_pop);
 	
-					// режим анимации по умолчанию
-					_common2.default.animationDefault();
+						// режим анимации по умолчанию
+						_common2.default.animationDefault();
 	
-					var _stepType2 = _share2.default.get('stepType');
+						var _stepType = _share2.default.get('stepType');
 	
-					var _checkMoveEnd = false;
+						var _checkMoveEnd = false;
 	
-					for (var _actionName in _deck_destination.actions) {
-						if (_deck_destination.actions[_actionName].event == "moveEnd") {
-							_checkMoveEnd = true;
-						}
-					}
-	
-					_event2.default.dispatch('addStep', {
-						'move': {
-							from: _deck_departure.name,
-							to: _deck_destination.name,
-							deck: _deck2.default.deckCardNames(moveDeck),
-							stepType: {
-								undo: _stepType2,
-								redo: _checkMoveEnd ? "specialStepType" : _stepType2
-							},
-							context: "move"
-						}
-					});
-	
-					if (_deck_destination.save) {
-						_event2.default.dispatch('saveSteps');
-					}
-	
-					_event2.default.dispatch('moveDragDeck', {
-	
-						departure: _deck_departure,
-						destination: _deck_destination,
-						moveDeck: moveDeck,
-						callback: function callback(e) {
-	
-							if (
-							// !event.has('moveEnd', {
-							!_event2.default.has('actionEvent:moveEnd:' + _deck_destination.name, {
-								tag: _event2.default.tags.inGame
-							}) || _share2.default.get('autoStep:stepType') == _share2.default.get('stepType')) {
-								_event2.default.dispatch('stopSession');
+						for (var _actionName in _deck_destination.actions) {
+							if (_deck_destination.actions[_actionName].event == "moveEnd") {
+								_checkMoveEnd = true;
 							}
-	
-							_event2.default.dispatch('moveEnd:' + _share2.default.get('stepType'));
-							_event2.default.dispatch('moveEnd', {
-								from: _deck_departure,
-								to: _deck_destination,
-								moveDeck: moveDeck,
-								stepType: _share2.default.get('stepType'),
-								before: function before(data) {
-									if (data && typeof data.stepType == "string") {
-										_event2.default.dispatch('addStep', {
-											'redo': {
-												'stepType': data.stepType
-											}
-										});
-									}
-								}
-							});
-	
-							_tips3.default.checkTips();
-	
-							_winCheck2.default.winCheck({ show: true });
 						}
-					});
+	
+						_event2.default.dispatch('addStep', {
+							'move': {
+								from: _deck_departure.name,
+								to: _deck_destination.name,
+								deck: _deck2.default.deckCardNames(moveDeck),
+								stepType: {
+									undo: _stepType,
+									redo: _checkMoveEnd ? "specialStepType" : _stepType
+								},
+								context: "move"
+							}
+						});
+	
+						var issetMoves = null;
+	
+						_event2.default.dispatch('moveDragDeck', {
+	
+							departure: _deck_departure,
+							destination: _deck_destination,
+							moveDeck: moveDeck,
+							callback: function callback(e) {
+	
+								if (
+								// !event.has('moveEnd', {
+								!_event2.default.has('actionEvent:moveEnd:' + _deck_destination.name, {
+									tag: _event2.default.tags.inGame
+								}) || _share2.default.get('autoStep:stepType') == _share2.default.get('stepType')) {
+									_event2.default.dispatch('stopSession');
+								}
+	
+								_tips3.default.checkTips();
+	
+								var _tips = _tips3.default.getTips();
+								if (_deck_destination.save || _tips.length > 0 && _stepType != _defaults2.default.stepType) {
+									_event2.default.dispatch('saveSteps');
+								}
+	
+								_event2.default.dispatch('moveEnd:' + _share2.default.get('stepType'));
+								_event2.default.dispatch('moveEnd', {
+									from: _deck_departure,
+									to: _deck_destination,
+									moveDeck: moveDeck,
+									stepType: _share2.default.get('stepType'),
+									before: function before(data) {
+										if (data && typeof data.stepType == "string") {
+											_event2.default.dispatch('addStep', {
+												'redo': {
+													'stepType': data.stepType
+												}
+											});
+										}
+									}
+								});
+	
+								_winCheck2.default.winCheck({ show: true });
+							}
+						});
+					})();
 				}
 			}
 		}
@@ -8995,6 +9020,7 @@ var SolitaireEngine =
 			key: 'attr',
 			value: function attr(attributes) {
 				try {
+	
 					for (var attrName in attributes) {
 						this.el[attrName] = attributes[attrName];
 					}
@@ -9008,6 +9034,7 @@ var SolitaireEngine =
 				try {
 	
 					var _classes = this.el.className.split(' ');
+	
 					return _classes.includes(className);
 				} catch (e) {}
 			}
@@ -9030,6 +9057,7 @@ var SolitaireEngine =
 				try {
 	
 					var _classes = this.el.className.split(' ');
+	
 					if (!this.hasClass(className)) {
 						_classes.push(className);
 						this.el.className = _classes.join(' ');
@@ -10403,12 +10431,12 @@ var SolitaireEngine =
 	// 	_log('stepType:' + e, 'yellow');
 	// })
 	
-	_event2.default.listen('saveSteps', function (e) {
-		if (window.xxx) {
-			throw new Error('saveSteps');
-		}
-		_log('saveSteps', 'yellow');
-	});
+	// event.listen('saveSteps', e => {
+	// 	if(window.xxx) {
+	// 		throw new Error('saveSteps');
+	// 	}
+	// 	_log('saveSteps', 'yellow');
+	// });
 	
 	// event.listen('shareSet:curLockState', (e) => {
 	// 	_log('curLockState:' + e, '#aaffaa');
@@ -10434,32 +10462,30 @@ var SolitaireEngine =
 		_log('stop', 'green');
 	});
 	
-	document.onwheel = function (e) {
+	// document.onwheel = (e) => {
 	
-		var area = null;
-		// if (e.target.id == 'log_1') {
-		// 	area = e.target;
-		// } else 
-		if (e.target.parentNode.id == 'log_1') {
-			area = e.target.parentNode;
-		} else {
-			return;
-		}
+	// 	let area = null;
+	// 		// if (e.target.id == 'log_1') {
+	// 		// 	area = e.target;
+	// 		// } else 
+	// 		if(e.target.parentNode.id == 'log_1') {
+	// 		area = e.target.parentNode;
+	// 	} else {
+	// 		return;
+	// 	}
 	
-		var delta = e.deltaY || e.detail || e.wheelDelta;
+	// 	let delta = e.deltaY || e.detail || e.wheelDelta;
 	
-		area.scrollTop = area.scrollTop + delta;
+	// 	area.scrollTop = area.scrollTop + delta;
 	
-		// if (delta < 0 && area.scrollTop == 0) {
-		e.preventDefault();
-		// }
+	// 	// if (delta < 0 && area.scrollTop == 0) {
+	// 	e.preventDefault();
+	// 	// }
 	
-		// if (delta > 0 && area.scrollHeight - area.clientHeight - area.scrollTop <= 1) {
-		e.preventDefault();
-		// }
-	};
-	
-	// --
+	// 	// if (delta > 0 && area.scrollHeight - area.clientHeight - area.scrollTop <= 1) {
+	// 	e.preventDefault();
+	// 	// }
+	// };
 	
 	var debugHistoryMgrClass = function () {
 		function debugHistoryMgrClass() {

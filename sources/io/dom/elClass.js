@@ -39,6 +39,7 @@ export default class elClass {
 
 	attr(attributes) {
 		try {
+
 			for(let attrName in attributes) {
 				this.el[attrName] = attributes[attrName];
 			}
@@ -51,6 +52,7 @@ export default class elClass {
 		try {
 
 			let _classes = this.el.className.split(' ');
+
 			return _classes.includes(className);
 		} catch(e) {}
 	}
@@ -71,6 +73,7 @@ export default class elClass {
 		try {
 
 			let _classes = this.el.className.split(' ');
+
 			if(!this.hasClass(className)) {
 				_classes.push(className);
 				this.el.className = _classes.join(' ');

@@ -104,17 +104,19 @@ let _undo = data => {
 		// _movesStack.push(e => {
 
 		let forceMoveData = {
-			from     : data.move.to,   // from ->
+			from     : data.move.to  , // from ->
 			to       : data.move.from, //      <- to
 			deck     : data.move.deck,
 			flip     : data.move.flip,
 		};
 
 		if(!share.get('showHistoryAnimation')) {
+
 			common.animationOff();
+
 			forceMoveData.callback = e => {
 				common.animationOn();
-			}
+			};
 		}
 		// forceMoveData.callback = _movesCallback
 		forceMove(forceMoveData);
@@ -202,15 +204,33 @@ let _redo = data => {
 	) {
 
 		if(data.move.stepType) {
+
 			if(typeof data.move.stepType == "string") {
 				share.set('stepType', data.move.stepType);
 			}
+
 			if(typeof data.move.stepType.redo == "string") {
 				share.set('stepType', data.move.stepType.redo);
 			}
 		}
 
-		forceMove(data.move);
+		let forceMoveData = {
+			from     : data.move.from,
+			to       : data.move.to  ,
+			deck     : data.move.deck,
+			flip     : data.move.flip,
+		};
+
+		if(!share.get('showHistoryAnimation')) {
+
+			common.animationOff();
+
+			forceMoveData.callback = e => {
+				common.animationOn();
+			};
+		}
+
+		forceMove(forceMoveData);
 	}
 
 	if(
