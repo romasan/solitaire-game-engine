@@ -17,26 +17,26 @@ class inputs {
 		share.set('dragDeck',    null);
 		share.set('startCursor', null);
 
-		event.listen('undo', this._inputUndoRedo());
-		event.listen('redo', this._inputUndoRedo());
+		// event.listen('undo', this._inputUndoRedo());
+		// event.listen('redo', this._inputUndoRedo());
 
 		try {
 
-			document.onmousedown = (e) => {
+			document.onmousedown = data => {
 				
-				if(e.button !== 0) {
+				if(data.button !== 0) {
 					return;
 				}
 				
-				this.take(e.target, e.clientX, e.clientY);
+				this.take(data.target, data.clientX, data.clientY);
 			};
 
-			document.onmousemove = (e) => {
-				this.drag(e.clientX, e.clientY);
+			document.onmousemove = data => {
+				this.drag(data.clientX, data.clientY);
 			};
 
-			document.onmouseup = (e) => {
-				this.put(e.target, e.clientX, e.clientY);
+			document.onmouseup = data => {
+				this.put(data.target, data.clientX, data.clientY);
 			};
 
 			// TODO
@@ -59,35 +59,39 @@ class inputs {
 			// 	common.curUnLock();
 			// };
 
-			document.ondblclick = (e) => {
-				this.take(e.target, e.clientX, e.clientY);
-				this.put(e.target, e.clientX, e.clientY, true);
+			document.ondblclick = data => {
+
+				event.dispatch('stopAnimations');
+				
+				this.take(data.target, data.clientX, data.clientY);
+				this.put(data.target, data.clientX, data.clientY, true);
+				
 				common.curUnLock();
 			};
 
-			document.addEventListener('touchstart', (e) => {
-				// e.preventDefault()
-				this.take(e.target, e.touches[0].clientX, e.touches[0].clientY)
+			document.addEventListener('touchstart', data => {
+				// data.preventDefault()
+				this.take(data.target, data.touches[0].clientX, data.touches[0].clientY)
 			}, false);
 
-			document.addEventListener('touchmove', (e) => {
+			document.addEventListener('touchmove', data => {
 
 				if(share.startCursor) {
-					e.preventDefault();
+					data.preventDefault();
 				}
 
-				this.drag(e.touches[0].clientX, e.touches[0].clientY)
+				this.drag(data.touches[0].clientX, data.touches[0].clientY)
 			}, false);
 
-			document.addEventListener('touchend', (e) => {
-				// e.preventDefault()
-				this.put(e.changedTouches[0].target, e.changedTouches[0].clientX, e.changedTouches[0].clientY);
+			document.addEventListener('touchend', data => {
+				// data.preventDefault()
+				this.put(data.changedTouches[0].target, data.changedTouches[0].clientX, data.changedTouches[0].clientY);
 			}, false);
 		} catch(e) {}
 	
 	}
 
-	_inputUndoRedo() {
+	break() {
 
 		let _dragDeck = share.get('dragDeck');
 		
@@ -123,7 +127,7 @@ class inputs {
 			return;
 		}
 
-		if( target.className.split(' ').indexOf('slot') >= 0 ) {
+		if( target.className.split(' ').includes('slot') ) {
 
 			let _id   = target.id,
 			
@@ -136,7 +140,7 @@ class inputs {
 			}
 		}
 
-		if( target.className.split(' ').indexOf('draggable') >= 0 ) {
+		if( target.className.split(' ').includes('draggable') ) {
 
 			let _id     = target.id,
 			    _card   = _id                   ? common.getElementById(_id) : null,
@@ -183,15 +187,13 @@ class inputs {
 			return;
 		}
 
-		let _distance = _startCursor 
-			? Math.sqrt(common.sqr(x - _startCursor.x) + common.sqr(y - _startCursor.y)) 
-			: 0;
-
-		// console.log(x - _startCursor.x, y - _startCursor.y);
+		// let _distance = _startCursor 
+		// 	? Math.sqrt(common.sqr(x - _startCursor.x) + common.sqr(y - _startCursor.y)) 
+		// 	: 0;
 
 		let _deck = common.getElementById(_dragDeck[0].card.parent);
 
-		let _position = _deck.padding(_dragDeck[_dragDeck.length - 1].index);
+		// let _position = _deck.padding(_dragDeck[_dragDeck.length - 1].index);
 
 		event.dispatch('dragDeck', {
 			x, y        , 
@@ -234,7 +236,7 @@ class inputs {
 		}
 
 		let _startCursor = share.get('startCursor'),// начальная позиция курсора
-		    _dragDeck    = share.get('dragDeck');   // 
+		    _dragDeck    = share.get('dragDeck');
 
 		if(!_dragDeck || !_startCursor) {
 			return;
@@ -244,8 +246,7 @@ class inputs {
 
 		let _position = _deck.padding(_dragDeck[0].index);
 		
-		let _distance = Math.sqrt(common.sqr(x - _startCursor.x) + common.sqr(y - _startCursor.y));
-		// console.log('>>> distance:', _distance, x - _startCursor.x, y - _startCursor.y);
+		let _distance = Math.sqrt((i => i * i)(x - _startCursor.x) + (i => i * i)(y - _startCursor.y));
 
 		let cursorMove = {
 			distance     : _distance,
@@ -270,21 +271,16 @@ class inputs {
 		event.dispatch('hideCard', target);
 		let _dop = document.elementFromPoint(x, y);
 		event.dispatch('showCard', target);
-		// if(_dop) {
 
-		// Move(_dragDeck, _dop, cursorMove);
 		event.dispatch('Move', {
 			moveDeck   : _dragDeck,
 			to         : _dop.id,
-			cursorMove : cursorMove
-		})
-		// }
-
-		// event.dispatch('redrawDeckIndexes', _deck);
+			cursorMove
+		});
 
 		share.set('dragDeck',    null);
 		share.set('startCursor', null);
 	}
 }
 
-let _inputs = new inputs();
+export default new inputs();

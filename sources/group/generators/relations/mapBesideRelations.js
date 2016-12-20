@@ -38,14 +38,14 @@ import mapCommon from 'mapCommon';
 // 	return null;
 // };
 
-export default (e) => {// {x, y, map, mapSize, el, data}
+export default data => {// {x, y, map, mapSize, el, data}
 
 	let _relations = [];
 
-	// var _next = getBeside(e.x, e.y, e.mapSize, e.map, e.el, 'next') && (
+	// var _next = getBeside(data.x, data.y, data.mapSize, data.map, data.el, 'next') && (
 	// 	_relations.push({name: 'next', to: _next})
 	// );
-	// var _prev = getBeside(e.x, e.y, e.mapSize, e.map, e.el, 'prev') && (
+	// var _prev = getBeside(data.x, data.y, data.mapSize, data.map, data.el, 'prev') && (
 	// 	_relations.push({name: 'prev', to: _prev})
 	// );
 

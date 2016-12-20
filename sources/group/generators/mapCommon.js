@@ -7,27 +7,25 @@ const beSide = {
 	down  : {x:  0, y:  1} 
 };
 
-let inMap = (x, y, mapSize) => {
-	return x >= 0            &&
-	       y >= 0            &&
-	       x < mapSize.width &&
-	       y < mapSize.height;
-};
+let inMap = (x, y, mapSize) => 
+	x >= 0             &&
+	y >= 0             &&
+	x < mapSize.width  &&
+	y < mapSize.height;
 
-let exist = (x, y, mapSize, map)=> {
-	return inMap(x, y, mapSize) &&
-	       map[y][x];
-};
+let exist = (x, y, mapSize, map) => 
+	inMap(x, y, mapSize) &&
+	map[y][x];
 
-let mapSize = (map) => {
+let mapSize = map => {
 	
 	let _mapSize = {
 		width  : map[0].length,//MAX LENGTH
 		height : map   .length
 	};
 	
-	map.forEach(function(e) {
-		_mapSize.width = Math.max(_mapSize.width, e.length);
+	map.forEach(data => {
+		_mapSize.width = Math.max(_mapSize.width, data.length);
 	});
 
 	return _mapSize;

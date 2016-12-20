@@ -4,42 +4,56 @@ import share           from 'share';
 import event           from 'event';
 import common          from 'common';
 
-import winCheckMethods from 'winCheckMethods';
+import winCheckRules   from 'winCheckRules';
 import Deck            from 'deck';
 
-let winCheck = (params) => {
+let winCheck = params => {
 
 	let rulesCorrect = true;
-	let _hasMetods = false;
-	let _winCheck = share.get('winCheck');// _field.winCheck
-	
-	for(let ruleName in _winCheck.rules) {
-		_hasMetods = true;
-		
-		if(winCheckMethods[ruleName]) {
-		
-			let _result = winCheckMethods[ruleName]({
+	let _hasRules = false;
+
+	let _winCheck = share.get('winCheck');
+
+	if(!_winCheck) {
+		return false;
+	}
+
+	// if(_winCheck.rules) {
+	// 	_winCheck = winCheck.rules;
+	// }
+
+	let _winCheckRules = _winCheck.rules
+		? _winCheck.rules
+		: _winCheck;
+
+	for(let ruleName in _winCheckRules) {
+
+		_hasRules = true;
+
+		if(winCheckRules[ruleName]) {
+
+			let _result = winCheckRules[ruleName]({
 				decks     : Deck.getDecks({visible : true}), 
-				rulesArgs : _winCheck.rules[ruleName]
+				rulesArgs : _winCheckRules[ruleName]
 			});
-			
+
 			rulesCorrect = rulesCorrect && _result;
 
 		} else {
-			rulesCorrect = rulesCorrect && winCheckMethods.newerWin();
+			rulesCorrect = rulesCorrect && winCheckRules.newerWin();
 		}
 	}
-	
-	if(!_hasMetods) {
-		rulesCorrect = rulesCorrect && winCheckMethods.newerWin();
+
+	if(!_hasRules) {
+		rulesCorrect = rulesCorrect && winCheckRules.newerWin();
 	}
 
 	if(rulesCorrect) {
-		
+
 		if(params && params.noCallback) {
 			return true;
 		}
-		
+
 		// show you win message
 		event.dispatch('win', params);
 
@@ -52,21 +66,21 @@ let winCheck = (params) => {
 };
 
 // hidden check
-let hwinCheck = (params) => {
-	
+let hwinCheck = params => {
+
 	if(!params) {
 		params = {};
 	}
-	
+
 	if(typeof params.show == 'undefined') {
 		params.show = false;
 	}
-	
+
 	winCheck(params);
 	// return winCheck({noCallback : true});
 };
 
 export default {
-	winCheck, 
+	winCheck , 
 	hwinCheck
 };

@@ -13,6 +13,7 @@ import stepsAround    from 'stepsAroundAction';
 import changeStepType from 'changeStepTypeAction';
 import lock           from 'lockAction';
 import unlock         from 'unlockAction';
+import checkFull      from 'checkFullAction';
 
 let _actions = {
 	"twindeck"       : twindeck      ,
@@ -21,7 +22,8 @@ let _actions = {
 	"stepsAround"    : stepsAround   ,
 	"changeStepType" : changeStepType,
 	"lock"           : lock          ,
-	"unlock"         : unlock
+	"unlock"         : unlock        ,
+	"checkFull"      : checkFull
 };
 
 // ------------------------------------------------------------------------------------------
@@ -29,33 +31,32 @@ let _actions = {
 let _decksActions  = [],
     _events        = [];
 
-event.listen('initField', () => {
+event.listen('initField', e => {
 	_decksActions = [];
 	_events       = [];
 })
 
-let addActionEvent = (_event) => {
+let addActionEvent = eventName => {
 
 	event.listen(
 
 		// event name
-		_event, 
+		eventName, 
 		
 		// callback
-		(data) => {
+		data => {
 
 			for(let i in _decksActions) {
-				if(_decksActions[i].event == _event) {
+				if(_decksActions[i].event == eventName) {
 					
 					let _actionName = _decksActions[i].action;
 
-					let _canRun = _event == 'click'
+					let _canRun = eventName == 'click'
 					    ? data.to.name == _decksActions[i].deck.name
 					    : true;
 					
 					if(_canRun) {
 						
-						// _actions[_actionName].call(
 						_actions[_actionName].run(
 							
 							_decksActions[i].deck, 
@@ -63,7 +64,7 @@ let addActionEvent = (_event) => {
 							{
 								actionData : _decksActions[i].deck.actions[_actionName],
 								eventData  : data,
-								eventName  : _event
+								eventName
 							}
 						);
 					};
@@ -72,12 +73,12 @@ let addActionEvent = (_event) => {
 		},
 
 		// context
-		'addActionEvent:' + _event
+		'addActionEvent:' + eventName
 	);
 
 };
 
-let add = function(deck) {
+let add = deck => {
 
 	for(let actionName in deck.actions) {
 
@@ -96,8 +97,10 @@ let add = function(deck) {
 				action : actionName
 			});
 
+			share.set('actionEvent:' + deck.name + ':' + deck.actions[actionName].event, true);
+			
 			// создаём событие если оно еще не создано
-			if(_events.indexOf(deck.actions[actionName].event) < 0) {
+			if(!_events.includes(deck.actions[actionName].event)) {
 				
 				// сохраняем событие в список с уже созданными
 				_events.push(deck.actions[actionName].event);
@@ -114,7 +117,7 @@ let add = function(deck) {
 	autoRunActions(deck);
 };
 
-let autoRunActions = (deck) => {// bind this deck
+let autoRunActions = deck => {
 
 	common.animationDefault();
 
@@ -122,9 +125,9 @@ let autoRunActions = (deck) => {// bind this deck
 		if(deck.actions[actionName].autorun) {
 			if(_actions[actionName]) {
 				_actions[actionName].run(
-					
+
 					deck, 
-					
+
 					{
 						actionData : deck.actions[actionName],
 						eventData  : null,

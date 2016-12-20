@@ -5,7 +5,7 @@ import defaults from 'defaults';
 
 import storage from 'storage';
 
-export default () => {
+export default e => {
 
 	let pref = storage.get('pref');
 	!pref && (pref = defaults.pref);
@@ -14,7 +14,7 @@ export default () => {
 		
 		if(defaults.themes[prefName]) {
 
-			if(defaults.themes[prefName].indexOf(pref[prefName]) < 0) {
+			if(!defaults.themes[prefName].includes(pref[prefName])) {
 				pref[prefName] = defaults.pref[prefName];
 			}
 

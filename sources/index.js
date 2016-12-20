@@ -16,12 +16,6 @@ import winCheck      from 'winCheck';
 import History       from 'history';
 import Tips          from 'tips';
 import deckGenerator from 'deckGenerator';
-// import storage       from 'storage';
-
-// styles DOM
-import 'common.scss';
-import 'default_theme.scss';
-import 'alternative_theme.scss';
 
 let preloadCallback = null,
     firstInit       = true;
@@ -32,38 +26,39 @@ exports.winCheck  = winCheck.hwinCheck;
 exports.generator = deckGenerator;
 exports.version   = version.toString().split(9).slice(1).map(e => parseInt(e, 8)).join('.');
 
-exports.onload = (f) => {
-	preloadCallback = f;
+exports.onload = callback => {
+	preloadCallback = callback;
 };
 
-exports.onChangePreferences = (f) => {
-	share.set('changePreferencesCallback', f);
+exports.onChangePreferences = callback => {
+	share.set('changePreferencesCallback', callback);
 };
 
 // exports.getPreferences = () => {
 // 	let _pref = storage.get('pref');
 // };
 
-exports.init = (gameConfig) => {
+exports.init = gameConfig => {
 
 	event.dispatch('gameInit', {firstInit});
-	
+
 	event.clearByTag(event.tags.inGame);
-	event.setTag(event.tags.inGame);
+	event.setTag    (event.tags.inGame);
 
 	Field.clear();
 	Field.create(gameConfig);
-	
+
 	if(firstInit) {
-		
+
 		firstInit = false;
-		
+
 		if(typeof preloadCallback == "function") {
 			let _data = share.get('gamePreferencesData');
 			preloadCallback(_data);
 		}
 
 		let changePreferencesCallback = share.get('changePreferencesCallback');
+
 		if(typeof changePreferencesCallback == "function") {
 			let _data = share.get('gamePreferencesData');
 			changePreferencesCallback(_data);
@@ -72,7 +67,7 @@ exports.init = (gameConfig) => {
 
 	event.dispatch('gameInited');
 
-	exports.Redraw = function(data) {
+	exports.Redraw = data => {
 		Field.Redraw(data);
 	}
 };

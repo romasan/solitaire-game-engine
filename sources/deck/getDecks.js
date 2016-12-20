@@ -2,7 +2,7 @@
 
 import share from 'share';
 
-export default (data) => {
+export default data => {
 
 	let _decks = {};
 
@@ -10,16 +10,20 @@ export default (data) => {
 
 	if(data && data.visible) {
 
-		for(let d in _elements) {
-			if(_elements[d].type == 'deck') {
-				if(_elements[d].visible) {
-					_decks[d] = _elements[d];
+		for(let deckId in _elements) {
+			if(_elements[deckId].type == 'deck') {
+				if(_elements[deckId].visible) {
+					_decks[deckId] = _elements[deckId];
 				}
 			};
 		};
 	} else {
-		return _elements;
+		for(let deckId in _elements) {
+			if(_elements[deckId].type == 'deck') {
+				_decks[deckId] = _elements[deckId];
+			};
+		};
 	}
-	
+
 	return _decks;
 }

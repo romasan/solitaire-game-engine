@@ -7,11 +7,11 @@ import common from 'common';
 // class card {
 
 // 	constructor(e) {
-// 		this.id      = e.id;
-// 		this.name    = e.name;
-// 		this.type    = 'card';
-// 		this.visible = true;
-// 		this.flip    = false;
+// 		deck.id      = e.id;
+// 		deck.name    = e.name;
+// 		deck.type    = 'card';
+// 		deck.visible = true;
+// 		deck.flip    = false;
 // 	}
 
 // 	set domElement(e) {
@@ -23,23 +23,23 @@ import common from 'common';
 // 	}
 // };
 
-export default function(name) {// TODO
+export default (deck, name) => {
 
 	let _name = common.validateCardName(name);// {color, rank}
 	
 	if(_name) {
 
-		let _id = 'card_' + common.genId(),
-			_card = {
-				id      : _id,
-				name    : name,
-				type    : 'card',
-				// domElement : domElement,
-				visible : true,
-				// parent  : _parent,
-				flip    : false
-			}
-		_card.parent = this.id;
+		let _id = 'card_' + common.genId();
+
+		let _card = {
+			id      : _id    ,
+			name    : name   ,
+			type    : 'card' ,
+			visible : true   ,
+			flip    : false  ,
+			// filled  : false  ,
+			parent  : deck.id
+		};
 		
 		event.dispatch('addCardEl', _card);
 		
@@ -47,9 +47,9 @@ export default function(name) {// TODO
 		_elements[_id] = _card;
 		share.set('elements', _elements);
 		
-		this.Push([_card]);
-		this.flipCheck();
-		this.Redraw();
+		deck.Push([_card]);
+		deck.flipCheck();
+		deck.Redraw();
 
 		return _card;
 	}

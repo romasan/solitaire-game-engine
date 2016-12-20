@@ -4,17 +4,17 @@ export default {
 
 // Theme ---------------------------------------------------------------------------------
 
-	themes : {
-		field : [
-			"default_field",
+	"themes" : {
+		"field" : [
+			"default_field"    ,
 			"alternative_field"
 		],
-		face  : [
-			"default_face",
+		"face"  : [
+			"default_face"    ,
 			"alternative_face"
 		],
-		back  : [
-			"default_back",
+		"back"  : [
+			"default_back"    ,
 			"alternative_back"
 		]
 		// empty : [
@@ -23,86 +23,90 @@ export default {
 		// ]
 	},
 	
-	pref : {
-		field : "default_field",    // 0
-		face  : "alternative_face", // 1
-		back  : "default_back"      // 0
+	"pref" : {
+		"field" : "default_field"   , // 0
+		"face"  : "alternative_face", // 1
+		"back"  : "default_back"      // 0
 	},
 
 // Tips ----------------------------------------------------------------------------------
 
-	showTips            : true,
-	showTipsDestination : false,
-	showTipPriority     : false,
-	canMoveFlip         : false,
+	"showTips"            : true ,
+	"showTipsDestination" : false,
+	"showTipPriority"     : false,
+	"canMoveFlip"         : false,
 
-	tipsParams   : {
-		hideOnEmpty       : false,
-		excludeHomeGroups : true
+	"tipsParams" : {
+		"hideOnEmpty"       : false,
+		"excludeHomeGroups" : true
 	},
 	
 // Field ---------------------------------------------------------------------------------
 
-	zoom                : 1.0,
+	"zoom"                : 1.0 ,
 
-	locale              : "ru",
+	"locale"              : "ru",
 
-	animation           : true,
-	animationTime       : 600,  // time in milliseconds
+	"animation"           : true,
+	"animationTime"       : 600 , // time in milliseconds
 
-	inputParams : {
-		doubleClick : false
+	"inputParams" : {
+		"doubleClick" : false
 	},
 
-// Group
+// Group ---------------------------------------------------------------------------------
 
-	flip                : null, // param for deck
-	actions             : null, // param for deck
+	"flip"                : null, // param for deck
+	"actions"             : null, // param for deck
 
 // Deck ----------------------------------------------------------------------------------
 
-	can_move_flip       : false,
-	showSlot            : true,
-	autohide            : false,
+	"can_move_flip"       : false      ,
+	"showSlot"            : true       ,
+	"autohide"            : false      ,
 
-	paddingType         : 'none',
-	flip_type           : 'none',
+	"paddingType"         : 'none'     ,
+	"flip_type"           : 'none'     ,
+
+	"rotate"              : 0          ,
 	
-	takeRules           : ['onlytop'],
-	putRule             : 'any',
+	"takeRules"           : ['onlytop'],
+	"putRule"             : 'any'      ,
 
-	moveDistance        : 0,
+	"moveDistance"        : 0          ,
 
-	padding_y           : 0,
-	padding_x           : 0,
-	flip_padding_y      : 0,    //5,
-	flip_padding_x      : 0,    //20,
-	move_distance       : 10,
-	debugLabels         : false,
+	"padding_y"           : 0          ,
+	"padding_x"           : 0          ,
+	"flip_padding_y"      : 0          , // 5,
+	"flip_padding_x"      : 0          , // 20,
+	"move_distance"       : 10         ,
+	"debugLabels"         : false      ,
 
-	startZIndex         : 100,
-	topZIndex           : 900,
+	"startZIndex"         : 100        ,
+	"topZIndex"           : 900        ,
 
 // Card ----------------------------------------------------------------------------------
 
-	card : {
-		width        : 71,
-		height       : 96,
+	"card" : {
+		"width"        : 71,
+		"height"       : 96,
 
-		suits        : ['h', 'd', 'c', 's'],
-		colors       : {
-			red   : ['h', 'd'],
-			black : ['c', 's']
-		},
+		"suits"        : ['h', 'd', 'c', 's'],
+		"ranks"        : ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', 'j', 'q', 'k'],
+		"values"       : [ 1,   2,   3,   4,   5,   6,   7,   8,   9,   10,   11,  12,  13],
+		"ranks36"      : ['1',                     '6', '7', '8', '9', '10', 'j', 'q', 'k'],
 
-		ranks        : ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', 'j', 'q', 'k'],
-		values       : [ 1,   2,   3,   4,   5,   6,   7,   8,   9,   10,   11,  12,  13],
-		ranks36      : ['1',                     '6', '7', '8', '9', '10', 'j', 'q', 'k']
+		"colors" : {
+			"red"   : ['h', 'd'],
+			"black" : ['c', 's']
+		}
 	},
 
 // ---------------------------------------------------------------------------------------
 
-	stepType         : 'default',
-	forceClone       : true
+	"stepType"             : 'default',
+	"forceClone"           : true     ,
+	// "movesAnimation"    : "simple" // simple|byStep|not
+	"showHistoryAnimation" : true
 
 };

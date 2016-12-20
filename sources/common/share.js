@@ -3,7 +3,13 @@
 import event    from 'event';
 import defaults from 'defaults';
 
-// export default new function() {
+/*
+ * get
+ * set
+ * getAll
+ * delete
+ */
+
 class shareClass {
 
 	constructor() {
@@ -36,7 +42,12 @@ class shareClass {
 				typeof forceClone == "boolean" && forceClone
 			) {
 				try {
-					this._data[name] = Object.assign({}, data);
+					// this._data[name] = Object.assign({}, data);
+					this._data[name] = ['string', 'number', 'boolean'].includes(typeof data)
+					? data
+					: data instanceof Array
+						? Object.assign([], data)
+						: Object.assign({}, data);
 				} catch(e) {
 					this._data[name] = data;
 				}
@@ -54,7 +65,7 @@ class shareClass {
 				forceClone = data;
 			}
 
-			for(var _name in name) {
+			for(let _name in name) {
 
 				event.dispatch('shareChange:' + name, {
 					from : this._data[_name],
@@ -65,7 +76,12 @@ class shareClass {
 					typeof forceClone == "boolean" && forceClone
 				) {
 					try {
-						this._data[_name] = Object.assign({}, name[_name]);
+						// this._data[_name] = Object.assign({}, name[_name]);
+						this._data[_name] = ['string', 'number', 'boolean'].includes(typeof name[_name])
+						? name[_name]
+						: name[_name] instanceof Array
+							? Object.assign([], name[_name])
+							: Object.assign({}, name[_name]);
 					} catch(e) {
 						this._data[_name] = name[_name];
 					}

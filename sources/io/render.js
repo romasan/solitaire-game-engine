@@ -13,25 +13,31 @@ import moveDragDeck   from 'moveDragDeck';
 import moveCardToHome from 'moveCardToHome';
 import fieldThemesSet from 'fieldThemesSet';
 
+// styles DOM
+import 'common.scss';
+import 'default_theme.scss';
+import 'alternative_theme.scss';
+
 // common
 
-event.listen('removeEl', (e) => {
+event.listen('removeEl', data => {
 
-	let _elDomElement = share.get('domElement:' + e.id);
+	let _elDomElement = share.get('domElement:' + data.id);
 
-	elRender(_elDomElement)
-		.remove();
+	_elDomElement.remove();
+
+	share.delete('domElement:' + data.id);
 });
 
-event.listen('showCard', (target) => {
+event.listen('showCard', target => {
 	elRender(target).show();
 });
 
-event.listen('hideCard', (target) => {
+event.listen('hideCard', target => {
 	elRender(target).hide();
 });
 
-event.listen('stopAnimations', () => {
+event.listen('stopAnimations', e => {
 	// TODO
 	// elRender.stopAnimations();
 });

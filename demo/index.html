@@ -3,6 +3,27 @@
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
 	<script src="../frontend/js/SolitaireEngine.js"></script>
 	<script>
+
+		let GAMES = {
+			"mat" : {
+				"type"   : "js",
+				"object" : "matGame"
+				"url"    : "../../mat/frontend/js/mat-game.js",
+				"games"  : {
+					"path"  : "../../mat/games/",
+					"count" : 30000
+				} 
+			},
+			"fourteen" : {
+				"type"  : "js",
+				"url"   : "../../mat/frontend/js/mat-game.js",
+				"games" : {
+					"path"  : "../../mat/games/",
+					"count" : 30000
+				} 
+			}
+		};
+
 		'use strict';
 		class History {
 			constructor() {
@@ -38,6 +59,7 @@
 		};
 		let history = new History();
 		let showHints = true;
+		// for full games scripts
 		window.controller = {
 			getShowPossibleMoves: () => {
 				return showHints;
@@ -49,21 +71,24 @@
 			}
 		};
 	</script>
-	<script src="../../fourteen/js/fourteen-game.js"></script>
+	<script src="../../fourteen/frontend/js/fourteen-game.js"></script>
 	<script>
+		let GAME = null;
 		$(document).ready(() => {
 
+			let gameName = document.location.hash.slice(1)
+
 			let GAME = new matGame();
+			let gamesCount = 3e4;
+			let gamesPath = '../../fourteen/frontend/games/';
 			
 			$('#b_undo').click(() => {
 				let e = history.undo();
-				console.log('undo', e);
 				GAME.undoMove(e);
 			});
 
 			$('#b_redo').click(() => {
 				let e = history.redo();
-				console.log('redo', e);
 				GAME.redoMove(e);
 			});
 
@@ -71,9 +96,8 @@
 
 			$('#b_newgame').click(() => {
 				history.clear();
-				gameIndex = 1 + (Math.random() * 3e4) | 0;
-				console.log('newgame', gameIndex);
-				$.getJSON(`../../fourteen/games/${gameIndex}.json`, (e) => {
+				gameIndex = 1 + (Math.random() * gamesCount) | 0;
+				$.getJSON(gamesPath + gameIndex + '.json', (e) => {
 					GAME.__startGame(JSON.stringify(e));
 				});
 				$('#gameIndex').html(gameIndex);
@@ -81,8 +105,7 @@
 
 			$('#b_restart').click(() => {
 				history.clear();
-				console.log('restart');
-				$.getJSON(`../../fourteen/games/${gameIndex}.json`, (e) => {
+				$.getJSON(gamesPath + gameIndex + '.json', (e) => {
 					GAME.__startGame(JSON.stringify(e));
 				});
 				$('#gameIndex').html(gameIndex);
@@ -94,9 +117,8 @@
 				console.log('hints', showHints);
 			});
 
-			gameIndex = 1 + (Math.random() * 3e4) | 0;
-			console.log('newgame', gameIndex);
-			$.getJSON(`../../fourteen/games/${gameIndex}.json`, (e) => {
+			gameIndex = 1 + (Math.random() * gamesCount) | 0;
+			$.getJSON(gamesPath + gameIndex + '.json', (e) => {
 				GAME.__startGame(JSON.stringify(e));
 			});
 			$('#steps').html(0);
@@ -104,7 +126,6 @@
 
 		});
 
-		// GAME.__startGame(deck);
 	</script>
 	<style>
 		body {

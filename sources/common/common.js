@@ -3,7 +3,7 @@
 import share              from 'share';
 import event              from 'event';
 import defaults           from 'defaults';
-import state              from 'state';
+import stateManager       from 'stateManager';
 
 import Tips               from 'tips';
 import Field              from 'field';
@@ -13,21 +13,44 @@ import drawPreferences    from 'drawPreferences';
 import preferencesEvents  from 'preferencesEvents';
 import defaultPreferences from 'defaultPreferences';
 
-// event.listen('shareChange:stepType', (e) => {
-// 	console.log('%cshareChange:stepType', 'background-color: green;color: white;', e);
-// });
+/*
 
-// event.listen('shareChange:curLockState', (e) => {
-// 	console.log('%cshareChange:curLockState', 'background-color: blue;color: white;', e);
-// });
+Listeners:
 
-event.listen('gameInit', (e) => {
+ * gameInit
+ * gameInited
+ * moveEnd
+ * actionBreak
+ * startSession
+ * stopSession
+
+ * newGame
+ * historyReapeater
+
+Methods:
+
+ * isCurLock
+ * curLock
+ * curUnLock
+ * getElements
+ * getElementById
+ * getElementsByName
+ * validateCardName
+ * genId
+ * animationOn
+ * animationDefault
+ * animationOff
+
+ */
+
+event.listen('gameInit', data => {
 
 	share.set('stepType', defaults.stepType);
+	share.delete('sessionStarted');
 
 	curUnLock();
 	
-	if(!e.firstInit) {
+	if(!data.firstInit) {
 		return;
 	};
 	
@@ -35,96 +58,47 @@ event.listen('gameInit', (e) => {
 	preferencesEvents();
 });
 
-event.listen('gameInited', () => {
+event.listen('gameInited', e => {
 	defaultPreferences();
 });
 
-// share.set('prevStepType', defaults.stepType);
-// event.listen('shareChange:stepType', (e) => {
-// 	share.set('prevStepType', e.from);
-// });
-
-event.listen('moveEnd', () => {
+event.listen('moveEnd', e => {
 	Tips.checkTips();
 });
 
-event.listen('actionBreak', () => {
+event.listen('actionBreak', e => {
 	Tips.checkTips();
 });
 
-event.listen('startSession', () => {
+event.listen('startSession', e => {
 	share.set('sessionStarted', true);
-	state.backup();
+	stateManager.backup();
 });
 
-event.listen('stopSession', () => {
+event.listen('stopSession', e => {
 	share.set('sessionStarted', false);
-	state.backup();
+	// stateManager.backup();
 });
 
-// --
-
-let sqr = i => i * i;
-
-// --
-
-// Lock/Unlock
-
-// let _lock = false;
-
-// let isLock = function() {
-// 	return _lock;
-// };
-
-// let lock = function() {
-// 	_lock = true;
-// }
-// event.listen('lock', lock);
-
-// let unlock = function() {
-// 	lock = false;
-// }
-// event.listen('unlock', unlock);
-
-// --
-
-let _inputStack = [];
-
-let isCurLock = () => {
+let isCurLock = e => {
 	return share.get('curLockState');
 };
 
-let curLock = () => {
+let curLock = e => {
 	share.set('curLockState', true);
 };
 
-let curUnLock = () => {
-	
+let curUnLock = e => {	
 	share.set('curLockState', false);
-	
-	for(let i in _inputStack) {
-		if(typeof _inputStack[i] == "function") {
-			_inputStack[i]();
-		}
-	}
-	_inputStack = [];
-}
-
-let input = (callback) => {
-	if(!isCurLock()) {
-		callback();
-	} else {
-		_inputStack.push(callback);
-	}
 }
 
 // getters
 
-let getElements = () => {
+let getElements = e => {
 	return share.get('elements');
 }
 
-let getElementById = (id) => {
+let getElementById = id => {
 	
 	let _elements = share.get('elements');
 	
@@ -156,27 +130,31 @@ let getElementsByName = (name, type) => {
 
 // validator
 
-let validateCardName = (name, nolog) => {
-	
+let validateCardName = name => {
+
 	if(typeof name != 'string') {
-		console.warn('Warning: validate name must have string type', name);
-		// throw new Error('z');
+
+		console.warn('Warning: validate name must have string type "' + name + '"', name);
+
+		// throw new Error('validateCardName');
+
 		return false;
 	}
-	
-	let suit  = name.slice(0, 1),
-		rank  = name.slice(1, 3),
-		color = null,
+
+	let suit  = name.slice(0, 1)                                       ,
+		rank  = name.slice(1, 3)                                       ,
+		color = null                                                   ,
 		value = defaults.card.values[defaults.card.ranks.indexOf(rank)];
+
 	for(let colorName in defaults.card.colors) {
-		if(defaults.card.colors[colorName].indexOf(suit) >= 0) {
+		if(defaults.card.colors[colorName].includes(suit)) {
 			color = colorName;
 		}
 	}
-	
+
 	if( 
-		defaults.card.suits.indexOf(suit) >= 0 &&
-		defaults.card.ranks.indexOf(rank) >= 0
+		defaults.card.suits.includes(suit) &&
+		defaults.card.ranks.includes(rank)
 	) {
 		return {
 			color,
@@ -200,23 +178,23 @@ let genId = () => {
 	return _id += 1;
 };
 
-// --
+// animations
 
 share.set('animation', defaults.animation);
 
-let animationOn = () => {
+let animationOn = e => {
 	share.set('animation', true);
 }
 
-let animationDefault = () => {
+let animationDefault = e => {
 	share.set('animation', defaults.animation);
 }
 
-let animationOff = () => {
+let animationOff = e => {
 	share.set('animation', false);
 }
 
-event.listen('newGame', () => {
+event.listen('newGame', e => {
 	// TODO
 	// из-за отключения анимации 
 	// на время восстановления ходов из истории приходится костылять
@@ -228,7 +206,7 @@ event.listen('newGame', () => {
 
 // --
 
-event.listen('historyReapeater', (data) => {
+event.listen('historyReapeater', data => {
 	if(data) {
 		share.set('noRedraw', true);
 		share.set('noTips', true);
@@ -240,32 +218,9 @@ event.listen('historyReapeater', (data) => {
 	}
 });
 
-// --
-
-let deckInGroups = (deck, groups) => {
-	for(let groupName in groups) {
-		Group.getGroup(groupName).hasDeck();
-	}
-}
-
-// event.listen('makeStep', function(e) {
-	// share.set('animation', defaults.animation);
-// });
-
 share.set('stepType', defaults.stepType);
 
-// let clearInput = ()=>{
-//     share.set('dragDeck',    null);
-//     share.set('startCursor', null);
-// 		console.log('clearInput');
-// }
-
-// share.set('lang', defaults.lang);
-
 export default {
-//	isLock           ,
-//	lock             ,
-//	unlock           ,
 	isCurLock        ,
 	curLock          ,
 	curUnLock        ,
@@ -276,7 +231,5 @@ export default {
 	genId            ,
 	animationOn      ,
 	animationOff     ,
-	animationDefault ,
-	deckInGroups     ,
-	sqr              
+	animationDefault
 };

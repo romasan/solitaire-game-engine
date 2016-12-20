@@ -1,18 +1,12 @@
 'use strict';
 
 import fallAutoStep from 'fallAutoStep';
-// import A         from 'A';
-// import B         from 'B';
-// import C         from 'C';
 
 const autosteps = {
-	fallAutoStep,
-//  A,
-//  B,
-//  C
+	fallAutoStep
 };
 
-export default (autoStepsParams)=>{
+export default autoStepsParams => {
 	
 	let _autosteps = {};
 

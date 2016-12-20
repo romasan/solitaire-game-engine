@@ -21,11 +21,9 @@ let tipTypes = [
 
 let _tips = [];
 
-let getTips = () => {
-	return _tips;
-}
+let getTips = e => _tips;
 
-let checkTips = () => {
+let checkTips = e => {
 
 	if(share.get('noTips')) {
 		return false;
@@ -40,7 +38,7 @@ let checkTips = () => {
 	});
 
 	if(
-		_tips.length === 0                         &&
+		_tips.length == 0                          &&
 		share.get('stepType') == defaults.stepType
 	) {
 		
@@ -58,14 +56,14 @@ let checkTips = () => {
 			// TODO инициализировать "hideTipsInDom" в Field.js 
 			if(
 				(
-					_tips[i].to.count === 0                             &&
+					_tips[i].to.count === 0                         &&
 					Field.tipsParams.hideOnEmpty
-				)                                                       ||
+				)                                                   ||
 				(
-					Field.tipsParams.excludeHomeGroups                 &&
-					_homeGroups                                         &&
-					_homeGroups.length                                  &&
-					_homeGroups.indexOf(_tips[i].from.deck.parent) >= 0
+					Field.tipsParams.excludeHomeGroups              &&
+					_homeGroups                                     &&
+					_homeGroups.length                              &&
+					_homeGroups.includes(_tips[i].from.deck.parent)
 				)
 			) {
 				// ?#$%&!
@@ -78,7 +76,7 @@ let checkTips = () => {
 				
 			}
 			
-			if(_homeGroups.indexOf(_tips[i].to.deck.parent) >= 0) {
+			if(_homeGroups.includes(_tips[i].to.deck.parent)) {
 				event.dispatch('showTip', {
 					el   : _tips[i].from.card, 
 					type : 'tipToHome'
@@ -95,7 +93,7 @@ event.listen('checkTips', checkTips);
 
 // --------------------------------------------------------
 
-let showTips = (data) => {
+let showTips = data => {
 	
 	_showTips = true;
 	
@@ -107,7 +105,7 @@ let showTips = (data) => {
 };
 event.listen('tipsON', showTips);
 
-let hideTips = (data) => {
+let hideTips = data => {
 	
 	_showTips = false;
 	
@@ -121,7 +119,7 @@ event.listen('tipsOFF', hideTips);
 
 // --------------------------------------------------------
 
-let tipsMove = (data) => {
+let tipsMove = data => {
 
 	if(!share.get('showTipPriority')) {
 		return;
@@ -152,7 +150,7 @@ let tipsMove = (data) => {
 
 // --------------------------------------------------------
 
-let tipsDestination = (data) => {
+let tipsDestination = data => {
 
 	if(share.get('showTipsDestination')) {
 
@@ -172,11 +170,11 @@ let tipsDestination = (data) => {
 	}
 };
 
-let checkFrom = (_from) => {
+let checkFrom = from => {
 
 	for(let i in _tips) {
 		if(
-			_tips[i].from.deck.name == _from
+			_tips[i].from.deck.name == from
 		) {
 			return true;
 		}
@@ -185,12 +183,12 @@ let checkFrom = (_from) => {
 	return false;
 };
 
-let fromTo = (_from, _to) => {
+let fromTo = (from, to) => {
 	
 	for(let i in _tips) {
 		if(
-			_tips[i].from.deck.name == _from &&
-			_tips[i].to.deck.name   == _to
+			_tips[i].from.deck.name == from &&
+			_tips[i].to  .deck.name == to
 		) {
 			return true;
 		}
@@ -206,7 +204,6 @@ export default {
 	showTips       ,
 	hideTips       ,
 	tipsMove       ,
-//  tiprFrom       ,// TODO
 	checkFrom      ,
 	fromTo         ,
 	tipsDestination

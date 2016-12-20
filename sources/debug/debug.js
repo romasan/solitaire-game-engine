@@ -10,7 +10,7 @@ import field         from 'field'        ;
 import elRender      from 'elRender'     ;
 import mapCommon     from 'mapCommon'    ;
 import history       from 'history'      ;
-import state         from 'state'        ;
+import stateManager  from 'stateManager' ;
 
 import renderTest    from 'renderTest'   ;
 
@@ -95,6 +95,13 @@ let _log = (text, color, e) => {
 // 	_log('stepType:' + e, 'yellow');
 // })
 
+// event.listen('saveSteps', e => {
+// 	if(window.xxx) {
+// 		throw new Error('saveSteps');
+// 	}
+// 	_log('saveSteps', 'yellow');
+// });
+
 // event.listen('shareSet:curLockState', (e) => {
 // 	_log('curLockState:' + e, '#aaffaa');
 // });
@@ -111,41 +118,38 @@ let _log = (text, color, e) => {
 // 	_log('gameInit (' + ((a.eventInfo.index | 0) + 1) + ', ' + a.eventInfo.count + ')', '#ff7777');
 // });
 
-event.listen('startSession', (e) => {
-	_log('start', 'red', e);
-});
+// event.listen('startSession', (e) => {
+// 	_log('start', 'red', e);
+// });
 
-event.listen('stopSession', () => {
-	_log('stop', 'green');
-});
+// event.listen('stopSession', () => {
+// 	_log('stop', 'green');
+// });
 
-document.onwheel = (e) => {
+// document.onwheel = (e) => {
 
-  let area = null;
-  // if (e.target.id == 'log_1') {
-  // 	area = e.target;
-  // } else 
-  if(e.target.parentNode.id == 'log_1') {
-  	area = e.target.parentNode;
-  } else {
-  	return;
-  }
+// 	let area = null;
+// 		// if (e.target.id == 'log_1') {
+// 		// 	area = e.target;
+// 		// } else 
+// 		if(e.target.parentNode.id == 'log_1') {
+// 		area = e.target.parentNode;
+// 	} else {
+// 		return;
+// 	}
 
-  let delta = e.deltaY || e.detail || e.wheelDelta;
+// 	let delta = e.deltaY || e.detail || e.wheelDelta;
 
-  area.scrollTop = area.scrollTop + delta;
+// 	area.scrollTop = area.scrollTop + delta;
 
-  // if (delta < 0 && area.scrollTop == 0) {
-    e.preventDefault();
-  // }
+// 	// if (delta < 0 && area.scrollTop == 0) {
+// 	e.preventDefault();
+// 	// }
 
-  // if (delta > 0 && area.scrollHeight - area.clientHeight - area.scrollTop <= 1) {
-    e.preventDefault();
-  // }
-  
-};
-
-// --
+// 	// if (delta > 0 && area.scrollHeight - area.clientHeight - area.scrollTop <= 1) {
+// 	e.preventDefault();
+// 	// }
+// };
 
 class debugHistoryMgrClass {
 
@@ -242,7 +246,7 @@ export default {
 	validateCardName : common.validateCardName,
 	elRender                                  ,
 	defaults                                  ,
-	state                                     ,
+	stateManager                              ,
 	history                                   ,
 	field                                     ,
 	groupGenerators : {

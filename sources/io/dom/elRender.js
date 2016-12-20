@@ -6,56 +6,62 @@
 
 import defaults from 'defaults';
 import share    from 'share';
+import event    from 'event';
 
 import elClass    from 'elClass';
 import allElClass from 'allElClass';
 
-share.set('animatedElements'     , 0       );
-share.set('animatedElementsStack', []      );
-share.set('animatedCallback'     , () => {});
+share.set('animatedElements'     , 0        );
+share.set('animatedElementsStack', []       );
+share.set('animatedCallback'     , e => null);
 
-var _allEl = (e) => {
+let _allEl = data => {
 
-	if(!e) {
+	if(!data) {
 		throw new Error("elRender:empty arguments");
 	}
 	
-	if(typeof e == "string") {
+	if(typeof data == "string") {
 
 		try {
 			
-			if(e[0] == "#") {
+			if(data[0] == "#") {
 				
-				let _element = document.getElementById(e.slice(1, Infinity));
-				return new elClass(_element);
-			
-			} else if(e[0] == ".") {
+				let _element = document.getElementById(data.slice(1, Infinity));
+
+				return new elClass(_element);			
+			} else if(data[0] == ".") {
 				
-				let _elements = document.getElementsByClassName(e.slice(1, Infinity));
-				return new allElClass(_elements);
-			
-			} else if(e[0] == "<") {
+				let _elements = document.getElementsByClassName(data.slice(1, Infinity));
+
+				return new allElClass(_elements);			
+			} else if(data[0] == "<") {
 				
 				let _temp = document.createElement('temp');
-				_temp.innerHTML = e;
+				_temp.innerHTML = data;
 				let _element = _temp.children[0];
-				return new elClass(_element);
-			
+
+				return new elClass(_element);			
 			}
-		} catch(e) {}
+		} catch(data) {}
 		
-	} else if(e.el || e.elements) {
-		return e;
+	} else if(data.el || data.elements) {
+		return data;
 	} else {
-		return new elClass(e);
+		return new elClass(data);
 	}
 };
 
-_allEl.stopAnimations = (callback) => {
+_allEl.stopAnimations = e => {
 
 	_allEl(".animated")
-		.css({transition: '0s'}) // false
+		// .css({transition: '0s'})
+		.css({
+			'transition': false
+		})
 		.removeClass("animated");
 };
+
+event.listen('stopAnimations', _allEl.stopAnimations);
 
 export default _allEl;

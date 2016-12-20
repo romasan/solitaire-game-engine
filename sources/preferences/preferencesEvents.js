@@ -7,14 +7,17 @@ import defaults        from 'defaults';
 import storage         from 'storage';
 import gamePreferences from 'gamePreferences';
 
-let onShowParameters = () => {
+let onShowParameters = e => {
 
 	let pref = storage.get('pref');
 	!pref && (pref = defaults.pref);
 
-	for(var prefName in defaults.themes) {
+	for(let prefName in defaults.themes) {
 
-		let _pref = pref[prefName] && defaults.themes[prefName].indexOf(pref[prefName]) >= 0 ? pref[prefName] : defaults.pref[prefName];
+		let _pref = pref[prefName] && defaults.themes[prefName].includes(pref[prefName])
+			? pref[prefName]
+			: defaults.pref[prefName];
+
 		$(`input[name='pref_${prefName}'][value='${(_pref).toString()}']`)
 			.prop({checked: true});
 	}
@@ -22,10 +25,11 @@ let onShowParameters = () => {
 	gamePreferences.show(pref);
 };
 
-let applyParameters = () => {
+let applyParameters = e => {
 	
-	var pref = {};
-	for(var prefName in defaults.themes) {
+	let pref = {};
+
+	for(let prefName in defaults.themes) {
 		let _value = $(`input[name='pref_${prefName}']:checked`).val();
 		_value = _value == "true" ? true : _value == "false" ? false : _value;
 		pref[prefName] = _value;
@@ -46,11 +50,11 @@ let applyParameters = () => {
 	}
 };
 
-let saveParameters = (pref) => {
+let saveParameters = pref => {
 	storage.set('pref', pref);
 };
 
-export default () => {
+export default e => {
 	
 	// TODO переделать без jQuery
 

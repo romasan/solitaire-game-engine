@@ -7,15 +7,21 @@ import defaults from 'defaults';
 
 import elRender from 'elRender';
 
-let angleValidate = (_angle) => {
+/*
+ * moveDragDeck
+ * moveDragDeckDone
+ * dragDeck
+ */
 
-	if(_angle < 0  ) { _angle += 360; }
-	if(_angle > 360) { _angle -= 360; }
+let angleValidate = angle => {
 
-	return _angle;
+	if(angle < 0  ) { angle += 360; }
+	if(angle > 360) { angle -= 360; }
+
+	return angle;
 };
 
-event.listen('moveDragDeck', (data) => {
+event.listen('moveDragDeck', data => {
 
 	common.curLock();
 
@@ -25,7 +31,7 @@ event.listen('moveDragDeck', (data) => {
 
 		let _position = data.destination.padding(data.destination.cards.length - 1 + (i | 0));
 
-		let departureAngle   = angleValidate(data.departure	.rotate), 
+		let departureAngle   = angleValidate(data.departure	 .rotate), 
 		    destinationAngle = angleValidate(data.destination.rotate);
 
 		let _cardDomElement = share.get('domElement:' + data.moveDeck[i].card.id);
@@ -85,9 +91,9 @@ event.listen('moveDragDeck', (data) => {
 
 // --------------------------------------------------------------------------------------------------------
 
-event.listen('moveDragDeckDone', (data) => {
+event.listen('moveDragDeckDone', data => {
 
-	if(!data.deck.fill) {
+	if(!data.deck.full) {
 		return;
 	}
 
@@ -98,13 +104,13 @@ event.listen('moveDragDeckDone', (data) => {
 		let _cardDomElement = share.get('domElement:' + _deck[i].id);
 
 		elRender(_cardDomElement)
-			.addClass('fill')
+			.addClass('full')
 	}
 });
 
 // --------------------------------------------------------------------------------------------------------
 
-event.listen('dragDeck', (data) => {// {x, y, _dragDeck, _startCursor, _deck}
+event.listen('dragDeck', data => {// {x, y, _dragDeck, _startCursor, _deck}
 
 	for(let i in data._dragDeck) {
 			let _position = data._deck.padding(data._dragDeck[i].index);

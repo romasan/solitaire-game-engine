@@ -1,9 +1,16 @@
 'use strict';
 
-// var events = {};
+/*
+ * listen
+ * dispatch
+ * clear
+ * setTag
+ * clearByTag
+ * get
+ * has
+ */
 
 class Event {
-// export default new function() {
 
 	constructor() {
 
@@ -165,7 +172,4 @@ class Event {
 	// log() {}
 };
 
-// let _event = new Event();
-// _event.listen = console.log;
-// export default _event;
 export default new Event();

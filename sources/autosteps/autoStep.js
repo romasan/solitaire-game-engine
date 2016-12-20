@@ -57,7 +57,7 @@ export default class {
 		if(this.dispatch) {
 			event.dispatch(this.dispatch, {
 				stepType: share.get('stepType'),
-				callback: () => {
+				callback: e => {
 					share.set('stepType', defaults.stepType);
 				}
 			});
@@ -74,8 +74,8 @@ export default class {
 		this.stepType = stepType;
 
 		if(this.event) {
-			event.listen(this.event, (e) => {
-				this.start(e);
+			event.listen(this.event, data => {
+				this.start(data);
 			});
 		}
 		

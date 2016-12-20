@@ -2,8 +2,12 @@
 
 import event from 'event';
 
-export default
-class deckAction {
+/*
+ * run
+ * end
+ * break
+ */
+export default class deckAction {
 	
 	constructor() {}
 
@@ -13,5 +17,7 @@ class deckAction {
 		event.dispatch('stopSession');
 	}
 
-	break() {}
+	break() {
+		// TODO
+	}
 }

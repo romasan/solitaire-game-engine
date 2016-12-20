@@ -18,7 +18,7 @@ const opposite = [
 	{down  : 'up'   }
 ];
 
-export default (data) => {// {x, y, map, mapSize, el, data}
+export default data => {// {x, y, map, mapSize, el, data}
 
 	let _relations = [];
 
@@ -26,8 +26,8 @@ export default (data) => {// {x, y, map, mapSize, el, data}
 	
 	for(let i in data.data.directions) {
 		if(
-			_directions.indexOf(data.data.directions[i]) < 0           && // этого направления ещё не было
-			_directions.indexOf(opposite[data.data.directions[i]]) < 0    // противоположного направления тоже не было
+			!_directions.includes(data.data.directions[i])           && // этого направления ещё не было
+			!_directions.includes(opposite[data.data.directions[i]])    // противоположного направления тоже не было
 		) {
 			_directions.push(data.data.directions[i]);
 		}
@@ -42,8 +42,8 @@ export default (data) => {// {x, y, map, mapSize, el, data}
 			
 			case 'left' :
 			
-				x = (data.x|0) + mapCommon.beSide.left.x;
-				y = (data.y|0) + mapCommon.beSide.left.y;
+				x = (data.x | 0) + mapCommon.beSide.left.x;
+				y = (data.y | 0) + mapCommon.beSide.left.y;
 			
 				if(mapCommon.exist(x, y, data.mapSize, data.map)) {
 					_relations.push({
@@ -57,8 +57,8 @@ export default (data) => {// {x, y, map, mapSize, el, data}
 			
 			case 'right':
 			
-				x = (data.x|0) + mapCommon.beSide.right.x;
-				y = (data.y|0) + mapCommon.beSide.right.y;
+				x = (data.x | 0) + mapCommon.beSide.right.x;
+				y = (data.y | 0) + mapCommon.beSide.right.y;
 			
 				if(mapCommon.exist(x, y, data.mapSize, data.map)) {
 					_relations.push({
@@ -72,8 +72,8 @@ export default (data) => {// {x, y, map, mapSize, el, data}
 			
 			case 'up'   :
 			
-				x = (data.x|0) + mapCommon.beSide.up.x;
-				y = (data.y|0) + mapCommon.beSide.up.y;
+				x = (data.x | 0) + mapCommon.beSide.up.x;
+				y = (data.y | 0) + mapCommon.beSide.up.y;
 			
 				if(mapCommon.exist(x, y, data.mapSize, data.map)) {
 					_relations.push({
@@ -87,8 +87,8 @@ export default (data) => {// {x, y, map, mapSize, el, data}
 			
 			case 'down' :
 			
-				x = (data.x|0) + mapCommon.beSide.down.x;
-				y = (data.y|0) + mapCommon.beSide.down.y;
+				x = (data.x | 0) + mapCommon.beSide.down.x;
+				y = (data.y | 0) + mapCommon.beSide.down.y;
 			
 				if(mapCommon.exist(x, y, data.mapSize, data.map)) {
 					_relations.push({

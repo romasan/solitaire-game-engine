@@ -1,51 +1,51 @@
 'use strict';
 
-export default function(cardNames) {
+export default (group, cardNames) => {
 
 	let deckIndex = [];
 	let _decksLength = 0;
 
 	// создаём карты из списка cardNames в порядке очерёдности колод (по одной карте)
-	for(let i in this.decks) {
+	for(let i in group.decks) {
 		_decksLength += 1;
 		deckIndex.push(null);
 	};
 	
 	// если параметр groupIndex не выходит за рамки занимаем соответствующий порядковый номер
-	for(let i in this.decks) {
-		if(this.decks[i].groupIndex && this.decks[i].groupIndex <= _decksLength) {
-			deckIndex[this.decks[i].groupIndex - 1] = true;
+	for(let i in group.decks) {
+		if(group.decks[i].groupIndex && group.decks[i].groupIndex <= _decksLength) {
+			deckIndex[group.decks[i].groupIndex - 1] = true;
 		};
 	};
 	
 	// если нет параметра groupIndex (начинается с 1) ставим первый свободный порядковый номер
-	for(let i in this.decks) {
-		if(!this.decks[i].groupIndex) {
+	for(let i in group.decks) {
+		if(!group.decks[i].groupIndex) {
 			let _index = 0;
 			for(;deckIndex[_index] != null;_index += 1) {}
-			deckIndex[_index] = this.decks[i].id;
+			deckIndex[_index] = group.decks[i].id;
 		};
 	};
 
 	// если параметр groupIndex не выходит за рамки ставим соответствующий порядковый номер
-	for(let i in this.decks) {
-		if(this.decks[i].groupIndex && this.decks[i].groupIndex <= _decksLength) {
-			deckIndex[this.decks[i].groupIndex - 1] = this.decks[i].id;
+	for(let i in group.decks) {
+		if(group.decks[i].groupIndex && group.decks[i].groupIndex <= _decksLength) {
+			deckIndex[group.decks[i].groupIndex - 1] = group.decks[i].id;
 		};
 	};
 
 	// если параметр groupIndex выходит за рамки запоминаем...
 	let _decksWithBigIndex = {}
-	for(let i in this.decks) {
-		if(this.decks[i].groupIndex && this.decks[i].groupIndex > _decksLength) {
-			_decksWithBigIndex[this.decks[i].groupIndex - 1] = this.decks[i].id;
+	for(let i in group.decks) {
+		if(group.decks[i].groupIndex && group.decks[i].groupIndex > _decksLength) {
+			_decksWithBigIndex[group.decks[i].groupIndex - 1] = group.decks[i].id;
 		};
 	};
 	// ...и сортируем
 	for(let i in _decksWithBigIndex) {
 		let _index = 0;
 		for(;deckIndex[_index] != null;_index += 1) {}
-		deckIndex[_index] = this.decks[_decksWithBigIndex[i]].id;
+		deckIndex[_index] = group.decks[_decksWithBigIndex[i]].id;
 	};
 
 	// сморим являются ли элементы названиями карт (строкой)
@@ -61,7 +61,7 @@ export default function(cardNames) {
 
 			let _index = deckIndex[i % deckIndex.length];
 			
-			this.decks[_index].genCardByName(cardNames[i]);
+			group.decks[_index].genCardByName(cardNames[i]);
 		}
 	// если нужно добавить несколько групп карт
 	} else {
@@ -71,7 +71,7 @@ export default function(cardNames) {
 
 	 			// console.log('fillDeck', deckIndex[i].name, cardNames[i]);
 
-	 			this.decks[deckIndex[i]].Fill(cardNames[i]);
+	 			group.decks[deckIndex[i]].Fill(cardNames[i]);
 	 		};
 	 	};
 	};
