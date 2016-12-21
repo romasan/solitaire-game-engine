@@ -111,7 +111,7 @@ var SolitaireEngine =
 	exports.options = _defaults2.default;
 	exports.winCheck = _winCheck2.default.hwinCheck;
 	exports.generator = _deckGenerator2.default;
-	exports.version = (9091493372).toString().split(9).slice(1).map(function (e) {
+	exports.version = (9091493377).toString().split(9).slice(1).map(function (e) {
 		return parseInt(e, 8);
 	}).join('.');
 	
@@ -528,7 +528,7 @@ var SolitaireEngine =
 		"locale": "ru",
 	
 		"animation": true,
-		"animationTime": 600, // time in milliseconds
+		"animationTime": 400, // time in milliseconds
 	
 		"inputParams": {
 			"doubleClick": false
@@ -9964,11 +9964,17 @@ var SolitaireEngine =
 	_event2.default.listen('dragDeck', function (data) {
 		// {x, y, _dragDeck, _startCursor, _deck}
 	
+		console.log('>>>', data.x, data.y);
+	
 		for (var i in data._dragDeck) {
+	
+			var _zoom = _share2.default.get('zoom');
+	
 			var _position = data._deck.padding(data._dragDeck[i].index);
+	
 			var _params = {
-				'left': _position.x + (data.x - data._startCursor.x) + 'px',
-				'top': _position.y + (data.y - data._startCursor.y) + 'px',
+				'left': _position.x + (data.x - data._startCursor.x) / _zoom + 'px',
+				'top': _position.y + (data.y - data._startCursor.y) / _zoom + 'px',
 				'z-index': _defaults2.default.topZIndex + (i | 0)
 			};
 	

@@ -112,11 +112,17 @@ event.listen('moveDragDeckDone', data => {
 
 event.listen('dragDeck', data => {// {x, y, _dragDeck, _startCursor, _deck}
 
+	console.log('>>>', data.x, data.y);
+
 	for(let i in data._dragDeck) {
+
+			let _zoom = share.get('zoom');
+
 			let _position = data._deck.padding(data._dragDeck[i].index);
+
 			let _params = {
-				'left'    : (_position.x + (data.x - data._startCursor.x)) + 'px',
-				'top'     : (_position.y + (data.y - data._startCursor.y)) + 'px',
+				'left'    : (_position.x + (data.x - data._startCursor.x) / _zoom) + 'px',
+				'top'     : (_position.y + (data.y - data._startCursor.y) / _zoom) + 'px',
 				'z-index' : defaults.topZIndex + (i | 0)
 			}
 
