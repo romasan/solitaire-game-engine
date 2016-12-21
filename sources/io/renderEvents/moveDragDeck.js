@@ -112,8 +112,6 @@ event.listen('moveDragDeckDone', data => {
 
 event.listen('dragDeck', data => {// {x, y, _dragDeck, _startCursor, _deck}
 
-	console.log('>>>', data.x, data.y);
-
 	for(let i in data._dragDeck) {
 
 			let _zoom = share.get('zoom');

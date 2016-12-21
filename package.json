@@ -1,6 +1,6 @@
 {
   "name": "solitaire-engine",
-  "version": "0.12.1797",
+  "version": "0.12.1798",
   "description": "Solitaire game engine",
   "author": "Roman Bauer",
   "email": "kotapesic@gmail.com",
@@ -11,7 +11,8 @@
   },
   "scripts": {
     "build": "./scripts/clear.sh;node ./node_modules/webpack/bin/webpack.js",
-    "dev": "MODE=dev node ./node_modules/webpack/bin/webpack.js"
+    "dev": "MODE=dev node ./node_modules/webpack/bin/webpack.js",
+    "gen_module": "MODE=gen node ./node_modules/webpack/bin/webpack.js;./scripts/gen_module.sh"
   },
   "devDependencies": {
     "babel": "^6.5.2",
