@@ -238,7 +238,6 @@ class Deck {
 				if(
 					typeof _rule == "string"
 				) {
-					console.log('###', _rule, this.name);
 					full = full                                  &&
 					       typeof fullRules[_rule] == "function" &&
 					       fullRules[_rule](this);
@@ -261,6 +260,8 @@ class Deck {
 
 			this.full = full;
 		}
+
+		// console.log('checkFull', this.name, this.full);
 
 		return this.full;
 	}

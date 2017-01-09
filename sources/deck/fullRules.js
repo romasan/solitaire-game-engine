@@ -271,6 +271,14 @@ let fullRules = {
 
 	nextDeckTopCardAsc      : deck => fullRules._besideTopCard(deck, 'next', (from, to) => from.value < to.value)           ,
 
+	recoursivePrevNotEmpty  : deck => {
+		return false; // TODO
+	},
+
+	recoursiveNextNotEmpty  : deck => {
+		return false; // TODO
+	},
+
 	recoursivePrevDeckTopCardDescStep : deck => fullRules._besideTopCardRecoursive(deck, 'prev', (from, to) => from.value == (to.value | 0) + 1),
 
 	recoursivePrevDeckTopCardAscStep  : deck => fullRules._besideTopCardRecoursive(deck, 'prev', (from, to) => (from.value | 0) + 1 == to.value),

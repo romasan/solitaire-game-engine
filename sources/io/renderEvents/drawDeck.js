@@ -187,7 +187,7 @@ event.listen('redrawDeck', data => {
 	}
 
 	if(data.deck.full) {
-		console.log('redrawDeck:', data.deck.name, data.deck.full);
+		console.log('%credrawDeck:', 'background: green;', data.deck.name, data.deck.full);
 	}
 
 	// перерисовка стопки
