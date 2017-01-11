@@ -12,7 +12,10 @@ const stepType = 'kickStepType';
 class kickAction extends deckAction {
 
 	constructor() {
+
 		super();
+
+		this._actionName = 'kickAction';
 	}
 
 	run(deck, data) {
@@ -71,6 +74,8 @@ class kickAction extends deckAction {
 
 			share.set('stepType', defaults.stepType);
 
+			console.log('сюда пришли #1', data.actionData.dispatch);
+
 			if(data.actionData.dispatch) {
 				
 				event.dispatch(data.actionData.dispatch, {
@@ -97,7 +102,6 @@ class kickAction extends deckAction {
 			}
 		}
 		
-
 		// TODO interval
 		let forceMoveParams = {
 			from     : _from             ,
@@ -106,7 +110,7 @@ class kickAction extends deckAction {
 			flip     : true              ,
 			callback : _callback
 		};
-		
+		console.log('ну допустим начнём здесь');
 		// forceMove(forceMoveParams);
 		event.dispatch('forceMove', forceMoveParams);
 	}

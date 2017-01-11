@@ -1,0 +1,39 @@
+{
+	"moveDistance" : 15,
+	"inputParams"  : {
+		"doubleClick" : false
+	},
+	"winCheck" : {
+		"filters" : [
+			{
+				"groups" : []
+			},
+			"notEmpty"
+		],
+		"rules" : ["allFulled"]
+	},
+	"groups" : {
+		"line_1" : {
+			"position"	: {
+				"x" : 10,
+				"y" : 10
+			},
+			"placement"   : {
+				"x" : 10
+			},
+			"decks" : 10
+		}
+	},
+	"decks" : [
+		{
+			"name" : "deal_deck",
+			"takeRules" : ["not"],
+			"putRules"	: ["not"],
+			"flip"		: "all",
+			"position" : {
+				"x" : 600,
+				"y" : 400
+			},
+		}
+	]
+}

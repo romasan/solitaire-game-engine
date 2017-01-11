@@ -37,15 +37,15 @@ let winCheck = params => {
 				rulesArgs : _winCheckRules[ruleName]
 			});
 
-			rulesCorrect = rulesCorrect && _result;
+			rulesCorrect &= _result;
 
 		} else {
-			rulesCorrect = rulesCorrect && winCheckRules.newerWin();
+			rulesCorrect &= winCheckRules.newerWin();
 		}
 	}
 
 	if(!_hasRules) {
-		rulesCorrect = rulesCorrect && winCheckRules.newerWin();
+		rulesCorrect &= winCheckRules.newerWin();
 	}
 
 	if(rulesCorrect) {

@@ -18,6 +18,7 @@ export default data => {
 			};
 		};
 	} else {
+
 		for(let deckId in _elements) {
 			if(_elements[deckId].type == 'deck') {
 				_decks[deckId] = _elements[deckId];

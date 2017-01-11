@@ -1,8 +1,9 @@
 'use strict';
 
-import event    from 'event';
-import share    from 'share';
+import event    from 'event'   ;
+import share    from 'share'   ;
 import defaults from 'defaults';
+import common   from 'common'  ;
 
 /*
  * attr
@@ -188,6 +189,8 @@ export default class elClass {
 			// Thread
 			setTimeout(e => {
 
+				console.log('%canimate thread', 'background: orange;', common.getElementById(this.el.id).name);
+
 				if(_animation) {
 					this.css({
 						'transition': (animationTime / 1000) + 's'
@@ -223,7 +226,7 @@ export default class elClass {
 
 					this.addClass("animated");
 
-					this.el.addEventListener("transitionend", ()=>{
+					this.el.addEventListener("transitionend", e => {
 
 						counter -= 1;
 
@@ -232,7 +235,10 @@ export default class elClass {
 						if(!counter) {
 
 							this.removeClass("animated");
-							this.css({transition: null});
+
+							this.css({
+								transition: null
+							});
 
 							if(typeof callback == "function") {
 								callback();

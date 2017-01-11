@@ -23,11 +23,13 @@ class inputs {
 		try {
 
 			document.onmousedown = data => {
-				
+
 				if(data.button !== 0) {
 					return;
 				}
-				
+
+				console.log('down');
+
 				this.take(data.target, data.clientX, data.clientY);
 			};
 
@@ -38,6 +40,10 @@ class inputs {
 			document.onmouseup = data => {
 				this.put(data.target, data.clientX, data.clientY);
 			};
+
+			// document.mouseleave = data => {
+			// 	console.log('mouseleave:', data);
+			// }
 
 			// TODO
 			// Решение: (if distance > 0)
@@ -62,10 +68,10 @@ class inputs {
 			document.ondblclick = data => {
 
 				event.dispatch('stopAnimations');
-				
+
 				this.take(data.target, data.clientX, data.clientY);
 				this.put(data.target, data.clientX, data.clientY, true);
-				
+
 				common.curUnLock();
 			};
 
@@ -101,9 +107,9 @@ class inputs {
 			_dragDeck[0].card        &&
 			_dragDeck[0].card.parent
 		) {
-			
+
 			let _deck = Deck.getDeckById(_dragDeck[0].card.parent)
-			
+
 			if(_deck) {
 				_deck.Redraw();
 			}
@@ -130,9 +136,9 @@ class inputs {
 		if( target.className.split(' ').includes('slot') ) {
 
 			let _id   = target.id,
-			
+
 			_deck = common.getElementById(_id);
-			
+
 			if(_deck) {
 				event.dispatch('click', {
 					to: _deck
@@ -179,7 +185,7 @@ class inputs {
 		if(common.isCurLock()) {
 			return;
 		}
-		
+
 		let _startCursor = share.get('startCursor'),
 		    _dragDeck    = share.get('dragDeck');
 
@@ -272,11 +278,15 @@ class inputs {
 		let _dop = document.elementFromPoint(x, y);
 		event.dispatch('showCard', target);
 
+		console.log('###', _dop);
+
+		// if(_dop && _dop.id) {
 		event.dispatch('Move', {
 			moveDeck   : _dragDeck,
-			to         : _dop.id,
+			to         : _dop && _dop.id ? _dop.id : 'mat',
 			cursorMove
 		});
+		// }
 
 		share.set('dragDeck',    null);
 		share.set('startCursor', null);

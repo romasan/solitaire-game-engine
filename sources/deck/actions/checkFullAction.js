@@ -13,7 +13,10 @@ class checkFullAction extends deckAction {
 
 	run(deck, data) {
 
-		if(data.eventData.to.name != deck.name) {
+		if(
+			data.eventData.to.name != deck.name &&
+			!data.actionData.any
+		) {
 			return false;
 		}
 
@@ -30,8 +33,6 @@ class checkFullAction extends deckAction {
 				for(let groupName of _query.groups) {
 
 					let _group = Group.getByName(groupName);
-
-					let _decks = _group.getDecks();
 
 					if(_select == 'first') {
 
@@ -59,7 +60,7 @@ class checkFullAction extends deckAction {
 
 						let _decks = _group.getDecks();
 
-						_selectedDecks.concat(_decks);
+						_selectedDecks = _selectedDecks.concat(_decks);
 					}
 				}
 			}
@@ -75,12 +76,13 @@ class checkFullAction extends deckAction {
 					}
 				}
 			}
-
 			for(let deckIndex in _selectedDecks) {
 
 				let deck = _selectedDecks[deckIndex];
 
-				if( deck.checkFull() ) {
+				if(
+					deck.checkFull()
+				) {
 					deck.Redraw();
 				}
 			}

@@ -62,6 +62,7 @@ event.listen('moveDragDeck', data => {
 
 		let _zIndex = (defaults.topZIndex | 0) + (i | 0);
 
+		console.log('а теперь здеся', data.moveDeck.map(e => e.card.name), data.debug);
 		let _callback = function(data, _last) {
 
 			data.departure	.Redraw();
@@ -113,10 +114,14 @@ event.listen('moveDragDeckDone', data => {
 event.listen('dragDeck', data => {// {x, y, _dragDeck, _startCursor, _deck}
 
 	for(let i in data._dragDeck) {
+
+			let _zoom = share.get('zoom');
+
 			let _position = data._deck.padding(data._dragDeck[i].index);
+
 			let _params = {
-				'left'    : (_position.x + (data.x - data._startCursor.x)) + 'px',
-				'top'     : (_position.y + (data.y - data._startCursor.y)) + 'px',
+				'left'    : (_position.x + (data.x - data._startCursor.x) / _zoom) + 'px',
+				'top'     : (_position.y + (data.y - data._startCursor.y) / _zoom) + 'px',
 				'z-index' : defaults.topZIndex + (i | 0)
 			}
 

@@ -242,6 +242,30 @@ let winCheckRules = {
 		return winCheckRules._asc_desk(data);
 	},
 
+	topKing    : data => {
+
+		for(let i in data.decks) {
+
+			let deck = data.decks[i];
+
+			let topCard = deck.getTopCard();
+
+			let topCardRank = common.validateCardName(topCard.name).rank;
+			console.log('topKing', deck.name, topCardRank, defaults.card.ranks[defaults.card.ranks.length - 1]);
+
+			if(
+				typeof topCardRank != "undefined"                                  &&
+				topCardRank != defaults.card.ranks[defaults.card.ranks.length - 1]
+			) {
+				return false;
+			}
+		}
+
+		return true;
+	},
+
+	topAce     : data => false,
+
 	// Composite rules (input arguments)
 
 	// комбинированное правило
