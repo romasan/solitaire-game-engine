@@ -111,7 +111,7 @@ var SolitaireEngine =
 	exports.options = _defaults2.default;
 	exports.winCheck = _winCheck2.default.hwinCheck;
 	exports.generator = _deckGenerator2.default;
-	exports.version = (9091493500).toString().split(9).slice(1).map(function (e) {
+	exports.version = (9091493502).toString().split(9).slice(1).map(function (e) {
 		return parseInt(e, 8);
 	}).join('.');
 	
@@ -653,6 +653,8 @@ var SolitaireEngine =
 						return;
 					}
 	
+					console.log('down');
+	
 					_this.take(data.target, data.clientX, data.clientY);
 				};
 	
@@ -663,6 +665,10 @@ var SolitaireEngine =
 				document.onmouseup = function (data) {
 					_this.put(data.target, data.clientX, data.clientY);
 				};
+	
+				// document.mouseleave = data => {
+				// 	console.log('mouseleave:', data);
+				// }
 	
 				// TODO
 				// Решение: (if distance > 0)
@@ -899,11 +905,15 @@ var SolitaireEngine =
 				var _dop = document.elementFromPoint(x, y);
 				_event2.default.dispatch('showCard', target);
 	
+				console.log('###', _dop);
+	
+				// if(_dop && _dop.id) {
 				_event2.default.dispatch('Move', {
 					moveDeck: _dragDeck,
-					to: _dop.id,
+					to: _dop && _dop.id ? _dop.id : 'mat',
 					cursorMove: cursorMove
 				});
+				// }
 	
 				_share2.default.set('dragDeck', null);
 				_share2.default.set('startCursor', null);
@@ -4608,6 +4618,7 @@ var SolitaireEngine =
 		}, {
 			key: 'end',
 			value: function end() {
+				console.log('end action:', this._actionName);
 				_event2.default.dispatch('stopSession');
 			}
 		}, {
@@ -4890,7 +4901,7 @@ var SolitaireEngine =
 	var forceMove = function forceMove(data) {
 		// {from, to, deck, <flip>, <callback>}
 	
-		// console.log('forceMove', data);
+		console.log('forceMove', _share2.default.get('stepType'));
 	
 		if (!data.from || !data.to || !data.deck) {
 			return;
@@ -4950,9 +4961,12 @@ var SolitaireEngine =
 				departure: deckFrom,
 				destination: deckTo
 			};
+			var _time = new Date();
+			console.log('йа тут', _time, _time.getMilliseconds());
 	
 			if (typeof data.callback == "function") {
 				moveDragDeckParams.callback = function (e) {
+					console.log('йа каллбэк из форсМува');
 					_event2.default.dispatch('forceMoveEnd');
 					data.callback();
 				};
@@ -4961,7 +4975,8 @@ var SolitaireEngine =
 					_event2.default.dispatch('forceMoveEnd');
 				};
 			}
-	
+			console.log('>>> forceMove:moveDragDeck >>>');
+			moveDragDeckParams.debug = 'проверочка';
 			_event2.default.dispatch('moveDragDeck', moveDragDeckParams);
 		} else {
 			console.warn("forceMove:Ход невозможен", data);
@@ -5024,7 +5039,10 @@ var SolitaireEngine =
 		function kickAction() {
 			_classCallCheck(this, kickAction);
 	
-			return _possibleConstructorReturn(this, (kickAction.__proto__ || Object.getPrototypeOf(kickAction)).call(this));
+			var _this = _possibleConstructorReturn(this, (kickAction.__proto__ || Object.getPrototypeOf(kickAction)).call(this));
+	
+			_this._actionName = 'kickAction';
+			return _this;
 		}
 	
 		_createClass(kickAction, [{
@@ -5085,6 +5103,8 @@ var SolitaireEngine =
 	
 					_share2.default.set('stepType', _defaults2.default.stepType);
 	
+					console.log('сюда пришли #1', data.actionData.dispatch);
+	
 					if (data.actionData.dispatch) {
 	
 						_event2.default.dispatch(data.actionData.dispatch, {
@@ -5119,7 +5139,7 @@ var SolitaireEngine =
 					flip: true,
 					callback: _callback
 				};
-	
+				console.log('ну допустим начнём здесь');
 				// forceMove(forceMoveParams);
 				_event2.default.dispatch('forceMove', forceMoveParams);
 			}
@@ -8128,6 +8148,10 @@ var SolitaireEngine =
 	
 	var Move = function Move(moveDeck, to, cursorMove) {
 	
+		console.log('MOVE', _share2.default.get('stepType'), moveDeck.map(function (e) {
+			return e.card.name;
+		}));
+	
 		_common2.default.animationDefault();
 	
 		var _deck_departure = moveDeck[0].card.parent && _common2.default.getElementById(moveDeck[0].card.parent),
@@ -8233,6 +8257,7 @@ var SolitaireEngine =
 	
 						var issetMoves = null;
 	
+						console.log('>>> Move:moveDragDeck >>>');
 						_event2.default.dispatch('moveDragDeck', {
 	
 							departure: _deck_departure,
@@ -8289,7 +8314,7 @@ var SolitaireEngine =
 				var Tip = (0, _bestTip2.default)(moveDeck, cursorMove);
 	
 				if (Tip) {
-	
+					console.log('>>> move >>>');
 					Move(moveDeck, Tip.to.deck.id, cursorMove);
 	
 					return;
@@ -8389,14 +8414,14 @@ var SolitaireEngine =
 					rulesArgs: _winCheckRules[ruleName]
 				});
 	
-				rulesCorrect = rulesCorrect && _result;
+				rulesCorrect &= _result;
 			} else {
-				rulesCorrect = rulesCorrect && _winCheckRules3.default.newerWin();
+				rulesCorrect &= _winCheckRules3.default.newerWin();
 			}
 		}
 	
 		if (!_hasRules) {
-			rulesCorrect = rulesCorrect && _winCheckRules3.default.newerWin();
+			rulesCorrect &= _winCheckRules3.default.newerWin();
 		}
 	
 		if (rulesCorrect) {
@@ -8974,6 +8999,9 @@ var SolitaireEngine =
 	
 	_allEl.stopAnimations = function (e) {
 	
+		console.log('%cSTOP ALL ANIMATIONS', 'color: red; font-weigth: bold;');
+		return;
+	
 		_allEl(".animated")
 		// .css({transition: '0s'})
 		.css({
@@ -9008,6 +9036,10 @@ var SolitaireEngine =
 	var _defaults = __webpack_require__(3);
 	
 	var _defaults2 = _interopRequireDefault(_defaults);
+	
+	var _common = __webpack_require__(5);
+	
+	var _common2 = _interopRequireDefault(_common);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
@@ -9209,6 +9241,8 @@ var SolitaireEngine =
 						// Thread
 						setTimeout(function (e) {
 	
+							console.log('%canimate thread', 'background: orange;', _common2.default.getElementById(_this.el.id).name);
+	
 							if (_animation) {
 								_this.css({
 									'transition': animationTime / 1000 + 's'
@@ -9243,7 +9277,7 @@ var SolitaireEngine =
 	
 								_this.addClass("animated");
 	
-								_this.el.addEventListener("transitionend", function () {
+								_this.el.addEventListener("transitionend", function (e) {
 	
 									counter -= 1;
 	
@@ -9252,7 +9286,10 @@ var SolitaireEngine =
 									if (!counter) {
 	
 										_this.removeClass("animated");
-										_this.css({ transition: null });
+	
+										_this.css({
+											transition: null
+										});
 	
 										if (typeof callback == "function") {
 											callback();
@@ -9949,6 +9986,9 @@ var SolitaireEngine =
 	
 			var _zIndex = (_defaults2.default.topZIndex | 0) + (i | 0);
 	
+			console.log('а теперь здеся', data.moveDeck.map(function (e) {
+				return e.card.name;
+			}), data.debug);
 			var _callback = function (data, _last) {
 	
 				data.departure.Redraw();
@@ -10039,6 +10079,8 @@ var SolitaireEngine =
 	
 	// Move card to home
 	_event2.default.listen('moveCardToHome', function (data) {
+	
+		console.log('home');
 	
 		if (_share2.default.get('lastCursorMove').distance > 0) {
 			_common2.default.curLock();

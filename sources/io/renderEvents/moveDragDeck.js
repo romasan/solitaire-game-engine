@@ -62,6 +62,7 @@ event.listen('moveDragDeck', data => {
 
 		let _zIndex = (defaults.topZIndex | 0) + (i | 0);
 
+		console.log('а теперь здеся', data.moveDeck.map(e => e.card.name), data.debug);
 		let _callback = function(data, _last) {
 
 			data.departure	.Redraw();
