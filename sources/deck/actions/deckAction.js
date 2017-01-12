@@ -14,7 +14,7 @@ export default class deckAction {
 	run() {}
 
 	end() {
-		console.log('end action:', this._actionName);
+		if(window.debug_1) console.log('end action:', this._actionName);
 		event.dispatch('stopSession');
 	}
 

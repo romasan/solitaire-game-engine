@@ -73,7 +73,7 @@ class stateManager {
 
 				for(let i in cardAttributes) {
 					let _name = cardAttributes[i];
-					_card[_name] = _decks[deckId].cards[cardId][name];
+					_card[_name] = _decks[deckId].cards[cardId][_name];
 				}
 
 				_cards.push(_card);
@@ -111,17 +111,17 @@ class stateManager {
 
 			let _cards = [];
 
-			for(let i in this._state.model[deckId].cards) {
+			for(let cardIndex in this._state.model[deckId].cards) {
 
-				let cardId = this._state.model[deckId].cards[i].id;
+				let cardId = this._state.model[deckId].cards[cardIndex].id;
 
 				let _card = common.getElementById(cardId);
 
-				if(_card.name == this._state.model[deckId].cards[i].name) {
+				if(_card.name == this._state.model[deckId].cards[cardIndex].name) {
 
-					for(let i in cardAttributes) {
-						let _name = cardAttributes[i];
-						_card[_name] = this._state.model[deckId].cards[i][name];
+					for(let attrIndex in cardAttributes) {
+						let attrName = cardAttributes[attrIndex];
+							_card[attrName] = this._state.model[deckId].cards[cardIndex][attrName];
 					}
 					
 					_cards.push(_card);

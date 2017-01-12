@@ -54,7 +54,7 @@ let _allEl = data => {
 
 _allEl.stopAnimations = e => {
 
-	console.log('%cSTOP ALL ANIMATIONS', 'color: red; font-weigth: bold;');
+	if(window.debug_1) console.log('%cSTOP ALL ANIMATIONS', 'color: red; font-weigth: bold;');
 	return;
 
 	_allEl(".animated")

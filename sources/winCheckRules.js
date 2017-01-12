@@ -167,8 +167,6 @@ let winCheckRules = {
 
 		}
 
-		console.log('asc_desk', data.asc_desk, _correct);
-
 		return _correct;
 	},
 

@@ -74,7 +74,7 @@ class kickAction extends deckAction {
 
 			share.set('stepType', defaults.stepType);
 
-			console.log('сюда пришли #1', data.actionData.dispatch);
+			if(window.debug_1) console.log('сюда пришли #1', data.actionData.dispatch);
 
 			if(data.actionData.dispatch) {
 				
@@ -110,7 +110,7 @@ class kickAction extends deckAction {
 			flip     : true              ,
 			callback : _callback
 		};
-		console.log('ну допустим начнём здесь');
+		if(window.debug_1) console.log('ну допустим начнём здесь');
 		// forceMove(forceMoveParams);
 		event.dispatch('forceMove', forceMoveParams);
 	}

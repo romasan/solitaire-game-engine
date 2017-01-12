@@ -28,7 +28,7 @@ class inputs {
 					return;
 				}
 
-				console.log('down');
+				if(window.debug_1) console.log('down');
 
 				this.take(data.target, data.clientX, data.clientY);
 			};
@@ -82,7 +82,7 @@ class inputs {
 
 			document.addEventListener('touchmove', data => {
 
-				if(share.startCursor) {
+				if(share.get('startCursor')) {
 					data.preventDefault();
 				}
 
@@ -100,7 +100,7 @@ class inputs {
 	break() {
 
 		let _dragDeck = share.get('dragDeck');
-		
+
 		if(
 			_dragDeck                &&
 			_dragDeck[0]             &&
@@ -114,7 +114,7 @@ class inputs {
 				_deck.Redraw();
 			}
 		}
-		
+
 		share.set('dragDeck',    null);
 		share.set('startCursor', null);
 
@@ -158,7 +158,7 @@ class inputs {
 					to: _deck
 				});
 			}
-			
+
 			// _deck.runActions();
 
 			// TODO
@@ -251,7 +251,7 @@ class inputs {
 		let _deck = common.getElementById(_dragDeck[0].card.parent);
 
 		let _position = _deck.padding(_dragDeck[0].index);
-		
+
 		let _distance = Math.sqrt((i => i * i)(x - _startCursor.x) + (i => i * i)(y - _startCursor.y));
 
 		let cursorMove = {
@@ -277,8 +277,6 @@ class inputs {
 		event.dispatch('hideCard', target);
 		let _dop = document.elementFromPoint(x, y);
 		event.dispatch('showCard', target);
-
-		console.log('###', _dop);
 
 		// if(_dop && _dop.id) {
 		event.dispatch('Move', {
