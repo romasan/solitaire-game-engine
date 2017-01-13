@@ -133,6 +133,8 @@ event.listen('undo', undoData => {
 
 	inputs.break();
 
+	_history.reset();
+
 	event.dispatch('stopAnimations');
 	
 	if(!undoData) {
@@ -244,6 +246,8 @@ let _redo = data => {
 event.listen('redo', redoData => {
 
 	inputs.break();
+
+	_history.reset();
 
 	event.dispatch('stopAnimations');
 

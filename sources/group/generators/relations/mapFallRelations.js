@@ -26,8 +26,8 @@ export default data => {// {x, y, map, mapSize, el, data}
 	
 	for(let i in data.data.directions) {
 		if(
-			!_directions.includes(data.data.directions[i])           && // этого направления ещё не было
-			!_directions.includes(opposite[data.data.directions[i]])    // противоположного направления тоже не было
+			!_directions.indexOf(data.data.directions[i])           >= 0 && // этого направления ещё не было
+			!_directions.indexOf(opposite[data.data.directions[i]]) >= 0    // противоположного направления тоже не было
 		) {
 			_directions.push(data.data.directions[i]);
 		}

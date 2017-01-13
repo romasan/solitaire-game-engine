@@ -133,7 +133,7 @@ class inputs {
 			return;
 		}
 
-		if( target.className.split(' ').includes('slot') ) {
+		if( target.className.split(' ').indexOf('slot') >= 0 ) {
 
 			let _id   = target.id,
 
@@ -146,7 +146,7 @@ class inputs {
 			}
 		}
 
-		if( target.className.split(' ').includes('draggable') ) {
+		if( target.className.split(' ').indexOf('draggable') >= 0 ) {
 
 			let _id     = target.id,
 			    _card   = _id                   ? common.getElementById(_id) : null,

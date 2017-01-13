@@ -13,7 +13,7 @@ import Field    from 'field';
 
 let Move = (moveDeck, to, cursorMove) => {
 
-	if(window.debug_1) console.log('MOVE', share.get('stepType'), moveDeck.map(e => e.card.name));
+	console.log('MOVE', share.get('stepType'), moveDeck.map(e => e.card.name));
 
 	common.animationDefault();
 
@@ -194,7 +194,7 @@ let Move = (moveDeck, to, cursorMove) => {
 				let Tip = bestTip(moveDeck, cursorMove);
 
 				if(Tip) {
-					if(window.debug_1) console.log('>>> move >>>');
+					console.log('>>> move >>>');
 					Move(moveDeck, Tip.to.deck.id, cursorMove);
 
 					return;

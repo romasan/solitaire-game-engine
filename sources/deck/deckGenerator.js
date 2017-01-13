@@ -112,7 +112,7 @@ export default data => {
 		_ranks = []
 
 		for(i in data.ranks) {
-			if(defaults.card.rank.includes(data.ranks[i].toString())) {
+			if(defaults.card.rank.indexOf(data.ranks[i].toString()) >= 0) {
 				_ranks.push(data.ranks[i].toString())
 			}
 		}

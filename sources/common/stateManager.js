@@ -49,7 +49,7 @@ class stateManager {
 
 			let _element = share.get(this._sourceList[i]);
 			
-			this._state[this._sourceList[i]] = ['string', 'number', 'boolean'].includes(typeof _element)
+			this._state[this._sourceList[i]] = ['string', 'number', 'boolean'].indexOf(typeof _element) >= 0
 				? _element
 				: _element instanceof Array
 					? Object.assign([], _element)

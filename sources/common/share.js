@@ -43,7 +43,7 @@ class shareClass {
 			) {
 				try {
 					// this._data[name] = Object.assign({}, data);
-					this._data[name] = ['string', 'number', 'boolean'].includes(typeof data)
+					this._data[name] = ['string', 'number', 'boolean'].indexOf(typeof data) >= 0
 					? data
 					: data instanceof Array
 						? Object.assign([], data)
@@ -77,7 +77,7 @@ class shareClass {
 				) {
 					try {
 						// this._data[_name] = Object.assign({}, name[_name]);
-						this._data[_name] = ['string', 'number', 'boolean'].includes(typeof name[_name])
+						this._data[_name] = ['string', 'number', 'boolean'].indexOf(typeof name[_name]) >= 0
 						? name[_name]
 						: name[_name] instanceof Array
 							? Object.assign([], name[_name])

@@ -111,7 +111,7 @@ var SolitaireEngine =
 	exports.options = _defaults2.default;
 	exports.winCheck = _winCheck2.default.hwinCheck;
 	exports.generator = _deckGenerator2.default;
-	exports.version = (9091493615).toString().split(9).slice(1).map(function (e) {
+	exports.version = (9091493730).toString().split(9).slice(1).map(function (e) {
 		return parseInt(e, 8);
 	}).join('.');
 	
@@ -236,7 +236,7 @@ var SolitaireEngine =
 					if (typeof forceClone == "boolean" && forceClone) {
 						try {
 							// this._data[name] = Object.assign({}, data);
-							this._data[name] = ['string', 'number', 'boolean'].includes(typeof data === 'undefined' ? 'undefined' : _typeof(data)) ? data : data instanceof Array ? Object.assign([], data) : Object.assign({}, data);
+							this._data[name] = ['string', 'number', 'boolean'].indexOf(typeof data === 'undefined' ? 'undefined' : _typeof(data)) >= 0 ? data : data instanceof Array ? Object.assign([], data) : Object.assign({}, data);
 						} catch (e) {
 							this._data[name] = data;
 						}
@@ -263,7 +263,7 @@ var SolitaireEngine =
 						if (typeof forceClone == "boolean" && forceClone) {
 							try {
 								// this._data[_name] = Object.assign({}, name[_name]);
-								this._data[_name2] = ['string', 'number', 'boolean'].includes(_typeof(name[_name2])) ? name[_name2] : name[_name2] instanceof Array ? Object.assign([], name[_name2]) : Object.assign({}, name[_name2]);
+								this._data[_name2] = ['string', 'number', 'boolean'].indexOf(_typeof(name[_name2])) >= 0 ? name[_name2] : name[_name2] instanceof Array ? Object.assign([], name[_name2]) : Object.assign({}, name[_name2]);
 							} catch (e) {
 								this._data[_name2] = name[_name2];
 							}
@@ -752,7 +752,7 @@ var SolitaireEngine =
 					return;
 				}
 	
-				if (target.className.split(' ').includes('slot')) {
+				if (target.className.split(' ').indexOf('slot') >= 0) {
 	
 					var _id = target.id,
 					    _deck = _common2.default.getElementById(_id);
@@ -764,7 +764,7 @@ var SolitaireEngine =
 					}
 				}
 	
-				if (target.className.split(' ').includes('draggable')) {
+				if (target.className.split(' ').indexOf('draggable') >= 0) {
 	
 					var _id2 = target.id,
 					    _card = _id2 ? _common2.default.getElementById(_id2) : null,
@@ -1109,12 +1109,12 @@ var SolitaireEngine =
 		    value = _defaults2.default.card.values[_defaults2.default.card.ranks.indexOf(rank)];
 	
 		for (var colorName in _defaults2.default.card.colors) {
-			if (_defaults2.default.card.colors[colorName].includes(suit)) {
+			if (_defaults2.default.card.colors[colorName].indexOf(suit) >= 0) {
 				color = colorName;
 			}
 		}
 	
-		if (_defaults2.default.card.suits.includes(suit) && _defaults2.default.card.ranks.includes(rank)) {
+		if (_defaults2.default.card.suits.indexOf(suit) >= 0 && _defaults2.default.card.ranks.indexOf(rank) >= 0) {
 			return {
 				color: color,
 				value: value,
@@ -1264,7 +1264,7 @@ var SolitaireEngine =
 	
 					var _element = _share2.default.get(this._sourceList[i]);
 	
-					this._state[this._sourceList[i]] = ['string', 'number', 'boolean'].includes(typeof _element === 'undefined' ? 'undefined' : _typeof(_element)) ? _element : _element instanceof Array ? Object.assign([], _element) : Object.assign({}, _element);
+					this._state[this._sourceList[i]] = ['string', 'number', 'boolean'].indexOf(typeof _element === 'undefined' ? 'undefined' : _typeof(_element)) >= 0 ? _element : _element instanceof Array ? Object.assign([], _element) : Object.assign({}, _element);
 				}
 	
 				this._state.model = {};
@@ -1513,7 +1513,7 @@ var SolitaireEngine =
 			for (var i in _tips) {
 	
 				// TODO инициализировать "hideTipsInDom" в Field.js 
-				if (_tips[i].to.count === 0 && _field2.default.tipsParams.hideOnEmpty || _field2.default.tipsParams.excludeHomeGroups && _homeGroups && _homeGroups.length && _homeGroups.includes(_tips[i].from.deck.parent)) {
+				if (_tips[i].to.count === 0 && _field2.default.tipsParams.hideOnEmpty || _field2.default.tipsParams.excludeHomeGroups && _homeGroups && _homeGroups.length && _homeGroups.indexOf(_tips[i].from.deck.parent) >= 0) {
 					// ?#$%&!
 				} else {
 	
@@ -1523,7 +1523,7 @@ var SolitaireEngine =
 					});
 				}
 	
-				if (_homeGroups.includes(_tips[i].to.deck.parent)) {
+				if (_homeGroups.indexOf(_tips[i].to.deck.parent) >= 0) {
 					_event2.default.dispatch('showTip', {
 						el: _tips[i].from.card,
 						type: 'tipToHome'
@@ -2597,14 +2597,16 @@ var SolitaireEngine =
 						_relation = data.decks[to].relations[relId];
 					}
 	
-					for (var from in data.decks) {
+					// TODO обратные связи
+					// затирают прямы связи в IE
+					// for(let from in data.decks) {
 	
-						if (data.decks[from].name == _relation.to) {
-							_relation.to = null;
-							_relation.from = data.decks[to].name;
-							data.decks[from].relations.push(_relation);
-						}
-					}
+					// 	if(data.decks[from].name == _relation.to) {
+					// 		_relation.to = null;
+					// 		_relation.from = data.decks[to].name;
+					// 		data.decks[from].relations.push(_relation)
+					// 	}
+					// }
 				}
 			}
 	
@@ -2950,8 +2952,6 @@ var SolitaireEngine =
 	
 					this.full = full;
 				}
-	
-				// console.log('checkFull', this.name, this.full);
 	
 				return this.full;
 			}
@@ -4489,7 +4489,7 @@ var SolitaireEngine =
 				_share2.default.set('actionEvent:' + deck.name + ':' + deck.actions[actionName].event, true);
 	
 				// создаём событие если оно еще не создано
-				if (!_events.includes(deck.actions[actionName].event)) {
+				if (!_events.indexOf(deck.actions[actionName].event) >= 0) {
 	
 					// сохраняем событие в список с уже созданными
 					_events.push(deck.actions[actionName].event);
@@ -6236,6 +6236,8 @@ var SolitaireEngine =
 	
 		_inputs2.default.break();
 	
+		_history.reset();
+	
 		_event2.default.dispatch('stopAnimations');
 	
 		if (!undoData) {
@@ -6334,6 +6336,8 @@ var SolitaireEngine =
 	_event2.default.listen('redo', function (redoData) {
 	
 		_inputs2.default.break();
+	
+		_history.reset();
 	
 		_event2.default.dispatch('stopAnimations');
 	
@@ -7050,8 +7054,8 @@ var SolitaireEngine =
 		var _directions = [];
 	
 		for (var i in data.data.directions) {
-			if (!_directions.includes(data.data.directions[i]) && // этого направления ещё не было
-			!_directions.includes(opposite[data.data.directions[i]]) // противоположного направления тоже не было
+			if (!_directions.indexOf(data.data.directions[i]) >= 0 && // этого направления ещё не было
+			!_directions.indexOf(opposite[data.data.directions[i]]) >= 0 // противоположного направления тоже не было
 			) {
 					_directions.push(data.data.directions[i]);
 				}
@@ -7909,7 +7913,7 @@ var SolitaireEngine =
 	
 		for (var prefName in _defaults2.default.themes) {
 	
-			var _pref = pref[prefName] && _defaults2.default.themes[prefName].includes(pref[prefName]) ? pref[prefName] : _defaults2.default.pref[prefName];
+			var _pref = pref[prefName] && _defaults2.default.themes[prefName].indexOf(pref[prefName]) >= 0 ? pref[prefName] : _defaults2.default.pref[prefName];
 	
 			$('input[name=\'pref_' + prefName + '\'][value=\'' + _pref.toString() + '\']').prop({ checked: true });
 		}
@@ -8092,7 +8096,7 @@ var SolitaireEngine =
 	
 			if (_defaults2.default.themes[prefName]) {
 	
-				if (!_defaults2.default.themes[prefName].includes(pref[prefName])) {
+				if (!_defaults2.default.themes[prefName].indexOf(pref[prefName]) >= 0) {
 					pref[prefName] = _defaults2.default.pref[prefName];
 				}
 			}
@@ -8147,7 +8151,7 @@ var SolitaireEngine =
 	
 	var Move = function Move(moveDeck, to, cursorMove) {
 	
-		if (window.debug_1) console.log('MOVE', _share2.default.get('stepType'), moveDeck.map(function (e) {
+		console.log('MOVE', _share2.default.get('stepType'), moveDeck.map(function (e) {
 			return e.card.name;
 		}));
 	
@@ -8313,7 +8317,7 @@ var SolitaireEngine =
 				var Tip = (0, _bestTip2.default)(moveDeck, cursorMove);
 	
 				if (Tip) {
-					if (window.debug_1) console.log('>>> move >>>');
+					console.log('>>> move >>>');
 					Move(moveDeck, Tip.to.deck.id, cursorMove);
 	
 					return;
@@ -8531,7 +8535,7 @@ var SolitaireEngine =
 	
 				// let _parent = data.decks[_i].parent
 				// if(data.filterArgs.indexOf(data.decks[_i].parent)) {
-				if (typeof data.filterArgs == "string" && data.decks[_i].parent == data.filterArgs || data.filterArgs.length && data.filterArgs.includes(data.decks[_i].parent)) {
+				if (typeof data.filterArgs == "string" && data.decks[_i].parent == data.filterArgs || data.filterArgs.length && data.filterArgs.indexOf(data.decks[_i].parent) >= 0) {
 					_decks.push(data.decks[_i]);
 				}
 			}
@@ -8559,7 +8563,7 @@ var SolitaireEngine =
 					var deck = _step.value;
 	
 					// let maxDeckIndex = Group.getGroup(deck.parent).decksCount();
-					if (deck.tags.includes(data.filterArgs)) {
+					if (deck.tags.indexOf(data.filterArgs) >= 0) {
 						_decks.push(deck);
 					}
 				}
@@ -8592,7 +8596,7 @@ var SolitaireEngine =
 			var _decks = [];
 	
 			for (var _i in data.decks) {
-				if (typeof data.filterArgs == "string" && data.decks[_i].name == data.filterArgs || data.filterArgs.includes(data.decks[_i].name)) {
+				if (typeof data.filterArgs == "string" && data.decks[_i].name == data.filterArgs || data.filterArgs.indexOf(data.decks[_i].name) >= 0) {
 					_decks.push(data.decks[_i]);
 				}
 			}
@@ -8612,7 +8616,7 @@ var SolitaireEngine =
 			var _decks = [];
 	
 			for (var _i in data.decks) {
-				if (data.decks[_i].tags.includes('last')) {
+				if (data.decks[_i].tags.indexOf('last') >= 0) {
 					_decks.push(data.decks[_i]);
 				}
 			}
@@ -8996,8 +9000,8 @@ var SolitaireEngine =
 	
 	_allEl.stopAnimations = function (e) {
 	
-		if (window.debug_1) console.log('%cSTOP ALL ANIMATIONS', 'color: red; font-weigth: bold;');
-		return;
+		console.log('%cSTOP ALL ANIMATIONS', 'color: red; font-weigth: bold;');
+		// return;
 	
 		_allEl(".animated")
 		// .css({transition: '0s'})
@@ -9094,7 +9098,7 @@ var SolitaireEngine =
 	
 					var _classes = this.el.className.split(' ');
 	
-					return _classes.includes(className);
+					return _classes.indexOf(className) >= 0;
 				} catch (e) {}
 			}
 		}, {
@@ -10077,7 +10081,7 @@ var SolitaireEngine =
 	// Move card to home
 	_event2.default.listen('moveCardToHome', function (data) {
 	
-		console.log('home');
+		if (window.debug_1) console.log('home');
 	
 		if (_share2.default.get('lastCursorMove').distance > 0) {
 			_common2.default.curLock();
@@ -10348,7 +10352,7 @@ var SolitaireEngine =
 			_ranks = [];
 	
 			for (i in data.ranks) {
-				if (_defaults2.default.card.rank.includes(data.ranks[i].toString())) {
+				if (_defaults2.default.card.rank.indexOf(data.ranks[i].toString()) >= 0) {
 					_ranks.push(data.ranks[i].toString());
 				}
 			}

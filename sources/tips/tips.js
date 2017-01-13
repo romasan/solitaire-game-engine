@@ -25,6 +25,7 @@ let getTips = e => _tips;
 
 let checkTips = e => {
 
+
 	if(share.get('noTips')) {
 		return false;
 	}
@@ -41,7 +42,7 @@ let checkTips = e => {
 		_tips.length == 0                          &&
 		share.get('stepType') == defaults.stepType
 	) {
-		
+
 		event.dispatch('noTips');
 		console.log('No possible moves.');
 	}
@@ -56,14 +57,14 @@ let checkTips = e => {
 			// TODO инициализировать "hideTipsInDom" в Field.js 
 			if(
 				(
-					_tips[i].to.count === 0                         &&
+					_tips[i].to.count === 0                             &&
 					Field.tipsParams.hideOnEmpty
-				)                                                   ||
+				)                                                       ||
 				(
-					Field.tipsParams.excludeHomeGroups              &&
-					_homeGroups                                     &&
-					_homeGroups.length                              &&
-					_homeGroups.includes(_tips[i].from.deck.parent)
+					Field.tipsParams.excludeHomeGroups                  &&
+					_homeGroups                                         &&
+					_homeGroups.length                                  &&
+					_homeGroups.indexOf(_tips[i].from.deck.parent) >= 0
 				)
 			) {
 				// ?#$%&!
@@ -75,17 +76,15 @@ let checkTips = e => {
 				});
 				
 			}
-			
-			if(_homeGroups.includes(_tips[i].to.deck.parent)) {
+
+			if(_homeGroups.indexOf(_tips[i].to.deck.parent) >= 0) {
 				event.dispatch('showTip', {
 					el   : _tips[i].from.card, 
 					type : 'tipToHome'
 				});
 			}
-
 		}
 	}
-
 };
 
 event.listen('makeStep', checkTips);
@@ -106,9 +105,9 @@ let showTips = data => {
 event.listen('tipsON', showTips);
 
 let hideTips = data => {
-	
+
 	_showTips = false;
-	
+
 	if(data && data.init) {
 		return;
 	}
@@ -179,12 +178,12 @@ let checkFrom = from => {
 			return true;
 		}
 	}
-	
+
 	return false;
 };
 
 let fromTo = (from, to) => {
-	
+
 	for(let i in _tips) {
 		if(
 			_tips[i].from.deck.name == from &&
@@ -193,7 +192,7 @@ let fromTo = (from, to) => {
 			return true;
 		}
 	}
-	
+
 	return false;
 };
 

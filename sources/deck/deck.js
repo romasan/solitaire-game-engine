@@ -261,8 +261,6 @@ class Deck {
 			this.full = full;
 		}
 
-		// console.log('checkFull', this.name, this.full);
-
 		return this.full;
 	}
 
@@ -404,6 +402,7 @@ class Deck {
 	}
 
 	getRelationsByName(relationName, filter) {
+
 
 		let _relations = [];
 

@@ -375,14 +375,16 @@ let add = data => {
 					_relation = data.decks[to].relations[relId];
 				}
 
-				for(let from in data.decks) {
+				// TODO обратные связи
+				// затирают прямы связи в IE
+				// for(let from in data.decks) {
 
-					if(data.decks[from].name == _relation.to) {
-						_relation.to = null;
-						_relation.from = data.decks[to].name;
-						data.decks[from].relations.push(_relation)
-					}
-				}
+				// 	if(data.decks[from].name == _relation.to) {
+				// 		_relation.to = null;
+				// 		_relation.from = data.decks[to].name;
+				// 		data.decks[from].relations.push(_relation)
+				// 	}
+				// }
 			}
 		}
 

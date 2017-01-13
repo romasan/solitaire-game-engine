@@ -54,7 +54,7 @@ export default class elClass {
 
 			let _classes = this.el.className.split(' ');
 
-			return _classes.includes(className);
+			return _classes.indexOf(className) >= 0;
 		} catch(e) {}
 	}
 

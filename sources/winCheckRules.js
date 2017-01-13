@@ -60,8 +60,8 @@ let winCheckRules = {
 					data.decks[_i].parent  == data.filterArgs
 				) ||
 				(
-			 		data.filterArgs.length                          &&
-			 		data.filterArgs.includes(data.decks[_i].parent)
+			 		data.filterArgs.length                              &&
+			 		data.filterArgs.indexOf(data.decks[_i].parent) >= 0
 			 	)
 			) {
 				_decks.push(data.decks[_i]);
@@ -81,7 +81,7 @@ let winCheckRules = {
 
 		for(let deck of data.decks) {
 			// let maxDeckIndex = Group.getGroup(deck.parent).decksCount();
-			if(deck.tags.includes(data.filterArgs)) {
+			if(deck.tags.indexOf(data.filterArgs) >= 0) {
 				_decks.push(deck);
 			}
 		}
@@ -101,9 +101,9 @@ let winCheckRules = {
 
 		for(let _i in data.decks) {
 			if(
-				typeof data.filterArgs == "string"            &&
-				data.decks[_i].name == data.filterArgs        ||
-				data.filterArgs.includes(data.decks[_i].name)
+				typeof data.filterArgs == "string"                &&
+				data.decks[_i].name == data.filterArgs            ||
+				data.filterArgs.indexOf(data.decks[_i].name) >= 0
 			) {
 				_decks.push(data.decks[_i]);
 			}
@@ -122,7 +122,7 @@ let winCheckRules = {
 		let _decks = [];
 		
 		for(let _i in data.decks) {
-			if(data.decks[_i].tags.includes('last')) {
+			if(data.decks[_i].tags.indexOf('last') >= 0) {
 				_decks.push(data.decks[_i]);
 			}
 		}
