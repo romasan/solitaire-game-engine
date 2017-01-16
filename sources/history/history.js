@@ -333,7 +333,12 @@ event.listen('addStep', data => {
 
 // save steps to client history
 event.listen('saveSteps', e => {
-	event.dispatch('makeStep', _history.get());
+	let data = _history.get();
+	if(data.length) {
+		event.dispatch('makeStep', data);
+	} else {
+		console.warn('Empty history to save.');
+	}
 });
 
 export default _history;

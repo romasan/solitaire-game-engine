@@ -61,19 +61,19 @@ class allToAll {
 	// 4)
 	// если получилось положить карты (с текущими правилами) записываем как возможный ход
 	put(deckIndex_2, deckIndex, cardIndex, _cards) {
-		
+
 		let _cards_to = this._decks[deckIndex_2].cards,
-			_card_to  = _cards_to.length ? _cards_to[_cards_to.length - 1] : null;
+		    _card_to  = _cards_to.length ? _cards_to[_cards_to.length - 1] : null;
 		
 		this._moves.push({
-			
+
 			from : {
 				deck     : this._decks[deckIndex],
 				card     : _cards[cardIndex] ,// firstCard of moved deck
 				count    : _cards.length
 				// deckName : this._decks[deckIndex].name
 			},
-			
+
 			to : {
 				deck     : this._decks[deckIndex_2],
 				lastCard : _card_to,

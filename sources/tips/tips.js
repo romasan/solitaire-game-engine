@@ -25,7 +25,6 @@ let getTips = e => _tips;
 
 let checkTips = e => {
 
-
 	if(share.get('noTips')) {
 		return false;
 	}
@@ -56,10 +55,10 @@ let checkTips = e => {
 
 			// TODO инициализировать "hideTipsInDom" в Field.js 
 			if(
-				(
-					_tips[i].to.count === 0                             &&
-					Field.tipsParams.hideOnEmpty
-				)                                                       ||
+				// (
+				// 	_tips[i].to.count === 0                             &&
+				// 	Field.tipsParams.hideOnEmpty
+				// )                                                       ||
 				(
 					Field.tipsParams.excludeHomeGroups                  &&
 					_homeGroups                                         &&

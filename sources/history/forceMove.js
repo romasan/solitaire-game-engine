@@ -9,8 +9,6 @@ import Tips from 'tips';
 
 let forceMove = data => {// {from, to, deck, <flip>, <callback>}
 
-	if(window.debug_1) console.log('forceMove', share.get('stepType'));
-
 	if(
 		!data.from ||
 		!data.to   ||
@@ -82,22 +80,19 @@ let forceMove = data => {// {from, to, deck, <flip>, <callback>}
 			departure   : deckFrom ,
 			destination : deckTo
 		};
-		let _time = new Date();
-		if(window.debug_1) console.log('йа тут', _time, _time.getMilliseconds());
 
 		if(typeof data.callback == "function") {
 			moveDragDeckParams.callback = e => {
-				if(window.debug_1) console.log('йа каллбэк из форсМува');
 				event.dispatch('forceMoveEnd');
 				data.callback();
 			}
+			moveDragDeckParams.debug = 'from:forceMove';
 		} else {
 			moveDragDeckParams.callback = e => {
 				event.dispatch('forceMoveEnd');
 			}
 		}
-		if(window.debug_1) console.log('>>> forceMove:moveDragDeck >>>');
-		moveDragDeckParams.debug = 'проверочка';
+		// console.log('>>> forceMove:moveDragDeck >>>');
 		event.dispatch('moveDragDeck', moveDragDeckParams);
 	} else {
 		console.warn("forceMove:Ход невозможен", data);

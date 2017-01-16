@@ -19,10 +19,10 @@ class kickAction extends deckAction {
 	}
 
 	run(deck, data) {
-		
+
 		// если тип хода не стандартный не выполнять кик
 		if(share.get('stepType') != defaults.stepType) {
-			
+
 			super.break();
 
 			return false;
@@ -33,14 +33,14 @@ class kickAction extends deckAction {
 			typeof data.eventData.stepType == "string"   &&
 			data.eventData.stepType != defaults.stepType
 		) {
-			
+
 			super.break();
 
 			return false;
 		}
 
 		if(data.eventData.to.name != deck.name) {// data.eventData.to - куда мы перетащили карты
-			
+
 			super.break();
 
 			return false;
@@ -49,11 +49,13 @@ class kickAction extends deckAction {
 		share.set('stepType', stepType);
 
 		common.animationDefault();
-		
+
 		let _from = data.eventData.to, //Deck.Deck(_name),
 		    _deck = _from.getCardsNames();
 
 		let _callback = e => {
+
+			console.log('kickAction:run:callback');
 
 			let _addStep = historyData => {
 
@@ -70,17 +72,17 @@ class kickAction extends deckAction {
 						context  : "kickAction"
 					}
 				});
-			};		
+			};
 
 			share.set('stepType', defaults.stepType);
 
 			if(window.debug_1) console.log('сюда пришли #1', data.actionData.dispatch);
 
 			if(data.actionData.dispatch) {
-				
+				console.log('kickAction:dispatch:', data.actionData.dispatch);
 				event.dispatch(data.actionData.dispatch, {
 					before: data => {
-						
+
 						_addStep({
 							undo: stepType,
 							redo: data.stepType	
@@ -90,7 +92,7 @@ class kickAction extends deckAction {
 					}
 				});
 			} else {
-				
+
 				_addStep({
 					undo: stepType,// share.get('stepType'),
 					redo: data.actionData.dispatch ? share.get('stepType') : defaults.stepType
@@ -101,7 +103,7 @@ class kickAction extends deckAction {
 				super.end();
 			}
 		}
-		
+
 		// TODO interval
 		let forceMoveParams = {
 			from     : _from             ,
@@ -110,7 +112,7 @@ class kickAction extends deckAction {
 			flip     : true              ,
 			callback : _callback
 		};
-		if(window.debug_1) console.log('ну допустим начнём здесь');
+
 		// forceMove(forceMoveParams);
 		event.dispatch('forceMove', forceMoveParams);
 	}

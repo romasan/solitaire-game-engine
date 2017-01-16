@@ -42,14 +42,14 @@ event.listen('moveDragDeck', data => {
 			})
 
 		if(departureAngle - destinationAngle > 180) {
-			
+
 			departureAngle = departureAngle - 360;
 			elRender(_cardDomElement)
 				.css({
 					'transform' : 'rotate(' + departureAngle + 'deg)'
 				})
 		};
-		
+
 		if(departureAngle - destinationAngle < -180) {
 			destinationAngle -= 360;
 		}
@@ -62,21 +62,26 @@ event.listen('moveDragDeck', data => {
 
 		let _zIndex = (defaults.topZIndex | 0) + (i | 0);
 
-		if(window.debug_1) console.log('а теперь здеся', data.moveDeck.map(e => e.card.name), data.debug);
 		let _callback = function(data, _last) {
+		// let _callback = e => {
+			console.log('moveDragDeck:callback');
 
 			data.departure	.Redraw();
 			data.destination.Redraw();
 
 			common.curUnLock();
 
-			if(_last && typeof data.callback == "function") {
+			if(
+				_last                              &&
+				typeof data.callback == "function"
+			) {
 				data.callback();
 			}
 
 			event.dispatch('moveDragDeckDone', {
 				deck : data.destination
 			});
+		// };
 		}.bind(null, data, i == _lastIndex);
 
 		elRender(_cardDomElement)
@@ -99,7 +104,7 @@ event.listen('moveDragDeckDone', data => {
 	}
 
 	let _deck = data.deck.cards;
-	
+
 	for(let i in _deck) {
 
 		let _cardDomElement = share.get('domElement:' + _deck[i].id);

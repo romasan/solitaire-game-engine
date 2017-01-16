@@ -49,7 +49,6 @@ class Event {
 		}
 	}
 
-	// this.do =
 	dispatch(eventName, data) {
 
 		if(this._events[eventName]) {

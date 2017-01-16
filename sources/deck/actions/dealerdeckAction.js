@@ -180,14 +180,13 @@ class dealerdeckAction extends deckAction {
 		};
 		
 		if(_makeStep) {
-
 			// сохраняем если паздача удалась
 			event.dispatch('saveSteps');
-
 		};
 
 		if(data.actionData.dispatch) {
 
+			console.log('dealerdeckAction:dispatch:', data.actionData.dispatch);
 			event.dispatch(data.actionData.dispatch, !_makeStep);
 		} else {
 

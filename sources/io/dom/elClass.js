@@ -17,6 +17,7 @@ import common   from 'common'  ;
  * append
  * html
  * animate
+ * stop
  * remove
  * parent
  * after
@@ -36,6 +37,9 @@ export default class elClass {
 			// if(window._debug) throw new Error("test");
 			this.el = null;
 		}
+
+		this._animationCallbacks = [];
+		this._animationIndex = 0;
 	}
 
 	attr(attributes) {
@@ -186,6 +190,10 @@ export default class elClass {
 			typeof animationTime == "function"  && (callback = animationTime, animationTime = share.get('animationTime'));
 			typeof callback      == "string"    && (animationName = callback, callback = null);
 
+			animationName = animationName ? animationName : 'animation_' + this._animationIndex;
+			this._animationCallbacks[animationName] = callback;
+			this._animationIndex += 1;
+
 			// Thread
 			setTimeout(e => {
 
@@ -240,8 +248,9 @@ export default class elClass {
 								transition: null
 							});
 
-							if(typeof callback == "function") {
-								callback();
+							if(typeof this._animationCallbacks[animationName] == "function") {
+								this._animationCallbacks[animationName]();
+								this._animationCallbacks[animationName] = null;
 							}
 
 							event.dispatch('allAnimationsEnd', animationName);
@@ -252,14 +261,19 @@ export default class elClass {
 
 					// event.dispatch('animationEnd', this);
 
-					if(typeof callback == "function") {
-						callback();
+					if(typeof this._animationCallbacks[animationName] == "function") {
+						this._animationCallbacks[animationName]();
+						this._animationCallbacks[animationName] = null;
 					}
 
 					event.dispatch('allAnimationsEnd', animationName);
 				}
 			}, 0);
 		} catch(e) {}
+	}
+
+	stop() {
+		this._animationCallbacks = [];
 	}
 
 	remove() {

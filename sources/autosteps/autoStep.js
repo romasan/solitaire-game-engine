@@ -55,6 +55,7 @@ export default class {
 	end() {
 
 		if(this.dispatch) {
+			console.log(`autostep(${this._name}):dispatch`, this.dispatch)
 			event.dispatch(this.dispatch, {
 				stepType: share.get('stepType'),
 				callback: e => {

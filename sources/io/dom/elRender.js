@@ -58,6 +58,7 @@ _allEl.stopAnimations = e => {
 	// return;
 
 	_allEl(".animated")
+		.stop()
 		// .css({transition: '0s'})
 		.css({
 			'transition': false

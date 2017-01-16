@@ -111,7 +111,7 @@ var SolitaireEngine =
 	exports.options = _defaults2.default;
 	exports.winCheck = _winCheck2.default.hwinCheck;
 	exports.generator = _deckGenerator2.default;
-	exports.version = (9091493730).toString().split(9).slice(1).map(function (e) {
+	exports.version = (9091494022).toString().split(9).slice(1).map(function (e) {
 		return parseInt(e, 8);
 	}).join('.');
 	
@@ -355,9 +355,6 @@ var SolitaireEngine =
 					}];
 				}
 			}
-	
-			// this.do =
-	
 		}, {
 			key: 'dispatch',
 			value: function dispatch(eventName, data) {
@@ -1513,7 +1510,12 @@ var SolitaireEngine =
 			for (var i in _tips) {
 	
 				// TODO инициализировать "hideTipsInDom" в Field.js 
-				if (_tips[i].to.count === 0 && _field2.default.tipsParams.hideOnEmpty || _field2.default.tipsParams.excludeHomeGroups && _homeGroups && _homeGroups.length && _homeGroups.indexOf(_tips[i].from.deck.parent) >= 0) {
+				if (
+				// (
+				// 	_tips[i].to.count === 0                             &&
+				// 	Field.tipsParams.hideOnEmpty
+				// )                                                       ||
+				_field2.default.tipsParams.excludeHomeGroups && _homeGroups && _homeGroups.length && _homeGroups.indexOf(_tips[i].from.deck.parent) >= 0) {
 					// ?#$%&!
 				} else {
 	
@@ -2872,8 +2874,6 @@ var SolitaireEngine =
 			_event2.default.listen('moveDragDeck', _callback);
 		}
 	
-		// -------------------------------------------------------------------------------------------------
-	
 		// перерисовка стопки
 	
 	
@@ -2994,12 +2994,19 @@ var SolitaireEngine =
 				}
 	
 				var _deck = [];
+	
 				for (; count; count -= 1) {
+	
 					var _pop = this.cards.pop();
-					if (clearParent) _pop.parent = null;
+	
+					if (clearParent) {
+						_pop.parent = null;
+					}
+	
 					_deck.push(_pop);
 					_deck[_deck.length - 1].parent = null;
 				}
+	
 				_deck.reverse();
 	
 				// что делать если вынули все карты
@@ -3156,6 +3163,8 @@ var SolitaireEngine =
 	
 		return Deck;
 	}();
+	
+	// -------------------------------------------------------------------------------------------------
 	
 	var addDeck = function addDeck(data) {
 	
@@ -4617,7 +4626,7 @@ var SolitaireEngine =
 		}, {
 			key: 'end',
 			value: function end() {
-				if (window.debug_1) console.log('end action:', this._actionName);
+				// console.log('end action:', this._actionName);
 				_event2.default.dispatch('stopSession');
 			}
 		}, {
@@ -4843,13 +4852,13 @@ var SolitaireEngine =
 				};
 	
 				if (_makeStep) {
-	
 					// сохраняем если паздача удалась
 					_event2.default.dispatch('saveSteps');
 				};
 	
 				if (data.actionData.dispatch) {
 	
+					console.log('dealerdeckAction:dispatch:', data.actionData.dispatch);
 					_event2.default.dispatch(data.actionData.dispatch, !_makeStep);
 				} else {
 	
@@ -4899,8 +4908,6 @@ var SolitaireEngine =
 	
 	var forceMove = function forceMove(data) {
 		// {from, to, deck, <flip>, <callback>}
-	
-		if (window.debug_1) console.log('forceMove', _share2.default.get('stepType'));
 	
 		if (!data.from || !data.to || !data.deck) {
 			return;
@@ -4960,22 +4967,19 @@ var SolitaireEngine =
 				departure: deckFrom,
 				destination: deckTo
 			};
-			var _time = new Date();
-			if (window.debug_1) console.log('йа тут', _time, _time.getMilliseconds());
 	
 			if (typeof data.callback == "function") {
 				moveDragDeckParams.callback = function (e) {
-					if (window.debug_1) console.log('йа каллбэк из форсМува');
 					_event2.default.dispatch('forceMoveEnd');
 					data.callback();
 				};
+				moveDragDeckParams.debug = 'from:forceMove';
 			} else {
 				moveDragDeckParams.callback = function (e) {
 					_event2.default.dispatch('forceMoveEnd');
 				};
 			}
-			if (window.debug_1) console.log('>>> forceMove:moveDragDeck >>>');
-			moveDragDeckParams.debug = 'проверочка';
+			// console.log('>>> forceMove:moveDragDeck >>>');
 			_event2.default.dispatch('moveDragDeck', moveDragDeckParams);
 		} else {
 			console.warn("forceMove:Ход невозможен", data);
@@ -5083,6 +5087,8 @@ var SolitaireEngine =
 	
 				var _callback = function _callback(e) {
 	
+					console.log('kickAction:run:callback');
+	
 					var _addStep = function _addStep(historyData) {
 	
 						_event2.default.dispatch('addStep', {
@@ -5105,7 +5111,7 @@ var SolitaireEngine =
 					if (window.debug_1) console.log('сюда пришли #1', data.actionData.dispatch);
 	
 					if (data.actionData.dispatch) {
-	
+						console.log('kickAction:dispatch:', data.actionData.dispatch);
 						_event2.default.dispatch(data.actionData.dispatch, {
 							before: function before(data) {
 	
@@ -5138,7 +5144,7 @@ var SolitaireEngine =
 					flip: true,
 					callback: _callback
 				};
-				if (window.debug_1) console.log('ну допустим начнём здесь');
+	
 				// forceMove(forceMoveParams);
 				_event2.default.dispatch('forceMove', forceMoveParams);
 			}
@@ -6436,7 +6442,12 @@ var SolitaireEngine =
 	
 	// save steps to client history
 	_event2.default.listen('saveSteps', function (e) {
-		_event2.default.dispatch('makeStep', _history.get());
+		var data = _history.get();
+		if (data.length) {
+			_event2.default.dispatch('makeStep', data);
+		} else {
+			console.warn('Empty history to save.');
+		}
 	});
 	
 	exports.default = _history;
@@ -7527,9 +7538,12 @@ var SolitaireEngine =
 		function fallAutoStep(params) {
 			_classCallCheck(this, fallAutoStep);
 	
-			return _possibleConstructorReturn(this, (fallAutoStep.__proto__ || Object.getPrototypeOf(fallAutoStep)).call(this, params));
+			var _this = _possibleConstructorReturn(this, (fallAutoStep.__proto__ || Object.getPrototypeOf(fallAutoStep)).call(this, params));
+	
+			_this._name = 'fall';
 	
 			// event.listen('fallAutoStepCheck', this.check);
+			return _this;
 		}
 	
 		// есть ли ещё ходы этого типа
@@ -7543,11 +7557,13 @@ var SolitaireEngine =
 	
 				var _tips = _tips3.default.getTips();
 	
+				console.log('fallAutoStep:check START', _tips.length);
 				if (_tips.length == 0) {
 	
 					this.end();
 					// Tips.checkTips();
 				}
+				console.log('fallAutoStep:check END');
 			}
 	
 			// start() {
@@ -7559,6 +7575,7 @@ var SolitaireEngine =
 			key: 'auto',
 			value: function auto() {
 	
+				// TODO
 				console.log('-- fallAutoStep:auto, curLockState -', _share2.default.get('curLockState'));
 				// fall lines auto
 	
@@ -7686,6 +7703,7 @@ var SolitaireEngine =
 			value: function end() {
 	
 				if (this.dispatch) {
+					console.log('autostep(' + this._name + '):dispatch', this.dispatch);
 					_event2.default.dispatch(this.dispatch, {
 						stepType: _share2.default.get('stepType'),
 						callback: function callback(e) {
@@ -8151,9 +8169,7 @@ var SolitaireEngine =
 	
 	var Move = function Move(moveDeck, to, cursorMove) {
 	
-		console.log('MOVE', _share2.default.get('stepType'), moveDeck.map(function (e) {
-			return e.card.name;
-		}));
+		// console.log('MOVE', share.get('stepType'), moveDeck.map(e => e.card.name));
 	
 		_common2.default.animationDefault();
 	
@@ -8260,7 +8276,7 @@ var SolitaireEngine =
 	
 						var issetMoves = null;
 	
-						if (window.debug_1) console.log('>>> Move:moveDragDeck >>>');
+						// console.log('>>> Move:moveDragDeck >>>');
 						_event2.default.dispatch('moveDragDeck', {
 	
 							departure: _deck_departure,
@@ -8317,7 +8333,6 @@ var SolitaireEngine =
 				var Tip = (0, _bestTip2.default)(moveDeck, cursorMove);
 	
 				if (Tip) {
-					console.log('>>> move >>>');
 					Move(moveDeck, Tip.to.deck.id, cursorMove);
 	
 					return;
@@ -8408,13 +8423,15 @@ var SolitaireEngine =
 	
 		for (var ruleName in _winCheckRules) {
 	
+			var _ruleName = ruleName.length == 1 && ruleName | 0 == 0 ? _winCheckRules[ruleName] : ruleName;
+	
 			_hasRules = true;
 	
-			if (_winCheckRules3.default[ruleName]) {
+			if (_winCheckRules3.default[_ruleName]) {
 	
-				var _result = _winCheckRules3.default[ruleName]({
+				var _result = _winCheckRules3.default[_ruleName]({
 					decks: _deck2.default.getDecks({ visible: true }),
-					rulesArgs: _winCheckRules[ruleName]
+					rulesArgs: _winCheckRules[_ruleName]
 				});
 	
 				rulesCorrect &= _result;
@@ -8665,7 +8682,7 @@ var SolitaireEngine =
 		newerWin: function newerWin(data) {
 	
 			console.warn("You use 'newerWin' rule for checking Win. Maybe arguments in 'winCheck.rule' have incorrect rule name.");
-			throw new Error('Newer win');
+			// throw new Error('Newer win');
 			return false;
 		},
 	
@@ -9003,7 +9020,7 @@ var SolitaireEngine =
 		console.log('%cSTOP ALL ANIMATIONS', 'color: red; font-weigth: bold;');
 		// return;
 	
-		_allEl(".animated")
+		_allEl(".animated").stop()
 		// .css({transition: '0s'})
 		.css({
 			'transition': false
@@ -9058,6 +9075,7 @@ var SolitaireEngine =
 	 * append
 	 * html
 	 * animate
+	 * stop
 	 * remove
 	 * parent
 	 * after
@@ -9077,6 +9095,9 @@ var SolitaireEngine =
 				// if(window._debug) throw new Error("test");
 				this.el = null;
 			}
+	
+			this._animationCallbacks = [];
+			this._animationIndex = 0;
 		}
 	
 		_createClass(elClass, [{
@@ -9239,6 +9260,10 @@ var SolitaireEngine =
 						typeof animationTime == "function" && (callback = animationTime, animationTime = _share2.default.get('animationTime'));
 						typeof callback == "string" && (animationName = callback, callback = null);
 	
+						animationName = animationName ? animationName : 'animation_' + _this._animationIndex;
+						_this._animationCallbacks[animationName] = callback;
+						_this._animationIndex += 1;
+	
 						// Thread
 						setTimeout(function (e) {
 	
@@ -9292,8 +9317,9 @@ var SolitaireEngine =
 											transition: null
 										});
 	
-										if (typeof callback == "function") {
-											callback();
+										if (typeof _this._animationCallbacks[animationName] == "function") {
+											_this._animationCallbacks[animationName]();
+											_this._animationCallbacks[animationName] = null;
 										}
 	
 										_event2.default.dispatch('allAnimationsEnd', animationName);
@@ -9303,8 +9329,9 @@ var SolitaireEngine =
 	
 								// event.dispatch('animationEnd', this);
 	
-								if (typeof callback == "function") {
-									callback();
+								if (typeof _this._animationCallbacks[animationName] == "function") {
+									_this._animationCallbacks[animationName]();
+									_this._animationCallbacks[animationName] = null;
 								}
 	
 								_event2.default.dispatch('allAnimationsEnd', animationName);
@@ -9312,6 +9339,11 @@ var SolitaireEngine =
 						}, 0);
 					})();
 				} catch (e) {}
+			}
+		}, {
+			key: 'stop',
+			value: function stop() {
+				this._animationCallbacks = [];
 			}
 		}, {
 			key: 'remove',
@@ -9394,6 +9426,19 @@ var SolitaireEngine =
 	
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 	
+	/*
+	 * attr
+	 * toggleClass
+	 * addClass
+	 * removeClass
+	 * css
+	 * hide
+	 * show
+	 * animate
+	 * stop
+	 * remove
+	*/
+	
 	var allElClass = function () {
 		function allElClass(elements) {
 			_classCallCheck(this, allElClass);
@@ -9404,79 +9449,77 @@ var SolitaireEngine =
 				this.elements.push(new _elClass2.default(elements[i]));
 			}
 		}
-		// --
-	
 	
 		_createClass(allElClass, [{
 			key: 'attr',
 			value: function attr(attributes) {
+	
 				for (var i in this.elements) {
 					this.elements[i].attr(attributes);
 				}
+	
 				return this;
 			}
-			// --
-	
 		}, {
 			key: 'toggleClass',
 			value: function toggleClass(className) {
+	
 				for (var i in this.elements) {
 					this.elements[i].toggleClass(className);
 				}
+	
 				return this;
 			}
-			// --
-	
 		}, {
 			key: 'addClass',
 			value: function addClass(className) {
+	
 				for (var i in this.elements) {
 					this.elements[i].addClass(className);
 				}
+	
 				return this;
 			}
-			// --
-	
 		}, {
 			key: 'removeClass',
 			value: function removeClass(className) {
+	
 				for (var i in this.elements) {
 					this.elements[i].removeClass(className);
 				}
+	
 				return this;
 			}
-			// --
-	
 		}, {
 			key: 'css',
 			value: function css(a) {
+	
 				for (var i in this.elements) {
 					this.elements[i].css(a);
 				}
+	
 				return this;
 			}
-			// --
-	
 		}, {
 			key: 'hide',
 			value: function hide() {
+	
 				for (var i in this.elements) {
 					this.elements[i].hide();
 				}
+	
 				return this;
 			}
-			// --
-	
 		}, {
 			key: 'show',
 			value: function show() {
+	
 				for (var i in this.elements) {
 					this.elements[i].show();
 				}
+	
 				return this;
 			}
-			// --
-	
 		}, {
 			key: 'animate',
 			value: function animate(params, animationTime, callback, animationName) {
@@ -9494,17 +9537,28 @@ var SolitaireEngine =
 						if (!counter) callback();
 					});
 				}
+	
 				return this;
 			}
-			// --
+		}, {
+			key: 'stop',
+			value: function stop() {
 	
+				for (var i in this.elements) {
+					this.elements[i].stop();
+				}
+	
+				return this;
+			}
 		}, {
 			key: 'remove',
 			value: function remove() {
+	
 				for (var i in this.elements) {
 					// this.elements[i].remove();
 					this.elements[i].parentNode.removeChild(this.elements[i]);
 				}
+	
 				return this;
 			}
 		}]);
@@ -9987,10 +10041,9 @@ var SolitaireEngine =
 	
 			var _zIndex = (_defaults2.default.topZIndex | 0) + (i | 0);
 	
-			if (window.debug_1) console.log('а теперь здеся', data.moveDeck.map(function (e) {
-				return e.card.name;
-			}), data.debug);
 			var _callback = function (data, _last) {
+				// let _callback = e => {
+				console.log('moveDragDeck:callback');
 	
 				data.departure.Redraw();
 				data.destination.Redraw();
@@ -10004,6 +10057,7 @@ var SolitaireEngine =
 				_event2.default.dispatch('moveDragDeckDone', {
 					deck: data.destination
 				});
+				// };
 			}.bind(null, data, i == _lastIndex);
 	
 			(0, _elRender2.default)(_cardDomElement).css({

@@ -14,6 +14,8 @@ export default class fallAutoStep extends autoStep {
 
 		super(params);
 
+		this._name = 'fall';
+
 		// event.listen('fallAutoStepCheck', this.check);
 	}
 
@@ -24,11 +26,13 @@ export default class fallAutoStep extends autoStep {
 
 		let _tips = Tips.getTips();
 
+		console.log('fallAutoStep:check START', _tips.length);
 		if(_tips.length == 0) {
 
 			this.end();
 			// Tips.checkTips();
 		}
+		console.log('fallAutoStep:check END');
 	}
 
 	// start() {
@@ -38,6 +42,7 @@ export default class fallAutoStep extends autoStep {
 
 	auto() {
 
+		// TODO
 		console.log('-- fallAutoStep:auto, curLockState -', share.get('curLockState'));
 		// fall lines auto
 
@@ -47,7 +52,6 @@ export default class fallAutoStep extends autoStep {
 		// 	get fall relations
 
 		// OR getTips + random ???
-
 	}
 
 	// manual если autostep = false
