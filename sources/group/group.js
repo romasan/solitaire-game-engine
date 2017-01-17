@@ -1,13 +1,13 @@
 'use strict';
 
-import event          from 'event';
-import share          from 'share';
-import defaults       from 'defaults';
-import common         from 'common';
+import event          from 'event'         ;
+import share          from 'share'         ;
+import defaults       from 'defaults'      ;
+import common         from 'common'        ;
 
-import Deck           from 'deck';
-import groupFill      from 'groupFill';
-import groupRedraw    from 'groupRedraw';
+import Deck           from 'deck'          ;
+import groupFill      from 'groupFill'     ;
+import groupRedraw    from 'groupRedraw'   ;
 import groupGenerator from 'groupGenerator';
 
 const params = {

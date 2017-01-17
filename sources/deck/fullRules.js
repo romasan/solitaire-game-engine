@@ -1,11 +1,11 @@
 'use strict';
 
-import defaults  from 'defaults';
-import common    from 'common';
+import defaults  from 'defaults' ;
+import common    from 'common'   ;
 
-import Group     from 'group';
-import Deck      from 'deck';
-import Tips      from 'tips';
+import Group     from 'group'    ;
+import Deck      from 'deck'     ;
+import Tips      from 'tips'     ;
 import getBeside from 'getBeside';
 
 /*

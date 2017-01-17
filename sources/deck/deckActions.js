@@ -1,19 +1,19 @@
 'use strict';
 
-import event    from 'event';
-import share    from 'share';
-import defaults from 'defaults';
-import common   from 'common';
+import event    from 'event'                     ;
+import share    from 'share'                     ;
+import defaults from 'defaults'                  ;
+import common   from 'common'                    ;
 
 // Actions
-import twindeck       from 'twindeckAction';
-import dealerdeck     from 'dealerdeckAction';
-import kickAction     from 'kickAction';
-import stepsAround    from 'stepsAroundAction';
+import twindeck       from 'twindeckAction'      ;
+import dealerdeck     from 'dealerdeckAction'    ;
+import kickAction     from 'kickAction'          ;
+import stepsAround    from 'stepsAroundAction'   ;
 import changeStepType from 'changeStepTypeAction';
-import lock           from 'lockAction';
-import unlock         from 'unlockAction';
-import checkFull      from 'checkFullAction';
+import lock           from 'lockAction'          ;
+import unlock         from 'unlockAction'        ;
+import checkFull      from 'checkFullAction'     ;
 
 let _actions = {
 	"twindeck"       : twindeck      ,
@@ -26,7 +26,11 @@ let _actions = {
 	"checkFull"      : checkFull
 };
 
-// ------------------------------------------------------------------------------------------
+/*
+ * addActionEvent
+ * add
+ * autoRunActions
+ */
 
 let _decksActions  = [],
     _events        = [];

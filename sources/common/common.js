@@ -1,16 +1,16 @@
 'use strict';
 
-import share              from 'share';
-import event              from 'event';
-import defaults           from 'defaults';
-import stateManager       from 'stateManager';
+import share              from 'share'             ;
+import event              from 'event'             ;
+import defaults           from 'defaults'          ;
+import stateManager       from 'stateManager'      ;
 
-import Tips               from 'tips';
-import Field              from 'field';
-import History            from 'history';
+import Tips               from 'tips'              ;
+import Field              from 'field'             ;
+import History            from 'history'           ;
 
-import drawPreferences    from 'drawPreferences';
-import preferencesEvents  from 'preferencesEvents';
+import drawPreferences    from 'drawPreferences'   ;
+import preferencesEvents  from 'preferencesEvents' ;
 import defaultPreferences from 'defaultPreferences';
 
 /*

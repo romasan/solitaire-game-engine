@@ -1,11 +1,11 @@
 'use strict';
 
-import share       from 'share';
-import event       from 'event';
-import defaults    from 'defaults';
-import common      from 'common';
+import share       from 'share'      ;
+import event       from 'event'      ;
+import defaults    from 'defaults'   ;
+import common      from 'common'     ;
 
-import getDecks    from 'getDecks';
+import getDecks    from 'getDecks'   ;
 import getDeckById from 'getDeckById';
 
 let cardAttributes = [

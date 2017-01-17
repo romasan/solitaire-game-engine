@@ -1,20 +1,20 @@
 'use strict';
 
 // common
-import share         from 'share';
-import event         from 'event';
-import defaults      from 'defaults';
+import share         from 'share'        ;
+import event         from 'event'        ;
+import defaults      from 'defaults'     ;
 
 // init
-import Inputs        from 'inputs';
-import Move          from 'move';
-import forceMove     from 'forceMove';
-import render        from 'render';
-import Field         from 'field';
-import common        from 'common';
-import winCheck      from 'winCheck';
-import History       from 'history';
-import Tips          from 'tips';
+import Inputs        from 'inputs'       ;
+import Move          from 'move'         ;
+import forceMove     from 'forceMove'    ;
+import render        from 'render'       ;
+import Field         from 'field'        ;
+import common        from 'common'       ;
+import winCheck      from 'winCheck'     ;
+import History       from 'history'      ;
+import Tips          from 'tips'         ;
 import deckGenerator from 'deckGenerator';
 
 let preloadCallback = null,

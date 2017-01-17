@@ -1,11 +1,11 @@
 'use strict';
 
-import event      from 'event';
-import share      from 'share';
-import defaults   from 'defaults';
-import common     from 'common';
+import event      from 'event'     ;
+import share      from 'share'     ;
+import defaults   from 'defaults'  ;
+import common     from 'common'    ;
 
-import forceMove  from 'forceMove';
+import forceMove  from 'forceMove' ;
 import deckAction from 'deckAction';
 
 const stepType = 'dealerdeckStepType';

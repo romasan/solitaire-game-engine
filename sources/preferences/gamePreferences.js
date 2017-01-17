@@ -2,6 +2,12 @@
 
 import share from 'share';
 
+/*
+ * draw
+ * show
+ * get
+ */
+
 class gamePreferences {
 
 	constructor() {

@@ -1,5 +1,12 @@
 'use strict';
 
+/*
+ * get
+ * cardsInTakeDeck
+ * decksToPut
+ * put
+ */
+
 class allToAll {
 
 	constructor() {

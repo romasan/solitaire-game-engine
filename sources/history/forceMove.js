@@ -1,11 +1,11 @@
 'use strict';
 
-import event  from 'event';
-import share  from 'share';
+import event  from 'event' ;
+import share  from 'share' ;
 import common from 'common';
 
-import Deck from 'deck';
-import Tips from 'tips';
+import Deck from 'deck'    ;
+import Tips from 'tips'    ;
 
 let forceMove = data => {// {from, to, deck, <flip>, <callback>}
 

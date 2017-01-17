@@ -1,8 +1,8 @@
 'use strict';
 
-import share    from 'share';
-import defaults from 'defaults';
-import common   from 'common';
+import share    from 'share'          ;
+import defaults from 'defaults'       ;
+import common   from 'common'         ;
 
 import takeRules from 'readyTakeRules';
 

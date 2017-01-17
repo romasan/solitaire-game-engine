@@ -111,7 +111,7 @@ var SolitaireEngine =
 	exports.options = _defaults2.default;
 	exports.winCheck = _winCheck2.default.hwinCheck;
 	exports.generator = _deckGenerator2.default;
-	exports.version = (9091494022).toString().split(9).slice(1).map(function (e) {
+	exports.version = (9091494071).toString().split(9).slice(1).map(function (e) {
 		return parseInt(e, 8);
 	}).join('.');
 	
@@ -336,8 +336,6 @@ var SolitaireEngine =
 			key: 'listen',
 			value: function listen(eventName, callback, context) {
 	
-				// console.log('listen: (tag:', this._tag + ')', eventName);
-	
 				if (typeof callback != 'function' || typeof eventName != 'string') {
 					return;
 				}
@@ -411,18 +409,7 @@ var SolitaireEngine =
 						var _correct = true;
 	
 						for (var _attr in filter) {
-	
-							// if(_attr == "slice") {
-	
-							// 	for(let _sliceAttr in filter[_attr]) {
-	
-							// 		let _name = _sliceAttr;
-	
-							// 		_correct = _correct && this._events[eventName][i][_name].split(':') == filter[_attr][_sliceAttr];
-							// 	}
-							// } else {
 							_correct = _correct && this._events[eventName][i][_attr] == filter[_attr];
-							// }
 						}
 	
 						if (_correct) {
@@ -628,7 +615,12 @@ var SolitaireEngine =
 	
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 	
-	// -------------------------------------------------------------------------------------------------------------
+	/*
+	 * break
+	 * take
+	 * drag
+	 * put
+	 */
 	
 	var inputs = function () {
 		function inputs() {
@@ -1472,6 +1464,17 @@ var SolitaireEngine =
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
+	/*
+	 * getTips
+	 * checkTips
+	 * showTips
+	 * hideTips
+	 * tipsMove
+	 * tipsDestination
+	 * checkFrom
+	 * fromTo
+	 */
+	
 	var _showTips = _defaults2.default.showTips;
 	
 	var tipTypes = ['tip', 'tipTo', 'tipPriority', 'tipToHome'];
@@ -1649,6 +1652,13 @@ var SolitaireEngine =
 /***/ function(module, exports) {
 
 	'use strict';
+	
+	/*
+	 * get
+	 * cardsInTakeDeck
+	 * decksToPut
+	 * put
+	 */
 	
 	Object.defineProperty(exports, "__esModule", {
 		value: true
@@ -4433,7 +4443,11 @@ var SolitaireEngine =
 		"checkFull": _checkFullAction2.default
 	};
 	
-	// ------------------------------------------------------------------------------------------
+	/*
+	 * addActionEvent
+	 * add
+	 * autoRunActions
+	 */
 	
 	var _decksActions = [],
 	    _events = [];
@@ -4615,6 +4629,7 @@ var SolitaireEngine =
 	 * end
 	 * break
 	 */
+	
 	var deckAction = function () {
 		function deckAction() {
 			_classCallCheck(this, deckAction);
@@ -5516,6 +5531,7 @@ var SolitaireEngine =
 	exports.default = function (data, method, me) {
 	
 		var sources = [];
+	
 		if (typeof data.source != "string") {
 			if (data.source && data.source.constructor == Array) {
 				for (var i in data.source) {
@@ -6128,30 +6144,26 @@ var SolitaireEngine =
 	
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 	
-	// import elRender  from 'elRender';
+	// TODO пошаговая анимация
+	// let _movesCallback = e => {
+	// 	if(_movesStack.length) {
+	// 		_movesStack.shift()();
+	// 	} else {
+	// 		// 
+	// 	}
+	// };
 	
-	// let _undoMethods = {};
-	// let _redoMethods = {};
+	// let _movesStack = [];
 	
-	var _movesCallback = function _movesCallback(e) {
-		if (_movesStack.length) {
-			_movesStack.shift()();
-		} else {
-			// 
-		}
-	};
+	// // --
 	
-	var _movesStack = [];
-	
-	// --
-	
-	var _stepsCallback = function _stepsCallback(e) {
-		if (_stepsStack.length) {
-			_stepsStack.shift()();
-		} else {
-			// 
-		}
-	};
+	// let _stepsCallback = e => {
+	// 	if(_stepsStack.length) {
+	// 		_stepsStack.shift()();
+	// 	} else {
+	// 		// 
+	// 	}
+	// };
 	
 	var _stepsStack = [];
 	
@@ -6563,6 +6575,7 @@ var SolitaireEngine =
 				_decksWithBigIndex[group.decks[_i4].groupIndex - 1] = group.decks[_i4].id;
 			};
 		};
+	
 		// ...и сортируем
 		for (var _i5 in _decksWithBigIndex) {
 			var _index2 = 0;
@@ -6580,9 +6593,7 @@ var SolitaireEngine =
 		if (_checkDeck) {
 	
 			for (var _i7 in cardNames) {
-	
 				var _index3 = deckIndex[_i7 % deckIndex.length];
-	
 				group.decks[_index3].genCardByName(cardNames[_i7]);
 			}
 			// если нужно добавить несколько групп карт
@@ -6590,9 +6601,6 @@ var SolitaireEngine =
 	
 			for (var _i8 in cardNames) {
 				if (_i8 < deckIndex.length) {
-	
-					// console.log('fillDeck', deckIndex[i].name, cardNames[i]);
-	
 					group.decks[deckIndex[_i8]].Fill(cardNames[_i8]);
 				};
 			};
@@ -7150,6 +7158,12 @@ var SolitaireEngine =
 
 	'use strict';
 	
+	/*
+	 * inMap
+	 * exist
+	 * mapSize
+	 */
+	
 	Object.defineProperty(exports, "__esModule", {
 		value: true
 	});
@@ -7650,6 +7664,12 @@ var SolitaireEngine =
 	
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 	
+	/*
+	 * start
+	 * end
+	 * init
+	 */
+	
 	var _class = function () {
 		function _class(params) {
 			_classCallCheck(this, _class);
@@ -7831,8 +7851,6 @@ var SolitaireEngine =
 
 	'use strict';
 	
-	// import share from 'share';
-	
 	Object.defineProperty(exports, "__esModule", {
 		value: true
 	});
@@ -7843,47 +7861,11 @@ var SolitaireEngine =
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
-	// import gamePreferences from 'gamePreferences';
-	
-	// import elRender from 'elRender';
-	
 	exports.default = function (e) {
-	
-		// let _locale = require('json!locales.json')[defaults.locale];
-	
-		// let Tpl = require("./preferncesTemplate.hamlc");//
-	
-		// let _values = {
-		// 	locale: _locale,
-		// 	preferences: []
-		// };
-	
-		// for(let propName in defaults.themes) {
-	
-		// 	let _pref = {
-		// 		title   : _locale["label_" + propName],
-		// 		options : []
-		// 	};
-	
-		// 	for(let i in defaults.themes[propName]) {
-		// 		_pref.options.push({
-		// 			value : defaults.themes[propName][i],
-		// 			label : _locale[defaults.themes[propName][i]]
-		// 		});
-		// 	}
-	
-		// 	_values.preferences.push(_pref);
-		// };
-	
-		// let _html = Tpl(_values);
-	
-		// --
 	
 		var _html = __webpack_require__(57);
 	
 		$("#gpCommit").parent().before(_html);
-	
-		// gamePreferences.draw();
 	};
 
 /***/ },
@@ -7923,6 +7905,12 @@ var SolitaireEngine =
 	var _gamePreferences2 = _interopRequireDefault(_gamePreferences);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	/*
+	 * onShowParameters
+	 * applyParameters
+	 * saveParameters
+	 */
 	
 	var onShowParameters = function onShowParameters(e) {
 	
@@ -8010,6 +7998,12 @@ var SolitaireEngine =
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	/*
+	 * draw
+	 * show
+	 * get
+	 */
 	
 	var gamePreferences = function () {
 		function gamePreferences() {
@@ -8316,7 +8310,9 @@ var SolitaireEngine =
 									}
 								});
 	
-								_winCheck2.default.winCheck({ show: true });
+								_winCheck2.default.winCheck({
+									show: true
+								});
 							}
 						});
 					})();
@@ -8910,8 +8906,6 @@ var SolitaireEngine =
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
-	// common
-	
 	_event2.default.listen('removeEl', function (data) {
 	
 		var _elDomElement = _share2.default.get('domElement:' + data.id);
@@ -8982,7 +8976,7 @@ var SolitaireEngine =
 	var _allEl = function _allEl(data) {
 	
 		if (!data) {
-			throw new Error("elRender:empty arguments");
+			throw new Error("elRender:empty arguments.");
 		}
 	
 		if (typeof data == "string") {
@@ -9015,6 +9009,7 @@ var SolitaireEngine =
 		}
 	};
 	
+	// TODO
 	_allEl.stopAnimations = function (e) {
 	
 		console.log('%cSTOP ALL ANIMATIONS', 'color: red; font-weigth: bold;');
@@ -9437,7 +9432,7 @@ var SolitaireEngine =
 	 * animate
 	 * stop
 	 * remove
-	*/
+	 */
 	
 	var allElClass = function () {
 		function allElClass(elements) {
@@ -10250,6 +10245,12 @@ var SolitaireEngine =
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
+	/*
+	 * shuffleArray
+	 * genType
+	 * genTypes
+	 */
+	
 	var shuffleArray = function shuffleArray(deck) {
 		for (var j, x, _i = deck.length; _i; j = Math.floor(Math.random() * _i), x = deck[--_i], deck[_i] = deck[j], deck[j] = x) {};
 	};
@@ -10435,484 +10436,54 @@ var SolitaireEngine =
 		value: true
 	});
 	
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-	
 	var _share = __webpack_require__(1);
 	
 	var _share2 = _interopRequireDefault(_share);
-	
-	var _event = __webpack_require__(2);
-	
-	var _event2 = _interopRequireDefault(_event);
-	
-	var _common = __webpack_require__(5);
-	
-	var _common2 = _interopRequireDefault(_common);
 	
 	var _defaults = __webpack_require__(3);
 	
 	var _defaults2 = _interopRequireDefault(_defaults);
 	
-	var _deckGenerator = __webpack_require__(78);
+	var _common = __webpack_require__(5);
 	
-	var _deckGenerator2 = _interopRequireDefault(_deckGenerator);
+	var _common2 = _interopRequireDefault(_common);
 	
 	var _field = __webpack_require__(12);
 	
 	var _field2 = _interopRequireDefault(_field);
 	
+	var _deckGenerator = __webpack_require__(78);
+	
+	var _deckGenerator2 = _interopRequireDefault(_deckGenerator);
+	
 	var _elRender = __webpack_require__(65);
 	
 	var _elRender2 = _interopRequireDefault(_elRender);
-	
-	var _mapCommon = __webpack_require__(47);
-	
-	var _mapCommon2 = _interopRequireDefault(_mapCommon);
-	
-	var _history = __webpack_require__(36);
-	
-	var _history2 = _interopRequireDefault(_history);
 	
 	var _stateManager = __webpack_require__(6);
 	
 	var _stateManager2 = _interopRequireDefault(_stateManager);
 	
-	var _renderTest = __webpack_require__(80);
+	var _history = __webpack_require__(36);
 	
-	var _renderTest2 = _interopRequireDefault(_renderTest);
+	var _history2 = _interopRequireDefault(_history);
+	
+	var _mapCommon = __webpack_require__(47);
+	
+	var _mapCommon2 = _interopRequireDefault(_mapCommon);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-	
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-	
-	// event.listen('addStep', (e) => {
-	// 	console.log('* Добавили данные для истории:', e.move ? e.move.stepType : 'none', e);
-	// 	if(e.move && !e.move.stepType) {
-	// 		throw new Error('debug');
-	// 	}
-	// });
-	
-	// event.listen('makeStep', (e) => {
-	// 	console.log('# Отправили данные на сохранение в историю:', e);
-	// }
-	
-	// -- LOG
-	
-	// $(document).ready(() => {
-	// 	$(document.body).append(
-	// 		$('<span>')
-	// 			.attr({id : 'log_1'})
-	// 			.css({
-	// 				'display'          : 'none'                                                            ,
-	// 				'width'            : '250px'                                                           ,
-	// 				'max-height'       : '70%'                                                             ,
-	// 				'position'         : 'absolute'                                                        ,
-	// 				'top'              : '0px'                                                             ,
-	// 				'right'            : '2px'                                                             ,
-	// 				'overflow'         : 'hidden'                                                          ,
-	// 				'zIndex'           : 999                                                               ,
-	// 				'background'       : 'rgba(0, 0, 0, .5)'                                               ,
-	// 				'padding'          : '4px'                                                             ,
-	// 				'border-radius'    : '0px 0px 5px 5px'                                                 ,
-	// 				'text-shadow'      : '#000 1px 0 0px, #000 0 1px 0px, #000 -1px 0 0px, #000 0 -1px 0px',
-	// 				'font-size'        : '10pt'                                                            ,
-	// 				'font-family'      : 'Tahoma, Verdana'
-	// 			})
-	// 			.dblclick(function() {
-	// 				setTimeout(() => {
-	// 					$(this)
-	// 						.hide()
-	// 						.empty();
-	// 				}, 100);
-	// 			})
-	// 	);
-	// });
-	
-	
-	var _log = function _log(text, color, e) {
-	
-		console.log('%c»%c' + text, 'color: white;',
-	
-		// 'background: rgba(0, 0, 0, .5);'                                                 +
-		'border-radius: 3px;' +
-		// 'text-shadow: #777 1px 0 0px, #777 0 1px 0px, #777 -1px 0 0px, #777 0 -1px 0px;' +
-		'padding: 2px;' +
-		// 'border: 1px solid black;'                                                       +
-		'background: ' + color + ';',
-		// 'font-weight: bold;'
-		// 'color: ' + color + ';'
-	
-		e ? e : '');
-	
-		// $('#log_1')
-		// 	.show()
-		// 	.append(
-		// 		$('<div>')
-		// 		.html(text)
-		// 		.css({
-		// 			color
-		// 		})
-		// 	)
-		// 	.prop({
-		// 		scrollTop : 1e10//log_1.scrollHeight - log_1.clientHeight
-		// 	})
-	};
-	
-	// event.listen('shareSet:stepType', (e) => {
-	// 	_log('stepType:' + e, 'yellow');
-	// })
-	
-	// event.listen('saveSteps', e => {
-	// 	if(window.xxx) {
-	// 		throw new Error('saveSteps');
-	// 	}
-	// 	_log('saveSteps', 'yellow');
-	// });
-	
-	// event.listen('shareSet:curLockState', (e) => {
-	// 	_log('curLockState:' + e, '#aaffaa');
-	// });
-	
-	// event.listen('moveEnd', (e) => {
-	// 	_log('moveEnd', 'orange');
-	// });
-	
-	// event.listen('forceMoveEnd', (e) => {
-	// 	_log('forceMoveEnd', 'orange');
-	// });
-	
-	// event.listen('gameInit', (e, a) => {
-	// 	_log('gameInit (' + ((a.eventInfo.index | 0) + 1) + ', ' + a.eventInfo.count + ')', '#ff7777');
-	// });
-	
-	// event.listen('startSession', (e) => {
-	// 	_log('start', 'red', e);
-	// });
-	
-	// event.listen('stopSession', () => {
-	// 	_log('stop', 'green');
-	// });
-	
-	// document.onwheel = (e) => {
-	
-	// 	let area = null;
-	// 		// if (e.target.id == 'log_1') {
-	// 		// 	area = e.target;
-	// 		// } else 
-	// 		if(e.target.parentNode.id == 'log_1') {
-	// 		area = e.target.parentNode;
-	// 	} else {
-	// 		return;
-	// 	}
-	
-	// 	let delta = e.deltaY || e.detail || e.wheelDelta;
-	
-	// 	area.scrollTop = area.scrollTop + delta;
-	
-	// 	// if (delta < 0 && area.scrollTop == 0) {
-	// 	e.preventDefault();
-	// 	// }
-	
-	// 	// if (delta > 0 && area.scrollHeight - area.clientHeight - area.scrollTop <= 1) {
-	// 	e.preventDefault();
-	// 	// }
-	// };
-	
-	var debugHistoryMgrClass = function () {
-		function debugHistoryMgrClass() {
-			_classCallCheck(this, debugHistoryMgrClass);
-	
-			this._history = [];
-			this._redo = [];
-		}
-	
-		_createClass(debugHistoryMgrClass, [{
-			key: 'record',
-			value: function record(data) {
-	
-				this._redo = [];
-				this._history.push(data);
-			}
-		}, {
-			key: 'undo',
-			value: function undo() {
-	
-				var _step = this._history.pop();
-				if (_step) {
-					this._redo.push(_step);
-				};
-				return _step;
-			}
-		}, {
-			key: 'redo',
-			value: function redo() {
-	
-				var _step = this._redo.pop();
-				if (_step) {
-					this._history.push(_step);
-				};
-				return _step;
-			}
-		}]);
-	
-		return debugHistoryMgrClass;
-	}();
-	
-	;
-	
-	var debugHistoryMgr = new debugHistoryMgrClass();
-	
-	// add buttons
-	
-	var _debugHistory = false;
-	var debugHistory = function debugHistory(a) {
-	
-		if (_debugHistory) {
-			return;
-		}
-		_debugHistory = true;
-	
-		_event2.default.listen('makeStep', debugHistoryMgr.record);
-	
-		if (a && a.drawButtons) (0, _elRender2.default)(document.body).append((0, _elRender2.default)("<div>").append($("<span>").addClass('awesome').text('UNDO').click(function () {
-			var _data = debugHistoryMgr.undo();
-			if (_data) {
-				SolitaireEngine.event.dispatch('undo', _data);
-			}
-		})).append($("<span>").addClass('awesome').text('REDO').click(function () {
-			var _data = debugHistoryMgr.redo();
-			if (_data) {
-				SolitaireEngine.event.dispatch('redo', _data);
-			}
-		})).css({
-			position: 'fixed',
-			top: '1px',
-			left: '1px'
-		}));
-	};
-	
-	// let runTests = ()=>{
-	// 	// renderTest();
-	// }
-	
-	// event.listen('gameInit', (e)=>{
-	// 	if(!e.firstInit) {return;};
-	// 	runTests();
-	// })
 	
 	exports.default = {
 		share: _share2.default,
-		deckGenerator: _deckGenerator2.default,
-		debugHistory: debugHistory,
-		debugHistoryMgr: debugHistoryMgr,
-		validateCardName: _common2.default.validateCardName,
-		elRender: _elRender2.default,
 		defaults: _defaults2.default,
+		common: _common2.default,
+		field: _field2.default,
+		deckGenerator: _deckGenerator2.default,
+		elRender: _elRender2.default,
 		stateManager: _stateManager2.default,
 		history: _history2.default,
-		field: _field2.default,
-		groupGenerators: {
-			mapCommon: _mapCommon2.default
-		}
-	};
-
-/***/ },
-/* 80 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	Object.defineProperty(exports, "__esModule", {
-		value: true
-	});
-	
-	var _elRender = __webpack_require__(65);
-	
-	var _elRender2 = _interopRequireDefault(_elRender);
-	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-	
-	exports.default = function () {
-	
-		/*	log("-- renderTests");
-	 // --
-	 	log("- startTest#1");
-	 	let _el_1 = elRender("<div>");
-	 	log(
-	 		"- renderTest#1-A",
-	 		_el_1
-	 	);
-	 	// log(
-	 	// 	"- renderTest#1-B",
-	 	// 	_el_1.elements[0].el.className
-	 	// );
-	 // --	log("-- renderTests");
-	 // --
-	 	log("- startTest#1");
-	 	let _el_1 = elRender("<div>");
-	 	log(
-	 		"- renderTest#1-A",
-	 		_el_1
-	 	);
-	 	// log(
-	 	// 	"- renderTest#1-B",
-	 	// 	_el_1.elements[0].el.className
-	 	// );
-	 // --
-	 	log("- startTest#2");
-	 	let _el_2 = elRender("#tbUndo");
-	 	log(
-	 		"- renderTest#2-A",
-	 		_el_2
-	 	);
-	 	// log(
-	 	// 	"- renderTest#2-B",
-	 	// 	_el_2.elements[0].el.className
-	 	// );
-	 // --
-	 	log("- startTest#3");
-	 	let _el_3 = elRender(".titleBandLink");
-	 	log(
-	 		"- renderTest#3 '.titleBandLink'",
-	 		_el_3
-	 	);
-	 	// log(
-	 	// 	"- renderTest#3-B",
-	 	// 	_el_3.elements[0].el.className
-	 	// );
-	 // --
-	 	log("- startTest#4");
-	 	let _el_4 = document.querySelector(".titleBandLink");
-	 	log(
-	 		"- renderTest#4-A",
-	 		elRender(_el_4)
-	 	);
-	 	// log(
-	 	// 	"- renderTest#4-B",
-	 	// 	_el_4.elements[0].el.className
-	 	// );
-	 // --
-	 	log("- startTest#5");
-	 	let _el_5 = document.querySelectorAll(".titleBandLink");
-	 	log(
-	 		"- renderTest#5 '.titleBandLink'",
-	 		_el_5
-	 	);
-	 	// log(
-	 	// 	"- renderTest#5-B",
-	 	// 	_el_5.elements[0].el.className
-	 	// );
-	 // --
-	 	log("- startTest#6");
-	 	let _el = elRender("#tbUndo");
-	 	let _el_6 = elRender(_el);
-	 	log(
-	 		"- renderTest#6-A",
-	 		_el_6
-	 	);
-	 	// log(
-	 	// 	"- renderTest#6-B",
-	 	// 	_el_6.elements[0].el.className
-	 	// );
-	 // --
-	 	log("- startTest#7");
-	 	let _elements = elRender(".titleBandLink");
-	 	let _el_7 = elRender(_elements);
-	 	log(
-	 		"- renderTest#7-A",
-	 		_el_7
-	 	);
-	 	// log(
-	 	// 	"- renderTest#7-B",
-	 	// 	_el_7.elements[0].el.className
-	 	// );
-	 // --
-	 	log("- startTest#8");
-	 	let _element = elRender("#tbUndo");
-	 	let _element2 = elRender("#tbRedo");
-	 	let _el_8 = elRender(_element)
-	 		.after(_element2);
-	 	log(
-	 		"- renderTest#8-A",
-	 		_el_8
-	 	);
-	 	log("- startTest#2");
-	 	let _el_2 = elRender("#tbUndo");
-	 	log(
-	 		"- renderTest#2-A",
-	 		_el_2
-	 	);
-	 	// log(
-	 	// 	"- renderTest#2-B",
-	 	// 	_el_2.elements[0].el.className
-	 	// );
-	 // --
-	 	log("- startTest#3");
-	 	let _el_3 = elRender(".titleBandLink");
-	 	log(
-	 		"- renderTest#3 '.titleBandLink'",
-	 		_el_3
-	 	);
-	 	// log(
-	 	// 	"- renderTest#3-B",
-	 	// 	_el_3.elements[0].el.className
-	 	// );
-	 // --
-	 	log("- startTest#4");
-	 	let _el_4 = document.querySelector(".titleBandLink");
-	 	log(
-	 		"- renderTest#4-A",
-	 		elRender(_el_4)
-	 	);
-	 	// log(
-	 	// 	"- renderTest#4-B",
-	 	// 	_el_4.elements[0].el.className
-	 	// );
-	 // --
-	 	log("- startTest#5");
-	 	let _el_5 = document.querySelectorAll(".titleBandLink");
-	 	log(
-	 		"- renderTest#5 '.titleBandLink'",
-	 		_el_5
-	 	);
-	 	// log(
-	 	// 	"- renderTest#5-B",
-	 	// 	_el_5.elements[0].el.className
-	 	// );
-	 // --
-	 	log("- startTest#6");
-	 	let _el = elRender("#tbUndo");
-	 	let _el_6 = elRender(_el);
-	 	log(
-	 		"- renderTest#6-A",
-	 		_el_6
-	 	);
-	 	// log(
-	 	// 	"- renderTest#6-B",
-	 	// 	_el_6.elements[0].el.className
-	 	// );
-	 // --
-	 	log("- startTest#7");
-	 	let _elements = elRender(".titleBandLink");
-	 	let _el_7 = elRender(_elements);
-	 	log(
-	 		"- renderTest#7-A",
-	 		_el_7
-	 	);
-	 	// log(
-	 	// 	"- renderTest#7-B",
-	 	// 	_el_7.elements[0].el.className
-	 	// );
-	 // --
-	 	log("- startTest#8");
-	 	let _element = elRender("#tbUndo");
-	 	let _element2 = elRender("#tbRedo");
-	 	let _el_8 = elRender(_element)
-	 		.after(_element2);
-	 	log(
-	 		"- renderTest#8-A",
-	 		_el_8
-	 	);*/
+		mapCommon: _mapCommon2.default
 	};
 
 /***/ }

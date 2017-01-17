@@ -2,7 +2,7 @@
 
 import defaults from 'defaults';
 
-import elClass  from 'elClass';
+import elClass  from 'elClass' ;
 
 /*
  * attr
@@ -15,7 +15,7 @@ import elClass  from 'elClass';
  * animate
  * stop
  * remove
-*/
+ */
 
 export default class allElClass {
 	

@@ -10,30 +10,27 @@ import Deck         from 'deck';
 import Tips         from 'tips';
 import field        from 'field';
 import inputs       from 'inputs';
-// import elRender  from 'elRender';
 
-// let _undoMethods = {};
-// let _redoMethods = {};
+// TODO пошаговая анимация
+// let _movesCallback = e => {
+// 	if(_movesStack.length) {
+// 		_movesStack.shift()();
+// 	} else {
+// 		// 
+// 	}
+// };
 
-let _movesCallback = e => {
-	if(_movesStack.length) {
-		_movesStack.shift()();
-	} else {
-		// 
-	}
-};
+// let _movesStack = [];
 
-let _movesStack = [];
+// // --
 
-// --
-
-let _stepsCallback = e => {
-	if(_stepsStack.length) {
-		_stepsStack.shift()();
-	} else {
-		// 
-	}
-};
+// let _stepsCallback = e => {
+// 	if(_stepsStack.length) {
+// 		_stepsStack.shift()();
+// 	} else {
+// 		// 
+// 	}
+// };
 
 let _stepsStack = [];
 

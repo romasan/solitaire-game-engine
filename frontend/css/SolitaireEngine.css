@@ -116,7 +116,6 @@ body {
   padding-top: 3px;
   padding-bottom: 3px; }
 
-/* =========================================== */
 .red_back .flip {
   background: url("/solitaire_engine/img/b2fv.png") !important;
   background-size: 100% 100% !important;
@@ -307,7 +306,6 @@ body {
 .alternative_face .card {
   border: 1px solid #121212;
   border-radius: 3px;
-  /* background: url('/solitaire_engine/img/card.svg'); */
   background: url("/solitaire_engine/img/card.png");
   background-size: 923px 384px; }
 

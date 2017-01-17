@@ -26,8 +26,6 @@ class Event {
 
 	listen(eventName, callback, context) {
 
-		// console.log('listen: (tag:', this._tag + ')', eventName);
-
 		if(
 			typeof callback  != 'function' ||
 			typeof eventName != 'string'
@@ -112,18 +110,7 @@ class Event {
 				let _correct = true;
 
 				for(let _attr in filter) {
-
-					// if(_attr == "slice") {
-
-					// 	for(let _sliceAttr in filter[_attr]) {
-
-					// 		let _name = _sliceAttr;
-
-					// 		_correct = _correct && this._events[eventName][i][_name].split(':') == filter[_attr][_sliceAttr];
-					// 	}
-					// } else {
 					_correct = _correct && this._events[eventName][i][_attr] == filter[_attr];
-					// }
 				}
 
 				if(_correct) {
@@ -132,7 +119,6 @@ class Event {
 			}
 
 			return _events;
-
 		} else {
 			return this._events[eventName];
 		}
@@ -158,7 +144,6 @@ class Event {
 			}
 
 			return _count;
-
 		} else {
 			return this._events[eventName] ? this._events[eventName].length : 0;
 		}

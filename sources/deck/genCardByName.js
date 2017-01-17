@@ -1,7 +1,7 @@
 'use strict';
 
-import event  from 'event';
-import share  from 'share';
+import event  from 'event' ;
+import share  from 'share' ;
 import common from 'common';
 
 // class card {

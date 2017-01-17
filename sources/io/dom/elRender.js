@@ -4,11 +4,11 @@
 
 // export default jquery;
 
-import defaults from 'defaults';
-import share    from 'share';
-import event    from 'event';
+import defaults from 'defaults'    ;
+import share    from 'share'       ;
+import event    from 'event'       ;
 
-import elClass    from 'elClass';
+import elClass    from 'elClass'   ;
 import allElClass from 'allElClass';
 
 share.set('animatedElements'     , 0        );
@@ -18,7 +18,7 @@ share.set('animatedCallback'     , e => null);
 let _allEl = data => {
 
 	if(!data) {
-		throw new Error("elRender:empty arguments");
+		throw new Error("elRender:empty arguments.");
 	}
 	
 	if(typeof data == "string") {
@@ -52,6 +52,7 @@ let _allEl = data => {
 	}
 };
 
+// TODO
 _allEl.stopAnimations = e => {
 
 	console.log('%cSTOP ALL ANIMATIONS', 'color: red; font-weigth: bold;');

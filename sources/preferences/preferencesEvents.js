@@ -1,11 +1,17 @@
 'use strict';
 
-import share           from 'share';
-import event           from 'event';
-import defaults        from 'defaults';
+import share           from 'share'          ;
+import event           from 'event'          ;
+import defaults        from 'defaults'       ;
 
-import storage         from 'storage';
+import storage         from 'storage'        ;
 import gamePreferences from 'gamePreferences';
+
+/*
+ * onShowParameters
+ * applyParameters
+ * saveParameters
+ */
 
 let onShowParameters = e => {
 

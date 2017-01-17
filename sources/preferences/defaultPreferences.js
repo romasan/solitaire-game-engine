@@ -1,9 +1,9 @@
 'use strict';
 
-import event    from 'event';
+import event    from 'event'   ;
 import defaults from 'defaults';
 
-import storage from 'storage';
+import storage from 'storage'  ;
 
 export default e => {
 

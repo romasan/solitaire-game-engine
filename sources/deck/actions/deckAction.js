@@ -7,6 +7,7 @@ import event from 'event';
  * end
  * break
  */
+ 
 export default class deckAction {
 	
 	constructor() {}
