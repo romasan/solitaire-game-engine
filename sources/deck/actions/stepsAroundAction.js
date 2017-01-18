@@ -38,9 +38,9 @@ class stepsAroundAction extends deckAction {
 		// выполняется для всех вокруг
 		// ход не делается
 		// вместо хода выполняется едействие для текущей стопки (если _central, по умолчанию true)
-		if(typeof data.actionData.run == "string") {
+		if(typeof data.actionData.run == 'string') {
 
-			let _central = typeof data.actionData.central == "boolean" ? data.actionData.central : true;
+			let _central = typeof data.actionData.central == 'boolean' ? data.actionData.central : true;
 
 			let _runStack = [];
 

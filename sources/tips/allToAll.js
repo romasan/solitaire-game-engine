@@ -74,18 +74,16 @@ class allToAll {
 		
 		this._moves.push({
 
-			from : {
-				deck     : this._decks[deckIndex],
-				card     : _cards[cardIndex] ,// firstCard of moved deck
-				count    : _cards.length
-				// deckName : this._decks[deckIndex].name
+			"from" : {
+				"deck"  : this._decks[deckIndex],
+				"card"  : _cards[cardIndex]     ,
+				"count" : _cards.length
 			},
 
-			to : {
-				deck     : this._decks[deckIndex_2],
-				lastCard : _card_to,
-				count    : _cards_to.length
-				// deckName : this._decks[deckIndex_2].name
+			"to" : {
+				"deck"     : this._decks[deckIndex_2],
+				"lastCard" : _card_to                ,
+				"count"    : _cards_to.length
 			}
 		});
 	}

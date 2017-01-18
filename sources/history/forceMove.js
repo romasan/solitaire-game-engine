@@ -21,19 +21,21 @@ let forceMove = data => {// {from, to, deck, <flip>, <callback>}
 		return;
 	}
 	
-	let deckFrom = typeof data.from == "string"
+	let deckFrom = typeof data.from == 'string'
 		? Deck.getDeck(data.from)
 		: data.from;
 
-	let deckTo = typeof data.to == "string"
+	let deckTo = typeof data.to == 'string'
 		? Deck.getDeck(data.to)
 		: data.to;
 
+	console.log('forceMove', deckFrom.name, '->', deckTo.name, deck);
+
 	if(
 		!deckFrom                ||
-		 deckFrom.type != "deck" ||
+		 deckFrom.type != 'deck' ||
 		!deckTo                  ||
-		 deckTo  .type != "deck"
+		 deckTo  .type != 'deck'
 	) {
 		return;
 	}
@@ -76,12 +78,12 @@ let forceMove = data => {// {from, to, deck, <flip>, <callback>}
 		}
 
 		let moveDragDeckParams = {
-			moveDeck    : cardsMove,
-			departure   : deckFrom ,
-			destination : deckTo
+			"moveDeck"    : cardsMove,
+			"departure"   : deckFrom ,
+			"destination" : deckTo
 		};
 
-		if(typeof data.callback == "function") {
+		if(typeof data.callback == 'function') {
 			moveDragDeckParams.callback = e => {
 				event.dispatch('forceMoveEnd');
 				data.callback();
@@ -95,7 +97,7 @@ let forceMove = data => {// {from, to, deck, <flip>, <callback>}
 		// console.log('>>> forceMove:moveDragDeck >>>');
 		event.dispatch('moveDragDeck', moveDragDeckParams);
 	} else {
-		console.warn("forceMove:Ход невозможен", data);
+		console.warn('forceMove:Ход невозможен', data);
 	}
 };
 

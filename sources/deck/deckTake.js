@@ -15,7 +15,7 @@ export default (deck, cardId) => {
 
 	rulesCorrect = rulesCorrect && !deck.locked;
 	
-	if(typeof deck.full == "boolean") {
+	if(typeof deck.full == 'boolean') {
 		rulesCorrect = rulesCorrect && !deck.full;
 	}
 
@@ -57,19 +57,19 @@ export default (deck, cardId) => {
 		if(cardIndex >= 0) {
 			
 			takeDeck.push({
-				index : i,
-				card  : deck.cards[i]
+				"index" : i            ,
+				"card"  : deck.cards[i]
 			});
 		}
 	}
 	
 	let _attrs = {
-		cardId     : cardId, 
-		cardName   : cardName, 
-		cardSuit   : cardSuit, 
-		cardRank   : cardRank, 
-		cardIndex  : cardIndex, 
-		deckLength : deckLength
+		"cardId"     : cardId    , 
+		"cardName"   : cardName  , 
+		"cardSuit"   : cardSuit  , 
+		"cardRank"   : cardRank  , 
+		"cardIndex"  : cardIndex , 
+		"deckLength" : deckLength
 	}
 
 	for(let ruleIndex in deck.takeRules) {

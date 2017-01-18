@@ -1,8 +1,8 @@
 'use strict';
 
-import event    from 'event';
-import share    from 'share';
-import common   from 'common';
+import event    from 'event'   ;
+import share    from 'share'   ;
+import common   from 'common'  ;
 
 import elRender from 'elRender';
 
@@ -19,8 +19,8 @@ event.listen('moveCardToHome', data => {
 
 		let _position = data.departure.padding(data.moveDeck[i].index);
 		let _params = {
-			left : _position.x + 'px',
-			top  : _position.y + 'px'
+			"left" : _position.x + 'px',
+			"top"  : _position.y + 'px'
 		}
 
 		let _cardDomElement = share.get('domElement:' + data.moveDeck[i].card.id);
@@ -30,7 +30,7 @@ event.listen('moveCardToHome', data => {
 
 				_params, 
 
-				() => {
+				e => {
 
 					common.curUnLock();
 
@@ -38,7 +38,7 @@ event.listen('moveCardToHome', data => {
 						data.departure.Redraw();
 					}
 
-					if(typeof data.callback == "function") {
+					if(typeof data.callback == 'function') {
 						data.callback();
 					}
 				},

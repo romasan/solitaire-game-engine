@@ -165,7 +165,7 @@ export default class elClass {
 	html(el) {
 		try {
 	
-			if(typeof el == "undefined") {
+			if(typeof el == 'undefined') {
 				return this.el.innerHTML;
 			}
 
@@ -186,9 +186,9 @@ export default class elClass {
 
 			let _animation = share.get('animation');
 
-			typeof animationTime == "undefined" && (animationTime = share.get('animationTime'));
-			typeof animationTime == "function"  && (callback = animationTime, animationTime = share.get('animationTime'));
-			typeof callback      == "string"    && (animationName = callback, callback = null);
+			typeof animationTime == 'undefined' && (animationTime = share.get('animationTime'));
+			typeof animationTime == 'function'  && (callback = animationTime, animationTime = share.get('animationTime'));
+			typeof callback      == 'string'    && (animationName = callback, callback = null);
 
 			animationName = animationName ? animationName : 'animation_' + this._animationIndex;
 			this._animationCallbacks[animationName] = callback;
@@ -232,9 +232,9 @@ export default class elClass {
 
 				if(_animation) {
 
-					this.addClass("animated");
+					this.addClass('animated');
 
-					this.el.addEventListener("transitionend", e => {
+					this.el.addEventListener('transitionend', e => {
 
 						counter -= 1;
 
@@ -242,13 +242,13 @@ export default class elClass {
 
 						if(!counter) {
 
-							this.removeClass("animated");
+							this.removeClass('animated');
 
 							this.css({
 								transition: null
 							});
 
-							if(typeof this._animationCallbacks[animationName] == "function") {
+							if(typeof this._animationCallbacks[animationName] == 'function') {
 								this._animationCallbacks[animationName]();
 								this._animationCallbacks[animationName] = null;
 							}
@@ -261,7 +261,7 @@ export default class elClass {
 
 					// event.dispatch('animationEnd', this);
 
-					if(typeof this._animationCallbacks[animationName] == "function") {
+					if(typeof this._animationCallbacks[animationName] == 'function') {
 						this._animationCallbacks[animationName]();
 						this._animationCallbacks[animationName] = null;
 					}
@@ -310,7 +310,7 @@ export default class elClass {
 	}
 
 	trigger(eventName) {
-		if(typeof this.el[eventName] == "function") {
+		if(typeof this.el[eventName] == 'function') {
 			this.el[eventName]();
 		}
 	}

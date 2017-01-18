@@ -30,13 +30,13 @@ export default (group, data) => {
 	//        A     y 90deg
 
 	let _decks  = [];
-	let _count  = typeof data.count == "number" ? data.count : 3;//16
+	let _count  = typeof data.count == 'number' ? data.count : 3;//16
 	let _step   = 180 / _count;
-	let _radius = typeof data.radius == "number" ? data.radius : 100;//405;
+	let _radius = typeof data.radius == 'number' ? data.radius : 100;//405;
 	let _center = 
-		typeof data.center   != "undefined" && 
-		typeof data.center.x != "undefined" && 
-		typeof data.center.y != "undefined"
+		typeof data.center   != 'undefined' && 
+		typeof data.center.x != 'undefined' && 
+		typeof data.center.y != 'undefined'
 			? data.center 
 			: {
 				"x" : 0,
@@ -51,7 +51,7 @@ export default (group, data) => {
 		let _b = Math.cos(_angle * _deg) * _radius;
 		if(_angle > 360) _angle -= 360;
 		_decks.push({
-			"name"     : group.name + "_deck" + deckIndex,
+			"name"     : group.name + '_deck' + deckIndex,
 			"rotate"   : _angle,
 			"position" : {
 				"x" : _center.x + _a - defaults.card.width  / 2,

@@ -81,16 +81,16 @@ let checkTips = e => {
 			} else {
 
 				event.dispatch('showTip', {
-					el   : _tips[i].from.card, 
-					type : 'tip'
+					"el"   : _tips[i].from.card, 
+					"type" : 'tip'
 				});
 				
 			}
 
 			if(_homeGroups.indexOf(_tips[i].to.deck.parent) >= 0) {
 				event.dispatch('showTip', {
-					el   : _tips[i].from.card, 
-					type : 'tipToHome'
+					"el"   : _tips[i].from.card, 
+					"type" : 'tipToHome'
 				});
 			}
 		}
@@ -150,8 +150,8 @@ let tipsMove = data => {
 		if(Tip) {
 
 			event.dispatch('showTip', {
-				el   : Tip.to.deck,
-				type : 'tipPriority'
+				"el"   : Tip.to.deck,
+				"type" : 'tipPriority'
 			});
 		}
 	}
@@ -170,8 +170,8 @@ let tipsDestination = data => {
 				if(_tips[i].from.card.id == data.currentCard.id) {					
 					
 					event.dispatch('showTip', {
-						'el'   : _tips[i].to.deck, 
-						'type' : 'tipTo'
+						"el"   : _tips[i].to.deck, 
+						"type" : 'tipTo'
 					});
 				}
 			}

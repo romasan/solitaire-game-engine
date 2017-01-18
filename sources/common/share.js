@@ -17,7 +17,7 @@ class shareClass {
 	}
 
 	get(name) {
-		if(typeof this._data[name] != "undefined") {
+		if(typeof this._data[name] != 'undefined') {
 			// TODO решить наконец проблему, 
 			// почему Object.assign не работает после babel-я
 			
@@ -31,7 +31,7 @@ class shareClass {
 	set(name, data, forceClone = false) {
 
 		// "foo", "bar", false
-		if(typeof name == "string") {
+		if(typeof name == 'string') {
 
 			event.dispatch('shareChange:' + name, {
 				from : this._data[name],
@@ -39,7 +39,7 @@ class shareClass {
 			});
 
 			if(
-				typeof forceClone == "boolean" && forceClone
+				typeof forceClone == 'boolean' && forceClone
 			) {
 				try {
 					// this._data[name] = Object.assign({}, data);
@@ -73,7 +73,7 @@ class shareClass {
 				});
 
 				if(
-					typeof forceClone == "boolean" && forceClone
+					typeof forceClone == 'boolean' && forceClone
 				) {
 					try {
 						// this._data[_name] = Object.assign({}, name[_name]);

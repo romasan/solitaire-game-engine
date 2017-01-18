@@ -19,7 +19,7 @@ class changeStepTypeAction extends deckAction {
 			return false;
 		}
 
-		if(typeof data.actionData.to != "string") {
+		if(typeof data.actionData.to != 'string') {
 
 			// !data.actionData.dispatch
 			super.end();

@@ -32,13 +32,12 @@ export default (deck, name) => {
 		let _id = 'card_' + common.genId();
 
 		let _card = {
-			id      : _id    ,
-			name    : name   ,
-			type    : 'card' ,
-			visible : true   ,
-			flip    : false  ,
-			// filled  : false  ,
-			parent  : deck.id
+			"id"      : _id    ,
+			"name"    : name   ,
+			"type"    : 'card' ,
+			"visible" : true   ,
+			"flip"    : false  ,
+			"parent"  : deck.id
 		};
 		
 		event.dispatch('addCardEl', _card);

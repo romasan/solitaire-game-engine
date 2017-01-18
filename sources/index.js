@@ -34,10 +34,6 @@ exports.onChangePreferences = callback => {
 	share.set('changePreferencesCallback', callback);
 };
 
-// exports.getPreferences = () => {
-// 	let _pref = storage.get('pref');
-// };
-
 exports.init = gameConfig => {
 
 	event.dispatch('gameInit', {firstInit});
@@ -52,14 +48,14 @@ exports.init = gameConfig => {
 
 		firstInit = false;
 
-		if(typeof preloadCallback == "function") {
+		if(typeof preloadCallback == 'function') {
 			let _data = share.get('gamePreferencesData');
 			preloadCallback(_data);
 		}
 
 		let changePreferencesCallback = share.get('changePreferencesCallback');
 
-		if(typeof changePreferencesCallback == "function") {
+		if(typeof changePreferencesCallback == 'function') {
 			let _data = share.get('gamePreferencesData');
 			changePreferencesCallback(_data);
 		}

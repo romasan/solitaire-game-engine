@@ -23,8 +23,8 @@ export default (deck, putDeck) => {
 		// Нестандартный ход (autosteps)
 		rulesCorrect = rulesCorrect && Field.autoSteps && Field.autoSteps[_stepType]
 			? Field.autoSteps[_stepType].manual({
-				putDeck,
-				to : deck
+				"putDeck" : putDeck,
+				"to"      : deck
 			})
 			: false;
 	} else {
@@ -45,14 +45,14 @@ export default (deck, putDeck) => {
 				if(putRules[ruleName]) {
 
 					let _param = {
-						from    : {
-							deckId : _deckId, 
-							deck   : _deck_departure
+						"from"    : {
+							"deckId" : _deckId, 
+							"deck"   : _deck_departure
 						}, 
-						putDeck,
-						cards   : _deck.cards,
-						to      : _deck,
-						link    : _link
+						"putDeck" : putDeck,
+						"cards"   : _deck.cards,
+						"to"      : _deck,
+						"link"    : _link
 						// rulesArgs : putRules[ruleName]
 					};
 					rulesCorrect = rulesCorrect && putRules[ruleName](_param);

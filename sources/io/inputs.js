@@ -146,7 +146,7 @@ class inputs {
 
 			if(_deck) {
 				event.dispatch('click', {
-					to: _deck
+					"to" : _deck
 				});
 			}
 		}
@@ -160,7 +160,7 @@ class inputs {
 
 			if(_deck) {
 				event.dispatch('click', {
-					to: _deck
+					"to" : _deck
 				});
 			}
 
@@ -207,10 +207,11 @@ class inputs {
 		// let _position = _deck.padding(_dragDeck[_dragDeck.length - 1].index);
 
 		event.dispatch('dragDeck', {
-			x, y        , 
-			_dragDeck   , 
-			_startCursor, 
-			_deck
+			"x"            : x           ,
+			"y"            : y           , 
+			"_dragDeck"    : _dragDeck   , 
+			"_startCursor" : _startCursor, 
+			"_deck"        : _deck
 		});
 
 		// подсказка лучшего хода до отпускания
@@ -260,20 +261,23 @@ class inputs {
 		let _distance = Math.sqrt((i => i * i)(x - _startCursor.x) + (i => i * i)(y - _startCursor.y));
 
 		let cursorMove = {
-			distance     : _distance,
-			dbclick      : !!dbclick,
-			direction    : {
-				x     : x - _startCursor.x,// (+) rigth / (-) left
-				y     : y - _startCursor.y,// (+) down  / (-) up
-				right : x > _startCursor.x,
-				left  : x < _startCursor.x,
-				down  : y > _startCursor.y,
-				up    : y < _startCursor.y
+			"distance"  : _distance,
+			"dbclick"   : !!dbclick,
+			"direction" : {
+				"x"     : x - _startCursor.x,// (+) rigth / (-) left
+				"y"     : y - _startCursor.y,// (+) down  / (-) up
+				"right" : x > _startCursor.x,
+				"left"  : x < _startCursor.x,
+				"down"  : y > _startCursor.y,
+				"up"    : y < _startCursor.y
 			},
-			lastPosition : {x, y},
-			deckPosition : {
-				x : (_position.x + (x - _startCursor.x)),
-				y : (_position.y + (y - _startCursor.y))
+			"lastPosition" : {
+				"x" : x,
+				"y" : y
+			},
+			"deckPosition" : {
+				"x" : (_position.x + (x - _startCursor.x)),
+				"y" : (_position.y + (y - _startCursor.y))
 			}
 		};
 
@@ -285,9 +289,9 @@ class inputs {
 
 		// if(_dop && _dop.id) {
 		event.dispatch('Move', {
-			moveDeck   : _dragDeck,
-			to         : _dop && _dop.id ? _dop.id : 'mat',
-			cursorMove
+			"moveDeck"   : _dragDeck,
+			"to"         : _dop && _dop.id ? _dop.id : 'mat',
+			"cursorMove" : cursorMove
 		});
 		// }
 

@@ -37,7 +37,7 @@ let applyParameters = e => {
 
 	for(let prefName in defaults.themes) {
 		let _value = $(`input[name='pref_${prefName}']:checked`).val();
-		_value = _value == "true" ? true : _value == "false" ? false : _value;
+		_value = _value == 'true' ? true : _value == 'false' ? false : _value;
 		pref[prefName] = _value;
 	}
 
@@ -50,7 +50,7 @@ let applyParameters = e => {
 	saveParameters(pref);
 	
 	let changePreferencesCallback = share.get('changePreferencesCallback');
-	if(typeof changePreferencesCallback == "function") {
+	if(typeof changePreferencesCallback == 'function') {
 		let _data = pref;
 		changePreferencesCallback(_data);
 	}
@@ -64,7 +64,7 @@ export default e => {
 	
 	// TODO переделать без jQuery
 
-	$("#bbParameters").click(onShowParameters);
+	$('#bbParameters').click(onShowParameters);
 	// event.dispatch('addDomEvent', {
 	// 	"event"    : "click"
 	// 	"element"  : "#bbParameters",

@@ -79,19 +79,19 @@ class Deck {
 		this.autoHide   = typeof data.autoHide   == 'boolean' ? data.autoHide  : defaults.autohide;
 		
 		// changed parameters
-		if(typeof data.showSlot == "undefined") {
+		if(typeof data.showSlot == 'undefined') {
 			data.showSlot = defaults.showSlot;
 		}
 		
 		this._params = {
-			padding_y      : typeof data.paddingY     == 'number' ? data.paddingY     : defaults.padding_y     ,
-			flip_padding_y : typeof data.flipPaddingY == 'number' ? data.flipPaddingY : defaults.flip_padding_y,
-			padding_x      : typeof data.paddingX     == 'number' ? data.paddingX     : defaults.padding_x     ,
-			flip_padding_x : typeof data.flipPaddingX == 'number' ? data.flipPaddingX : defaults.flip_padding_x,
-			startZIndex    : typeof data.startZIndex  == 'number' ? data.startZIndex  : defaults.startZIndex   ,
-			rotate         : typeof data.rotate       == 'number' ? data.rotate       : defaults.rotate        ,
-			x              : 0                                                                                 ,
-			y              : 0
+			"padding_y"      : typeof data.paddingY     == 'number' ? data.paddingY     : defaults.padding_y     ,
+			"flip_padding_y" : typeof data.flipPaddingY == 'number' ? data.flipPaddingY : defaults.flip_padding_y,
+			"padding_x"      : typeof data.paddingX     == 'number' ? data.paddingX     : defaults.padding_x     ,
+			"flip_padding_x" : typeof data.flipPaddingX == 'number' ? data.flipPaddingX : defaults.flip_padding_x,
+			"startZIndex"    : typeof data.startZIndex  == 'number' ? data.startZIndex  : defaults.startZIndex   ,
+			"rotate"         : typeof data.rotate       == 'number' ? data.rotate       : defaults.rotate        ,
+			"x"              : 0                                                                                 ,
+			"y"              : 0
 		};
 
 		this.rotate = this._params.rotate;
@@ -159,9 +159,9 @@ class Deck {
 		this.tags = data.tags ? data.tags : [];
 		
 		event.dispatch('addDeckEl', {
-			deckData : data, 
-			deck     : this,
-			params   : this._params
+			"deckData" : data, 
+			"deck"     : this,
+			"params"   : this._params
 		});
 
 		// Подписывается на перетаскивание стопки/карты
@@ -184,14 +184,14 @@ class Deck {
 	Redraw(data) {
 
 		event.dispatch('redrawDeck', {
-			deck     : this,
-			deckData : data,
-			params   : this._params,
-			cards    : this.cards
+			"deck"     : this,
+			"deckData" : data,
+			"params"   : this._params,
+			"cards"    : this.cards
 		});
 
 		event.dispatch('redrawDeckFlip', {
-			cards : this.cards
+			"cards" : this.cards
 		});
 
 	}
@@ -237,17 +237,17 @@ class Deck {
 				let _rule = this.fullRules[ruleIndex];
 
 				if(
-					typeof _rule == "string"
+					typeof _rule == 'string'
 				) {
 					full = full                                  &&
-					       typeof fullRules[_rule] == "function" &&
+					       typeof fullRules[_rule] == 'function' &&
 					       fullRules[_rule](this);
 				} else {
 
 					for(let subRule in _rule) {
 						if(
-							typeof subRule            == "string"   &&
-							typeof fullRules[subRule] == "function"
+							typeof subRule            == 'string'   &&
+							typeof fullRules[subRule] == 'function'
 						) {
 							full = full && fullRules[subRule](this, _rule[subRule]);
 						}

@@ -12,9 +12,9 @@ export default data => {// {deckIndex, count, decks, data}
 
 	if(_prev) {
 		_relations.push({
-			name: 'beside',
-			type: 'prev',
-			to  : _prev
+			"name" : 'beside',
+			"type" : 'prev'  ,
+			"to"   : _prev
 		});
 	}
 
@@ -24,9 +24,9 @@ export default data => {// {deckIndex, count, decks, data}
 
 	if(_next) {
 		_relations.push({
-			name: 'beside',
-			type: 'next',
-			to  : _next
+			"name" : 'beside',
+			"type" : 'next'  ,
+			"to"   : _next
 		});
 	}
 

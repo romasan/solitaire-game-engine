@@ -96,9 +96,9 @@ let add = deck => {
 			
 			// сохраняем action
 			_decksActions.push({
-				deck   : deck, 
-				event  : deck.actions[actionName].event,
-				action : actionName
+				"deck"   : deck, 
+				"event"  : deck.actions[actionName].event,
+				"action" : actionName
 			});
 
 			share.set('actionEvent:' + deck.name + ':' + deck.actions[actionName].event, true);
@@ -133,9 +133,9 @@ let autoRunActions = deck => {
 					deck, 
 
 					{
-						actionData : deck.actions[actionName],
-						eventData  : null,
-						eventName  : deck.actions[actionName].event
+						"actionData" : deck.actions[actionName],
+						"eventData"  : null,
+						"eventName"  : deck.actions[actionName].event
 					}
 				);
 			}

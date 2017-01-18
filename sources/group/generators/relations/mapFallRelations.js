@@ -12,10 +12,10 @@ import mapCommon from 'mapCommon';
 // ];
 
 const opposite = [
-	{left  : 'right'},
-	{right : 'left' },
-	{up    : 'down' },
-	{down  : 'up'   }
+	{"left"  : 'right'},
+	{"right" : 'left' },
+	{"up"    : 'down' },
+	{"down"  : 'up'   }
 ];
 
 export default data => {// {x, y, map, mapSize, el, data}
@@ -47,9 +47,9 @@ export default data => {// {x, y, map, mapSize, el, data}
 			
 				if(mapCommon.exist(x, y, data.mapSize, data.map)) {
 					_relations.push({
-						name      : 'fall',
-						direction : 'left',
-						to        : data.map[y][x].name
+						"name"      : 'fall',
+						"direction" : 'left',
+						"to"        : data.map[y][x].name
 					});
 				}
 			
@@ -62,9 +62,9 @@ export default data => {// {x, y, map, mapSize, el, data}
 			
 				if(mapCommon.exist(x, y, data.mapSize, data.map)) {
 					_relations.push({
-						name      : 'fall',
-						direction : 'right',
-						to        : data.map[y][x].name
+						"name"      : 'fall',
+						"direction" : 'right',
+						"to"        : data.map[y][x].name
 					});
 				}
 			
@@ -77,9 +77,9 @@ export default data => {// {x, y, map, mapSize, el, data}
 			
 				if(mapCommon.exist(x, y, data.mapSize, data.map)) {
 					_relations.push({
-						name      : 'fall',
-						direction : 'up',
-						to        : data.map[y][x].name
+						"name"      : 'fall',
+						"direction" : 'up',
+						"to"        : data.map[y][x].name
 					});
 				}
 			
@@ -92,9 +92,9 @@ export default data => {// {x, y, map, mapSize, el, data}
 			
 				if(mapCommon.exist(x, y, data.mapSize, data.map)) {
 					_relations.push({
-						name      : 'fall',
-						direction : 'down',
-						to        : data.map[y][x].name
+						"name"      : 'fall',
+						"direction" : 'down',
+						"to"        : data.map[y][x].name
 					});
 				}
 			

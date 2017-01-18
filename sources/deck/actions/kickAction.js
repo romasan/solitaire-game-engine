@@ -30,7 +30,7 @@ class kickAction extends deckAction {
 
 		// TODO спорный момент
 		if(
-			typeof data.eventData.stepType == "string"   &&
+			typeof data.eventData.stepType == 'string'   &&
 			data.eventData.stepType != defaults.stepType
 		) {
 
@@ -61,15 +61,15 @@ class kickAction extends deckAction {
 
 				event.dispatch('addStep', {
 					"move" : {
-						from     : _from.name,
-						to       : data.actionData.to,
-						deck     : _deck,
-						flip     : true,
-						stepType : {
-							undo: historyData.undo,
-							redo: historyData.redo
+						"from"     : _from.name,
+						"to"       : data.actionData.to,
+						"deck"     : _deck,
+						"flip"     : true,
+						"stepType" : {
+							"undo" : historyData.undo,
+							"redo" : historyData.redo
 						},
-						context  : "kickAction"
+						"context"  : 'kickAction'
 					}
 				});
 			};
@@ -84,8 +84,8 @@ class kickAction extends deckAction {
 					before: data => {
 
 						_addStep({
-							undo: stepType,
-							redo: data.stepType	
+							"undo" : stepType,
+							"redo" : data.stepType	
 						});
 
 						event.dispatch('saveSteps');
@@ -94,8 +94,8 @@ class kickAction extends deckAction {
 			} else {
 
 				_addStep({
-					undo: stepType,// share.get('stepType'),
-					redo: data.actionData.dispatch ? share.get('stepType') : defaults.stepType
+					"undo" : stepType,// share.get('stepType'),
+					"redo" : data.actionData.dispatch ? share.get('stepType') : defaults.stepType
 				})
 				
 				event.dispatch('saveSteps');
@@ -106,11 +106,11 @@ class kickAction extends deckAction {
 
 		// TODO interval
 		let forceMoveParams = {
-			from     : _from             ,
-			to       : data.actionData.to,
-			deck     : _deck             ,
-			flip     : true              ,
-			callback : _callback
+			"from"     : _from             ,
+			"to"       : data.actionData.to,
+			"deck"     : _deck             ,
+			"flip"     : true              ,
+			"callback" : _callback
 		};
 
 		// forceMove(forceMoveParams);

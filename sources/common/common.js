@@ -174,7 +174,7 @@ let validateCardName = name => {
 
 let _id = 0;
 
-let genId = () => {
+let genId = e => {
 	return _id += 1;
 };
 

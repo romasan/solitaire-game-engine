@@ -10,22 +10,22 @@ import groupFill      from 'groupFill'     ;
 import groupRedraw    from 'groupRedraw'   ;
 import groupGenerator from 'groupGenerator';
 
-const params = {
-	"paddingType"  : {"type" : "any"},
-	"flip"         : {"type" : "any"},
-	"showSlot"     : {"type" : "any"},
-	"takeRules"    : {"type" : "any"},
-	"putRules"     : {"type" : "any"},
-	"fullRules"    : {"type" : "any"},
-	"autoHide"     : {"type" : "any"},
-	"paddingX"     : {"type" : "any"},
-	"paddingY"     : {"type" : "any"},
-	"flipPaddingX" : {"type" : "any"},
-	"flipPaddingY" : {"type" : "any"},
-	"actions"      : {"type" : "any"},
-	"tags"         : {"type" : "any"},
+const PARAMS = {
+	"paddingType"  : {'type' : 'any'},
+	"flip"         : {'type' : 'any'},
+	"showSlot"     : {'type' : 'any'},
+	"takeRules"    : {'type' : 'any'},
+	"putRules"     : {'type' : 'any'},
+	"fullRules"    : {'type' : 'any'},
+	"autoHide"     : {'type' : 'any'},
+	"paddingX"     : {'type' : 'any'},
+	"paddingY"     : {'type' : 'any'},
+	"flipPaddingX" : {'type' : 'any'},
+	"flipPaddingY" : {'type' : 'any'},
+	"actions"      : {'type' : 'any'},
+	"tags"         : {'type' : 'any'},
 	"save"         : {
-		"type"    : "boolean",
+		"type"    : 'boolean',
 		"default" : true
 	}
 };
@@ -80,15 +80,15 @@ class groupClass {
 
 		// сохраняем атрибуты чтобы прокинуть их колодам
 		this.parameters = {};
-		for(let paramName in params) {
-			if(params[paramName].type == "any") {
+		for(let paramName in PARAMS) {
+			if(PARAMS[paramName].type == 'any') {
 				this.parameters[paramName] = data[paramName]
 					? data[paramName]
 					: defaults[paramName];
-			} else if(params[paramName].type == "boolean") {
-				this.parameters[paramName] = typeof data[paramName] == "boolean"
+			} else if(PARAMS[paramName].type == 'boolean') {
+				this.parameters[paramName] = typeof data[paramName] == 'boolean'
 					? data[paramName]
-					: params[paramName].default;
+					: PARAMS[paramName].default;
 				// this.parameters[paramName] = typeof data[paramName] == "boolean" ? data[paramName] : defaults[paramName];
 			}
 		};
@@ -193,27 +193,27 @@ class groupClass {
 		}
 
 		// прокидываем некоторые атрибуты всем колодам группы (у атрибутов заданных колоде приоритет выше)
-		for(let paramName in params) {
+		for(let paramName in PARAMS) {
 
-			if(params[paramName].type == "any") {
+			if(PARAMS[paramName].type == 'any') {
 				if(
 					this.parameters[paramName]        &&
-					typeof data[paramName] == "undefined"
+					typeof data[paramName] == 'undefined'
 				) {
 					data[paramName] = this.parameters[paramName];
 				};
-			} else if(params[paramName].type == "boolean") {
+			} else if(PARAMS[paramName].type == 'boolean') {
 
 				if(
-					typeof this.parameters[paramName] == "boolean" &&
-					typeof data[paramName] == "undefined"
+					typeof this.parameters[paramName] == 'boolean' &&
+					typeof data[paramName] == 'undefined'
 				) {
 					data[paramName] = this.parameters[paramName];
 				}			
 			}
 		};
 
-		data.deckIndex = typeof data.deckIndex == "number"
+		data.deckIndex = typeof data.deckIndex == 'number'
 			? data.deckIndex
 			:(_index | 0) + 1;
 		
@@ -336,7 +336,7 @@ let add = data => {
 		if(typeof data.decks == 'number') {
 			data.decks = {
 				"generator" : {
-					"type"  : "count",
+					"type"  : 'count',
 					"count" : data.decks
 				}
 			};

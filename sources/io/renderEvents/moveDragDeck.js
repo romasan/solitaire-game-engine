@@ -38,7 +38,7 @@ event.listen('moveDragDeck', data => {
 
 		elRender(_cardDomElement)
 			.css({
-				'transform' : 'rotate(' + departureAngle + 'deg)'
+				"transform" : 'rotate(' + departureAngle + 'deg)'
 			})
 
 		if(departureAngle - destinationAngle > 180) {
@@ -46,7 +46,7 @@ event.listen('moveDragDeck', data => {
 			departureAngle = departureAngle - 360;
 			elRender(_cardDomElement)
 				.css({
-					'transform' : 'rotate(' + departureAngle + 'deg)'
+					"transform" : 'rotate(' + departureAngle + 'deg)'
 				})
 		};
 
@@ -55,9 +55,9 @@ event.listen('moveDragDeck', data => {
 		}
 
 		let _params = {
-			'transform' : 'rotate(' + destinationAngle + 'deg)',
-			'left'      : _position.x + 'px'                   ,
-			'top'       : _position.y + 'px'
+			"transform" : 'rotate(' + destinationAngle + 'deg)',
+			"left"      : _position.x + 'px'                   ,
+			"top"       : _position.y + 'px'
 		};
 
 		let _zIndex = (defaults.topZIndex | 0) + (i | 0);
@@ -73,7 +73,7 @@ event.listen('moveDragDeck', data => {
 
 			if(
 				_last                              &&
-				typeof data.callback == "function"
+				typeof data.callback == 'function'
 			) {
 				data.callback();
 			}
@@ -86,7 +86,7 @@ event.listen('moveDragDeck', data => {
 
 		elRender(_cardDomElement)
 			.css({
-				'z-index' : _zIndex
+				"z-index" : _zIndex
 			})
 			.animate(
 				_params  ,
@@ -125,9 +125,9 @@ event.listen('dragDeck', data => {// {x, y, _dragDeck, _startCursor, _deck}
 			let _position = data._deck.padding(data._dragDeck[i].index);
 
 			let _params = {
-				'left'    : (_position.x + (data.x - data._startCursor.x) / _zoom) + 'px',
-				'top'     : (_position.y + (data.y - data._startCursor.y) / _zoom) + 'px',
-				'z-index' : defaults.topZIndex + (i | 0)
+				"left"    : (_position.x + (data.x - data._startCursor.x) / _zoom) + 'px',
+				"top"     : (_position.y + (data.y - data._startCursor.y) / _zoom) + 'px',
+				"z-index" : defaults.topZIndex + (i | 0)
 			}
 
 			// Operations with DOM

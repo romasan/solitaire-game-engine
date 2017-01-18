@@ -1,11 +1,11 @@
 'use strict';
 
-import share    from 'share';
-import event    from 'event';
+import share    from 'share'   ;
+import event    from 'event'   ;
 import defaults from 'defaults';
-import common   from 'common';
+import common   from 'common'  ;
 
-import Field    from 'field';
+import Field    from 'field'   ;
 import elRender from 'elRender';
 
 event.listen('addCardEl', data => {
@@ -26,7 +26,7 @@ event.listen('addCardEl', data => {
 		.addClass('el card draggable ' + data.name)
 		.css(_params)
 		.attr({
-			id: data.id
+			"id" : data.id
 		});
 
 	share.set('domElement:' + data.id, _domElement);

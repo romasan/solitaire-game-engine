@@ -1,10 +1,10 @@
 'use strict';
 
-import event    from 'event';
-import share    from 'share';
+import event    from 'event'   ;
+import share    from 'share'   ;
 import defaults from 'defaults';
 
-import Field    from 'field';
+import Field    from 'field'   ;
 import elRender from 'elRender';
 
 event.listen('fieldThemesSet', pref => {

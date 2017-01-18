@@ -1,10 +1,10 @@
 'use strict';
 
-import event    from 'event';
-import share    from 'share';
+import event    from 'event'   ;
+import share    from 'share'   ;
 import defaults from 'defaults';
 
-import Field    from 'field';
+import Field    from 'field'   ;
 import elRender from 'elRender';
 
 /*
@@ -91,19 +91,19 @@ event.listen('addDeckEl', data => {
 		elRender('<div>');
 
 	let _params = {
-		'transform' : 'rotate(' + (data.params.rotate | 0) + 'deg)',
-		'width'     : defaults.card.width  + 'px'                  ,
- 		'height'    : defaults.card.height + 'px'                  ,
-		'left'      : data.params.x        + 'px'                  ,
-		'top'       : data.params.y        + 'px'                  ,
-		'display'   : data.deck.visible ? 'block' : 'none'
+		"transform" : 'rotate(' + (data.params.rotate | 0) + 'deg)',
+		"width"     : defaults.card.width  + 'px'                  ,
+		"height"    : defaults.card.height + 'px'                  ,
+		"left"      : data.params.x        + 'px'                  ,
+		"top"       : data.params.y        + 'px'                  ,
+		"display"   : data.deck.visible ? 'block' : 'none'
 	};
 
 	elRender(_deckDomElement)
 		.css(_params)
 		.addClass('el')
 		.attr({
-			id : data.deck.id
+			"id" : data.deck.id
 		});
 
 	if(data.deckData.showSlot) {
@@ -164,7 +164,7 @@ event.listen('redrawDeckIndexes', data => {
 		let _cardDomElement = share.get('domElement:' + data.cards[i].id);
 
 		_cardDomElement.css({
-			'z-index' : (defaults.startZIndex | 0) + (i | 0)
+			"z-index" : (defaults.startZIndex | 0) + (i | 0)
 		});
 	}
 });
@@ -192,10 +192,10 @@ event.listen('redrawDeck', data => {
 
 	// перерисовка стопки
 	let _params = {
-		'transform' : 'rotate(' + (data.params.rotate | 0) + 'deg)',
-		'left'      : data.params.x + 'px'                         ,
-		'top'       : data.params.y + 'px'                         ,
-		'display'   : data.deck.visible ? 'block' : 'none'
+		"transform" : 'rotate(' + (data.params.rotate | 0) + 'deg)',
+		"left"      : data.params.x + 'px'                         ,
+		"top"       : data.params.y + 'px'                         ,
+		"display"   : data.deck.visible ? 'block' : 'none'
 	};	
 
 	let _deckDomElement = share.get('domElement:' + data.deck.id);
@@ -224,14 +224,14 @@ event.listen('redrawDeck', data => {
 		let _zIndex        = (data.params.startZIndex | 0) + (i | 0);
 		
 		let _params = {
-			'-ms-transform'     : 'rotate(' + (data.params.rotate | 0) + 'deg)',
-			'-webkit-transform' : 'rotate(' + (data.params.rotate | 0) + 'deg)',
-			'-moz-transform'    : 'rotate(' + (data.params.rotate | 0) + 'deg)',
-			'transform'         : 'rotate(' + (data.params.rotate | 0) + 'deg)',
-			'left'              : _card_position.x + 'px'                      ,
-			'top'               : _card_position.y + 'px'                      ,
-			'z-index'           : _zIndex                                      ,
-			'display'           : data.deck.visible ? 'block' : 'none'
+			"-ms-transform"     : 'rotate(' + (data.params.rotate | 0) + 'deg)',
+			"-webkit-transform" : 'rotate(' + (data.params.rotate | 0) + 'deg)',
+			"-moz-transform"    : 'rotate(' + (data.params.rotate | 0) + 'deg)',
+			"transform"         : 'rotate(' + (data.params.rotate | 0) + 'deg)',
+			"left"              : _card_position.x + 'px'                      ,
+			"top"               : _card_position.y + 'px'                      ,
+			"z-index"           : _zIndex                                      ,
+			"display"           : data.deck.visible ? 'block' : 'none'
 		};
 
 		let _cardDomElement = share.get('domElement:' + data.cards[i].id);

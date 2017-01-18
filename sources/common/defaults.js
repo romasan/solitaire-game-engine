@@ -6,16 +6,16 @@ export default {
 
 	"themes" : {
 		"field" : [
-			"default_field"    ,
-			"alternative_field"
+			'default_field'    ,
+			'alternative_field'
 		],
 		"face" : [
-			"default_face"    ,
-			"alternative_face"
+			'default_face'    ,
+			'alternative_face'
 		],
 		"back" : [
-			"default_back"    ,
-			"alternative_back"
+			'default_back'    ,
+			'alternative_back'
 		]
 		// empty : [
 		// 	"default_empty"    ,
@@ -24,9 +24,9 @@ export default {
 	},
 
 	"pref" : {
-		"field" : "default_field"   , // 0
-		"face"  : "alternative_face", // 1
-		"back"  : "default_back"      // 0
+		"field" : 'default_field'   , // 0
+		"face"  : 'alternative_face', // 1
+		"back"  : 'default_back'      // 0
 	},
 
 // Tips -------------------------------------------------------------------------------
@@ -45,7 +45,7 @@ export default {
 
 	"zoom"                : 1.0 ,
 
-	"locale"              : "ru",
+	"locale"              : 'ru',
 
 	"animation"           : true,
 	"animationTime"       : 400 , // time in milliseconds

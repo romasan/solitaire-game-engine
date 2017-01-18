@@ -15,19 +15,19 @@ export default class {
 
 	constructor(params) {
 
-		if(typeof params.groups != "undefined") {
+		if(typeof params.groups != 'undefined') {
 			this.groups = params.groups;
 		}
 		
-		if(typeof params.event == "string") {
+		if(typeof params.event == 'string') {
 			this.event = params.event;
 		}
 
-		if(typeof params.dispatch == "string") {
+		if(typeof params.dispatch == 'string') {
 			this.dispatch = params.dispatch;
 		}
 
-		if(typeof params.autoStep == "boolean") {
+		if(typeof params.autoStep == 'boolean') {
 			this.autoStep = params.autoStep;
 		}
 	}
@@ -40,7 +40,7 @@ export default class {
 
 		share.set('autoStep:stepType', this.stepType);
 
-		if(e && typeof e.before == "function") {
+		if(e && typeof e.before == 'function') {
 			e.before({
 				stepType: this.stepType
 			});
@@ -92,7 +92,7 @@ export default class {
 				
 				'moveEnd',
 
-				() => {
+				e => {
 
 					if(share.get('stepType') != this.stepType) {
 						return; 

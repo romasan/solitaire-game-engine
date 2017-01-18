@@ -1,15 +1,15 @@
 'use strict';
 
-import event        from 'event';
-import share        from 'share';
-import common       from 'common';
+import event        from 'event'       ;
+import share        from 'share'       ;
+import common       from 'common'      ;
 import stateManager from 'stateManager';
 
-import forceMove    from 'forceMove';
-import Deck         from 'deck';
-import Tips         from 'tips';
-import field        from 'field';
-import inputs       from 'inputs';
+import forceMove    from 'forceMove'   ;
+import Deck         from 'deck'        ;
+import Tips         from 'tips'        ;
+import field        from 'field'       ;
+import inputs       from 'inputs'      ;
 
 // TODO пошаговая анимация
 // let _movesCallback = e => {
@@ -57,7 +57,7 @@ let _undo = data => {
 
 	// LOCK
 	if(
-		typeof data.lock != "undefined"
+		typeof data.lock != 'undefined'
 	) {
 		for(let i in data.lock) {
 			let _element = common.getElementsByName(data.lock[i])[0];
@@ -67,7 +67,7 @@ let _undo = data => {
 
 	// UNLOCK
 	if(
-		typeof data.unlock != "undefined"
+		typeof data.unlock != 'undefined'
 	) {
 		for(let i in data.unlock) {
 			let _element = common.getElementsByName(data.unlock[i])[0];
@@ -77,10 +77,10 @@ let _undo = data => {
 
 	// MOVE
 	if(
-		typeof data.move      != "undefined" &&
-		typeof data.move.from != "undefined" &&
-		typeof data.move.to   != "undefined" &&
-		typeof data.move.deck != "undefined"
+		typeof data.move      != 'undefined' &&
+		typeof data.move.from != 'undefined' &&
+		typeof data.move.to   != 'undefined' &&
+		typeof data.move.deck != 'undefined'
 	) {
 
 		// TODO
@@ -88,11 +88,11 @@ let _undo = data => {
 		
 		if(data.move.stepType) {
 
-			if(typeof data.move.stepType == "string") {
+			if(typeof data.move.stepType == 'string') {
 				share.set('stepType', data.move.stepType);
 			}
 
-			if(typeof data.move.stepType.undo == "string") {
+			if(typeof data.move.stepType.undo == 'string') {
 				share.set('stepType', data.move.stepType.undo);
 			}
 		}
@@ -101,10 +101,10 @@ let _undo = data => {
 		// _movesStack.push(e => {
 
 		let forceMoveData = {
-			from     : data.move.to  , // from ->
-			to       : data.move.from, //      <- to
-			deck     : data.move.deck,
-			flip     : data.move.flip,
+			"from" : data.move.to  , // from ->
+			"to"   : data.move.from, //      <- to
+			"deck" : data.move.deck,
+			"flip" : data.move.flip,
 		};
 
 		if(!share.get('showHistoryAnimation')) {
@@ -176,7 +176,7 @@ let _redo = data => {
 
 	// LOCK
 	if(
-		typeof data.lock != "undefined"
+		typeof data.lock != 'undefined'
 	) {
 		for(let i in data.lock) {
 			let _element = common.getElementsByName(data.lock[i])[0];
@@ -186,7 +186,7 @@ let _redo = data => {
 
 	// UNLOCK
 	if(
-		typeof data.unlock != "undefined"
+		typeof data.unlock != 'undefined'
 	) {
 		for(let i in data.unlock) {
 			let _element = common.getElementsByName(data.unlock[i])[0];
@@ -196,28 +196,28 @@ let _redo = data => {
 
 	// MOVE
 	if(
-		typeof data.move      != "undefined" &&
-		typeof data.move.from != "undefined" &&
-		typeof data.move.to   != "undefined" &&
-		typeof data.move.deck != "undefined"
+		typeof data.move      != 'undefined' &&
+		typeof data.move.from != 'undefined' &&
+		typeof data.move.to   != 'undefined' &&
+		typeof data.move.deck != 'undefined'
 	) {
 
 		if(data.move.stepType) {
 
-			if(typeof data.move.stepType == "string") {
+			if(typeof data.move.stepType == 'string') {
 				share.set('stepType', data.move.stepType);
 			}
 
-			if(typeof data.move.stepType.redo == "string") {
+			if(typeof data.move.stepType.redo == 'string') {
 				share.set('stepType', data.move.stepType.redo);
 			}
 		}
 
 		let forceMoveData = {
-			from     : data.move.from,
-			to       : data.move.to  ,
-			deck     : data.move.deck,
-			flip     : data.move.flip,
+			"from" : data.move.from,
+			"to"   : data.move.to  ,
+			"deck" : data.move.deck,
+			"flip" : data.move.flip,
 		};
 
 		if(!share.get('showHistoryAnimation')) {
@@ -234,7 +234,7 @@ let _redo = data => {
 
 	if(
 		data.redo                            &&
-		typeof data.redo.stepType == "string"
+		typeof data.redo.stepType == 'string'
 	) {
 		share.set('stepType', data.redo.stepType);
 	}

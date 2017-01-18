@@ -9,7 +9,7 @@ export default (data, method, me) => {
 
 	let sources = [];
 
-	if(typeof data.source != "string") {
+	if(typeof data.source != 'string') {
 		if(
 			data.source                      &&
 			data.source.constructor == Array
@@ -35,14 +35,14 @@ export default (data, method, me) => {
 		
 		let current = common.getElementsByName(sources[i])[0];
 		
-		if(current.type == "group") {
+		if(current.type == 'group') {
 			let decks = current.getDecks();
 			for(let deckIndex in decks) {
 				decks[deckIndex][method]();
 			}
 		}
 		
-		if(current.type == "deck") {
+		if(current.type == 'deck') {
 			current[method]();
 		}
 	}

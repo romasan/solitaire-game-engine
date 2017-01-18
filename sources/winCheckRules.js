@@ -43,7 +43,7 @@ let winCheckRules = {
 	// Filters
 
 	// возвращает колоды определённой группы/групп
-	group : data => {
+	"group" : data => {
 
 		if(!data.filter || !data.filterArgs) {
 			return false;
@@ -56,7 +56,7 @@ let winCheckRules = {
 			// if(data.filterArgs.indexOf(data.decks[_i].parent)) {
 			if(
 				(
-					typeof data.filterArgs == "string"     &&
+					typeof data.filterArgs == 'string'     &&
 					data.decks[_i].parent  == data.filterArgs
 				) ||
 				(
@@ -73,9 +73,9 @@ let winCheckRules = {
 		return _decks.length;
 	},
 
-	groups : data => winCheckRules.group(data),
+	"groups" : data => winCheckRules.group(data),
 
-	select : data => {// by Tag
+	"select" : data => {// by Tag
 
 		let _decks = [];
 
@@ -91,7 +91,7 @@ let winCheckRules = {
 		return _decks.length;
 	},
 
-	deck : data => {
+	"deck" : data => {
 		
 		if(!data.filter || !data.filterArgs) {
 			return false;
@@ -101,7 +101,7 @@ let winCheckRules = {
 
 		for(let _i in data.decks) {
 			if(
-				typeof data.filterArgs == "string"                &&
+				typeof data.filterArgs == 'string'                &&
 				data.decks[_i].name == data.filterArgs            ||
 				data.filterArgs.indexOf(data.decks[_i].name) >= 0
 			) {
@@ -113,11 +113,11 @@ let winCheckRules = {
 		return _decks.length;
 	},
 	
-	decks : data => winCheckRules.deck(data),
+	"decks" : data => winCheckRules.deck(data),
 
 	// Tag filters
 
-	firstEmpty : data => {
+	"firstEmpty" : data => {
 
 		let _decks = [];
 		
@@ -134,7 +134,7 @@ let winCheckRules = {
 
 	// Internal use
 
-	_asc_desk : data => {
+	"_asc_desk" : data => {
 
 		if(
 			!data                            ||
@@ -172,15 +172,15 @@ let winCheckRules = {
 
 	// Simple rules
 
-	newerWin : data => {
+	"newerWin" : data => {
 
-		console.warn("You use 'newerWin' rule for checking Win. Maybe arguments in 'winCheck.rule' have incorrect rule name.")
+		console.warn('You use "newerWin" rule for checking Win. Maybe arguments in "winCheck.rule" have incorrect rule name.');
 		// throw new Error('Newer win');
 		return false;
 	},
 
 	// все колоды пусты
-	allEmpty : data => {
+	"allEmpty" : data => {
 
 		let _correct = true;
 
@@ -191,14 +191,14 @@ let winCheckRules = {
 		return _correct;
 	},
 
-	empty : data => {
+	"empty" : data => {
 		winCheckRules.allEmpty(data);
 	},
 
 	// Combined rules (use like filter)
 
 	// все карты в одной колоде
-	allInOne : data => {
+	"allInOne" : data => {
 
 		let _emptyDecksCount = 0,
 			_decksLength     = 0,
@@ -224,7 +224,7 @@ let winCheckRules = {
 
 	// step by step 1, 2, 3
 	// во всех колодах карты по возрастанию
-	allAscend : data => {
+	"allAscend" : data => {
 
 		data.asc_desk = -1;
 
@@ -233,14 +233,14 @@ let winCheckRules = {
 
 	// step by step 3, 2, 1
 	// во всех колодах карты по убыванию
-	allDescent : data => {
+	"allDescent" : data => {
 
 		data.asc_desk = 1;
 
 		return winCheckRules._asc_desk(data);
 	},
 
-	topKing    : data => {
+	"topKing"    : data => {
 
 		for(let i in data.decks) {
 
@@ -252,7 +252,7 @@ let winCheckRules = {
 			console.log('topKing', deck.name, topCardRank, defaults.card.ranks[defaults.card.ranks.length - 1]);
 
 			if(
-				typeof topCardRank != "undefined"                                  &&
+				typeof topCardRank != 'undefined'                                  &&
 				topCardRank != defaults.card.ranks[defaults.card.ranks.length - 1]
 			) {
 				return false;
@@ -262,12 +262,12 @@ let winCheckRules = {
 		return true;
 	},
 
-	topAce     : data => false,
+	"topAce"     : data => false,
 
 	// Composite rules (input arguments)
 
 	// комбинированное правило
-	query : data => {
+	"query" : data => {
 	// {
 	// 	decks[],  - all visible decks
 	// 	rulesArgs
@@ -312,7 +312,7 @@ let winCheckRules = {
 						// if(typeof data.rulesArgs[next].filters[i] == 'object') {
 						if (
 							data.rulesArgs[next].filters[i]                                 &&
-							data.rulesArgs[next].filters[i].toString() == "[object Object]"
+							data.rulesArgs[next].filters[i].toString() == '[object Object]'
 						) {
 
 							for(let filterName in data.rulesArgs[next].filters[i]) {
@@ -350,7 +350,7 @@ let winCheckRules = {
 		return _correct;
 	},
 
-	lego : data => winCheckRules.query(data)
+	"lego" : data => winCheckRules.query(data)
 }
 
 export default winCheckRules;
