@@ -283,6 +283,7 @@ class history {
 	}
 
 	add(step) {
+		console.log('history add', step);
 
 		// for(let i in step) {
 		this.steps.push(step);
@@ -292,7 +293,9 @@ class history {
 	// get steps and reset
 	get(reset = true) {
 
+
 		let _req = this.steps;
+		console.log('history get:', _req);
 		
 		if(reset) {
 			this.reset();
