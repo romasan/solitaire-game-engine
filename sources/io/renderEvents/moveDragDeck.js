@@ -95,8 +95,6 @@ event.listen('moveDragDeck', data => {
 	}
 });
 
-// --------------------------------------------------------------------------------------------------------
-
 event.listen('moveDragDeckDone', data => {
 
 	if(!data.deck.full) {
@@ -113,8 +111,6 @@ event.listen('moveDragDeckDone', data => {
 			.addClass('full')
 	}
 });
-
-// --------------------------------------------------------------------------------------------------------
 
 event.listen('dragDeck', data => {// {x, y, _dragDeck, _startCursor, _deck}
 

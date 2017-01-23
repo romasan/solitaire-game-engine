@@ -4,8 +4,8 @@ import event  from 'event' ;
 import share  from 'share' ;
 import common from 'common';
 
-import Deck from 'deck'    ;
-import Tips from 'tips'    ;
+import Deck   from 'deck'  ;
+import Tips   from 'tips'  ;
 
 let forceMove = data => {// {from, to, deck, <flip>, <callback>}
 
@@ -20,16 +20,16 @@ let forceMove = data => {// {from, to, deck, <flip>, <callback>}
 	if(!data.deck.length) {
 		return;
 	}
-	
+
 	let deckFrom = typeof data.from == 'string'
 		? Deck.getDeck(data.from)
 		: data.from;
 
-	let deckTo = typeof data.to == 'string'
+	let deckTo   = typeof data.to   == 'string'
 		? Deck.getDeck(data.to)
 		: data.to;
 
-	console.log('forceMove', deckFrom.name, '->', deckTo.name, data.deck);
+	console.log('forceMove:', deckFrom.name, '->', deckTo.name, data.deck);
 
 	if(
 		!deckFrom                ||
@@ -50,7 +50,10 @@ let forceMove = data => {// {from, to, deck, <flip>, <callback>}
 
 			let _id = i - (deckFromCards.length | 0) + (data.deck.length | 0);
 
-			if(data.deck[_id] && deckFromCards[i].name != data.deck[_id]) {
+			if(
+				data.deck[_id]                          &&
+				deckFromCards[i].name != data.deck[_id]
+			) {
 				_check = false;
 			}
 		}

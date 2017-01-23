@@ -13,8 +13,6 @@ import mapCommon          from 'mapCommon'         ;
 // 	return typeof el == "string" ? el : typeof el != "undefined" && typeof el.name == "string" ? el.name : null;
 // };
 
-// -------------------------------------------------------------------------------------------------------------------
-
 export default (group, data) => {
 
 	// {
@@ -94,7 +92,6 @@ export default (group, data) => {
 					},
 				}
 				
-				//  ---------------------------------------------------------
 				let _relations = [];
 
 				let _relGenerators = {
@@ -121,7 +118,6 @@ export default (group, data) => {
 				};
 
 				_deck.relations = _relations;
-				//  ---------------------------------------------------------
 				
 				_decks.push(_deck);
 				_index += 1;

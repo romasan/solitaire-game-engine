@@ -204,8 +204,6 @@ event.listen('newGame', e => {
 	animationOff();
 });
 
-// --
-
 event.listen('historyReapeater', data => {
 	if(data) {
 		share.set('noRedraw', true);

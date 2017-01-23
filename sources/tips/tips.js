@@ -100,7 +100,7 @@ let checkTips = e => {
 event.listen('makeStep', checkTips);
 event.listen('checkTips', checkTips);
 
-// --------------------------------------------------------
+// show/hide tips
 
 let showTips = data => {
 	
@@ -126,7 +126,7 @@ let hideTips = data => {
 };
 event.listen('tipsOFF', hideTips);
 
-// --------------------------------------------------------
+// best tip on move
 
 let tipsMove = data => {
 
@@ -137,7 +137,7 @@ let tipsMove = data => {
 	event.dispatch('hideTips', {types : ['tipPriority']});
 
 	if(
-		share.showTipPriority                       &&
+		share.showTipPriority                          &&
 		data                                           &&
 		data.moveDeck                                  &&
 		data.cursorMove                                &&
@@ -157,7 +157,7 @@ let tipsMove = data => {
 	}
 };
 
-// --------------------------------------------------------
+// tips destination decks
 
 let tipsDestination = data => {
 

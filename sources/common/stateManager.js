@@ -43,13 +43,19 @@ class stateManager {
 
 	backup() {
 
+		console.log('stateManager:backup');
+
 		this._state = {};
 
 		for(let i in this._sourceList) {
 
 			let _element = share.get(this._sourceList[i]);
-			
-			this._state[this._sourceList[i]] = ['string', 'number', 'boolean'].indexOf(typeof _element) >= 0
+
+			this._state[this._sourceList[i]] = [
+				'string' ,
+				'number' ,
+				'boolean'
+			].indexOf(typeof _element) >= 0
 				? _element
 				: _element instanceof Array
 					? Object.assign([], _element)
@@ -67,12 +73,12 @@ class stateManager {
 			for(let cardId in _decks[deckId].cards) {
 
 				let _card = {
-					'name'    : _decks[deckId].cards[cardId].name,
-					'id'      : _decks[deckId].cards[cardId].id
+					"name" : _decks[deckId].cards[cardId].name,
+					"id"   : _decks[deckId].cards[cardId].id
 				};
 
 				for(let i in cardAttributes) {
-					let _name = cardAttributes[i];
+					let _name    = cardAttributes[i];
 					_card[_name] = _decks[deckId].cards[cardId][_name];
 				}
 
@@ -80,14 +86,16 @@ class stateManager {
 			}
 
 			this._state.model[deckId] = {
-				'name'  : _decks[deckId].name  ,
-				'cards' : _cards               ,
-				'group' : _decks[deckId].parent
+				"name"  : _decks[deckId].name  ,
+				"cards" : _cards               ,
+				"group" : _decks[deckId].parent
 			}
 		}
 	}
 
 	restore() {
+
+		console.log('stateManager:restore');
 
 		if(!this._state) {
 

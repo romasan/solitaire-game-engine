@@ -2,7 +2,7 @@
 
 export default {
 
-// Theme ------------------------------------------------------------------------------
+// Theme
 
 	"themes" : {
 		"field" : [
@@ -29,7 +29,7 @@ export default {
 		"back"  : 'default_back'      // 0
 	},
 
-// Tips -------------------------------------------------------------------------------
+// Tips
 
 	"showTips"            : true ,
 	"showTipsDestination" : false,
@@ -41,7 +41,7 @@ export default {
 		"excludeHomeGroups" : true
 	},
 
-// Field ------------------------------------------------------------------------------
+// Field
 
 	"zoom"                : 1.0 ,
 
@@ -54,12 +54,12 @@ export default {
 		"doubleClick" : false
 	},
 
-// Group ------------------------------------------------------------------------------
+// Group
 
 	"flip"                : null, // param for deck
 	"actions"             : null, // param for deck
 
-// Deck -------------------------------------------------------------------------------
+// Deck
 
 	"can_move_flip"       : false      ,
 	"showSlot"            : true       ,
@@ -85,7 +85,7 @@ export default {
 	"startZIndex"         : 100        ,
 	"topZIndex"           : 900        ,
 
-// Card -------------------------------------------------------------------------------
+// Card
 
 	"card" : {
 		"width"  : 71,
@@ -102,7 +102,7 @@ export default {
 		}
 	},
 
-// ------------------------------------------------------------------------------------
+// Other
 
 	"stepType"             : 'default',
 	"forceClone"           : true     ,

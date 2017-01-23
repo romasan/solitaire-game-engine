@@ -81,8 +81,6 @@ let applyChangedParameters = data => {
 				: 0;
 };
 
-// --------------------------------------------------------------------------------------------------------
-
 event.listen('addDeckEl', data => {
 
 	applyChangedParameters(data);
@@ -124,8 +122,6 @@ event.listen('addDeckEl', data => {
 	share.set('domElement:' + data.deck.id, _deckDomElement);
 });
 
-// --------------------------------------------------------------------------------------------------------
-
 event.listen('redrawDeckFlip', data => {
 
 	if(!data || !data.cards) {
@@ -151,8 +147,6 @@ event.listen('redrawDeckFlip', data => {
 
 });
 
-// --------------------------------------------------------------------------------------------------------
-
 event.listen('redrawDeckIndexes', data => {
 
 	if(!data || !data.cards) {
@@ -168,8 +162,6 @@ event.listen('redrawDeckIndexes', data => {
 		});
 	}
 });
-
-// --------------------------------------------------------------------------------------------------------
 
 event.listen('redrawDeck', data => {
 

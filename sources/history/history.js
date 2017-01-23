@@ -19,10 +19,7 @@ import inputs       from 'inputs'      ;
 // 		// 
 // 	}
 // };
-
 // let _movesStack = [];
-
-// // --
 
 // let _stepsCallback = e => {
 // 	if(_stepsStack.length) {
@@ -31,10 +28,9 @@ import inputs       from 'inputs'      ;
 // 		// 
 // 	}
 // };
+// let _stepsStack = [];
 
-let _stepsStack = [];
-
-// ---------------------------------------- UNDO ----------------------------------------
+// undo
 
 let historyStack = [];
 
@@ -45,13 +41,13 @@ let _undo = data => {
 		event.dispatch('stopAnimations');
 		stateManager.restore();
 	}
-	
+
 	// FLIP
 	// if(data.flip) {};
-	
+
 	// UNFLIP
 	// if(data.unflip) {};
-	
+
 	// FULL
 	// if(data.full) {};
 
@@ -133,7 +129,7 @@ event.listen('undo', undoData => {
 	_history.reset();
 
 	event.dispatch('stopAnimations');
-	
+
 	if(!undoData) {
 		return;
 	};
@@ -142,7 +138,7 @@ event.listen('undo', undoData => {
 	if(undoData instanceof Array) {
 
 		undoData.reverse();
-		
+
 		for(let _i in undoData) {
 			let data = undoData[_i];
 			_undo(data);
@@ -152,10 +148,9 @@ event.listen('undo', undoData => {
 	}
 
 	Tips.checkTips();
-
 });
 
-// ---------------------------------------- REDO ----------------------------------------
+// redo
 
 let _redo = data => {
 
@@ -254,9 +249,9 @@ event.listen('redo', redoData => {
 
 	// Обратная совместимость
 	if(redoData instanceof Array) {
-		
+
 		redoData.reverse();
-		
+
 		for(let _i in redoData) {
 			let data = redoData[_i];
 			_redo(data);
@@ -269,7 +264,7 @@ event.listen('redo', redoData => {
 
 });
 
-// ----------------------------------------------
+// history
 
 class history {
 
@@ -283,7 +278,13 @@ class history {
 	}
 
 	add(step) {
-		console.log('history add', step);
+
+		console.log(
+			'history add:'                      ,
+			step && step.from ? step.from : step,
+			'->'                                ,
+			step && step.to   ? step.to   : step
+		);
 
 		// for(let i in step) {
 		this.steps.push(step);
@@ -293,10 +294,9 @@ class history {
 	// get steps and reset
 	get(reset = true) {
 
-
 		let _req = this.steps;
 		console.log('history get:', _req);
-		
+
 		if(reset) {
 			this.reset();
 		}
@@ -317,7 +317,7 @@ class history {
 	// 		_undoMethods[i] = data[i];
 	// 	}
 	// }
-	
+
 	// addRedoMethods(data) {
 	// 	for(let i in data) {
 	// 		_redoMethods[i] = data[i];
