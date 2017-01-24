@@ -20,9 +20,9 @@ class stepsAroundAction extends deckAction {
 	run(deck, data) {// {actionData, eventData, eventName}
 
 		let _stepType = share.get('stepType');
-		
+
 		if(_stepType != defaults.stepType) {
-			
+
 			super.break();
 
 			return;
@@ -31,7 +31,7 @@ class stepsAroundAction extends deckAction {
 		share.set('stepType', stepType);
 		// stop Drag'n'Drop
 		common.curLock();
-		
+
 		let _relations = deck.getRelationsByName('around', {from: null});
 		// let _tips = Tips.getTips();
 
@@ -45,7 +45,7 @@ class stepsAroundAction extends deckAction {
 			let _runStack = [];
 
 			for(let i in _relations) {
-				
+
 				if(
 					Tips.fromTo(deck.name, _relations[i].to)
 				) {
@@ -56,15 +56,15 @@ class stepsAroundAction extends deckAction {
 			let _counter = _runStack.length;
 
 			let _callback = e => {
-					
+
 				_counter -= 1;
 				if(_counter === 0) {
-					
+
 					this.end();
 					// event.dispatch(data.actionData.dispatch)
 				}
 			}
-			
+
 			if(_counter === 0) {
 
 				this.end();
@@ -80,28 +80,28 @@ class stepsAroundAction extends deckAction {
 			}
 
 			for(let i in _runStack) {
-				
+
 				let _data = null;
 				try {
 					_data = Object.assign({}, _runStack[i]);
 				} catch(e) {
 					_data = _runStack[i];
 				}
-				
+
 				_data.callback = _callback;
 				event.dispatch(data.actionData.run, _data);
 			}
 
 		// выполняется после хода 
 		} else {
-			
+
 			let _callback = e => {
 
 				if(share.get('stepType') == stepType) {
 					this.end();
 				}
 			};
-			
+
 			event.listen('makeStep', _callback)
 			// event.dispatch(data.actionData.dispatch)
 		}
@@ -119,7 +119,6 @@ class stepsAroundAction extends deckAction {
 
 		super.end();
 	}
-
 }
 
 export default new stepsAroundAction();

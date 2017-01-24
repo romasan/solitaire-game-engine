@@ -32,7 +32,7 @@ let onShowParameters = e => {
 };
 
 let applyParameters = e => {
-	
+
 	let pref = {};
 
 	for(let prefName in defaults.themes) {
@@ -48,7 +48,7 @@ let applyParameters = e => {
 	// event.dispatch('changeGameParameters', pref);
 
 	saveParameters(pref);
-	
+
 	let changePreferencesCallback = share.get('changePreferencesCallback');
 	if(typeof changePreferencesCallback == 'function') {
 		let _data = pref;
@@ -61,7 +61,7 @@ let saveParameters = pref => {
 };
 
 export default e => {
-	
+
 	// TODO переделать без jQuery
 
 	$('#bbParameters').click(onShowParameters);
@@ -70,12 +70,12 @@ export default e => {
 	// 	"element"  : "#bbParameters",
 	// 	"callback" : onShowParameters
 	// });
-	
+
 	// $("#gpCommit").click(saveParameters);
-	
+
 	$('#parametersPanel').on('change', 'input', applyParameters);
 	// $("#solitaire-engine-style-preferences input").change(applyParameters);
-	
+
 	// event.dispatch('addDomEvent', {
 	// 	"event"    : "change"
 	// 	"element"  : ".solitaire-engine-style-preferences-element",

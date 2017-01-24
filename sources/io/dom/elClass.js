@@ -32,7 +32,7 @@ export default class elClass {
 	constructor(data) {
 
 		this.el = data;
-		
+
 		if(!data) {
 			// if(window._debug) throw new Error("test");
 			this.el = null;
@@ -100,15 +100,15 @@ export default class elClass {
 
 			// if(this.hasClass(className)) {
 			let _clone = [];
-			
+
 			for(let i in _classes) {
 				if(_classes[i] != className) {
 					_clone.push(_classes[i]);
 				}
 			}
-			
+
 			_classes = _clone;
-			
+
 			this.el.className = _classes.join(' ');
 			// }
 
@@ -164,7 +164,7 @@ export default class elClass {
 
 	html(el) {
 		try {
-	
+
 			if(typeof el == 'undefined') {
 				return this.el.innerHTML;
 			}

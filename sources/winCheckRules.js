@@ -39,7 +39,7 @@ Conposite rules:
  */
 
 let winCheckRules = {
-	
+
 	// Filters
 
 	// возвращает колоды определённой группы/групп
@@ -51,7 +51,7 @@ let winCheckRules = {
 
 		let _decks = [];
 		for(let _i in data.decks) {
-			
+
 			// let _parent = data.decks[_i].parent
 			// if(data.filterArgs.indexOf(data.decks[_i].parent)) {
 			if(
@@ -60,14 +60,14 @@ let winCheckRules = {
 					data.decks[_i].parent  == data.filterArgs
 				) ||
 				(
-			 		data.filterArgs.length                              &&
-			 		data.filterArgs.indexOf(data.decks[_i].parent) >= 0
-			 	)
+					data.filterArgs.length                              &&
+					data.filterArgs.indexOf(data.decks[_i].parent) >= 0
+				)
 			) {
 				_decks.push(data.decks[_i]);
 			}
 		}
-		
+
 		data.decks = _decks;
 
 		return _decks.length;
@@ -96,7 +96,7 @@ let winCheckRules = {
 		if(!data.filter || !data.filterArgs) {
 			return false;
 		}
-		
+
 		let _decks = [];
 
 		for(let _i in data.decks) {
@@ -108,11 +108,11 @@ let winCheckRules = {
 				_decks.push(data.decks[_i]);
 			}
 		}
-				
+
 		data.decks = _decks;
 		return _decks.length;
 	},
-	
+
 	"decks" : data => winCheckRules.deck(data),
 
 	// Tag filters
@@ -120,7 +120,7 @@ let winCheckRules = {
 	"firstEmpty" : data => {
 
 		let _decks = [];
-		
+
 		for(let _i in data.decks) {
 			if(data.decks[_i].tags.indexOf('last') >= 0) {
 				_decks.push(data.decks[_i]);

@@ -108,14 +108,14 @@ event.listen('addDeckEl', data => {
 		elRender(_deckDomElement)
 			.addClass('slot');
 	}
-	
+
 	if(data.deckData.class) {
 		elRender(_deckDomElement)
 			.addClass(data.deckData.class);
 	}
 
 	let _fieldDomElement = share.get('domElement:field');
-	
+
 	elRender(_fieldDomElement)
 		.append(_deckDomElement);
 
@@ -129,11 +129,11 @@ event.listen('redrawDeckFlip', data => {
 	}
 
 	for(let i in data.cards) {
-		
+
 		let _params = {};
 
 		let _cardDomElement = share.get('domElement:' + data.cards[i].id);
-		
+
 		if(data.cards[i].flip) {
 
 			_cardDomElement.addClass('flip');
@@ -141,7 +141,7 @@ event.listen('redrawDeckFlip', data => {
 
 			_cardDomElement.removeClass('flip');
 		}
-		
+
 		_cardDomElement.css(_params);
 	}
 
@@ -188,10 +188,10 @@ event.listen('redrawDeck', data => {
 		"left"      : data.params.x + 'px'                         ,
 		"top"       : data.params.y + 'px'                         ,
 		"display"   : data.deck.visible ? 'block' : 'none'
-	};	
+	};
 
 	let _deckDomElement = share.get('domElement:' + data.deck.id);
-	
+
 	elRender(_deckDomElement)
 		.css(_params);
 
@@ -211,10 +211,10 @@ event.listen('redrawDeck', data => {
 
 	// перерисовка карт
 	for(let i in data.cards) {
-		
+
 		let _card_position = data.deck.padding(i);
 		let _zIndex        = (data.params.startZIndex | 0) + (i | 0);
-		
+
 		let _params = {
 			"-ms-transform"     : 'rotate(' + (data.params.rotate | 0) + 'deg)',
 			"-webkit-transform" : 'rotate(' + (data.params.rotate | 0) + 'deg)',
@@ -229,15 +229,15 @@ event.listen('redrawDeck', data => {
 		let _cardDomElement = share.get('domElement:' + data.cards[i].id);
 
 		if(data.cards[i].flip) {
-		
+
 			elRender(_cardDomElement)
 				.addClass('flip');
 		} else {
-		
+
 			elRender(_cardDomElement)
 				.removeClass('flip');
 		}
-		
+
 		elRender(_cardDomElement)
 			.css(_params);
 	}

@@ -111,7 +111,7 @@ var SolitaireEngine =
 	exports.options = _defaults2.default;
 	exports.winCheck = _winCheck2.default.hwinCheck;
 	exports.generator = _deckGenerator2.default;
-	exports.version = (9091494114).toString().split(9).slice(1).map(function (e) {
+	exports.version = (9091494117).toString().split(9).slice(1).map(function (e) {
 		return parseInt(e, 8);
 	}).join('.');
 	
@@ -568,7 +568,6 @@ var SolitaireEngine =
 		"forceClone": true,
 		// "movesAnimation"    : "simple" // simple|byStep|not
 		"showHistoryAnimation": true
-	
 	};
 
 /***/ },
@@ -1110,11 +1109,11 @@ var SolitaireEngine =
 	
 		if (_defaults2.default.card.suits.indexOf(suit) >= 0 && _defaults2.default.card.ranks.indexOf(rank) >= 0) {
 			return {
-				color: color,
-				value: value,
-				name: name,
-				suit: suit,
-				rank: rank
+				"color": color,
+				"value": value,
+				"name": name,
+				"suit": suit,
+				"rank": rank
 			};
 		} else {
 			console.warn('Warning: validate name:', name, '- incorrect');
@@ -2258,19 +2257,19 @@ var SolitaireEngine =
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 	
 	var PARAMS = {
-		"paddingType": { 'type': 'any' },
-		"flip": { 'type': 'any' },
-		"showSlot": { 'type': 'any' },
-		"takeRules": { 'type': 'any' },
-		"putRules": { 'type': 'any' },
-		"fullRules": { 'type': 'any' },
-		"autoHide": { 'type': 'any' },
-		"paddingX": { 'type': 'any' },
-		"paddingY": { 'type': 'any' },
-		"flipPaddingX": { 'type': 'any' },
-		"flipPaddingY": { 'type': 'any' },
-		"actions": { 'type': 'any' },
-		"tags": { 'type': 'any' },
+		"paddingType": { "type": 'any' },
+		"flip": { "type": 'any' },
+		"showSlot": { "type": 'any' },
+		"takeRules": { "type": 'any' },
+		"putRules": { "type": 'any' },
+		"fullRules": { "type": 'any' },
+		"autoHide": { "type": 'any' },
+		"paddingX": { "type": 'any' },
+		"paddingY": { "type": 'any' },
+		"flipPaddingX": { "type": 'any' },
+		"flipPaddingY": { "type": 'any' },
+		"actions": { "type": 'any' },
+		"tags": { "type": 'any' },
 		"save": {
 			"type": 'boolean',
 			"default": true
@@ -3383,8 +3382,8 @@ var SolitaireEngine =
 			}
 	
 			return {
-				up: up,
-				down: down
+				"up": up,
+				"down": down
 			};
 		},
 	
@@ -3393,8 +3392,8 @@ var SolitaireEngine =
 			var du = readyPutRules._down_up_cards(deck);
 	
 			return du ? {
-				down: _defaults2.default.card.ranks.indexOf(du.down.rank),
-				up: _defaults2.default.card.ranks.indexOf(du.up.rank)
+				"down": _defaults2.default.card.ranks.indexOf(du.down.rank),
+				"up": _defaults2.default.card.ranks.indexOf(du.up.rank)
 			} : false;
 		},
 	
@@ -4246,32 +4245,32 @@ var SolitaireEngine =
 	});
 	exports.default = {
 	
-		none: function none(params, card, index, length, deck) {
+		"none": function none(params, card, index, length, deck) {
 	
 			return {
-				x: params.x,
-				y: params.y
+				"x": params.x,
+				"y": params.y
 			};
 		},
 	
-		last_three_min: function last_three_min(params, card, index, length, deck) {
+		"last_three_min": function last_three_min(params, card, index, length, deck) {
 	
 			if (index > length - 3) {
 				if (length > 3) {
 					return {
-						x: params.x - (length - 3 - index) * 2,
-						y: params.y - (length - 3 - index)
+						"x": params.x - (length - 3 - index) * 2,
+						"y": params.y - (length - 3 - index)
 					};
 				} else {
 					return {
-						x: params.x + index * 2,
-						y: params.y + (index | 0)
+						"x": params.x + index * 2,
+						"y": params.y + (index | 0)
 					};
 				}
 			} else {
 				return {
-					x: x,
-					y: y
+					"x": x,
+					"y": y
 				};
 			}
 		},
@@ -4298,7 +4297,7 @@ var SolitaireEngine =
 		// 	};
 		// },
 	
-		radial: function radial(params, card, index, length, deck) {
+		"radial": function radial(params, card, index, length, deck) {
 	
 			//              b
 			//       C  ..`:   A = sin(b) * C
@@ -4318,12 +4317,12 @@ var SolitaireEngine =
 			// if(_angle > 360) _angle -= 360;
 	
 			return {
-				x: params.x + _a, // - _card.width  / 2,
-				y: params.y - _b // - _card.height / 2
+				"x": params.x + _a, // - _card.width  / 2,
+				"y": params.y - _b // - _card.height / 2
 			};
 		},
 	
-		special: function special(params, card, index, length, deck) {
+		"special": function special(params, card, index, length, deck) {
 	
 			var _y = params.y,
 			    _x = params.x;
@@ -4334,12 +4333,12 @@ var SolitaireEngine =
 			}
 	
 			return {
-				x: _x,
-				y: _y
+				"x": _x,
+				"y": _y
 			};
 		},
 	
-		vertical: function vertical(params, card, index, length, deck) {
+		"vertical": function vertical(params, card, index, length, deck) {
 	
 			var _y = params.y;
 	
@@ -4348,14 +4347,14 @@ var SolitaireEngine =
 			}
 	
 			var _return = {
-				x: params.x,
-				y: _y
+				"x": params.x,
+				"y": _y
 			};
 	
 			return _return;
 		},
 	
-		horizontal: function horizontal(params, card, index, length, deck) {
+		"horizontal": function horizontal(params, card, index, length, deck) {
 	
 			var _x = params.x;
 	
@@ -4364,8 +4363,8 @@ var SolitaireEngine =
 			}
 	
 			var _return = {
-				x: _x,
-				y: params.y
+				"x": _x,
+				"y": params.y
 			};
 	
 			return _return;
@@ -4864,13 +4863,13 @@ var SolitaireEngine =
 								"context": 'dealerdeckAction'
 							}
 						});
-					};
-				};
+					}
+				}
 	
 				if (_makeStep) {
 					// сохраняем если паздача удалась
 					_event2.default.dispatch('saveSteps');
-				};
+				}
 	
 				if (data.actionData.dispatch) {
 	
@@ -5144,7 +5143,7 @@ var SolitaireEngine =
 					} else {
 	
 						_addStep({
-							"undo": stepType, // share.get('stepType'),
+							"undo": stepType,
 							"redo": data.actionData.dispatch ? _share2.default.get('stepType') : _defaults2.default.stepType
 						});
 	
@@ -6025,7 +6024,7 @@ var SolitaireEngine =
 	'use strict';
 	
 	Object.defineProperty(exports, "__esModule", {
-		value: true
+			value: true
 	});
 	
 	var _event = __webpack_require__(2);
@@ -6063,35 +6062,35 @@ var SolitaireEngine =
 	
 	exports.default = function (deck, name) {
 	
-		var _name = _common2.default.validateCardName(name); // {color, rank}
+			var _name = _common2.default.validateCardName(name); // {color, rank}
 	
-		if (_name) {
+			if (_name) {
 	
-			var _id = 'card_' + _common2.default.genId();
+					var _id = 'card_' + _common2.default.genId();
 	
-			var _card = {
-				"id": _id,
-				"name": name,
-				"type": 'card',
-				"visible": true,
-				"flip": false,
-				"parent": deck.id
-			};
+					var _card = {
+							"id": _id,
+							"name": name,
+							"type": 'card',
+							"visible": true,
+							"flip": false,
+							"parent": deck.id
+					};
 	
-			_event2.default.dispatch('addCardEl', _card);
+					_event2.default.dispatch('addCardEl', _card);
 	
-			var _elements = _share2.default.get('elements');
-			_elements[_id] = _card;
-			_share2.default.set('elements', _elements);
+					var _elements = _share2.default.get('elements');
+					_elements[_id] = _card;
+					_share2.default.set('elements', _elements);
 	
-			deck.Push([_card]);
-			deck.flipCheck();
-			deck.Redraw();
+					deck.Push([_card]);
+					deck.flipCheck();
+					deck.Redraw();
 	
-			return _card;
-		}
+					return _card;
+			}
 	
-		return false;
+			return false;
 	};
 
 /***/ },
@@ -6925,7 +6924,10 @@ var SolitaireEngine =
 			"y": typeof group.placement.y != 'undefined' ? group.placement.y : _default_placement.y
 		} : _default_placement;
 	
-		group.placement = { x: 0, y: 0 };
+		group.placement = {
+			"x": 0,
+			"y": 0
+		};
 	
 		var _index = 1;
 	
@@ -7259,6 +7261,8 @@ var SolitaireEngine =
 	var _mapCommon2 = _interopRequireDefault(_mapCommon);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	// TODO
 	
 	// let getBeside = (_x, _y, mapSize, map, el, type)=>{
 	
@@ -7870,7 +7874,7 @@ var SolitaireEngine =
 /* 57 */
 /***/ function(module, exports) {
 
-	module.exports = "<div id=\"solitaire-engine-style-preferences\">\n    <h4>Настройки оформления</h4>\n    <div>\n\t    <span class=\"solitaire-engine-style-preferences-label\">Фон:</span>\n\t    <!-- <select id=\"pref_field\" class=\"solitaire-engine-style-preferences-element\"> -->\n        <label>\n        \t<input type=\"radio\" name=\"pref_field\" value=\"default_field\">\n        \tКлассический\n    \t</label>\n        <label>\n        \t<input type=\"radio\" name=\"pref_field\" value=\"alternative_field\">\n        \tАльтернативный\n    \t</label>\n\t    <!-- </select> -->\n\t</div>\n\t<div>\n\t    <span class=\"solitaire-engine-style-preferences-label\">Лицевая сторона:</span>\n\t    <!-- <select id=\"pref_face\" class=\"solitaire-engine-style-preferences-element\"> -->\n        <label>\n        \t<input type=\"radio\" name=\"pref_face\" value=\"default_face\">\n        \tКлассическая\n    \t</label>\n        <label>\n        \t<input type=\"radio\" name=\"pref_face\" value=\"alternative_face\">\n        \tАнгло-американская\n    \t</label>\n\t    <!-- </select> -->\n\t</div>\n    <div>\n\t    <span class=\"solitaire-engine-style-preferences-label\">Рубашка:</span>\n\t    <!-- <select id=\"pref_back\" class=\"solitaire-engine-style-preferences-element\"> -->\n        <label>\n        \t<input type=\"radio\" name=\"pref_back\" value=\"default_back\">\n        \tКлассическая\n    \t</label>\n        <label>\n        \t<input type=\"radio\" name=\"pref_back\" value=\"alternative_back\">\n        \tАльтернативная\n    \t</label>\n        <!-- <label>\n        \t<input type=\"radio\" name=\"pref_back\" value=\"red_back\">\n        \tКрасная\n    \t</label>\n        <label>\n        \t<input type=\"radio\" name=\"pref_back\" value=\"blue_back\">\n        \tСиняя\n    \t</label> -->\n\t    <!-- </select> -->\n\t</div>\n    <div id=\"gamePreferences\"></div>\n    <!-- <div>\n\t    <span class=\"solitaire-engine-style-preferences-label\">Пустая ячейка:</span>\n\t    <select id=\"pref_empty\" class=\"solitaire-engine-style-preferences-element\">\n\t        <option value=0>Классическая</option>\n\t        <option value=1>С обводкой</option>\n\t    </select>\n\t</div> -->\n\n</div>";
+	module.exports = "<div id=\"solitaire-engine-style-preferences\">\n\t<h4>Настройки оформления</h4>\n\t<div>\n\t\t<span class=\"solitaire-engine-style-preferences-label\">Фон:</span>\n\t\t<!-- <select id=\"pref_field\" class=\"solitaire-engine-style-preferences-element\"> -->\n\t\t<label>\n\t\t\t<input type=\"radio\" name=\"pref_field\" value=\"default_field\">\n\t\t\tКлассический\n\t\t</label>\n\t\t<label>\n\t\t\t<input type=\"radio\" name=\"pref_field\" value=\"alternative_field\">\n\t\t\tАльтернативный\n\t\t</label>\n\t\t<!-- </select> -->\n\t</div>\n\t<div>\n\t\t<span class=\"solitaire-engine-style-preferences-label\">Лицевая сторона:</span>\n\t\t<!-- <select id=\"pref_face\" class=\"solitaire-engine-style-preferences-element\"> -->\n\t\t<label>\n\t\t\t<input type=\"radio\" name=\"pref_face\" value=\"default_face\">\n\t\t\tКлассическая\n\t\t</label>\n\t\t<label>\n\t\t\t<input type=\"radio\" name=\"pref_face\" value=\"alternative_face\">\n\t\t\tАнгло-американская\n\t\t</label>\n\t\t<!-- </select> -->\n\t</div>\n\t<div>\n\t\t<span class=\"solitaire-engine-style-preferences-label\">Рубашка:</span>\n\t\t<!-- <select id=\"pref_back\" class=\"solitaire-engine-style-preferences-element\"> -->\n\t\t<label>\n\t\t\t<input type=\"radio\" name=\"pref_back\" value=\"default_back\">\n\t\t\tКлассическая\n\t\t</label>\n\t\t<label>\n\t\t\t<input type=\"radio\" name=\"pref_back\" value=\"alternative_back\">\n\t\t\tАльтернативная\n\t\t</label>\n\t\t<!-- <label>\n\t\t\t<input type=\"radio\" name=\"pref_back\" value=\"red_back\">\n\t\t\tКрасная\n\t\t</label>\n\t\t<label>\n\t\t\t<input type=\"radio\" name=\"pref_back\" value=\"blue_back\">\n\t\t\tСиняя\n\t\t</label> -->\n\t\t<!-- </select> -->\n\t</div>\n\t<div id=\"gamePreferences\"></div>\n\t<!-- <div>\n\t\t<span class=\"solitaire-engine-style-preferences-label\">Пустая ячейка:</span>\n\t\t<select id=\"pref_empty\" class=\"solitaire-engine-style-preferences-element\">\n\t\t\t<option value=0>Классическая</option>\n\t\t\t<option value=1>С обводкой</option>\n\t\t</select>\n\t</div> -->\n</div>";
 
 /***/ },
 /* 58 */
@@ -10113,8 +10117,6 @@ var SolitaireEngine =
 	// Move card to home
 	_event2.default.listen('moveCardToHome', function (data) {
 	
-		if (window.debug_1) console.log('home');
-	
 		if (_share2.default.get('lastCursorMove').distance > 0) {
 			_common2.default.curLock();
 		}
@@ -10174,24 +10176,24 @@ var SolitaireEngine =
 	
 	_event2.default.listen('fieldThemesSet', function (pref) {
 	
-		var _fieldDomElement = _share2.default.get('domElement:field'); //Field.domElement;
+			var _fieldDomElement = _share2.default.get('domElement:field'); //Field.domElement;
 	
-		for (var prefName in _defaults2.default.themes) {
+			for (var prefName in _defaults2.default.themes) {
 	
-			// Clear old themes
-			for (var i in _defaults2.default.themes[prefName]) {
+					// Clear old themes
+					for (var i in _defaults2.default.themes[prefName]) {
 	
-				var themeName = _defaults2.default.themes[prefName][i];
+							var themeName = _defaults2.default.themes[prefName][i];
 	
-				(0, _elRender2.default)(_fieldDomElement).removeClass(themeName);
+							(0, _elRender2.default)(_fieldDomElement).removeClass(themeName);
+					}
+	
+					// Add new themes
+					var className = pref[prefName];
+					// let className = defaults.themes[prefName][pref[prefName]];
+	
+					(0, _elRender2.default)(_fieldDomElement).addClass(className);
 			}
-	
-			// Add new themes
-			var className = pref[prefName];
-			// let className = defaults.themes[prefName][pref[prefName]];
-	
-			(0, _elRender2.default)(_fieldDomElement).addClass(className);
-		}
 	});
 
 /***/ },

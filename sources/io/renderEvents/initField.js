@@ -1,16 +1,16 @@
 'use strict';
 
-import share    from 'share';
-import event    from 'event';
+import share    from 'share'   ;
+import event    from 'event'   ;
 import defaults from 'defaults';
 
-import Field    from 'field';
+import Field    from 'field'   ;
 import elRender from 'elRender';
 
 event.listen('initField', data => {
 
 	let domElement = data.field ? data.field : '#map';
-	
+
 	if(typeof domElement == 'string') {
 		if(domElement.split('.').length == 2) {
 			domElement = document.getElementsByClassName(domElement.split('.')[1])[0];
@@ -23,7 +23,7 @@ event.listen('initField', data => {
 			domElement = document.getElementById('mat')
 		}
 	};
-	
+
 	let _params = {};
 
 	if(data.width  && typeof data.width  == 'number') { _params.width  = data.width  + 'px'; }

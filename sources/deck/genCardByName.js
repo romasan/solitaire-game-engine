@@ -26,7 +26,7 @@ import common from 'common';
 export default (deck, name) => {
 
 	let _name = common.validateCardName(name);// {color, rank}
-	
+
 	if(_name) {
 
 		let _id = 'card_' + common.genId();
@@ -39,19 +39,19 @@ export default (deck, name) => {
 			"flip"    : false  ,
 			"parent"  : deck.id
 		};
-		
+
 		event.dispatch('addCardEl', _card);
-		
+
 		let _elements = share.get('elements');
 		_elements[_id] = _card;
 		share.set('elements', _elements);
-		
+
 		deck.Push([_card]);
 		deck.flipCheck();
 		deck.Redraw();
 
 		return _card;
 	}
-	
+
 	return false;
 };

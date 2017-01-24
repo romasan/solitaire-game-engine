@@ -1,9 +1,9 @@
 'use strict';
 
-import common    from 'common';
-import defaults  from 'defaults';
+import common    from 'common'   ;
+import defaults  from 'defaults' ;
 
-import Deck      from 'deck';
+import Deck      from 'deck'     ;
 import getBeside from 'getBeside';
 
 /*
@@ -90,8 +90,8 @@ let readyPutRules = {
 		}
 
 		return {
-			up  ,
-			down
+			"up"   : up  ,
+			"down" : down
 		}
 	},
 
@@ -100,8 +100,8 @@ let readyPutRules = {
 		let du = readyPutRules._down_up_cards(deck);
 
 		return du ? {
-			down : defaults.card.ranks.indexOf(du.down.rank),
-			up   : defaults.card.ranks.indexOf(du.up.rank)
+			"down" : defaults.card.ranks.indexOf(du.down.rank),
+			"up"   : defaults.card.ranks.indexOf(du.up.rank)
 		} : false;
 	},
 

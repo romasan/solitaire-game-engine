@@ -21,9 +21,9 @@ let cardAttributes = [
  */
 
 class stateManager {
-	
+
 	constructor() {
-		
+
 		this._state = null;
 
 		this._sourceList = [
@@ -114,7 +114,7 @@ class stateManager {
 		}
 
 		for(let deckId in this._state.model) {
-			
+
 			let _deck = getDeckById(deckId);
 
 			let _cards = [];
@@ -131,7 +131,7 @@ class stateManager {
 						let attrName = cardAttributes[attrIndex];
 							_card[attrName] = this._state.model[deckId].cards[cardIndex][attrName];
 					}
-					
+
 					_cards.push(_card);
 				} else {
 					// console.warn(

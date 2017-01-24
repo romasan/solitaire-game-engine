@@ -18,10 +18,10 @@ class dealerdeckAction extends deckAction {
 
 	run(deck, data) {// data.actionData, e
 
-	// default data.actionData.onlyEmpty - false
-	// default data.actionData.from      - deck.name
-	// default data.actionData.stepType  - NULL
-		
+		// default data.actionData.onlyEmpty - false
+		// default data.actionData.from      - deck.name
+		// default data.actionData.stepType  - NULL
+
 		// console.log('dealerdeckAction:', deck.name, data);
 
 		if(
@@ -30,17 +30,17 @@ class dealerdeckAction extends deckAction {
 		) {
 
 			super.break();
-			
+
 			return;
 		}
-		
+
 		// меняем тип хода
 		share.set('stepType', stepType);
 
 		let dealDeck = typeof data.actionData.from == 'string'
 			? Deck.getDeck(data.actionData.from)
 			: deck
-		
+
 		// смотрим остались ли карты
 		if(dealDeck.cards.length == 0) {
 
@@ -50,7 +50,7 @@ class dealerdeckAction extends deckAction {
 			event.dispatch('dealEnd');
 
 			super.end();
-			
+
 			return;
 		}
 
@@ -69,17 +69,17 @@ class dealerdeckAction extends deckAction {
 
 			// передали имя
 			if(typeof data.actionData.to == 'string') {
-				
+
 				// ищем элементы с таким именем
 				let _elements = common.getElementsByName(data.actionData.to);
 				for(let i in _elements) {
 
 					// это группа
 					if(_elements[i].type == 'group') {
-						
+
 						// _decks = _decks.concat(Group.Group(data.actionData.to).decks);
 						// let __decks = Group.Group(data.actionData.to).decks;
-						
+
 						// берём колоды из группы
 						for(let deckIndex in _elements[i].decks) {
 							_decks.push(_elements[i].decks[deckIndex]);
@@ -95,11 +95,11 @@ class dealerdeckAction extends deckAction {
 
 			// передали массив
 			} else {
-				
+
 				for(let i in data.actionData.to) {
-					
+
 					let _elements = common.getElementsByName(data.actionData.to[i]);
-					
+
 					for(let elIndex in _elements) {
 
 						if(_elements[elIndex].type == 'group') {
@@ -113,13 +113,11 @@ class dealerdeckAction extends deckAction {
 						if(_elements[elIndex].type == 'deck') {
 							_decks.push(_elements[elIndex]);
 						};
-
 					}
-
 				}
 			}
 		};
-		
+
 		// вкл/выкл анимации по умолчанию
 		common.animationDefault();
 
@@ -128,7 +126,7 @@ class dealerdeckAction extends deckAction {
 
 		// пробегаем колоды из списка
 		for(let deckId in _decks) {
-			
+
 			// берём верхнюю карту
 			let _card = dealDeck.getTopCard();
 
@@ -136,13 +134,13 @@ class dealerdeckAction extends deckAction {
 			let _canStep = data.actionData.onlyEmpty
 				? _decks[deckId].cards.length == 0
 				: true;
-			
+
 			if(_canStep && _card) {
 
 				_makeStep = true;
 
 				let _cardName = _card.name;
-				
+
 				let _callback = ()=>{
 
 					event.dispatch('checkTips');
@@ -155,7 +153,7 @@ class dealerdeckAction extends deckAction {
 					"flip"     : true,
 					"callback" : _callback
 				}, true);
-				
+
 				_decks[deckId].flipCheck();
 				// _decks[deckId].Redraw();
 
@@ -174,15 +172,13 @@ class dealerdeckAction extends deckAction {
 						"context"  : 'dealerdeckAction'
 					}
 				});
+			}
+		}
 
-			};
-
-		};
-		
 		if(_makeStep) {
 			// сохраняем если паздача удалась
 			event.dispatch('saveSteps');
-		};
+		}
 
 		if(data.actionData.dispatch) {
 
@@ -195,7 +191,6 @@ class dealerdeckAction extends deckAction {
 			share.set('stepType', defaults.stepType);
 		}
 	}
-
 }
 
 export default new dealerdeckAction();

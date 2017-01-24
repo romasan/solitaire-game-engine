@@ -99,7 +99,7 @@ class inputs {
 				this.put(data.changedTouches[0].target, data.changedTouches[0].clientX, data.changedTouches[0].clientY);
 			}, false);
 		} catch(e) {}
-	
+
 	}
 
 // break
@@ -157,7 +157,7 @@ class inputs {
 
 		if( target.className.split(' ').indexOf('draggable') >= 0 ) {
 
-			let _id     = target.id,
+			let _id     = target.id                                                ,
 			    _card   = _id                   ? common.getElementById(_id) : null,
 			    _parent = _card && _card.parent ? _card.parent               : null,
 			    _deck   = _parent               ? Deck.getDeckById(_parent)  : null;
@@ -196,7 +196,7 @@ class inputs {
 		}
 
 		let _startCursor = share.get('startCursor'),
-		    _dragDeck    = share.get('dragDeck');
+		    _dragDeck    = share.get('dragDeck')   ;
 
 		if(!_dragDeck || !_startCursor) {
 			return;
@@ -252,7 +252,7 @@ class inputs {
 		}
 
 		let _startCursor = share.get('startCursor'),// начальная позиция курсора
-		    _dragDeck    = share.get('dragDeck');
+		    _dragDeck    = share.get('dragDeck')   ;
 
 		if(!_dragDeck || !_startCursor) {
 			return;

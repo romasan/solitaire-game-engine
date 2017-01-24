@@ -18,7 +18,7 @@ import elClass  from 'elClass' ;
  */
 
 export default class allElClass {
-	
+
 	constructor(elements) {
 		
 		this.elements = [];
@@ -92,13 +92,13 @@ export default class allElClass {
 	}
 
 	animate(params, animationTime, callback, animationName) {
-		
+
 		typeof animationTime == 'undefined' && (animationTime = share.get('animationTime'));
 		typeof animationTime == 'function'  && (callback = animationTime, animationTime = share.get('animationTime'));
 		typeof callback      == 'string'    && (animationName = callback, callback = null);
 
 		let counter = 0;
-		
+
 		for(let i in this.elements) {
 			counter += 1;
 			this.elements[i].animate(params, animationTime, ()=>{

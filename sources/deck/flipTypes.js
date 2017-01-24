@@ -1,6 +1,5 @@
 'use strict';
 
-
 /*
 
 Types:
@@ -16,7 +15,7 @@ Types:
  */
 
 export default {
-	
+
 	"none"    : (card, i, length) => {
 		card.flip = false;
 	},

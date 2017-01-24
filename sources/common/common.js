@@ -49,11 +49,11 @@ event.listen('gameInit', data => {
 	share.delete('sessionStarted');
 
 	curUnLock();
-	
+
 	if(!data.firstInit) {
 		return;
 	};
-	
+
 	drawPreferences();
 	preferencesEvents();
 });
@@ -99,9 +99,9 @@ let getElements = e => {
 }
 
 let getElementById = id => {
-	
+
 	let _elements = share.get('elements');
-	
+
 	return _elements[id];
 }
 
@@ -142,9 +142,9 @@ let validateCardName = name => {
 	}
 
 	let suit  = name.slice(0, 1)                                       ,
-		rank  = name.slice(1, 3)                                       ,
-		color = null                                                   ,
-		value = defaults.card.values[defaults.card.ranks.indexOf(rank)];
+	    rank  = name.slice(1, 3)                                       ,
+	    color = null                                                   ,
+	    value = defaults.card.values[defaults.card.ranks.indexOf(rank)];
 
 	for(let colorName in defaults.card.colors) {
 		if(defaults.card.colors[colorName].indexOf(suit) >= 0) {
@@ -157,11 +157,11 @@ let validateCardName = name => {
 		defaults.card.ranks.indexOf(rank) >= 0
 	) {
 		return {
-			color,
-			value,
-			name ,
-			suit , 
-			rank
+			"color" : color,
+			"value" : value,
+			"name"  : name ,
+			"suit"  : suit , 
+			"rank"  : rank
 		}
 	} else {
 		console.warn('Warning: validate name:', name, '- incorrect');

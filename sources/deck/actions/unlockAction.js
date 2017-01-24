@@ -9,7 +9,7 @@ import deckAction       from 'deckAction'      ;
 import lockActionCommon from 'lockActionCommon';
 
 class unlockAction extends deckAction {
-	
+
 	constructor() {
 		super();
 	}
@@ -25,7 +25,6 @@ class unlockAction extends deckAction {
 		// !data.actionData.dispatch
 		super.end();
 	}
-
 }
 
 export default new unlockAction();

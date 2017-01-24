@@ -46,7 +46,7 @@ let addActionEvent = eventName => {
 
 		// event name
 		eventName, 
-		
+
 		// callback
 		data => {
 
@@ -58,13 +58,13 @@ let addActionEvent = eventName => {
 					let _canRun = eventName == 'click'
 					    ? data.to.name == _decksActions[i].deck.name
 					    : true;
-					
+
 					if(_canRun) {
-						
+
 						_actions[_actionName].run(
-							
+
 							_decksActions[i].deck, 
-							
+
 							{
 								actionData : _decksActions[i].deck.actions[_actionName],
 								eventData  : data,
@@ -93,7 +93,7 @@ let add = deck => {
 
 		// если такой action существует
 		if(_actions[actionName]) {
-			
+
 			// сохраняем action
 			_decksActions.push({
 				"deck"   : deck, 
@@ -102,13 +102,13 @@ let add = deck => {
 			});
 
 			share.set('actionEvent:' + deck.name + ':' + deck.actions[actionName].event, true);
-			
+
 			// создаём событие если оно еще не создано
 			if(!_events.indexOf(deck.actions[actionName].event) >= 0) {
-				
+
 				// сохраняем событие в список с уже созданными
 				_events.push(deck.actions[actionName].event);
-				
+
 				// вешаем событие
 				addActionEvent(deck.actions[actionName].event);
 			}
@@ -117,7 +117,7 @@ let add = deck => {
 		};
 
 	}
-	
+
 	autoRunActions(deck);
 };
 

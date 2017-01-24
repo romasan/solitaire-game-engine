@@ -97,7 +97,7 @@ let fullRules = {
 
 		return _check;
 	},
-	
+
 	"_besideTopCard" : (deck, direction, callback) => {
 
 		let _beside    = getBeside(deck)[direction];
@@ -143,7 +143,7 @@ let fullRules = {
 		let _correct = true;
 
 		let queryDecks = [];
-		
+
 		// Groups
 		if(data.groups) {
 			for(let groupName of data.groups) {
@@ -170,7 +170,7 @@ let fullRules = {
 				}
 			}
 		}
-		
+
 		// Decks
 		if(data.decks) {
 			for(let deckName of data.decks) {

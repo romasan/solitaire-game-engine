@@ -24,8 +24,8 @@ import Field    from 'field'    ;
 let _showTips = defaults.showTips;
 
 let tipTypes = [
-	'tip'        , 
-	'tipTo'      , 
+	'tip'        ,
+	'tipTo'      ,
 	'tipPriority',
 	'tipToHome'
 ];
@@ -103,9 +103,9 @@ event.listen('checkTips', checkTips);
 // show/hide tips
 
 let showTips = data => {
-	
+
 	_showTips = true;
-	
+
 	if(data && data.init) {
 		return;
 	}
@@ -164,11 +164,11 @@ let tipsDestination = data => {
 	if(share.get('showTipsDestination')) {
 
 		event.dispatch('hideTips');
-		
+
 		if(data && data.currentCard && data.currentCard.id) {
 			for(let i in _tips) {
 				if(_tips[i].from.card.id == data.currentCard.id) {					
-					
+
 					event.dispatch('showTip', {
 						"el"   : _tips[i].to.deck, 
 						"type" : 'tipTo'

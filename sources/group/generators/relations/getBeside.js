@@ -1,7 +1,7 @@
 'use strict';
 
 export default deck => {// {deck}
-	
+
 	let prev = deck.getRelationsByName('beside', {
 		"from" : null,
 		"type" : 'prev'

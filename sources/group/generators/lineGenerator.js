@@ -44,7 +44,7 @@ export default (group, data) => {
 			_deck[propName] = data.first[propName];
 		}
 	}
-	
+
 	if(_decks[1]) {
 		_decks[1].tags = ['second'];
 	}

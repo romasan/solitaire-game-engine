@@ -20,11 +20,11 @@ let _allEl = data => {
 	if(!data) {
 		throw new Error('elRender:empty arguments.');
 	}
-	
+
 	if(typeof data == 'string') {
 
 		try {
-			
+
 			if(data[0] == '#') {
 				
 				let _element = document.getElementById(data.slice(1, Infinity));

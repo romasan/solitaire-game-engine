@@ -24,12 +24,12 @@ let exist = (x, y, mapSize, map) =>
 	map[y][x];
 
 let mapSize = map => {
-	
+
 	let _mapSize = {
 		"width"  : map[0].length,//MAX LENGTH
 		"height" : map   .length
 	};
-	
+
 	map.forEach(data => {
 		_mapSize.width = Math.max(_mapSize.width, data.length);
 	});
@@ -61,5 +61,5 @@ export default {
 	mapSize        ,
 	inMap          ,
 	aroundRelations,
-	exist          
+	exist
 };

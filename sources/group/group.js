@@ -11,19 +11,19 @@ import groupRedraw    from 'groupRedraw'   ;
 import groupGenerator from 'groupGenerator';
 
 const PARAMS = {
-	"paddingType"  : {'type' : 'any'},
-	"flip"         : {'type' : 'any'},
-	"showSlot"     : {'type' : 'any'},
-	"takeRules"    : {'type' : 'any'},
-	"putRules"     : {'type' : 'any'},
-	"fullRules"    : {'type' : 'any'},
-	"autoHide"     : {'type' : 'any'},
-	"paddingX"     : {'type' : 'any'},
-	"paddingY"     : {'type' : 'any'},
-	"flipPaddingX" : {'type' : 'any'},
-	"flipPaddingY" : {'type' : 'any'},
-	"actions"      : {'type' : 'any'},
-	"tags"         : {'type' : 'any'},
+	"paddingType"  : {"type" : 'any'},
+	"flip"         : {"type" : 'any'},
+	"showSlot"     : {"type" : 'any'},
+	"takeRules"    : {"type" : 'any'},
+	"putRules"     : {"type" : 'any'},
+	"fullRules"    : {"type" : 'any'},
+	"autoHide"     : {"type" : 'any'},
+	"paddingX"     : {"type" : 'any'},
+	"paddingY"     : {"type" : 'any'},
+	"flipPaddingX" : {"type" : 'any'},
+	"flipPaddingY" : {"type" : 'any'},
+	"actions"      : {"type" : 'any'},
+	"tags"         : {"type" : 'any'},
 	"save"         : {
 		"type"    : 'boolean',
 		"default" : true
@@ -45,7 +45,7 @@ const PARAMS = {
  */
 
 class groupClass {
-	
+
 	constructor(data, id) {
 
 		this.type = 'group';
@@ -216,7 +216,7 @@ class groupClass {
 		data.deckIndex = typeof data.deckIndex == 'number'
 			? data.deckIndex
 			:(_index | 0) + 1;
-		
+
 		let _el = Deck.addDeck(data);
 
 		this.deckIndex[_index]  = _el.id;
@@ -248,7 +248,7 @@ class groupClass {
 	}
 
 	get decksCount() {
-		
+
 		let _count = 0;
 
 		for(let i in this.decks) {

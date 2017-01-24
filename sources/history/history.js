@@ -81,7 +81,7 @@ let _undo = data => {
 
 		// TODO
 		let movesAnimation = share.get('movesAnimation');
-		
+
 		if(data.move.stepType) {
 
 			if(typeof data.move.stepType == 'string') {
@@ -269,7 +269,7 @@ event.listen('redo', redoData => {
 class history {
 
 	constructor() {
-		
+
 		this.steps = [];
 	}
 

@@ -9,7 +9,7 @@ import Field    from 'field'   ;
 import elRender from 'elRender';
 
 event.listen('addCardEl', data => {
-	
+
 	let _card = {
 		width  : defaults.card.width .toFixed(3) * 1,
 		height : defaults.card.height.toFixed(3) * 1
@@ -21,7 +21,7 @@ event.listen('addCardEl', data => {
 	};
 
 	let _domElement = elRender('<div>')
-	
+
 	elRender(_domElement)
 		.addClass('el card draggable ' + data.name)
 		.css(_params)
@@ -32,7 +32,7 @@ event.listen('addCardEl', data => {
 	share.set('domElement:' + data.id, _domElement);
 
 	let _fieldDomElement = share.get('domElement:field');
-	
+
 	elRender(_fieldDomElement)
 		.append(_domElement);
 });

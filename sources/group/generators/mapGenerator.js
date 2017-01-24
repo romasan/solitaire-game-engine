@@ -4,7 +4,7 @@
 
 'use strict';
 
-import defaults from 'defaults'                    ;
+import defaults           from 'defaults'          ;
 
 import relationsGenerator from 'relationsGenerator';
 import mapCommon          from 'mapCommon'         ;
@@ -31,7 +31,7 @@ export default (group, data) => {
 	// }
 
 	let _decks = [];
-	
+
 	let _default_placement = {
 		"x" : 0,
 		"y" : 0
@@ -45,7 +45,10 @@ export default (group, data) => {
 			}
 			: _default_placement;
 
-	group.placement = {x : 0, y : 0};
+	group.placement = {
+		"x" : 0,
+		"y" : 0
+	};
 
 	let _index = 1;
 
@@ -78,12 +81,12 @@ export default (group, data) => {
 		for(let _x in data.map[_y]) {
 
 			let x = _x | 0,
-				y = _y | 0;
+			    y = _y | 0;
 
 			let _el = data.map[y][x];
-			
+
 			if(_el) {
-				
+
 				let _deck = {
 					"name"     : data.map[y][x].name,// (group.name + "_deck" + _index) OR (group.name + '_' + data.map[y][x])
 					"position" : {
@@ -91,7 +94,7 @@ export default (group, data) => {
 						"y" : y * ((defaults.card.height | 0) + (_placement.y | 0))
 					},
 				}
-				
+
 				let _relations = [];
 
 				let _relGenerators = {
@@ -118,7 +121,7 @@ export default (group, data) => {
 				};
 
 				_deck.relations = _relations;
-				
+
 				_decks.push(_deck);
 				_index += 1;
 			}

@@ -1,7 +1,7 @@
 'use strict';
 
 class domObjects {
-	
+
 	constructor() {
 		this._oblects = {};
 		this._id = -1;
@@ -12,7 +12,7 @@ class domObjects {
 	}
 
 	add(object) {
-		
+
 		this._id += 1;
 		let _i = 'el_' + this._id;
 		

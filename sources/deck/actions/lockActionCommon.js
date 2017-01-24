@@ -23,7 +23,7 @@ export default (data, method, me) => {
 	} else {
 		sources = [data.source];
 	}
-	
+
 	if(data.save) {
 		let _step = {};
 		_step[method] = sources;
@@ -32,16 +32,16 @@ export default (data, method, me) => {
 	}
 
 	for(let i in sources) {
-		
+
 		let current = common.getElementsByName(sources[i])[0];
-		
+
 		if(current.type == 'group') {
 			let decks = current.getDecks();
 			for(let deckIndex in decks) {
 				decks[deckIndex][method]();
 			}
 		}
-		
+
 		if(current.type == 'deck') {
 			current[method]();
 		}

@@ -8,27 +8,25 @@ import Field    from 'field'   ;
 import elRender from 'elRender';
 
 event.listen('fieldThemesSet', pref => {
-	
+
 	let _fieldDomElement = share.get('domElement:field');//Field.domElement;
 
 	for(let prefName in defaults.themes) {
-		
+
 		// Clear old themes
 		for(let i in defaults.themes[prefName]) {
-			
+
 			let themeName = defaults.themes[prefName][i];
-			
+
 			elRender(_fieldDomElement)
 				.removeClass(themeName);
-			
 		}
-		
+
 		// Add new themes
 		let className = pref[prefName];
 		// let className = defaults.themes[prefName][pref[prefName]];
-		
+
 		elRender(_fieldDomElement)
 			.addClass(className);
-		
 	}
 });

@@ -4,8 +4,8 @@ import share    from 'share'   ;
 import defaults from 'defaults';
 import common   from 'common'  ;
 
-import Tips  from 'tips'       ;
-import Field from 'field'      ;
+import Tips     from 'tips'    ;
+import Field    from 'field'   ;
 
 export default (moveDeck, cursorMove) => {
 

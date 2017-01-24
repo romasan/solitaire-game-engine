@@ -164,7 +164,6 @@ class Field {
 
 		// событие: игра началась
 		event.dispatch('newGame');
-
 	}
 
 	Redraw(data) {

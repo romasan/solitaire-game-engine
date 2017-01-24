@@ -1,34 +1,33 @@
-$img_dir:"/solitaire_engine/img/";
+$img_dir :"/solitaire_engine/img/";
 
 $theme_name  : ".alternative";
 
 $card_width  : 71px;
 $card_height : 96px;
 
-$cards: ("1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "j", "q", "k");
-$ranks: ("d", "s", "h", "c");
+$cards : ("1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "j", "q", "k");
+$ranks : ("d", "s", "h", "c");
 
 #{$theme_name}_field {
-	background: url('#{$img_dir}bg_large1.jpg')!important;
-	background-size: 100% 100%!important;
+	background      : url('#{$img_dir}bg_large1.jpg')!important;
+	background-size : 100% 100%!important;
 }
 
 #{$theme_name}_face {
 
-	.card  {
-		border: 1px solid #121212;
-		border-radius: 3px;
-		background: url('#{$img_dir}card.png');
-		background-size: length($cards) * $card_width length($ranks) * $card_height;
+	.card {
+		border          : 1px solid #121212;
+		border-radius   : 3px;
+		background      : url('#{$img_dir}card.png');
+		background-size : length($cards) * $card_width length($ranks) * $card_height;
 	}
-	
+
 	@each $rank in $ranks {
 		@each $card in $cards {
 			
 			.#{$rank}#{$card} {
-				background-position: $card_width * (index($cards, $card) - 1) $card_height * (index($ranks, $rank) - 1);
+				background-position : $card_width * (index($cards, $card) - 1) $card_height * (index($ranks, $rank) - 1);
 			}
-			
 		}
 	}
 }
@@ -36,8 +35,8 @@ $ranks: ("d", "s", "h", "c");
 #{$theme_name}_back {
 
 	.flip {
-		background-image: url('#{$img_dir}rub.png')!important;
-		background-size: 100% 100%!important;
-		border: 0px!important;
+		background-image : url('#{$img_dir}rub.png')!important;
+		background-size  : 100% 100%!important;
+		border           : 0px!important;
 	}
 }

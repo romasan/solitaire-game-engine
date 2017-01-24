@@ -84,8 +84,8 @@ class kickAction extends deckAction {
 					before: data => {
 
 						_addStep({
-							"undo" : stepType,
-							"redo" : data.stepType	
+							"undo" : stepType     ,
+							"redo" : data.stepType
 						});
 
 						event.dispatch('saveSteps');
@@ -94,10 +94,10 @@ class kickAction extends deckAction {
 			} else {
 
 				_addStep({
-					"undo" : stepType,// share.get('stepType'),
+					"undo" : stepType                                                            ,
 					"redo" : data.actionData.dispatch ? share.get('stepType') : defaults.stepType
 				})
-				
+
 				event.dispatch('saveSteps');
 
 				super.end();
@@ -116,7 +116,6 @@ class kickAction extends deckAction {
 		// forceMove(forceMoveParams);
 		event.dispatch('forceMove', forceMoveParams);
 	}
-
 }
 
 export default new kickAction();

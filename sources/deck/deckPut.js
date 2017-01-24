@@ -12,7 +12,7 @@ export default (deck, putDeck) => {
 	let _stepType = share.get('stepType');
 
 	let rulesCorrect = true;
-	
+
 	let _deckId         = putDeck[0].card.parent;
 	let _deck_departure = Deck.getDeckById(_deckId);
 
@@ -33,7 +33,7 @@ export default (deck, putDeck) => {
 		let _deck = deck;
 
 		for(let ruleIndex in deck.putRules) {
-			
+
 			if(rulesCorrect) {
 
 				if(_link) {

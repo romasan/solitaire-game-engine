@@ -11,7 +11,7 @@ export default e => {
 	!pref && (pref = defaults.pref);
 
 	for(let prefName in pref) {
-		
+
 		if(defaults.themes[prefName]) {
 
 			if(!defaults.themes[prefName].indexOf(pref[prefName]) >= 0) {

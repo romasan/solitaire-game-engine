@@ -15,13 +15,13 @@ class gamePreferences {
 	}
 
 	draw() {
-		
+
 		if(this.exist) {
 			return;
 		}		
 
 		let _preferences = share.get('gamePreferences');
-		
+
 		for(let prefName in _preferences) {
 			
 			let _label = $('<div>').append(
@@ -54,7 +54,7 @@ class gamePreferences {
 	show(pref) {
 
 		this.draw();
-		
+
 		let _preferences = share.get('gamePreferences');
 
 		for(let prefName in _preferences) {
@@ -68,7 +68,7 @@ class gamePreferences {
 			}
 		}
 	}
-	
+
 	get(pref) {
 
 		let _preferences = share.get('gamePreferences');

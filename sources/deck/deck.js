@@ -77,12 +77,12 @@ class Deck {
 		this.deckIndex  = typeof data.deckIndex  == 'number'  ? data.deckIndex : null             ;
 		this.parent     = typeof data.parent     == 'string'  ? data.parent    : 'field'          ;
 		this.autoHide   = typeof data.autoHide   == 'boolean' ? data.autoHide  : defaults.autohide;
-		
+
 		// changed parameters
 		if(typeof data.showSlot == 'undefined') {
 			data.showSlot = defaults.showSlot;
 		}
-		
+
 		this._params = {
 			"padding_y"      : typeof data.paddingY     == 'number' ? data.paddingY     : defaults.padding_y     ,
 			"flip_padding_y" : typeof data.flipPaddingY == 'number' ? data.flipPaddingY : defaults.flip_padding_y,
@@ -157,7 +157,7 @@ class Deck {
 
 		// Tags
 		this.tags = data.tags ? data.tags : [];
-		
+
 		event.dispatch('addDeckEl', {
 			"deckData" : data, 
 			"deck"     : this,
@@ -303,11 +303,11 @@ class Deck {
 		for(;count;count -= 1) {
 
 			let _pop = this.cards.pop();
-			
+
 			if(clearParent) {
 				_pop.parent = null;
 			}
-			
+
 			_deck.push(_pop);
 			_deck[_deck.length - 1].parent = null;
 		}

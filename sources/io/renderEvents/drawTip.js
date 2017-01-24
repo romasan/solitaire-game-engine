@@ -31,9 +31,9 @@ event.listen('hideTips', data => {
 	} else {
 
 		for(let i in Tips.tipTypes) {
-			
+
 			let typeName = Tips.tipTypes[i];
-			
+
 			elRender('.' + typeName)
 				.removeClass(typeName);
 		}

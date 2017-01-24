@@ -2,6 +2,8 @@
 
 import mapCommon from 'mapCommon';
 
+// TODO
+
 // let getBeside = (_x, _y, mapSize, map, el, type)=>{
 
 // 	if(typeof el[type] == "string") {

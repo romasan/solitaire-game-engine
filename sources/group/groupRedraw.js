@@ -20,7 +20,7 @@ export default (group, data) => {
 
 	// прокидываем конфигурацию для стопок
 	for(let i in decks) {
-		
+
 		// иннициируем конфигурацию стопки если отсутствует
 		if(!data.decks[i]) {
 			data.decks[i] = {};
