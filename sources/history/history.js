@@ -280,10 +280,10 @@ class history {
 	add(step) {
 
 		console.log(
-			'history add:'                      ,
-			step && step.from ? step.from : step,
-			'->'                                ,
-			step && step.to   ? step.to   : step
+			'history add:'                                             ,
+			step && step.move && step.move.from ? step.move.from : step,
+			'->'                                                       ,
+			step && step.move && step.move.to   ? step.move.to   : step
 		);
 
 		// for(let i in step) {

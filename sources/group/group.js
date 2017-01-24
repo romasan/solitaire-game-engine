@@ -11,19 +11,19 @@ import groupRedraw    from 'groupRedraw'   ;
 import groupGenerator from 'groupGenerator';
 
 const PARAMS = {
-	"paddingType"  : {"type" : 'any'},
-	"flip"         : {"type" : 'any'},
-	"showSlot"     : {"type" : 'any'},
-	"takeRules"    : {"type" : 'any'},
-	"putRules"     : {"type" : 'any'},
-	"fullRules"    : {"type" : 'any'},
-	"autoHide"     : {"type" : 'any'},
-	"paddingX"     : {"type" : 'any'},
-	"paddingY"     : {"type" : 'any'},
-	"flipPaddingX" : {"type" : 'any'},
-	"flipPaddingY" : {"type" : 'any'},
-	"actions"      : {"type" : 'any'},
-	"tags"         : {"type" : 'any'},
+	"paddingType"  : { "type" : 'any' },
+	"flip"         : { "type" : 'any' },
+	"showSlot"     : { "type" : 'any' },
+	"takeRules"    : { "type" : 'any' },
+	"putRules"     : { "type" : 'any' },
+	"fullRules"    : { "type" : 'any' },
+	"autoHide"     : { "type" : 'any' },
+	"paddingX"     : { "type" : 'any' },
+	"paddingY"     : { "type" : 'any' },
+	"flipPaddingX" : { "type" : 'any' },
+	"flipPaddingY" : { "type" : 'any' },
+	"actions"      : { "type" : 'any' },
+	"tags"         : { "type" : 'any' },
 	"save"         : {
 		"type"    : 'boolean',
 		"default" : true
@@ -107,8 +107,8 @@ class groupClass {
 
 		if(!data.position) {
 			data.position = {
-				'x' : 0, 
-				'y' : 0
+				"x" : 0, 
+				"y" : 0
 			};
 		}
 
@@ -336,7 +336,7 @@ let add = data => {
 		if(typeof data.decks == 'number') {
 			data.decks = {
 				"generator" : {
-					"type"  : 'count',
+					"type"  : 'count'   ,
 					"count" : data.decks
 				}
 			};
