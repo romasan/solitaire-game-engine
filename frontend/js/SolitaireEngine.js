@@ -111,7 +111,7 @@ var SolitaireEngine =
 	exports.options = _defaults2.default;
 	exports.winCheck = _winCheck2.default.hwinCheck;
 	exports.generator = _deckGenerator2.default;
-	exports.version = (9091494122).toString().split(9).slice(1).map(function (e) {
+	exports.version = (9091494125).toString().split(9).slice(1).map(function (e) {
 		return parseInt(e, 8);
 	}).join('.');
 	
@@ -1249,7 +1249,9 @@ var SolitaireEngine =
 			key: 'backup',
 			value: function backup() {
 	
-				console.log('stateManager:backup');
+				_event2.default.dispatch('debugFlag', { flag: 2, color: 'green', text: 'sm:backup' });
+	
+				// console.log('stateManager:backup');
 	
 				this._state = {};
 	
@@ -1294,7 +1296,8 @@ var SolitaireEngine =
 			key: 'restore',
 			value: function restore() {
 	
-				console.log('stateManager:restore');
+				_event2.default.dispatch('debugFlag', { flag: 2, color: 'red', text: 'sm:restore' });
+				// console.log('stateManager:restore');
 	
 				if (!this._state) {
 	
@@ -1305,6 +1308,7 @@ var SolitaireEngine =
 	
 				// restore share
 				for (var i in this._clearList) {
+					console.log('>>>', this._clearList[i], 'clear', _share2.default.get(this._clearList[i]));
 					_share2.default.delete(this._clearList[i]);
 				}
 	
@@ -1351,6 +1355,12 @@ var SolitaireEngine =
 		}, {
 			key: 'get',
 			value: function get() {
+				_event2.default.dispatch('debugFlag', { flag: 2, color: 'yellow', text: 'sm:get' });
+				return this._state;
+			}
+		}, {
+			key: 'log',
+			value: function log() {
 				return this._state;
 			}
 		}]);
@@ -4936,7 +4946,7 @@ var SolitaireEngine =
 	
 		var deckTo = typeof data.to == 'string' ? _deck2.default.getDeck(data.to) : data.to;
 	
-		console.log('forceMove:', deckFrom.name, '->', deckTo.name, data.deck.join());
+		// console.log('forceMove:', deckFrom.name, '->', deckTo.name, data.deck.join());
 	
 		if (!deckFrom || deckFrom.type != 'deck' || !deckTo || deckTo.type != 'deck') {
 			return;
@@ -5104,7 +5114,7 @@ var SolitaireEngine =
 	
 				var _callback = function _callback(e) {
 	
-					console.log('kickAction:run:callback');
+					// console.log('kickAction:run:callback');
 	
 					var _addStep = function _addStep(historyData) {
 	
@@ -5128,7 +5138,7 @@ var SolitaireEngine =
 					if (window.debug_1) console.log('сюда пришли #1', data.actionData.dispatch);
 	
 					if (data.actionData.dispatch) {
-						console.log('kickAction:dispatch:', data.actionData.dispatch);
+						// console.log('kickAction:dispatch:', data.actionData.dispatch);
 						_event2.default.dispatch(data.actionData.dispatch, {
 							before: function before(data) {
 	
@@ -6387,17 +6397,26 @@ var SolitaireEngine =
 	
 		_createClass(history, [{
 			key: 'reset',
-			value: function reset() {
+			value: function reset(interior) {
 				this.steps = [];
+				if (!interior) {
+					_event2.default.dispatch('debugFlag', { flag: 1, color: 'blue', text: 'h:reset' });
+				}
 			}
 		}, {
 			key: 'add',
 			value: function add(step) {
 	
-				console.log('history add:', step && step.move && step.move.from ? step.move.from : step, '->', step && step.move && step.move.to ? step.move.to : step);
+				// console.log(
+				// 	'history add:'                                             ,
+				// 	step && step.move && step.move.from ? step.move.from : step,
+				// 	'->'                                                       ,
+				// 	step && step.move && step.move.to   ? step.move.to   : step
+				// );
 	
 				// for(let i in step) {
 				this.steps.push(step);
+				_event2.default.dispatch('debugFlag', { flag: 1, color: 'red', text: 'h:add' + this.steps.length });
 				// }
 			}
 	
@@ -6410,11 +6429,12 @@ var SolitaireEngine =
 	
 	
 				var _req = this.steps;
-				console.log('history get:', _req);
+				// console.log('history get:', _req);
 	
 				if (reset) {
-					this.reset();
+					this.reset(true);
 				}
+				_event2.default.dispatch('debugFlag', { flag: 1, color: 'green', text: 'h:get' });
 	
 				return _req;
 			}
@@ -7573,13 +7593,13 @@ var SolitaireEngine =
 	
 				var _tips = _tips3.default.getTips();
 	
-				console.log('fallAutoStep:check START', _tips.length);
+				// console.log('fallAutoStep:check START', _tips.length);
 				if (_tips.length == 0) {
 	
 					this.end();
 					// Tips.checkTips();
 				}
-				console.log('fallAutoStep:check END');
+				// console.log('fallAutoStep:check END');
 			}
 	
 			// start() {
@@ -7725,7 +7745,7 @@ var SolitaireEngine =
 			value: function end() {
 	
 				if (this.dispatch) {
-					console.log('autostep(' + this._name + '):dispatch', this.dispatch);
+					// console.log(`autostep(${this._name}):dispatch`, this.dispatch)
 					_event2.default.dispatch(this.dispatch, {
 						stepType: _share2.default.get('stepType'),
 						callback: function callback(e) {
@@ -10029,7 +10049,7 @@ var SolitaireEngine =
 	
 			var _callback = function (data, _last) {
 				// let _callback = e => {
-				console.log('moveDragDeck:callback');
+				// console.log('moveDragDeck:callback');
 	
 				data.departure.Redraw();
 				data.destination.Redraw();
@@ -10425,6 +10445,10 @@ var SolitaireEngine =
 	
 	var _share2 = _interopRequireDefault(_share);
 	
+	var _event = __webpack_require__(2);
+	
+	var _event2 = _interopRequireDefault(_event);
+	
 	var _defaults = __webpack_require__(3);
 	
 	var _defaults2 = _interopRequireDefault(_defaults);
@@ -10458,6 +10482,25 @@ var SolitaireEngine =
 	var _mapCommon2 = _interopRequireDefault(_mapCommon);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	var _css = {
+		"position": 'absolute',
+		"top": '0px',
+		"width": '100px',
+		"height": '20px',
+		"border": '1px solid #c0c0c0',
+		"background": 'white',
+		"color": 'white',
+		"text-shadow": 'black 1px 1px 0px,' + ' black -1px 1px 0px, black -1px -1px 0px, black 1px -1px 0px'
+	};
+	
+	$(document).ready(function (e) {
+		$(document.body).append($('<div>').css(_css).css({ "right": '20px' }).attr({ "id": 'flag_1' })).append($('<div>').css(_css).css({ "right": '122px' }).attr({ "id": 'flag_2' })).append($('<div>').css(_css).css({ "right": '224px' }).attr({ "id": 'flag_3' }));
+	});
+	
+	_event2.default.listen('debugFlag', function (e) {
+		$('#flag_' + e.flag).css({ "background": e.color }).html(e.text);
+	});
 	
 	exports.default = {
 		share: _share2.default,

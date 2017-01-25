@@ -55,7 +55,7 @@ class kickAction extends deckAction {
 
 		let _callback = e => {
 
-			console.log('kickAction:run:callback');
+			// console.log('kickAction:run:callback');
 
 			let _addStep = historyData => {
 
@@ -79,7 +79,7 @@ class kickAction extends deckAction {
 			if(window.debug_1) console.log('сюда пришли #1', data.actionData.dispatch);
 
 			if(data.actionData.dispatch) {
-				console.log('kickAction:dispatch:', data.actionData.dispatch);
+				// console.log('kickAction:dispatch:', data.actionData.dispatch);
 				event.dispatch(data.actionData.dispatch, {
 					before: data => {
 

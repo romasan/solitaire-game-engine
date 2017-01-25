@@ -64,7 +64,7 @@ event.listen('moveDragDeck', data => {
 
 		let _callback = function(data, _last) {
 		// let _callback = e => {
-			console.log('moveDragDeck:callback');
+			// console.log('moveDragDeck:callback');
 
 			data.departure	.Redraw();
 			data.destination.Redraw();

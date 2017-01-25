@@ -273,21 +273,25 @@ class history {
 		this.steps = [];
 	}
 
-	reset() {
+	reset(interior) {
 		this.steps = [];
+		if(!interior) {
+			event.dispatch('debugFlag', {flag : 1, color : 'blue', text : 'h:reset'});
+		}
 	}
 
 	add(step) {
 
-		console.log(
-			'history add:'                                             ,
-			step && step.move && step.move.from ? step.move.from : step,
-			'->'                                                       ,
-			step && step.move && step.move.to   ? step.move.to   : step
-		);
+		// console.log(
+		// 	'history add:'                                             ,
+		// 	step && step.move && step.move.from ? step.move.from : step,
+		// 	'->'                                                       ,
+		// 	step && step.move && step.move.to   ? step.move.to   : step
+		// );
 
 		// for(let i in step) {
 		this.steps.push(step);
+		event.dispatch('debugFlag', {flag : 1, color : 'red', text : 'h:add' + this.steps.length});
 		// }
 	}
 
@@ -295,11 +299,12 @@ class history {
 	get(reset = true) {
 
 		let _req = this.steps;
-		console.log('history get:', _req);
+		// console.log('history get:', _req);
 
 		if(reset) {
-			this.reset();
+			this.reset(true);
 		}
+		event.dispatch('debugFlag', {flag : 1, color : 'green', text : 'h:get'});
 
 		return _req;
 	}

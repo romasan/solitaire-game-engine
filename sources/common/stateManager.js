@@ -43,7 +43,9 @@ class stateManager {
 
 	backup() {
 
-		console.log('stateManager:backup');
+		event.dispatch('debugFlag', {flag : 2, color : 'green', text : 'sm:backup'});
+
+		// console.log('stateManager:backup');
 
 		this._state = {};
 
@@ -95,7 +97,8 @@ class stateManager {
 
 	restore() {
 
-		console.log('stateManager:restore');
+		event.dispatch('debugFlag', {flag : 2, color : 'red', text : 'sm:restore'});
+		// console.log('stateManager:restore');
 
 		if(!this._state) {
 
@@ -106,6 +109,7 @@ class stateManager {
 
 		// restore share
 		for(let i in this._clearList) {
+			console.log('>>>', this._clearList[i], 'clear', share.get(this._clearList[i]));
 			share.delete(this._clearList[i]);
 		}
 
@@ -151,6 +155,11 @@ class stateManager {
 	}
 
 	get() {
+		event.dispatch('debugFlag', {flag : 2, color : 'yellow', text : 'sm:get'});
+		return this._state;
+	}
+
+	log() {
 		return this._state;
 	}
 }

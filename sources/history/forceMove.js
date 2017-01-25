@@ -29,7 +29,7 @@ let forceMove = data => {// {from, to, deck, <flip>, <callback>}
 		? Deck.getDeck(data.to)
 		: data.to;
 
-	console.log('forceMove:', deckFrom.name, '->', deckTo.name, data.deck.join());
+	// console.log('forceMove:', deckFrom.name, '->', deckTo.name, data.deck.join());
 
 	if(
 		!deckFrom                ||
