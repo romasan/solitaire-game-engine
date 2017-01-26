@@ -41,6 +41,58 @@ class stateManager {
 		];
 	}
 
+	_debug() {
+		this.backup();
+		this._debugRestore();
+	}
+
+	_debugRestore() {
+
+		event.dispatch('debugFlag', {flag : 2, color : 'red', text : 'sm:Drestore'});
+		// console.log('stateManager:restore');
+
+		for(let i in this._sourceList) {
+			// console.log('change', this._sourceList[i], share.get(this._sourceList[i]), '->', this._state[this._sourceList[i]]);
+			share.set(this._sourceList[i], this._state[this._sourceList[i]], true);
+		}
+
+		for(let deckId in this._state.model) {
+
+			let _deck = getDeckById(deckId);
+
+			let _cards = [];
+
+			for(let cardIndex in this._state.model[deckId].cards) {
+
+				let cardId = this._state.model[deckId].cards[cardIndex].id;
+
+				let _card = common.getElementById(cardId);
+
+				if(_card.name == this._state.model[deckId].cards[cardIndex].name) {
+
+					for(let attrIndex in cardAttributes) {
+						let attrName = cardAttributes[attrIndex];
+							_card[attrName] = this._state.model[deckId].cards[cardIndex][attrName];
+					}
+
+					_cards.push(_card);
+				} else {
+					// console.warn(
+					// 	'Что-то не так с картой'               ,
+					// 	this._state.model[deckId].cards[i].id  ,
+					// 	this._state.model[deckId].cards[i].name,
+					// 	' != '                                 ,
+					// 	_card.id                               ,
+					// 	_card.name
+					// );
+				}
+			}
+
+			_deck.cards = _cards;
+			_deck.Redraw();
+		}
+	}
+
 	backup() {
 
 		event.dispatch('debugFlag', {flag : 2, color : 'green', text : 'sm:backup'});
@@ -109,7 +161,6 @@ class stateManager {
 
 		// restore share
 		for(let i in this._clearList) {
-			console.log('>>>', this._clearList[i], 'clear', share.get(this._clearList[i]));
 			share.delete(this._clearList[i]);
 		}
 

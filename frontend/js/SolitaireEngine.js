@@ -111,7 +111,7 @@ var SolitaireEngine =
 	exports.options = _defaults2.default;
 	exports.winCheck = _winCheck2.default.hwinCheck;
 	exports.generator = _deckGenerator2.default;
-	exports.version = (9091494125).toString().split(9).slice(1).map(function (e) {
+	exports.version = (9091494147).toString().split(9).slice(1).map(function (e) {
 		return parseInt(e, 8);
 	}).join('.');
 	
@@ -1246,6 +1246,60 @@ var SolitaireEngine =
 		}
 	
 		_createClass(stateManager, [{
+			key: '_debug',
+			value: function _debug() {
+				this.backup();
+				this._debugRestore();
+			}
+		}, {
+			key: '_debugRestore',
+			value: function _debugRestore() {
+	
+				_event2.default.dispatch('debugFlag', { flag: 2, color: 'red', text: 'sm:Drestore' });
+				// console.log('stateManager:restore');
+	
+				for (var i in this._sourceList) {
+					// console.log('change', this._sourceList[i], share.get(this._sourceList[i]), '->', this._state[this._sourceList[i]]);
+					_share2.default.set(this._sourceList[i], this._state[this._sourceList[i]], true);
+				}
+	
+				for (var deckId in this._state.model) {
+	
+					var _deck = (0, _getDeckById2.default)(deckId);
+	
+					var _cards = [];
+	
+					for (var cardIndex in this._state.model[deckId].cards) {
+	
+						var cardId = this._state.model[deckId].cards[cardIndex].id;
+	
+						var _card = _common2.default.getElementById(cardId);
+	
+						if (_card.name == this._state.model[deckId].cards[cardIndex].name) {
+	
+							for (var attrIndex in cardAttributes) {
+								var attrName = cardAttributes[attrIndex];
+								_card[attrName] = this._state.model[deckId].cards[cardIndex][attrName];
+							}
+	
+							_cards.push(_card);
+						} else {
+							// console.warn(
+							// 	'Что-то не так с картой'               ,
+							// 	this._state.model[deckId].cards[i].id  ,
+							// 	this._state.model[deckId].cards[i].name,
+							// 	' != '                                 ,
+							// 	_card.id                               ,
+							// 	_card.name
+							// );
+						}
+					}
+	
+					_deck.cards = _cards;
+					_deck.Redraw();
+				}
+			}
+		}, {
 			key: 'backup',
 			value: function backup() {
 	
@@ -1308,7 +1362,6 @@ var SolitaireEngine =
 	
 				// restore share
 				for (var i in this._clearList) {
-					console.log('>>>', this._clearList[i], 'clear', _share2.default.get(this._clearList[i]));
 					_share2.default.delete(this._clearList[i]);
 				}
 	
@@ -10495,7 +10548,7 @@ var SolitaireEngine =
 	};
 	
 	$(document).ready(function (e) {
-		$(document.body).append($('<div>').css(_css).css({ "right": '20px' }).attr({ "id": 'flag_1' })).append($('<div>').css(_css).css({ "right": '122px' }).attr({ "id": 'flag_2' })).append($('<div>').css(_css).css({ "right": '224px' }).attr({ "id": 'flag_3' }));
+		$(document.body).append($('<div>').css(_css).css({ "right": '20px' }).attr({ "id": 'flag_1' }).css({ height: '0px' }).animate({ height: '20px' }, 'fast')).append($('<div>').css(_css).css({ "right": '122px' }).attr({ "id": 'flag_2' }).css({ height: '0px' }).animate({ height: '20px' }, 'fast')).append($('<div>').css(_css).css({ "right": '224px' }).attr({ "id": 'flag_3' }).css({ height: '0px' }).animate({ height: '20px' }, 'fast'));
 	});
 	
 	_event2.default.listen('debugFlag', function (e) {

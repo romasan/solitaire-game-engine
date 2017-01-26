@@ -28,12 +28,15 @@ $(document).ready(e => {
 	$(document.body)
 		.append(
 			$('<div>').css(_css).css({ "right" : '20px' }).attr({ "id" : 'flag_1' })
+				.css({height:'0px'}).animate({height:'20px'}, 'fast')
 		)
 		.append(
 			$('<div>').css(_css).css({ "right" : '122px' }).attr({ "id" : 'flag_2' })
+				.css({height:'0px'}).animate({height:'20px'}, 'fast')
 		)
 		.append(
 			$('<div>').css(_css).css({ "right" : '224px' }).attr({ "id" : 'flag_3' })
+				.css({height:'0px'}).animate({height:'20px'}, 'fast')
 		);
 });
 
