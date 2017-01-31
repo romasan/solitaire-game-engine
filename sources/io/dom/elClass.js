@@ -201,7 +201,7 @@ export default class elClass {
 
 				if(_animation) {
 					this.css({
-						'transition': (animationTime / 1000) + 's'
+						"transition" : (animationTime / 1000) + 's'
 					});
 				}
 

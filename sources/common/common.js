@@ -112,7 +112,11 @@ let getElementsByName = (name, type) => {
 	let _elements = share.get('elements');
 
 	for(let i in _elements) {
-		if(_elements[i].name && typeof _elements[i].name == 'string' && _elements[i].name == name) {
+		if(
+			       _elements[i].name             &&
+			typeof _elements[i].name == 'string' &&
+			       _elements[i].name == name
+		) {
 			if(type && typeof _elements[i].type == 'string') {
 				if(type && _elements[i].type == type) {
 					response.push(_elements[i]);
@@ -120,6 +124,26 @@ let getElementsByName = (name, type) => {
 					response.push(_elements[i]);
 				}
 			} else {
+				response.push(_elements[i]);
+			}
+		}
+	}
+
+	return response;
+};
+
+let getElementsByType = type => {
+
+	let response = [];
+
+	let _elements = share.get('elements');
+
+	if(type) {
+		for(let i in _elements) {
+			if(
+				typeof _elements[i].type == 'string' &&
+				       _elements[i].type == type
+			) {
 				response.push(_elements[i]);
 			}
 		}

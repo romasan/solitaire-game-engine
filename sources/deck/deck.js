@@ -71,12 +71,12 @@ class Deck {
 			? data.name
 			: (_parent_name + '_' + _new_id);
 
-		this.locked     =        data.locked                  ? true           : false            ;
-		this.save       =        data.save                    ? true           : false            ;
-		this.visible    = typeof data.visible    == 'boolean' ? data.visible   : true             ;
-		this.deckIndex  = typeof data.deckIndex  == 'number'  ? data.deckIndex : null             ;
-		this.parent     = typeof data.parent     == 'string'  ? data.parent    : 'field'          ;
-		this.autoHide   = typeof data.autoHide   == 'boolean' ? data.autoHide  : defaults.autohide;
+		this.locked    =        data.locked                 ? true           : false            ;
+		this.save      =        data.save                   ? true           : false            ;
+		this.visible   = typeof data.visible   == 'boolean' ? data.visible   : true             ;
+		this.deckIndex = typeof data.deckIndex == 'number'  ? data.deckIndex : null             ;
+		this.parent    = typeof data.parent    == 'string'  ? data.parent    : 'field'          ;
+		this.autoHide  = typeof data.autoHide  == 'boolean' ? data.autoHide  : defaults.autohide;
 
 		// changed parameters
 		if(typeof data.showSlot == 'undefined') {
@@ -159,8 +159,8 @@ class Deck {
 		this.tags = data.tags ? data.tags : [];
 
 		event.dispatch('addDeckEl', {
-			"deckData" : data, 
-			"deck"     : this,
+			"deckData" : data        , 
+			"deck"     : this        ,
 			"params"   : this._params
 		});
 
@@ -184,8 +184,8 @@ class Deck {
 	Redraw(data) {
 
 		event.dispatch('redrawDeck', {
-			"deck"     : this,
-			"deckData" : data,
+			"deck"     : this        ,
+			"deckData" : data        ,
 			"params"   : this._params,
 			"cards"    : this.cards
 		});
@@ -344,13 +344,13 @@ class Deck {
 
 	hide() {
 		this.visible = false;
-		History.add({hideDeck : this.name});
+		History.add({ "hideDeck" : this.name });
 		this.Redraw();
 	}
 
 	show() {
 		this.visible = false;
-		History.add({showDeck : this.name});
+		History.add({ "showDeck" : this.name });
 		this.Redraw();
 	}
 
@@ -370,14 +370,13 @@ class Deck {
 
 	getCards() {
 
-		return this.cards;
-
 		// let _cards = [];
 		// for(let i in this.cards) {
 		// 	let _card = common.getElementById(this.cards[i]);
 		// 	_cards.push(_card);
 		// }
-		// return _cards;
+
+		return this.cards;
 	}
 
 	hideCards() {

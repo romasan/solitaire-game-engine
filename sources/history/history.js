@@ -124,15 +124,27 @@ let _undo = data => {
 
 event.listen('undo', undoData => {
 
+	// common.animationOff();
+	// event.dispatch('moveCardToHome', {});
+	// common.animationOn();
+
+	console.log('undo:', undoData);
+
+	if(!undoData) {
+		return;
+	};
+
+	// let e = undoData.length ? undoData[undoData.length - 1] : undoData;
+	// if(e.move) {
+	// 	// TODO
+	// }
+
 	inputs.break();
 
 	_history.reset();
 
 	event.dispatch('stopAnimations');
 
-	if(!undoData) {
-		return;
-	};
 
 	// Обратная совместимость
 	if(undoData instanceof Array) {

@@ -47,8 +47,8 @@ export default data => {// {x, y, map, mapSize, el, data}
 
 				if(mapCommon.exist(x, y, data.mapSize, data.map)) {
 					_relations.push({
-						"name"      : 'fall',
-						"direction" : 'left',
+						"name"      : 'fall'             ,
+						"direction" : 'left'             ,
 						"to"        : data.map[y][x].name
 					});
 				}

@@ -6,6 +6,7 @@ import defaults      from 'defaults'     ;
 import common        from 'common'       ;
 
 import field         from 'field'        ;
+import deck          from 'deck'         ;
 import deckGenerator from 'deckGenerator';
 import elRender      from 'elRender'     ;
 import stateManager  from 'stateManager' ;
@@ -28,21 +29,52 @@ $(document).ready(e => {
 	$(document.body)
 		.append(
 			$('<div>').css(_css).css({ "right" : '20px' }).attr({ "id" : 'flag_1' })
-				.css({height:'0px'}).animate({height:'20px'}, 'fast')
+				.css({ "height" : '0px' }).animate({ "height" : '20px' }, 'fast')
 		)
 		.append(
 			$('<div>').css(_css).css({ "right" : '122px' }).attr({ "id" : 'flag_2' })
-				.css({height:'0px'}).animate({height:'20px'}, 'fast')
+				.css({ "height" : '0px' }).animate({ "height" : '20px' }, 'fast')
 		)
 		.append(
 			$('<div>').css(_css).css({ "right" : '224px' }).attr({ "id" : 'flag_3' })
-				.css({height:'0px'}).animate({height:'20px'}, 'fast')
+				.css({ "height" : '0px' }).animate({ "height" : '20px' }, 'fast')
 		);
 });
 
 event.listen('debugFlag', e => {
 	$('#flag_' + e.flag).css({ "background" : e.color }).html(e.text);
 });
+
+let stamp = e => {
+	let summaryAnimationsCallbacksCouns = 0;
+	return {
+		stepType : share.get('stepType'),
+		decks    : (e => {
+			e = deck.getDecks();
+			let decks = [];
+			for(let i in e) {
+				decks.push({
+					name  : e[i].name,
+					cards : e[i].cards.map(c => {
+						return {
+							name : c.name,
+							el   : (z => {
+								let el = share.get('domElement:' + c.id);
+								summaryAnimationsCallbacksCouns += el._animationCallbacks.length;
+								return {
+									_animationCallbacksLength : el._animationCallbacks.length
+								}
+							})()
+						}
+					})
+				});
+			}
+			return decks;
+		})(),
+		summaryAnimationsCallbacksCouns : summaryAnimationsCallbacksCouns,
+		history : history.get().length
+	}
+}
 
 export default {
 	share        ,
@@ -53,5 +85,6 @@ export default {
 	elRender     ,
 	stateManager ,
 	history      ,
-	mapCommon
+	mapCommon    ,
+	stamp
 };

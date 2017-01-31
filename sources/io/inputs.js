@@ -115,7 +115,7 @@ class inputs {
 			_dragDeck[0].card.parent
 		) {
 
-			let _deck = Deck.getDeckById(_dragDeck[0].card.parent)
+			let _deck = Deck.getDeckById(_dragDeck[0].card.parent);
 
 			if(_deck) {
 				_deck.Redraw();
