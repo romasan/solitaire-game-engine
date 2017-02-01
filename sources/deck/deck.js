@@ -205,6 +205,25 @@ class Deck {
 		return this.cards[this.cards.length - 1];
 	}
 
+	getSomeCards(count) {
+
+		let _cards = [];
+
+		if(
+			typeof count != 'number'  ||
+			count > this.cards.length ||
+			count < 1
+		) {
+			count = this.cards.length
+		}
+
+		for(let i = 0; i < count; i += 1) {
+			_cards.push(this.cards[this.cards.length - 1 - i]);
+		}
+		console.log('getSomeCards:', count, _cards);
+		return _cards;
+	}
+
 	lock() {
 		this.locked = true;
 	}

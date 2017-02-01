@@ -111,7 +111,7 @@ var SolitaireEngine =
 	exports.options = _defaults2.default;
 	exports.winCheck = _winCheck2.default.hwinCheck;
 	exports.generator = _deckGenerator2.default;
-	exports.version = (9091494222).toString().split(9).slice(1).map(function (e) {
+	exports.version = (9091494245).toString().split(9).slice(1).map(function (e) {
 		return parseInt(e, 8);
 	}).join('.');
 	
@@ -777,7 +777,7 @@ var SolitaireEngine =
 	
 					if (_dragDeck) {
 	
-						_share2.default.set('startCursor', { x: x, y: y });
+						_share2.default.set('startCursor', { "x": x, "y": y });
 	
 						// ???
 						_tips2.default.tipsDestination({ currentCard: _card });
@@ -856,6 +856,7 @@ var SolitaireEngine =
 				var _startCursor = _share2.default.get('startCursor'),
 				    // начальная позиция курсора
 				_dragDeck = _share2.default.get('dragDeck');
+				console.log('PUT#1:', _common2.default.getElementById(_dragDeck[0].card.parent).name);
 	
 				if (!_dragDeck || !_startCursor) {
 					return;
@@ -892,7 +893,9 @@ var SolitaireEngine =
 					}
 				};
 	
+				console.log('PUT#2:', _common2.default.getElementById(_dragDeck[0].card.parent).name);
 				_share2.default.set('lastCursorMove', cursorMove, _defaults2.default.forceClone);
+				_share2.default.set('lastDragDeck', _dragDeck, _defaults2.default.forceClone);
 	
 				_event2.default.dispatch('hideCard', target);
 				var _dop = document.elementFromPoint(x, y);
@@ -2986,6 +2989,22 @@ var SolitaireEngine =
 				}
 	
 				return this.cards[this.cards.length - 1];
+			}
+		}, {
+			key: 'getSomeCards',
+			value: function getSomeCards(count) {
+	
+				var _cards = [];
+	
+				if (typeof count != 'number' || count > this.cards.length || count < 1) {
+					count = this.cards.length;
+				}
+	
+				for (var i = 0; i < count; i += 1) {
+					_cards.push(this.cards[this.cards.length - 1 - i]);
+				}
+				console.log('getSomeCards:', count, _cards);
+				return _cards;
 			}
 		}, {
 			key: 'lock',
@@ -6195,9 +6214,9 @@ var SolitaireEngine =
 	
 	var _forceMove2 = _interopRequireDefault(_forceMove);
 	
-	var _deck = __webpack_require__(14);
+	var _deck2 = __webpack_require__(14);
 	
-	var _deck2 = _interopRequireDefault(_deck);
+	var _deck3 = _interopRequireDefault(_deck2);
 	
 	var _tips = __webpack_require__(9);
 	
@@ -6319,20 +6338,34 @@ var SolitaireEngine =
 	
 	_event2.default.listen('undo', function (undoData) {
 	
-		// common.animationOff();
-		// event.dispatch('moveCardToHome', {});
-		// common.animationOn();
-	
-		console.log('undo:', undoData);
-	
 		if (!undoData) {
 			return;
 		};
 	
-		// let e = undoData.length ? undoData[undoData.length - 1] : undoData;
-		// if(e.move) {
-		// 	// TODO
-		// }
+		var e = undoData.length ? undoData[undoData.length - 1] : undoData;
+	
+		if (e.move) {
+	
+			// let _deck = Deck.getDeck(e.move.from);
+			// let _deckCardsCount = _deck.cardsCount();
+			var _lastDragDeck = _share2.default.get('lastDragDeck'),
+			    _deck = _common2.default.getElementById(_lastDragDeck[0].card.parent);
+			console.log('undoMove:', _common2.default.getElementById(_lastDragDeck[0].card.parent).name);
+	
+			_common2.default.animationOff();
+			_event2.default.dispatch('moveCardToHome', {
+				// console.log('undo:moveCardToHome:', {
+				"departure": _deck,
+				"moveDeck": _lastDragDeck
+				// "moveDeck"  : _deck.getSomeCards(e.move.deck.length).map((c, i) => {
+				// 	return {
+				// 		"card"  : c,
+				// 		"index" : (_deckCardsCount | 0) - (e.move.deck.length | 0) + i
+				// 	}
+				// })
+			});
+			_common2.default.animationOn();
+		}
 	
 		_inputs2.default.break();
 	
@@ -6471,7 +6504,7 @@ var SolitaireEngine =
 			value: function reset(interior) {
 				this.steps = [];
 				if (!interior) {
-					_event2.default.dispatch('debugFlag', { flag: 1, color: 'blue', text: 'h:reset' });
+					_event2.default.dispatch('debugFlag', { "flag": 1, "color": 'blue', "text": 'h:reset' });
 				}
 			}
 		}, {
@@ -6487,7 +6520,7 @@ var SolitaireEngine =
 	
 				// for(let i in step) {
 				this.steps.push(step);
-				_event2.default.dispatch('debugFlag', { flag: 1, color: 'red', text: 'h:add' + this.steps.length });
+				_event2.default.dispatch('debugFlag', { "flag": 1, "color": 'red', "text": 'h:add' + this.steps.length });
 				// }
 			}
 	
@@ -6505,7 +6538,7 @@ var SolitaireEngine =
 				if (reset) {
 					this.reset(true);
 				}
-				_event2.default.dispatch('debugFlag', { flag: 1, color: 'green', text: 'h:get' });
+				_event2.default.dispatch('debugFlag', { "flag": 1, "color": 'green', "text": 'h:get' });
 	
 				return _req;
 			}

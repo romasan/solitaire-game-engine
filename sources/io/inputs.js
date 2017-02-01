@@ -19,7 +19,7 @@ class inputs {
 
 	constructor() {
 
-		share.set('dragDeck',    null);
+		share.set('dragDeck'   , null);
 		share.set('startCursor', null);
 
 		// event.listen('undo', this._inputUndoRedo());
@@ -75,7 +75,7 @@ class inputs {
 				event.dispatch('stopAnimations');
 
 				this.take(data.target, data.clientX, data.clientY);
-				this.put(data.target, data.clientX, data.clientY, true);
+				this.put (data.target, data.clientX, data.clientY, true);
 
 				common.curUnLock();
 			};
@@ -122,7 +122,7 @@ class inputs {
 			}
 		}
 
-		share.set('dragDeck',    null);
+		share.set('dragDeck'   , null);
 		share.set('startCursor', null);
 
 		common.curUnLock();
@@ -132,7 +132,7 @@ class inputs {
 
 	take(target, x, y) {
 
-		share.set('dragDeck',    null);
+		share.set('dragDeck'   , null);
 		share.set('startCursor', null);
 
 		if(
@@ -144,9 +144,8 @@ class inputs {
 
 		if( target.className.split(' ').indexOf('slot') >= 0 ) {
 
-			let _id   = target.id,
-
-			_deck = common.getElementById(_id);
+			let _id   = target.id                 ,
+			    _deck = common.getElementById(_id);
 
 			if(_deck) {
 				event.dispatch('click', {
@@ -179,7 +178,7 @@ class inputs {
 
 			if(_dragDeck) {
 
-				share.set('startCursor', {x, y});
+				share.set('startCursor', { "x" : x, "y" : y });
 
 				// ???
 				Tips.tipsDestination({currentCard : _card});
@@ -251,8 +250,9 @@ class inputs {
 			return;
 		}
 
-		let _startCursor = share.get('startCursor'),// начальная позиция курсора
+		let _startCursor = share.get('startCursor'), // начальная позиция курсора
 		    _dragDeck    = share.get('dragDeck')   ;
+		console.log('PUT#1:', common.getElementById(_dragDeck[0].card.parent).name);
 
 		if(!_dragDeck || !_startCursor) {
 			return;
@@ -268,8 +268,8 @@ class inputs {
 			"distance"  : _distance,
 			"dbclick"   : !!dbclick,
 			"direction" : {
-				"x"     : x - _startCursor.x,// (+) rigth / (-) left
-				"y"     : y - _startCursor.y,// (+) down  / (-) up
+				"x"     : x - _startCursor.x, // (+) rigth / (-) left
+				"y"     : y - _startCursor.y, // (+) down  / (-) up
 				"right" : x > _startCursor.x,
 				"left"  : x < _startCursor.x,
 				"down"  : y > _startCursor.y,
@@ -285,7 +285,9 @@ class inputs {
 			}
 		};
 
+		console.log('PUT#2:', common.getElementById(_dragDeck[0].card.parent).name);
 		share.set('lastCursorMove', cursorMove, defaults.forceClone);
+		share.set('lastDragDeck'  , _dragDeck , defaults.forceClone);
 
 		event.dispatch('hideCard', target);
 		let _dop = document.elementFromPoint(x, y);
@@ -293,13 +295,13 @@ class inputs {
 
 		// if(_dop && _dop.id) {
 		event.dispatch('Move', {
-			"moveDeck"   : _dragDeck,
+			"moveDeck"   : _dragDeck                        ,
 			"to"         : _dop && _dop.id ? _dop.id : 'mat',
 			"cursorMove" : cursorMove
 		});
 		// }
 
-		share.set('dragDeck',    null);
+		share.set('dragDeck'   , null);
 		share.set('startCursor', null);
 	}
 }

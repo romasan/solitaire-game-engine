@@ -124,20 +124,35 @@ let _undo = data => {
 
 event.listen('undo', undoData => {
 
-	// common.animationOff();
-	// event.dispatch('moveCardToHome', {});
-	// common.animationOn();
-
-	console.log('undo:', undoData);
 
 	if(!undoData) {
 		return;
 	};
 
-	// let e = undoData.length ? undoData[undoData.length - 1] : undoData;
-	// if(e.move) {
-	// 	// TODO
-	// }
+	let e = undoData.length ? undoData[undoData.length - 1] : undoData;
+
+	if(e.move) {
+
+		// let _deck = Deck.getDeck(e.move.from);
+		// let _deckCardsCount = _deck.cardsCount();
+		let _lastDragDeck = share.get('lastDragDeck')                          ,
+		    _deck         = common.getElementById(_lastDragDeck[0].card.parent);
+	console.log('undoMove:', common.getElementById(_lastDragDeck[0].card.parent).name);
+
+		common.animationOff();
+		event.dispatch('moveCardToHome', {
+		// console.log('undo:moveCardToHome:', {
+			"departure" : _deck        ,
+			"moveDeck"  : _lastDragDeck
+			// "moveDeck"  : _deck.getSomeCards(e.move.deck.length).map((c, i) => {
+			// 	return {
+			// 		"card"  : c,
+			// 		"index" : (_deckCardsCount | 0) - (e.move.deck.length | 0) + i
+			// 	}
+			// })
+		});
+		common.animationOn();
+	}
 
 	inputs.break();
 
@@ -288,7 +303,7 @@ class history {
 	reset(interior) {
 		this.steps = [];
 		if(!interior) {
-			event.dispatch('debugFlag', {flag : 1, color : 'blue', text : 'h:reset'});
+			event.dispatch('debugFlag', {"flag" : 1, "color" : 'blue', "text" : 'h:reset'});
 		}
 	}
 
@@ -303,7 +318,7 @@ class history {
 
 		// for(let i in step) {
 		this.steps.push(step);
-		event.dispatch('debugFlag', {flag : 1, color : 'red', text : 'h:add' + this.steps.length});
+		event.dispatch('debugFlag', {"flag" : 1, "color" : 'red', "text" : 'h:add' + this.steps.length});
 		// }
 	}
 
@@ -316,7 +331,7 @@ class history {
 		if(reset) {
 			this.reset(true);
 		}
-		event.dispatch('debugFlag', {flag : 1, color : 'green', text : 'h:get'});
+		event.dispatch('debugFlag', {"flag" : 1, "color" : 'green', "text" : 'h:get'});
 
 		return _req;
 	}
