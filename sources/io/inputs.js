@@ -252,7 +252,6 @@ class inputs {
 
 		let _startCursor = share.get('startCursor'), // начальная позиция курсора
 		    _dragDeck    = share.get('dragDeck')   ;
-		console.log('PUT#1:', common.getElementById(_dragDeck[0].card.parent).name);
 
 		if(!_dragDeck || !_startCursor) {
 			return;
@@ -285,9 +284,11 @@ class inputs {
 			}
 		};
 
-		console.log('PUT#2:', common.getElementById(_dragDeck[0].card.parent).name);
-		share.set('lastCursorMove', cursorMove, defaults.forceClone);
-		share.set('lastDragDeck'  , _dragDeck , defaults.forceClone);
+		share.set('lastCursorMove', cursorMove  , defaults.forceClone);
+		share.set('lastDragDeck', {
+			"dragDeckParentId" : _dragDeck[0].card.parent,
+			"dragDeck"         : _dragDeck
+		}, defaults.forceClone);
 
 		event.dispatch('hideCard', target);
 		let _dop = document.elementFromPoint(x, y);

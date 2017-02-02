@@ -32,6 +32,8 @@ event.listen('moveCardToHome', data => {
 
 				e => {
 
+					console.log('moveCardToHome:END');
+
 					common.curUnLock();
 
 					if(data.departure) {

@@ -30,8 +30,8 @@ class kickAction extends deckAction {
 
 		// TODO спорный момент
 		if(
-			typeof data.eventData.stepType == 'string'   &&
-			data.eventData.stepType != defaults.stepType
+			typeof data.eventData.stepType == 'string'          &&
+			       data.eventData.stepType != defaults.stepType
 		) {
 
 			super.break();
@@ -46,25 +46,25 @@ class kickAction extends deckAction {
 			return false;
 		}
 
+		console.log('kickAction:run', stepType, share.get('stepType'));
+
 		share.set('stepType', stepType);
 
 		common.animationDefault();
 
-		let _from = data.eventData.to, //Deck.Deck(_name),
+		let _from = data.eventData.to    , //Deck.Deck(_name),
 		    _deck = _from.getCardsNames();
 
 		let _callback = e => {
-
-			// console.log('kickAction:run:callback');
 
 			let _addStep = historyData => {
 
 				event.dispatch('addStep', {
 					"move" : {
-						"from"     : _from.name,
+						"from"     : _from.name        ,
 						"to"       : data.actionData.to,
-						"deck"     : _deck,
-						"flip"     : true,
+						"deck"     : _deck             ,
+						"flip"     : true              ,
 						"stepType" : {
 							"undo" : historyData.undo,
 							"redo" : historyData.redo

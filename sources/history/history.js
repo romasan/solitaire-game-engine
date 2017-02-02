@@ -124,42 +124,30 @@ let _undo = data => {
 
 event.listen('undo', undoData => {
 
-
 	if(!undoData) {
 		return;
 	};
 
-	let e = undoData.length ? undoData[undoData.length - 1] : undoData;
+	// let e = undoData.length ? undoData[undoData.length - 1] : undoData;
 
-	if(e.move) {
+	// if(e.move) {
 
-		// let _deck = Deck.getDeck(e.move.from);
-		// let _deckCardsCount = _deck.cardsCount();
-		let _lastDragDeck = share.get('lastDragDeck')                          ,
-		    _deck         = common.getElementById(_lastDragDeck[0].card.parent);
-	console.log('undoMove:', common.getElementById(_lastDragDeck[0].card.parent).name);
+	// 	let _lastDragDeck = share.get('lastDragDeck');
+	//     let _deck = common.getElementById(_lastDragDeck.dragDeckParentId);
 
-		common.animationOff();
-		event.dispatch('moveCardToHome', {
-		// console.log('undo:moveCardToHome:', {
-			"departure" : _deck        ,
-			"moveDeck"  : _lastDragDeck
-			// "moveDeck"  : _deck.getSomeCards(e.move.deck.length).map((c, i) => {
-			// 	return {
-			// 		"card"  : c,
-			// 		"index" : (_deckCardsCount | 0) - (e.move.deck.length | 0) + i
-			// 	}
-			// })
-		});
-		common.animationOn();
-	}
+	// 	common.animationOff();
+	// 	event.dispatch('moveCardToHome', {
+	// 		"departure" : _deck        ,
+	// 		"moveDeck"  : _lastDragDeck.dragDeck
+	// 	});
+	// 	common.animationOn();
+	// }
 
 	inputs.break();
 
 	_history.reset();
 
 	event.dispatch('stopAnimations');
-
 
 	// Обратная совместимость
 	if(undoData instanceof Array) {
@@ -302,12 +290,11 @@ class history {
 
 	reset(interior) {
 		this.steps = [];
-		if(!interior) {
-			event.dispatch('debugFlag', {"flag" : 1, "color" : 'blue', "text" : 'h:reset'});
-		}
+		console.log('history reset');
 	}
 
 	add(step) {
+		console.log('history add');
 
 		// console.log(
 		// 	'history add:'                                             ,
@@ -318,12 +305,12 @@ class history {
 
 		// for(let i in step) {
 		this.steps.push(step);
-		event.dispatch('debugFlag', {"flag" : 1, "color" : 'red', "text" : 'h:add' + this.steps.length});
 		// }
 	}
 
 	// get steps and reset
 	get(reset = true) {
+		console.log('history get, reset', reset);
 
 		let _req = this.steps;
 		// console.log('history get:', _req);
@@ -331,14 +318,11 @@ class history {
 		if(reset) {
 			this.reset(true);
 		}
-		event.dispatch('debugFlag', {"flag" : 1, "color" : 'green', "text" : 'h:get'});
 
 		return _req;
 	}
 
-	log() {
-		console.log(this.steps);
-	}
+	log() {}
 
 	count() {
 		return this.steps.length;
