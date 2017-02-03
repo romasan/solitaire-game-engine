@@ -28,7 +28,7 @@ export default (data, method, me) => {
 		let _step = {};
 		_step[method] = sources;
 		event.dispatch('addStep', _step);
-		event.dispatch('saveSteps');
+		event.dispatch('saveSteps', 'LOCKACTIONCOMMON');
 	}
 
 	for(let i in sources) {

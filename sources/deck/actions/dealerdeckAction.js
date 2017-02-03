@@ -25,8 +25,8 @@ class dealerdeckAction extends deckAction {
 		// console.log('dealerdeckAction:', deck.name, data);
 
 		if(
-			typeof data.actionData.stepType == 'string'       &&
-			data.actionData.stepType != share.get('stepType')
+			typeof data.actionData.stepType == 'string'              &&
+			       data.actionData.stepType != share.get('stepType')
 		) {
 
 			super.break();
@@ -141,16 +141,15 @@ class dealerdeckAction extends deckAction {
 
 				let _cardName = _card.name;
 
-				let _callback = ()=>{
-
+				let _callback = e => {
 					event.dispatch('checkTips');
 				};
 
 				forceMove({
-					"from"     : dealDeck.name,
+					"from"     : dealDeck.name      ,
 					"to"       : _decks[deckId].name,
-					"deck"     : [_cardName],
-					"flip"     : true,
+					"deck"     : [_cardName]        ,
+					"flip"     : true               ,
 					"callback" : _callback
 				}, true);
 
@@ -161,13 +160,15 @@ class dealerdeckAction extends deckAction {
 
 				event.dispatch('addStep', {
 					'move' : {
-						"from"     : dealDeck.name,
+						"from"     :       dealDeck.name,
 						"to"       : _decks[deckId].name,
-						"deck"     : [_cardName],
-						"flip"     : true,
+						"deck"     : [_cardName]        ,
+						"flip"     : true               ,
 						"stepType" : {
 							"undo" : share.get('stepType'),
-							"redo" : data.actionData.dispatch ? share.get('stepType') : defaults.stepType
+							"redo" : data.actionData.dispatch
+								? share.get('stepType')
+								: defaults.stepType
 						},
 						"context"  : 'dealerdeckAction'
 					}
@@ -177,7 +178,7 @@ class dealerdeckAction extends deckAction {
 
 		if(_makeStep) {
 			// сохраняем если паздача удалась
-			event.dispatch('saveSteps');
+			event.dispatch('saveSteps', 'DEALERDECKACTION');
 		}
 
 		if(data.actionData.dispatch) {

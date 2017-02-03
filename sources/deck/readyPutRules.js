@@ -315,6 +315,8 @@ let readyPutRules = {
 	},
 
 	// TODO rules with params ??? or atom rules
+	// "sum" : (deck, data) => {} // rulename:data -> sum:14
+
 	// query ?
 
 	"around" : deck => {// {from, putDeck, cards}

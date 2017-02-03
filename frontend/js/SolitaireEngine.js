@@ -65,7 +65,7 @@ var SolitaireEngine =
 	
 	var _inputs2 = _interopRequireDefault(_inputs);
 	
-	var _move = __webpack_require__(61);
+	var _move = __webpack_require__(62);
 	
 	var _move2 = _interopRequireDefault(_move);
 	
@@ -73,7 +73,7 @@ var SolitaireEngine =
 	
 	var _forceMove2 = _interopRequireDefault(_forceMove);
 	
-	var _render = __webpack_require__(64);
+	var _render = __webpack_require__(65);
 	
 	var _render2 = _interopRequireDefault(_render);
 	
@@ -85,7 +85,7 @@ var SolitaireEngine =
 	
 	var _common2 = _interopRequireDefault(_common);
 	
-	var _winCheck = __webpack_require__(62);
+	var _winCheck = __webpack_require__(63);
 	
 	var _winCheck2 = _interopRequireDefault(_winCheck);
 	
@@ -97,7 +97,7 @@ var SolitaireEngine =
 	
 	var _tips2 = _interopRequireDefault(_tips);
 	
-	var _deckGenerator = __webpack_require__(78);
+	var _deckGenerator = __webpack_require__(79);
 	
 	var _deckGenerator2 = _interopRequireDefault(_deckGenerator);
 	
@@ -111,7 +111,7 @@ var SolitaireEngine =
 	exports.options = _defaults2.default;
 	exports.winCheck = _winCheck2.default.hwinCheck;
 	exports.generator = _deckGenerator2.default;
-	exports.version = (9091494271).toString().split(9).slice(1).map(function (e) {
+	exports.version = (9091494315).toString().split(9).slice(1).map(function (e) {
 		return parseInt(e, 8);
 	}).join('.');
 	
@@ -158,7 +158,7 @@ var SolitaireEngine =
 	};
 	
 	if (true) {
-		var debug = __webpack_require__(79);
+		var debug = __webpack_require__(80);
 		exports.debug = debug.default;
 	}
 
@@ -229,8 +229,8 @@ var SolitaireEngine =
 				if (typeof name == 'string') {
 	
 					_event2.default.dispatch('shareChange:' + name, {
-						from: this._data[name],
-						to: data
+						"from": this._data[name],
+						"to": data
 					});
 	
 					if (typeof forceClone == 'boolean' && forceClone) {
@@ -256,8 +256,8 @@ var SolitaireEngine =
 					for (var _name2 in name) {
 	
 						_event2.default.dispatch('shareChange:' + name, {
-							from: this._data[_name2],
-							to: name[_name2]
+							"from": this._data[_name2],
+							"to": name[_name2]
 						});
 	
 						if (typeof forceClone == 'boolean' && forceClone) {
@@ -962,15 +962,15 @@ var SolitaireEngine =
 	
 	var _history2 = _interopRequireDefault(_history);
 	
-	var _drawPreferences = __webpack_require__(56);
+	var _drawPreferences = __webpack_require__(57);
 	
 	var _drawPreferences2 = _interopRequireDefault(_drawPreferences);
 	
-	var _preferencesEvents = __webpack_require__(58);
+	var _preferencesEvents = __webpack_require__(59);
 	
 	var _preferencesEvents2 = _interopRequireDefault(_preferencesEvents);
 	
-	var _defaultPreferences = __webpack_require__(60);
+	var _defaultPreferences = __webpack_require__(61);
 	
 	var _defaultPreferences2 = _interopRequireDefault(_defaultPreferences);
 	
@@ -2067,11 +2067,11 @@ var SolitaireEngine =
 	
 	var _tips2 = _interopRequireDefault(_tips);
 	
-	var _addAutoSteps = __webpack_require__(52);
+	var _addAutoSteps = __webpack_require__(53);
 	
 	var _addAutoSteps2 = _interopRequireDefault(_addAutoSteps);
 	
-	var _storage = __webpack_require__(55);
+	var _storage = __webpack_require__(56);
 	
 	var _storage2 = _interopRequireDefault(_storage);
 	
@@ -2804,10 +2804,6 @@ var SolitaireEngine =
 	
 	var _group2 = _interopRequireDefault(_group);
 	
-	var _history = __webpack_require__(36);
-	
-	var _history2 = _interopRequireDefault(_history);
-	
 	var _getDecks = __webpack_require__(7);
 	
 	var _getDecks2 = _interopRequireDefault(_getDecks);
@@ -3153,14 +3149,16 @@ var SolitaireEngine =
 			key: 'hide',
 			value: function hide() {
 				this.visible = false;
-				_history2.default.add({ "hideDeck": this.name });
+				// History.add({ "hideDeck" : this.name });
+				_event2.default.dispatch('addStep', { "hideDeck": this.name });
 				this.Redraw();
 			}
 		}, {
 			key: 'show',
 			value: function show() {
 				this.visible = false;
-				_history2.default.add({ "showDeck": this.name });
+				// History.add({ "showDeck" : this.name });
+				_event2.default.dispatch('addStep', { "showDeck": this.name });
 				this.Redraw();
 			}
 	
@@ -3706,6 +3704,8 @@ var SolitaireEngine =
 		},
 	
 		// TODO rules with params ??? or atom rules
+		// "sum" : (deck, data) => {} // rulename:data -> sum:14
+	
 		// query ?
 	
 		"around": function around(deck) {
@@ -4926,8 +4926,7 @@ var SolitaireEngine =
 	
 						var _cardName = _card.name;
 	
-						var _callback = function _callback() {
-	
+						var _callback = function _callback(e) {
 							_event2.default.dispatch('checkTips');
 						};
 	
@@ -4962,7 +4961,7 @@ var SolitaireEngine =
 	
 				if (_makeStep) {
 					// сохраняем если паздача удалась
-					_event2.default.dispatch('saveSteps');
+					_event2.default.dispatch('saveSteps', 'DEALERDECKACTION');
 				}
 	
 				if (data.actionData.dispatch) {
@@ -5231,7 +5230,7 @@ var SolitaireEngine =
 									"redo": data.stepType
 								});
 	
-								_event2.default.dispatch('saveSteps');
+								_event2.default.dispatch('saveSteps', 'KICKACTION#1');
 							}
 						});
 					} else {
@@ -5241,7 +5240,7 @@ var SolitaireEngine =
 							"redo": data.actionData.dispatch ? _share2.default.get('stepType') : _defaults2.default.stepType
 						});
 	
-						_event2.default.dispatch('saveSteps');
+						_event2.default.dispatch('saveSteps', 'KICKACTION#2');
 	
 						_get(kickAction.prototype.__proto__ || Object.getPrototypeOf(kickAction.prototype), 'end', _this2).call(_this2);
 					}
@@ -5644,7 +5643,7 @@ var SolitaireEngine =
 			var _step = {};
 			_step[method] = sources;
 			_event2.default.dispatch('addStep', _step);
-			_event2.default.dispatch('saveSteps');
+			_event2.default.dispatch('saveSteps', 'LOCKACTIONCOMMON');
 		}
 	
 		for (var _i in sources) {
@@ -5897,7 +5896,7 @@ var SolitaireEngine =
 					}
 				}
 	
-				_event2.default.dispatch('saveSteps');
+				_event2.default.dispatch('saveSteps', 'CHECKFULLACTION');
 	
 				_get(checkFullAction.prototype.__proto__ || Object.getPrototypeOf(checkFullAction.prototype), 'end', this).call(this);
 			}
@@ -6564,11 +6563,16 @@ var SolitaireEngine =
 	var _history = new history();
 	
 	_event2.default.listen('addStep', function (data) {
+		if (data.debug) {
+			console.log('History:addStep:', data.debug);
+			delete data.debug;
+		}
 		_history.add(data);
 	});
 	
 	// save steps to client history
 	_event2.default.listen('saveSteps', function (e) {
+		console.log('saveSteps >>>', e);
 		var data = _history.get();
 		if (data.length) {
 			_event2.default.dispatch('makeStep', data);
@@ -6860,13 +6864,18 @@ var SolitaireEngine =
 	
 	var _lineGenerator2 = _interopRequireDefault(_lineGenerator);
 	
+	var _rhombusGenerator = __webpack_require__(52);
+	
+	var _rhombusGenerator2 = _interopRequireDefault(_rhombusGenerator);
+	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
 	exports.default = {
 		"count": _countGenerator2.default,
 		"fan": _fanGenerator2.default,
 		"map": _mapGenerator2.default,
-		"line": _lineGenerator2.default
+		"line": _lineGenerator2.default,
+		"rhombus": _rhombusGenerator2.default
 	};
 
 /***/ },
@@ -7586,6 +7595,18 @@ var SolitaireEngine =
 
 /***/ },
 /* 52 */
+/***/ function(module, exports) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	
+	exports.default = function (group, data) {};
+
+/***/ },
+/* 53 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -7594,7 +7615,7 @@ var SolitaireEngine =
 		value: true
 	});
 	
-	var _fallAutoStep = __webpack_require__(53);
+	var _fallAutoStep = __webpack_require__(54);
 	
 	var _fallAutoStep2 = _interopRequireDefault(_fallAutoStep);
 	
@@ -7625,7 +7646,7 @@ var SolitaireEngine =
 	};
 
 /***/ },
-/* 53 */
+/* 54 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -7648,7 +7669,7 @@ var SolitaireEngine =
 	
 	var _event2 = _interopRequireDefault(_event);
 	
-	var _autoStep2 = __webpack_require__(54);
+	var _autoStep2 = __webpack_require__(55);
 	
 	var _autoStep3 = _interopRequireDefault(_autoStep2);
 	
@@ -7755,7 +7776,7 @@ var SolitaireEngine =
 	exports.default = fallAutoStep;
 
 /***/ },
-/* 54 */
+/* 55 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -7895,7 +7916,7 @@ var SolitaireEngine =
 	exports.default = _class;
 
 /***/ },
-/* 55 */
+/* 56 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -7968,7 +7989,7 @@ var SolitaireEngine =
 	exports.default = new storage();
 
 /***/ },
-/* 56 */
+/* 57 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -7985,19 +8006,19 @@ var SolitaireEngine =
 	
 	exports.default = function (e) {
 	
-		var _html = __webpack_require__(57);
+		var _html = __webpack_require__(58);
 	
 		$("#gpCommit").parent().before(_html);
 	};
 
 /***/ },
-/* 57 */
+/* 58 */
 /***/ function(module, exports) {
 
 	module.exports = "<div id=\"solitaire-engine-style-preferences\">\n\t<h4>Настройки оформления</h4>\n\t<div>\n\t\t<span class=\"solitaire-engine-style-preferences-label\">Фон:</span>\n\t\t<!-- <select id=\"pref_field\" class=\"solitaire-engine-style-preferences-element\"> -->\n\t\t<label>\n\t\t\t<input type=\"radio\" name=\"pref_field\" value=\"default_field\">\n\t\t\tКлассический\n\t\t</label>\n\t\t<label>\n\t\t\t<input type=\"radio\" name=\"pref_field\" value=\"alternative_field\">\n\t\t\tАльтернативный\n\t\t</label>\n\t\t<!-- </select> -->\n\t</div>\n\t<div>\n\t\t<span class=\"solitaire-engine-style-preferences-label\">Лицевая сторона:</span>\n\t\t<!-- <select id=\"pref_face\" class=\"solitaire-engine-style-preferences-element\"> -->\n\t\t<label>\n\t\t\t<input type=\"radio\" name=\"pref_face\" value=\"default_face\">\n\t\t\tКлассическая\n\t\t</label>\n\t\t<label>\n\t\t\t<input type=\"radio\" name=\"pref_face\" value=\"alternative_face\">\n\t\t\tАнгло-американская\n\t\t</label>\n\t\t<!-- </select> -->\n\t</div>\n\t<div>\n\t\t<span class=\"solitaire-engine-style-preferences-label\">Рубашка:</span>\n\t\t<!-- <select id=\"pref_back\" class=\"solitaire-engine-style-preferences-element\"> -->\n\t\t<label>\n\t\t\t<input type=\"radio\" name=\"pref_back\" value=\"default_back\">\n\t\t\tКлассическая\n\t\t</label>\n\t\t<label>\n\t\t\t<input type=\"radio\" name=\"pref_back\" value=\"alternative_back\">\n\t\t\tАльтернативная\n\t\t</label>\n\t\t<!-- <label>\n\t\t\t<input type=\"radio\" name=\"pref_back\" value=\"red_back\">\n\t\t\tКрасная\n\t\t</label>\n\t\t<label>\n\t\t\t<input type=\"radio\" name=\"pref_back\" value=\"blue_back\">\n\t\t\tСиняя\n\t\t</label> -->\n\t\t<!-- </select> -->\n\t</div>\n\t<div id=\"gamePreferences\"></div>\n\t<!-- <div>\n\t\t<span class=\"solitaire-engine-style-preferences-label\">Пустая ячейка:</span>\n\t\t<select id=\"pref_empty\" class=\"solitaire-engine-style-preferences-element\">\n\t\t\t<option value=0>Классическая</option>\n\t\t\t<option value=1>С обводкой</option>\n\t\t</select>\n\t</div> -->\n</div>";
 
 /***/ },
-/* 58 */
+/* 59 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -8018,11 +8039,11 @@ var SolitaireEngine =
 	
 	var _defaults2 = _interopRequireDefault(_defaults);
 	
-	var _storage = __webpack_require__(55);
+	var _storage = __webpack_require__(56);
 	
 	var _storage2 = _interopRequireDefault(_storage);
 	
-	var _gamePreferences = __webpack_require__(59);
+	var _gamePreferences = __webpack_require__(60);
 	
 	var _gamePreferences2 = _interopRequireDefault(_gamePreferences);
 	
@@ -8102,7 +8123,7 @@ var SolitaireEngine =
 	};
 
 /***/ },
-/* 59 */
+/* 60 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -8198,7 +8219,7 @@ var SolitaireEngine =
 	exports.default = new gamePreferences();
 
 /***/ },
-/* 60 */
+/* 61 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -8215,7 +8236,7 @@ var SolitaireEngine =
 	
 	var _defaults2 = _interopRequireDefault(_defaults);
 	
-	var _storage = __webpack_require__(55);
+	var _storage = __webpack_require__(56);
 	
 	var _storage2 = _interopRequireDefault(_storage);
 	
@@ -8240,7 +8261,7 @@ var SolitaireEngine =
 	};
 
 /***/ },
-/* 61 */
+/* 62 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -8273,7 +8294,7 @@ var SolitaireEngine =
 	
 	var _bestTip2 = _interopRequireDefault(_bestTip);
 	
-	var _winCheck = __webpack_require__(62);
+	var _winCheck = __webpack_require__(63);
 	
 	var _winCheck2 = _interopRequireDefault(_winCheck);
 	
@@ -8412,7 +8433,7 @@ var SolitaireEngine =
 	
 							var _tips = _tips3.default.getTips();
 							if (_deck_destination.save || _tips.length > 0 && _stepType != _defaults2.default.stepType) {
-								_event2.default.dispatch('saveSteps');
+								_event2.default.dispatch('saveSteps', 'MOVE');
 							}
 	
 							_event2.default.dispatch('moveEnd:' + _share2.default.get('stepType'));
@@ -8488,7 +8509,7 @@ var SolitaireEngine =
 	});
 
 /***/ },
-/* 62 */
+/* 63 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -8509,7 +8530,7 @@ var SolitaireEngine =
 	
 	var _common2 = _interopRequireDefault(_common);
 	
-	var _winCheckRules2 = __webpack_require__(63);
+	var _winCheckRules2 = __webpack_require__(64);
 	
 	var _winCheckRules3 = _interopRequireDefault(_winCheckRules2);
 	
@@ -8597,7 +8618,7 @@ var SolitaireEngine =
 	};
 
 /***/ },
-/* 63 */
+/* 64 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -8972,7 +8993,7 @@ var SolitaireEngine =
 	exports.default = winCheckRules;
 
 /***/ },
-/* 64 */
+/* 65 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -8985,43 +9006,43 @@ var SolitaireEngine =
 	
 	var _share2 = _interopRequireDefault(_share);
 	
-	var _elRender = __webpack_require__(65);
+	var _elRender = __webpack_require__(66);
 	
 	var _elRender2 = _interopRequireDefault(_elRender);
 	
-	var _initField = __webpack_require__(68);
+	var _initField = __webpack_require__(69);
 	
 	var _initField2 = _interopRequireDefault(_initField);
 	
-	var _drawDeck = __webpack_require__(69);
+	var _drawDeck = __webpack_require__(70);
 	
 	var _drawDeck2 = _interopRequireDefault(_drawDeck);
 	
-	var _drawCard = __webpack_require__(70);
+	var _drawCard = __webpack_require__(71);
 	
 	var _drawCard2 = _interopRequireDefault(_drawCard);
 	
-	var _drawTip = __webpack_require__(71);
+	var _drawTip = __webpack_require__(72);
 	
 	var _drawTip2 = _interopRequireDefault(_drawTip);
 	
-	var _moveDragDeck = __webpack_require__(72);
+	var _moveDragDeck = __webpack_require__(73);
 	
 	var _moveDragDeck2 = _interopRequireDefault(_moveDragDeck);
 	
-	var _moveCardToHome = __webpack_require__(73);
+	var _moveCardToHome = __webpack_require__(74);
 	
 	var _moveCardToHome2 = _interopRequireDefault(_moveCardToHome);
 	
-	var _fieldThemesSet = __webpack_require__(74);
+	var _fieldThemesSet = __webpack_require__(75);
 	
 	var _fieldThemesSet2 = _interopRequireDefault(_fieldThemesSet);
-	
-	__webpack_require__(75);
 	
 	__webpack_require__(76);
 	
 	__webpack_require__(77);
+	
+	__webpack_require__(78);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
@@ -9051,7 +9072,7 @@ var SolitaireEngine =
 	});
 
 /***/ },
-/* 65 */
+/* 66 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -9076,11 +9097,11 @@ var SolitaireEngine =
 	
 	var _event2 = _interopRequireDefault(_event);
 	
-	var _elClass = __webpack_require__(66);
+	var _elClass = __webpack_require__(67);
 	
 	var _elClass2 = _interopRequireDefault(_elClass);
 	
-	var _allElClass = __webpack_require__(67);
+	var _allElClass = __webpack_require__(68);
 	
 	var _allElClass2 = _interopRequireDefault(_allElClass);
 	
@@ -9146,7 +9167,7 @@ var SolitaireEngine =
 	exports.default = _allEl;
 
 /***/ },
-/* 66 */
+/* 67 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -9517,7 +9538,7 @@ var SolitaireEngine =
 	exports.default = elClass;
 
 /***/ },
-/* 67 */
+/* 68 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -9532,7 +9553,7 @@ var SolitaireEngine =
 	
 	var _defaults2 = _interopRequireDefault(_defaults);
 	
-	var _elClass = __webpack_require__(66);
+	var _elClass = __webpack_require__(67);
 	
 	var _elClass2 = _interopRequireDefault(_elClass);
 	
@@ -9683,7 +9704,7 @@ var SolitaireEngine =
 	exports.default = allElClass;
 
 /***/ },
-/* 68 */
+/* 69 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -9704,7 +9725,7 @@ var SolitaireEngine =
 	
 	var _field2 = _interopRequireDefault(_field);
 	
-	var _elRender = __webpack_require__(65);
+	var _elRender = __webpack_require__(66);
 	
 	var _elRender2 = _interopRequireDefault(_elRender);
 	
@@ -9754,7 +9775,7 @@ var SolitaireEngine =
 	});
 
 /***/ },
-/* 69 */
+/* 70 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -9775,7 +9796,7 @@ var SolitaireEngine =
 	
 	var _field2 = _interopRequireDefault(_field);
 	
-	var _elRender = __webpack_require__(65);
+	var _elRender = __webpack_require__(66);
 	
 	var _elRender2 = _interopRequireDefault(_elRender);
 	
@@ -9950,7 +9971,7 @@ var SolitaireEngine =
 	});
 
 /***/ },
-/* 70 */
+/* 71 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -9975,7 +9996,7 @@ var SolitaireEngine =
 	
 	var _field2 = _interopRequireDefault(_field);
 	
-	var _elRender = __webpack_require__(65);
+	var _elRender = __webpack_require__(66);
 	
 	var _elRender2 = _interopRequireDefault(_elRender);
 	
@@ -10007,7 +10028,7 @@ var SolitaireEngine =
 	});
 
 /***/ },
-/* 71 */
+/* 72 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -10020,7 +10041,7 @@ var SolitaireEngine =
 	
 	var _share2 = _interopRequireDefault(_share);
 	
-	var _elRender = __webpack_require__(65);
+	var _elRender = __webpack_require__(66);
 	
 	var _elRender2 = _interopRequireDefault(_elRender);
 	
@@ -10063,7 +10084,7 @@ var SolitaireEngine =
 	});
 
 /***/ },
-/* 72 */
+/* 73 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -10084,7 +10105,7 @@ var SolitaireEngine =
 	
 	var _defaults2 = _interopRequireDefault(_defaults);
 	
-	var _elRender = __webpack_require__(65);
+	var _elRender = __webpack_require__(66);
 	
 	var _elRender2 = _interopRequireDefault(_elRender);
 	
@@ -10212,7 +10233,7 @@ var SolitaireEngine =
 	});
 
 /***/ },
-/* 73 */
+/* 74 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -10229,7 +10250,7 @@ var SolitaireEngine =
 	
 	var _common2 = _interopRequireDefault(_common);
 	
-	var _elRender = __webpack_require__(65);
+	var _elRender = __webpack_require__(66);
 	
 	var _elRender2 = _interopRequireDefault(_elRender);
 	
@@ -10272,7 +10293,7 @@ var SolitaireEngine =
 	});
 
 /***/ },
-/* 74 */
+/* 75 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -10293,7 +10314,7 @@ var SolitaireEngine =
 	
 	var _field2 = _interopRequireDefault(_field);
 	
-	var _elRender = __webpack_require__(65);
+	var _elRender = __webpack_require__(66);
 	
 	var _elRender2 = _interopRequireDefault(_elRender);
 	
@@ -10322,12 +10343,6 @@ var SolitaireEngine =
 	});
 
 /***/ },
-/* 75 */
-/***/ function(module, exports) {
-
-	// removed by extract-text-webpack-plugin
-
-/***/ },
 /* 76 */
 /***/ function(module, exports) {
 
@@ -10341,6 +10356,12 @@ var SolitaireEngine =
 
 /***/ },
 /* 78 */
+/***/ function(module, exports) {
+
+	// removed by extract-text-webpack-plugin
+
+/***/ },
+/* 79 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -10537,7 +10558,7 @@ var SolitaireEngine =
 	};
 
 /***/ },
-/* 79 */
+/* 80 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -10570,11 +10591,11 @@ var SolitaireEngine =
 	
 	var _deck2 = _interopRequireDefault(_deck);
 	
-	var _deckGenerator = __webpack_require__(78);
+	var _deckGenerator = __webpack_require__(79);
 	
 	var _deckGenerator2 = _interopRequireDefault(_deckGenerator);
 	
-	var _elRender = __webpack_require__(65);
+	var _elRender = __webpack_require__(66);
 	
 	var _elRender2 = _interopRequireDefault(_elRender);
 	
@@ -10592,39 +10613,54 @@ var SolitaireEngine =
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
-	var _css = {
-		"position": 'absolute',
-		"top": '0px',
-		"width": '100px',
-		"height": '20px',
-		"border": '1px solid #c0c0c0',
-		"background": 'white',
-		"color": 'white',
-		"text-shadow": 'black 1px 1px 0px,' + ' black -1px 1px 0px, black -1px -1px 0px, black 1px -1px 0px'
+	/*
+	let _css = {
+		"position"    : 'absolute'         ,
+		"top"         : '0px'              ,
+		"width"       : '100px'            ,
+		"height"      : '20px'             ,
+		"border"      : '1px solid #c0c0c0',
+		"background"  : 'white'            ,
+		"color"       : 'white'            ,
+		"text-shadow" : 'black 1px 1px 0px,' +
+		' black -1px 1px 0px, black -1px -1px 0px, black 1px -1px 0px'
 	};
-	
-	$(document).ready(function (e) {
-		$(document.body).append($('<div>').css(_css).css({ "right": '20px' }).attr({ "id": 'flag_1' }).css({ "height": '0px' }).animate({ "height": '20px' }, 'fast')).append($('<div>').css(_css).css({ "right": '122px' }).attr({ "id": 'flag_2' }).css({ "height": '0px' }).animate({ "height": '20px' }, 'fast')).append($('<div>').css(_css).css({ "right": '224px' }).attr({ "id": 'flag_3' }).css({ "height": '0px' }).animate({ "height": '20px' }, 'fast'));
+	$(document).ready(e => {
+		$(document.body)
+			.append(
+				$('<div>').css(_css).css({ "right" : '20px' }).attr({ "id" : 'flag_1' })
+					.css({ "height" : '0px' }).animate({ "height" : '20px' }, 'fast')
+			)
+			.append(
+				$('<div>').css(_css).css({ "right" : '122px' }).attr({ "id" : 'flag_2' })
+					.css({ "height" : '0px' }).animate({ "height" : '20px' }, 'fast')
+			)
+			.append(
+				$('<div>').css(_css).css({ "right" : '224px' }).attr({ "id" : 'flag_3' })
+					.css({ "height" : '0px' }).animate({ "height" : '20px' }, 'fast')
+			);
 	});
 	
-	_event2.default.listen('debugFlag', function (e) {
-		$('#flag_' + e.flag).css({ "background": e.color }).html(e.text);
+	event.listen('debugFlag', e => {
+		$('#flag_' + e.flag).css({ "background" : e.color }).html(e.text);
 	});
-	
+	*/
 	var stamp = function stamp(e) {
 		var summaryAnimationsCallbacksCouns = 0;
 		return {
-			stepType: _share2.default.get('stepType'),
-			decks: function (e) {
+			"stepType": _share2.default.get('stepType'),
+			"decks": function (e) {
+	
 				e = _deck2.default.getDecks();
 				var decks = [];
+	
 				for (var i in e) {
 					decks.push({
-						name: e[i].name,
-						cards: e[i].cards.map(function (c) {
+						"name": e[i].name,
+						"cards": e[i].cards.map(function (c) {
 							return {
-								name: c.name,
-								el: function (z) {
+								"name": c.name,
+								"el": function (z) {
 									var el = _share2.default.get('domElement:' + c.id);
 									summaryAnimationsCallbacksCouns += el._animationCallbacks.length;
 									return {
@@ -10635,6 +10671,7 @@ var SolitaireEngine =
 						})
 					});
 				}
+	
 				return decks;
 			}(),
 			summaryAnimationsCallbacksCouns: summaryAnimationsCallbacksCouns,

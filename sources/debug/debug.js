@@ -13,6 +13,7 @@ import stateManager  from 'stateManager' ;
 import history       from 'history'      ;
 import mapCommon     from 'mapCommon'    ;
 
+/*
 let _css = {
 	"position"    : 'absolute'         ,
 	"top"         : '0px'              ,
@@ -24,7 +25,6 @@ let _css = {
 	"text-shadow" : 'black 1px 1px 0px,' +
 	' black -1px 1px 0px, black -1px -1px 0px, black 1px -1px 0px'
 };
-
 $(document).ready(e => {
 	$(document.body)
 		.append(
@@ -44,21 +44,23 @@ $(document).ready(e => {
 event.listen('debugFlag', e => {
 	$('#flag_' + e.flag).css({ "background" : e.color }).html(e.text);
 });
-
+*/
 let stamp = e => {
 	let summaryAnimationsCallbacksCouns = 0;
 	return {
-		stepType : share.get('stepType'),
-		decks    : (e => {
+		"stepType" : share.get('stepType'),
+		"decks"    : (e => {
+
 			e = deck.getDecks();
 			let decks = [];
+
 			for(let i in e) {
 				decks.push({
-					name  : e[i].name,
-					cards : e[i].cards.map(c => {
+					"name"  : e[i].name,
+					"cards" : e[i].cards.map(c => {
 						return {
-							name : c.name,
-							el   : (z => {
+							"name" : c.name,
+							"el"   : (z => {
 								let el = share.get('domElement:' + c.id);
 								summaryAnimationsCallbacksCouns += el._animationCallbacks.length;
 								return {
@@ -69,6 +71,7 @@ let stamp = e => {
 					})
 				});
 			}
+
 			return decks;
 		})(),
 		summaryAnimationsCallbacksCouns : summaryAnimationsCallbacksCouns,

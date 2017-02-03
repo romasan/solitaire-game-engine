@@ -344,11 +344,16 @@ class history {
 let _history = new history();
 
 event.listen('addStep', data => {
+	if(data.debug) {
+		console.log('History:addStep:', data.debug);
+		delete data.debug;
+	}
 	_history.add(data)
 });
 
 // save steps to client history
 event.listen('saveSteps', e => {
+	console.log('saveSteps >>>', e);
 	let data = _history.get();
 	if(data.length) {
 		event.dispatch('makeStep', data);

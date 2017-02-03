@@ -155,7 +155,7 @@ let Move = (moveDeck, to, cursorMove) => {
 							_deck_destination.save                             ||
 							_tips.length > 0 && _stepType != defaults.stepType
 						) {
-							event.dispatch('saveSteps');
+							event.dispatch('saveSteps', 'MOVE');
 						}
 
 						event.dispatch('moveEnd:' + share.get('stepType'));

@@ -38,8 +38,8 @@ class shareClass {
 		if(typeof name == 'string') {
 
 			event.dispatch('shareChange:' + name, {
-				from : this._data[name],
-				to   : data
+				"from" : this._data[name],
+				"to"   : data
 			});
 
 			if(
@@ -47,7 +47,11 @@ class shareClass {
 			) {
 				try {
 					// this._data[name] = Object.assign({}, data);
-					this._data[name] = ['string', 'number', 'boolean'].indexOf(typeof data) >= 0
+					this._data[name] = [
+						'string' ,
+						'number' ,
+						'boolean'
+					].indexOf(typeof data) >= 0
 					? data
 					: data instanceof Array
 						? Object.assign([], data)
@@ -72,8 +76,8 @@ class shareClass {
 			for(let _name in name) {
 
 				event.dispatch('shareChange:' + name, {
-					from : this._data[_name],
-					to   : name[_name]
+					"from" : this._data[_name],
+					"to"   : name[_name]
 				});
 
 				if(

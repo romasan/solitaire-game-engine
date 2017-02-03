@@ -88,7 +88,7 @@ class checkFullAction extends deckAction {
 			}
 		}
 
-		event.dispatch('saveSteps');
+		event.dispatch('saveSteps', 'CHECKFULLACTION');
 
 		super.end();
 	}

@@ -15,7 +15,6 @@ import Take           from 'deckTake'      ;
 import Put            from 'deckPut'       ;
 import genCardByName  from 'genCardByName' ;
 import Group          from 'group'         ;
-import History        from 'history'       ;
 
 import getDecks       from 'getDecks'      ;
 import getDeckById    from 'getDeckById'   ;
@@ -363,13 +362,15 @@ class Deck {
 
 	hide() {
 		this.visible = false;
-		History.add({ "hideDeck" : this.name });
+		// History.add({ "hideDeck" : this.name });
+		event.dispatch('addStep', { "hideDeck" : this.name });
 		this.Redraw();
 	}
 
 	show() {
 		this.visible = false;
-		History.add({ "showDeck" : this.name });
+		// History.add({ "showDeck" : this.name });
+		event.dispatch('addStep', { "showDeck" : this.name });
 		this.Redraw();
 	}
 

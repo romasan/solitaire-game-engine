@@ -88,7 +88,7 @@ class kickAction extends deckAction {
 							"redo" : data.stepType
 						});
 
-						event.dispatch('saveSteps');
+						event.dispatch('saveSteps', 'KICKACTION#1');
 					}
 				});
 			} else {
@@ -98,7 +98,7 @@ class kickAction extends deckAction {
 					"redo" : data.actionData.dispatch ? share.get('stepType') : defaults.stepType
 				})
 
-				event.dispatch('saveSteps');
+				event.dispatch('saveSteps', 'KICKACTION#2');
 
 				super.end();
 			}
