@@ -32,6 +32,9 @@ event.listen('moveDragDeck', data => {
 
 	let _lastIndex = data.moveDeck.length - 1;
 
+	let rand = Math.random();
+	console.log('moveDragDeck >>>', rand);
+
 	for(let i in data.moveDeck) {
 
 		let _position = data.destination.padding(data.destination.cards.length - 1 + (i | 0));
@@ -69,7 +72,7 @@ event.listen('moveDragDeck', data => {
 
 		let _callback = function(data, _last) {
 		// let _callback = e => {
-			// console.log('moveDragDeck:callback');
+			console.log('moveDragDeck:callback', i, data.moveDeck.length, rand);
 
 			data.departure	.Redraw();
 			data.destination.Redraw();

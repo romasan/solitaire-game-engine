@@ -44,7 +44,7 @@ let Move = (moveDeck, to, cursorMove) => {
 	) {
 
 		let _deck_departure = moveDeck[0].card.parent && common.getElementById(moveDeck[0].card.parent);
-
+		console.log('move >>> moveCardToHome#1');
 		event.dispatch('moveCardToHome', {
 			"moveDeck"  : moveDeck             ,
 			"departure" : _deck_departure      ,
@@ -130,13 +130,14 @@ let Move = (moveDeck, to, cursorMove) => {
 
 				let issetMoves = null;
 
-				// console.log('>>> Move:moveDragDeck >>>');
+				console.log('>>> Move:moveDragDeck >>>');
 				event.dispatch('moveDragDeck', {
 
 					"departure"   : _deck_departure  ,
 					"destination" : _deck_destination,
 					"moveDeck"    : moveDeck         ,
 					"callback"    : e => {
+						console.log('<<< Move:moveDragDeck <<<');
 
 						if(
 							// !event.has('moveEnd', {
@@ -201,7 +202,7 @@ let Move = (moveDeck, to, cursorMove) => {
 
 					return;
 				} else {
-
+					console.log('move >>> moveCardToHome#2');
 					event.dispatch('moveCardToHome', {
 						"moveDeck"  : moveDeck       ,
 						"departure" : _deck_departure
@@ -211,7 +212,7 @@ let Move = (moveDeck, to, cursorMove) => {
 				}
 
 		} else {
-
+			console.log('move >>> moveCardToHome#3');
 			event.dispatch('moveCardToHome', {
 				"moveDeck"  : moveDeck       ,
 				"departure" : _deck_departure
