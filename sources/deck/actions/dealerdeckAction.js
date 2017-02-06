@@ -141,9 +141,19 @@ class dealerdeckAction extends deckAction {
 
 				let _cardName = _card.name;
 
+				let _stop = false;
 				let _callback = e => {
+
+					if(_stop) {
+						return;
+					}
+
 					event.dispatch('checkTips');
 				};
+
+				event.once('clearCallbacks', e => {
+					_stop = true;
+				});
 
 				forceMove({
 					"from"     : dealDeck.name      ,

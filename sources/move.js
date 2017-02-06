@@ -131,55 +131,68 @@ let Move = (moveDeck, to, cursorMove) => {
 				let issetMoves = null;
 
 				console.log('>>> Move:moveDragDeck >>>');
+
+				let _stop = false;
+				let _callback = e => {
+
+					if(_stop) {
+						return;
+					}
+
+					console.log('<<< Move:moveDragDeck <<<');
+
+					if(
+						// !event.has('moveEnd', {
+						!event.has('actionEvent:moveEnd:' + _deck_destination.name, {
+							tag: event.tags.inGame
+						}) ||
+						share.get('autoStep:stepType') == share.get('stepType')
+					) {
+						event.dispatch('stopSession');
+					}
+
+					Tips.checkTips();
+
+					let _tips = Tips.getTips();
+					if(
+						_deck_destination.save                             ||
+						_tips.length > 0 && _stepType != defaults.stepType
+					) {
+						event.dispatch('saveSteps', 'MOVE');
+					}
+
+					event.dispatch('moveEnd:' + share.get('stepType'));
+					event.dispatch('moveEnd', {
+						"from"     : _deck_departure      ,
+						"to"       : _deck_destination    ,
+						"moveDeck" : moveDeck             ,
+						"stepType" : share.get('stepType'),
+						"before"   : data => {
+							if(data && typeof data.stepType == 'string') {
+								event.dispatch('addStep', {
+									"redo": {
+										"stepType": data.stepType
+									}
+								})
+							}
+						}
+					});
+
+					winCheck.winCheck({
+						"show" : true
+					});
+				};
+
+				event.once('clearCallbacks', e => {
+					_stop = true;
+				});
+
 				event.dispatch('moveDragDeck', {
 
 					"departure"   : _deck_departure  ,
 					"destination" : _deck_destination,
 					"moveDeck"    : moveDeck         ,
-					"callback"    : e => {
-						console.log('<<< Move:moveDragDeck <<<');
-
-						if(
-							// !event.has('moveEnd', {
-							!event.has('actionEvent:moveEnd:' + _deck_destination.name, {
-								tag: event.tags.inGame
-							}) ||
-							share.get('autoStep:stepType') == share.get('stepType')
-						) {
-							event.dispatch('stopSession');
-						}
-
-						Tips.checkTips();
-
-						let _tips = Tips.getTips();
-						if(
-							_deck_destination.save                             ||
-							_tips.length > 0 && _stepType != defaults.stepType
-						) {
-							event.dispatch('saveSteps', 'MOVE');
-						}
-
-						event.dispatch('moveEnd:' + share.get('stepType'));
-						event.dispatch('moveEnd', {
-							"from"     : _deck_departure      ,
-							"to"       : _deck_destination    ,
-							"moveDeck" : moveDeck             ,
-							"stepType" : share.get('stepType'),
-							"before"   : data => {
-								if(data && typeof data.stepType == 'string') {
-									event.dispatch('addStep', {
-										"redo": {
-											"stepType": data.stepType
-										}
-									})
-								}
-							}
-						});
-
-						winCheck.winCheck({
-							"show" : true
-						});
-					}
+					"callback"    : _callback
 				});
 			}
 		}

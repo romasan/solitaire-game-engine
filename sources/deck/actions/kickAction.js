@@ -55,7 +55,12 @@ class kickAction extends deckAction {
 		let _from = data.eventData.to    , //Deck.Deck(_name),
 		    _deck = _from.getCardsNames();
 
+		let _stop = false;
 		let _callback = e => {
+
+			if(_stop) {
+				return;
+			}
 
 			let _addStep = historyData => {
 
@@ -103,6 +108,10 @@ class kickAction extends deckAction {
 				super.end();
 			}
 		}
+
+		event.once('clearCallbacks', e => {
+			_stop = true;
+		});
 
 		// TODO interval
 		let forceMoveParams = {

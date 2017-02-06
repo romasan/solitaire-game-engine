@@ -57,6 +57,7 @@ _allEl.stopAnimations = e => {
 
 	console.log('%cSTOP ALL ANIMATIONS', 'color: red; font-weigth: bold;');
 	// return;
+	event.dispatch('clearCallbacks');
 
 	_allEl('.animated')
 		.stop()
