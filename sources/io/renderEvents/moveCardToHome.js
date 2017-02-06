@@ -9,8 +9,6 @@ import elRender from 'elRender';
 // Move card to home
 event.listen('moveCardToHome', data => {
 
-	console.log('moveCardToHome:', data);
-
 	if(share.get('lastCursorMove').distance > 0) {
 		common.curLock();
 	}
@@ -31,8 +29,6 @@ event.listen('moveCardToHome', data => {
 				_params, 
 
 				e => {
-
-					console.log('moveCardToHome:END');
 
 					common.curUnLock();
 

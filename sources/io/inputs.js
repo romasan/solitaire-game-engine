@@ -72,7 +72,7 @@ class inputs {
 
 			document.ondblclick = data => {
 
-				event.dispatch('stopAnimations');
+				// event.dispatch('stopAnimations');
 
 				this.take(data.target, data.clientX, data.clientY);
 				this.put (data.target, data.clientX, data.clientY, true);

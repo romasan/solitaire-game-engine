@@ -34,8 +34,3 @@ event.listen('showCard', target => {
 event.listen('hideCard', target => {
 	elRender(target).hide();
 });
-
-event.listen('stopAnimations', e => {
-	// TODO
-	// elRender.stopAnimations();
-});

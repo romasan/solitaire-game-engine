@@ -46,8 +46,6 @@ class kickAction extends deckAction {
 			return false;
 		}
 
-		console.log('kickAction:run', stepType, share.get('stepType'));
-
 		share.set('stepType', stepType);
 
 		common.animationDefault();
@@ -55,12 +53,12 @@ class kickAction extends deckAction {
 		let _from = data.eventData.to    , //Deck.Deck(_name),
 		    _deck = _from.getCardsNames();
 
-		let _stop = false;
+		// let _stop = false;
 		let _callback = e => {
 
-			if(_stop) {
-				return;
-			}
+			// if(_stop) {
+			// 	return;
+			// }
 
 			let _addStep = historyData => {
 
@@ -80,8 +78,6 @@ class kickAction extends deckAction {
 			};
 
 			share.set('stepType', defaults.stepType);
-
-			if(window.debug_1) console.log('сюда пришли #1', data.actionData.dispatch);
 
 			if(data.actionData.dispatch) {
 				// console.log('kickAction:dispatch:', data.actionData.dispatch);
@@ -109,9 +105,9 @@ class kickAction extends deckAction {
 			}
 		}
 
-		event.once('clearCallbacks', e => {
-			_stop = true;
-		});
+		// event.once('clearCallbacks', e => {
+		// 	_stop = true;
+		// });
 
 		// TODO interval
 		let forceMoveParams = {

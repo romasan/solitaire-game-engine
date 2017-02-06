@@ -55,7 +55,11 @@ let _allEl = data => {
 // TODO
 _allEl.stopAnimations = e => {
 
-	console.log('%cSTOP ALL ANIMATIONS', 'color: red; font-weigth: bold;');
+	// if(!share.get('animation')) {
+	// 	return;
+	// }
+
+	console.log('%cSTOP ALL ANIMATIONS', 'color: red; font-weigth: bold;', e);
 	// return;
 	event.dispatch('clearCallbacks');
 

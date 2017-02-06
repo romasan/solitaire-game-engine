@@ -111,7 +111,7 @@ var SolitaireEngine =
 	exports.options = _defaults2.default;
 	exports.winCheck = _winCheck2.default.hwinCheck;
 	exports.generator = _deckGenerator2.default;
-	exports.version = (9091494354).toString().split(9).slice(1).map(function (e) {
+	exports.version = (9091494371).toString().split(9).slice(1).map(function (e) {
 		return parseInt(e, 8);
 	}).join('.');
 	
@@ -692,7 +692,7 @@ var SolitaireEngine =
 	
 				document.ondblclick = function (data) {
 	
-					_event2.default.dispatch('stopAnimations');
+					// event.dispatch('stopAnimations');
 	
 					_this.take(data.target, data.clientX, data.clientY);
 					_this.put(data.target, data.clientX, data.clientY, true);
@@ -5211,8 +5211,6 @@ var SolitaireEngine =
 					return false;
 				}
 	
-				console.log('kickAction:run', stepType, _share2.default.get('stepType'));
-	
 				_share2.default.set('stepType', stepType);
 	
 				_common2.default.animationDefault();
@@ -5221,12 +5219,12 @@ var SolitaireEngine =
 				    //Deck.Deck(_name),
 				_deck = _from.getCardsNames();
 	
-				var _stop = false;
+				// let _stop = false;
 				var _callback = function _callback(e) {
 	
-					if (_stop) {
-						return;
-					}
+					// if(_stop) {
+					// 	return;
+					// }
 	
 					var _addStep = function _addStep(historyData) {
 	
@@ -5246,8 +5244,6 @@ var SolitaireEngine =
 					};
 	
 					_share2.default.set('stepType', _defaults2.default.stepType);
-	
-					if (window.debug_1) console.log('сюда пришли #1', data.actionData.dispatch);
 	
 					if (data.actionData.dispatch) {
 						// console.log('kickAction:dispatch:', data.actionData.dispatch);
@@ -5275,9 +5271,9 @@ var SolitaireEngine =
 					}
 				};
 	
-				_event2.default.once('clearCallbacks', function (e) {
-					_stop = true;
-				});
+				// event.once('clearCallbacks', e => {
+				// 	_stop = true;
+				// });
 	
 				// TODO interval
 				var forceMoveParams = {
@@ -7703,7 +7699,7 @@ var SolitaireEngine =
 	
 		if (_share2.default.get('sessionStarted')) {
 			// _undoMoveStack = [];
-			_event2.default.dispatch('stopAnimations');
+			_event2.default.dispatch('stopAnimations', 'HISTORY#1');
 			_stateManager2.default.restore();
 		}
 	
@@ -7803,7 +7799,7 @@ var SolitaireEngine =
 	
 		_history.reset();
 	
-		_event2.default.dispatch('stopAnimations');
+		_event2.default.dispatch('stopAnimations', 'HISTORY#2');
 	
 		// Обратная совместимость
 		if (undoData instanceof Array) {
@@ -7827,7 +7823,7 @@ var SolitaireEngine =
 	
 		if (_share2.default.get('sessionStarted')) {
 			// _undoMoveStack = [];
-			_event2.default.dispatch('stopAnimations');
+			_event2.default.dispatch('stopAnimations', 'HISTORY#2');
 			_stateManager2.default.restore();
 		}
 	
@@ -7900,7 +7896,7 @@ var SolitaireEngine =
 	
 		_history.reset();
 	
-		_event2.default.dispatch('stopAnimations');
+		_event2.default.dispatch('stopAnimations', 'HISTORY#4');
 	
 		if (!redoData) {
 			return;
@@ -8002,7 +7998,6 @@ var SolitaireEngine =
 	
 	_event2.default.listen('addStep', function (data) {
 		if (data.debug) {
-			console.log('History:addStep:', data.debug);
 			delete data.debug;
 		}
 		_history.add(data);
@@ -8010,13 +8005,30 @@ var SolitaireEngine =
 	
 	// save steps to client history
 	_event2.default.listen('saveSteps', function (e) {
-		console.log('saveSteps >>>', e);
 		var data = _history.get();
 		if (data.length) {
 			_event2.default.dispatch('makeStep', data);
 		} else {
 			console.warn('Empty history to save.');
 		}
+	});
+	
+	_event2.default.listen('doHistory', function (e) {
+	
+		console.log('doHistory:', e);
+	
+		// common.animationOff();
+	
+		for (var i in e.data) {
+	
+			_event2.default.dispatch('redo', e.data[i]);
+	
+			if (typeof e.callback == 'function') {
+				e.callback(e.data[i]);
+			}
+		}
+	
+		// common.animationOn();
 	});
 	
 	exports.default = _history;
@@ -8359,7 +8371,7 @@ var SolitaireEngine =
 		if (_stepType != _defaults2.default.stepType && (_field2.default.autoSteps && !_field2.default.autoSteps[_stepType] || !_field2.default.autoSteps)) {
 	
 			var _deck_departure2 = moveDeck[0].card.parent && _common2.default.getElementById(moveDeck[0].card.parent);
-			console.log('move >>> moveCardToHome#1');
+	
 			_event2.default.dispatch('moveCardToHome', {
 				"moveDeck": moveDeck,
 				"departure": _deck_departure2,
@@ -8414,99 +8426,90 @@ var SolitaireEngine =
 				_success = _success && _pop;
 	
 				if (_pop) {
-					(function () {
 	
-						// ложим карты в колоду назначения
-						_deck_destination.Push(_pop);
+					// ложим карты в колоду назначения
+					_deck_destination.Push(_pop);
 	
-						// режим анимации по умолчанию
-						_common2.default.animationDefault();
+					// режим анимации по умолчанию
+					_common2.default.animationDefault();
 	
-						// let _stepType = share.get('stepType');
+					var _checkMoveEnd = false;
 	
-						var _checkMoveEnd = false;
+					for (var _actionName in _deck_destination.actions) {
+						if (_deck_destination.actions[_actionName].event == 'moveEnd') {
+							_checkMoveEnd = true;
+						}
+					}
 	
-						for (var _actionName in _deck_destination.actions) {
-							if (_deck_destination.actions[_actionName].event == 'moveEnd') {
-								_checkMoveEnd = true;
-							}
+					_event2.default.dispatch('addStep', {
+						"move": {
+							"from": _deck_departure.name,
+							"to": _deck_destination.name,
+							"deck": _deck2.default.deckCardNames(moveDeck),
+							"stepType": {
+								"undo": _stepType,
+								"redo": _checkMoveEnd ? 'specialStepType' : _stepType
+							},
+							"context": "move"
+						}
+					});
+	
+					var issetMoves = null;
+	
+					// let _stop = false;
+					var _callback = function _callback(e) {
+	
+						// if(_stop) {
+						// 	return;
+						// }
+	
+						if (
+						// !event.has('moveEnd', {
+						!_event2.default.has('actionEvent:moveEnd:' + _deck_destination.name, {
+							tag: _event2.default.tags.inGame
+						}) || _share2.default.get('autoStep:stepType') == _share2.default.get('stepType')) {
+							_event2.default.dispatch('stopSession');
 						}
 	
-						_event2.default.dispatch('addStep', {
-							"move": {
-								"from": _deck_departure.name,
-								"to": _deck_destination.name,
-								"deck": _deck2.default.deckCardNames(moveDeck),
-								"stepType": {
-									"undo": _stepType,
-									"redo": _checkMoveEnd ? 'specialStepType' : _stepType
-								},
-								"context": "move"
-							}
-						});
+						_tips3.default.checkTips();
 	
-						var issetMoves = null;
+						var _tips = _tips3.default.getTips();
+						if (_deck_destination.save || _tips.length > 0 && _stepType != _defaults2.default.stepType) {
+							_event2.default.dispatch('saveSteps', 'MOVE');
+						}
 	
-						console.log('>>> Move:moveDragDeck >>>');
-	
-						var _stop = false;
-						var _callback = function _callback(e) {
-	
-							if (_stop) {
-								return;
-							}
-	
-							console.log('<<< Move:moveDragDeck <<<');
-	
-							if (
-							// !event.has('moveEnd', {
-							!_event2.default.has('actionEvent:moveEnd:' + _deck_destination.name, {
-								tag: _event2.default.tags.inGame
-							}) || _share2.default.get('autoStep:stepType') == _share2.default.get('stepType')) {
-								_event2.default.dispatch('stopSession');
-							}
-	
-							_tips3.default.checkTips();
-	
-							var _tips = _tips3.default.getTips();
-							if (_deck_destination.save || _tips.length > 0 && _stepType != _defaults2.default.stepType) {
-								_event2.default.dispatch('saveSteps', 'MOVE');
-							}
-	
-							_event2.default.dispatch('moveEnd:' + _share2.default.get('stepType'));
-							_event2.default.dispatch('moveEnd', {
-								"from": _deck_departure,
-								"to": _deck_destination,
-								"moveDeck": moveDeck,
-								"stepType": _share2.default.get('stepType'),
-								"before": function before(data) {
-									if (data && typeof data.stepType == 'string') {
-										_event2.default.dispatch('addStep', {
-											"redo": {
-												"stepType": data.stepType
-											}
-										});
-									}
-								}
-							});
-	
-							_winCheck2.default.winCheck({
-								"show": true
-							});
-						};
-	
-						_event2.default.once('clearCallbacks', function (e) {
-							_stop = true;
-						});
-	
-						_event2.default.dispatch('moveDragDeck', {
-	
-							"departure": _deck_departure,
-							"destination": _deck_destination,
+						_event2.default.dispatch('moveEnd:' + _share2.default.get('stepType'));
+						_event2.default.dispatch('moveEnd', {
+							"from": _deck_departure,
+							"to": _deck_destination,
 							"moveDeck": moveDeck,
-							"callback": _callback
+							"stepType": _share2.default.get('stepType'),
+							"before": function before(data) {
+								if (data && typeof data.stepType == 'string') {
+									_event2.default.dispatch('addStep', {
+										"redo": {
+											"stepType": data.stepType
+										}
+									});
+								}
+							}
 						});
-					})();
+	
+						_winCheck2.default.winCheck({
+							"show": true
+						});
+					};
+	
+					// event.once('clearCallbacks', e => {
+					// 	_stop = true;
+					// });
+	
+					_event2.default.dispatch('moveDragDeck', {
+						"departure": _deck_departure,
+						"destination": _deck_destination,
+						"moveDeck": moveDeck,
+						"callback": _callback
+					});
 				}
 			}
 		}
@@ -8524,7 +8527,6 @@ var SolitaireEngine =
 	
 					return;
 				} else {
-					console.log('move >>> moveCardToHome#2');
 					_event2.default.dispatch('moveCardToHome', {
 						"moveDeck": moveDeck,
 						"departure": _deck_departure
@@ -8533,7 +8535,6 @@ var SolitaireEngine =
 					_event2.default.dispatch('stopSession');
 				}
 			} else {
-				console.log('move >>> moveCardToHome#3');
 				_event2.default.dispatch('moveCardToHome', {
 					"moveDeck": moveDeck,
 					"departure": _deck_departure
@@ -9114,11 +9115,6 @@ var SolitaireEngine =
 	_event2.default.listen('hideCard', function (target) {
 		(0, _elRender2.default)(target).hide();
 	});
-	
-	_event2.default.listen('stopAnimations', function (e) {
-		// TODO
-		// elRender.stopAnimations();
-	});
 
 /***/ },
 /* 66 */
@@ -9201,7 +9197,11 @@ var SolitaireEngine =
 	// TODO
 	_allEl.stopAnimations = function (e) {
 	
-		console.log('%cSTOP ALL ANIMATIONS', 'color: red; font-weigth: bold;');
+		// if(!share.get('animation')) {
+		// 	return;
+		// }
+	
+		console.log('%cSTOP ALL ANIMATIONS', 'color: red; font-weigth: bold;', e);
 		// return;
 		_event2.default.dispatch('clearCallbacks');
 	
@@ -10328,8 +10328,6 @@ var SolitaireEngine =
 	// Move card to home
 	_event2.default.listen('moveCardToHome', function (data) {
 	
-		console.log('moveCardToHome:', data);
-	
 		if (_share2.default.get('lastCursorMove').distance > 0) {
 			_common2.default.curLock();
 		}
@@ -10345,8 +10343,6 @@ var SolitaireEngine =
 			var _cardDomElement = _share2.default.get('domElement:' + data.moveDeck[i].card.id);
 	
 			(0, _elRender2.default)(_cardDomElement).animate(_params, function (e) {
-	
-				console.log('moveCardToHome:END');
 	
 				_common2.default.curUnLock();
 	

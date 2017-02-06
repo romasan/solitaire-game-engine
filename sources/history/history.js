@@ -38,7 +38,7 @@ let _undo = data => {
 
 	if(share.get('sessionStarted')) {
 		// _undoMoveStack = [];
-		event.dispatch('stopAnimations');
+		event.dispatch('stopAnimations', 'HISTORY#1');
 		stateManager.restore();
 	}
 
@@ -147,7 +147,7 @@ event.listen('undo', undoData => {
 
 	_history.reset();
 
-	event.dispatch('stopAnimations');
+	event.dispatch('stopAnimations', 'HISTORY#2');
 
 	// Обратная совместимость
 	if(undoData instanceof Array) {
@@ -171,7 +171,7 @@ let _redo = data => {
 
 	if(share.get('sessionStarted')) {
 		// _undoMoveStack = [];
-		event.dispatch('stopAnimations');
+		event.dispatch('stopAnimations', 'HISTORY#2');
 		stateManager.restore();
 	}
 
@@ -256,7 +256,7 @@ event.listen('redo', redoData => {
 
 	_history.reset();
 
-	event.dispatch('stopAnimations');
+	event.dispatch('stopAnimations', 'HISTORY#4');
 
 	if(!redoData) {
 		return;
@@ -345,7 +345,6 @@ let _history = new history();
 
 event.listen('addStep', data => {
 	if(data.debug) {
-		console.log('History:addStep:', data.debug);
 		delete data.debug;
 	}
 	_history.add(data)
@@ -353,7 +352,6 @@ event.listen('addStep', data => {
 
 // save steps to client history
 event.listen('saveSteps', e => {
-	console.log('saveSteps >>>', e);
 	let data = _history.get();
 	if(data.length) {
 		event.dispatch('makeStep', data);
@@ -361,5 +359,23 @@ event.listen('saveSteps', e => {
 		console.warn('Empty history to save.');
 	}
 });
+
+event.listen('doHistory', e => {
+
+	console.log('doHistory:', e);
+
+	// common.animationOff();
+
+	for(let i in e.data) {
+
+		event.dispatch('redo', e.data[i]);
+
+		if(typeof e.callback == 'function') {
+			e.callback(e.data[i]);
+		}
+	}
+
+	// common.animationOn();
+})
 
 export default _history;

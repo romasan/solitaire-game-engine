@@ -16,9 +16,9 @@ let Move = (moveDeck, to, cursorMove) => {
 	common.animationDefault();
 
 	let _deck_departure   = moveDeck[0].card.parent                        &&
-	                        common.getElementById(moveDeck[0].card.parent),   // стопка из которой взяли
-	    _deck_destination = null,                                             // в которую положили
-	    _success          = true;                                             // флаг возможности хода
+	                        common.getElementById(moveDeck[0].card.parent)   , // стопка из которой взяли
+	    _deck_destination = null                                             , // в которую положили
+	    _success          = true                                             ; // флаг возможности хода
 
 	let _stepType = share.get('stepType');
 
@@ -44,7 +44,7 @@ let Move = (moveDeck, to, cursorMove) => {
 	) {
 
 		let _deck_departure = moveDeck[0].card.parent && common.getElementById(moveDeck[0].card.parent);
-		console.log('move >>> moveCardToHome#1');
+
 		event.dispatch('moveCardToHome', {
 			"moveDeck"  : moveDeck             ,
 			"departure" : _deck_departure      ,
@@ -58,12 +58,12 @@ let Move = (moveDeck, to, cursorMove) => {
 		"type": 'move'
 	});
 
-	_success = _success && to;// to - не пустой
+	_success = _success && to; // to - не пустой
 
 	let _el = null;
 
 	if(_success) {
-		_el = common.getElementById(to);// получаем карту/стопку
+		_el = common.getElementById(to); // получаем карту/стопку
 	}
 
 	_success = _success && _el;
@@ -105,8 +105,6 @@ let Move = (moveDeck, to, cursorMove) => {
 				// режим анимации по умолчанию
 				common.animationDefault();
 
-				// let _stepType = share.get('stepType');
-
 				let _checkMoveEnd = false;
 
 				for(let _actionName in _deck_destination.actions) {
@@ -130,16 +128,12 @@ let Move = (moveDeck, to, cursorMove) => {
 
 				let issetMoves = null;
 
-				console.log('>>> Move:moveDragDeck >>>');
-
-				let _stop = false;
+				// let _stop = false;
 				let _callback = e => {
 
-					if(_stop) {
-						return;
-					}
-
-					console.log('<<< Move:moveDragDeck <<<');
+					// if(_stop) {
+					// 	return;
+					// }
 
 					if(
 						// !event.has('moveEnd', {
@@ -183,12 +177,11 @@ let Move = (moveDeck, to, cursorMove) => {
 					});
 				};
 
-				event.once('clearCallbacks', e => {
-					_stop = true;
-				});
+				// event.once('clearCallbacks', e => {
+				// 	_stop = true;
+				// });
 
 				event.dispatch('moveDragDeck', {
-
 					"departure"   : _deck_departure  ,
 					"destination" : _deck_destination,
 					"moveDeck"    : moveDeck         ,
@@ -215,7 +208,6 @@ let Move = (moveDeck, to, cursorMove) => {
 
 					return;
 				} else {
-					console.log('move >>> moveCardToHome#2');
 					event.dispatch('moveCardToHome', {
 						"moveDeck"  : moveDeck       ,
 						"departure" : _deck_departure
@@ -225,7 +217,6 @@ let Move = (moveDeck, to, cursorMove) => {
 				}
 
 		} else {
-			console.log('move >>> moveCardToHome#3');
 			event.dispatch('moveCardToHome', {
 				"moveDeck"  : moveDeck       ,
 				"departure" : _deck_departure
