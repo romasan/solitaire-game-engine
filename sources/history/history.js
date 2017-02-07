@@ -147,8 +147,9 @@ event.listen('undo', undoData => {
 
 	_history.reset();
 
-	event.dispatch('stopAnimations', 'HISTORY#2');
-
+	if(share.get('animation')) {
+		event.dispatch('stopAnimations', 'HISTORY#2');
+	}
 	// Обратная совместимость
 	if(undoData instanceof Array) {
 
@@ -256,7 +257,9 @@ event.listen('redo', redoData => {
 
 	_history.reset();
 
-	event.dispatch('stopAnimations', 'HISTORY#4');
+	if(share.get('animation')) {
+		event.dispatch('stopAnimations', 'HISTORY#4');
+	}
 
 	if(!redoData) {
 		return;
@@ -353,6 +356,7 @@ event.listen('addStep', data => {
 // save steps to client history
 event.listen('saveSteps', e => {
 	let data = _history.get();
+	console.log('%cSAVE STEPS', 'color: green;', e, data);
 	if(data.length) {
 		event.dispatch('makeStep', data);
 	} else {

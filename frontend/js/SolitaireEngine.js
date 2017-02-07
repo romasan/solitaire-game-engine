@@ -111,7 +111,7 @@ var SolitaireEngine =
 	exports.options = _defaults2.default;
 	exports.winCheck = _winCheck2.default.hwinCheck;
 	exports.generator = _deckGenerator2.default;
-	exports.version = (9091494371).toString().split(9).slice(1).map(function (e) {
+	exports.version = (9091494413).toString().split(9).slice(1).map(function (e) {
 		return parseInt(e, 8);
 	}).join('.');
 	
@@ -7799,8 +7799,9 @@ var SolitaireEngine =
 	
 		_history.reset();
 	
-		_event2.default.dispatch('stopAnimations', 'HISTORY#2');
-	
+		if (_share2.default.get('animation')) {
+			_event2.default.dispatch('stopAnimations', 'HISTORY#2');
+		}
 		// Обратная совместимость
 		if (undoData instanceof Array) {
 	
@@ -7896,7 +7897,9 @@ var SolitaireEngine =
 	
 		_history.reset();
 	
-		_event2.default.dispatch('stopAnimations', 'HISTORY#4');
+		if (_share2.default.get('animation')) {
+			_event2.default.dispatch('stopAnimations', 'HISTORY#4');
+		}
 	
 		if (!redoData) {
 			return;
@@ -8006,6 +8009,7 @@ var SolitaireEngine =
 	// save steps to client history
 	_event2.default.listen('saveSteps', function (e) {
 		var data = _history.get();
+		console.log('%cSAVE STEPS', 'color: green;', e, data);
 		if (data.length) {
 			_event2.default.dispatch('makeStep', data);
 		} else {
@@ -8350,6 +8354,8 @@ var SolitaireEngine =
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
 	var Move = function Move(moveDeck, to, cursorMove) {
+	
+		console.log('MOVE');
 	
 		_common2.default.animationDefault();
 	

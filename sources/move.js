@@ -13,6 +13,8 @@ import Field    from 'field'   ;
 
 let Move = (moveDeck, to, cursorMove) => {
 
+	console.log('MOVE');
+
 	common.animationDefault();
 
 	let _deck_departure   = moveDeck[0].card.parent                        &&
