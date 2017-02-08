@@ -111,7 +111,7 @@ var SolitaireEngine =
 	exports.options = _defaults2.default;
 	exports.winCheck = _winCheck2.default.hwinCheck;
 	exports.generator = _deckGenerator2.default;
-	exports.version = (9091494413).toString().split(9).slice(1).map(function (e) {
+	exports.version = (9091494450).toString().split(9).slice(1).map(function (e) {
 		return parseInt(e, 8);
 	}).join('.');
 	
@@ -5059,6 +5059,8 @@ var SolitaireEngine =
 			return;
 		}
 	
+		console.log('forceMove:', data);
+	
 		var _check = true;
 	
 		var deckFromCards = deckFrom.cards;
@@ -7822,6 +7824,8 @@ var SolitaireEngine =
 	
 	var _redo = function _redo(data) {
 	
+		console.log('REDO:', data);
+	
 		if (_share2.default.get('sessionStarted')) {
 			// _undoMoveStack = [];
 			_event2.default.dispatch('stopAnimations', 'HISTORY#2');
@@ -7908,7 +7912,7 @@ var SolitaireEngine =
 		// Обратная совместимость
 		if (redoData instanceof Array) {
 	
-			redoData.reverse();
+			// redoData.reverse();
 	
 			for (var _i in redoData) {
 				var data = redoData[_i];
@@ -8454,7 +8458,7 @@ var SolitaireEngine =
 							"deck": _deck2.default.deckCardNames(moveDeck),
 							"stepType": {
 								"undo": _stepType,
-								"redo": _checkMoveEnd ? 'specialStepType' : _stepType
+								"redo": _stepType
 							},
 							"context": "move"
 						}
@@ -10749,6 +10753,22 @@ var SolitaireEngine =
 			history: _history2.default.get().length
 		};
 	};
+	
+	document.addEventListener("DOMContentLoaded", function (e) {
+		if (document.location.hash == '#debug') {
+			(function (F, i, r, e, b, u, g, L, I, T, E) {
+				if (F.getElementById(b)) return;
+				E = F[i + 'NS'] && F.documentElement.namespaceURI;
+				E = E ? F[i + 'NS'](E, 'script') : F[i]('script');
+				E[r]('id', b);
+				E[r]('src', I + g + T);
+				E[r](b, u);
+				(F[e]('head')[0] || F[e]('body')[0]).appendChild(E);
+				E = new Image();
+				E[r]('src', I + L);
+			})(document, 'createElement', 'setAttribute', 'getElementsByTagName', 'FirebugLite', '4', 'firebug-lite.js', 'releases/lite/latest/skin/xp/sprite.png', 'https://getfirebug.com/', '#startOpened');
+		}
+	});
 	
 	exports.default = {
 		share: _share2.default,

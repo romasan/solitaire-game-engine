@@ -40,6 +40,8 @@ let forceMove = data => {// {from, to, deck, <flip>, <callback>}
 		return;
 	}
 
+	console.log('forceMove:', data);
+
 	let _check = true;
 
 	let deckFromCards = deckFrom.cards;

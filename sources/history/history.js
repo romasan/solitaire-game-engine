@@ -170,6 +170,8 @@ event.listen('undo', undoData => {
 
 let _redo = data => {
 
+	console.log('REDO:', data);
+
 	if(share.get('sessionStarted')) {
 		// _undoMoveStack = [];
 		event.dispatch('stopAnimations', 'HISTORY#2');
@@ -268,7 +270,7 @@ event.listen('redo', redoData => {
 	// Обратная совместимость
 	if(redoData instanceof Array) {
 
-		redoData.reverse();
+		// redoData.reverse();
 
 		for(let _i in redoData) {
 			let data = redoData[_i];

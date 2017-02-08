@@ -122,7 +122,8 @@ let Move = (moveDeck, to, cursorMove) => {
 						"deck"     : Deck.deckCardNames(moveDeck),
 						"stepType" : {
 							"undo" : _stepType,
-							"redo" : _checkMoveEnd ? 'specialStepType' : _stepType
+							"redo" : _stepType,
+							// "redo" : _checkMoveEnd ? 'specialStepType' : _stepType
 						},
 						"context"  : "move"
 					}
