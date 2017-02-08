@@ -197,8 +197,6 @@ export default class elClass {
 			// Thread
 			setTimeout(e => {
 
-				if(window.debug_1) console.log('%canimate thread', 'background: orange;', common.getElementById(this.el.id).name);
-
 				if(_animation) {
 					this.css({
 						"transition" : (animationTime / 1000) + 's'

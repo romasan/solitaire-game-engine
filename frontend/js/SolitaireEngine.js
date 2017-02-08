@@ -111,7 +111,7 @@ var SolitaireEngine =
 	exports.options = _defaults2.default;
 	exports.winCheck = _winCheck2.default.hwinCheck;
 	exports.generator = _deckGenerator2.default;
-	exports.version = (9091494450).toString().split(9).slice(1).map(function (e) {
+	exports.version = (9091494457).toString().split(9).slice(1).map(function (e) {
 		return parseInt(e, 8);
 	}).join('.');
 	
@@ -220,10 +220,6 @@ var SolitaireEngine =
 			value: function set(name, data) {
 				var forceClone = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : false;
 	
-	
-				if (name == 'stepType') {
-					console.log('shareSet:stepType', data);
-				}
 	
 				// "foo", "bar", false
 				if (typeof name == 'string') {
@@ -652,8 +648,6 @@ var SolitaireEngine =
 					if (data.button !== 0) {
 						return;
 					}
-	
-					if (window.debug_1) console.log('down');
 	
 					_this.take(data.target, data.clientX, data.clientY);
 				};
@@ -3016,7 +3010,7 @@ var SolitaireEngine =
 				for (var i = 0; i < count; i += 1) {
 					_cards.push(this.cards[this.cards.length - 1 - i]);
 				}
-				console.log('getSomeCards:', count, _cards);
+	
 				return _cards;
 			}
 		}, {
@@ -4003,7 +3997,6 @@ var SolitaireEngine =
 						if (_select == "first") {
 							// TODO select deck with index 0
 							var _deck = _group.getDeckByIndex(1);
-							// console.log('###', deck.name, _select, _deck.name);
 	
 							queryDecks.push(_deck);
 						} else if (_select == "second") {
@@ -4747,7 +4740,6 @@ var SolitaireEngine =
 		}, {
 			key: 'end',
 			value: function end() {
-				// console.log('end action:', this._actionName);
 				_event2.default.dispatch('stopSession');
 			}
 		}, {
@@ -4827,8 +4819,6 @@ var SolitaireEngine =
 				// default data.actionData.onlyEmpty - false
 				// default data.actionData.from      - deck.name
 				// default data.actionData.stepType  - NULL
-	
-				// console.log('dealerdeckAction:', deck.name, data);
 	
 				if (typeof data.actionData.stepType == 'string' && data.actionData.stepType != _share2.default.get('stepType')) {
 	
@@ -4990,7 +4980,6 @@ var SolitaireEngine =
 	
 				if (data.actionData.dispatch) {
 	
-					console.log('dealerdeckAction:dispatch:', data.actionData.dispatch);
 					_event2.default.dispatch(data.actionData.dispatch, !_makeStep);
 				} else {
 	
@@ -5053,13 +5042,9 @@ var SolitaireEngine =
 	
 		var deckTo = typeof data.to == 'string' ? _deck2.default.getDeck(data.to) : data.to;
 	
-		// console.log('forceMove:', deckFrom.name, '->', deckTo.name, data.deck.join());
-	
 		if (!deckFrom || deckFrom.type != 'deck' || !deckTo || deckTo.type != 'deck') {
 			return;
 		}
-	
-		console.log('forceMove:', data);
 	
 		var _check = true;
 	
@@ -5115,7 +5100,7 @@ var SolitaireEngine =
 					_event2.default.dispatch('forceMoveEnd');
 				};
 			}
-			// console.log('>>> forceMove:moveDragDeck >>>');
+	
 			_event2.default.dispatch('moveDragDeck', moveDragDeckParams);
 		} else {
 			console.warn('forceMove:Ход невозможен', data);
@@ -5248,7 +5233,7 @@ var SolitaireEngine =
 					_share2.default.set('stepType', _defaults2.default.stepType);
 	
 					if (data.actionData.dispatch) {
-						// console.log('kickAction:dispatch:', data.actionData.dispatch);
+	
 						_event2.default.dispatch(data.actionData.dispatch, {
 							before: function before(data) {
 	
@@ -7348,13 +7333,11 @@ var SolitaireEngine =
 	
 				var _tips = _tips3.default.getTips();
 	
-				// console.log('fallAutoStep:check START', _tips.length);
 				if (_tips.length == 0) {
 	
 					this.end();
 					// Tips.checkTips();
 				}
-				// console.log('fallAutoStep:check END');
 			}
 	
 			// start() {
@@ -7500,7 +7483,6 @@ var SolitaireEngine =
 			value: function end() {
 	
 				if (this.dispatch) {
-					// console.log(`autostep(${this._name}):dispatch`, this.dispatch)
 					_event2.default.dispatch(this.dispatch, {
 						stepType: _share2.default.get('stepType'),
 						callback: function callback(e) {
@@ -7824,8 +7806,6 @@ var SolitaireEngine =
 	
 	var _redo = function _redo(data) {
 	
-		console.log('REDO:', data);
-	
 		if (_share2.default.get('sessionStarted')) {
 			// _undoMoveStack = [];
 			_event2.default.dispatch('stopAnimations', 'HISTORY#2');
@@ -7938,12 +7918,10 @@ var SolitaireEngine =
 			key: 'reset',
 			value: function reset(interior) {
 				this.steps = [];
-				console.log('history reset');
 			}
 		}, {
 			key: 'add',
 			value: function add(step) {
-				console.log('history add');
 	
 				// console.log(
 				// 	'history add:'                                             ,
@@ -7964,7 +7942,6 @@ var SolitaireEngine =
 			value: function get() {
 				var reset = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : true;
 	
-				console.log('history get, reset', reset);
 	
 				var _req = this.steps;
 				// console.log('history get:', _req);
@@ -8013,7 +7990,6 @@ var SolitaireEngine =
 	// save steps to client history
 	_event2.default.listen('saveSteps', function (e) {
 		var data = _history.get();
-		console.log('%cSAVE STEPS', 'color: green;', e, data);
 		if (data.length) {
 			_event2.default.dispatch('makeStep', data);
 		} else {
@@ -8022,8 +7998,6 @@ var SolitaireEngine =
 	});
 	
 	_event2.default.listen('doHistory', function (e) {
-	
-		console.log('doHistory:', e);
 	
 		// common.animationOff();
 	
@@ -8246,7 +8220,6 @@ var SolitaireEngine =
 					if (pref && typeof pref[prefName] != 'undefined') {
 						$('input[name=\'gamePref_' + prefName + '\'][value=\'' + pref[prefName].toString() + '\']').prop({ checked: true });
 					} else {
-						console.log('2>', 'input[name=\'gamePref_' + prefName + '\'][value=\'' + _preferences[prefName].value.toString() + '\']');
 						$('input[name=\'gamePref_' + prefName + '\'][value=\'' + _preferences[prefName].value.toString() + '\']').prop({ checked: true });
 					}
 				}
@@ -8358,8 +8331,6 @@ var SolitaireEngine =
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
 	var Move = function Move(moveDeck, to, cursorMove) {
-	
-		console.log('MOVE');
 	
 		_common2.default.animationDefault();
 	
@@ -9462,8 +9433,6 @@ var SolitaireEngine =
 						// Thread
 						setTimeout(function (e) {
 	
-							if (window.debug_1) console.log('%canimate thread', 'background: orange;', _common2.default.getElementById(_this.el.id).name);
-	
 							if (_animation) {
 								_this.css({
 									"transition": animationTime / 1000 + 's'
@@ -9997,8 +9966,6 @@ var SolitaireEngine =
 			}
 		}
 	
-		// console.log('redraw cards for', data.deck.name, data.cards);
-	
 		// перерисовка карт
 		for (var _i in data.cards) {
 	
@@ -10190,17 +10157,11 @@ var SolitaireEngine =
 		return angle;
 	};
 	
-	var debugId = 0;
-	
 	_event2.default.listen('moveDragDeck', function (data) {
 	
 		_common2.default.curLock();
 	
 		var _lastIndex = data.moveDeck.length - 1;
-	
-		var rand = debugId + '_' + Math.random();
-		debugId += 1;
-		console.log('moveDragDeck >>>', rand);
 	
 		var _loop = function _loop(i) {
 	
@@ -10242,7 +10203,6 @@ var SolitaireEngine =
 					return;
 				}
 				// let _callback = e => {
-				console.log('moveDragDeck:callback', i, data.moveDeck.length, rand);
 	
 				data.departure.Redraw();
 				data.destination.Redraw();

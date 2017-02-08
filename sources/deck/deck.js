@@ -219,7 +219,7 @@ class Deck {
 		for(let i = 0; i < count; i += 1) {
 			_cards.push(this.cards[this.cards.length - 1 - i]);
 		}
-		console.log('getSomeCards:', count, _cards);
+
 		return _cards;
 	}
 

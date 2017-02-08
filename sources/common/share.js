@@ -30,10 +30,6 @@ class shareClass {
 
 	set(name, data, forceClone = false) {
 
-		if(name == 'stepType') {
-			console.log('shareSet:stepType', data);
-		}
-
 		// "foo", "bar", false
 		if(typeof name == 'string') {
 

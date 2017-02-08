@@ -26,13 +26,11 @@ export default class fallAutoStep extends autoStep {
 
 		let _tips = Tips.getTips();
 
-		// console.log('fallAutoStep:check START', _tips.length);
 		if(_tips.length == 0) {
 
 			this.end();
 			// Tips.checkTips();
 		}
-		// console.log('fallAutoStep:check END');
 	}
 
 	// start() {

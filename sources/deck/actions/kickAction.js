@@ -80,7 +80,7 @@ class kickAction extends deckAction {
 			share.set('stepType', defaults.stepType);
 
 			if(data.actionData.dispatch) {
-				// console.log('kickAction:dispatch:', data.actionData.dispatch);
+
 				event.dispatch(data.actionData.dispatch, {
 					before: data => {
 

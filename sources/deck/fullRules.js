@@ -158,7 +158,6 @@ let fullRules = {
 				if(_select == "first") {
 					// TODO select deck with index 0
 					let _deck = _group.getDeckByIndex(1);
-					// console.log('###', deck.name, _select, _deck.name);
 
 					queryDecks.push(_deck);
 				} else if(_select == "second") {

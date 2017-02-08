@@ -22,8 +22,6 @@ class dealerdeckAction extends deckAction {
 		// default data.actionData.from      - deck.name
 		// default data.actionData.stepType  - NULL
 
-		// console.log('dealerdeckAction:', deck.name, data);
-
 		if(
 			typeof data.actionData.stepType == 'string'              &&
 			       data.actionData.stepType != share.get('stepType')
@@ -193,7 +191,6 @@ class dealerdeckAction extends deckAction {
 
 		if(data.actionData.dispatch) {
 
-			console.log('dealerdeckAction:dispatch:', data.actionData.dispatch);
 			event.dispatch(data.actionData.dispatch, !_makeStep);
 		} else {
 

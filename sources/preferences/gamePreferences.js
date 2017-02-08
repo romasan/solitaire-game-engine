@@ -62,7 +62,6 @@ class gamePreferences {
 				$(`input[name='gamePref_${prefName}'][value='${(pref[prefName]).toString()}']`)
 					.prop({checked: true});
 			} else {
-				console.log('2>', `input[name='gamePref_${prefName}'][value='${(_preferences[prefName].value).toString()}']`);
 				$(`input[name='gamePref_${prefName}'][value='${(_preferences[prefName].value).toString()}']`)
 					.prop({checked: true});
 			}

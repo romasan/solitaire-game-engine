@@ -170,8 +170,6 @@ event.listen('undo', undoData => {
 
 let _redo = data => {
 
-	console.log('REDO:', data);
-
 	if(share.get('sessionStarted')) {
 		// _undoMoveStack = [];
 		event.dispatch('stopAnimations', 'HISTORY#2');
@@ -295,11 +293,9 @@ class history {
 
 	reset(interior) {
 		this.steps = [];
-		console.log('history reset');
 	}
 
 	add(step) {
-		console.log('history add');
 
 		// console.log(
 		// 	'history add:'                                             ,
@@ -315,7 +311,6 @@ class history {
 
 	// get steps and reset
 	get(reset = true) {
-		console.log('history get, reset', reset);
 
 		let _req = this.steps;
 		// console.log('history get:', _req);
@@ -358,7 +353,6 @@ event.listen('addStep', data => {
 // save steps to client history
 event.listen('saveSteps', e => {
 	let data = _history.get();
-	console.log('%cSAVE STEPS', 'color: green;', e, data);
 	if(data.length) {
 		event.dispatch('makeStep', data);
 	} else {
@@ -367,8 +361,6 @@ event.listen('saveSteps', e => {
 });
 
 event.listen('doHistory', e => {
-
-	console.log('doHistory:', e);
 
 	// common.animationOff();
 

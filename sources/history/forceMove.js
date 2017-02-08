@@ -29,8 +29,6 @@ let forceMove = data => {// {from, to, deck, <flip>, <callback>}
 		? Deck.getDeck(data.to)
 		: data.to;
 
-	// console.log('forceMove:', deckFrom.name, '->', deckTo.name, data.deck.join());
-
 	if(
 		!deckFrom                ||
 		 deckFrom.type != 'deck' ||
@@ -39,8 +37,6 @@ let forceMove = data => {// {from, to, deck, <flip>, <callback>}
 	) {
 		return;
 	}
-
-	console.log('forceMove:', data);
 
 	let _check = true;
 
@@ -99,7 +95,7 @@ let forceMove = data => {// {from, to, deck, <flip>, <callback>}
 				event.dispatch('forceMoveEnd');
 			}
 		}
-		// console.log('>>> forceMove:moveDragDeck >>>');
+
 		event.dispatch('moveDragDeck', moveDragDeckParams);
 	} else {
 		console.warn('forceMove:Ход невозможен', data);

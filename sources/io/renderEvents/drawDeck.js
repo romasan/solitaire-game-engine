@@ -207,8 +207,6 @@ event.listen('redrawDeck', data => {
 		}
 	}
 
-	// console.log('redraw cards for', data.deck.name, data.cards);
-
 	// перерисовка карт
 	for(let i in data.cards) {
 

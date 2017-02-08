@@ -33,8 +33,6 @@ class inputs {
 					return;
 				}
 
-				if(window.debug_1) console.log('down');
-
 				this.take(data.target, data.clientX, data.clientY);
 			};
 

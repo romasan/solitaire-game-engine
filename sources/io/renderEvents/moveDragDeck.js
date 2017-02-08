@@ -26,17 +26,11 @@ let angleValidate = angle => {
 	return angle;
 };
 
-let debugId = 0;
-
 event.listen('moveDragDeck', data => {
 
 	common.curLock();
 
 	let _lastIndex = data.moveDeck.length - 1;
-
-	let rand = debugId + '_' + Math.random();
-	debugId += 1;
-	console.log('moveDragDeck >>>', rand);
 
 	for(let i in data.moveDeck) {
 
@@ -80,7 +74,6 @@ event.listen('moveDragDeck', data => {
 				return;
 			}
 		// let _callback = e => {
-			console.log('moveDragDeck:callback', i, data.moveDeck.length, rand);
 
 			data.departure	.Redraw();
 			data.destination.Redraw();
