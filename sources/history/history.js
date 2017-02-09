@@ -313,7 +313,6 @@ class history {
 	get(reset = true) {
 
 		let _req = this.steps;
-		// console.log('history get:', _req);
 
 		if(reset) {
 			this.reset(true);

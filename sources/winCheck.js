@@ -37,8 +37,8 @@ let winCheck = params => {
 		if(winCheckRules[_ruleName]) {
 
 			let _result = winCheckRules[_ruleName]({
-				decks     : Deck.getDecks({visible : true}), 
-				rulesArgs : _winCheckRules[_ruleName]
+				"decks"     : Deck.getDecks({ "visible" : true }), 
+				"rulesArgs" : _winCheckRules[_ruleName]
 			});
 
 			rulesCorrect &= _result;

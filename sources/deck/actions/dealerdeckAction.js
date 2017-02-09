@@ -45,9 +45,8 @@ class dealerdeckAction extends deckAction {
 			share.set('stepType', defaults.stepType);
 
 			event.dispatch('actionBreak');
-			event.dispatch('dealEnd');
 
-			super.end();
+			this.end();
 
 			return;
 		}
@@ -167,7 +166,7 @@ class dealerdeckAction extends deckAction {
 				event.dispatch('dealEnd');
 
 				event.dispatch('addStep', {
-					'move' : {
+					"move" : {
 						"from"     :       dealDeck.name,
 						"to"       : _decks[deckId].name,
 						"deck"     : [_cardName]        ,
@@ -194,10 +193,15 @@ class dealerdeckAction extends deckAction {
 			event.dispatch(data.actionData.dispatch, !_makeStep);
 		} else {
 
-			super.end();
+			this.end();
 			// сохраняем если ничего не вызываем
 			share.set('stepType', defaults.stepType);
 		}
+	}
+
+	end() {
+		event.dispatch('dealEnd');
+		super.end();
 	}
 }
 

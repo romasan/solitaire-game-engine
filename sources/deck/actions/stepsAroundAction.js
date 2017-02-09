@@ -74,8 +74,8 @@ class stepsAroundAction extends deckAction {
 				_counter += 1;
 
 				event.dispatch(data.actionData.run, {
-					to       : deck.name,
-					callback : _callback
+					"to"       : deck.name,
+					"callback" : _callback
 				});
 			}
 

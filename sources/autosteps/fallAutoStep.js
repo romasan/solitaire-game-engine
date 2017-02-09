@@ -63,7 +63,7 @@ export default class fallAutoStep extends autoStep {
 		let _from = Deck.getDeckById(data.putDeck[0].card.parent),
 		    _to   = data.to;
 
-		let _relations = _from.getRelationsByName('fall', {from: null});
+		let _relations = _from.getRelationsByName('fall', { "from" : null });
 
 		for(let i in _relations) {
 			if(

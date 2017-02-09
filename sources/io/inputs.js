@@ -179,7 +179,7 @@ class inputs {
 				share.set('startCursor', { "x" : x, "y" : y });
 
 				// ???
-				Tips.tipsDestination({currentCard : _card});
+				Tips.tipsDestination({ "currentCard" : _card });
 			}
 		}
 	}

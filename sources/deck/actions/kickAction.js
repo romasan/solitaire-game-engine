@@ -101,7 +101,7 @@ class kickAction extends deckAction {
 
 				event.dispatch('saveSteps', 'KICKACTION#2');
 
-				super.end();
+				this.end();
 			}
 		}
 
@@ -120,6 +120,11 @@ class kickAction extends deckAction {
 
 		// forceMove(forceMoveParams);
 		event.dispatch('forceMove', forceMoveParams);
+	}
+
+	end() {
+		event.dispatch('kickEnd');
+		super.end();
 	}
 }
 

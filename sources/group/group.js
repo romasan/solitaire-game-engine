@@ -57,20 +57,20 @@ class groupClass {
 			: ('name_' + id);
 
 		this.position = {
-			x : data.position && data.position.x && typeof data.position.x == 'number' 
+			"x" : data.position && data.position.x && typeof data.position.x == 'number' 
 				? data.position.x 
 				: 0,
-			y : data.position && data.position.y && typeof data.position.y == 'number' 
+			"y" : data.position && data.position.y && typeof data.position.y == 'number' 
 				? data.position.y 
 				: 0,
 		};
 
 		this.placement = data.placement 
 			? {
-				x : data.placement.x 
+				"x" : data.placement.x 
 					? data.placement.x 
 					: 0, 
-				y : data.placement.y 
+				"y" : data.placement.y 
 					? data.placement.y 
 					: 0
 			} 
@@ -122,8 +122,8 @@ class groupClass {
 		}
 
 		data.parentPosition = {
-			x : this.position.x, 
-			y : this.position.y
+			"x" : this.position.x, 
+			"y" : this.position.y
 		};
 
 		// расставляем колоды в группе

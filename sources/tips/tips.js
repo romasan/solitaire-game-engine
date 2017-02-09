@@ -45,7 +45,7 @@ let checkTips = e => {
 	let _decks = Deck.getDecks({visible : true});
 
 	_tips = allToAll({
-		decks : _decks
+		"decks" : _decks
 	});
 
 	if(
@@ -97,7 +97,7 @@ let checkTips = e => {
 	}
 };
 
-event.listen('makeStep', checkTips);
+event.listen('makeStep' , checkTips);
 event.listen('checkTips', checkTips);
 
 // show/hide tips
@@ -112,7 +112,8 @@ let showTips = data => {
 
 	checkTips();
 };
-event.listen('tipsON', showTips);
+event.listen('tips:on', showTips);
+event.listen('tipsON' , showTips);
 
 let hideTips = data => {
 
@@ -124,7 +125,8 @@ let hideTips = data => {
 
 	checkTips();
 };
-event.listen('tipsOFF', hideTips);
+event.listen('tips:off', hideTips);
+event.listen('tipsOFF' , hideTips);
 
 // best tip on move
 
@@ -134,7 +136,7 @@ let tipsMove = data => {
 		return;
 	}
 
-	event.dispatch('hideTips', {types : ['tipPriority']});
+	event.dispatch('hideTips', { "types" : ['tipPriority'] });
 
 	if(
 		share.showTipPriority                          &&

@@ -42,9 +42,9 @@ class Field {
 
 		// вкл./выкл. подсказок
 		if(typeof data.showTips == 'boolean' && data.showTips) {
-			Tips.showTips({init : true});
+			Tips.showTips({ "init" : true });
 		} else {
-			Tips.hideTips({init : true});
+			Tips.hideTips({ "init" : true });
 		}
 
 		// устанвливаем тип хода по умолчанию

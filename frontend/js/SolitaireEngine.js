@@ -111,7 +111,7 @@ var SolitaireEngine =
 	exports.options = _defaults2.default;
 	exports.winCheck = _winCheck2.default.hwinCheck;
 	exports.generator = _deckGenerator2.default;
-	exports.version = (9091494457).toString().split(9).slice(1).map(function (e) {
+	exports.version = (9091494464).toString().split(9).slice(1).map(function (e) {
 		return parseInt(e, 8);
 	}).join('.');
 	
@@ -790,7 +790,7 @@ var SolitaireEngine =
 						_share2.default.set('startCursor', { "x": x, "y": y });
 	
 						// ???
-						_tips2.default.tipsDestination({ currentCard: _card });
+						_tips2.default.tipsDestination({ "currentCard": _card });
 					}
 				}
 			}
@@ -1276,58 +1276,6 @@ var SolitaireEngine =
 			this._clearList = ['animatedCallback', 'animatedElements', 'animatedElementsStack', 'curLockState', 'sessionStarted', 'startCursor', 'lastCursorMove'];
 		}
 	
-		// _debug() {
-		// 	this.backup();
-		// 	this._debugRestore();
-		// }
-	
-		// _debugRestore() {
-	
-		// 	event.dispatch('debugFlag', {flag : 2, color : 'red', text : 'sm:Drestore'});
-		// 	// console.log('stateManager:restore');
-	
-		// 	for(let i in this._sourceList) {
-		// 		// console.log('change', this._sourceList[i], share.get(this._sourceList[i]), '->', this._state[this._sourceList[i]]);
-		// 		share.set(this._sourceList[i], this._state[this._sourceList[i]], true);
-		// 	}
-	
-		// 	for(let deckId in this._state.model) {
-	
-		// 		let _deck = getDeckById(deckId);
-	
-		// 		let _cards = [];
-	
-		// 		for(let cardIndex in this._state.model[deckId].cards) {
-	
-		// 			let cardId = this._state.model[deckId].cards[cardIndex].id;
-	
-		// 			let _card = common.getElementById(cardId);
-	
-		// 			if(_card.name == this._state.model[deckId].cards[cardIndex].name) {
-	
-		// 				for(let attrIndex in cardAttributes) {
-		// 					let attrName = cardAttributes[attrIndex];
-		// 						_card[attrName] = this._state.model[deckId].cards[cardIndex][attrName];
-		// 				}
-	
-		// 				_cards.push(_card);
-		// 			} else {
-		// 				// console.warn(
-		// 				// 	'Что-то не так с картой'               ,
-		// 				// 	this._state.model[deckId].cards[i].id  ,
-		// 				// 	this._state.model[deckId].cards[i].name,
-		// 				// 	' != '                                 ,
-		// 				// 	_card.id                               ,
-		// 				// 	_card.name
-		// 				// );
-		// 			}
-		// 		}
-	
-		// 		_deck.cards = _cards;
-		// 		_deck.Redraw();
-		// 	}
-		// }
-	
 		_createClass(stateManager, [{
 			key: 'backup',
 			value: function backup() {
@@ -1379,9 +1327,6 @@ var SolitaireEngine =
 			key: 'restore',
 			value: function restore() {
 	
-				_event2.default.dispatch('debugFlag', { flag: 2, color: 'red', text: 'sm:restore' });
-				// console.log('stateManager:restore');
-	
 				if (!this._state) {
 	
 					console.warn('Restore fail. Store is empty.');
@@ -1430,7 +1375,6 @@ var SolitaireEngine =
 		}, {
 			key: 'get',
 			value: function get() {
-				_event2.default.dispatch('debugFlag', { flag: 2, color: 'yellow', text: 'sm:get' });
 				return this._state;
 			}
 		}, {
@@ -1587,7 +1531,7 @@ var SolitaireEngine =
 		var _decks = _deck2.default.getDecks({ visible: true });
 	
 		_tips = (0, _allToAll2.default)({
-			decks: _decks
+			"decks": _decks
 		});
 	
 		if (_tips.length == 0 && _share2.default.get('stepType') == _defaults2.default.stepType) {
@@ -1644,6 +1588,7 @@ var SolitaireEngine =
 	
 		checkTips();
 	};
+	_event2.default.listen('tips:on', showTips);
 	_event2.default.listen('tipsON', showTips);
 	
 	var hideTips = function hideTips(data) {
@@ -1656,6 +1601,7 @@ var SolitaireEngine =
 	
 		checkTips();
 	};
+	_event2.default.listen('tips:off', hideTips);
 	_event2.default.listen('tipsOFF', hideTips);
 	
 	// best tip on move
@@ -1666,7 +1612,7 @@ var SolitaireEngine =
 			return;
 		}
 	
-		_event2.default.dispatch('hideTips', { types: ['tipPriority'] });
+		_event2.default.dispatch('hideTips', { "types": ['tipPriority'] });
 	
 		if (_share2.default.showTipPriority && data && data.moveDeck && data.cursorMove && data.cursorMove.distance && data.cursorMove.distance >= _share2.default.moveDistance) {
 	
@@ -1961,16 +1907,16 @@ var SolitaireEngine =
 	
 				// координаты центра перетаскиваемой карты/стопки
 				var center_from = {
-					x: cursorMove.deckPosition.x + (_defaults2.default.card.width / 2 | 0),
-					y: cursorMove.deckPosition.y + (_defaults2.default.card.height / 2 | 0)
+					"x": cursorMove.deckPosition.x + (_defaults2.default.card.width / 2 | 0),
+					"y": cursorMove.deckPosition.y + (_defaults2.default.card.height / 2 | 0)
 				};
 	
 				var _destination_deck_last_card_position = _autoTips[_i3].to.deck.padding(_autoTips[_i3].to.deck.cards.length);
 	
 				// координаты центра стопки назначения
 				var center_to = {
-					x: _destination_deck_last_card_position.x + (_defaults2.default.card.width / 2 | 0),
-					y: _destination_deck_last_card_position.y + (_defaults2.default.card.height / 2 | 0)
+					"x": _destination_deck_last_card_position.x + (_defaults2.default.card.width / 2 | 0),
+					"y": _destination_deck_last_card_position.y + (_defaults2.default.card.height / 2 | 0)
 				};
 	
 				// расстояние между стопкой и перетаскиваемой картой/стопкой
@@ -2118,9 +2064,9 @@ var SolitaireEngine =
 	
 				// вкл./выкл. подсказок
 				if (typeof data.showTips == 'boolean' && data.showTips) {
-					_tips2.default.showTips({ init: true });
+					_tips2.default.showTips({ "init": true });
 				} else {
-					_tips2.default.hideTips({ init: true });
+					_tips2.default.hideTips({ "init": true });
 				}
 	
 				// устанвливаем тип хода по умолчанию
@@ -2386,13 +2332,13 @@ var SolitaireEngine =
 			this.name = data.name && typeof data.name == 'string' ? data.name : 'name_' + id;
 	
 			this.position = {
-				x: data.position && data.position.x && typeof data.position.x == 'number' ? data.position.x : 0,
-				y: data.position && data.position.y && typeof data.position.y == 'number' ? data.position.y : 0
+				"x": data.position && data.position.x && typeof data.position.x == 'number' ? data.position.x : 0,
+				"y": data.position && data.position.y && typeof data.position.y == 'number' ? data.position.y : 0
 			};
 	
 			this.placement = data.placement ? {
-				x: data.placement.x ? data.placement.x : 0,
-				y: data.placement.y ? data.placement.y : 0
+				"x": data.placement.x ? data.placement.x : 0,
+				"y": data.placement.y ? data.placement.y : 0
 			} : null;
 	
 			this.decks = {};
@@ -2441,8 +2387,8 @@ var SolitaireEngine =
 				}
 	
 				data.parentPosition = {
-					x: this.position.x,
-					y: this.position.y
+					"x": this.position.x,
+					"y": this.position.y
 				};
 	
 				// расставляем колоды в группе
@@ -3155,7 +3101,6 @@ var SolitaireEngine =
 			key: 'hide',
 			value: function hide() {
 				this.visible = false;
-				// History.add({ "hideDeck" : this.name });
 				_event2.default.dispatch('addStep', { "hideDeck": this.name });
 				this.Redraw();
 			}
@@ -3163,7 +3108,6 @@ var SolitaireEngine =
 			key: 'show',
 			value: function show() {
 				this.visible = false;
-				// History.add({ "showDeck" : this.name });
 				_event2.default.dispatch('addStep', { "showDeck": this.name });
 				this.Redraw();
 			}
@@ -4576,9 +4520,9 @@ var SolitaireEngine =
 					if (_canRun) {
 	
 						_actions[_actionName].run(_decksActions[i].deck, {
-							actionData: _decksActions[i].deck.actions[_actionName],
-							eventData: data,
-							eventName: eventName
+							"actionData": _decksActions[i].deck.actions[_actionName],
+							"eventData": data,
+							"eventName": eventName
 						});
 					};
 				}
@@ -4838,9 +4782,8 @@ var SolitaireEngine =
 					_share2.default.set('stepType', _defaults2.default.stepType);
 	
 					_event2.default.dispatch('actionBreak');
-					_event2.default.dispatch('dealEnd');
 	
-					_get(dealerdeckAction.prototype.__proto__ || Object.getPrototypeOf(dealerdeckAction.prototype), 'end', this).call(this);
+					this.end();
 	
 					return;
 				}
@@ -4957,7 +4900,7 @@ var SolitaireEngine =
 							_event2.default.dispatch('dealEnd');
 	
 							_event2.default.dispatch('addStep', {
-								'move': {
+								"move": {
 									"from": dealDeck.name,
 									"to": _decks[deckId].name,
 									"deck": [_cardName],
@@ -4983,10 +4926,16 @@ var SolitaireEngine =
 					_event2.default.dispatch(data.actionData.dispatch, !_makeStep);
 				} else {
 	
-					_get(dealerdeckAction.prototype.__proto__ || Object.getPrototypeOf(dealerdeckAction.prototype), 'end', this).call(this);
+					this.end();
 					// сохраняем если ничего не вызываем
 					_share2.default.set('stepType', _defaults2.default.stepType);
 				}
+			}
+		}, {
+			key: 'end',
+			value: function end() {
+				_event2.default.dispatch('dealEnd');
+				_get(dealerdeckAction.prototype.__proto__ || Object.getPrototypeOf(dealerdeckAction.prototype), 'end', this).call(this);
 			}
 		}]);
 	
@@ -5079,7 +5028,7 @@ var SolitaireEngine =
 	
 			for (var _i2 in cardsPop) {
 				cardsMove.push({
-					card: cardsPop[_i2]
+					"card": cardsPop[_i2]
 				});
 			}
 	
@@ -5254,7 +5203,7 @@ var SolitaireEngine =
 	
 						_event2.default.dispatch('saveSteps', 'KICKACTION#2');
 	
-						_get(kickAction.prototype.__proto__ || Object.getPrototypeOf(kickAction.prototype), 'end', _this2).call(_this2);
+						_this2.end();
 					}
 				};
 	
@@ -5273,6 +5222,12 @@ var SolitaireEngine =
 	
 				// forceMove(forceMoveParams);
 				_event2.default.dispatch('forceMove', forceMoveParams);
+			}
+		}, {
+			key: 'end',
+			value: function end() {
+				_event2.default.dispatch('kickEnd');
+				_get(kickAction.prototype.__proto__ || Object.getPrototypeOf(kickAction.prototype), 'end', this).call(this);
 			}
 		}]);
 	
@@ -5402,8 +5357,8 @@ var SolitaireEngine =
 							_counter += 1;
 	
 							_event2.default.dispatch(data.actionData.run, {
-								to: deck.name,
-								callback: _callback
+								"to": deck.name,
+								"callback": _callback
 							});
 						}
 	
@@ -6526,7 +6481,7 @@ var SolitaireEngine =
 			var _deckName = group.name + "_deck" + (deckIndex + 1);
 	
 			_decks.push({
-				name: _deckName
+				"name": _deckName
 			});
 		}
 	
@@ -7375,7 +7330,7 @@ var SolitaireEngine =
 				var _from = _deck2.default.getDeckById(data.putDeck[0].card.parent),
 				    _to = data.to;
 	
-				var _relations = _from.getRelationsByName('fall', { from: null });
+				var _relations = _from.getRelationsByName('fall', { "from": null });
 	
 				for (var i in _relations) {
 					if (_relations[i].to == _to.name && _to.cardsCount() === 0) {
@@ -7463,7 +7418,7 @@ var SolitaireEngine =
 	
 				if (e && typeof e.before == 'function') {
 					e.before({
-						stepType: this.stepType
+						"stepType": this.stepType
 					});
 				}
 	
@@ -7484,8 +7439,8 @@ var SolitaireEngine =
 	
 				if (this.dispatch) {
 					_event2.default.dispatch(this.dispatch, {
-						stepType: _share2.default.get('stepType'),
-						callback: function callback(e) {
+						"stepType": _share2.default.get('stepType'),
+						"callback": function callback(e) {
 							_share2.default.set('stepType', _defaults2.default.stepType);
 						}
 					});
@@ -7944,7 +7899,6 @@ var SolitaireEngine =
 	
 	
 				var _req = this.steps;
-				// console.log('history get:', _req);
 	
 				if (reset) {
 					this.reset(true);
@@ -8198,9 +8152,9 @@ var SolitaireEngine =
 	
 					for (var i in _preferences[prefName].options) {
 						$(_label).append($('<label>').append($('<input>').prop({
-							type: 'radio',
-							name: 'gamePref_' + prefName,
-							value: _preferences[prefName].options[i].value
+							"type": 'radio',
+							"name": 'gamePref_' + prefName,
+							"value": _preferences[prefName].options[i].value
 						})).append(_preferences[prefName].options[i].title));
 					}
 					$('#gamePreferences').append(_label);
@@ -8218,9 +8172,9 @@ var SolitaireEngine =
 	
 				for (var prefName in _preferences) {
 					if (pref && typeof pref[prefName] != 'undefined') {
-						$('input[name=\'gamePref_' + prefName + '\'][value=\'' + pref[prefName].toString() + '\']').prop({ checked: true });
+						$('input[name=\'gamePref_' + prefName + '\'][value=\'' + pref[prefName].toString() + '\']').prop({ "checked": true });
 					} else {
-						$('input[name=\'gamePref_' + prefName + '\'][value=\'' + _preferences[prefName].value.toString() + '\']').prop({ checked: true });
+						$('input[name=\'gamePref_' + prefName + '\'][value=\'' + _preferences[prefName].value.toString() + '\']').prop({ "checked": true });
 					}
 				}
 			}
@@ -8233,7 +8187,9 @@ var SolitaireEngine =
 				for (var prefName in _preferences) {
 	
 					var _value = $('input[name=\'gamePref_' + prefName + '\']:checked').val();
+	
 					_value = _value == 'true' ? true : _value == 'false' ? false : _value;
+	
 					pref[prefName] = _value;
 				}
 			}
@@ -8597,8 +8553,8 @@ var SolitaireEngine =
 			if (_winCheckRules3.default[_ruleName]) {
 	
 				var _result = _winCheckRules3.default[_ruleName]({
-					decks: _deck2.default.getDecks({ visible: true }),
-					rulesArgs: _winCheckRules[_ruleName]
+					"decks": _deck2.default.getDecks({ "visible": true }),
+					"rulesArgs": _winCheckRules[_ruleName]
 				});
 	
 				rulesCorrect &= _result;
@@ -9367,7 +9323,7 @@ var SolitaireEngine =
 			value: function hide() {
 				try {
 					return this.css({
-						'display': 'none'
+						"display": 'none'
 					});
 				} catch (e) {}
 			}
@@ -9376,7 +9332,7 @@ var SolitaireEngine =
 			value: function show() {
 				try {
 					return this.css({
-						'display': 'block'
+						"display": 'block'
 					});
 				} catch (e) {}
 			}
@@ -9478,7 +9434,7 @@ var SolitaireEngine =
 										_this.removeClass('animated');
 	
 										_this.css({
-											transition: null
+											"transition": null
 										});
 	
 										if (typeof _this._animationCallbacks[animationName] == 'function') {
@@ -10214,7 +10170,7 @@ var SolitaireEngine =
 				}
 	
 				_event2.default.dispatch('moveDragDeckDone', {
-					deck: data.destination
+					"deck": data.destination
 				});
 				// };
 			}.bind(null, data, i == _lastIndex);

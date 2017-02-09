@@ -362,14 +362,12 @@ class Deck {
 
 	hide() {
 		this.visible = false;
-		// History.add({ "hideDeck" : this.name });
 		event.dispatch('addStep', { "hideDeck" : this.name });
 		this.Redraw();
 	}
 
 	show() {
 		this.visible = false;
-		// History.add({ "showDeck" : this.name });
 		event.dispatch('addStep', { "showDeck" : this.name });
 		this.Redraw();
 	}

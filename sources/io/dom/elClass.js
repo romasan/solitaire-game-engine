@@ -135,7 +135,7 @@ export default class elClass {
 	hide() {
 		try {
 			return this.css({
-				'display' : 'none'
+				"display" : 'none'
 			});
 		} catch(e) {}
 	}
@@ -143,7 +143,7 @@ export default class elClass {
 	show() {
 		try {
 			return this.css({
-				'display' : 'block'
+				"display" : 'block'
 			});
 		} catch(e) {}
 	}
@@ -243,7 +243,7 @@ export default class elClass {
 							this.removeClass('animated');
 
 							this.css({
-								transition: null
+								"transition" : null
 							});
 
 							if(typeof this._animationCallbacks[animationName] == 'function') {

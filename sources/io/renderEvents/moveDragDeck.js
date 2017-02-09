@@ -88,7 +88,7 @@ event.listen('moveDragDeck', data => {
 			}
 
 			event.dispatch('moveDragDeckDone', {
-				deck : data.destination
+				"deck" : data.destination
 			});
 		// };
 		}.bind(null, data, i == _lastIndex);

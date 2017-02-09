@@ -71,16 +71,16 @@ export default (moveDeck, cursorMove) => {
 
 			// координаты центра перетаскиваемой карты/стопки
 			let center_from = {
-				x : cursorMove.deckPosition.x + ((defaults.card.width  / 2) | 0),
-				y : cursorMove.deckPosition.y + ((defaults.card.height / 2) | 0)
+				"x" : cursorMove.deckPosition.x + ((defaults.card.width  / 2) | 0),
+				"y" : cursorMove.deckPosition.y + ((defaults.card.height / 2) | 0)
 			}
 
 			let _destination_deck_last_card_position = _autoTips[i].to.deck.padding(_autoTips[i].to.deck.cards.length);
 
 			// координаты центра стопки назначения
 			let center_to = {
-				x : _destination_deck_last_card_position.x + ((defaults.card.width  / 2) | 0),
-				y : _destination_deck_last_card_position.y + ((defaults.card.height / 2) | 0)
+				"x" : _destination_deck_last_card_position.x + ((defaults.card.width  / 2) | 0),
+				"y" : _destination_deck_last_card_position.y + ((defaults.card.height / 2) | 0)
 			}
 
 			// расстояние между стопкой и перетаскиваемой картой/стопкой

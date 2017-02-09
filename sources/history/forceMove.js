@@ -74,7 +74,7 @@ let forceMove = data => {// {from, to, deck, <flip>, <callback>}
 
 		for(let i in cardsPop) {
 			cardsMove.push({
-				card : cardsPop[i]
+				"card" : cardsPop[i]
 			});
 		}
 

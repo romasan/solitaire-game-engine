@@ -19,7 +19,7 @@ export default (group, data) => {
 		let _deckName = group.name + "_deck" + (deckIndex + 1);
 
 		_decks.push({
-			name : _deckName
+			"name" : _deckName
 		});
 	}
 

@@ -42,7 +42,7 @@ export default class {
 
 		if(e && typeof e.before == 'function') {
 			e.before({
-				stepType: this.stepType
+				"stepType" : this.stepType
 			});
 		}
 		
@@ -62,8 +62,8 @@ export default class {
 
 		if(this.dispatch) {
 			event.dispatch(this.dispatch, {
-				stepType: share.get('stepType'),
-				callback: e => {
+				"stepType" : share.get('stepType'),
+				"callback" : e => {
 					share.set('stepType', defaults.stepType);
 				}
 			});

@@ -66,9 +66,9 @@ let addActionEvent = eventName => {
 							_decksActions[i].deck, 
 
 							{
-								actionData : _decksActions[i].deck.actions[_actionName],
-								eventData  : data,
-								eventName
+								"actionData" : _decksActions[i].deck.actions[_actionName],
+								"eventData"  : data,
+								"eventName"  : eventName
 							}
 						);
 					};
