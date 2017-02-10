@@ -5,10 +5,10 @@ import share     from 'share'   ;
 import defaults  from 'defaults';
 import common    from 'common'  ;
 
-import allToAll from 'allToAll' ;
-import bestTip  from 'bestTip'  ;
-import Deck     from 'deck'     ;
-import Field    from 'field'    ;
+import allToAll  from 'allToAll';
+import bestTip   from 'bestTip' ;
+import Deck      from 'deck'    ;
+import Field     from 'field'   ;
 
 /*
  * getTips

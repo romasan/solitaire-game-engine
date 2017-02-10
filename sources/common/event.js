@@ -92,6 +92,7 @@ class Event {
 	}
 
 	clearByTag(tag) {
+
 		for(let eventName in this._events) {
 			for(let i in this._events[eventName]) {
 				if(
@@ -158,6 +159,10 @@ class Event {
 		} else {
 			return this._events[eventName] ? this._events[eventName].length : 0;
 		}
+	}
+
+	_getAll() {
+		return this._events;
 	}
 
 	// getEventsByName(eventName) {

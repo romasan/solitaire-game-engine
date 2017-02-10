@@ -111,7 +111,7 @@ var SolitaireEngine =
 	exports.options = _defaults2.default;
 	exports.winCheck = _winCheck2.default.hwinCheck;
 	exports.generator = _deckGenerator2.default;
-	exports.version = (9091494464).toString().split(9).slice(1).map(function (e) {
+	exports.version = (9091494537).toString().split(9).slice(1).map(function (e) {
 		return parseInt(e, 8);
 	}).join('.');
 	
@@ -141,13 +141,13 @@ var SolitaireEngine =
 				var _data = _share2.default.get('gamePreferencesData');
 				preloadCallback(_data);
 			}
+		}
 	
-			var changePreferencesCallback = _share2.default.get('changePreferencesCallback');
+		var changePreferencesCallback = _share2.default.get('changePreferencesCallback');
 	
-			if (typeof changePreferencesCallback == 'function') {
-				var _data2 = _share2.default.get('gamePreferencesData');
-				changePreferencesCallback(_data2);
-			}
+		if (typeof changePreferencesCallback == 'function') {
+			var _data2 = _share2.default.get('gamePreferencesData');
+			changePreferencesCallback(_data2);
 		}
 	
 		_event2.default.dispatch('gameInited');
@@ -395,6 +395,7 @@ var SolitaireEngine =
 		}, {
 			key: 'clearByTag',
 			value: function clearByTag(tag) {
+	
 				for (var eventName in this._events) {
 					for (var i in this._events[eventName]) {
 						if (this._events[eventName][i] && this._events[eventName][i].tag == tag) {
@@ -455,6 +456,11 @@ var SolitaireEngine =
 				} else {
 					return this._events[eventName] ? this._events[eventName].length : 0;
 				}
+			}
+		}, {
+			key: '_getAll',
+			value: function _getAll() {
+				return this._events;
 			}
 	
 			// getEventsByName(eventName) {
@@ -5183,6 +5189,7 @@ var SolitaireEngine =
 	
 					if (data.actionData.dispatch) {
 	
+						_event2.default.dispatch('kick:end');
 						_event2.default.dispatch(data.actionData.dispatch, {
 							before: function before(data) {
 	
@@ -5196,6 +5203,7 @@ var SolitaireEngine =
 						});
 					} else {
 	
+						_event2.default.dispatch('kick:end');
 						_addStep({
 							"undo": stepType,
 							"redo": data.actionData.dispatch ? _share2.default.get('stepType') : _defaults2.default.stepType
@@ -5203,7 +5211,7 @@ var SolitaireEngine =
 	
 						_event2.default.dispatch('saveSteps', 'KICKACTION#2');
 	
-						_this2.end();
+						_get(kickAction.prototype.__proto__ || Object.getPrototypeOf(kickAction.prototype), 'end', _this2).call(_this2);
 					}
 				};
 	
@@ -5223,12 +5231,12 @@ var SolitaireEngine =
 				// forceMove(forceMoveParams);
 				_event2.default.dispatch('forceMove', forceMoveParams);
 			}
-		}, {
-			key: 'end',
-			value: function end() {
-				_event2.default.dispatch('kickEnd');
-				_get(kickAction.prototype.__proto__ || Object.getPrototypeOf(kickAction.prototype), 'end', this).call(this);
-			}
+	
+			// end() {
+			// 	event.dispatch('kickEnd');
+			// 	super.end();
+			// }
+	
 		}]);
 	
 		return kickAction;

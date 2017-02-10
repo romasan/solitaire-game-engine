@@ -53,12 +53,13 @@ exports.init = gameConfig => {
 			preloadCallback(_data);
 		}
 
-		let changePreferencesCallback = share.get('changePreferencesCallback');
+	}
 
-		if(typeof changePreferencesCallback == 'function') {
-			let _data = share.get('gamePreferencesData');
-			changePreferencesCallback(_data);
-		}
+	let changePreferencesCallback = share.get('changePreferencesCallback');
+
+	if(typeof changePreferencesCallback == 'function') {
+		let _data = share.get('gamePreferencesData');
+		changePreferencesCallback(_data);
 	}
 
 	event.dispatch('gameInited');

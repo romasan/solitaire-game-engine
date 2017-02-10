@@ -81,6 +81,7 @@ class kickAction extends deckAction {
 
 			if(data.actionData.dispatch) {
 
+				event.dispatch('kick:end');
 				event.dispatch(data.actionData.dispatch, {
 					before: data => {
 
@@ -94,6 +95,7 @@ class kickAction extends deckAction {
 				});
 			} else {
 
+				event.dispatch('kick:end');
 				_addStep({
 					"undo" : stepType                                                            ,
 					"redo" : data.actionData.dispatch ? share.get('stepType') : defaults.stepType
@@ -101,7 +103,7 @@ class kickAction extends deckAction {
 
 				event.dispatch('saveSteps', 'KICKACTION#2');
 
-				this.end();
+				super.end();
 			}
 		}
 
@@ -122,10 +124,10 @@ class kickAction extends deckAction {
 		event.dispatch('forceMove', forceMoveParams);
 	}
 
-	end() {
-		event.dispatch('kickEnd');
-		super.end();
-	}
+	// end() {
+	// 	event.dispatch('kickEnd');
+	// 	super.end();
+	// }
 }
 
 export default new kickAction();
