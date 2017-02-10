@@ -58,15 +58,24 @@ export default class {
 		}
 	}
 
-	end() {
+	end(data) {
 
 		if(this.dispatch) {
-			event.dispatch(this.dispatch, {
+
+			let _data = {
 				"stepType" : share.get('stepType'),
 				"callback" : e => {
 					share.set('stepType', defaults.stepType);
 				}
-			});
+			};
+
+			if(data) {
+				for(let valueName in data) {
+					_data[valueName] = data[valueName];
+				}
+			}
+
+			event.dispatch(this.dispatch, _data);
 		} else {
 			// share.set('stepType', defaults.stepType);
 			event.dispatch('stopSession');

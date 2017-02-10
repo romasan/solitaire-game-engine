@@ -16,6 +16,8 @@ export default class fallAutoStep extends autoStep {
 
 		this._name = 'fall';
 
+		this.manualPossibleMoves = 0;
+
 		// event.listen('fallAutoStepCheck', this.check);
 	}
 
@@ -41,7 +43,7 @@ export default class fallAutoStep extends autoStep {
 	auto() {
 
 		// TODO
-		console.log('-- fallAutoStep:auto, curLockState -', share.get('curLockState'));
+		console.log('fallAutoStep:auto');
 		// fall lines auto
 
 		// get groups
@@ -70,10 +72,15 @@ export default class fallAutoStep extends autoStep {
 				_relations[i].to == _to.name &&
 				_to.cardsCount() === 0
 			) {
+				this.manualPossibleMoves += 1;
 				return true;
 			}
 		}
 
 		return false;
+	}
+
+	end() {
+		super.end({ "save" : (this.manualPossibleMoves > 0 ? true : false) });
 	}
 }

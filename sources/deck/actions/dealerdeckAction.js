@@ -18,6 +18,8 @@ class dealerdeckAction extends deckAction {
 
 	run(deck, data) {// data.actionData, e
 
+		let save = typeof data.eventData.save == "boolean" ? data.eventData.save : true;
+
 		// default data.actionData.onlyEmpty - false
 		// default data.actionData.from      - deck.name
 		// default data.actionData.stepType  - NULL
