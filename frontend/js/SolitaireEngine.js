@@ -111,7 +111,7 @@ var SolitaireEngine =
 	exports.options = _defaults2.default;
 	exports.winCheck = _winCheck2.default.hwinCheck;
 	exports.generator = _deckGenerator2.default;
-	exports.version = (9091494544).toString().split(9).slice(1).map(function (e) {
+	exports.version = (9091494561).toString().split(9).slice(1).map(function (e) {
 		return parseInt(e, 8);
 	}).join('.');
 	
@@ -4924,7 +4924,7 @@ var SolitaireEngine =
 					}
 				}
 	
-				if (_makeStep) {
+				if (_makeStep && save) {
 					// сохраняем если паздача удалась
 					_event2.default.dispatch('saveSteps', 'DEALERDECKACTION');
 				}
@@ -5209,6 +5209,7 @@ var SolitaireEngine =
 						_addStep({
 							"undo": stepType,
 							"redo": data.actionData.dispatch ? _share2.default.get('stepType') : _defaults2.default.stepType
+							// "redo" : defaults.stepType
 						});
 	
 						_event2.default.dispatch('saveSteps', 'KICKACTION#2');
@@ -7457,13 +7458,15 @@ var SolitaireEngine =
 			key: 'end',
 			value: function end(data) {
 	
+				_share2.default.set('stepType', _defaults2.default.stepType);
+	
 				if (this.dispatch) {
 	
 					var _data = {
-						"stepType": _share2.default.get('stepType'),
-						"callback": function callback(e) {
-							_share2.default.set('stepType', _defaults2.default.stepType);
-						}
+						"stepType": _share2.default.get('stepType')
+						// "callback" : e => {
+						// 	share.set('stepType', defaults.stepType);
+						// }
 					};
 	
 					if (data) {
@@ -7611,6 +7614,10 @@ var SolitaireEngine =
 	var _common = __webpack_require__(5);
 	
 	var _common2 = _interopRequireDefault(_common);
+	
+	var _defaults = __webpack_require__(3);
+	
+	var _defaults2 = _interopRequireDefault(_defaults);
 	
 	var _stateManager = __webpack_require__(6);
 	
@@ -7774,11 +7781,11 @@ var SolitaireEngine =
 		if (undoData instanceof Array) {
 	
 			undoData.reverse();
-	
 			for (var _i in undoData) {
 				var data = undoData[_i];
 				_undo(data);
 			}
+			undoData.reverse();
 		} else {
 			_undo(undoData);
 		}
@@ -7877,16 +7884,21 @@ var SolitaireEngine =
 		if (redoData instanceof Array) {
 	
 			// redoData.reverse();
-	
 			for (var _i in redoData) {
 				var data = redoData[_i];
 				_redo(data);
 			}
+			// redoData.reverse();
 		} else {
 			_redo(redoData);
 		}
 	
 		_tips2.default.checkTips();
+	
+		if (_share2.default.get('stepType') != _defaults2.default.stepType && _tips2.default.getTips().length == 0) {
+			_share2.default.set('stepType', _defaults2.default.stepType);
+			_tips2.default.checkTips();
+		}
 	});
 	
 	// history

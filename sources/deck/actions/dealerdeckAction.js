@@ -185,7 +185,7 @@ class dealerdeckAction extends deckAction {
 			}
 		}
 
-		if(_makeStep) {
+		if(_makeStep && save) {
 			// сохраняем если паздача удалась
 			event.dispatch('saveSteps', 'DEALERDECKACTION');
 		}

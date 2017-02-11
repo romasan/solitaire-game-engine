@@ -99,6 +99,7 @@ class kickAction extends deckAction {
 				_addStep({
 					"undo" : stepType                                                            ,
 					"redo" : data.actionData.dispatch ? share.get('stepType') : defaults.stepType
+					// "redo" : defaults.stepType
 				})
 
 				event.dispatch('saveSteps', 'KICKACTION#2');

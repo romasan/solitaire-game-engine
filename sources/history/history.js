@@ -3,6 +3,7 @@
 import event        from 'event'       ;
 import share        from 'share'       ;
 import common       from 'common'      ;
+import defaults     from 'defaults'    ;
 import stateManager from 'stateManager';
 
 import forceMove    from 'forceMove'   ;
@@ -154,11 +155,11 @@ event.listen('undo', undoData => {
 	if(undoData instanceof Array) {
 
 		undoData.reverse();
-
 		for(let _i in undoData) {
 			let data = undoData[_i];
 			_undo(data);
 		}
+		undoData.reverse();
 	} else {
 		_undo(undoData);
 	}
@@ -269,16 +270,24 @@ event.listen('redo', redoData => {
 	if(redoData instanceof Array) {
 
 		// redoData.reverse();
-
 		for(let _i in redoData) {
 			let data = redoData[_i];
 			_redo(data);
 		}
+		// redoData.reverse();
 	} else {
 		_redo(redoData);
 	}
 
 	Tips.checkTips();
+
+	if(
+		share.get('stepType') != defaults.stepType &&
+		Tips.getTips().length == 0
+	) {
+		share.set('stepType', defaults.stepType);
+		Tips.checkTips();
+	}
 
 });
 

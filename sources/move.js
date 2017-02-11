@@ -121,6 +121,7 @@ let Move = (moveDeck, to, cursorMove) => {
 						"stepType" : {
 							"undo" : _stepType,
 							"redo" : _stepType,
+							// "redo" : _checkMoveEnd ? defaults.stepType : _stepType
 							// "redo" : _checkMoveEnd ? 'specialStepType' : _stepType
 						},
 						"context"  : "move"

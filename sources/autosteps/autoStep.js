@@ -60,13 +60,15 @@ export default class {
 
 	end(data) {
 
+		share.set('stepType', defaults.stepType);
+
 		if(this.dispatch) {
 
 			let _data = {
-				"stepType" : share.get('stepType'),
-				"callback" : e => {
-					share.set('stepType', defaults.stepType);
-				}
+				"stepType" : share.get('stepType')
+				// "callback" : e => {
+				// 	share.set('stepType', defaults.stepType);
+				// }
 			};
 
 			if(data) {
