@@ -17,6 +17,7 @@ import common   from 'common'  ;
  * append
  * html
  * animate
+ * stop
  * remove
  * parent
  * after
@@ -31,11 +32,14 @@ export default class elClass {
 	constructor(data) {
 
 		this.el = data;
-		
+
 		if(!data) {
 			// if(window._debug) throw new Error("test");
 			this.el = null;
 		}
+
+		this._animationCallbacks = [];
+		this._animationIndex = 0;
 	}
 
 	attr(attributes) {
@@ -54,7 +58,7 @@ export default class elClass {
 
 			let _classes = this.el.className.split(' ');
 
-			return _classes.includes(className);
+			return _classes.indexOf(className) >= 0;
 		} catch(e) {}
 	}
 
@@ -96,15 +100,15 @@ export default class elClass {
 
 			// if(this.hasClass(className)) {
 			let _clone = [];
-			
+
 			for(let i in _classes) {
 				if(_classes[i] != className) {
 					_clone.push(_classes[i]);
 				}
 			}
-			
+
 			_classes = _clone;
-			
+
 			this.el.className = _classes.join(' ');
 			// }
 
@@ -131,7 +135,7 @@ export default class elClass {
 	hide() {
 		try {
 			return this.css({
-				'display' : 'none'
+				"display" : 'none'
 			});
 		} catch(e) {}
 	}
@@ -139,7 +143,7 @@ export default class elClass {
 	show() {
 		try {
 			return this.css({
-				'display' : 'block'
+				"display" : 'block'
 			});
 		} catch(e) {}
 	}
@@ -160,8 +164,8 @@ export default class elClass {
 
 	html(el) {
 		try {
-	
-			if(typeof el == "undefined") {
+
+			if(typeof el == 'undefined') {
 				return this.el.innerHTML;
 			}
 
@@ -182,18 +186,20 @@ export default class elClass {
 
 			let _animation = share.get('animation');
 
-			typeof animationTime == "undefined" && (animationTime = share.get('animationTime'));
-			typeof animationTime == "function"  && (callback = animationTime, animationTime = share.get('animationTime'));
-			typeof callback      == "string"    && (animationName = callback, callback = null);
+			typeof animationTime == 'undefined' && (animationTime = share.get('animationTime'));
+			typeof animationTime == 'function'  && (callback = animationTime, animationTime = share.get('animationTime'));
+			typeof callback      == 'string'    && (animationName = callback, callback = null);
+
+			animationName = animationName ? animationName : 'animation_' + this._animationIndex;
+			this._animationCallbacks[animationName] = callback;
+			this._animationIndex += 1;
 
 			// Thread
 			setTimeout(e => {
 
-				console.log('%canimate thread', 'background: orange;', common.getElementById(this.el.id).name);
-
 				if(_animation) {
 					this.css({
-						'transition': (animationTime / 1000) + 's'
+						"transition" : (animationTime / 1000) + 's'
 					});
 				}
 
@@ -224,9 +230,9 @@ export default class elClass {
 
 				if(_animation) {
 
-					this.addClass("animated");
+					this.addClass('animated');
 
-					this.el.addEventListener("transitionend", e => {
+					this.el.addEventListener('transitionend', e => {
 
 						counter -= 1;
 
@@ -234,14 +240,15 @@ export default class elClass {
 
 						if(!counter) {
 
-							this.removeClass("animated");
+							this.removeClass('animated');
 
 							this.css({
-								transition: null
+								"transition" : null
 							});
 
-							if(typeof callback == "function") {
-								callback();
+							if(typeof this._animationCallbacks[animationName] == 'function') {
+								this._animationCallbacks[animationName]();
+								this._animationCallbacks[animationName] = null;
 							}
 
 							event.dispatch('allAnimationsEnd', animationName);
@@ -252,14 +259,19 @@ export default class elClass {
 
 					// event.dispatch('animationEnd', this);
 
-					if(typeof callback == "function") {
-						callback();
+					if(typeof this._animationCallbacks[animationName] == 'function') {
+						this._animationCallbacks[animationName]();
+						this._animationCallbacks[animationName] = null;
 					}
 
 					event.dispatch('allAnimationsEnd', animationName);
 				}
 			}, 0);
 		} catch(e) {}
+	}
+
+	stop() {
+		this._animationCallbacks = [];
 	}
 
 	remove() {
@@ -296,7 +308,7 @@ export default class elClass {
 	}
 
 	trigger(eventName) {
-		if(typeof this.el[eventName] == "function") {
+		if(typeof this.el[eventName] == 'function') {
 			this.el[eventName]();
 		}
 	}

@@ -1,10 +1,10 @@
 'use strict';
 
-import event    from 'event';
-import share    from 'share';
+import event    from 'event'   ;
+import share    from 'share'   ;
 import defaults from 'defaults';
 
-import Field    from 'field';
+import Field    from 'field'   ;
 import elRender from 'elRender';
 
 /*
@@ -81,8 +81,6 @@ let applyChangedParameters = data => {
 				: 0;
 };
 
-// --------------------------------------------------------------------------------------------------------
-
 event.listen('addDeckEl', data => {
 
 	applyChangedParameters(data);
@@ -91,40 +89,38 @@ event.listen('addDeckEl', data => {
 		elRender('<div>');
 
 	let _params = {
-		'transform' : 'rotate(' + (data.params.rotate | 0) + 'deg)',
-		'width'     : defaults.card.width  + 'px'                  ,
- 		'height'    : defaults.card.height + 'px'                  ,
-		'left'      : data.params.x        + 'px'                  ,
-		'top'       : data.params.y        + 'px'                  ,
-		'display'   : data.deck.visible ? 'block' : 'none'
+		"transform" : 'rotate(' + (data.params.rotate | 0) + 'deg)',
+		"width"     : defaults.card.width  + 'px'                  ,
+		"height"    : defaults.card.height + 'px'                  ,
+		"left"      : data.params.x        + 'px'                  ,
+		"top"       : data.params.y        + 'px'                  ,
+		"display"   : data.deck.visible ? 'block' : 'none'
 	};
 
 	elRender(_deckDomElement)
 		.css(_params)
 		.addClass('el')
 		.attr({
-			id : data.deck.id
+			"id" : data.deck.id
 		});
 
 	if(data.deckData.showSlot) {
 		elRender(_deckDomElement)
 			.addClass('slot');
 	}
-	
+
 	if(data.deckData.class) {
 		elRender(_deckDomElement)
 			.addClass(data.deckData.class);
 	}
 
 	let _fieldDomElement = share.get('domElement:field');
-	
+
 	elRender(_fieldDomElement)
 		.append(_deckDomElement);
 
 	share.set('domElement:' + data.deck.id, _deckDomElement);
 });
-
-// --------------------------------------------------------------------------------------------------------
 
 event.listen('redrawDeckFlip', data => {
 
@@ -133,11 +129,11 @@ event.listen('redrawDeckFlip', data => {
 	}
 
 	for(let i in data.cards) {
-		
+
 		let _params = {};
 
 		let _cardDomElement = share.get('domElement:' + data.cards[i].id);
-		
+
 		if(data.cards[i].flip) {
 
 			_cardDomElement.addClass('flip');
@@ -145,13 +141,11 @@ event.listen('redrawDeckFlip', data => {
 
 			_cardDomElement.removeClass('flip');
 		}
-		
+
 		_cardDomElement.css(_params);
 	}
 
 });
-
-// --------------------------------------------------------------------------------------------------------
 
 event.listen('redrawDeckIndexes', data => {
 
@@ -164,12 +158,10 @@ event.listen('redrawDeckIndexes', data => {
 		let _cardDomElement = share.get('domElement:' + data.cards[i].id);
 
 		_cardDomElement.css({
-			'z-index' : (defaults.startZIndex | 0) + (i | 0)
+			"z-index" : (defaults.startZIndex | 0) + (i | 0)
 		});
 	}
 });
-
-// --------------------------------------------------------------------------------------------------------
 
 event.listen('redrawDeck', data => {
 
@@ -192,14 +184,14 @@ event.listen('redrawDeck', data => {
 
 	// перерисовка стопки
 	let _params = {
-		'transform' : 'rotate(' + (data.params.rotate | 0) + 'deg)',
-		'left'      : data.params.x + 'px'                         ,
-		'top'       : data.params.y + 'px'                         ,
-		'display'   : data.deck.visible ? 'block' : 'none'
-	};	
+		"transform" : 'rotate(' + (data.params.rotate | 0) + 'deg)',
+		"left"      : data.params.x + 'px'                         ,
+		"top"       : data.params.y + 'px'                         ,
+		"display"   : data.deck.visible ? 'block' : 'none'
+	};
 
 	let _deckDomElement = share.get('domElement:' + data.deck.id);
-	
+
 	elRender(_deckDomElement)
 		.css(_params);
 
@@ -215,37 +207,35 @@ event.listen('redrawDeck', data => {
 		}
 	}
 
-	// console.log('redraw cards for', data.deck.name, data.cards);
-
 	// перерисовка карт
 	for(let i in data.cards) {
-		
+
 		let _card_position = data.deck.padding(i);
 		let _zIndex        = (data.params.startZIndex | 0) + (i | 0);
-		
+
 		let _params = {
-			'-ms-transform'     : 'rotate(' + (data.params.rotate | 0) + 'deg)',
-			'-webkit-transform' : 'rotate(' + (data.params.rotate | 0) + 'deg)',
-			'-moz-transform'    : 'rotate(' + (data.params.rotate | 0) + 'deg)',
-			'transform'         : 'rotate(' + (data.params.rotate | 0) + 'deg)',
-			'left'              : _card_position.x + 'px'                      ,
-			'top'               : _card_position.y + 'px'                      ,
-			'z-index'           : _zIndex                                      ,
-			'display'           : data.deck.visible ? 'block' : 'none'
+			"-ms-transform"     : 'rotate(' + (data.params.rotate | 0) + 'deg)',
+			"-webkit-transform" : 'rotate(' + (data.params.rotate | 0) + 'deg)',
+			"-moz-transform"    : 'rotate(' + (data.params.rotate | 0) + 'deg)',
+			"transform"         : 'rotate(' + (data.params.rotate | 0) + 'deg)',
+			"left"              : _card_position.x + 'px'                      ,
+			"top"               : _card_position.y + 'px'                      ,
+			"z-index"           : _zIndex                                      ,
+			"display"           : data.deck.visible ? 'block' : 'none'
 		};
 
 		let _cardDomElement = share.get('domElement:' + data.cards[i].id);
 
 		if(data.cards[i].flip) {
-		
+
 			elRender(_cardDomElement)
 				.addClass('flip');
 		} else {
-		
+
 			elRender(_cardDomElement)
 				.removeClass('flip');
 		}
-		
+
 		elRender(_cardDomElement)
 			.css(_params);
 	}

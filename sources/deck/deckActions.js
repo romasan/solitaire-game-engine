@@ -1,19 +1,19 @@
 'use strict';
 
-import event    from 'event';
-import share    from 'share';
-import defaults from 'defaults';
-import common   from 'common';
+import event    from 'event'                     ;
+import share    from 'share'                     ;
+import defaults from 'defaults'                  ;
+import common   from 'common'                    ;
 
 // Actions
-import twindeck       from 'twindeckAction';
-import dealerdeck     from 'dealerdeckAction';
-import kickAction     from 'kickAction';
-import stepsAround    from 'stepsAroundAction';
+import twindeck       from 'twindeckAction'      ;
+import dealerdeck     from 'dealerdeckAction'    ;
+import kickAction     from 'kickAction'          ;
+import stepsAround    from 'stepsAroundAction'   ;
 import changeStepType from 'changeStepTypeAction';
-import lock           from 'lockAction';
-import unlock         from 'unlockAction';
-import checkFull      from 'checkFullAction';
+import lock           from 'lockAction'          ;
+import unlock         from 'unlockAction'        ;
+import checkFull      from 'checkFullAction'     ;
 
 let _actions = {
 	"twindeck"       : twindeck      ,
@@ -26,7 +26,11 @@ let _actions = {
 	"checkFull"      : checkFull
 };
 
-// ------------------------------------------------------------------------------------------
+/*
+ * addActionEvent
+ * add
+ * autoRunActions
+ */
 
 let _decksActions  = [],
     _events        = [];
@@ -42,7 +46,7 @@ let addActionEvent = eventName => {
 
 		// event name
 		eventName, 
-		
+
 		// callback
 		data => {
 
@@ -54,17 +58,17 @@ let addActionEvent = eventName => {
 					let _canRun = eventName == 'click'
 					    ? data.to.name == _decksActions[i].deck.name
 					    : true;
-					
+
 					if(_canRun) {
-						
+
 						_actions[_actionName].run(
-							
+
 							_decksActions[i].deck, 
-							
+
 							{
-								actionData : _decksActions[i].deck.actions[_actionName],
-								eventData  : data,
-								eventName
+								"actionData" : _decksActions[i].deck.actions[_actionName],
+								"eventData"  : data,
+								"eventName"  : eventName
 							}
 						);
 					};
@@ -89,22 +93,22 @@ let add = deck => {
 
 		// если такой action существует
 		if(_actions[actionName]) {
-			
+
 			// сохраняем action
 			_decksActions.push({
-				deck   : deck, 
-				event  : deck.actions[actionName].event,
-				action : actionName
+				"deck"   : deck, 
+				"event"  : deck.actions[actionName].event,
+				"action" : actionName
 			});
 
 			share.set('actionEvent:' + deck.name + ':' + deck.actions[actionName].event, true);
-			
+
 			// создаём событие если оно еще не создано
-			if(!_events.includes(deck.actions[actionName].event)) {
-				
+			if(!_events.indexOf(deck.actions[actionName].event) >= 0) {
+
 				// сохраняем событие в список с уже созданными
 				_events.push(deck.actions[actionName].event);
-				
+
 				// вешаем событие
 				addActionEvent(deck.actions[actionName].event);
 			}
@@ -113,7 +117,7 @@ let add = deck => {
 		};
 
 	}
-	
+
 	autoRunActions(deck);
 };
 
@@ -129,9 +133,9 @@ let autoRunActions = deck => {
 					deck, 
 
 					{
-						actionData : deck.actions[actionName],
-						eventData  : null,
-						eventName  : deck.actions[actionName].event
+						"actionData" : deck.actions[actionName],
+						"eventData"  : null,
+						"eventName"  : deck.actions[actionName].event
 					}
 				);
 			}

@@ -1,43 +1,37 @@
 'use strict';
 
-import event        from 'event';
-import share        from 'share';
-import common       from 'common';
+import event        from 'event'       ;
+import share        from 'share'       ;
+import common       from 'common'      ;
+import defaults     from 'defaults'    ;
 import stateManager from 'stateManager';
 
-import forceMove    from 'forceMove';
-import Deck         from 'deck';
-import Tips         from 'tips';
-import field        from 'field';
-import inputs       from 'inputs';
-// import elRender  from 'elRender';
+import forceMove    from 'forceMove'   ;
+import Deck         from 'deck'        ;
+import Tips         from 'tips'        ;
+import field        from 'field'       ;
+import inputs       from 'inputs'      ;
 
-// let _undoMethods = {};
-// let _redoMethods = {};
+// TODO пошаговая анимация
+// let _movesCallback = e => {
+// 	if(_movesStack.length) {
+// 		_movesStack.shift()();
+// 	} else {
+// 		// 
+// 	}
+// };
+// let _movesStack = [];
 
-let _movesCallback = e => {
-	if(_movesStack.length) {
-		_movesStack.shift()();
-	} else {
-		// 
-	}
-};
+// let _stepsCallback = e => {
+// 	if(_stepsStack.length) {
+// 		_stepsStack.shift()();
+// 	} else {
+// 		// 
+// 	}
+// };
+// let _stepsStack = [];
 
-let _movesStack = [];
-
-// --
-
-let _stepsCallback = e => {
-	if(_stepsStack.length) {
-		_stepsStack.shift()();
-	} else {
-		// 
-	}
-};
-
-let _stepsStack = [];
-
-// ---------------------------------------- UNDO ----------------------------------------
+// undo
 
 let historyStack = [];
 
@@ -45,22 +39,22 @@ let _undo = data => {
 
 	if(share.get('sessionStarted')) {
 		// _undoMoveStack = [];
-		event.dispatch('stopAnimations');
+		event.dispatch('stopAnimations', 'HISTORY#1');
 		stateManager.restore();
 	}
-	
+
 	// FLIP
 	// if(data.flip) {};
-	
+
 	// UNFLIP
 	// if(data.unflip) {};
-	
+
 	// FULL
 	// if(data.full) {};
 
 	// LOCK
 	if(
-		typeof data.lock != "undefined"
+		typeof data.lock != 'undefined'
 	) {
 		for(let i in data.lock) {
 			let _element = common.getElementsByName(data.lock[i])[0];
@@ -70,7 +64,7 @@ let _undo = data => {
 
 	// UNLOCK
 	if(
-		typeof data.unlock != "undefined"
+		typeof data.unlock != 'undefined'
 	) {
 		for(let i in data.unlock) {
 			let _element = common.getElementsByName(data.unlock[i])[0];
@@ -80,22 +74,22 @@ let _undo = data => {
 
 	// MOVE
 	if(
-		typeof data.move      != "undefined" &&
-		typeof data.move.from != "undefined" &&
-		typeof data.move.to   != "undefined" &&
-		typeof data.move.deck != "undefined"
+		typeof data.move      != 'undefined' &&
+		typeof data.move.from != 'undefined' &&
+		typeof data.move.to   != 'undefined' &&
+		typeof data.move.deck != 'undefined'
 	) {
 
 		// TODO
 		let movesAnimation = share.get('movesAnimation');
-		
+
 		if(data.move.stepType) {
 
-			if(typeof data.move.stepType == "string") {
+			if(typeof data.move.stepType == 'string') {
 				share.set('stepType', data.move.stepType);
 			}
 
-			if(typeof data.move.stepType.undo == "string") {
+			if(typeof data.move.stepType.undo == 'string') {
 				share.set('stepType', data.move.stepType.undo);
 			}
 		}
@@ -104,10 +98,10 @@ let _undo = data => {
 		// _movesStack.push(e => {
 
 		let forceMoveData = {
-			from     : data.move.to  , // from ->
-			to       : data.move.from, //      <- to
-			deck     : data.move.deck,
-			flip     : data.move.flip,
+			"from" : data.move.to  , // from ->
+			"to"   : data.move.from, //      <- to
+			"deck" : data.move.deck,
+			"flip" : data.move.flip,
 		};
 
 		if(!share.get('showHistoryAnimation')) {
@@ -131,38 +125,55 @@ let _undo = data => {
 
 event.listen('undo', undoData => {
 
-	inputs.break();
-
-	event.dispatch('stopAnimations');
-	
 	if(!undoData) {
 		return;
 	};
 
+	// let e = undoData.length ? undoData[undoData.length - 1] : undoData;
+
+	// if(e.move) {
+
+	// 	let _lastDragDeck = share.get('lastDragDeck');
+	//     let _deck = common.getElementById(_lastDragDeck.dragDeckParentId);
+
+	// 	common.animationOff();
+	// 	event.dispatch('moveCardToHome', {
+	// 		"departure" : _deck        ,
+	// 		"moveDeck"  : _lastDragDeck.dragDeck
+	// 	});
+	// 	common.animationOn();
+	// }
+
+	inputs.break();
+
+	_history.reset();
+
+	if(share.get('animation')) {
+		event.dispatch('stopAnimations', 'HISTORY#2');
+	}
 	// Обратная совместимость
 	if(undoData instanceof Array) {
 
 		undoData.reverse();
-		
 		for(let _i in undoData) {
 			let data = undoData[_i];
 			_undo(data);
 		}
+		undoData.reverse();
 	} else {
 		_undo(undoData);
 	}
 
 	Tips.checkTips();
-
 });
 
-// ---------------------------------------- REDO ----------------------------------------
+// redo
 
 let _redo = data => {
 
 	if(share.get('sessionStarted')) {
 		// _undoMoveStack = [];
-		event.dispatch('stopAnimations');
+		event.dispatch('stopAnimations', 'HISTORY#2');
 		stateManager.restore();
 	}
 
@@ -177,7 +188,7 @@ let _redo = data => {
 
 	// LOCK
 	if(
-		typeof data.lock != "undefined"
+		typeof data.lock != 'undefined'
 	) {
 		for(let i in data.lock) {
 			let _element = common.getElementsByName(data.lock[i])[0];
@@ -187,7 +198,7 @@ let _redo = data => {
 
 	// UNLOCK
 	if(
-		typeof data.unlock != "undefined"
+		typeof data.unlock != 'undefined'
 	) {
 		for(let i in data.unlock) {
 			let _element = common.getElementsByName(data.unlock[i])[0];
@@ -197,28 +208,28 @@ let _redo = data => {
 
 	// MOVE
 	if(
-		typeof data.move      != "undefined" &&
-		typeof data.move.from != "undefined" &&
-		typeof data.move.to   != "undefined" &&
-		typeof data.move.deck != "undefined"
+		typeof data.move      != 'undefined' &&
+		typeof data.move.from != 'undefined' &&
+		typeof data.move.to   != 'undefined' &&
+		typeof data.move.deck != 'undefined'
 	) {
 
 		if(data.move.stepType) {
 
-			if(typeof data.move.stepType == "string") {
+			if(typeof data.move.stepType == 'string') {
 				share.set('stepType', data.move.stepType);
 			}
 
-			if(typeof data.move.stepType.redo == "string") {
+			if(typeof data.move.stepType.redo == 'string') {
 				share.set('stepType', data.move.stepType.redo);
 			}
 		}
 
 		let forceMoveData = {
-			from     : data.move.from,
-			to       : data.move.to  ,
-			deck     : data.move.deck,
-			flip     : data.move.flip,
+			"from" : data.move.from,
+			"to"   : data.move.to  ,
+			"deck" : data.move.deck,
+			"flip" : data.move.flip,
 		};
 
 		if(!share.get('showHistoryAnimation')) {
@@ -235,7 +246,7 @@ let _redo = data => {
 
 	if(
 		data.redo                            &&
-		typeof data.redo.stepType == "string"
+		typeof data.redo.stepType == 'string'
 	) {
 		share.set('stepType', data.redo.stepType);
 	}
@@ -245,7 +256,11 @@ event.listen('redo', redoData => {
 
 	inputs.break();
 
-	event.dispatch('stopAnimations');
+	_history.reset();
+
+	if(share.get('animation')) {
+		event.dispatch('stopAnimations', 'HISTORY#4');
+	}
 
 	if(!redoData) {
 		return;
@@ -253,35 +268,50 @@ event.listen('redo', redoData => {
 
 	// Обратная совместимость
 	if(redoData instanceof Array) {
-		
-		redoData.reverse();
-		
+
+		// redoData.reverse();
 		for(let _i in redoData) {
 			let data = redoData[_i];
 			_redo(data);
 		}
+		// redoData.reverse();
 	} else {
 		_redo(redoData);
 	}
 
 	Tips.checkTips();
 
+	if(
+		share.get('stepType') != defaults.stepType &&
+		Tips.getTips().length == 0
+	) {
+		share.set('stepType', defaults.stepType);
+		Tips.checkTips();
+	}
+
 });
 
-// ----------------------------------------------
+// history
 
 class history {
 
 	constructor() {
-		
+
 		this.steps = [];
 	}
 
-	reset() {
+	reset(interior) {
 		this.steps = [];
 	}
 
 	add(step) {
+
+		// console.log(
+		// 	'history add:'                                             ,
+		// 	step && step.move && step.move.from ? step.move.from : step,
+		// 	'->'                                                       ,
+		// 	step && step.move && step.move.to   ? step.move.to   : step
+		// );
 
 		// for(let i in step) {
 		this.steps.push(step);
@@ -292,17 +322,15 @@ class history {
 	get(reset = true) {
 
 		let _req = this.steps;
-		
+
 		if(reset) {
-			this.reset();
+			this.reset(true);
 		}
 
 		return _req;
 	}
 
-	log() {
-		console.log(this.steps);
-	}
+	log() {}
 
 	count() {
 		return this.steps.length;
@@ -313,7 +341,7 @@ class history {
 	// 		_undoMethods[i] = data[i];
 	// 	}
 	// }
-	
+
 	// addRedoMethods(data) {
 	// 	for(let i in data) {
 	// 		_redoMethods[i] = data[i];
@@ -324,12 +352,36 @@ class history {
 let _history = new history();
 
 event.listen('addStep', data => {
+	if(data.debug) {
+		delete data.debug;
+	}
 	_history.add(data)
 });
 
 // save steps to client history
 event.listen('saveSteps', e => {
-	event.dispatch('makeStep', _history.get());
+	let data = _history.get();
+	if(data.length) {
+		event.dispatch('makeStep', data);
+	} else {
+		console.warn('Empty history to save.');
+	}
 });
+
+event.listen('doHistory', e => {
+
+	// common.animationOff();
+
+	for(let i in e.data) {
+
+		event.dispatch('redo', e.data[i]);
+
+		if(typeof e.callback == 'function') {
+			e.callback(e.data[i]);
+		}
+	}
+
+	// common.animationOn();
+})
 
 export default _history;

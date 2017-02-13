@@ -1,8 +1,8 @@
 'use strict';
 
-import event      from 'event';
+import event      from 'event'     ;
 
-import Group      from 'group';
+import Group      from 'group'     ;
 import deckAction from 'deckAction';
 
 class checkFullAction extends deckAction {
@@ -88,7 +88,7 @@ class checkFullAction extends deckAction {
 			}
 		}
 
-		event.dispatch('saveSteps');
+		event.dispatch('saveSteps', 'CHECKFULLACTION');
 
 		super.end();
 	}

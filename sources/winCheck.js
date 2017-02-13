@@ -28,13 +28,17 @@ let winCheck = params => {
 
 	for(let ruleName in _winCheckRules) {
 
+		let _ruleName = ruleName.length == 1 && ruleName | 0 == 0
+			? _winCheckRules[ruleName]
+			: ruleName;
+
 		_hasRules = true;
 
-		if(winCheckRules[ruleName]) {
+		if(winCheckRules[_ruleName]) {
 
-			let _result = winCheckRules[ruleName]({
-				decks     : Deck.getDecks({visible : true}), 
-				rulesArgs : _winCheckRules[ruleName]
+			let _result = winCheckRules[_ruleName]({
+				"decks"     : Deck.getDecks({ "visible" : true }), 
+				"rulesArgs" : _winCheckRules[_ruleName]
 			});
 
 			rulesCorrect &= _result;

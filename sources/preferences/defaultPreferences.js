@@ -1,9 +1,9 @@
 'use strict';
 
-import event    from 'event';
+import event    from 'event'   ;
 import defaults from 'defaults';
 
-import storage from 'storage';
+import storage from 'storage'  ;
 
 export default e => {
 
@@ -11,10 +11,10 @@ export default e => {
 	!pref && (pref = defaults.pref);
 
 	for(let prefName in pref) {
-		
+
 		if(defaults.themes[prefName]) {
 
-			if(!defaults.themes[prefName].includes(pref[prefName])) {
+			if(!defaults.themes[prefName].indexOf(pref[prefName]) >= 0) {
 				pref[prefName] = defaults.pref[prefName];
 			}
 

@@ -7,14 +7,14 @@ import event from 'event';
  * end
  * break
  */
+ 
 export default class deckAction {
-	
+
 	constructor() {}
 
 	run() {}
 
 	end() {
-		console.log('end action:', this._actionName);
 		event.dispatch('stopSession');
 	}
 

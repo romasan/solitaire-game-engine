@@ -1,10 +1,10 @@
 'use strict';
 
-import event    from 'event';
-import share    from 'share';
+import event    from 'event'   ;
+import share    from 'share'   ;
 
 import elRender from 'elRender';
-import Tips     from 'tips';
+import Tips     from 'tips'    ;
 
 event.listen('showTip', data => {
 
@@ -31,9 +31,9 @@ event.listen('hideTips', data => {
 	} else {
 
 		for(let i in Tips.tipTypes) {
-			
+
 			let typeName = Tips.tipTypes[i];
-			
+
 			elRender('.' + typeName)
 				.removeClass(typeName);
 		}

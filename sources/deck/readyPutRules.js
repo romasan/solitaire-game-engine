@@ -1,9 +1,9 @@
 'use strict';
 
-import common    from 'common';
-import defaults  from 'defaults';
+import common    from 'common'   ;
+import defaults  from 'defaults' ;
 
-import Deck      from 'deck';
+import Deck      from 'deck'     ;
 import getBeside from 'getBeside';
 
 /*
@@ -46,7 +46,7 @@ let readyPutRules = {
 
 	// Relations filters
 
-	linePrev : deck => {
+	"linePrev" : deck => {
 
 		let prev = getBeside(deck.to).prev;
 
@@ -60,7 +60,7 @@ let readyPutRules = {
 		return false;
 	},
 
-	lineNext : deck => {
+	"lineNext" : deck => {
 
 		let next = getBeside(deck.to).next;
 
@@ -76,7 +76,7 @@ let readyPutRules = {
 
 	// Internal use
 
-	_down_up_cards : deck => {
+	"_down_up_cards" : deck => {
 
 		if(deck.cards.length == 0) {
 			return false;
@@ -90,22 +90,22 @@ let readyPutRules = {
 		}
 
 		return {
-			up  ,
-			down
+			"up"   : up  ,
+			"down" : down
 		}
 	},
 
-	_down_up_rank_num : deck => {
+	"_down_up_rank_num" : deck => {
 
 		let du = readyPutRules._down_up_cards(deck);
 
 		return du ? {
-			down : defaults.card.ranks.indexOf(du.down.rank),
-			up   : defaults.card.ranks.indexOf(du.up.rank)
+			"down" : defaults.card.ranks.indexOf(du.down.rank),
+			"up"   : defaults.card.ranks.indexOf(du.up.rank)
 		} : false;
 	},
 
-	_isFirst: (deck, _name) => {
+	"_isFirst": (deck, _name) => {
 
 		if(deck.cards.length == 0) {
 
@@ -122,7 +122,7 @@ let readyPutRules = {
 
 	// Rules
 
-	striped : deck => {
+	"striped" : deck => {
 
 		if(deck.cards.length == 0) {
 			return true;
@@ -139,15 +139,15 @@ let readyPutRules = {
 		return color_A != color_B;
 	},
 
-	firstAce     : deck => readyPutRules._isFirst(deck, defaults.card.ranks[0]),
+	"firstAce"     : deck => readyPutRules._isFirst(deck, defaults.card.ranks[0]),
 
-	firstKing    : deck => readyPutRules._isFirst(deck, defaults.card.ranks[defaults.card.ranks.length - 1]),
+	"firstKing"    : deck => readyPutRules._isFirst(deck, defaults.card.ranks[defaults.card.ranks.length - 1]),
 
-	notForEmpty  : deck => deck.cards.length > 0,
+	"notForEmpty"  : deck => deck.cards.length > 0,
 
-	onlyEmpty    : deck => deck.cards.length == 0,
+	"onlyEmpty"    : deck => deck.cards.length == 0,
 
-	oneRank      : deck => {
+	"oneRank"      : deck => {
 
 		if(deck.cards.length == 0) {
 			return true;
@@ -158,7 +158,7 @@ let readyPutRules = {
 		return du && du.up.rank == du.down.rank;
 	},
 
-	oneSuit      : deck => {
+	"oneSuit"      : deck => {
 
 		if(deck.cards.length == 0) {
 			return true;
@@ -169,11 +169,11 @@ let readyPutRules = {
 		return du && du.up.suit == du.down.suit;
 	},
 
-	any : deck => true,
+	"any" : deck => true,
 
-	not : deck => false,
+	"not" : deck => false,
 
-	ascendDeck : deck => {//ascend deck by step
+	"ascendDeck" : deck => {//ascend deck by step
 
 		if(deck.putDeck.length == 1) {
 			return true;
@@ -199,7 +199,7 @@ let readyPutRules = {
 		return ruleCorrect;
 	},
 
-	descendDeck : deck => {//ascend deck by step
+	"descendDeck" : deck => {//ascend deck by step
 
 		if(deck.putDeck.length == 1) {
 			return true;
@@ -225,7 +225,7 @@ let readyPutRules = {
 		return ruleCorrect;
 	},
 
-	oneRankDeck : deck => {
+	"oneRankDeck" : deck => {
 
 		if(deck.putDeck.length == 1) {
 			return true;
@@ -247,7 +247,7 @@ let readyPutRules = {
 		return ruleCorrect;
 	},
 
-	ascend : deck => {
+	"ascend" : deck => {
 
 		if(deck.cards.length == 0) {
 			return true;
@@ -258,7 +258,7 @@ let readyPutRules = {
 		return da && da.down < da.up;
 	},
 
-	descent : deck => {
+	"descent" : deck => {
 
 		if(deck.cards.length == 0) {
 			return true;
@@ -269,7 +269,7 @@ let readyPutRules = {
 		return da && da.down > da.up;
 	},
 
-	descentOne : deck => {// one step
+	"descentOne" : deck => {// one step
 
 		if(deck.cards.length == 0) {
 			return true;
@@ -280,7 +280,7 @@ let readyPutRules = {
 		return da && da.down == 1 + da.up;
 	},
 
-	ascendOne : deck => {// one step
+	"ascendOne" : deck => {// one step
 
 		if(deck.cards.length == 0) {
 			return true;
@@ -291,7 +291,7 @@ let readyPutRules = {
 		return da && 1 + da.down == da.up;
 	},
 
-	ascdescOne : deck => {
+	"ascdescOne" : deck => {
 
 		if(deck.cards.length == 0) {
 			return true;
@@ -302,7 +302,7 @@ let readyPutRules = {
 		return da && Math.abs(da.down - da.up) == 1;
 	},
 
-	sum14 : deck => {
+	"sum14" : deck => {
 
 		if(deck.cards.length == 0) {
 			return true;
@@ -315,9 +315,11 @@ let readyPutRules = {
 	},
 
 	// TODO rules with params ??? or atom rules
+	// "sum" : (deck, data) => {} // rulename:data -> sum:14
+
 	// query ?
 
-	around : deck => {// {from, putDeck, cards}
+	"around" : deck => {// {from, putDeck, cards}
 
 		if(deck.cards.length == 0) {
 			return true;

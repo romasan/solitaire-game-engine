@@ -1,18 +1,22 @@
 'use strict';
 
-import share    from 'share';
+import share    from 'share'   ;
 import defaults from 'defaults';
-import event    from 'event';
+import event    from 'event'   ;
 
 import autoStep from 'autoStep';
-import Deck     from 'deck';
-import Tips     from 'tips';
+import Deck     from 'deck'    ;
+import Tips     from 'tips'    ;
 
 export default class fallAutoStep extends autoStep {
 
 	constructor(params) {
 
 		super(params);
+
+		this._name = 'fall';
+
+		this.manualPossibleMoves = 0;
 
 		// event.listen('fallAutoStepCheck', this.check);
 	}
@@ -38,7 +42,8 @@ export default class fallAutoStep extends autoStep {
 
 	auto() {
 
-		console.log('-- fallAutoStep:auto, curLockState -', share.get('curLockState'));
+		// TODO
+		console.log('fallAutoStep:auto');
 		// fall lines auto
 
 		// get groups
@@ -47,7 +52,6 @@ export default class fallAutoStep extends autoStep {
 		// 	get fall relations
 
 		// OR getTips + random ???
-
 	}
 
 	// manual если autostep = false
@@ -61,17 +65,22 @@ export default class fallAutoStep extends autoStep {
 		let _from = Deck.getDeckById(data.putDeck[0].card.parent),
 		    _to   = data.to;
 
-		let _relations = _from.getRelationsByName('fall', {from: null});
+		let _relations = _from.getRelationsByName('fall', { "from" : null });
 
 		for(let i in _relations) {
 			if(
 				_relations[i].to == _to.name &&
 				_to.cardsCount() === 0
 			) {
+				this.manualPossibleMoves += 1;
 				return true;
 			}
 		}
 
 		return false;
+	}
+
+	end() {
+		super.end({ "save" : (this.manualPossibleMoves > 0 ? true : false) });
 	}
 }

@@ -1,8 +1,8 @@
 'use strict';
 
-import event	from 'event';
-import share	from 'share';
-import common	from 'common';
+import event	from 'event'   ;
+import share	from 'share'   ;
+import common	from 'common'  ;
 import defaults from 'defaults';
 
 import elRender from 'elRender';
@@ -15,8 +15,13 @@ import elRender from 'elRender';
 
 let angleValidate = angle => {
 
-	if(angle < 0  ) { angle += 360; }
-	if(angle > 360) { angle -= 360; }
+	if(angle < 0  ) {
+		angle += 360;
+	}
+
+	if(angle > 360) {
+		angle -= 360;
+	}
 
 	return angle;
 };
@@ -38,50 +43,63 @@ event.listen('moveDragDeck', data => {
 
 		elRender(_cardDomElement)
 			.css({
-				'transform' : 'rotate(' + departureAngle + 'deg)'
+				"transform" : 'rotate(' + departureAngle + 'deg)'
 			})
 
 		if(departureAngle - destinationAngle > 180) {
-			
+
 			departureAngle = departureAngle - 360;
 			elRender(_cardDomElement)
 				.css({
-					'transform' : 'rotate(' + departureAngle + 'deg)'
+					"transform" : 'rotate(' + departureAngle + 'deg)'
 				})
 		};
-		
+
 		if(departureAngle - destinationAngle < -180) {
 			destinationAngle -= 360;
 		}
 
 		let _params = {
-			'transform' : 'rotate(' + destinationAngle + 'deg)',
-			'left'      : _position.x + 'px'                   ,
-			'top'       : _position.y + 'px'
+			"transform" : 'rotate(' + destinationAngle + 'deg)',
+			"left"      : _position.x + 'px'                   ,
+			"top"       : _position.y + 'px'
 		};
 
 		let _zIndex = (defaults.topZIndex | 0) + (i | 0);
 
-		console.log('а теперь здеся', data.moveDeck.map(e => e.card.name), data.debug);
+		let _stop = false;
 		let _callback = function(data, _last) {
+
+			if(_stop) {
+				return;
+			}
+		// let _callback = e => {
 
 			data.departure	.Redraw();
 			data.destination.Redraw();
 
 			common.curUnLock();
 
-			if(_last && typeof data.callback == "function") {
+			if(
+				_last                              &&
+				typeof data.callback == 'function'
+			) {
 				data.callback();
 			}
 
 			event.dispatch('moveDragDeckDone', {
-				deck : data.destination
+				"deck" : data.destination
 			});
+		// };
 		}.bind(null, data, i == _lastIndex);
+
+		event.once('clearCallbacks', e => {
+			_stop = true;
+		});
 
 		elRender(_cardDomElement)
 			.css({
-				'z-index' : _zIndex
+				"z-index" : _zIndex
 			})
 			.animate(
 				_params  ,
@@ -90,8 +108,6 @@ event.listen('moveDragDeck', data => {
 	}
 });
 
-// --------------------------------------------------------------------------------------------------------
-
 event.listen('moveDragDeckDone', data => {
 
 	if(!data.deck.full) {
@@ -99,7 +115,7 @@ event.listen('moveDragDeckDone', data => {
 	}
 
 	let _deck = data.deck.cards;
-	
+
 	for(let i in _deck) {
 
 		let _cardDomElement = share.get('domElement:' + _deck[i].id);
@@ -109,26 +125,24 @@ event.listen('moveDragDeckDone', data => {
 	}
 });
 
-// --------------------------------------------------------------------------------------------------------
-
 event.listen('dragDeck', data => {// {x, y, _dragDeck, _startCursor, _deck}
 
 	for(let i in data._dragDeck) {
 
-			let _zoom = share.get('zoom');
+		let _zoom = share.get('zoom');
 
-			let _position = data._deck.padding(data._dragDeck[i].index);
+		let _position = data._deck.padding(data._dragDeck[i].index);
 
-			let _params = {
-				'left'    : (_position.x + (data.x - data._startCursor.x) / _zoom) + 'px',
-				'top'     : (_position.y + (data.y - data._startCursor.y) / _zoom) + 'px',
-				'z-index' : defaults.topZIndex + (i | 0)
-			}
-
-			// Operations with DOM
-			let _cardDomElement = share.get('domElement:' + data._dragDeck[i].card.id);
-
-			elRender(_cardDomElement)
-					.css(_params);	 
+		let _params = {
+			"left"    : (_position.x + (data.x - data._startCursor.x) / _zoom) + 'px',
+			"top"     : (_position.y + (data.y - data._startCursor.y) / _zoom) + 'px',
+			"z-index" : defaults.topZIndex + (i | 0)
 		}
+
+		// Operations with DOM
+		let _cardDomElement = share.get('domElement:' + data._dragDeck[i].card.id);
+
+		elRender(_cardDomElement)
+			.css(_params);
+	}
 });

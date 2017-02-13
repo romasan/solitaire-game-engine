@@ -1,15 +1,15 @@
-'use strict';
+  'use strict';
 
-import share        from 'share';
-import event        from 'event';
-import defaults     from 'defaults';
-import common       from 'common';
+import share        from 'share'       ;
+import event        from 'event'       ;
+import defaults     from 'defaults'    ;
+import common       from 'common'      ;
 
-import Group        from 'group';
-import Deck         from 'deck';
-import Tips         from 'tips';
+import Group        from 'group'       ;
+import Deck         from 'deck'        ;
+import Tips         from 'tips'        ;
 import addAutoSteps from 'addAutoSteps';
-import storage      from 'storage';
+import storage      from 'storage'     ;
 
 // Model
 // let values = {
@@ -42,22 +42,22 @@ class Field {
 
 		// вкл./выкл. подсказок
 		if(typeof data.showTips == 'boolean' && data.showTips) {
-			Tips.showTips({init : true});
+			Tips.showTips({ "init" : true });
 		} else {
-			Tips.hideTips({init : true});
+			Tips.hideTips({ "init" : true });
 		}
 
 		// устанвливаем тип хода по умолчанию
 		share.set('stepType', defaults.stepType);
 
 		let _values = {
-			"showTipsDestination"  : "boolean", // Альтернативные подсказки
-			"showTipPriority"      : "boolean",
-			"moveDistance"         : "number" ,
-			"zoom"                 : "number" , // масштаб отображения
-			// "movesAnimation"       : "string" ,
-			"animationTime"        : "number" , // время анимации
-			"showHistoryAnimation" : "boolean"
+			"showTipsDestination"  : 'boolean', // Альтернативные подсказки
+			"showTipPriority"      : 'boolean',
+			"moveDistance"         : 'number' ,
+			"zoom"                 : 'number' , // масштаб отображения
+			// "movesAnimation"    : 'string' ,
+			"animationTime"        : 'number' , // время анимации
+			"showHistoryAnimation" : 'boolean'
 		};
 
 		for(let valueName in _values) {
@@ -80,11 +80,11 @@ class Field {
 			    _prefData    = {}          ;
 
 			for(let prefName in data.preferences) {
-				if(typeof prefName == "string") {
+				if(typeof prefName == 'string') {
 
 					_preferences[prefName] = data.preferences[prefName];
 
-					_prefData[prefName] = _pref && typeof _pref[prefName] != "undefined"
+					_prefData[prefName] = _pref && typeof _pref[prefName] != 'undefined'
 						? _pref[prefName]
 						: data.preferences[prefName].value;
 				}
@@ -98,14 +98,14 @@ class Field {
 
 		// параметры отображения подсказок
 		for(let tipParamName in defaults.tipsParams) {
-			this.tipsParams[tipParamName] = (data.tipsParams && typeof data.tipsParams[tipParamName] != "undefined")
+			this.tipsParams[tipParamName] = (data.tipsParams && typeof data.tipsParams[tipParamName] != 'undefined')
 				? data.tipsParams[tipParamName]
 				: defaults.tipsParams[tipParamName]
 		}
 
 		// параметры ввода
 		for(let inputParamName in defaults.inputParams) {
-			this.inputParams[inputParamName] = (data.inputParams && typeof data.inputParams[inputParamName] != "undefined")
+			this.inputParams[inputParamName] = (data.inputParams && typeof data.inputParams[inputParamName] != 'undefined')
 				? data.inputParams[inputParamName]
 				: defaults.inputParams[inputParamName]
 		}
@@ -164,7 +164,6 @@ class Field {
 
 		// событие: игра началась
 		event.dispatch('newGame');
-
 	}
 
 	Redraw(data) {

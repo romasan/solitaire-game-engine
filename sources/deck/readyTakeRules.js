@@ -14,13 +14,13 @@ Rules:
 export default {
 				
 	// SimpleRules
-	not      : data => false,
+	"not"      : data => false                                ,
 
-	notFirst : data => data.cardIndex > 0,
+	"notFirst" : data => data.cardIndex > 0                   ,
 
-	any      : data => true,
+	"any"      : data => true                                 ,
 
-	onlytop  : data => data.cardIndex == data.deckLength - 1
+	"onlytop"  : data => data.cardIndex == data.deckLength - 1
 	
 	// TODO rules
 	

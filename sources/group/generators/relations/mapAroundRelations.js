@@ -16,10 +16,10 @@ export default data => {// {x, y, map, mapSize, el, data}
 			data.map[data.y + mapCommon.aroundRelations[i].y][data.x + mapCommon.aroundRelations[i].x]
 		) {
 			_relations.push({
-				to   : data.map[data.y + mapCommon.aroundRelations[i].y][data.x + mapCommon.aroundRelations[i].x].name,
-				type : mapCommon.aroundRelations[i].type                                                     ,
-				id   : mapCommon.aroundRelations[i].id                                                       ,
-				name : 'around'
+				"to"   : data.map[data.y + mapCommon.aroundRelations[i].y][data.x + mapCommon.aroundRelations[i].x].name,
+				"type" : mapCommon.aroundRelations[i].type                                                     ,
+				"id"   : mapCommon.aroundRelations[i].id                                                       ,
+				"name" : 'around'
 			});
 		}
 	}

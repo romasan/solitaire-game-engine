@@ -4,11 +4,11 @@
 
 // export default jquery;
 
-import defaults from 'defaults';
-import share    from 'share';
-import event    from 'event';
+import defaults from 'defaults'    ;
+import share    from 'share'       ;
+import event    from 'event'       ;
 
-import elClass    from 'elClass';
+import elClass    from 'elClass'   ;
 import allElClass from 'allElClass';
 
 share.set('animatedElements'     , 0        );
@@ -18,24 +18,24 @@ share.set('animatedCallback'     , e => null);
 let _allEl = data => {
 
 	if(!data) {
-		throw new Error("elRender:empty arguments");
+		throw new Error('elRender:empty arguments.');
 	}
-	
-	if(typeof data == "string") {
+
+	if(typeof data == 'string') {
 
 		try {
-			
-			if(data[0] == "#") {
+
+			if(data[0] == '#') {
 				
 				let _element = document.getElementById(data.slice(1, Infinity));
 
 				return new elClass(_element);			
-			} else if(data[0] == ".") {
+			} else if(data[0] == '.') {
 				
 				let _elements = document.getElementsByClassName(data.slice(1, Infinity));
 
 				return new allElClass(_elements);			
-			} else if(data[0] == "<") {
+			} else if(data[0] == '<') {
 				
 				let _temp = document.createElement('temp');
 				_temp.innerHTML = data;
@@ -52,17 +52,24 @@ let _allEl = data => {
 	}
 };
 
+// TODO
 _allEl.stopAnimations = e => {
 
-	console.log('%cSTOP ALL ANIMATIONS', 'color: red; font-weigth: bold;');
-	return;
+	// if(!share.get('animation')) {
+	// 	return;
+	// }
 
-	_allEl(".animated")
+	console.log('%cSTOP ALL ANIMATIONS', 'color: red; font-weigth: bold;', e);
+	// return;
+	event.dispatch('clearCallbacks');
+
+	_allEl('.animated')
+		.stop()
 		// .css({transition: '0s'})
 		.css({
-			'transition': false
+			"transition" : false
 		})
-		.removeClass("animated");
+		.removeClass('animated');
 };
 
 event.listen('stopAnimations', _allEl.stopAnimations);

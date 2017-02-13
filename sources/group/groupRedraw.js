@@ -20,7 +20,7 @@ export default (group, data) => {
 
 	// прокидываем конфигурацию для стопок
 	for(let i in decks) {
-		
+
 		// иннициируем конфигурацию стопки если отсутствует
 		if(!data.decks[i]) {
 			data.decks[i] = {};
@@ -32,23 +32,23 @@ export default (group, data) => {
 			data.decks[i].parentPosition
 		) {
 			data.decks[i].parentPosition = {
-				x : data.position.x,
-				y : data.position.y
+				"x" : data.position.x,
+				"y" : data.position.y
 			};
 		};
 
 		// прокидываем остальные параметры (параметры группы приоритетнее)
-		if( typeof data.paddingX == "number" ) { data.decks[i].paddingX = data.paddingX; };
-		if( typeof data.paddingY == "number" ) { data.decks[i].paddingY = data.paddingY; };
+		if( typeof data.paddingX == 'number' ) { data.decks[i].paddingX = data.paddingX; };
+		if( typeof data.paddingY == 'number' ) { data.decks[i].paddingY = data.paddingY; };
 
-		if( typeof data.flipPaddingX == "number" ) { data.decks[i].flipPaddingX = data.flipPaddingX; };
-		if( typeof data.flipPaddingY == "number" ) { data.decks[i].flipPaddingY = data.flipPaddingY; };
+		if( typeof data.flipPaddingX == 'number' ) { data.decks[i].flipPaddingX = data.flipPaddingX; };
+		if( typeof data.flipPaddingY == 'number' ) { data.decks[i].flipPaddingY = data.flipPaddingY; };
 
-		if( typeof data.decks[i].position == "undefined" ) { data.decks[i].position = {}; };
+		if( typeof data.decks[i].position == 'undefined' ) { data.decks[i].position = {}; };
 
 		data.decks[i].parentPosition = {};
 
-		if(typeof data.rotate == "number") {
+		if(typeof data.rotate == 'number') {
 			data.decks[i].parentRotate = data.rotate;
 		};
 		

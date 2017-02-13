@@ -1,20 +1,20 @@
 'use strict';
 
 // common
-import share         from 'share';
-import event         from 'event';
-import defaults      from 'defaults';
+import share         from 'share'        ;
+import event         from 'event'        ;
+import defaults      from 'defaults'     ;
 
 // init
-import Inputs        from 'inputs';
-import Move          from 'move';
-import forceMove     from 'forceMove';
-import render        from 'render';
-import Field         from 'field';
-import common        from 'common';
-import winCheck      from 'winCheck';
-import History       from 'history';
-import Tips          from 'tips';
+import Inputs        from 'inputs'       ;
+import Move          from 'move'         ;
+import forceMove     from 'forceMove'    ;
+import render        from 'render'       ;
+import Field         from 'field'        ;
+import common        from 'common'       ;
+import winCheck      from 'winCheck'     ;
+import History       from 'history'      ;
+import Tips          from 'tips'         ;
 import deckGenerator from 'deckGenerator';
 
 let preloadCallback = null,
@@ -34,10 +34,6 @@ exports.onChangePreferences = callback => {
 	share.set('changePreferencesCallback', callback);
 };
 
-// exports.getPreferences = () => {
-// 	let _pref = storage.get('pref');
-// };
-
 exports.init = gameConfig => {
 
 	event.dispatch('gameInit', {firstInit});
@@ -52,17 +48,18 @@ exports.init = gameConfig => {
 
 		firstInit = false;
 
-		if(typeof preloadCallback == "function") {
+		if(typeof preloadCallback == 'function') {
 			let _data = share.get('gamePreferencesData');
 			preloadCallback(_data);
 		}
 
-		let changePreferencesCallback = share.get('changePreferencesCallback');
+	}
 
-		if(typeof changePreferencesCallback == "function") {
-			let _data = share.get('gamePreferencesData');
-			changePreferencesCallback(_data);
-		}
+	let changePreferencesCallback = share.get('changePreferencesCallback');
+
+	if(typeof changePreferencesCallback == 'function') {
+		let _data = share.get('gamePreferencesData');
+		changePreferencesCallback(_data);
 	}
 
 	event.dispatch('gameInited');

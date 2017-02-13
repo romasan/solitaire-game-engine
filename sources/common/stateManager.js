@@ -1,11 +1,11 @@
 'use strict';
 
-import share       from 'share';
-import event       from 'event';
-import defaults    from 'defaults';
-import common      from 'common';
+import share       from 'share'      ;
+import event       from 'event'      ;
+import defaults    from 'defaults'   ;
+import common      from 'common'     ;
 
-import getDecks    from 'getDecks';
+import getDecks    from 'getDecks'   ;
 import getDeckById from 'getDeckById';
 
 let cardAttributes = [
@@ -21,9 +21,9 @@ let cardAttributes = [
  */
 
 class stateManager {
-	
+
 	constructor() {
-		
+
 		this._state = null;
 
 		this._sourceList = [
@@ -43,13 +43,21 @@ class stateManager {
 
 	backup() {
 
+		event.dispatch('debugFlag', {flag : 2, color : 'green', text : 'sm:backup'});
+
+		// console.log('stateManager:backup');
+
 		this._state = {};
 
 		for(let i in this._sourceList) {
 
 			let _element = share.get(this._sourceList[i]);
-			
-			this._state[this._sourceList[i]] = ['string', 'number', 'boolean'].includes(typeof _element)
+
+			this._state[this._sourceList[i]] = [
+				'string' ,
+				'number' ,
+				'boolean'
+			].indexOf(typeof _element) >= 0
 				? _element
 				: _element instanceof Array
 					? Object.assign([], _element)
@@ -67,22 +75,22 @@ class stateManager {
 			for(let cardId in _decks[deckId].cards) {
 
 				let _card = {
-					'name'    : _decks[deckId].cards[cardId].name,
-					'id'      : _decks[deckId].cards[cardId].id
+					"name" : _decks[deckId].cards[cardId].name,
+					"id"   : _decks[deckId].cards[cardId].id
 				};
 
 				for(let i in cardAttributes) {
-					let _name = cardAttributes[i];
-					_card[_name] = _decks[deckId].cards[cardId][name];
+					let _name    = cardAttributes[i];
+					_card[_name] = _decks[deckId].cards[cardId][_name];
 				}
 
 				_cards.push(_card);
 			}
 
 			this._state.model[deckId] = {
-				'name'  : _decks[deckId].name  ,
-				'cards' : _cards               ,
-				'group' : _decks[deckId].parent
+				"name"  : _decks[deckId].name  ,
+				"cards" : _cards               ,
+				"group" : _decks[deckId].parent
 			}
 		}
 	}
@@ -106,34 +114,34 @@ class stateManager {
 		}
 
 		for(let deckId in this._state.model) {
-			
+
 			let _deck = getDeckById(deckId);
 
 			let _cards = [];
 
-			for(let i in this._state.model[deckId].cards) {
+			for(let cardIndex in this._state.model[deckId].cards) {
 
-				let cardId = this._state.model[deckId].cards[i].id;
+				let cardId = this._state.model[deckId].cards[cardIndex].id;
 
 				let _card = common.getElementById(cardId);
 
-				if(_card.name == this._state.model[deckId].cards[i].name) {
+				if(_card.name == this._state.model[deckId].cards[cardIndex].name) {
 
-					for(let i in cardAttributes) {
-						let _name = cardAttributes[i];
-						_card[_name] = this._state.model[deckId].cards[i][name];
+					for(let attrIndex in cardAttributes) {
+						let attrName = cardAttributes[attrIndex];
+							_card[attrName] = this._state.model[deckId].cards[cardIndex][attrName];
 					}
-					
+
 					_cards.push(_card);
 				} else {
-					// console.warn(
-					// 	'Что-то не так с картой'               ,
-					// 	this._state.model[deckId].cards[i].id  ,
-					// 	this._state.model[deckId].cards[i].name,
-					// 	' != '                                 ,
-					// 	_card.id                               ,
-					// 	_card.name
-					// );
+					console.warn(
+						'Что-то не так с картой'               ,
+						this._state.model[deckId].cards[i].id  ,
+						this._state.model[deckId].cards[i].name,
+						' != '                                 ,
+						_card.id                               ,
+						_card.name
+					);
 				}
 			}
 
@@ -143,6 +151,10 @@ class stateManager {
 	}
 
 	get() {
+		return this._state;
+	}
+
+	log() {
 		return this._state;
 	}
 }

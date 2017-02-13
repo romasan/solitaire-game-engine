@@ -13,7 +13,7 @@ class storage {
 	// тогда в конфигурацию нужно будет включить gameId
 
 	constructor() {
-		
+
 		try {
 			if(!localStorage.hasOwnProperty('SolitaireEngine')) {
 				localStorage.SolitaireEngine = "{}";
@@ -30,7 +30,7 @@ class storage {
 			localStorage.SolitaireEngine = _data;
 		} catch(e) {}
 	}
-	
+
 	get(key) {
 
 		try {
@@ -42,7 +42,7 @@ class storage {
 	}
 	
 	clear() {
-		
+
 		try {
 			localStorage.SolitaireEngine = "{}";
 		} catch(e) {}

@@ -1,6 +1,6 @@
 'use strict';
 
-import event    from 'event';
+import event    from 'event'   ;
 import defaults from 'defaults';
 
 /*
@@ -17,7 +17,7 @@ class shareClass {
 	}
 
 	get(name) {
-		if(typeof this._data[name] != "undefined") {
+		if(typeof this._data[name] != 'undefined') {
 			// TODO решить наконец проблему, 
 			// почему Object.assign не работает после babel-я
 			
@@ -31,19 +31,23 @@ class shareClass {
 	set(name, data, forceClone = false) {
 
 		// "foo", "bar", false
-		if(typeof name == "string") {
+		if(typeof name == 'string') {
 
 			event.dispatch('shareChange:' + name, {
-				from : this._data[name],
-				to   : data
+				"from" : this._data[name],
+				"to"   : data
 			});
 
 			if(
-				typeof forceClone == "boolean" && forceClone
+				typeof forceClone == 'boolean' && forceClone
 			) {
 				try {
 					// this._data[name] = Object.assign({}, data);
-					this._data[name] = ['string', 'number', 'boolean'].includes(typeof data)
+					this._data[name] = [
+						'string' ,
+						'number' ,
+						'boolean'
+					].indexOf(typeof data) >= 0
 					? data
 					: data instanceof Array
 						? Object.assign([], data)
@@ -68,16 +72,16 @@ class shareClass {
 			for(let _name in name) {
 
 				event.dispatch('shareChange:' + name, {
-					from : this._data[_name],
-					to   : name[_name]
+					"from" : this._data[_name],
+					"to"   : name[_name]
 				});
 
 				if(
-					typeof forceClone == "boolean" && forceClone
+					typeof forceClone == 'boolean' && forceClone
 				) {
 					try {
 						// this._data[_name] = Object.assign({}, name[_name]);
-						this._data[_name] = ['string', 'number', 'boolean'].includes(typeof name[_name])
+						this._data[_name] = ['string', 'number', 'boolean'].indexOf(typeof name[_name]) >= 0
 						? name[_name]
 						: name[_name] instanceof Array
 							? Object.assign([], name[_name])

@@ -2,20 +2,20 @@
 
 export default {
 
-// Theme ------------------------------------------------------------------------------
+// Theme
 
 	"themes" : {
 		"field" : [
-			"default_field"    ,
-			"alternative_field"
+			'default_field'    ,
+			'alternative_field'
 		],
 		"face" : [
-			"default_face"    ,
-			"alternative_face"
+			'default_face'    ,
+			'alternative_face'
 		],
 		"back" : [
-			"default_back"    ,
-			"alternative_back"
+			'default_back'    ,
+			'alternative_back'
 		]
 		// empty : [
 		// 	"default_empty"    ,
@@ -24,12 +24,12 @@ export default {
 	},
 
 	"pref" : {
-		"field" : "default_field"   , // 0
-		"face"  : "alternative_face", // 1
-		"back"  : "default_back"      // 0
+		"field" : 'default_field'   , // 0
+		"face"  : 'alternative_face', // 1
+		"back"  : 'default_back'      // 0
 	},
 
-// Tips -------------------------------------------------------------------------------
+// Tips
 
 	"showTips"            : true ,
 	"showTipsDestination" : false,
@@ -41,11 +41,11 @@ export default {
 		"excludeHomeGroups" : true
 	},
 
-// Field ------------------------------------------------------------------------------
+// Field
 
 	"zoom"                : 1.0 ,
 
-	"locale"              : "ru",
+	"locale"              : 'ru',
 
 	"animation"           : true,
 	"animationTime"       : 400 , // time in milliseconds
@@ -54,12 +54,12 @@ export default {
 		"doubleClick" : false
 	},
 
-// Group ------------------------------------------------------------------------------
+// Group
 
 	"flip"                : null, // param for deck
 	"actions"             : null, // param for deck
 
-// Deck -------------------------------------------------------------------------------
+// Deck
 
 	"can_move_flip"       : false      ,
 	"showSlot"            : true       ,
@@ -69,7 +69,7 @@ export default {
 	"flip_type"           : 'none'     ,
 
 	"rotate"              : 0          ,
-	
+
 	"takeRules"           : ['onlytop'],
 	"putRule"             : 'any'      ,
 
@@ -85,7 +85,7 @@ export default {
 	"startZIndex"         : 100        ,
 	"topZIndex"           : 900        ,
 
-// Card -------------------------------------------------------------------------------
+// Card
 
 	"card" : {
 		"width"  : 71,
@@ -102,11 +102,10 @@ export default {
 		}
 	},
 
-// ------------------------------------------------------------------------------------
+// Other
 
 	"stepType"             : 'default',
 	"forceClone"           : true     ,
 	// "movesAnimation"    : "simple" // simple|byStep|not
 	"showHistoryAnimation" : true
-
 };

@@ -1,11 +1,11 @@
 'use strict';
 
-import share    from 'share';
+import share    from 'share'   ;
 import defaults from 'defaults';
-import common   from 'common';
+import common   from 'common'  ;
 
-import Tips  from 'tips';
-import Field from 'field';
+import Tips     from 'tips'    ;
+import Field    from 'field'   ;
 
 export default (moveDeck, cursorMove) => {
 
@@ -25,8 +25,8 @@ export default (moveDeck, cursorMove) => {
 
 	// move card to closest deck of a possible move
 	let _tip_index          = 0 ,
-		_in_direction_count = 0 ,
-		_min_distance       = -1;
+	    _in_direction_count = 0 ,
+	    _min_distance       = -1;
 
 	// Приоритет для homeGroups
 	let _homeGroups = Field.homeGroups;
@@ -36,7 +36,7 @@ export default (moveDeck, cursorMove) => {
 		let _tips = [];
 
 		for(let homeGroupIndex in _homeGroups) {
-			
+
 			for(let i in _autoTips) {
 				if(_autoTips[i].to.deck.parent == _homeGroups[homeGroupIndex]) {
 					_tips.push(_autoTips[i]);
@@ -71,20 +71,21 @@ export default (moveDeck, cursorMove) => {
 
 			// координаты центра перетаскиваемой карты/стопки
 			let center_from = {
-				x : cursorMove.deckPosition.x + ((defaults.card.width  / 2) | 0),
-				y : cursorMove.deckPosition.y + ((defaults.card.height / 2) | 0)
+				"x" : cursorMove.deckPosition.x + ((defaults.card.width  / 2) | 0),
+				"y" : cursorMove.deckPosition.y + ((defaults.card.height / 2) | 0)
 			}
 
 			let _destination_deck_last_card_position = _autoTips[i].to.deck.padding(_autoTips[i].to.deck.cards.length);
+
 			// координаты центра стопки назначения
 			let center_to = {
-				x : _destination_deck_last_card_position.x + ((defaults.card.width  / 2) | 0),
-				y : _destination_deck_last_card_position.y + ((defaults.card.height / 2) | 0)
+				"x" : _destination_deck_last_card_position.x + ((defaults.card.width  / 2) | 0),
+				"y" : _destination_deck_last_card_position.y + ((defaults.card.height / 2) | 0)
 			}
 
 			// расстояние между стопкой и перетаскиваемой картой/стопкой
 			_autoTips[i].distance = Math.sqrt((i => i * i)(center_from.x - center_to.x) + (i => i * i)(center_from.y - center_to.y));
-			
+
 			// смотрим находится ли стопка назначения в направлении движения
 			_autoTips[i].inDirection = false;
 			if(
@@ -99,10 +100,10 @@ export default (moveDeck, cursorMove) => {
 
 		// ищем ближайшую стопку среди из подсказок
 		for(let i in _autoTips) {
-			
+
 			// первая итерация
 			if(_min_distance == '-1') {
-				
+
 				// нет подсказок в направлении движения
 				if(_in_direction_count == 0) {
 					_min_distance = _autoTips[i].distance;
@@ -118,12 +119,12 @@ export default (moveDeck, cursorMove) => {
 
 				// нашли меньше
 				if(_autoTips[i].distance < _min_distance) {
-					
+
 					// нет подсказок в направлении движения
 					if(_in_direction_count == 0) {
 						_min_distance = _autoTips[i].distance;
 						_tip_index = i;
-					
+
 					// есть подсказки в направлении движения
 					} else {
 						if(_autoTips[i].inDirection) {

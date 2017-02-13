@@ -1,26 +1,24 @@
 'use strict';
 
-import event    from 'event';
-import share    from 'share';
+import event    from 'event'   ;
+import share    from 'share'   ;
 import defaults from 'defaults';
-import common   from 'common';
+import common   from 'common'  ;
 
-import Deck     from 'deck';
-import Tips     from 'tips';
-import bestTip  from 'bestTip';
+import Deck     from 'deck'    ;
+import Tips     from 'tips'    ;
+import bestTip  from 'bestTip' ;
 import winCheck from 'winCheck';
-import Field    from 'field';
+import Field    from 'field'   ;
 
 let Move = (moveDeck, to, cursorMove) => {
-
-	console.log('MOVE', share.get('stepType'), moveDeck.map(e => e.card.name));
 
 	common.animationDefault();
 
 	let _deck_departure   = moveDeck[0].card.parent                        &&
-	                        common.getElementById(moveDeck[0].card.parent),   // стопка из которой взяли
-	    _deck_destination = null,                                             // в которую положили
-	    _success          = true;                                             // флаг возможности хода
+	                        common.getElementById(moveDeck[0].card.parent)   , // стопка из которой взяли
+	    _deck_destination = null                                             , // в которую положили
+	    _success          = true                                             ; // флаг возможности хода
 
 	let _stepType = share.get('stepType');
 
@@ -37,7 +35,7 @@ let Move = (moveDeck, to, cursorMove) => {
 
 	// выйти если не стандартный ход
 	if(
-		_stepType != defaults.stepType &&
+		_stepType != defaults.stepType  &&
 		(
 			Field.autoSteps             &&
 			!Field.autoSteps[_stepType] ||
@@ -48,22 +46,24 @@ let Move = (moveDeck, to, cursorMove) => {
 		let _deck_departure = moveDeck[0].card.parent && common.getElementById(moveDeck[0].card.parent);
 
 		event.dispatch('moveCardToHome', {
-			moveDeck  : moveDeck             ,
-			departure : _deck_departure      ,
-			stepType  : share.get('stepType')
+			"moveDeck"  : moveDeck             ,
+			"departure" : _deck_departure      ,
+			"stepType"  : share.get('stepType')
 		});
 
 		return;
 	}
 
-	event.dispatch('startSession', {type: 'move'});
+	event.dispatch('startSession', {
+		"type": 'move'
+	});
 
-	_success = _success && to;// to - не пустой
+	_success = _success && to; // to - не пустой
 
 	let _el = null;
 
 	if(_success) {
-		_el = common.getElementById(to);// получаем карту/стопку
+		_el = common.getElementById(to); // получаем карту/стопку
 	}
 
 	_success = _success && _el;
@@ -90,6 +90,7 @@ let Move = (moveDeck, to, cursorMove) => {
 		// узнаём можно ли положить карты на папку назначения
 		let _put = _deck_destination.Put(moveDeck);
 		_success = _success && _put;
+
 		if(_put) {// } && _deck_departure) {
 
 			// если можно положить карты берём их из исходной стопки
@@ -104,78 +105,89 @@ let Move = (moveDeck, to, cursorMove) => {
 				// режим анимации по умолчанию
 				common.animationDefault();
 
-				let _stepType = share.get('stepType');
-
 				let _checkMoveEnd = false;
 
 				for(let _actionName in _deck_destination.actions) {
-					if(_deck_destination.actions[_actionName].event == "moveEnd") {
+					if(_deck_destination.actions[_actionName].event == 'moveEnd') {
 						_checkMoveEnd = true;
 					}
 				}
 
 				event.dispatch('addStep', {
-					'move' : {
-						from     : _deck_departure  .name      ,
-						to       : _deck_destination.name      ,
-						deck     : Deck.deckCardNames(moveDeck),
-						stepType : {
-							undo: _stepType,
-							redo: _checkMoveEnd ? "specialStepType" : _stepType
+					"move" : {
+						"from"     : _deck_departure  .name      ,
+						"to"       : _deck_destination.name      ,
+						"deck"     : Deck.deckCardNames(moveDeck),
+						"stepType" : {
+							"undo" : _stepType,
+							"redo" : _stepType,
+							// "redo" : _checkMoveEnd ? defaults.stepType : _stepType
+							// "redo" : _checkMoveEnd ? 'specialStepType' : _stepType
 						},
-						context  : "move"
+						"context"  : "move"
 					}
 				});
 
 				let issetMoves = null;
 
-				console.log('>>> Move:moveDragDeck >>>')
-				event.dispatch('moveDragDeck', {
+				// let _stop = false;
+				let _callback = e => {
 
-					departure   : _deck_departure  ,
-					destination : _deck_destination,
-					moveDeck    : moveDeck         ,
-					callback    : e => {
+					// if(_stop) {
+					// 	return;
+					// }
 
-						if(
-							// !event.has('moveEnd', {
-							!event.has('actionEvent:moveEnd:' + _deck_destination.name, {
-								tag: event.tags.inGame
-							}) ||
-							share.get('autoStep:stepType') == share.get('stepType')
-						) {
-							event.dispatch('stopSession');
-						}
-
-						Tips.checkTips();
-
-						let _tips = Tips.getTips();
-						if(
-							_deck_destination.save                             ||
-							_tips.length > 0 && _stepType != defaults.stepType
-						) {
-							event.dispatch('saveSteps');
-						}
-
-						event.dispatch('moveEnd:' + share.get('stepType'));
-						event.dispatch('moveEnd', {
-							from     : _deck_departure      ,
-							to       : _deck_destination    ,
-							moveDeck : moveDeck             ,
-							stepType : share.get('stepType'),
-							before   : data => {
-								if(data && typeof data.stepType == "string") {
-									event.dispatch('addStep', {
-										'redo': {
-											'stepType': data.stepType
-										}
-									})
-								}
-							}
-						});
-
-						winCheck.winCheck({show : true});
+					if(
+						// !event.has('moveEnd', {
+						!event.has('actionEvent:moveEnd:' + _deck_destination.name, {
+							tag: event.tags.inGame
+						}) ||
+						share.get('autoStep:stepType') == share.get('stepType')
+					) {
+						event.dispatch('stopSession');
 					}
+
+					Tips.checkTips();
+
+					let _tips = Tips.getTips();
+					if(
+						_deck_destination.save                             ||
+						_tips.length > 0 && _stepType != defaults.stepType
+					) {
+						event.dispatch('saveSteps', 'MOVE');
+					}
+
+					event.dispatch('moveEnd:' + share.get('stepType'));
+					event.dispatch('moveEnd', {
+						"from"     : _deck_departure      ,
+						"to"       : _deck_destination    ,
+						"moveDeck" : moveDeck             ,
+						"stepType" : share.get('stepType'),
+						"before"   : data => {
+							if(data && typeof data.stepType == 'string') {
+								event.dispatch('addStep', {
+									"redo": {
+										"stepType": data.stepType
+									}
+								})
+							}
+						}
+					});
+
+					winCheck.winCheck({
+						"show" : true
+					});
+				};
+
+				// event.once('clearCallbacks', e => {
+				// 	_stop = true;
+				// });
+
+				event.dispatch('moveDragDeck', {
+					"departure"   : _deck_departure  ,
+					"destination" : _deck_destination,
+					"moveDeck"    : moveDeck         ,
+					"callback"    : _callback
 				});
 			}
 		}
@@ -194,25 +206,22 @@ let Move = (moveDeck, to, cursorMove) => {
 				let Tip = bestTip(moveDeck, cursorMove);
 
 				if(Tip) {
-					console.log('>>> move >>>');
 					Move(moveDeck, Tip.to.deck.id, cursorMove);
 
 					return;
 				} else {
-
 					event.dispatch('moveCardToHome', {
-						moveDeck  : moveDeck       ,
-						departure : _deck_departure
+						"moveDeck"  : moveDeck       ,
+						"departure" : _deck_departure
 					});
 					// ^ callback
 					event.dispatch('stopSession');
 				}
 
 		} else {
-
 			event.dispatch('moveCardToHome', {
-				moveDeck  : moveDeck       ,
-				departure : _deck_departure
+				"moveDeck"  : moveDeck       ,
+				"departure" : _deck_departure
 			});
 			// ^ callback
 			event.dispatch('stopSession');
@@ -223,8 +232,6 @@ let Move = (moveDeck, to, cursorMove) => {
 event.listen('Move', data => {
 	Move(data.moveDeck, data.to, data.cursorMove);
 });
-
-// --
 
 event.listen('autoStepToHome', e => {
 

@@ -1,27 +1,33 @@
 'use strict';
 
-import event    from 'event';
-import share    from 'share';
-import common   from 'common';
+import event    from 'event'   ;
+import share    from 'share'   ;
+import common   from 'common'  ;
 import defaults from 'defaults';
+
+/*
+ * start
+ * end
+ * init
+ */
 
 export default class {
 
 	constructor(params) {
 
-		if(typeof params.groups != "undefined") {
+		if(typeof params.groups != 'undefined') {
 			this.groups = params.groups;
 		}
 		
-		if(typeof params.event == "string") {
+		if(typeof params.event == 'string') {
 			this.event = params.event;
 		}
 
-		if(typeof params.dispatch == "string") {
+		if(typeof params.dispatch == 'string') {
 			this.dispatch = params.dispatch;
 		}
 
-		if(typeof params.autoStep == "boolean") {
+		if(typeof params.autoStep == 'boolean') {
 			this.autoStep = params.autoStep;
 		}
 	}
@@ -34,9 +40,9 @@ export default class {
 
 		share.set('autoStep:stepType', this.stepType);
 
-		if(e && typeof e.before == "function") {
+		if(e && typeof e.before == 'function') {
 			e.before({
-				stepType: this.stepType
+				"stepType" : this.stepType
 			});
 		}
 		
@@ -52,15 +58,26 @@ export default class {
 		}
 	}
 
-	end() {
+	end(data) {
+
+		share.set('stepType', defaults.stepType);
 
 		if(this.dispatch) {
-			event.dispatch(this.dispatch, {
-				stepType: share.get('stepType'),
-				callback: e => {
-					share.set('stepType', defaults.stepType);
+
+			let _data = {
+				"stepType" : share.get('stepType')
+				// "callback" : e => {
+				// 	share.set('stepType', defaults.stepType);
+				// }
+			};
+
+			if(data) {
+				for(let valueName in data) {
+					_data[valueName] = data[valueName];
 				}
-			});
+			}
+
+			event.dispatch(this.dispatch, _data);
 		} else {
 			// share.set('stepType', defaults.stepType);
 			event.dispatch('stopSession');
@@ -85,7 +102,7 @@ export default class {
 				
 				'moveEnd',
 
-				() => {
+				e => {
 
 					if(share.get('stepType') != this.stepType) {
 						return; 

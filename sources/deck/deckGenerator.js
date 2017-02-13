@@ -2,6 +2,12 @@
 
 import defaults from 'defaults';
 
+/*
+ * shuffleArray
+ * genType
+ * genTypes
+ */
+
 let shuffleArray = deck => {
 	for(let j, x, i = deck.length; i; j = Math.floor(Math.random() * i), x = deck[--i], deck[i] = deck[j], deck[j] = x) {};
 };
@@ -21,23 +27,23 @@ let genType = (_cardsColors, _cardsRanks) => {
 
 let genTypes = {
 
-	all    : ranks => genType(defaults.card.suits, ranks),
+	"all"    : ranks => genType(defaults.card.suits, ranks),
 
-	black  : ranks => {
+	"black"  : ranks => {
 
 		let _cardsSuits = defaults.card.colors.black;
 
 		return genType(_cardsSuits, ranks);
 	},
 
-	red    : ranks => {
+	"red"    : ranks => {
 
 		let _cardsSuits = defaults.card.colors.red;
 
 		return genType(_cardsSuits, ranks);
 	},
 
-	black_and_red : ranks => {
+	"black_and_red" : ranks => {
 
 		let _cardsSuits = [
 			defaults.card.colors.red  [(Math.random() * defaults.card.colors.red  .length) | 0], 
@@ -47,48 +53,48 @@ let genTypes = {
 		return genType(_cardsSuits, ranks);
 	},
 
-	h_only : ranks => {
+	"h_only" : ranks => {
 
 		let _cardsSuits = ['h'];
 
 		return genType(_cardsSuits, ranks);
 	}, 
 
-	d_only : ranks => {
+	"d_only" : ranks => {
 
 		let _cardsSuits = ['d'];
 
 		return genType(_cardsSuits, ranks);
 	}, 
 	
-	c_only : ranks => {
+	"c_only" : ranks => {
 
 		let _cardsSuits = ['c'];
 
 		return genType(_cardsSuits, ranks);
 	},
 
-	s_only : ranks => {
+	"s_only" : ranks => {
 
 		let _cardsSuits = ['s'];
 
 		return genType(_cardsSuits, ranks);
 	},
 
-	one_rank_only : ranks => {
+	"one_rank_only" : ranks => {
 
 		let _cardsSuits = [defaults.card.solors[(Math.random() * defaults.card.solors.length) | 0]];
 
 		return genType(_cardsSuits, ranks);
 	},
 
-	hearts        : ranks => genTypes.h_only(),
+	"hearts"        : ranks => genTypes.h_only(),
 
-	diamonds      : ranks => genTypes.d_only(),
+	"diamonds"      : ranks => genTypes.d_only(),
 
-	clubs         : ranks => genTypes.c_only(),
+	"clubs"         : ranks => genTypes.c_only(),
 
-	spades        : ranks => genTypes.s_only()
+	"spades"        : ranks => genTypes.s_only()
 };
 
 export default data => {
@@ -112,7 +118,7 @@ export default data => {
 		_ranks = []
 
 		for(i in data.ranks) {
-			if(defaults.card.rank.includes(data.ranks[i].toString())) {
+			if(defaults.card.rank.indexOf(data.ranks[i].toString()) >= 0) {
 				_ranks.push(data.ranks[i].toString())
 			}
 		}

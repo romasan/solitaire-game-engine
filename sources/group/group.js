@@ -1,31 +1,31 @@
 'use strict';
 
-import event          from 'event';
-import share          from 'share';
-import defaults       from 'defaults';
-import common         from 'common';
+import event          from 'event'         ;
+import share          from 'share'         ;
+import defaults       from 'defaults'      ;
+import common         from 'common'        ;
 
-import Deck           from 'deck';
-import groupFill      from 'groupFill';
-import groupRedraw    from 'groupRedraw';
+import Deck           from 'deck'          ;
+import groupFill      from 'groupFill'     ;
+import groupRedraw    from 'groupRedraw'   ;
 import groupGenerator from 'groupGenerator';
 
-const params = {
-	"paddingType"  : {"type" : "any"},
-	"flip"         : {"type" : "any"},
-	"showSlot"     : {"type" : "any"},
-	"takeRules"    : {"type" : "any"},
-	"putRules"     : {"type" : "any"},
-	"fullRules"    : {"type" : "any"},
-	"autoHide"     : {"type" : "any"},
-	"paddingX"     : {"type" : "any"},
-	"paddingY"     : {"type" : "any"},
-	"flipPaddingX" : {"type" : "any"},
-	"flipPaddingY" : {"type" : "any"},
-	"actions"      : {"type" : "any"},
-	"tags"         : {"type" : "any"},
+const PARAMS = {
+	"paddingType"  : { "type" : 'any' },
+	"flip"         : { "type" : 'any' },
+	"showSlot"     : { "type" : 'any' },
+	"takeRules"    : { "type" : 'any' },
+	"putRules"     : { "type" : 'any' },
+	"fullRules"    : { "type" : 'any' },
+	"autoHide"     : { "type" : 'any' },
+	"paddingX"     : { "type" : 'any' },
+	"paddingY"     : { "type" : 'any' },
+	"flipPaddingX" : { "type" : 'any' },
+	"flipPaddingY" : { "type" : 'any' },
+	"actions"      : { "type" : 'any' },
+	"tags"         : { "type" : 'any' },
 	"save"         : {
-		"type"    : "boolean",
+		"type"    : 'boolean',
 		"default" : true
 	}
 };
@@ -45,7 +45,7 @@ const params = {
  */
 
 class groupClass {
-	
+
 	constructor(data, id) {
 
 		this.type = 'group';
@@ -57,20 +57,20 @@ class groupClass {
 			: ('name_' + id);
 
 		this.position = {
-			x : data.position && data.position.x && typeof data.position.x == 'number' 
+			"x" : data.position && data.position.x && typeof data.position.x == 'number' 
 				? data.position.x 
 				: 0,
-			y : data.position && data.position.y && typeof data.position.y == 'number' 
+			"y" : data.position && data.position.y && typeof data.position.y == 'number' 
 				? data.position.y 
 				: 0,
 		};
 
 		this.placement = data.placement 
 			? {
-				x : data.placement.x 
+				"x" : data.placement.x 
 					? data.placement.x 
 					: 0, 
-				y : data.placement.y 
+				"y" : data.placement.y 
 					? data.placement.y 
 					: 0
 			} 
@@ -80,15 +80,15 @@ class groupClass {
 
 		// сохраняем атрибуты чтобы прокинуть их колодам
 		this.parameters = {};
-		for(let paramName in params) {
-			if(params[paramName].type == "any") {
+		for(let paramName in PARAMS) {
+			if(PARAMS[paramName].type == 'any') {
 				this.parameters[paramName] = data[paramName]
 					? data[paramName]
 					: defaults[paramName];
-			} else if(params[paramName].type == "boolean") {
-				this.parameters[paramName] = typeof data[paramName] == "boolean"
+			} else if(PARAMS[paramName].type == 'boolean') {
+				this.parameters[paramName] = typeof data[paramName] == 'boolean'
 					? data[paramName]
-					: params[paramName].default;
+					: PARAMS[paramName].default;
 				// this.parameters[paramName] = typeof data[paramName] == "boolean" ? data[paramName] : defaults[paramName];
 			}
 		};
@@ -107,8 +107,8 @@ class groupClass {
 
 		if(!data.position) {
 			data.position = {
-				'x' : 0, 
-				'y' : 0
+				"x" : 0, 
+				"y" : 0
 			};
 		}
 
@@ -122,8 +122,8 @@ class groupClass {
 		}
 
 		data.parentPosition = {
-			x : this.position.x, 
-			y : this.position.y
+			"x" : this.position.x, 
+			"y" : this.position.y
 		};
 
 		// расставляем колоды в группе
@@ -193,30 +193,30 @@ class groupClass {
 		}
 
 		// прокидываем некоторые атрибуты всем колодам группы (у атрибутов заданных колоде приоритет выше)
-		for(let paramName in params) {
+		for(let paramName in PARAMS) {
 
-			if(params[paramName].type == "any") {
+			if(PARAMS[paramName].type == 'any') {
 				if(
 					this.parameters[paramName]        &&
-					typeof data[paramName] == "undefined"
+					typeof data[paramName] == 'undefined'
 				) {
 					data[paramName] = this.parameters[paramName];
 				};
-			} else if(params[paramName].type == "boolean") {
+			} else if(PARAMS[paramName].type == 'boolean') {
 
 				if(
-					typeof this.parameters[paramName] == "boolean" &&
-					typeof data[paramName] == "undefined"
+					typeof this.parameters[paramName] == 'boolean' &&
+					typeof data[paramName] == 'undefined'
 				) {
 					data[paramName] = this.parameters[paramName];
 				}			
 			}
 		};
 
-		data.deckIndex = typeof data.deckIndex == "number"
+		data.deckIndex = typeof data.deckIndex == 'number'
 			? data.deckIndex
 			:(_index | 0) + 1;
-		
+
 		let _el = Deck.addDeck(data);
 
 		this.deckIndex[_index]  = _el.id;
@@ -248,7 +248,7 @@ class groupClass {
 	}
 
 	get decksCount() {
-		
+
 		let _count = 0;
 
 		for(let i in this.decks) {
@@ -315,7 +315,7 @@ class groupClass {
 	}
 }
 
-// -----------------------------------------------------------------------------------------------------------------------
+// add group
 
 let add = data => {
 
@@ -336,7 +336,7 @@ let add = data => {
 		if(typeof data.decks == 'number') {
 			data.decks = {
 				"generator" : {
-					"type"  : "count",
+					"type"  : 'count'   ,
 					"count" : data.decks
 				}
 			};
@@ -375,14 +375,16 @@ let add = data => {
 					_relation = data.decks[to].relations[relId];
 				}
 
-				for(let from in data.decks) {
+				// TODO обратные связи
+				// затирают прямы связи в IE
+				// for(let from in data.decks) {
 
-					if(data.decks[from].name == _relation.to) {
-						_relation.to = null;
-						_relation.from = data.decks[to].name;
-						data.decks[from].relations.push(_relation)
-					}
-				}
+				// 	if(data.decks[from].name == _relation.to) {
+				// 		_relation.to = null;
+				// 		_relation.from = data.decks[to].name;
+				// 		data.decks[from].relations.push(_relation)
+				// 	}
+				// }
 			}
 		}
 

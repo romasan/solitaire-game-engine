@@ -16,7 +16,6 @@ class twindeckAction extends deckAction {
 		// !data.actionData.dispatch
 		super.end();
 	}
-
 }
 
 export default new twindeckAction();

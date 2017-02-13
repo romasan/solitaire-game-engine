@@ -1,26 +1,25 @@
 'use strict';
 
-import event          from 'event';
-import share          from 'share';
-import defaults       from 'defaults';
-import common         from 'common';
+import event          from 'event'         ;
+import share          from 'share'         ;
+import defaults       from 'defaults'      ;
+import common         from 'common'        ;
 
-import flipTypes      from 'flipTypes';
-import readyPutRules  from 'readyPutRules';
+import flipTypes      from 'flipTypes'     ;
+import readyPutRules  from 'readyPutRules' ;
 import readyTakeRules from 'readyTakeRules';
-import fullRules      from 'fullRules';
-import paddingTypes   from 'paddingTypes';
-import deckActions    from 'deckActions';
-import Take           from 'deckTake';
-import Put            from 'deckPut';
-import genCardByName  from 'genCardByName';
-import Group          from 'group';
-import History        from 'history';
+import fullRules      from 'fullRules'     ;
+import paddingTypes   from 'paddingTypes'  ;
+import deckActions    from 'deckActions'   ;
+import Take           from 'deckTake'      ;
+import Put            from 'deckPut'       ;
+import genCardByName  from 'genCardByName' ;
+import Group          from 'group'         ;
 
-import getDecks       from 'getDecks';
-import getDeckById    from 'getDeckById';
-import deckCardNames  from 'deckCardNames';
-import getDeck        from 'getDeck';
+import getDecks       from 'getDecks'      ;
+import getDeckById    from 'getDeckById'   ;
+import deckCardNames  from 'deckCardNames' ;
+import getDeck        from 'getDeck'       ;
 
 /*
  * Redraw
@@ -71,27 +70,27 @@ class Deck {
 			? data.name
 			: (_parent_name + '_' + _new_id);
 
-		this.locked     = data.locked ? true : false;
-		this.save       = data.save   ? true : false;
-		this.visible    = typeof data.visible    == 'boolean' ? data.visible   : true;
-		this.deckIndex  = typeof data.deckIndex  == 'number'  ? data.deckIndex : null;
-		this.parent     = typeof data.parent     == 'string'  ? data.parent    : 'field';
-		this.autoHide   = typeof data.autoHide   == 'boolean' ? data.autoHide  : defaults.autohide;
-		
+		this.locked    =        data.locked                 ? true           : false            ;
+		this.save      =        data.save                   ? true           : false            ;
+		this.visible   = typeof data.visible   == 'boolean' ? data.visible   : true             ;
+		this.deckIndex = typeof data.deckIndex == 'number'  ? data.deckIndex : null             ;
+		this.parent    = typeof data.parent    == 'string'  ? data.parent    : 'field'          ;
+		this.autoHide  = typeof data.autoHide  == 'boolean' ? data.autoHide  : defaults.autohide;
+
 		// changed parameters
-		if(typeof data.showSlot == "undefined") {
+		if(typeof data.showSlot == 'undefined') {
 			data.showSlot = defaults.showSlot;
 		}
-		
+
 		this._params = {
-			padding_y      : ( typeof data.paddingY     == 'number' ) ? data.paddingY     : defaults.padding_y     ,
-			flip_padding_y : ( typeof data.flipPaddingY == 'number' ) ? data.flipPaddingY : defaults.flip_padding_y,
-			padding_x      : ( typeof data.paddingX     == 'number' ) ? data.paddingX     : defaults.padding_x     ,
-			flip_padding_x : ( typeof data.flipPaddingX == 'number' ) ? data.flipPaddingX : defaults.flip_padding_x,
-			startZIndex    : ( typeof data.startZIndex  == 'number' ) ? data.startZIndex  : defaults.startZIndex   ,
-			rotate         : ( typeof data.rotate       == 'number' ) ? data.rotate       : defaults.rotate        ,
-			x              : 0                                                                                     ,
-			y              : 0
+			"padding_y"      : typeof data.paddingY     == 'number' ? data.paddingY     : defaults.padding_y     ,
+			"flip_padding_y" : typeof data.flipPaddingY == 'number' ? data.flipPaddingY : defaults.flip_padding_y,
+			"padding_x"      : typeof data.paddingX     == 'number' ? data.paddingX     : defaults.padding_x     ,
+			"flip_padding_x" : typeof data.flipPaddingX == 'number' ? data.flipPaddingX : defaults.flip_padding_x,
+			"startZIndex"    : typeof data.startZIndex  == 'number' ? data.startZIndex  : defaults.startZIndex   ,
+			"rotate"         : typeof data.rotate       == 'number' ? data.rotate       : defaults.rotate        ,
+			"x"              : 0                                                                                 ,
+			"y"              : 0
 		};
 
 		this.rotate = this._params.rotate;
@@ -132,7 +131,10 @@ class Deck {
 		let padding = data.paddingX || data.paddingY
 			? paddingTypes.special 
 			: data.paddingType 
-				? (typeof data.paddingType == 'string' && paddingTypes[data.paddingType]) 
+				? (
+					typeof data.paddingType == 'string' && 
+					paddingTypes[data.paddingType]
+				) 
 					? paddingTypes[data.paddingType] 
 					: paddingTypes.none
 				: paddingTypes[defaults.paddingType];
@@ -154,11 +156,11 @@ class Deck {
 
 		// Tags
 		this.tags = data.tags ? data.tags : [];
-		
+
 		event.dispatch('addDeckEl', {
-			deckData : data, 
-			deck     : this,
-			params   : this._params
+			"deckData" : data        , 
+			"deck"     : this        ,
+			"params"   : this._params
 		});
 
 		// Подписывается на перетаскивание стопки/карты
@@ -177,20 +179,18 @@ class Deck {
 		event.listen('moveDragDeck', _callback);
 	}
 
-// -------------------------------------------------------------------------------------------------
-
 	// перерисовка стопки
 	Redraw(data) {
 
 		event.dispatch('redrawDeck', {
-			deck     : this,
-			deckData : data,
-			params   : this._params,
-			cards    : this.cards
+			"deck"     : this        ,
+			"deckData" : data        ,
+			"params"   : this._params,
+			"cards"    : this.cards
 		});
 
 		event.dispatch('redrawDeckFlip', {
-			cards : this.cards
+			"cards" : this.cards
 		});
 
 	}
@@ -202,6 +202,25 @@ class Deck {
 		}
 
 		return this.cards[this.cards.length - 1];
+	}
+
+	getSomeCards(count) {
+
+		let _cards = [];
+
+		if(
+			typeof count != 'number'  ||
+			count > this.cards.length ||
+			count < 1
+		) {
+			count = this.cards.length
+		}
+
+		for(let i = 0; i < count; i += 1) {
+			_cards.push(this.cards[this.cards.length - 1 - i]);
+		}
+
+		return _cards;
 	}
 
 	lock() {
@@ -236,17 +255,17 @@ class Deck {
 				let _rule = this.fullRules[ruleIndex];
 
 				if(
-					typeof _rule == "string"
+					typeof _rule == 'string'
 				) {
 					full = full                                  &&
-					       typeof fullRules[_rule] == "function" &&
+					       typeof fullRules[_rule] == 'function' &&
 					       fullRules[_rule](this);
 				} else {
 
 					for(let subRule in _rule) {
 						if(
-							typeof subRule == "string"              &&
-							typeof fullRules[subRule] == "function"
+							typeof subRule            == 'string'   &&
+							typeof fullRules[subRule] == 'function'
 						) {
 							full = full && fullRules[subRule](this, _rule[subRule]);
 						}
@@ -260,8 +279,6 @@ class Deck {
 
 			this.full = full;
 		}
-
-		// console.log('checkFull', this.name, this.full);
 
 		return this.full;
 	}
@@ -300,12 +317,19 @@ class Deck {
 		}
 
 		let _deck = [];
+
 		for(;count;count -= 1) {
+
 			let _pop = this.cards.pop();
-			if(clearParent) _pop.parent = null;
+
+			if(clearParent) {
+				_pop.parent = null;
+			}
+
 			_deck.push(_pop);
 			_deck[_deck.length - 1].parent = null;
 		}
+
 		_deck.reverse();
 
 		// что делать если вынули все карты
@@ -338,13 +362,13 @@ class Deck {
 
 	hide() {
 		this.visible = false;
-		History.add({hideDeck : this.name});
+		event.dispatch('addStep', { "hideDeck" : this.name });
 		this.Redraw();
 	}
 
 	show() {
 		this.visible = false;
-		History.add({showDeck : this.name});
+		event.dispatch('addStep', { "showDeck" : this.name });
 		this.Redraw();
 	}
 
@@ -364,14 +388,13 @@ class Deck {
 
 	getCards() {
 
-		return this.cards;
-
 		// let _cards = [];
 		// for(let i in this.cards) {
 		// 	let _card = common.getElementById(this.cards[i]);
 		// 	_cards.push(_card);
 		// }
-		// return _cards;
+
+		return this.cards;
 	}
 
 	hideCards() {
@@ -404,6 +427,7 @@ class Deck {
 	}
 
 	getRelationsByName(relationName, filter) {
+
 
 		let _relations = [];
 
@@ -445,6 +469,8 @@ class Deck {
 	}
 }
 
+// add deck
+
 let addDeck = data => {
 
 	if(!data) {
@@ -472,8 +498,6 @@ let addDeck = data => {
 
 	return _deck;
 };
-
-// ------------------------------------------------------------------------------------------------------------------------------------------
 
 export default {
 	deckCardNames,

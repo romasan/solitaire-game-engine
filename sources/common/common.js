@@ -1,16 +1,16 @@
 'use strict';
 
-import share              from 'share';
-import event              from 'event';
-import defaults           from 'defaults';
-import stateManager       from 'stateManager';
+import share              from 'share'             ;
+import event              from 'event'             ;
+import defaults           from 'defaults'          ;
+import stateManager       from 'stateManager'      ;
 
-import Tips               from 'tips';
-import Field              from 'field';
-import History            from 'history';
+import Tips               from 'tips'              ;
+import Field              from 'field'             ;
+import History            from 'history'           ;
 
-import drawPreferences    from 'drawPreferences';
-import preferencesEvents  from 'preferencesEvents';
+import drawPreferences    from 'drawPreferences'   ;
+import preferencesEvents  from 'preferencesEvents' ;
 import defaultPreferences from 'defaultPreferences';
 
 /*
@@ -49,11 +49,11 @@ event.listen('gameInit', data => {
 	share.delete('sessionStarted');
 
 	curUnLock();
-	
+
 	if(!data.firstInit) {
 		return;
 	};
-	
+
 	drawPreferences();
 	preferencesEvents();
 });
@@ -99,9 +99,9 @@ let getElements = e => {
 }
 
 let getElementById = id => {
-	
+
 	let _elements = share.get('elements');
-	
+
 	return _elements[id];
 }
 
@@ -112,7 +112,11 @@ let getElementsByName = (name, type) => {
 	let _elements = share.get('elements');
 
 	for(let i in _elements) {
-		if(_elements[i].name && typeof _elements[i].name == 'string' && _elements[i].name == name) {
+		if(
+			       _elements[i].name             &&
+			typeof _elements[i].name == 'string' &&
+			       _elements[i].name == name
+		) {
 			if(type && typeof _elements[i].type == 'string') {
 				if(type && _elements[i].type == type) {
 					response.push(_elements[i]);
@@ -120,6 +124,26 @@ let getElementsByName = (name, type) => {
 					response.push(_elements[i]);
 				}
 			} else {
+				response.push(_elements[i]);
+			}
+		}
+	}
+
+	return response;
+};
+
+let getElementsByType = type => {
+
+	let response = [];
+
+	let _elements = share.get('elements');
+
+	if(type) {
+		for(let i in _elements) {
+			if(
+				typeof _elements[i].type == 'string' &&
+				       _elements[i].type == type
+			) {
 				response.push(_elements[i]);
 			}
 		}
@@ -142,26 +166,26 @@ let validateCardName = name => {
 	}
 
 	let suit  = name.slice(0, 1)                                       ,
-		rank  = name.slice(1, 3)                                       ,
-		color = null                                                   ,
-		value = defaults.card.values[defaults.card.ranks.indexOf(rank)];
+	    rank  = name.slice(1, 3)                                       ,
+	    color = null                                                   ,
+	    value = defaults.card.values[defaults.card.ranks.indexOf(rank)];
 
 	for(let colorName in defaults.card.colors) {
-		if(defaults.card.colors[colorName].includes(suit)) {
+		if(defaults.card.colors[colorName].indexOf(suit) >= 0) {
 			color = colorName;
 		}
 	}
 
 	if( 
-		defaults.card.suits.includes(suit) &&
-		defaults.card.ranks.includes(rank)
+		defaults.card.suits.indexOf(suit) >= 0 &&
+		defaults.card.ranks.indexOf(rank) >= 0
 	) {
 		return {
-			color,
-			value,
-			name ,
-			suit , 
-			rank
+			"color" : color,
+			"value" : value,
+			"name"  : name ,
+			"suit"  : suit , 
+			"rank"  : rank
 		}
 	} else {
 		console.warn('Warning: validate name:', name, '- incorrect');
@@ -174,7 +198,7 @@ let validateCardName = name => {
 
 let _id = 0;
 
-let genId = () => {
+let genId = e => {
 	return _id += 1;
 };
 
@@ -203,8 +227,6 @@ event.listen('newGame', e => {
 	// не только историю ходов
 	animationOff();
 });
-
-// --
 
 event.listen('historyReapeater', data => {
 	if(data) {

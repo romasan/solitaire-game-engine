@@ -15,8 +15,8 @@ class Event {
 	constructor() {
 
 		this.tags = {
-			preInit : 'preInit',
-			inGame  : 'inGame'
+			"preInit" : 'preInit',
+			"inGame"  : 'inGame'
 		};
 
 		this._tag = this.tags.preInit;
@@ -24,9 +24,7 @@ class Event {
 		this._events = {};
 	}
 
-	listen(eventName, callback, context) {
-
-		// console.log('listen: (tag:', this._tag + ')', eventName);
+	listen(eventName, callback, context, once) {
 
 		if(
 			typeof callback  != 'function' ||
@@ -37,19 +35,25 @@ class Event {
 
 		if(this._events[eventName]) {
 			this._events[eventName].push({
-				tag: this._tag,
-				context       ,
-				callback
+				"tag"      : this._tag,
+				"context"  : context  ,
+				"callback" : callback ,
+				"once"     : once
 			});
 		} else {
 			this._events[eventName] = [{
-				tag: this._tag,
-				callback
+				"tag"      : this._tag,
+				"callback" : callback ,
+				"context"  : context  ,
+				"once"     : once
 			}];
 		}
 	}
 
-	// this.do =
+	once(eventName, callback, context) {
+		this.listen(eventName, callback, context, true);
+	}
+
 	dispatch(eventName, data) {
 
 		if(this._events[eventName]) {
@@ -63,13 +67,17 @@ class Event {
 						data,
 
 						{
-							eventInfo : {
-								eventName                             ,
-								index : i                             ,
-								count : this._events[eventName].length
+							"eventInfo" : {
+								"eventName" : eventName                     ,
+								"index"     : i                             ,
+								"count"     : this._events[eventName].length
 							}
 						}
 					);
+
+					if(this._events[eventName][i].once) {
+						delete this._events[eventName][i];
+					}
 				}
 			}
 		}
@@ -84,6 +92,7 @@ class Event {
 	}
 
 	clearByTag(tag) {
+
 		for(let eventName in this._events) {
 			for(let i in this._events[eventName]) {
 				if(
@@ -113,18 +122,7 @@ class Event {
 				let _correct = true;
 
 				for(let _attr in filter) {
-
-					// if(_attr == "slice") {
-
-					// 	for(let _sliceAttr in filter[_attr]) {
-
-					// 		let _name = _sliceAttr;
-
-					// 		_correct = _correct && this._events[eventName][i][_name].split(':') == filter[_attr][_sliceAttr];
-					// 	}
-					// } else {
 					_correct = _correct && this._events[eventName][i][_attr] == filter[_attr];
-					// }
 				}
 
 				if(_correct) {
@@ -133,7 +131,6 @@ class Event {
 			}
 
 			return _events;
-
 		} else {
 			return this._events[eventName];
 		}
@@ -159,10 +156,13 @@ class Event {
 			}
 
 			return _count;
-
 		} else {
 			return this._events[eventName] ? this._events[eventName].length : 0;
 		}
+	}
+
+	_getAll() {
+		return this._events;
 	}
 
 	// getEventsByName(eventName) {

@@ -1,15 +1,13 @@
 'use strict';
 
-import event  from 'event';
-import share  from 'share';
+import event  from 'event' ;
+import share  from 'share' ;
 import common from 'common';
 
-import Deck from 'deck';
-import Tips from 'tips';
+import Deck   from 'deck'  ;
+import Tips   from 'tips'  ;
 
 let forceMove = data => {// {from, to, deck, <flip>, <callback>}
-
-	console.log('forceMove', share.get('stepType'));
 
 	if(
 		!data.from ||
@@ -22,20 +20,20 @@ let forceMove = data => {// {from, to, deck, <flip>, <callback>}
 	if(!data.deck.length) {
 		return;
 	}
-	
-	let deckFrom = typeof data.from == "string"
+
+	let deckFrom = typeof data.from == 'string'
 		? Deck.getDeck(data.from)
 		: data.from;
 
-	let deckTo = typeof data.to == "string"
+	let deckTo   = typeof data.to   == 'string'
 		? Deck.getDeck(data.to)
 		: data.to;
 
 	if(
 		!deckFrom                ||
-		 deckFrom.type != "deck" ||
+		 deckFrom.type != 'deck' ||
 		!deckTo                  ||
-		 deckTo  .type != "deck"
+		 deckTo  .type != 'deck'
 	) {
 		return;
 	}
@@ -50,7 +48,10 @@ let forceMove = data => {// {from, to, deck, <flip>, <callback>}
 
 			let _id = i - (deckFromCards.length | 0) + (data.deck.length | 0);
 
-			if(data.deck[_id] && deckFromCards[i].name != data.deck[_id]) {
+			if(
+				data.deck[_id]                          &&
+				deckFromCards[i].name != data.deck[_id]
+			) {
 				_check = false;
 			}
 		}
@@ -73,34 +74,31 @@ let forceMove = data => {// {from, to, deck, <flip>, <callback>}
 
 		for(let i in cardsPop) {
 			cardsMove.push({
-				card : cardsPop[i]
+				"card" : cardsPop[i]
 			});
 		}
 
 		let moveDragDeckParams = {
-			moveDeck    : cardsMove,
-			departure   : deckFrom ,
-			destination : deckTo
+			"moveDeck"    : cardsMove,
+			"departure"   : deckFrom ,
+			"destination" : deckTo
 		};
-		let _time = new Date();
-		console.log('йа тут', _time, _time.getMilliseconds());
 
-		if(typeof data.callback == "function") {
+		if(typeof data.callback == 'function') {
 			moveDragDeckParams.callback = e => {
-				console.log('йа каллбэк из форсМува');
 				event.dispatch('forceMoveEnd');
 				data.callback();
 			}
+			moveDragDeckParams.debug = 'from:forceMove';
 		} else {
 			moveDragDeckParams.callback = e => {
 				event.dispatch('forceMoveEnd');
 			}
 		}
-		console.log('>>> forceMove:moveDragDeck >>>');
-		moveDragDeckParams.debug = 'проверочка';
+
 		event.dispatch('moveDragDeck', moveDragDeckParams);
 	} else {
-		console.warn("forceMove:Ход невозможен", data);
+		console.warn('forceMove:Ход невозможен', data);
 	}
 };
 

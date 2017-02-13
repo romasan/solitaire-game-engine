@@ -15,36 +15,36 @@ Types:
 
 export default {
 
-	none : (params, card, index, length, deck) => {
+	"none" : (params, card, index, length, deck) => {
 
 		return {
-			x : params.x,
-			y : params.y
+			"x" : params.x,
+			"y" : params.y
 		};
 	},
 
-	last_three_min : (params, card, index, length, deck) => {
+	"last_three_min" : (params, card, index, length, deck) => {
 
 		if(index > length - 3) {
 			if(length > 3) {
 				return {
-					x : params.x - (length - 3 - index) * 2,
-					y : params.y - (length - 3 - index)
+					"x" : params.x - (length - 3 - index) * 2,
+					"y" : params.y - (length - 3 - index)
 				};
 			} else {
 				return {
-					x : params.x + (index * 2),
-					y : params.y + (index | 0)
+					"x" : params.x + (index * 2),
+					"y" : params.y + (index | 0)
 				};
 			}
 		} else {
 			return {
-				x : x,
-				y : y
+				"x" : x,
+				"y" : y
 			};
 		}
 	},
-	
+
 	// twindeck_typeA : (params, card, index, length, deck) => {
 
 	// 	let twindeck_max_cards       = 24,
@@ -66,8 +66,8 @@ export default {
 	// 		y : params.y + _padding.y * _plus
 	// 	};
 	// },
-	
-	radial : (params, card, index, length, deck) => {
+
+	"radial" : (params, card, index, length, deck) => {
 
 		//              b
 		//       C  ..`:   A = sin(b) * C
@@ -85,12 +85,12 @@ export default {
 		// if(_angle > 360) _angle -= 360;
 
 		return {
-			x : params.x + _a,// - _card.width  / 2,
-			y : params.y - _b // - _card.height / 2
+			"x" : params.x + _a,// - _card.width  / 2,
+			"y" : params.y - _b // - _card.height / 2
 		};
 	},
 	
-	special : (params, card, index, length, deck) => {
+	"special" : (params, card, index, length, deck) => {
 
 		let _y = params.y, _x = params.x;
 
@@ -100,12 +100,12 @@ export default {
 		}
 
 		return {
-			x : _x,
-			y : _y
+			"x" : _x,
+			"y" : _y
 		};
 	},
 
-	vertical: (params, card, index, length, deck) => {
+	"vertical": (params, card, index, length, deck) => {
 
 		let _y = params.y;
 
@@ -116,14 +116,14 @@ export default {
 		}
 
 		let _return = {
-			x : params.x,
-			y : _y
+			"x" : params.x,
+			"y" : _y
 		};
 
 		return _return;
 	},
 
-	horizontal: (params, card, index, length, deck) => {
+	"horizontal": (params, card, index, length, deck) => {
 
 		let _x = params.x;
 
@@ -134,10 +134,10 @@ export default {
 		}
 
 		let _return = {
-			x : _x,
-			y : params.y
+			"x" : _x,
+			"y" : params.y
 		};
-		
+
 		return _return;
 	}
 };
