@@ -82,6 +82,16 @@ class Deck {
 			data.showSlot = defaults.showSlot;
 		}
 
+		if(data.padding) {
+			if(typeof data.padding.x == 'number' && typeof data.paddingX != 'number') { data.paddingX = data.padding.x; }
+			if(typeof data.padding.y == 'number' && typeof data.paddingY != 'number') { data.paddingY = data.padding.y; }
+		}
+
+		if(data.flipPadding) {
+			if(typeof data.flipPadding.x == 'number' && typeof data.flipPaddingX != 'number') { data.flipPaddingX = data.flipPadding.x; }
+			if(typeof data.flipPadding.y == 'number' && typeof data.flipPaddingY != 'number') { data.flipPaddingY = data.flipPadding.y; }
+		}
+
 		this._params = {
 			"padding_y"      : typeof data.paddingY     == 'number' ? data.paddingY     : defaults.padding_y     ,
 			"flip_padding_y" : typeof data.flipPaddingY == 'number' ? data.flipPaddingY : defaults.flip_padding_y,
@@ -129,7 +139,7 @@ class Deck {
 		// Padding
 		// порядок карт в колоде
 		let padding = data.paddingX || data.paddingY
-			? paddingTypes.special 
+			? paddingTypes._default 
 			: data.paddingType 
 				? (
 					typeof data.paddingType == 'string' && 

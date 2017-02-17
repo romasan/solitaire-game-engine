@@ -111,7 +111,7 @@ var SolitaireEngine =
 	exports.options = _defaults2.default;
 	exports.winCheck = _winCheck2.default.hwinCheck;
 	exports.generator = _deckGenerator2.default;
-	exports.version = (9091494561).toString().split(9).slice(1).map(function (e) {
+	exports.version = (9091494624).toString().split(9).slice(1).map(function (e) {
 		return parseInt(e, 8);
 	}).join('.');
 	
@@ -2301,8 +2301,10 @@ var SolitaireEngine =
 		"putRules": { "type": 'any' },
 		"fullRules": { "type": 'any' },
 		"autoHide": { "type": 'any' },
+		"padding": { "type": 'any' },
 		"paddingX": { "type": 'any' },
 		"paddingY": { "type": 'any' },
+		"flipPadding": { "type": 'any' },
 		"flipPaddingX": { "type": 'any' },
 		"flipPaddingY": { "type": 'any' },
 		"actions": { "type": 'any' },
@@ -2843,6 +2845,24 @@ var SolitaireEngine =
 				data.showSlot = _defaults2.default.showSlot;
 			}
 	
+			if (data.padding) {
+				if (typeof data.padding.x == 'number' && typeof data.paddingX != 'number') {
+					data.paddingX = data.padding.x;
+				}
+				if (typeof data.padding.y == 'number' && typeof data.paddingY != 'number') {
+					data.paddingY = data.padding.y;
+				}
+			}
+	
+			if (data.flipPadding) {
+				if (typeof data.flipPadding.x == 'number' && typeof data.flipPaddingX != 'number') {
+					data.flipPaddingX = data.flipPadding.x;
+				}
+				if (typeof data.flipPadding.y == 'number' && typeof data.flipPaddingY != 'number') {
+					data.flipPaddingY = data.flipPadding.y;
+				}
+			}
+	
 			this._params = {
 				"padding_y": typeof data.paddingY == 'number' ? data.paddingY : _defaults2.default.padding_y,
 				"flip_padding_y": typeof data.flipPaddingY == 'number' ? data.flipPaddingY : _defaults2.default.flip_padding_y,
@@ -2877,7 +2897,7 @@ var SolitaireEngine =
 	
 			// Padding
 			// порядок карт в колоде
-			var padding = data.paddingX || data.paddingY ? _paddingTypes2.default.special : data.paddingType ? typeof data.paddingType == 'string' && _paddingTypes2.default[data.paddingType] ? _paddingTypes2.default[data.paddingType] : _paddingTypes2.default.none : _paddingTypes2.default[_defaults2.default.paddingType];
+			var padding = data.paddingX || data.paddingY ? _paddingTypes2.default._default : data.paddingType ? typeof data.paddingType == 'string' && _paddingTypes2.default[data.paddingType] ? _paddingTypes2.default[data.paddingType] : _paddingTypes2.default.none : _paddingTypes2.default[_defaults2.default.paddingType];
 	
 			this.padding = function (index) {
 				return padding(_this._params, _this.cards[index], index, _this.cards.length, _this.cards);
@@ -4280,10 +4300,10 @@ var SolitaireEngine =
 	
 	Types:
 	
+	 * _default
 	 * none
 	 * last_three_min
 	 * radial
-	 * special
 	 * vertical
 	 * horizontal
 	
@@ -4294,84 +4314,7 @@ var SolitaireEngine =
 	});
 	exports.default = {
 	
-		"none": function none(params, card, index, length, deck) {
-	
-			return {
-				"x": params.x,
-				"y": params.y
-			};
-		},
-	
-		"last_three_min": function last_three_min(params, card, index, length, deck) {
-	
-			if (index > length - 3) {
-				if (length > 3) {
-					return {
-						"x": params.x - (length - 3 - index) * 2,
-						"y": params.y - (length - 3 - index)
-					};
-				} else {
-					return {
-						"x": params.x + index * 2,
-						"y": params.y + (index | 0)
-					};
-				}
-			} else {
-				return {
-					"x": x,
-					"y": y
-				};
-			}
-		},
-	
-		// twindeck_typeA : (params, card, index, length, deck) => {
-	
-		// 	let twindeck_max_cards       = 24,
-		// 		twindeck_deck_length     = 3;
-	
-		// 	let _padding = {
-		// 		x : 2,
-		// 		y : 1
-		// 	}
-	
-		// 	let _depth = (length / twindeck_max_cards * twindeck_deck_length)|0;
-		// 	if(_depth >= twindeck_deck_length) _depth = twindeck_deck_length - 1;
-	
-		// 	let _plus = index - (length - _depth - 1);
-		// 	if(_plus < 0) _plus = 0;
-	
-		// 	return {
-		// 		x : params.x + _padding.x * _plus, 
-		// 		y : params.y + _padding.y * _plus
-		// 	};
-		// },
-	
-		"radial": function radial(params, card, index, length, deck) {
-	
-			//              b
-			//       C  ..`:   A = sin(b) * C
-			//     ...``   :B  B = cos(b) * C
-			// a.``.......+:
-			//        A     y 90deg
-			var _depth = 1,
-			    _radius = index * _depth,
-	
-			// _step   = 180 / 16,
-			// _card   = defaults.card,
-			_angle = params.rotate,
-			    //_step / 2 + 270;
-			_deg = Math.PI / 180,
-			    _a = Math.sin(_angle * _deg) * _radius,
-			    _b = Math.cos(_angle * _deg) * _radius;
-			// if(_angle > 360) _angle -= 360;
-	
-			return {
-				"x": params.x + _a, // - _card.width  / 2,
-				"y": params.y - _b // - _card.height / 2
-			};
-		},
-	
-		"special": function special(params, card, index, length, deck) {
+		"_default": function _default(params, card, index, length, deck) {
 	
 			var _y = params.y,
 			    _x = params.x;
@@ -4386,6 +4329,59 @@ var SolitaireEngine =
 				"y": _y
 			};
 		},
+	
+		"none": function none(params, card, index, length, deck) {
+	
+			return {
+				"x": params.x,
+				"y": params.y
+			};
+		},
+	
+		// "last_three_min" : (params, card, index, length, deck) => {
+	
+		// 	if(index > length - 3) {
+		// 		if(length > 3) {
+		// 			return {
+		// 				"x" : params.x - (length - 3 - index) * 2,
+		// 				"y" : params.y - (length - 3 - index)
+		// 			};
+		// 		} else {
+		// 			return {
+		// 				"x" : params.x + (index * 2),
+		// 				"y" : params.y + (index | 0)
+		// 			};
+		// 		}
+		// 	} else {
+		// 		return {
+		// 			"x" : x,
+		// 			"y" : y
+		// 		};
+		// 	}
+		// },
+	
+		// "radial" : (params, card, index, length, deck) => {
+	
+		// 	//              b
+		// 	//       C  ..`:   A = sin(b) * C
+		// 	//     ...``   :B  B = cos(b) * C
+		// 	// a.``.......+:
+		// 	//        A     y 90deg
+		// 	let _depth  = 1,
+		// 	_radius = index * _depth,
+		// 	// _step   = 180 / 16,
+		// 	// _card   = defaults.card,
+		// 	_angle  = params.rotate,//_step / 2 + 270;
+		// 	_deg    = Math.PI / 180,
+		// 	_a      = Math.sin(_angle * _deg) * _radius,
+		// 	_b      = Math.cos(_angle * _deg) * _radius;
+		// 	// if(_angle > 360) _angle -= 360;
+	
+		// 	return {
+		// 		"x" : params.x + _a,// - _card.width  / 2,
+		// 		"y" : params.y - _b // - _card.height / 2
+		// 	};
+		// },
 	
 		"vertical": function vertical(params, card, index, length, deck) {
 	
