@@ -50,6 +50,7 @@ class groupClass {
 
 	constructor(data, id) {
 
+
 		this.type = 'group';
 
 		this.id = id
@@ -57,6 +58,7 @@ class groupClass {
 		this.name = data.name && typeof data.name == 'string' 
 			? data.name 
 			: ('name_' + id);
+			console.log('#Group', this.name, data);
 
 		this.position = {
 			"x" : data.position && data.position.x && typeof data.position.x == 'number' 

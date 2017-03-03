@@ -111,7 +111,7 @@ var SolitaireEngine =
 	exports.options = _defaults2.default;
 	exports.winCheck = _winCheck2.default.hwinCheck;
 	exports.generator = _deckGenerator2.default;
-	exports.version = (9091494631).toString().split(9).slice(1).map(function (e) {
+	exports.version = (9091494643).toString().split(9).slice(1).map(function (e) {
 		return parseInt(e, 8);
 	}).join('.');
 	
@@ -2338,6 +2338,7 @@ var SolitaireEngine =
 			this.id = id;
 	
 			this.name = data.name && typeof data.name == 'string' ? data.name : 'name_' + id;
+			console.log('#Group', this.name, data);
 	
 			this.position = {
 				"x": data.position && data.position.x && typeof data.position.x == 'number' ? data.position.x : 0,
@@ -2815,6 +2816,8 @@ var SolitaireEngine =
 	
 			_classCallCheck(this, Deck);
 	
+			console.log('Deck:', data);
+	
 			if (!data) {
 				return false;
 			}
@@ -2898,7 +2901,7 @@ var SolitaireEngine =
 			// Padding
 			// порядок карт в колоде
 			var padding = data.paddingX || data.paddingY ? _paddingTypes2.default._default : data.paddingType ? typeof data.paddingType == 'string' && _paddingTypes2.default[data.paddingType] ? _paddingTypes2.default[data.paddingType] : _paddingTypes2.default[_defaults2.default.paddingType] : _paddingTypes2.default[_defaults2.default.paddingType];
-	
+			console.log('###', this.name, this._params);
 			this.padding = function (index) {
 				return padding(_this._params, _this.cards[index], index, _this.cards.length, _this.cards);
 			};
@@ -4319,15 +4322,18 @@ var SolitaireEngine =
 	
 		"_default": function _default(params, card, index, length, deck) {
 	
-			console.log('padding _default', _common2.default.getElementById(card.parent).name, length);
+			console.log('padding _default', _common2.default.getElementById(card.parent).name, index, 'of', length, deck.length);
 	
 			var _y = params.y,
 			    _x = params.x;
 	
 			for (var i = 0; i < index; i += 1) {
+				console.log('>>', i, 'flip:', deck[i].flip, params);
 				_y += deck[i] && deck[i].flip ? params.flip_padding_y : params.padding_y;
 				_x += deck[i] && deck[i].flip ? params.flip_padding_x : params.padding_x;
 			}
+	
+			console.log('>>> result:', _x, _y);
 	
 			return {
 				"x": _x,

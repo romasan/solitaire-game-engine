@@ -50,6 +50,8 @@ class Deck {
 
 	constructor(data, id) {
 
+		console.log('Deck:', data);
+
 		if(!data) {
 			return false;
 		}
@@ -156,7 +158,7 @@ class Deck {
 					? paddingTypes[data.paddingType] 
 					: paddingTypes[defaults.paddingType]
 				: paddingTypes[defaults.paddingType];
-
+		console.log('###', this.name, this._params);
 		this.padding = index => padding(this._params, this.cards[index], index, this.cards.length, this.cards);
 
 		this.actions = [];
