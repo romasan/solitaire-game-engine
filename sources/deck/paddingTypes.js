@@ -1,15 +1,13 @@
 'use strict';
 
+import common from 'common';
+
 /*
 
 Types:
 
  * _default
  * none
- * last_three_min
- * radial
- * vertical
- * horizontal
 
  */
 
@@ -17,6 +15,8 @@ export default {
 
 
 	"_default" : (params, card, index, length, deck) => {
+
+		console.log('padding _default', common.getElementById(card.parent).name, length);
 
 		let _y = params.y, _x = params.x;
 
@@ -85,6 +85,8 @@ export default {
 	// },
 
 	"vertical": (params, card, index, length, deck) => {
+
+		console.log('vertical');
 
 		let _y = params.y;
 

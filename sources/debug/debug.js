@@ -79,12 +79,12 @@ let stamp = e => {
 	}
 }
 
-document.addEventListener("DOMContentLoaded", e => { 
+document.addEventListener("DOMContentLoaded", e => {
 	if(document.location.hash == '#debug') {
-		(function(F,i,r,e,b,u,g,L,I,T,E) {
-			if(F.getElementById(b)) return;
+		(function(F, i, r, e, b, u, g, L, I, T, E) {
+			if(F.getElementById(b)) { return; }
 			E = F[i + 'NS'] && F.documentElement.namespaceURI;
-			E = E 
+			E = E
 				? F[i + 'NS'](E, 'script')
 				: F[i]('script');
 			E[r]('id', b);
@@ -95,14 +95,14 @@ document.addEventListener("DOMContentLoaded", e => {
 			E[r]('src', I + L);
 		})(
 			document,
-			'createElement',
-			'setAttribute',
-			'getElementsByTagName',
-			'FirebugLite',
-			'4',
-			'firebug-lite.js',
+			'createElement'                          ,
+			'setAttribute'                           ,
+			'getElementsByTagName'                   ,
+			'FirebugLite'                            ,
+			'4'                                      ,
+			'firebug-lite.js'                        ,
 			'releases/lite/latest/skin/xp/sprite.png',
-			'https://getfirebug.com/',
+			'https://getfirebug.com/'                ,
 			'#startOpened'
 		);
 	}

@@ -11,13 +11,13 @@ import groupRedraw    from 'groupRedraw'   ;
 import groupGenerator from 'groupGenerator';
 
 const PARAMS = {
-	"paddingType"  : { "type" : 'any' },
 	"flip"         : { "type" : 'any' },
 	"showSlot"     : { "type" : 'any' },
 	"takeRules"    : { "type" : 'any' },
 	"putRules"     : { "type" : 'any' },
 	"fullRules"    : { "type" : 'any' },
 	"autoHide"     : { "type" : 'any' },
+	"paddingType"  : { "type" : 'any' },
 	"padding"      : { "type" : 'any' },
 	"paddingX"     : { "type" : 'any' },
 	"paddingY"     : { "type" : 'any' },

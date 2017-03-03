@@ -77,8 +77,8 @@ export default {
 
 	"padding_y"           : 0          ,
 	"padding_x"           : 0          ,
-	"flip_padding_y"      : 0          , // 5,
-	"flip_padding_x"      : 0          , // 20,
+	"flip_padding_y"      : 0          ,
+	"flip_padding_x"      : 0          ,
 	"move_distance"       : 10         ,
 	"debugLabels"         : false      ,
 
@@ -91,14 +91,14 @@ export default {
 		"width"  : 71,
 		"height" : 96,
 
-		"suits"   : ['h', 'd', 'c', 's']                                              ,
-		"ranks"   : ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', 'j', 'q', 'k'],
-		"values"  : [ 1,   2,   3,   4,   5,   6,   7,   8,   9,   10,   11,  12,  13],
-		"ranks36" : ['1',                     '6', '7', '8', '9', '10', 'j', 'q', 'k'],
+		"suits"   : [ 'h', 'd', 'c', 's'                                               ],
+		"ranks"   : [ '1', '2', '3', '4', '5', '6', '7', '8', '9', '10', 'j', 'q', 'k' ],
+		"values"  : [  1 ,  2 ,  3 ,  4 ,  5 ,  6 ,  7 ,  8 ,  9 ,  10 ,  11,  12,  13 ],
+		"ranks36" : [ '1',                     '6', '7', '8', '9', '10', 'j', 'q', 'k' ],
 
 		"colors" : {
-			"red"   : ['h', 'd'],
-			"black" : ['c', 's']
+			"red"   : [ 'h', 'd' ],
+			"black" : [ 'c', 's' ]
 		}
 	},
 

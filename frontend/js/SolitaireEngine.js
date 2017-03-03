@@ -111,7 +111,7 @@ var SolitaireEngine =
 	exports.options = _defaults2.default;
 	exports.winCheck = _winCheck2.default.hwinCheck;
 	exports.generator = _deckGenerator2.default;
-	exports.version = (9091494624).toString().split(9).slice(1).map(function (e) {
+	exports.version = (9091494631).toString().split(9).slice(1).map(function (e) {
 		return parseInt(e, 8);
 	}).join('.');
 	
@@ -555,8 +555,8 @@ var SolitaireEngine =
 	
 		"padding_y": 0,
 		"padding_x": 0,
-		"flip_padding_y": 0, // 5,
-		"flip_padding_x": 0, // 20,
+		"flip_padding_y": 0,
+		"flip_padding_x": 0,
 		"move_distance": 10,
 		"debugLabels": false,
 	
@@ -2294,13 +2294,13 @@ var SolitaireEngine =
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 	
 	var PARAMS = {
-		"paddingType": { "type": 'any' },
 		"flip": { "type": 'any' },
 		"showSlot": { "type": 'any' },
 		"takeRules": { "type": 'any' },
 		"putRules": { "type": 'any' },
 		"fullRules": { "type": 'any' },
 		"autoHide": { "type": 'any' },
+		"paddingType": { "type": 'any' },
 		"padding": { "type": 'any' },
 		"paddingX": { "type": 'any' },
 		"paddingY": { "type": 'any' },
@@ -2897,7 +2897,7 @@ var SolitaireEngine =
 	
 			// Padding
 			// порядок карт в колоде
-			var padding = data.paddingX || data.paddingY ? _paddingTypes2.default._default : data.paddingType ? typeof data.paddingType == 'string' && _paddingTypes2.default[data.paddingType] ? _paddingTypes2.default[data.paddingType] : _paddingTypes2.default.none : _paddingTypes2.default[_defaults2.default.paddingType];
+			var padding = data.paddingX || data.paddingY ? _paddingTypes2.default._default : data.paddingType ? typeof data.paddingType == 'string' && _paddingTypes2.default[data.paddingType] ? _paddingTypes2.default[data.paddingType] : _paddingTypes2.default[_defaults2.default.paddingType] : _paddingTypes2.default[_defaults2.default.paddingType];
 	
 			this.padding = function (index) {
 				return padding(_this._params, _this.cards[index], index, _this.cards.length, _this.cards);
@@ -4292,9 +4292,19 @@ var SolitaireEngine =
 
 /***/ },
 /* 20 */
-/***/ function(module, exports) {
+/***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+		value: true
+	});
+	
+	var _common = __webpack_require__(5);
+	
+	var _common2 = _interopRequireDefault(_common);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
 	/*
 	
@@ -4302,19 +4312,14 @@ var SolitaireEngine =
 	
 	 * _default
 	 * none
-	 * last_three_min
-	 * radial
-	 * vertical
-	 * horizontal
 	
 	 */
 	
-	Object.defineProperty(exports, "__esModule", {
-		value: true
-	});
 	exports.default = {
 	
 		"_default": function _default(params, card, index, length, deck) {
+	
+			console.log('padding _default', _common2.default.getElementById(card.parent).name, length);
 	
 			var _y = params.y,
 			    _x = params.x;
@@ -4384,6 +4389,8 @@ var SolitaireEngine =
 		// },
 	
 		"vertical": function vertical(params, card, index, length, deck) {
+	
+			console.log('vertical');
 	
 			var _y = params.y;
 	
@@ -10710,7 +10717,9 @@ var SolitaireEngine =
 	document.addEventListener("DOMContentLoaded", function (e) {
 		if (document.location.hash == '#debug') {
 			(function (F, i, r, e, b, u, g, L, I, T, E) {
-				if (F.getElementById(b)) return;
+				if (F.getElementById(b)) {
+					return;
+				}
 				E = F[i + 'NS'] && F.documentElement.namespaceURI;
 				E = E ? F[i + 'NS'](E, 'script') : F[i]('script');
 				E[r]('id', b);

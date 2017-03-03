@@ -83,13 +83,21 @@ class Deck {
 		}
 
 		if(data.padding) {
-			if(typeof data.padding.x == 'number' && typeof data.paddingX != 'number') { data.paddingX = data.padding.x; }
-			if(typeof data.padding.y == 'number' && typeof data.paddingY != 'number') { data.paddingY = data.padding.y; }
+			if(typeof data.padding.x == 'number' && typeof data.paddingX != 'number') {
+				data.paddingX = data.padding.x;
+			}
+			if(typeof data.padding.y == 'number' && typeof data.paddingY != 'number') {
+				data.paddingY = data.padding.y;
+			}
 		}
 
 		if(data.flipPadding) {
-			if(typeof data.flipPadding.x == 'number' && typeof data.flipPaddingX != 'number') { data.flipPaddingX = data.flipPadding.x; }
-			if(typeof data.flipPadding.y == 'number' && typeof data.flipPaddingY != 'number') { data.flipPaddingY = data.flipPadding.y; }
+			if(typeof data.flipPadding.x == 'number' && typeof data.flipPaddingX != 'number') {
+				data.flipPaddingX = data.flipPadding.x;
+			}
+			if(typeof data.flipPadding.y == 'number' && typeof data.flipPaddingY != 'number') {
+				data.flipPaddingY = data.flipPadding.y;
+			}
 		}
 
 		this._params = {
@@ -113,14 +121,14 @@ class Deck {
 		this.cardFlipCheck = flipTypes[flipType];
 
 		// Put
-		this.putRules = data.putRules 
-			? typeof data.putRules == 'function' 
+		this.putRules = data.putRules
+			? typeof data.putRules == 'function'
 				? data.putRules
-				: typeof data.putRules == 'string' 
-					? readyPutRules[data.putRules] 
+				: typeof data.putRules == 'string'
+					? readyPutRules[data.putRules]
 						? readyPutRules[data.putRules]
 						: readyPutRules[defaults.putRule]
-					: data.putRules.constructor == Array 
+					: data.putRules.constructor == Array
 						? data.putRules
 						: readyPutRules[defaults.putRule]
 			: readyPutRules[defaults.putRule];
@@ -146,7 +154,7 @@ class Deck {
 					paddingTypes[data.paddingType]
 				) 
 					? paddingTypes[data.paddingType] 
-					: paddingTypes.none
+					: paddingTypes[defaults.paddingType]
 				: paddingTypes[defaults.paddingType];
 
 		this.padding = index => padding(this._params, this.cards[index], index, this.cards.length, this.cards);
