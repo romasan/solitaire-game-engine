@@ -15,18 +15,13 @@ export default {
 
 	"_default" : (params, card, index, length, deck) => {
 
-		console.log('padding _default', common.getElementById(card.parent).name, index, 'of', length, deck.length);
-
 		let _y = params.y,
 		    _x = params.x;
 
 		for(let i = 0; i < index; i += 1) {
-			console.log('>>', i, 'flip:', deck[i].flip, params);
 			_y += deck[i] && deck[i].flip ? params.flip_padding_y : params.padding_y;
 			_x += deck[i] && deck[i].flip ? params.flip_padding_x : params.padding_x;
 		}
-
-		console.log('>>> result:', _x, _y);
 
 		return {
 			"x" : _x,
