@@ -1,11 +1,11 @@
 'use strict';
 
-import share    from 'share'        ;
-import defaults from 'defaults'     ;
+import share    from 'share'   ;
+import defaults from 'defaults';
 
-import Field    from 'field'        ;
-import Deck     from 'deck'         ;
-import putRules from 'readyPutRules';
+import Field    from 'field'   ;
+import Deck     from 'deck'    ;
+import putRules from 'putRules';
 
 export default (deck, putDeck) => {
 
@@ -46,12 +46,12 @@ export default (deck, putDeck) => {
 
 					let _param = {
 						"from"    : {
-							"deckId" : _deckId, 
+							"deckId" : _deckId        ,
 							"deck"   : _deck_departure
 						}, 
-						"putDeck" : putDeck,
+						"putDeck" : putDeck    ,
 						"cards"   : _deck.cards,
-						"to"      : _deck,
+						"to"      : _deck      ,
 						"link"    : _link
 						// rulesArgs : putRules[ruleName]
 					};

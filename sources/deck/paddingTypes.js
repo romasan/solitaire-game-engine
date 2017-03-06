@@ -11,7 +11,7 @@ Types:
 
  */
 
-export default {
+let paddingTypes = {
 
 	"_default" : (params, card, index, length, deck) => {
 
@@ -84,39 +84,31 @@ export default {
 
 	"vertical": (params, card, index, length, deck) => {
 
-		console.log('vertical');
+		let _params = {};
 
-		let _y = params.y;
-
-		for(let i = 0; i < index; i += 1) {
-			_y += deck[i] && deck[i].flip
-				? params.flip_padding_y
-				: params.padding_y;
+		for(let name in params) {
+			_params[name] = params[name];
 		}
 
-		let _return = {
-			"x" : params.x,
-			"y" : _y
-		};
+		_params.padding_y = 10;
+		_params.flip_padding_y = 5;
 
-		return _return;
+		return paddingTypes._default(_params, card, index, length, deck);
 	},
 
 	"horizontal": (params, card, index, length, deck) => {
 
-		let _x = params.x;
+		let _params = {};
 
-		for(let i = 0; i < index; i += 1) {
-			_x += deck[i] && deck[i].flip
-				? params.flip_padding_x
-				: params.padding_x;
+		for(let name in params) {
+			_params[name] = params[name];
 		}
 
-		let _return = {
-			"x" : _x,
-			"y" : params.y
-		};
+		_params.padding_x = 10;
+		_params.flip_padding_x = 5;
 
-		return _return;
+		return paddingTypes._default(_params, card, index, length, deck);
 	}
 };
+
+export default  paddingTypes;

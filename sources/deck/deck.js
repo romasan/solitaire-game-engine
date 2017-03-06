@@ -1,25 +1,25 @@
 'use strict';
 
-import event          from 'event'         ;
-import share          from 'share'         ;
-import defaults       from 'defaults'      ;
-import common         from 'common'        ;
+import event         from 'event'         ;
+import share         from 'share'         ;
+import defaults      from 'defaults'      ;
+import common        from 'common'        ;
 
-import flipTypes      from 'flipTypes'     ;
-import readyPutRules  from 'readyPutRules' ;
-import readyTakeRules from 'readyTakeRules';
-import fullRules      from 'fullRules'     ;
-import paddingTypes   from 'paddingTypes'  ;
-import deckActions    from 'deckActions'   ;
-import Take           from 'deckTake'      ;
-import Put            from 'deckPut'       ;
-import genCardByName  from 'genCardByName' ;
-import Group          from 'group'         ;
+import flipTypes     from 'flipTypes'     ;
+import putRules      from 'putRules' ;
+import takeRules     from 'takeRules';
+import fullRules     from 'fullRules'     ;
+import paddingTypes  from 'paddingTypes'  ;
+import deckActions   from 'deckActions'   ;
+import Take          from 'deckTake'      ;
+import Put           from 'deckPut'       ;
+import genCardByName from 'genCardByName' ;
+import Group         from 'group'         ;
 
-import getDecks       from 'getDecks'      ;
-import getDeckById    from 'getDeckById'   ;
-import deckCardNames  from 'deckCardNames' ;
-import getDeck        from 'getDeck'       ;
+import getDecks      from 'getDecks'      ;
+import getDeckById   from 'getDeckById'   ;
+import deckCardNames from 'deckCardNames' ;
+import getDeck       from 'getDeck'       ;
 
 /*
  * Redraw
