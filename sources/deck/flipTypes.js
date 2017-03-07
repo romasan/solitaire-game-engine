@@ -42,5 +42,12 @@ export default {
 
 	"bee"     : (card, i, length) => {
 		card.flip = (i == length - 1) ? false : (i % 2 == 0) ? true : false;
+	},
+
+	"topCount" : (card, i, length, data) => {
+
+		console.log("topCount", data);
+
+		card.flip = false;
 	}
 };

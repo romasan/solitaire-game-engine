@@ -77,6 +77,8 @@ class Deck {
 		this.parent    = typeof data.parent    == 'string'  ? data.parent    : 'field'          ;
 		this.autoHide  = typeof data.autoHide  == 'boolean' ? data.autoHide  : defaults.autohide;
 
+		this.data = {};
+
 		// changed parameters
 		if(typeof data.showSlot == 'undefined') {
 			data.showSlot = defaults.showSlot;
@@ -115,7 +117,9 @@ class Deck {
 
 		// Flip
 		let flipType = data.flip && typeof data.flip == 'string' 
-			? data.flip 
+			? flipTypes[data.flip]
+				? data.flip
+				: defaults.flip_type
 			: defaults.flip_type;
 
 		this.cardFlipCheck = flipTypes[flipType];
@@ -146,18 +150,35 @@ class Deck {
 
 		// Padding
 		// порядок карт в колоде
+		let paddingData = null;
 		let padding = data.paddingX || data.paddingY
 			? paddingTypes._default 
-			: data.paddingType 
-				? (
-					typeof data.paddingType == 'string' && 
-					paddingTypes[data.paddingType]
-				) 
-					? paddingTypes[data.paddingType] 
-					: paddingTypes[defaults.paddingType]
-				: paddingTypes[defaults.paddingType];
+			: data.paddingType                                             // isset data.paddingType
+				? typeof data.paddingType == 'string'                      // is string
+					? paddingTypes[data.paddingType]                       // isset method
+						? paddingTypes[data.paddingType]                   // use method(data.paddingType)
+						: data.paddingType.indexOf(':') >= 0               // is method with attribute
+							? (e => {
+								let data = e.split(':');
+								let name = data[0];
+								if(paddingTypes[name]) {
+									paddingData = data[1];
+									return paddingTypes[name];             // use method(data.paddingType:)(:data.paddingType)
+								} 
+								return paddingTypes[defaults.paddingType]; // use default
+							})(data.paddingType)
+							: paddingTypes[defaults.paddingType]           // use default
+					: paddingTypes[defaults.paddingType]                   // use default
+				: paddingTypes[defaults.paddingType];                      // use default
 
-		this.padding = index => padding(this._params, this.cards[index], index, this.cards.length, this.cards);
+		this.padding = index => padding(
+			this._params     ,
+			this.cards[index],
+			index            ,
+			this.cards.length,
+			this.cards       ,
+			paddingData
+		);
 
 		this.actions = [];
 		if(data.actions) {

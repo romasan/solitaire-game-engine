@@ -108,6 +108,15 @@ let paddingTypes = {
 		_params.flip_padding_x = 5;
 
 		return paddingTypes._default(_params, card, index, length, deck);
+	},
+
+
+	"roller": (params, card, index, length, deck, data) => {
+		console.log('ROLLER', data);
+		return {
+			"x" : params.x,
+			"y" : params.y
+		};
 	}
 };
 
