@@ -85,10 +85,16 @@ class Deck {
 		}
 
 		if(data.padding) {
-			if(typeof data.padding.x == 'number' && typeof data.paddingX != 'number') {
+			if(
+				typeof data.padding.x == 'number' &&
+				typeof data.paddingX  != 'number'
+			) {
 				data.paddingX = data.padding.x;
 			}
-			if(typeof data.padding.y == 'number' && typeof data.paddingY != 'number') {
+			if(
+				typeof data.padding.y == 'number' &&
+				typeof data.paddingY  != 'number'
+			) {
 				data.paddingY = data.padding.y;
 			}
 		}
@@ -116,26 +122,43 @@ class Deck {
 		this.rotate = this._params.rotate;
 
 		// Flip
+		let flipData = null;
 		let flipType = data.flip && typeof data.flip == 'string' 
-			? flipTypes[data.flip]
-				? data.flip
-				: defaults.flip_type
+			? data.flip.indexOf(':') >= 0
+				? (e => {
+					let name = e[0];
+					if(e.length == 2) {
+						flipData = e[1]
+					}
+					return flipTypes[name] ? name : defaults.flip_type;
+				})(data.flip.split(':'))
+				: flipTypes[data.flip]
+					? data.flip
+					: defaults.flip_type
 			: defaults.flip_type;
-
-		this.cardFlipCheck = flipTypes[flipType];
+		console.log(flipType);
+		this.cardFlipCheck = (card, i, length) => {
+			card.flip = flipTypes[flipType](i, length, flipData);
+		};
 
 		// Put
 		this.putRules = data.putRules
-			? typeof data.putRules == 'function'
-				? data.putRules
-				: typeof data.putRules == 'string'
-					? readyPutRules[data.putRules]
-						? readyPutRules[data.putRules]
-						: readyPutRules[defaults.putRule]
-					: data.putRules.constructor == Array
-						? data.putRules
-						: readyPutRules[defaults.putRule]
-			: readyPutRules[defaults.putRule];
+			? typeof data.putRules == 'string'
+				? putRules[data.putRules]
+					? [data.putRules]
+					: defaults.putRules
+				: data.putRules.constructor == Array
+					? data.putRules.filter(
+						ruleName => typeof ruleName == 'string' && putRules[ruleName]
+							? true
+							: false
+					)
+					: defaults.putRules
+			: defaults.putRules;
+
+		if(this.putRules.length == 0) {
+			this.putRules = defaults.putRules;
+		}
 
 		// Take
 		// можно ли взять карту/стопку
@@ -152,21 +175,20 @@ class Deck {
 		// порядок карт в колоде
 		let paddingData = null;
 		let padding = data.paddingX || data.paddingY
-			? paddingTypes._default 
+			? paddingTypes._default
 			: data.paddingType                                             // isset data.paddingType
 				? typeof data.paddingType == 'string'                      // is string
 					? paddingTypes[data.paddingType]                       // isset method
 						? paddingTypes[data.paddingType]                   // use method(data.paddingType)
 						: data.paddingType.indexOf(':') >= 0               // is method with attribute
 							? (e => {
-								let data = e.split(':');
-								let name = data[0];
+								let name = e[0];                           // method name
 								if(paddingTypes[name]) {
-									paddingData = data[1];
+									paddingData = e[1];                    // save method data
 									return paddingTypes[name];             // use method(data.paddingType:)(:data.paddingType)
 								} 
 								return paddingTypes[defaults.paddingType]; // use default
-							})(data.paddingType)
+							})(data.paddingType.split(':'))
 							: paddingTypes[defaults.paddingType]           // use default
 					: paddingTypes[defaults.paddingType]                   // use default
 				: paddingTypes[defaults.paddingType];                      // use default

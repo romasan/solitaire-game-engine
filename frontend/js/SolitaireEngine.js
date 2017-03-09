@@ -111,7 +111,7 @@ var SolitaireEngine =
 	exports.options = _defaults2.default;
 	exports.winCheck = _winCheck2.default.hwinCheck;
 	exports.generator = _deckGenerator2.default;
-	exports.version = (9091494726).toString().split(9).slice(1).map(function (e) {
+	exports.version = (9091494736).toString().split(9).slice(1).map(function (e) {
 		return parseInt(e, 8);
 	}).join('.');
 	
@@ -549,7 +549,7 @@ var SolitaireEngine =
 		"rotate": 0,
 	
 		"takeRules": ['onlytop'],
-		"putRule": 'any',
+		"putRules": ['any'],
 	
 		"moveDistance": 0,
 	
@@ -2879,12 +2879,27 @@ var SolitaireEngine =
 			this.rotate = this._params.rotate;
 	
 			// Flip
-			var flipType = data.flip && typeof data.flip == 'string' ? _flipTypes2.default[data.flip] ? data.flip : _defaults2.default.flip_type : _defaults2.default.flip_type;
-	
-			this.cardFlipCheck = _flipTypes2.default[flipType];
+			var flipData = null;
+			var flipType = data.flip && typeof data.flip == 'string' ? data.flip.indexOf(':') >= 0 ? function (e) {
+				var name = e[0];
+				if (e.length == 2) {
+					flipData = e[1];
+				}
+				return _flipTypes2.default[name] ? name : _defaults2.default.flip_type;
+			}(data.flip.split(':')) : _flipTypes2.default[data.flip] ? data.flip : _defaults2.default.flip_type : _defaults2.default.flip_type;
+			console.log(flipType);
+			this.cardFlipCheck = function (card, i, length) {
+				card.flip = _flipTypes2.default[flipType](i, length, flipData);
+			};
 	
 			// Put
-			this.putRules = data.putRules ? typeof data.putRules == 'function' ? data.putRules : typeof data.putRules == 'string' ? readyPutRules[data.putRules] ? readyPutRules[data.putRules] : readyPutRules[_defaults2.default.putRule] : data.putRules.constructor == Array ? data.putRules : readyPutRules[_defaults2.default.putRule] : readyPutRules[_defaults2.default.putRule];
+			this.putRules = data.putRules ? typeof data.putRules == 'string' ? _putRules2.default[data.putRules] ? [data.putRules] : _defaults2.default.putRules : data.putRules.constructor == Array ? data.putRules.filter(function (ruleName) {
+				return typeof ruleName == 'string' && _putRules2.default[ruleName] ? true : false;
+			}) : _defaults2.default.putRules : _defaults2.default.putRules;
+	
+			if (this.putRules.length == 0) {
+				this.putRules = _defaults2.default.putRules;
+			}
 	
 			// Take
 			// можно ли взять карту/стопку
@@ -2906,14 +2921,13 @@ var SolitaireEngine =
 			? _paddingTypes2.default[data.paddingType] // use method(data.paddingType)
 			: data.paddingType.indexOf(':') >= 0 // is method with attribute
 			? function (e) {
-				var data = e.split(':');
-				var name = data[0];
+				var name = e[0]; // method name
 				if (_paddingTypes2.default[name]) {
-					paddingData = data[1];
+					paddingData = e[1]; // save method data
 					return _paddingTypes2.default[name]; // use method(data.paddingType:)(:data.paddingType)
 				}
 				return _paddingTypes2.default[_defaults2.default.paddingType]; // use default
-			}(data.paddingType) : _paddingTypes2.default[_defaults2.default.paddingType] // use default
+			}(data.paddingType.split(':')) : _paddingTypes2.default[_defaults2.default.paddingType] // use default
 			: _paddingTypes2.default[_defaults2.default.paddingType] // use default
 			: _paddingTypes2.default[_defaults2.default.paddingType]; // use default
 	
@@ -3315,10 +3329,11 @@ var SolitaireEngine =
 	 * none
 	 * all
 	 * notlast
-	 * first_1
-	 * first_2
-	 * first_3
 	 * bee
+	 * bottomFlip
+	 * bottomUnflip
+	 * topFlip
+	 * topUnflip
 	
 	 */
 	
@@ -3327,39 +3342,48 @@ var SolitaireEngine =
 	});
 	exports.default = {
 	
-		"none": function none(card, i, length) {
-			card.flip = false;
+		"none": function none(i, length) {
+			return false;
 		},
 	
-		"all": function all(card, i, length) {
-			card.flip = true;
+		"all": function all(i, length) {
+			return true;
 		},
 	
-		"notlast": function notlast(card, i, length) {
-			card.flip = i < length - 1 ? true : false;
+		"notlast": function notlast(i, length) {
+			return i < length - 1 ? true : false;
 		},
 	
-		"first_1": function first_1(card, i, length) {
-			card.flip = i < 1 ? true : false;
+		"bee": function bee(i, length) {
+			return i == length - 1 ? false : i % 2 == 0 ? true : false;
 		},
 	
-		"first_2": function first_2(card, i, length) {
-			card.flip = i < 2 ? true : false;
+		"bottomFlip": function bottomFlip(i, length, data) {
+	
+			console.log("bottomCount", data);
+	
+			return false;
 		},
 	
-		"first_3": function first_3(card, i, length) {
-			card.flip = i < 3 ? true : false;
+		"bottomUnflip": function bottomUnflip(i, length, data) {
+	
+			console.log("bottomUnflip", data);
+	
+			return false;
 		},
 	
-		"bee": function bee(card, i, length) {
-			card.flip = i == length - 1 ? false : i % 2 == 0 ? true : false;
+		"topFlip": function topFlip(i, length, data) {
+	
+			console.log("topFlip", data);
+	
+			return false;
 		},
 	
-		"topCount": function topCount(card, i, length, data) {
+		"topUnflip": function topUnflip(i, length, data) {
 	
-			console.log("topCount", data);
+			console.log("topUnflip", data);
 	
-			card.flip = false;
+			return false;
 		}
 	};
 
@@ -6074,25 +6098,25 @@ var SolitaireEngine =
 	
 		rulesCorrect = rulesCorrect && !deck.locked;
 	
+		// Нестандартный ход (autosteps)
 		if (_stepType != _defaults2.default.stepType) {
 	
-			// Нестандартный ход (autosteps)
 			rulesCorrect = rulesCorrect && _field2.default.autoSteps && _field2.default.autoSteps[_stepType] ? _field2.default.autoSteps[_stepType].manual({
 				"putDeck": putDeck,
 				"to": deck
 			}) : false;
+			// Стандартный ход
 		} else {
-	
-			var _link = null; // deckName
+			// let _link = null; // target deck name?
 			var _deck = deck;
 	
 			for (var ruleIndex in deck.putRules) {
 	
 				if (rulesCorrect) {
 	
-					if (_link) {
-						_deck = _deck3.default.getDeck(_link);
-					}
+					// if(_link) {
+					// 	_deck = Deck.getDeck(_link);
+					// }
 	
 					var ruleName = deck.putRules[ruleIndex];
 	
@@ -6105,12 +6129,11 @@ var SolitaireEngine =
 							},
 							"putDeck": putDeck,
 							"cards": _deck.cards,
-							"to": _deck,
-							"link": _link
-							// rulesArgs : putRules[ruleName]
+							"to": _deck
+							// "link"    : _link
 						};
 						rulesCorrect = rulesCorrect && _putRules2.default[ruleName](_param);
-						_link = _param.link;
+						// _link = _param.link;
 					} else {
 						console.warn('putRule:', ruleName, 'not exists');
 						rulesCorrect = false;
@@ -10676,70 +10699,40 @@ var SolitaireEngine =
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
 	/*
-	let _css = {
-		"position"    : 'absolute'         ,
-		"top"         : '0px'              ,
-		"width"       : '100px'            ,
-		"height"      : '20px'             ,
-		"border"      : '1px solid #c0c0c0',
-		"background"  : 'white'            ,
-		"color"       : 'white'            ,
-		"text-shadow" : 'black 1px 1px 0px,' +
-		' black -1px 1px 0px, black -1px -1px 0px, black 1px -1px 0px'
-	};
-	$(document).ready(e => {
-		$(document.body)
-			.append(
-				$('<div>').css(_css).css({ "right" : '20px' }).attr({ "id" : 'flag_1' })
-					.css({ "height" : '0px' }).animate({ "height" : '20px' }, 'fast')
-			)
-			.append(
-				$('<div>').css(_css).css({ "right" : '122px' }).attr({ "id" : 'flag_2' })
-					.css({ "height" : '0px' }).animate({ "height" : '20px' }, 'fast')
-			)
-			.append(
-				$('<div>').css(_css).css({ "right" : '224px' }).attr({ "id" : 'flag_3' })
-					.css({ "height" : '0px' }).animate({ "height" : '20px' }, 'fast')
-			);
-	});
-	
-	event.listen('debugFlag', e => {
-		$('#flag_' + e.flag).css({ "background" : e.color }).html(e.text);
-	});
-	*/
-	var stamp = function stamp(e) {
-		var summaryAnimationsCallbacksCouns = 0;
+	let stamp = e => {
+		let summaryAnimationsCallbacksCouns = 0;
 		return {
-			"stepType": _share2.default.get('stepType'),
-			"decks": function (e) {
+			"stepType" : share.get('stepType'),
+			"decks"    : (e => {
 	
-				e = _deck2.default.getDecks();
-				var decks = [];
+				e = deck.getDecks();
+				let decks = [];
 	
-				for (var i in e) {
+				for(let i in e) {
 					decks.push({
-						"name": e[i].name,
-						"cards": e[i].cards.map(function (c) {
+						"name"  : e[i].name,
+						"cards" : e[i].cards.map(c => {
 							return {
-								"name": c.name,
-								"el": function (z) {
-									var el = _share2.default.get('domElement:' + c.id);
+								"name" : c.name,
+								"el"   : (z => {
+									let el = share.get('domElement:' + c.id);
 									summaryAnimationsCallbacksCouns += el._animationCallbacks.length;
 									return {
-										_animationCallbacksLength: el._animationCallbacks.length
-									};
-								}()
-							};
+										_animationCallbacksLength : el._animationCallbacks.length
+									}
+								})()
+							}
 						})
 					});
 				}
 	
 				return decks;
-			}(),
-			summaryAnimationsCallbacksCouns: summaryAnimationsCallbacksCouns,
-			history: _history2.default.get().length
-		};
-	};
+			})(),
+			summaryAnimationsCallbacksCouns : summaryAnimationsCallbacksCouns,
+			history : history.get().length
+		}
+	}
+	*/
 	
 	document.addEventListener("DOMContentLoaded", function (e) {
 		if (document.location.hash == '#debug') {
@@ -10768,8 +10761,7 @@ var SolitaireEngine =
 		elRender: _elRender2.default,
 		stateManager: _stateManager2.default,
 		history: _history2.default,
-		mapCommon: _mapCommon2.default,
-		stamp: stamp
+		mapCommon: _mapCommon2.default
 	};
 
 /***/ }

@@ -7,47 +7,49 @@ Types:
  * none
  * all
  * notlast
- * first_1
- * first_2
- * first_3
  * bee
+ * bottomFlip
+ * bottomUnflip
+ * topFlip
+ * topUnflip
 
  */
 
 export default {
 
-	"none"    : (card, i, length) => {
-		card.flip = false;
+	"none"         : (i, length) => false,
+
+	"all"          : (i, length) => true,
+
+	"notlast"      : (i, length) => (i < length - 1) ? true : false,
+
+	"bee"          : (i, length) => (i == length - 1) ? false : (i % 2 == 0) ? true : false,
+
+	"bottomFlip"   : (i, length, data) => {
+
+		console.log("bottomCount", data);
+
+		return false;
 	},
 
-	"all"     : (card, i, length) => {
-		card.flip = true;
+	"bottomUnflip" : (i, length, data) => {
+
+		console.log("bottomUnflip", data);
+
+		return false;
 	},
 
-	"notlast" : (card, i, length) => {
-		card.flip = (i < length - 1) ? true : false;
+	"topFlip"      : (i, length, data) => {
+
+		console.log("topFlip", data);
+
+		return false;
 	},
 
-	"first_1" : (card, i, length) => {
-		card.flip = (i < 1) ? true : false;
-	},
+	"topUnflip"    : (i, length, data) => {
 
-	"first_2" : (card, i, length) => {
-		card.flip = (i < 2) ? true : false;
-	},
+		console.log("topUnflip", data);
 
-	"first_3" : (card, i, length) => {
-		card.flip = (i < 3) ? true : false;
-	},
-
-	"bee"     : (card, i, length) => {
-		card.flip = (i == length - 1) ? false : (i % 2 == 0) ? true : false;
-	},
-
-	"topCount" : (card, i, length, data) => {
-
-		console.log("topCount", data);
-
-		card.flip = false;
+		return false;
 	}
 };

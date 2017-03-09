@@ -71,7 +71,7 @@ export default {
 	"rotate"              : 0          ,
 
 	"takeRules"           : ['onlytop'],
-	"putRule"             : 'any'      ,
+	"putRules"            : ['any']    ,
 
 	"moveDistance"        : 0          ,
 

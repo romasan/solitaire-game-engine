@@ -18,27 +18,29 @@ export default (deck, putDeck) => {
 
 	rulesCorrect = rulesCorrect && !deck.locked;
 
+	// Нестандартный ход (autosteps)
 	if(_stepType != defaults.stepType) {
 
-		// Нестандартный ход (autosteps)
-		rulesCorrect = rulesCorrect && Field.autoSteps && Field.autoSteps[_stepType]
-			? Field.autoSteps[_stepType].manual({
-				"putDeck" : putDeck,
-				"to"      : deck
-			})
-			: false;
+		rulesCorrect = rulesCorrect   &&
+			Field.autoSteps           &&
+			Field.autoSteps[_stepType]
+				? Field.autoSteps[_stepType].manual({
+					"putDeck" : putDeck,
+					"to"      : deck
+				})
+				: false;
+	// Стандартный ход
 	} else {
-
-		let _link = null;// deckName
+		// let _link = null; // target deck name?
 		let _deck = deck;
 
 		for(let ruleIndex in deck.putRules) {
 
 			if(rulesCorrect) {
 
-				if(_link) {
-					_deck = Deck.getDeck(_link);
-				}
+				// if(_link) {
+				// 	_deck = Deck.getDeck(_link);
+				// }
 
 				let ruleName = deck.putRules[ruleIndex];
 
@@ -51,12 +53,11 @@ export default (deck, putDeck) => {
 						}, 
 						"putDeck" : putDeck    ,
 						"cards"   : _deck.cards,
-						"to"      : _deck      ,
-						"link"    : _link
-						// rulesArgs : putRules[ruleName]
+						"to"      : _deck
+						// "link"    : _link
 					};
 					rulesCorrect = rulesCorrect && putRules[ruleName](_param);
-					_link = _param.link;
+					// _link = _param.link;
 
 				} else {
 					console.warn('putRule:', ruleName, 'not exists');
