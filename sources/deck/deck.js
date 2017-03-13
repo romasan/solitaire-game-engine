@@ -537,7 +537,6 @@ class Deck {
 
 	getRelationsByName(relationName, filter) {
 
-
 		let _relations = [];
 
 		for(let i in this.relations) {

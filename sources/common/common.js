@@ -132,6 +132,8 @@ let getElementsByName = (name, type) => {
 	return response;
 };
 
+let getElementByName = (name, type) => getElementsByName(name, type)[0];
+
 let getElementsByType = type => {
 
 	let response = [];
@@ -249,6 +251,7 @@ export default {
 	getElements      ,
 	getElementById   ,
 	getElementsByName,
+	getElementByName ,
 	validateCardName ,
 	genId            ,
 	animationOn      ,

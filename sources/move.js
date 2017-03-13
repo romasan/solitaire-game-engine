@@ -149,6 +149,8 @@ let Move = (moveDeck, to, cursorMove) => {
 
 					Tips.checkTips();
 
+					_deck_departure.unflipTopCard();
+
 					let _tips = Tips.getTips();
 					if(
 						_deck_destination.save                             ||
@@ -173,8 +175,6 @@ let Move = (moveDeck, to, cursorMove) => {
 							}
 						}
 					});
-
-					_deck_departure.unflipTopCard();
 
 					winCheck.winCheck({
 						"show" : true

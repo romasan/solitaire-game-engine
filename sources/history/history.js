@@ -39,7 +39,7 @@ let _undo = data => {
 
 	if(share.get('sessionStarted')) {
 		// _undoMoveStack = [];
-		event.dispatch('stopAnimations', 'HISTORY#1');
+		event.dispatch('stopAnimations');
 		stateManager.restore();
 	}
 
@@ -48,7 +48,7 @@ let _undo = data => {
 
 	// UNFLIP
 	if(data.unflip) {
-		let deck = common.getElementsByName(data.unflip.deckName);
+		let deck = common.getElementByName(data.unflip.deckName);
 		let card = deck.getCardByIndex(data.unflip.cardIndex);
 		if(card) {
 			card.flip = true;
@@ -156,7 +156,7 @@ event.listen('undo', undoData => {
 	_history.reset();
 
 	if(share.get('animation')) {
-		event.dispatch('stopAnimations', 'HISTORY#2');
+		event.dispatch('stopAnimations');
 	}
 	// Обратная совместимость
 	if(undoData instanceof Array) {
@@ -180,7 +180,7 @@ let _redo = data => {
 
 	if(share.get('sessionStarted')) {
 		// _undoMoveStack = [];
-		event.dispatch('stopAnimations', 'HISTORY#2');
+		event.dispatch('stopAnimations');
 		stateManager.restore();
 	}
 
@@ -189,9 +189,8 @@ let _redo = data => {
 
 	// UNFLIP
 	if(data.unflip) {
-		let deck = common.getElementsByName(data.unflip.deckName);
-		let card = deck.getCardByIndex(data.unflip.cardIndex);
-		console.log('REDO UNFLIP', deck.name, card);
+		let deck = common.getElementByName(data.unflip.deckName);
+		let card = deck.getCardByIndex(data.unflip.cardIndex | 0);
 		if(card) {
 			card.flip = false;
 			event.dispatch('redrawDeckFlip', deck);
@@ -274,7 +273,7 @@ event.listen('redo', redoData => {
 	_history.reset();
 
 	if(share.get('animation')) {
-		event.dispatch('stopAnimations', 'HISTORY#4');
+		event.dispatch('stopAnimations');
 	}
 
 	if(!redoData) {
@@ -284,12 +283,10 @@ event.listen('redo', redoData => {
 	// Обратная совместимость
 	if(redoData instanceof Array) {
 
-		// redoData.reverse();
 		for(let _i in redoData) {
 			let data = redoData[_i];
 			_redo(data);
 		}
-		// redoData.reverse();
 	} else {
 		_redo(redoData);
 	}
@@ -321,16 +318,9 @@ class history {
 
 	add(step) {
 
-		// console.log(
-		// 	'history add:'                                             ,
-		// 	step && step.move && step.move.from ? step.move.from : step,
-		// 	'->'                                                       ,
-		// 	step && step.move && step.move.to   ? step.move.to   : step
-		// );
+		console.log('History:add', step);
 
-		// for(let i in step) {
 		this.steps.push(step);
-		// }
 	}
 
 	// get steps and reset
@@ -342,10 +332,12 @@ class history {
 			this.reset(true);
 		}
 
+		console.log('History:get', _req);
+
 		return _req;
 	}
 
-	log() {}
+	// log() {}
 
 	count() {
 		return this.steps.length;

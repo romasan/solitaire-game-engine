@@ -17,16 +17,12 @@ export default {
 			'default_back'    ,
 			'alternative_back'
 		]
-		// empty : [
-		// 	"default_empty"    ,
-		// 	"alternative_empty"
-		// ]
 	},
 
 	"pref" : {
-		"field" : 'default_field'   , // 0
-		"face"  : 'alternative_face', // 1
-		"back"  : 'default_back'      // 0
+		"field" : 'default_field'   ,
+		"face"  : 'alternative_face',
+		"back"  : 'default_back'
 	},
 
 // Tips
@@ -61,31 +57,31 @@ export default {
 
 // Deck
 
-	"can_move_flip"       : false      ,
-	"showSlot"            : true       ,
-	"autohide"            : false      ,
+	"can_move_flip"       : false  ,
+	"showSlot"            : true   ,
+	"autohide"            : false  ,
 
-	"paddingType"         : 'none'     ,
-	"flip_type"           : 'none'     ,
+	"paddingType"         : 'none' ,
+	"flip_type"           : 'none' ,
 
-	"rotate"              : 0          ,
+	"rotate"              : 0      ,
 
-	"takeRules"           : ['any']    ,
-	"putRules"            : ['any']    ,
+	"takeRules"           : ['any'],
+	"putRules"            : ['any'],
 
-	"fullRules"           : ['not']    ,
+	"fullRules"           : ['not'],
 
-	"moveDistance"        : 0          ,
+	"moveDistance"        : 0      ,
 
-	"padding_y"           : 0          ,
-	"padding_x"           : 0          ,
-	"flip_padding_y"      : 0          ,
-	"flip_padding_x"      : 0          ,
-	"move_distance"       : 10         ,
-	"debugLabels"         : false      ,
+	"padding_y"           : 0      ,
+	"padding_x"           : 0      ,
+	"flip_padding_y"      : 0      ,
+	"flip_padding_x"      : 0      ,
+	"move_distance"       : 10     ,
+	"debugLabels"         : false  ,
 
-	"startZIndex"         : 100        ,
-	"topZIndex"           : 900        ,
+	"startZIndex"         : 100    ,
+	"topZIndex"           : 900    ,
 
 // Card
 
