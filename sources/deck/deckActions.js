@@ -14,6 +14,7 @@ import changeStepType from 'changeStepTypeAction';
 import lock           from 'lockAction'          ;
 import unlock         from 'unlockAction'        ;
 import checkFull      from 'checkFullAction'     ;
+// import roller         from 'rollerAction'        ;
 
 let _actions = {
 	"twindeck"       : twindeck      ,
@@ -24,6 +25,7 @@ let _actions = {
 	"lock"           : lock          ,
 	"unlock"         : unlock        ,
 	"checkFull"      : checkFull
+	// "roller"         : roller
 };
 
 /*
