@@ -174,6 +174,8 @@ let Move = (moveDeck, to, cursorMove) => {
 						}
 					});
 
+					_deck_departure.unflipTopCard();
+
 					winCheck.winCheck({
 						"show" : true
 					});

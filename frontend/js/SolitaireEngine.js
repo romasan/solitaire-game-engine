@@ -111,7 +111,7 @@ var SolitaireEngine =
 	exports.options = _defaults2.default;
 	exports.winCheck = _winCheck2.default.hwinCheck;
 	exports.generator = _deckGenerator2.default;
-	exports.version = (9091494736).toString().split(9).slice(1).map(function (e) {
+	exports.version = (9091494744).toString().split(9).slice(1).map(function (e) {
 		return parseInt(e, 8);
 	}).join('.');
 	
@@ -548,8 +548,10 @@ var SolitaireEngine =
 	
 		"rotate": 0,
 	
-		"takeRules": ['onlytop'],
+		"takeRules": ['any'],
 		"putRules": ['any'],
+	
+		"fullRules": ['not'],
 	
 		"moveDistance": 0,
 	
@@ -2790,6 +2792,7 @@ var SolitaireEngine =
 	 * lock
 	 * unlock
 	 * flipCheck
+	 * unflipTopCard
 	 * checkFull
 	 * Fill
 	 * clear
@@ -2805,6 +2808,7 @@ var SolitaireEngine =
 	 * showCards
 	 * getCardsNames
 	 * cardsCount
+	 * getCardByIndex
 	 * getRelationsByName
 	 * hasTag
 	 */
@@ -2887,14 +2891,15 @@ var SolitaireEngine =
 				}
 				return _flipTypes2.default[name] ? name : _defaults2.default.flip_type;
 			}(data.flip.split(':')) : _flipTypes2.default[data.flip] ? data.flip : _defaults2.default.flip_type : _defaults2.default.flip_type;
-			console.log(flipType);
+	
 			this.cardFlipCheck = function (card, i, length) {
 				card.flip = _flipTypes2.default[flipType](i, length, flipData);
 			};
 	
 			// Put
 			this.putRules = data.putRules ? typeof data.putRules == 'string' ? _putRules2.default[data.putRules] ? [data.putRules] : _defaults2.default.putRules : data.putRules.constructor == Array ? data.putRules.filter(function (ruleName) {
-				return typeof ruleName == 'string' && _putRules2.default[ruleName] ? true : false;
+				return typeof ruleName == 'string' && _putRules2.default[ruleName] // TODO Exception (putRule "***" not found)
+				? true : false;
 			}) : _defaults2.default.putRules : _defaults2.default.putRules;
 	
 			if (this.putRules.length == 0) {
@@ -2903,14 +2908,25 @@ var SolitaireEngine =
 	
 			// Take
 			// можно ли взять карту/стопку
-			this.takeRules = data.takeRules;
+			this.takeRules = data.takeRules ? typeof data.takeRules == 'string' ? _takeRules2.default[data.takeRules] ? [data.takeRules] : _defaults2.default.takeRules : data.takeRules.constructor == Array ? data.takeRules.filter(function (ruleName) {
+				return typeof ruleName == 'string' && _takeRules2.default[ruleName];
+			} // TODO Exception (putRule "***" not found)
+			) : _defaults2.default.takeRules : _defaults2.default.takeRules;
 	
 			// Full
-			this.fullRules = null;
+			// Правила сложенной колоды
+			// Сложенная колода может использоваться для определения выиигрыша
+			// В сложенную колоду нельзя класть новые карты
 	
-			if (data.fullRules) {
-				this.fullRules = data.fullRules;
-			}
+			// this.fullRules = null;
+	
+			// if(data.fullRules) {
+			// 	this.fullRules = data.fullRules;
+			// }
+	
+			this.fullRules = data.fullRules ? typeof data.fullRules == "string" ? _fullRules2.default[data.fullRules] ? [data.fullRules] : _defaults2.default.fullRules : data.putRules.constructor == Array ? data.fullRules.filter(function (ruleName) {
+				return typeof ruleName == "string" && _fullRules2.default[ruleName];
+			}) : _defaults2.default.fullRules : _defaults2.default.fullRules;
 	
 			// Padding
 			// порядок карт в колоде
@@ -3032,10 +3048,29 @@ var SolitaireEngine =
 			value: function flipCheck() {
 	
 				for (var cardIndex in this.cards) {
-					this.cardFlipCheck(this.cards[cardIndex], cardIndex | 0, this.cards.length);
+					this.cardFlipCheck(this.cards[cardIndex], cardIndex | 0, this.cards.length, this.cards[this.cards.length - 1].name);
 				}
 	
 				_event2.default.dispatch('redrawDeckFlip', this);
+			}
+		}, {
+			key: 'unflipTopCard',
+			value: function unflipTopCard() {
+	
+				if (this.cards.length > 0) {
+					this.cards[this.cards.length - 1].flip = false;
+				}
+	
+				_event2.default.dispatch('redrawDeckFlip', this);
+	
+				// TODO save to history
+				_event2.default.dispatch('addStep', {
+					"unflip": {
+						"deckName": this.name,
+						"cardIndex": this.cards.length - 1,
+						"cardName": this.cards[this.cards.length - 1].name
+					}
+				});
 			}
 		}, {
 			key: 'checkFull',
@@ -3230,6 +3265,11 @@ var SolitaireEngine =
 				return this.cards.length;
 			}
 		}, {
+			key: 'getCardByIndex',
+			value: function getCardByIndex(index) {
+				return this.cards[index] ? this.cards[index] : false;
+			}
+		}, {
 			key: 'getRelationsByName',
 			value: function getRelationsByName(relationName, filter) {
 	
@@ -3340,7 +3380,7 @@ var SolitaireEngine =
 	Object.defineProperty(exports, "__esModule", {
 		value: true
 	});
-	exports.default = {
+	var flipTypes = {
 	
 		"none": function none(i, length) {
 			return false;
@@ -3358,34 +3398,34 @@ var SolitaireEngine =
 			return i == length - 1 ? false : i % 2 == 0 ? true : false;
 		},
 	
+		"beeFlip": function beeFlip(i, length) {
+			return i == length - 1 ? true : i % 2 == 0 ? false : true;
+		},
+	
+		"_direction_type": function _direction_type(direction, type, i, length, data) {
+			return data && (data | 0) > 0 ? direction == "top" ? i > length - data - 1 // top
+			? type == "flip" ? true : false : type == "flip" ? false : true : i < data // bottom
+			? type == "flip" ? true : false : type == "flip" ? false : true : false;
+		},
+	
 		"bottomFlip": function bottomFlip(i, length, data) {
-	
-			console.log("bottomCount", data);
-	
-			return false;
+			return flipTypes._direction_type("bootom", "flip", i, length, data);
 		},
 	
 		"bottomUnflip": function bottomUnflip(i, length, data) {
-	
-			console.log("bottomUnflip", data);
-	
-			return false;
+			return flipTypes._direction_type("bootom", "unflip", i, length, data);
 		},
 	
 		"topFlip": function topFlip(i, length, data) {
-	
-			console.log("topFlip", data);
-	
-			return false;
+			return flipTypes._direction_type("top", "flip", i, length, data);
 		},
 	
 		"topUnflip": function topUnflip(i, length, data) {
-	
-			console.log("topUnflip", data);
-	
-			return false;
+			return flipTypes._direction_type("top", "unflip", i, length, data);
 		}
 	};
+	
+	exports.default = flipTypes;
 
 /***/ },
 /* 16 */
@@ -4464,7 +4504,7 @@ var SolitaireEngine =
 		},
 	
 		"roller": function roller(params, card, index, length, deck, data) {
-			console.log('ROLLER', data);
+			console.log('ROLLER PADDING');
 			return {
 				"x": params.x,
 				"y": params.y
@@ -7735,7 +7775,14 @@ var SolitaireEngine =
 		// if(data.flip) {};
 	
 		// UNFLIP
-		// if(data.unflip) {};
+		if (data.unflip) {
+			var deck = _common2.default.getElementsByName(data.unflip.deckName);
+			var card = deck.getCardByIndex(data.unflip.cardIndex);
+			if (card) {
+				card.flip = true;
+				_event2.default.dispatch('redrawDeckFlip', deck);
+			}
+		};
 	
 		// FULL
 		// if(data.full) {};
@@ -7860,7 +7907,15 @@ var SolitaireEngine =
 		// if(data.flip) {};
 	
 		// UNFLIP
-		// if(data.unflip) {};
+		if (data.unflip) {
+			var deck = _common2.default.getElementsByName(data.unflip.deckName);
+			var card = deck.getCardByIndex(data.unflip.cardIndex);
+			console.log('REDO UNFLIP', deck.name, card);
+			if (card) {
+				card.flip = false;
+				_event2.default.dispatch('redrawDeckFlip', deck);
+			}
+		};
 	
 		// FULL
 		// if(data.full) {};
@@ -8525,6 +8580,8 @@ var SolitaireEngine =
 								}
 							}
 						});
+	
+						_deck_departure.unflipTopCard();
 	
 						_winCheck2.default.winCheck({
 							"show": true

@@ -15,41 +15,43 @@ Types:
 
  */
 
-export default {
+let flipTypes = {
 
-	"none"         : (i, length) => false,
+	"none"            : (i, length) => false                                                   ,
 
-	"all"          : (i, length) => true,
+	"all"             : (i, length) => true                                                    ,
 
-	"notlast"      : (i, length) => (i < length - 1) ? true : false,
+	"notlast"         : (i, length) => (i < length - 1) ? true : false                         ,
 
-	"bee"          : (i, length) => (i == length - 1) ? false : (i % 2 == 0) ? true : false,
+	"bee"             : (i, length) => (i == length - 1) ? false : (i % 2 == 0) ? true  : false,
 
-	"bottomFlip"   : (i, length, data) => {
+	"beeFlip"         : (i, length) => (i == length - 1) ? true  : (i % 2 == 0) ? false : true ,
 
-		console.log("bottomCount", data);
+	"_direction_type" : (direction, type, i, length, data) => data && (data | 0) > 0
+		? direction == "top"
+			? i > length - data - 1 // top
+				? type == "flip"
+					? true
+					: false
+				: type == "flip"
+					? false
+					: true
+			: i < data              // bottom
+				? type == "flip"
+					? true
+					: false
+				: type == "flip"
+					? false
+					: true
+		: false,
 
-		return false;
-	},
+	"bottomFlip"      : (i, length, data) => flipTypes._direction_type("bootom", "flip"  , i, length, data),
 
-	"bottomUnflip" : (i, length, data) => {
+	"bottomUnflip"    : (i, length, data) => flipTypes._direction_type("bootom", "unflip", i, length, data),
 
-		console.log("bottomUnflip", data);
+	"topFlip"         : (i, length, data) => flipTypes._direction_type("top"   , "flip"  , i, length, data),
 
-		return false;
-	},
-
-	"topFlip"      : (i, length, data) => {
-
-		console.log("topFlip", data);
-
-		return false;
-	},
-
-	"topUnflip"    : (i, length, data) => {
-
-		console.log("topUnflip", data);
-
-		return false;
-	}
+	"topUnflip"       : (i, length, data) => flipTypes._direction_type("top"   , "unflip", i, length, data)
 };
+
+export default flipTypes;

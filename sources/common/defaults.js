@@ -70,8 +70,10 @@ export default {
 
 	"rotate"              : 0          ,
 
-	"takeRules"           : ['onlytop'],
+	"takeRules"           : ['any']    ,
 	"putRules"            : ['any']    ,
+
+	"fullRules"           : ['not']    ,
 
 	"moveDistance"        : 0          ,
 

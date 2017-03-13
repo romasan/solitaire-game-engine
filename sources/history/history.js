@@ -47,7 +47,14 @@ let _undo = data => {
 	// if(data.flip) {};
 
 	// UNFLIP
-	// if(data.unflip) {};
+	if(data.unflip) {
+		let deck = common.getElementsByName(data.unflip.deckName);
+		let card = deck.getCardByIndex(data.unflip.cardIndex);
+		if(card) {
+			card.flip = true;
+			event.dispatch('redrawDeckFlip', deck);
+		}
+	};
 
 	// FULL
 	// if(data.full) {};
@@ -181,7 +188,15 @@ let _redo = data => {
 	// if(data.flip) {};
 
 	// UNFLIP
-	// if(data.unflip) {};
+	if(data.unflip) {
+		let deck = common.getElementsByName(data.unflip.deckName);
+		let card = deck.getCardByIndex(data.unflip.cardIndex);
+		console.log('REDO UNFLIP', deck.name, card);
+		if(card) {
+			card.flip = false;
+			event.dispatch('redrawDeckFlip', deck);
+		}
+	};
 	
 	// FULL
 	// if(data.full) {};

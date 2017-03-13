@@ -1,25 +1,25 @@
 'use strict';
 
-import event         from 'event'         ;
-import share         from 'share'         ;
-import defaults      from 'defaults'      ;
-import common        from 'common'        ;
+import event         from 'event'        ;
+import share         from 'share'        ;
+import defaults      from 'defaults'     ;
+import common        from 'common'       ;
 
-import flipTypes     from 'flipTypes'     ;
-import putRules      from 'putRules' ;
-import takeRules     from 'takeRules';
-import fullRules     from 'fullRules'     ;
-import paddingTypes  from 'paddingTypes'  ;
-import deckActions   from 'deckActions'   ;
-import Take          from 'deckTake'      ;
-import Put           from 'deckPut'       ;
-import genCardByName from 'genCardByName' ;
-import Group         from 'group'         ;
+import flipTypes     from 'flipTypes'    ;
+import putRules      from 'putRules'     ;
+import takeRules     from 'takeRules'    ;
+import fullRules     from 'fullRules'    ;
+import paddingTypes  from 'paddingTypes' ;
+import deckActions   from 'deckActions'  ;
+import Take          from 'deckTake'     ;
+import Put           from 'deckPut'      ;
+import genCardByName from 'genCardByName';
+import Group         from 'group'        ;
 
-import getDecks      from 'getDecks'      ;
-import getDeckById   from 'getDeckById'   ;
-import deckCardNames from 'deckCardNames' ;
-import getDeck       from 'getDeck'       ;
+import getDecks      from 'getDecks'     ;
+import getDeckById   from 'getDeckById'  ;
+import deckCardNames from 'deckCardNames';
+import getDeck       from 'getDeck'      ;
 
 /*
  * Redraw
@@ -27,6 +27,7 @@ import getDeck       from 'getDeck'       ;
  * lock
  * unlock
  * flipCheck
+ * unflipTopCard
  * checkFull
  * Fill
  * clear
@@ -42,6 +43,7 @@ import getDeck       from 'getDeck'       ;
  * showCards
  * getCardsNames
  * cardsCount
+ * getCardByIndex
  * getRelationsByName
  * hasTag
  */
@@ -136,7 +138,7 @@ class Deck {
 					? data.flip
 					: defaults.flip_type
 			: defaults.flip_type;
-		console.log(flipType);
+
 		this.cardFlipCheck = (card, i, length) => {
 			card.flip = flipTypes[flipType](i, length, flipData);
 		};
@@ -149,7 +151,7 @@ class Deck {
 					: defaults.putRules
 				: data.putRules.constructor == Array
 					? data.putRules.filter(
-						ruleName => typeof ruleName == 'string' && putRules[ruleName]
+						ruleName => typeof ruleName == 'string' && putRules[ruleName] // TODO Exception (putRule "***" not found)
 							? true
 							: false
 					)
@@ -162,14 +164,38 @@ class Deck {
 
 		// Take
 		// можно ли взять карту/стопку
-		this.takeRules = data.takeRules;
+		this.takeRules = data.takeRules
+			? typeof data.takeRules == 'string'
+				? takeRules[data.takeRules]
+					? [data.takeRules]
+					: defaults.takeRules
+				: data.takeRules.constructor == Array
+					? data.takeRules.filter(
+						ruleName => typeof ruleName == 'string' && takeRules[ruleName] // TODO Exception (putRule "***" not found)
+					)
+					: defaults.takeRules
+			: defaults.takeRules;
 
 		// Full
-		this.fullRules = null;
+		// Правила сложенной колоды
+		// Сложенная колода может использоваться для определения выиигрыша
+		// В сложенную колоду нельзя класть новые карты
 
-		if(data.fullRules) {
-			this.fullRules = data.fullRules;
-		}
+		// this.fullRules = null;
+
+		// if(data.fullRules) {
+		// 	this.fullRules = data.fullRules;
+		// }
+
+		this.fullRules = data.fullRules
+			? typeof data.fullRules == "string"
+				? fullRules[data.fullRules]
+					? [data.fullRules]
+					: defaults.fullRules
+				: data.putRules.constructor == Array
+					? data.fullRules.filter(ruleName => typeof ruleName == "string" && fullRules[ruleName])
+					: defaults.fullRules
+			: defaults.fullRules;
 
 		// Padding
 		// порядок карт в колоде
@@ -295,10 +321,28 @@ class Deck {
 	flipCheck() {
 
 		for(let cardIndex in this.cards) {
-			this.cardFlipCheck(this.cards[cardIndex], cardIndex | 0, this.cards.length);
+			this.cardFlipCheck(this.cards[cardIndex], cardIndex | 0, this.cards.length, this.cards[this.cards.length - 1].name);
 		}
 
 		event.dispatch('redrawDeckFlip', this);
+	}
+
+	unflipTopCard() {
+
+		if(this.cards.length > 0) {
+			this.cards[this.cards.length - 1].flip = false;
+		}
+
+		event.dispatch('redrawDeckFlip', this);
+
+		// TODO save to history
+		event.dispatch('addStep', {
+			"unflip" : {
+				"deckName"  : this.name                             ,
+				"cardIndex" : this.cards.length - 1                 ,
+				"cardName"  : this.cards[this.cards.length - 1].name
+			}
+		});
 	}
 
 	checkFull() {
@@ -485,6 +529,10 @@ class Deck {
 
 	cardsCount() {
 		return this.cards.length;
+	}
+
+	getCardByIndex(index) {
+		return this.cards[index] ? this.cards[index] : false;
 	}
 
 	getRelationsByName(relationName, filter) {

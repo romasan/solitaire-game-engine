@@ -90,7 +90,7 @@ let paddingTypes = {
 			_params[name] = params[name];
 		}
 
-		_params.padding_y = 10;
+		_params.padding_y      = 10;
 		_params.flip_padding_y = 5;
 
 		return paddingTypes._default(_params, card, index, length, deck);
@@ -104,7 +104,7 @@ let paddingTypes = {
 			_params[name] = params[name];
 		}
 
-		_params.padding_x = 10;
+		_params.padding_x      = 10;
 		_params.flip_padding_x = 5;
 
 		return paddingTypes._default(_params, card, index, length, deck);
@@ -112,7 +112,7 @@ let paddingTypes = {
 
 
 	"roller": (params, card, index, length, deck, data) => {
-		console.log('ROLLER', data);
+		console.log('ROLLER PADDING');
 		return {
 			"x" : params.x,
 			"y" : params.y
