@@ -102,10 +102,16 @@ class Deck {
 		}
 
 		if(data.flipPadding) {
-			if(typeof data.flipPadding.x == 'number' && typeof data.flipPaddingX != 'number') {
+			if(
+				typeof data.flipPadding.x == 'number' &&
+				typeof data.flipPaddingX  != 'number'
+			) {
 				data.flipPaddingX = data.flipPadding.x;
 			}
-			if(typeof data.flipPadding.y == 'number' && typeof data.flipPaddingY != 'number') {
+			if(
+				typeof data.flipPadding.y == 'number' &&
+				typeof data.flipPaddingY  != 'number'
+			) {
 				data.flipPaddingY = data.flipPadding.y;
 			}
 		}
@@ -128,11 +134,16 @@ class Deck {
 		let flipType = data.flip && typeof data.flip == 'string' 
 			? data.flip.indexOf(':') >= 0
 				? (e => {
+
 					let name = e[0];
+
 					if(e.length == 2) {
-						flipData = e[1]
+						flipData = e[1];
 					}
-					return flipTypes[name] ? name : defaults.flip_type;
+
+					return flipTypes[name]
+						? name
+						: defaults.flip_type;
 				})(data.flip.split(':'))
 				: flipTypes[data.flip]
 					? data.flip
@@ -180,44 +191,40 @@ class Deck {
 		// Правила сложенной колоды
 		// Сложенная колода может использоваться для определения выиигрыша
 		// В сложенную колоду нельзя класть новые карты
-
-		// this.fullRules = null;
-
-		// if(data.fullRules) {
-		// 	this.fullRules = data.fullRules;
-		// }
-
 		this.fullRules = data.fullRules
 			? typeof data.fullRules == "string"
 				? fullRules[data.fullRules]
 					? [data.fullRules]
 					: defaults.fullRules
 				: data.putRules.constructor == Array
-					? data.fullRules.filter(ruleName => typeof ruleName == "string" && fullRules[ruleName])
+					? data.fullRules.filter(
+						ruleName => typeof ruleName == "string" && fullRules[ruleName]
+					)
 					: defaults.fullRules
 			: defaults.fullRules;
 
 		// Padding
 		// порядок карт в колоде
 		let paddingData = null;
-		let padding = data.paddingX || data.paddingY
-			? paddingTypes._default
-			: data.paddingType                                             // isset data.paddingType
-				? typeof data.paddingType == 'string'                      // is string
-					? paddingTypes[data.paddingType]                       // isset method
-						? paddingTypes[data.paddingType]                   // use method(data.paddingType)
-						: data.paddingType.indexOf(':') >= 0               // is method with attribute
-							? (e => {
-								let name = e[0];                           // method name
-								if(paddingTypes[name]) {
-									paddingData = e[1];                    // save method data
-									return paddingTypes[name];             // use method(data.paddingType:)(:data.paddingType)
-								} 
-								return paddingTypes[defaults.paddingType]; // use default
-							})(data.paddingType.split(':'))
-							: paddingTypes[defaults.paddingType]           // use default
-					: paddingTypes[defaults.paddingType]                   // use default
-				: paddingTypes[defaults.paddingType];                      // use default
+		let padding = data.paddingType                                 // isset data.paddingType
+			? typeof data.paddingType == 'string'                      // is string
+				? paddingTypes[data.paddingType]                       // isset method
+					? paddingTypes[data.paddingType]                   // use method(data.paddingType)
+					: data.paddingType.indexOf(':') >= 0               // is method with attribute
+						? (e => {
+
+							let name = e[0];                           // method name
+
+							if(paddingTypes[name]) {
+								paddingData = e[1];                    // save method data
+								return paddingTypes[name];             // use method(data.paddingType:)(:data.paddingType)
+							}
+
+							return paddingTypes[defaults.paddingType]; // use default
+						})(data.paddingType.split(':'))
+						: paddingTypes[defaults.paddingType]           // use default
+				: paddingTypes[defaults.paddingType]                   // use default
+			: paddingTypes[defaults.paddingType];                      // use default
 
 		this.padding = index => padding(
 			this._params     ,

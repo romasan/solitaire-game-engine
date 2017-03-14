@@ -1,6 +1,8 @@
 'use strict';
 
-import common from 'common';
+import share    from 'share'   ;
+import defaults from 'defaults';
+import common   from 'common'  ;
 
 /*
 
@@ -8,6 +10,9 @@ Types:
 
  * _default
  * none
+ * vertical
+ * horizontal
+ * roller
 
  */
 
@@ -37,35 +42,10 @@ let paddingTypes = {
 		};
 	},
 
-	// "last_three_min" : (params, card, index, length, deck) => {
-
-	// 	if(index > length - 3) {
-	// 		if(length > 3) {
-	// 			return {
-	// 				"x" : params.x - (length - 3 - index) * 2,
-	// 				"y" : params.y - (length - 3 - index)
-	// 			};
-	// 		} else {
-	// 			return {
-	// 				"x" : params.x + (index * 2),
-	// 				"y" : params.y + (index | 0)
-	// 			};
-	// 		}
-	// 	} else {
-	// 		return {
-	// 			"x" : x,
-	// 			"y" : y
-	// 		};
-	// 	}
-	// },
+	// "last_three_min" : (params, card, index, length, deck) => {}
 
 	// "radial" : (params, card, index, length, deck) => {
 
-	// 	//              b
-	// 	//       C  ..`:   A = sin(b) * C
-	// 	//     ...``   :B  B = cos(b) * C
-	// 	// a.``.......+:
-	// 	//        A     y 90deg
 	// 	let _depth  = 1,
 	// 	_radius = index * _depth,
 	// 	// _step   = 180 / 16,
@@ -77,8 +57,8 @@ let paddingTypes = {
 	// 	// if(_angle > 360) _angle -= 360;
 
 	// 	return {
-	// 		"x" : params.x + _a,// - _card.width  / 2,
-	// 		"y" : params.y - _b // - _card.height / 2
+	// 		"x" : params.x + _a,
+	// 		"y" : params.y - _b
 	// 	};
 	// },
 
@@ -90,7 +70,9 @@ let paddingTypes = {
 			_params[name] = params[name];
 		}
 
+		_params.padding_x      = 0;
 		_params.padding_y      = 10;
+		_params.flip_padding_x = 0;
 		_params.flip_padding_y = 5;
 
 		return paddingTypes._default(_params, card, index, length, deck);
@@ -105,14 +87,43 @@ let paddingTypes = {
 		}
 
 		_params.padding_x      = 10;
+		_params.padding_y      = 0;
 		_params.flip_padding_x = 5;
+		_params.flip_padding_y = 0;
 
 		return paddingTypes._default(_params, card, index, length, deck);
 	},
 
-
 	"roller": (params, card, index, length, deck, data) => {
-		console.log('ROLLER PADDING');
+		// data: "open,group,padding"
+		// flipRule: "topUnflip:open"
+
+		let _data   = data.split(',')   ,
+		    open    = _data[0] | 0      , // open cards count
+		    group   = (_data[1] | 0) > 0  // closed cards group count
+		    	? _data[1] | 0
+		    	: 1,
+		    padding = _data[2] | 0;
+
+		if(index > length - open) {      // after delimiter
+			return {
+				"x" : params.x + (defaults.card.width * share.get('zoom')) + padding + ((index - length + open) * params.padding_x),
+				"y" : params.y + (index - length + open) * params.padding_y
+			}
+		} else {
+			if(index == length - open) { // delimiter
+				return {
+					"x" : params.x + (defaults.card.width * share.get('zoom')) + padding,
+					"y" : params.y
+				}
+			} else {                     // before delimiter
+				return {
+					"x" : params.x + params.flip_padding_x * ((index / group) | 0),
+					"y" : params.y + params.flip_padding_y * ((index / group) | 0)
+				}
+			}
+		} 
+
 		return {
 			"x" : params.x,
 			"y" : params.y
@@ -120,4 +131,4 @@ let paddingTypes = {
 	}
 };
 
-export default  paddingTypes;
+export default paddingTypes;

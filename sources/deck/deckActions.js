@@ -14,7 +14,7 @@ import changeStepType from 'changeStepTypeAction';
 import lock           from 'lockAction'          ;
 import unlock         from 'unlockAction'        ;
 import checkFull      from 'checkFullAction'     ;
-// import roller         from 'rollerAction'        ;
+import roller         from 'rollerAction'        ;
 
 let _actions = {
 	"twindeck"       : twindeck      ,
@@ -24,8 +24,8 @@ let _actions = {
 	"changeStepType" : changeStepType,
 	"lock"           : lock          ,
 	"unlock"         : unlock        ,
-	"checkFull"      : checkFull
-	// "roller"         : roller
+	"checkFull"      : checkFull     ,
+	"roller"         : roller
 };
 
 /*
@@ -40,7 +40,7 @@ let _decksActions  = [],
 event.listen('initField', e => {
 	_decksActions = [];
 	_events       = [];
-})
+});
 
 let addActionEvent = eventName => {
 
@@ -54,7 +54,7 @@ let addActionEvent = eventName => {
 
 			for(let i in _decksActions) {
 				if(_decksActions[i].event == eventName) {
-					
+
 					let _actionName = _decksActions[i].action;
 
 					let _canRun = eventName == 'click'
@@ -69,7 +69,7 @@ let addActionEvent = eventName => {
 
 							{
 								"actionData" : _decksActions[i].deck.actions[_actionName],
-								"eventData"  : data,
+								"eventData"  : data                                      ,
 								"eventName"  : eventName
 							}
 						);
@@ -98,7 +98,7 @@ let add = deck => {
 
 			// сохраняем action
 			_decksActions.push({
-				"deck"   : deck, 
+				"deck"   : deck                          , 
 				"event"  : deck.actions[actionName].event,
 				"action" : actionName
 			});
@@ -135,8 +135,8 @@ let autoRunActions = deck => {
 					deck, 
 
 					{
-						"actionData" : deck.actions[actionName],
-						"eventData"  : null,
+						"actionData" : deck.actions[actionName]      ,
+						"eventData"  : null                          ,
 						"eventName"  : deck.actions[actionName].event
 					}
 				);
@@ -147,5 +147,5 @@ let autoRunActions = deck => {
 }
 
 export default {
-	add
+	"add" : add
 }
