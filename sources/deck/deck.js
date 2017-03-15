@@ -38,10 +38,11 @@ import getDeck       from 'getDeck'      ;
  * genCardByName
  * hide
  * show
- * getCards
  * hideCards
+ * hideCardByIndex
  * showCards
  * getCardsNames
+ * getCards
  * cardsCount
  * getCardByIndex
  * getRelationsByName
@@ -228,10 +229,10 @@ class Deck {
 
 		this.padding = index => padding(
 			this._params     ,
-			this.cards[index],
+			this.cards[index], // this.getCardByIndex(index);
 			index            ,
-			this.cards.length,
-			this.cards       ,
+			this.cards.length, // this.cardsCount({"visible" : true})
+			this.cards       , // this.getCards({"visible" : true})
 			paddingData
 		);
 
@@ -334,22 +335,29 @@ class Deck {
 		event.dispatch('redrawDeckFlip', this);
 	}
 
+	unflipCardByIndex(index) {
+
+		if(this.cards[index]) {
+
+			this.cards[index].flip = false;
+
+			event.dispatch('redrawDeckFlip', this);
+
+			event.dispatch('addStep', {
+				"unflip" : {
+					"deckName"  : this.name             ,
+					"cardIndex" : index                 ,
+					"cardName"  : this.cards[index].name
+				}
+			});
+		}
+	}
+
 	unflipTopCard() {
 
 		if(this.cards.length > 0) {
-			this.cards[this.cards.length - 1].flip = false;
+			this.unflipCardByIndex(this.cards.length - 1);
 		}
-
-		event.dispatch('redrawDeckFlip', this);
-
-		// TODO save to history
-		event.dispatch('addStep', {
-			"unflip" : {
-				"deckName"  : this.name                             ,
-				"cardIndex" : this.cards.length - 1                 ,
-				"cardName"  : this.cards[this.cards.length - 1].name
-			}
-		});
 	}
 
 	checkFull() {
@@ -498,21 +506,21 @@ class Deck {
 	// 	return this.getCardsByName(cardName)[0];
 	// }
 
-	getCards() {
-
-		// let _cards = [];
-		// for(let i in this.cards) {
-		// 	let _card = common.getElementById(this.cards[i]);
-		// 	_cards.push(_card);
-		// }
-
-		return this.cards;
-	}
-
 	hideCards() {
 		for(let i in this.cards) {
 			this.cards[i].visible = false;
 			event.dispatch('hideCard', this.cards[i]);
+		}
+	}
+
+	hideCardByIndex(index, redraw) {
+		if(this.cards[index]) {
+
+			this.cards[index].visible = false;
+
+			if(redraw) {
+				this.Redraw();
+			}
 		}
 	}
 
@@ -534,33 +542,51 @@ class Deck {
 		return _cardsNames;
 	}
 
-	cardsCount() {
-		return this.cards.length;
+	getCards(filters = {"visible" : true}) {
+		if(filters) {
+			let _cards = [];
+			for(let i in this.cards) {
+
+				let _correct = true;
+
+				for(let filterName in filters) {
+					_correct = _correct && this.cards[i][filterName] == filters[filterName];
+				}
+
+				if(_correct) {
+					_cards.push(this.cards[i]);
+				}
+			}
+			return _cards;
+		} else {
+			return this.cards;
+		}
+	}
+
+	cardsCount(filters) {
+		return this.getCards(filters).length;
 	}
 
 	getCardByIndex(index) {
 		return this.cards[index] ? this.cards[index] : false;
 	}
 
-	getRelationsByName(relationName, filter) {
+	getRelationsByName(relationName, filters) {
 
 		let _relations = [];
 
 		for(let i in this.relations) {
 			if(this.relations[i].name == relationName) {
 
-				if(filter) {
+				if(filters) {
 
-					let _checked = 0, _count = 0;
+					let _correct = true;
 
-					for(let attr in filter) {
-						_count += 1;
-						if(this.relations[i][attr] == filter[attr]) {
-							_checked += 1;
-						}
+					for(let attr in filters) {
+						_correct = _correct && this.relations[i][attr] == filters[attr];
 					}
 
-					if(_checked == _count) {
+					if(_correct) {
 						_relations.push(this.relations[i]);
 					}
 				} else {

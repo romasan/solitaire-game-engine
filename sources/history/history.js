@@ -51,10 +51,16 @@ let _undo = data => {
 		let deck = common.getElementByName(data.unflip.deckName);
 		let card = deck.getCardByIndex(data.unflip.cardIndex);
 		if(card) {
+			// TODO deck.flipCardByIndex(index, false);
 			card.flip = true;
 			event.dispatch('redrawDeckFlip', deck);
 		}
+
 	};
+
+	// HIDE
+
+	// SHOW
 
 	// FULL
 	// if(data.full) {};
@@ -196,6 +202,10 @@ let _redo = data => {
 			event.dispatch('redrawDeckFlip', deck);
 		}
 	};
+
+	// HIDE
+
+	// SHOW
 	
 	// FULL
 	// if(data.full) {};

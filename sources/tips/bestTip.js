@@ -75,7 +75,8 @@ export default (moveDeck, cursorMove) => {
 				"y" : cursorMove.deckPosition.y + ((defaults.card.height / 2) | 0)
 			}
 
-			let _destination_deck_last_card_position = _autoTips[i].to.deck.padding(_autoTips[i].to.deck.cards.length);
+			// координаты последней карты стопки назначения
+			let _destination_deck_last_card_position = _autoTips[i].to.deck.padding(_autoTips[i].to.deck.cardsCount());
 
 			// координаты центра стопки назначения
 			let center_to = {

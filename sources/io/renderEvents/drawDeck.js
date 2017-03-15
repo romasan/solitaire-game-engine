@@ -210,6 +210,8 @@ event.listen('redrawDeck', data => {
 	// перерисовка карт
 	for(let i in data.cards) {
 
+		console.log('redraw card:', i);
+
 		let _card_position = data.deck.padding(i);
 		let _zIndex        = (data.params.startZIndex | 0) + (i | 0);
 
@@ -221,7 +223,9 @@ event.listen('redrawDeck', data => {
 			"left"              : _card_position.x + 'px'                      ,
 			"top"               : _card_position.y + 'px'                      ,
 			"z-index"           : _zIndex                                      ,
-			"display"           : data.deck.visible ? 'block' : 'none'
+			"display"           : data.deck.visible && data.cards[i].visible
+			                    	? 'block'
+			                    	: 'none'
 		};
 
 		let _cardDomElement = share.get('domElement:' + data.cards[i].id);

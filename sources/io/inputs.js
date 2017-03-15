@@ -140,19 +140,30 @@ class inputs {
 			return;
 		}
 
+		// click empty deck
 		if( target.className.split(' ').indexOf('slot') >= 0 ) {
 
 			let _id   = target.id                 ,
 			    _deck = common.getElementById(_id);
 
 			if(_deck) {
+
 				event.dispatch('click', {
-					"to" : _deck
+					"to"     : _deck,
+					"toCard" : null
+				});
+
+				event.dispatch('click:emptyDeck', {
+					"to"     : _deck,
+					"toCard" : null
 				});
 			}
 		}
 
-		if( target.className.split(' ').indexOf('draggable') >= 0 ) {
+		// click card in deck
+		if(
+			target.className.split(' ').indexOf('draggable') >= 0
+		) {
 
 			let _id     = target.id                                                ,
 			    _card   = _id                   ? common.getElementById(_id) : null,
@@ -160,9 +171,23 @@ class inputs {
 			    _deck   = _parent               ? Deck.getDeckById(_parent)  : null;
 
 			if(_deck) {
+
 				event.dispatch('click', {
-					"to" : _deck
+					"to"     : _deck,
+					"toCard" : _card
 				});
+
+				if(_card.flip) {
+					event.dispatch('click:flipCard', {
+						"to"     : _deck,
+						"toCard" : _card
+					});
+				} else {
+					event.dispatch('click:unflipCard', {
+						"to"     : _deck,
+						"toCard" : _card
+					});
+				}
 			}
 
 			// _deck.runActions();

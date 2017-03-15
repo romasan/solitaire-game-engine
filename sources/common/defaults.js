@@ -61,7 +61,7 @@ export default {
 	"showSlot"            : true   ,
 	"autohide"            : false  ,
 
-	"paddingType"         : 'none' ,
+	"paddingType"         : '_default' ,
 	"flip_type"           : 'none' ,
 
 	"rotate"              : 0      ,

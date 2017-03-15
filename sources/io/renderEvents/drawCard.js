@@ -10,14 +10,9 @@ import elRender from 'elRender';
 
 event.listen('addCardEl', data => {
 
-	let _card = {
-		width  : defaults.card.width .toFixed(3) * 1,
-		height : defaults.card.height.toFixed(3) * 1
-	};
-
 	let _params = {
-		"width"  : _card.width  + 'px',
-		"height" : _card.height + 'px'
+		"width"  : defaults.card.width  + 'px',
+		"height" : defaults.card.height + 'px'
 	};
 
 	let _domElement = elRender('<div>')

@@ -9,7 +9,6 @@ import common   from 'common'  ;
 Types:
 
  * _default
- * none
  * vertical
  * horizontal
  * roller
@@ -34,18 +33,16 @@ let paddingTypes = {
 		};
 	},
 
-	"none" : (params, card, index, length, deck) => {
-
-		return {
-			"x" : params.x,
-			"y" : params.y
-		};
-	},
+	// "none" : (params, card, index, length, deck) => {
+	// 	return {
+	// 		"x" : params.x,
+	// 		"y" : params.y
+	// 	};
+	// },
 
 	// "last_three_min" : (params, card, index, length, deck) => {}
 
 	// "radial" : (params, card, index, length, deck) => {
-
 	// 	let _depth  = 1,
 	// 	_radius = index * _depth,
 	// 	// _step   = 180 / 16,
@@ -55,7 +52,6 @@ let paddingTypes = {
 	// 	_a      = Math.sin(_angle * _deg) * _radius,
 	// 	_b      = Math.cos(_angle * _deg) * _radius;
 	// 	// if(_angle > 360) _angle -= 360;
-
 	// 	return {
 	// 		"x" : params.x + _a,
 	// 		"y" : params.y - _b
@@ -105,22 +101,18 @@ let paddingTypes = {
 		    	: 1,
 		    padding = _data[2] | 0;
 
-		if(index > length - open) {      // after delimiter
+		if(
+			index >= length - open && // delimiter and after
+			card.flip == false        // closed cards
+		) {
 			return {
 				"x" : params.x + (defaults.card.width * share.get('zoom')) + padding + ((index - length + open) * params.padding_x),
 				"y" : params.y + (index - length + open) * params.padding_y
 			}
-		} else {
-			if(index == length - open) { // delimiter
-				return {
-					"x" : params.x + (defaults.card.width * share.get('zoom')) + padding,
-					"y" : params.y
-				}
-			} else {                     // before delimiter
-				return {
-					"x" : params.x + params.flip_padding_x * ((index / group) | 0),
-					"y" : params.y + params.flip_padding_y * ((index / group) | 0)
-				}
+		} else {                      // before delimiter
+			return {
+				"x" : params.x + params.flip_padding_x * ((index / group) | 0),
+				"y" : params.y + params.flip_padding_y * ((index / group) | 0)
 			}
 		} 
 

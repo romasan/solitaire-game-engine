@@ -57,7 +57,7 @@ let addActionEvent = eventName => {
 
 					let _actionName = _decksActions[i].action;
 
-					let _canRun = eventName == 'click'
+					let _canRun = eventName.indexOf('click') == 0
 					    ? data.to.name == _decksActions[i].deck.name
 					    : true;
 
@@ -88,31 +88,38 @@ let add = deck => {
 
 	for(let actionName in deck.actions) {
 
-		// если не описано событие выполнять по клику
-		if(!deck.actions[actionName].event) {
-			deck.actions[actionName].event = 'click';
-		}
-
 		// если такой action существует
 		if(_actions[actionName]) {
 
-			// сохраняем action
-			_decksActions.push({
-				"deck"   : deck                          , 
-				"event"  : deck.actions[actionName].event,
-				"action" : actionName
-			});
+			if(!deck.actions[actionName].events) {
+				// если не описано событие выполнять по клику
+				if(typeof deck.actions[actionName].event == "string") {
+					deck.actions[actionName].events = [deck.actions[actionName].event];
+				} else {
+					deck.actions[actionName].events = ['click'];
+				}
+			}
 
-			share.set('actionEvent:' + deck.name + ':' + deck.actions[actionName].event, true);
+			for(let _event of deck.actions[actionName].events) {
 
-			// создаём событие если оно еще не создано
-			if(!_events.indexOf(deck.actions[actionName].event) >= 0) {
+				// сохраняем action
+				_decksActions.push({
+					"deck"   : deck      , 
+					"event"  : _event    ,
+					"action" : actionName
+				});
 
-				// сохраняем событие в список с уже созданными
-				_events.push(deck.actions[actionName].event);
+				share.set('actionEvent:' + deck.name + ':' + _event, true);
 
-				// вешаем событие
-				addActionEvent(deck.actions[actionName].event);
+				// создаём событие если оно еще не создано
+				if(!_events.indexOf(_event) >= 0) {
+
+					// сохраняем событие в список с уже созданными
+					_events.push(_event);
+
+					// вешаем событие
+					addActionEvent(_event);
+				}
 			}
 		} else {
 			console.warn('Action', actionName, 'for', deck.name, 'not found.');

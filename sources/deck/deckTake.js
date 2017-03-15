@@ -25,18 +25,19 @@ export default (deck, cardId) => {
 	let cardName   = null; 
 	let cardSuit   = null; 
 	let cardRank   = null; 
-	let deckLength = deck.cards.length;
+	let deckLength = deck.cardsCount();
 
 	// проверяем не является ли перевернутой
 
 	let takeDeck = []
 
-	for(let i in deck.cards) {
+	let cards = deck.getCards();
+	for(let i in cards) {
 
-		if(deck.cards[i].id == cardId) {
+		if(cards[i].id == cardId) {
 
 			cardIndex = i | 0;
-			cardName  = deck.cards[i].name;
+			cardName  = cards[i].name;
 
 			let _name = common.validateCardName(cardName);
 
@@ -48,8 +49,8 @@ export default (deck, cardId) => {
 			}
 
 			rulesCorrect = rulesCorrect && (
-				!deck.cards[i].flip                        &&
-				deck.cards[i].flip == defaults.canMoveFlip
+				!cards[i].flip                        &&
+				cards[i].flip == defaults.canMoveFlip
 			);
 		}
 
@@ -57,7 +58,7 @@ export default (deck, cardId) => {
 
 			takeDeck.push({
 				"index" : i            ,
-				"card"  : deck.cards[i]
+				"card"  : cards[i]
 			});
 		}
 	}
