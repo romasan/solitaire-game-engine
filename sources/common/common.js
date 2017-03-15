@@ -256,6 +256,14 @@ event.listen('toggleMarkerMode', toggleMarkerMode);
 
 share.set('stepType', defaults.stepType);
 
+let toggleSpecialStepMode = e => {
+
+	let mode = share.get('specialStepMode');
+
+	share.set('specialStepMode', !mode);
+	// TODO button change
+}
+
 export default {
 	isCurLock        ,
 	curLock          ,

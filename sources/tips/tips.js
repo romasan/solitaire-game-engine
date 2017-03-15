@@ -208,7 +208,7 @@ let fromTo = (from, to) => {
 	return false;
 };
 
-event.listen('autoStepToHome', e => {
+event.listen('autoStepToHome', data => {
 
 	console.log('autoStepToHome:', _tips)
 

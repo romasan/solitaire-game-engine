@@ -111,7 +111,7 @@ var SolitaireEngine =
 	exports.options = _defaults2.default;
 	exports.winCheck = _winCheck2.default.hwinCheck;
 	exports.generator = _deckGenerator2.default;
-	exports.version = (9091495367).toString().split(9).slice(1).map(function (e) {
+	exports.version = (9091495410).toString().split(9).slice(1).map(function (e) {
 		return parseInt(e, 8);
 	}).join('.');
 	
@@ -763,7 +763,7 @@ var SolitaireEngine =
 					var _id = target.id,
 					    _deck = _common2.default.getElementById(_id);
 	
-					if (_share2.default.get('markerMode')) {
+					if (_share2.default.get('markerMode') || _share2.default.get('specialStepMode')) {
 						// break;
 						_deck = null;
 					}
@@ -794,6 +794,13 @@ var SolitaireEngine =
 						// break;
 						_event2.default.dispatch('toggleMarkCard', _card);
 						_common2.default.toggleMarkerMode();
+						_deck2 = null;
+					}
+	
+					if (_share2.default.get('specialStepMode')) {
+						// break;
+						_event2.default.dispatch('specialStep', _card);
+						_common2.default.toggleSpecialStepMode();
 						_deck2 = null;
 					}
 	
@@ -1259,6 +1266,14 @@ var SolitaireEngine =
 	_event2.default.listen('toggleMarkerMode', toggleMarkerMode);
 	
 	_share2.default.set('stepType', _defaults2.default.stepType);
+	
+	var toggleSpecialStepMode = function toggleSpecialStepMode(e) {
+	
+		var mode = _share2.default.get('specialStepMode');
+	
+		_share2.default.set('specialStepMode', !mode);
+		// TODO button change
+	};
 	
 	exports.default = {
 		isCurLock: isCurLock,
@@ -1733,7 +1748,7 @@ var SolitaireEngine =
 		return false;
 	};
 	
-	_event2.default.listen('autoStepToHome', function (e) {
+	_event2.default.listen('autoStepToHome', function (data) {
 	
 		console.log('autoStepToHome:', _tips);
 	
@@ -3356,6 +3371,9 @@ var SolitaireEngine =
 					this.Redraw();
 				}
 			}
+	
+			// TODO можно использовать только для карт сверху
+	
 		}, {
 			key: 'hideCardByIndex',
 			value: function hideCardByIndex(index, redraw) {

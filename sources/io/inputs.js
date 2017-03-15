@@ -146,7 +146,10 @@ class inputs {
 			let _id   = target.id                 ,
 			    _deck = common.getElementById(_id);
 
-			if(share.get('markerMode')) { // break;
+			if(
+				share.get('markerMode')      ||
+				share.get('specialStepMode')
+			) { // break;
 				_deck = null;
 			}
 
@@ -177,6 +180,12 @@ class inputs {
 			if(share.get('markerMode')) { // break;
 				event.dispatch('toggleMarkCard', _card);
 				common.toggleMarkerMode();
+				_deck = null;
+			}
+
+			if(share.get('specialStepMode')) { // break;
+				event.dispatch('specialStep', _card);
+				common.toggleSpecialStepMode();
 				_deck = null;
 			}
 

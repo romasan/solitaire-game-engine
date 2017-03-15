@@ -9,12 +9,14 @@ class History {
 	}
 
 	add(e) {
+		console.log('history:add');
 		this._redo = [];
 		this._hist.push(e);
 		this.draw();
 	}
 
 	undo() {
+		console.log('history:undo');
 		let e = this._hist.pop();
 		if(e) this._redo.push(e);
 		this.draw();
@@ -22,6 +24,7 @@ class History {
 	}
 
 	redo() {
+		console.log('history:redo');
 		let e = this._redo.pop();
 		if(e) this._hist.push(e);
 		this.draw();
@@ -103,5 +106,9 @@ document.addEventListener("DOMContentLoaded", e => {
 
 	document.getElementById('b_auto').onclick = e => {
 		SolitaireEngine.event.dispatch('autoStepToHome');
+	}
+
+	document.getElementById('b_spec').onclick = e => {
+		SolitaireEngine.event.dispatch('toggleSpecialStepMode');
 	}
 });

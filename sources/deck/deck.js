@@ -561,6 +561,7 @@ class Deck {
 		}
 	}
 
+	// TODO можно использовать только для карт сверху
 	hideCardByIndex(index, redraw) {
 		if(this.cards[index]) {
 
