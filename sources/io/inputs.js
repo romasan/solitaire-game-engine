@@ -146,6 +146,10 @@ class inputs {
 			let _id   = target.id                 ,
 			    _deck = common.getElementById(_id);
 
+			if(share.get('markerMode')) { // break;
+				_deck = null;
+			}
+
 			if(_deck) {
 
 				event.dispatch('click', {
@@ -170,6 +174,12 @@ class inputs {
 			    _parent = _card && _card.parent ? _card.parent               : null,
 			    _deck   = _parent               ? Deck.getDeckById(_parent)  : null;
 
+			if(share.get('markerMode')) { // break;
+				event.dispatch('toggleMarkCard', _card);
+				common.toggleMarkerMode();
+				_deck = null;
+			}
+
 			if(_deck) {
 
 				event.dispatch('click', {
@@ -188,12 +198,14 @@ class inputs {
 						"toCard" : _card
 					});
 				}
+
+				// нельзя брать перевёрнутые карты
+				if(_card.flip) {
+					return;
+				}
 			}
 
 			// _deck.runActions();
-
-			// TODO
-			// в данной ситуации обрабатывается только клик по карте, пустые колоды никак не обрабатываются
 
 			let _dragDeck = _deck ? _deck.Take(_id) : null;
 

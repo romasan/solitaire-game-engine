@@ -10,6 +10,8 @@ export default e => {
 	// 	.parent()
 	// 	.before(_html);
 
-	let el = document.getElementById('gpCommit').parentNode;
-	el.innerHTML = _html + el.innerHTML;
+	try {
+		let el = document.getElementById('gpCommit').parentNode;
+		el.innerHTML = _html + el.innerHTML;
+	} catch(e) {}
 };

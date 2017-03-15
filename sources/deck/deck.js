@@ -28,6 +28,8 @@ import getDeck       from 'getDeck'      ;
  * unlock
  * flipCheck
  * unflipTopCard
+ * flipAllCards
+ * unflipAllCards
  * checkFull
  * Fill
  * clear
@@ -130,6 +132,8 @@ class Deck {
 
 		this.rotate = this._params.rotate;
 
+		this.autoUnflipTop = typeof data.autoUnflipTop == 'boolean' ? data.autoUnflipTop : defaults.autoUnflipTop;
+
 		// Flip
 		let flipData = null;
 		let flipType = data.flip && typeof data.flip == 'string' 
@@ -227,14 +231,30 @@ class Deck {
 				: paddingTypes[defaults.paddingType]                   // use default
 			: paddingTypes[defaults.paddingType];                      // use default
 
-		this.padding = index => padding(
-			this._params     ,
-			this.cards[index], // this.getCardByIndex(index);
-			index            ,
-			this.cards.length, // this.cardsCount({"visible" : true})
-			this.cards       , // this.getCards({"visible" : true})
-			paddingData
-		);
+		this.padding = index => {
+
+			let _cards = this.getCards();
+			let _index = index < _cards.length ? index : _cards.length - 1;
+			let _card = _cards[_index] ? _cards[_index] : this.cards[index];
+
+			return padding(
+				this._params  ,
+				_card,
+				_index        ,
+				_cards.length ,
+				_cards        ,
+				paddingData
+			);
+
+			// return padding(
+			// 	this._params     ,
+			// 	this.cards[index], // this.getCardByIndex(index);
+			// 	index            ,
+			// 	this.cards.length, // this.cardsCount({"visible" : true})
+			// 	this.cards       , // this.getCards({"visible" : true})
+			// 	paddingData
+			// );
+		}
 
 		this.actions = [];
 		if(data.actions) {
@@ -341,7 +361,8 @@ class Deck {
 
 			this.cards[index].flip = false;
 
-			event.dispatch('redrawDeckFlip', this);
+			// event.dispatch('redrawDeckFlip', this);
+			this.Redraw();
 
 			event.dispatch('addStep', {
 				"unflip" : {
@@ -357,6 +378,28 @@ class Deck {
 
 		if(this.cards.length > 0) {
 			this.unflipCardByIndex(this.cards.length - 1);
+		}
+	}
+
+	flipAllCards(redraw = true) {
+
+		for(let i in this.cards) {
+			this.cards[i].flip = true;
+		}
+
+		if(redraw) {
+			this.Redraw();
+		}
+	}
+
+	unflipAllCards(redraw = true) {
+
+		for(let i in this.cards) {
+			this.cards[i].flip = false;
+		}
+
+		if(redraw) {
+			this.Redraw();
 		}
 	}
 
@@ -506,10 +549,15 @@ class Deck {
 	// 	return this.getCardsByName(cardName)[0];
 	// }
 
-	hideCards() {
+	hideCards(redraw = true) {
+
 		for(let i in this.cards) {
 			this.cards[i].visible = false;
-			event.dispatch('hideCard', this.cards[i]);
+			// event.dispatch('hideCard', this.cards[i]);
+		}
+
+		if(redraw) {
+			this.Redraw();
 		}
 	}
 
@@ -524,10 +572,15 @@ class Deck {
 		}
 	}
 
-	showCards() {
+	showCards(redraw = true) {
+
 		for(let i in this.cards) {
 			this.cards[i].visible = true;
-			event.dispatch('showCard', this.cards[i]);
+			// event.dispatch('showCard', this.cards[i]);
+		}
+
+		if(redraw) {
+			this.Redraw();
 		}
 	}
 

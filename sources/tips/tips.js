@@ -208,6 +208,15 @@ let fromTo = (from, to) => {
 	return false;
 };
 
+event.listen('autoStepToHome', e => {
+
+	console.log('autoStepToHome:', _tips)
+
+	// TODO
+
+	// forceMove(_moveDeck, _to, _cursorMove);
+});
+
 export default {
 	tipTypes       ,
 	getTips        ,

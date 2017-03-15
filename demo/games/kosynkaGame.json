@@ -1,86 +1,100 @@
 {
 
-	"moveDistance" : 10,
-	"inputParams" : {
-		"doubleClick" : false
-	},
-	
-	"winCheck" : {},
-	"groups" : {
-		
-		"twindeck" : {
-			"position" : {
-				"x" : 50,
-				"y" : 10
-			},
-			"placement" : {
-				"x" : 20
-			},
-			"decks" : [
-				{
-					"name" : "td_from_deck",
-					"showSlot" : true,
-					"paddingType" : "twindeck_typeA",
-					"flip" : "all",
-					"takeRules" : ["not"],
-					"putRules" : ["not"],
-					"fill" : ["c1", "c2", "c3", "c4", "c5", "c6", "c7"],
-					"actions" : {
-						"twindeck" : {
-							"event" : "click",
-							"to" : "td_to_deck",
-							"iterations" : 3
-						}
-					}
-				},
-				{
-					"name" : "td_to_deck",
-					"paddingX" : 20,
-					"paddingY" : 1,
-					"takeRules" : ["onlytop"],
-					"putRules" : ["not"]
-				}
-			]
-		},
+    "moveDistance" : 10,
+    "inputParams"  : {
+        "doubleClick" : false
+    },
+    
+    "winCheck" : {
+    	"query" : [
+			{
+				"filters" : [
+					{"group" : "group_row"},
+					{"deck"  : "rollerDeck"}
+				],
+				"rules"	 : ["allEmpty"]
+			}
+		]
+    },
+    "groups"   : {
+    	"group_home" : {
+            "position" : {
+                "x" : 284,
+                "y" : 15
+            },
+            "placement" : {
+                "x" : 18
+            },
+            "showSlot" : true,
+            "putRules" : [
+                "ascendOne"  , 
+                "oneRank"    , 
+                "firstAce"   , 
+                "ascendDeck" , 
+                "oneRankDeck"
+            ],
+            "decks" : 4
+        },
 
-		"group_a" : {
-			"position" : {
-				"x" : 323,
-				"y" : 10
-			},
-			"placement" : {
-				"x" : 10,
-				"y" : 10
-			},
-			"showSlot" : true,
-			"putRules" : [
-				"ascendOne", 
-				"oneRank", 
-				"firstAce", 
-				"ascendDeck", 
-				"oneRankDeck"
-			],
-			"decks" : 4
-		},
+        "group_row" : {
+            "position" : {
+                "x" : 17 ,
+                "y" : 127
+            },
+            "flip" : "notlast",
+            "placement" : {
+                "x" : 18
+            },
+            "paddingType" : "vertical",
+            "showSlot"    : true      ,
+            "takeRules"   : ["any"]   ,
+            "putRules" : [
+                "descentOne",
+                "striped"
+            ],
+            "decks": 7
+        }
+    },
 
-		"group_b" : {
-			"position" : {
-				"x" : 50,
-				"y" : 150
-			},
-			"flip" : "notlast",
-			"placement" : {
-				"x" : 20
-			},
-			"paddingType" : "vertical",
-			"showSlot" : true,
-			"takeRules" : ["any"],
-			"putRules" : [
-				"descentOne",
-				"striped"
-			],
-			"decks": 7
-		}
-		
-	}
+    "decks" : [
+        {
+            "name"        : "rollerDeck",
+            "position"    : {
+                "x" : 17,
+                "y" : 15
+            },
+            "showSlot"    : true,
+
+            "padding" : {
+                "x" : 14,
+                "y" : 1
+            },
+            "flipPadding" : {
+                "x" : 2,
+                "y" : 1
+            },
+
+            "paddingType"   : "roller:3,9,18",
+            "flip"          : "all"          ,
+            "takeRules"     : ["onlytop"]    ,
+            "putRules"      : ["not"]        ,
+            "autoUnflipTop" : false          ,
+            "actions"       : {
+                "roller" : {
+                	"events"    : [
+                        "click:flipCard" ,
+                        "click:emptyDeck"
+                    ],
+                	"openCount" : 3
+                }
+            }
+    	},
+    	{
+            "name" : "test",
+            "position" : {
+                "x": 250,
+                "y": 300
+            }
+        }
+    ]
 }

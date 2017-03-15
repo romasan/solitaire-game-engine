@@ -149,7 +149,13 @@ let Move = (moveDeck, to, cursorMove) => {
 
 					Tips.checkTips();
 
-					_deck_departure.unflipTopCard();
+					if(
+						_deck_departure.autoUnflipTop                                &&
+						_deck_departure.cards.length > 0                             &&
+						_deck_departure.cards[_deck_departure.cards.length - 1].flip
+					) {
+						_deck_departure.unflipTopCard();
+					}
 
 					let _tips = Tips.getTips();
 					if(
@@ -233,13 +239,4 @@ let Move = (moveDeck, to, cursorMove) => {
 
 event.listen('Move', data => {
 	Move(data.moveDeck, data.to, data.cursorMove);
-});
-
-event.listen('autoStepToHome', e => {
-
-	let _tips = Tips.getTips();
-
-	// TODO
-
-	// Move(_moveDeck, _to, _cursorMove);
 });

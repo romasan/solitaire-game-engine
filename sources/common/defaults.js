@@ -57,31 +57,33 @@ export default {
 
 // Deck
 
-	"can_move_flip"       : false  ,
-	"showSlot"            : true   ,
-	"autohide"            : false  ,
+	"can_move_flip"       : false     ,
+	"showSlot"            : true      ,
 
-	"paddingType"         : '_default' ,
-	"flip_type"           : 'none' ,
+	"autohide"            : false     ,
+	"autoUnflipTop"       : true      ,
 
-	"rotate"              : 0      ,
+	"paddingType"         : '_default',
+	"flip_type"           : 'none'    ,
 
-	"takeRules"           : ['any'],
-	"putRules"            : ['any'],
+	"rotate"              : 0         ,
 
-	"fullRules"           : ['not'],
+	"takeRules"           : ['any']   ,
+	"putRules"            : ['any']   ,
 
-	"moveDistance"        : 0      ,
+	"fullRules"           : ['not']   ,
 
-	"padding_y"           : 0      ,
-	"padding_x"           : 0      ,
-	"flip_padding_y"      : 0      ,
-	"flip_padding_x"      : 0      ,
-	"move_distance"       : 10     ,
-	"debugLabels"         : false  ,
+	"moveDistance"        : 0         ,
 
-	"startZIndex"         : 100    ,
-	"topZIndex"           : 900    ,
+	"padding_y"           : 0         ,
+	"padding_x"           : 0         ,
+	"flip_padding_y"      : 0         ,
+	"flip_padding_x"      : 0         ,
+	"move_distance"       : 10        ,
+	"debugLabels"         : false     ,
+
+	"startZIndex"         : 100       ,
+	"topZIndex"           : 900       ,
 
 // Card
 

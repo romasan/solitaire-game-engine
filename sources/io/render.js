@@ -14,9 +14,9 @@ import moveCardToHome from 'moveCardToHome';
 import fieldThemesSet from 'fieldThemesSet';
 
 // styles DOM
-import 'common.scss'                       ;
-import 'default_theme.scss'                ;
-import 'alternative_theme.scss'            ;
+// import 'common.scss'                       ;
+// import 'default_theme.scss'                ;
+// import 'alternative_theme.scss'            ;
 
 event.listen('removeEl', data => {
 

@@ -29,6 +29,10 @@ const PARAMS = {
 	"save"         : {
 		"type"    : 'boolean',
 		"default" : true
+	},
+	"autoUnflipTop" : {
+		"type"    : 'boolean'             ,
+		"default" : defaults.autoUnflipTop
 	}
 };
 

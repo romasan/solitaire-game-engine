@@ -17,7 +17,7 @@ let onShowParameters = e => {
 
 	let pref = storage.get('pref');
 	!pref && (pref = defaults.pref);
-
+	try {
 	for(let prefName in defaults.themes) {
 
 		let _pref = pref[prefName] && defaults.themes[prefName].indexOf(pref[prefName]) >= 0
@@ -27,6 +27,7 @@ let onShowParameters = e => {
 		$(`input[name='pref_${prefName}'][value='${(_pref).toString()}']`)
 			.prop({checked: true});
 	}
+	} catch(e) {}
 
 	gamePreferences.show(pref);
 };
@@ -34,12 +35,14 @@ let onShowParameters = e => {
 let applyParameters = e => {
 
 	let pref = {};
+	try {
 
 	for(let prefName in defaults.themes) {
 		let _value = $(`input[name='pref_${prefName}']:checked`).val();
 		_value = _value == 'true' ? true : _value == 'false' ? false : _value;
 		pref[prefName] = _value;
 	}
+	} catch(e) {}
 
 	event.dispatch('fieldThemesSet', pref);
 
@@ -63,6 +66,7 @@ let saveParameters = pref => {
 export default e => {
 
 	// TODO переделать без jQuery
+	try {
 
 	$('#bbParameters').click(onShowParameters);
 	// event.dispatch('addDomEvent', {
@@ -81,4 +85,5 @@ export default e => {
 	// 	"element"  : ".solitaire-engine-style-preferences-element",
 	// 	"callback" : applyParameters
 	// });
+	} catch(e) {}
 };

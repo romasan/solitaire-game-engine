@@ -48,6 +48,8 @@ event.listen('gameInit', data => {
 	share.set('stepType', defaults.stepType);
 	share.delete('sessionStarted');
 
+	share.set('markerMode', false);
+
 	curUnLock();
 
 	if(!data.firstInit) {
@@ -242,6 +244,16 @@ event.listen('historyReapeater', data => {
 	}
 });
 
+let toggleMarkerMode = e => {
+
+	let mode = share.get('markerMode');
+
+	share.set('markerMode', !mode);
+	// TODO Visual
+}
+
+event.listen('toggleMarkerMode', toggleMarkerMode);
+
 share.set('stepType', defaults.stepType);
 
 export default {
@@ -256,5 +268,6 @@ export default {
 	genId            ,
 	animationOn      ,
 	animationOff     ,
-	animationDefault
+	animationDefault ,
+	toggleMarkerMode
 };

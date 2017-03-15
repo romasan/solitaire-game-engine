@@ -8,6 +8,8 @@ import takeRules from 'takeRules';
 
 export default (deck, cardId) => {
 
+	// console.log('TAKE', deck, cardId);
+
 	// Нестандартный ход (autosteps)
 	// if(share.get('stepType') != defaults.stepType) {return false;};
 
@@ -15,6 +17,7 @@ export default (deck, cardId) => {
 
 	rulesCorrect = rulesCorrect && !deck.locked;
 
+	// смотрим не заполнена ли колода
 	if(typeof deck.full == 'boolean') {
 		rulesCorrect = rulesCorrect && !deck.full;
 	}
@@ -29,7 +32,7 @@ export default (deck, cardId) => {
 
 	// проверяем не является ли перевернутой
 
-	let takeDeck = []
+	let takeDeck = [];
 
 	let cards = deck.getCards();
 	for(let i in cards) {

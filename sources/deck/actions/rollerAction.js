@@ -29,15 +29,7 @@ class rollerAction extends deckAction {
 			"visible" : false
 		});
 
-		console.log('roller action:', data, 'hidden cards count:', hiddenCardsCount);
-
-		if(cardsCount == 0) {
-
-			// показать все карты
-			deck.showCards();
-
-			// TODO clear roll history (if no steps)
-		} else {
+		if(cardsCount > 0) {
 
 			let unflipCardsCount = deck.cardsCount({
 				"visible" : true ,
@@ -53,7 +45,6 @@ class rollerAction extends deckAction {
 					if(cards[i].flip == false) {
 
 						deck.hideCardByIndex(i);
-						console.log('HIDE CARD:', i);
 
 						event.dispatch('addStep', {
 							"hide" : {
@@ -74,9 +65,7 @@ class rollerAction extends deckAction {
 				"flip"    : true
 			});
 
-			console.log('unflip cards:', flipCardsCount, openCards);
 			for(let i = flipCardsCount - 1; i >= 0 && i >= flipCardsCount - openCards; i -= 1) {
-				console.log('FLIP CARD:', i);
 				deck.cards[i].flip = false;
 			}
 
@@ -87,10 +76,28 @@ class rollerAction extends deckAction {
 			// 	deck.cards[unflipIndexFrom].flip = false;
 			// }
 
+			cardsCount = deck.cardsCount({
+				"visible" : true
+			});
+
+			if(cardsCount == 0) {
+
+				// показать все карты
+				deck.showCards();
+				deck.flipAllCards();
+				console.log('SHOW ALL CARDS');
+
+				// TODO clear roll history (if no steps)
+			}
+
 			deck.Redraw();
 		}
 
+
+
 		super.end();
+
+		event.dispatch('checkTips');
 	}
 }
 

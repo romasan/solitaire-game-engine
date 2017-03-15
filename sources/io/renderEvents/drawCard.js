@@ -8,6 +8,11 @@ import common   from 'common'  ;
 import Field    from 'field'   ;
 import elRender from 'elRender';
 
+/*
+ * addCardEl
+ * toggleMarkCard
+ */
+
 event.listen('addCardEl', data => {
 
 	let _params = {
@@ -30,4 +35,17 @@ event.listen('addCardEl', data => {
 
 	elRender(_fieldDomElement)
 		.append(_domElement);
+});
+
+event.listen('toggleMarkCard', data => {
+
+	let el = share.get('domElement:' + data.id);
+
+	if(el) {
+		if(el.hasClass('marker')) {
+			el.removeClass('marker');
+		} else {
+			el.addClass('marker')
+		}
+	}
 });
