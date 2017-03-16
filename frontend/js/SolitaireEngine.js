@@ -65,7 +65,7 @@ var SolitaireEngine =
 	
 	var _inputs2 = _interopRequireDefault(_inputs);
 	
-	var _move = __webpack_require__(63);
+	var _move = __webpack_require__(64);
 	
 	var _move2 = _interopRequireDefault(_move);
 	
@@ -73,7 +73,7 @@ var SolitaireEngine =
 	
 	var _forceMove2 = _interopRequireDefault(_forceMove);
 	
-	var _render = __webpack_require__(66);
+	var _render = __webpack_require__(67);
 	
 	var _render2 = _interopRequireDefault(_render);
 	
@@ -85,7 +85,7 @@ var SolitaireEngine =
 	
 	var _common2 = _interopRequireDefault(_common);
 	
-	var _winCheck = __webpack_require__(64);
+	var _winCheck = __webpack_require__(65);
 	
 	var _winCheck2 = _interopRequireDefault(_winCheck);
 	
@@ -97,7 +97,7 @@ var SolitaireEngine =
 	
 	var _tips2 = _interopRequireDefault(_tips);
 	
-	var _deckGenerator = __webpack_require__(80);
+	var _deckGenerator = __webpack_require__(81);
 	
 	var _deckGenerator2 = _interopRequireDefault(_deckGenerator);
 	
@@ -111,7 +111,7 @@ var SolitaireEngine =
 	exports.options = _defaults2.default;
 	exports.winCheck = _winCheck2.default.hwinCheck;
 	exports.generator = _deckGenerator2.default;
-	exports.version = (9091495321).toString().split(9).slice(1).map(function (e) {
+	exports.version = (9091495410).toString().split(9).slice(1).map(function (e) {
 		return parseInt(e, 8);
 	}).join('.');
 	
@@ -158,7 +158,7 @@ var SolitaireEngine =
 	};
 	
 	if (true) {
-		var debug = __webpack_require__(81);
+		var debug = __webpack_require__(82);
 		exports.debug = debug.default;
 	}
 
@@ -1026,7 +1026,7 @@ var SolitaireEngine =
 	
 	var _defaultPreferences2 = _interopRequireDefault(_defaultPreferences);
 	
-	var _specialStep = __webpack_require__(82);
+	var _specialStep = __webpack_require__(63);
 	
 	var _specialStep2 = _interopRequireDefault(_specialStep);
 	
@@ -8912,6 +8912,27 @@ var SolitaireEngine =
 	
 	var _event2 = _interopRequireDefault(_event);
 	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	_event2.default.listen('specialStep', function (data) {
+	
+		console.log('specialStep:', data);
+	
+		_event2.default.dispatch('specialStepHandler', function (history) {
+			console.log('specialStepHandler:', history);
+		});
+	});
+
+/***/ },
+/* 64 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	var _event = __webpack_require__(2);
+	
+	var _event2 = _interopRequireDefault(_event);
+	
 	var _share = __webpack_require__(1);
 	
 	var _share2 = _interopRequireDefault(_share);
@@ -8936,7 +8957,7 @@ var SolitaireEngine =
 	
 	var _bestTip2 = _interopRequireDefault(_bestTip);
 	
-	var _winCheck = __webpack_require__(64);
+	var _winCheck = __webpack_require__(65);
 	
 	var _winCheck2 = _interopRequireDefault(_winCheck);
 	
@@ -9151,7 +9172,7 @@ var SolitaireEngine =
 	});
 
 /***/ },
-/* 64 */
+/* 65 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -9172,7 +9193,7 @@ var SolitaireEngine =
 	
 	var _common2 = _interopRequireDefault(_common);
 	
-	var _winCheckRules2 = __webpack_require__(65);
+	var _winCheckRules2 = __webpack_require__(66);
 	
 	var _winCheckRules3 = _interopRequireDefault(_winCheckRules2);
 	
@@ -9260,7 +9281,7 @@ var SolitaireEngine =
 	};
 
 /***/ },
-/* 65 */
+/* 66 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -9634,7 +9655,7 @@ var SolitaireEngine =
 	exports.default = winCheckRules;
 
 /***/ },
-/* 66 */
+/* 67 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -9647,43 +9668,43 @@ var SolitaireEngine =
 	
 	var _share2 = _interopRequireDefault(_share);
 	
-	var _elRender = __webpack_require__(67);
+	var _elRender = __webpack_require__(68);
 	
 	var _elRender2 = _interopRequireDefault(_elRender);
 	
-	var _initField = __webpack_require__(70);
+	var _initField = __webpack_require__(71);
 	
 	var _initField2 = _interopRequireDefault(_initField);
 	
-	var _drawDeck = __webpack_require__(71);
+	var _drawDeck = __webpack_require__(72);
 	
 	var _drawDeck2 = _interopRequireDefault(_drawDeck);
 	
-	var _drawCard = __webpack_require__(72);
+	var _drawCard = __webpack_require__(73);
 	
 	var _drawCard2 = _interopRequireDefault(_drawCard);
 	
-	var _drawTip = __webpack_require__(73);
+	var _drawTip = __webpack_require__(74);
 	
 	var _drawTip2 = _interopRequireDefault(_drawTip);
 	
-	var _moveDragDeck = __webpack_require__(74);
+	var _moveDragDeck = __webpack_require__(75);
 	
 	var _moveDragDeck2 = _interopRequireDefault(_moveDragDeck);
 	
-	var _moveCardToHome = __webpack_require__(75);
+	var _moveCardToHome = __webpack_require__(76);
 	
 	var _moveCardToHome2 = _interopRequireDefault(_moveCardToHome);
 	
-	var _fieldThemesSet = __webpack_require__(76);
+	var _fieldThemesSet = __webpack_require__(77);
 	
 	var _fieldThemesSet2 = _interopRequireDefault(_fieldThemesSet);
-	
-	__webpack_require__(77);
 	
 	__webpack_require__(78);
 	
 	__webpack_require__(79);
+	
+	__webpack_require__(80);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
@@ -9712,7 +9733,7 @@ var SolitaireEngine =
 	});
 
 /***/ },
-/* 67 */
+/* 68 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -9737,11 +9758,11 @@ var SolitaireEngine =
 	
 	var _event2 = _interopRequireDefault(_event);
 	
-	var _elClass = __webpack_require__(68);
+	var _elClass = __webpack_require__(69);
 	
 	var _elClass2 = _interopRequireDefault(_elClass);
 	
-	var _allElClass = __webpack_require__(69);
+	var _allElClass = __webpack_require__(70);
 	
 	var _allElClass2 = _interopRequireDefault(_allElClass);
 	
@@ -9811,7 +9832,7 @@ var SolitaireEngine =
 	exports.default = _allEl;
 
 /***/ },
-/* 68 */
+/* 69 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -10180,7 +10201,7 @@ var SolitaireEngine =
 	exports.default = elClass;
 
 /***/ },
-/* 69 */
+/* 70 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -10195,7 +10216,7 @@ var SolitaireEngine =
 	
 	var _defaults2 = _interopRequireDefault(_defaults);
 	
-	var _elClass = __webpack_require__(68);
+	var _elClass = __webpack_require__(69);
 	
 	var _elClass2 = _interopRequireDefault(_elClass);
 	
@@ -10346,7 +10367,7 @@ var SolitaireEngine =
 	exports.default = allElClass;
 
 /***/ },
-/* 70 */
+/* 71 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -10367,7 +10388,7 @@ var SolitaireEngine =
 	
 	var _field2 = _interopRequireDefault(_field);
 	
-	var _elRender = __webpack_require__(67);
+	var _elRender = __webpack_require__(68);
 	
 	var _elRender2 = _interopRequireDefault(_elRender);
 	
@@ -10417,7 +10438,7 @@ var SolitaireEngine =
 	});
 
 /***/ },
-/* 71 */
+/* 72 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -10438,7 +10459,7 @@ var SolitaireEngine =
 	
 	var _field2 = _interopRequireDefault(_field);
 	
-	var _elRender = __webpack_require__(67);
+	var _elRender = __webpack_require__(68);
 	
 	var _elRender2 = _interopRequireDefault(_elRender);
 	
@@ -10607,7 +10628,7 @@ var SolitaireEngine =
 	});
 
 /***/ },
-/* 72 */
+/* 73 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -10632,7 +10653,7 @@ var SolitaireEngine =
 	
 	var _field2 = _interopRequireDefault(_field);
 	
-	var _elRender = __webpack_require__(67);
+	var _elRender = __webpack_require__(68);
 	
 	var _elRender2 = _interopRequireDefault(_elRender);
 	
@@ -10677,7 +10698,7 @@ var SolitaireEngine =
 	});
 
 /***/ },
-/* 73 */
+/* 74 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -10690,7 +10711,7 @@ var SolitaireEngine =
 	
 	var _share2 = _interopRequireDefault(_share);
 	
-	var _elRender = __webpack_require__(67);
+	var _elRender = __webpack_require__(68);
 	
 	var _elRender2 = _interopRequireDefault(_elRender);
 	
@@ -10733,7 +10754,7 @@ var SolitaireEngine =
 	});
 
 /***/ },
-/* 74 */
+/* 75 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -10754,7 +10775,7 @@ var SolitaireEngine =
 	
 	var _defaults2 = _interopRequireDefault(_defaults);
 	
-	var _elRender = __webpack_require__(67);
+	var _elRender = __webpack_require__(68);
 	
 	var _elRender2 = _interopRequireDefault(_elRender);
 	
@@ -10894,7 +10915,7 @@ var SolitaireEngine =
 	});
 
 /***/ },
-/* 75 */
+/* 76 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -10911,7 +10932,7 @@ var SolitaireEngine =
 	
 	var _common2 = _interopRequireDefault(_common);
 	
-	var _elRender = __webpack_require__(67);
+	var _elRender = __webpack_require__(68);
 	
 	var _elRender2 = _interopRequireDefault(_elRender);
 	
@@ -10950,7 +10971,7 @@ var SolitaireEngine =
 	});
 
 /***/ },
-/* 76 */
+/* 77 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -10971,7 +10992,7 @@ var SolitaireEngine =
 	
 	var _field2 = _interopRequireDefault(_field);
 	
-	var _elRender = __webpack_require__(67);
+	var _elRender = __webpack_require__(68);
 	
 	var _elRender2 = _interopRequireDefault(_elRender);
 	
@@ -11000,12 +11021,6 @@ var SolitaireEngine =
 	});
 
 /***/ },
-/* 77 */
-/***/ function(module, exports) {
-
-	// removed by extract-text-webpack-plugin
-
-/***/ },
 /* 78 */
 /***/ function(module, exports) {
 
@@ -11019,6 +11034,12 @@ var SolitaireEngine =
 
 /***/ },
 /* 80 */
+/***/ function(module, exports) {
+
+	// removed by extract-text-webpack-plugin
+
+/***/ },
+/* 81 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -11215,7 +11236,7 @@ var SolitaireEngine =
 	};
 
 /***/ },
-/* 81 */
+/* 82 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -11248,11 +11269,11 @@ var SolitaireEngine =
 	
 	var _deck2 = _interopRequireDefault(_deck);
 	
-	var _deckGenerator = __webpack_require__(80);
+	var _deckGenerator = __webpack_require__(81);
 	
 	var _deckGenerator2 = _interopRequireDefault(_deckGenerator);
 	
-	var _elRender = __webpack_require__(67);
+	var _elRender = __webpack_require__(68);
 	
 	var _elRender2 = _interopRequireDefault(_elRender);
 	
@@ -11335,22 +11356,6 @@ var SolitaireEngine =
 		history: _history2.default,
 		mapCommon: _mapCommon2.default
 	};
-
-/***/ },
-/* 82 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	var _event = __webpack_require__(2);
-	
-	var _event2 = _interopRequireDefault(_event);
-	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-	
-	_event2.default.listen('specialStep', function (data) {
-		console.log('specialStep:', data);
-	});
 
 /***/ }
 /******/ ]);
