@@ -235,25 +235,16 @@ class Deck {
 
 			let _cards = this.getCards();
 			let _index = index < _cards.length ? index : _cards.length - 1;
-			let _card = _cards[_index] ? _cards[_index] : this.cards[index];
+			let _card  = _cards[_index] ? _cards[_index] : this.cards[index];
 
 			return padding(
-				this._params  ,
-				_card,
-				_index        ,
-				_cards.length ,
-				_cards        ,
+				this._params ,
+				_card        ,
+				_index       ,
+				_cards.length,
+				_cards       ,
 				paddingData
 			);
-
-			// return padding(
-			// 	this._params     ,
-			// 	this.cards[index], // this.getCardByIndex(index);
-			// 	index            ,
-			// 	this.cards.length, // this.cardsCount({"visible" : true})
-			// 	this.cards       , // this.getCards({"visible" : true})
-			// 	paddingData
-			// );
 		}
 
 		this.actions = [];
@@ -475,7 +466,9 @@ class Deck {
 
 	Pop(count, clearParent) {
 
-		if(this.cards.length < count) {
+		let _cards = this.getCards();
+
+		if(_cards.length < count) {
 			return false;
 		}
 
@@ -483,8 +476,20 @@ class Deck {
 
 		for(;count;count -= 1) {
 
-			let _pop = this.cards.pop();
+			// get top visible card
+			let _pop = _cards.pop();
 
+			// remove this card from cards list
+			for(let i = 0; i < this.cards.length;i += 1) {
+				if(this.cards[i].id == _pop.id) {
+					this.cards = [
+						...this.cards.slice(0, i),
+						...this.cards.slice(i + 1)
+					];
+				}
+			}
+
+			// clear card parent value
 			if(clearParent) {
 				_pop.parent = null;
 			}
@@ -495,7 +500,7 @@ class Deck {
 
 		_deck.reverse();
 
-		// что делать если вынули все карты
+		// скрыть стопку если вынули все карты
 		if(
 			this.autoHide           && 
 			this.cards.length == 0

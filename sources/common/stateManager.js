@@ -18,6 +18,7 @@ let cardAttributes = [
  * backup
  * restore
  * get
+ * log
  */
 
 class stateManager {
@@ -44,8 +45,6 @@ class stateManager {
 	backup() {
 
 		event.dispatch('debugFlag', {flag : 2, color : 'green', text : 'sm:backup'});
-
-		// console.log('stateManager:backup');
 
 		this._state = {};
 

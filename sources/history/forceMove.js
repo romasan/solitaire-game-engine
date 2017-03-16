@@ -9,6 +9,8 @@ import Tips   from 'tips'  ;
 
 let forceMove = data => {// {from, to, deck, <flip>, <callback>}
 
+	console.log('forceMove:', data);
+
 	if(
 		!data.from ||
 		!data.to   ||

@@ -8,6 +8,8 @@ Types:
  * all
  * notlast
  * bee
+ * beeFlip
+ * _direction_type
  * bottomFlip
  * bottomUnflip
  * topFlip

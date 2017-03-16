@@ -210,11 +210,54 @@ let fromTo = (from, to) => {
 
 event.listen('autoStepToHome', data => {
 
-	console.log('autoStepToHome:', _tips)
+	console.log('autoStepToHome:', _tips);
 
-	// TODO
+	let _homeGroups = Field.homeGroups;
+	let homeGroupDecksNames = [];
 
-	// forceMove(_moveDeck, _to, _cursorMove);
+	for(let groupName of _homeGroups) {
+		let group = common.getElementsByName(groupName, 'deck')[0];
+		let decks = group.getDecks();
+		for(let deck of decks) {
+			homeGroupDecksNames.push(deck.name);
+		}
+	}
+
+	let suitableTips = [];
+
+	for(let tip of _tips) {
+		if(homeGroupDecksNames.indexOf(tip.to.deck.name) >= 0) {
+			suitableTips.push(tip);
+		}
+	}
+
+	let groupByFrom = {};
+
+	for(let tip of suitableTips) {
+		if(groupByFrom[tip.from.deck.name]) {
+			groupByFrom[tip.from.deck.name].push(tip);
+		} else {
+			groupByFrom[tip.from.deck.name] = [tip];
+		}
+		// forceMove();
+	}
+
+	for(let from in groupByFrom) {
+		let tips = groupByFrom[from];
+		// TODO select best tip
+		let tipIndex = 0;// tips.length == 1 ? 0 : ((Math.random() * tips.length) | 0);
+		let tip = tips[tipIndex];
+
+		let forceMoveData = {
+			"from" : tip.from.deck.name  ,
+			"to"   : tip.to  .deck.name  ,
+			"deck" : [tip.from.card.name]
+		};
+
+		event.dispatch('forceMove', forceMoveData);
+	}
+
+
 });
 
 export default {

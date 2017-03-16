@@ -8,8 +8,6 @@ import takeRules from 'takeRules';
 
 export default (deck, cardId) => {
 
-	// console.log('TAKE', deck, cardId);
-
 	// Нестандартный ход (autosteps)
 	// if(share.get('stepType') != defaults.stepType) {return false;};
 

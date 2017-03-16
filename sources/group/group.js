@@ -120,9 +120,6 @@ class groupClass {
 
 		// сортировка элементов в группе по заданному индексу и порядку добавления
 
-		// if(!data.position.x) { data.position.x = 0; }
-		// if(!data.position.y) { data.position.y = 0; }
-
 		if(!data.parent) {
 			data.parent = this.name;
 		}
@@ -182,7 +179,7 @@ class groupClass {
 			}
 
 		} else {
-			for(;typeof this.deckIndex[_index] != 'undefined';_index += 1) {};
+			for(;typeof this.deckIndex[_index] != 'undefined';_index += 1);
 			this.deckIndex[_index] = true;
 		}
 

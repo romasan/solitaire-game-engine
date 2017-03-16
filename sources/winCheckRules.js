@@ -249,7 +249,6 @@ let winCheckRules = {
 			let topCard = deck.getTopCard();
 
 			let topCardRank = common.validateCardName(topCard.name).rank;
-			console.log('topKing', deck.name, topCardRank, defaults.card.ranks[defaults.card.ranks.length - 1]);
 
 			if(
 				typeof topCardRank != 'undefined'                                  &&

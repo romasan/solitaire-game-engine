@@ -23,7 +23,7 @@ class rollerAction extends deckAction {
 			"visible" : true
 		});
 
-		let openCards = data.openCards ? data.openCards : 3;
+		let openCount = data.actionData.openCount ? data.actionData.openCount : 3;
 
 		let hiddenCardsCount = deck.cardsCount({
 			"visible" : false
@@ -65,12 +65,12 @@ class rollerAction extends deckAction {
 				"flip"    : true
 			});
 
-			for(let i = flipCardsCount - 1; i >= 0 && i >= flipCardsCount - openCards; i -= 1) {
+			for(let i = flipCardsCount - 1; i >= 0 && i >= flipCardsCount - openCount; i -= 1) {
 				deck.cards[i].flip = false;
 			}
 
 			// let unflipIndexTo   = cardsCount - unflipCardsCount > 0 ? cardsCount - unflipCardsCount : 0;
-			// let unflipIndexFrom = cardsCount - openCards        > 0 ? cardsCount - openCards        : 0;
+			// let unflipIndexFrom = cardsCount - openCount        > 0 ? cardsCount - openCount        : 0;
 
 			// for(;unflipIndexFrom < unflipIndexTo; unflipIndexFrom += 1) {
 			// 	deck.cards[unflipIndexFrom].flip = false;
@@ -85,7 +85,6 @@ class rollerAction extends deckAction {
 				// показать все карты
 				deck.showCards();
 				deck.flipAllCards();
-				console.log('SHOW ALL CARDS');
 
 				// TODO clear roll history (if no steps)
 			}

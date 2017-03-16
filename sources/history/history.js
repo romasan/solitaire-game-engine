@@ -310,7 +310,6 @@ event.listen('redo', redoData => {
 		share.set('stepType', defaults.stepType);
 		Tips.checkTips();
 	}
-
 });
 
 // history
@@ -328,7 +327,7 @@ class history {
 
 	add(step) {
 
-		console.log('History:add', step);
+		// console.log('History:add', step);
 
 		this.steps.push(step);
 	}
@@ -342,7 +341,7 @@ class history {
 			this.reset(true);
 		}
 
-		console.log('History:get', _req);
+		// console.log('History:get', _req);
 
 		return _req;
 	}

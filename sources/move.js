@@ -159,8 +159,9 @@ let Move = (moveDeck, to, cursorMove) => {
 
 					let _tips = Tips.getTips();
 					if(
-						_deck_destination.save                             ||
-						_tips.length > 0 && _stepType != defaults.stepType
+						_deck_destination.save         ||
+						_tips.length > 0               &&
+						_stepType != defaults.stepType
 					) {
 						event.dispatch('saveSteps', 'MOVE');
 					}

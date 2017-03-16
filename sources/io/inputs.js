@@ -44,10 +44,6 @@ class inputs {
 				this.put(data.target, data.clientX, data.clientY);
 			};
 
-			// document.mouseleave = data => {
-			// 	console.log('mouseleave:', data);
-			// }
-
 			// TODO
 			// Решение: (if distance > 0)
 			// Click
@@ -179,13 +175,13 @@ class inputs {
 
 			if(share.get('markerMode')) { // break;
 				event.dispatch('toggleMarkCard', _card);
-				common.toggleMarkerMode();
+				event.dispatch('toggleMarkerMode');
 				_deck = null;
 			}
 
 			if(share.get('specialStepMode')) { // break;
 				event.dispatch('specialStep', _card);
-				common.toggleSpecialStepMode();
+				event.dispatch('toggleSpecialStepMode');
 				_deck = null;
 			}
 

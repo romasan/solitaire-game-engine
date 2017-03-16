@@ -12,6 +12,7 @@ import History            from 'history'           ;
 import drawPreferences    from 'drawPreferences'   ;
 import preferencesEvents  from 'preferencesEvents' ;
 import defaultPreferences from 'defaultPreferences';
+import specialStep        from 'specialStep'       ;
 
 /*
 
@@ -164,8 +165,6 @@ let validateCardName = name => {
 
 		console.warn('Warning: validate name must have string type "' + name + '"', name);
 
-		// throw new Error('validateCardName');
-
 		return false;
 	}
 
@@ -264,6 +263,8 @@ let toggleSpecialStepMode = e => {
 	// TODO button change
 }
 
+event.listen('toggleSpecialStepMode', toggleSpecialStepMode);
+
 export default {
 	isCurLock        ,
 	curLock          ,
@@ -276,6 +277,5 @@ export default {
 	genId            ,
 	animationOn      ,
 	animationOff     ,
-	animationDefault ,
-	toggleMarkerMode
+	animationDefault
 };

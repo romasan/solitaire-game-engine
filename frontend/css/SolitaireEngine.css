@@ -128,6 +128,14 @@ body {
 
 #gamePreferences span {
   width: 100%; }
+
+.marker:after {
+  content: attr(data-content);
+  background-image: url("/solitaire_engine/img/marker.png");
+  width: 100%;
+  height: 100%;
+  display: block;
+  margin: 0px; }
 .default_field {
   background: green; }
 

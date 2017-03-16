@@ -178,10 +178,6 @@ event.listen('redrawDeck', data => {
 		applyChangedParameters(data);
 	}
 
-	if(data.deck.full) {
-		console.log('%credrawDeck:', 'background: green;', data.deck.name, data.deck.full);
-	}
-
 	// перерисовка стопки
 	let _params = {
 		"transform" : 'rotate(' + (data.params.rotate | 0) + 'deg)',
@@ -209,8 +205,6 @@ event.listen('redrawDeck', data => {
 
 	// перерисовка карт
 	for(let i in data.cards) {
-
-		// console.log('redraw card:', i);
 
 		let _card_position = data.deck.padding(i);
 		let _zIndex        = (data.params.startZIndex | 0) + (i | 0);
