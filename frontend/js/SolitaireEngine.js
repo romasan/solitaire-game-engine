@@ -111,7 +111,7 @@ var SolitaireEngine =
 	exports.options = _defaults2.default;
 	exports.winCheck = _winCheck2.default.hwinCheck;
 	exports.generator = _deckGenerator2.default;
-	exports.version = (9091495410).toString().split(9).slice(1).map(function (e) {
+	exports.version = (9091495424).toString().split(9).slice(1).map(function (e) {
 		return parseInt(e, 8);
 	}).join('.');
 	
@@ -1582,6 +1582,7 @@ var SolitaireEngine =
 	 * tipsDestination
 	 * checkFrom
 	 * fromTo
+	 * autoStepToHome
 	 */
 	
 	var _showTips = _defaults2.default.showTips;
@@ -1746,7 +1747,7 @@ var SolitaireEngine =
 		return false;
 	};
 	
-	_event2.default.listen('autoStepToHome', function (data) {
+	var autoStepToHome = function autoStepToHome(data) {
 	
 		console.log('autoStepToHome:', _tips);
 	
@@ -1878,7 +1879,9 @@ var SolitaireEngine =
 	
 			_event2.default.dispatch('forceMove', forceMoveData);
 		}
-	});
+	};
+	
+	_event2.default.listen('autoStepToHome', autoStepToHome);
 	
 	exports.default = {
 		tipTypes: tipTypes,
@@ -8914,12 +8917,26 @@ var SolitaireEngine =
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
-	_event2.default.listen('specialStep', function (data) {
+	_event2.default.listen('specialStep', function (card) {
 	
-		console.log('specialStep:', data);
+		console.log('$$$', card);
 	
-		_event2.default.dispatch('specialStepHandler', function (history) {
-			console.log('specialStepHandler:', history);
+		_event2.default.dispatch('rewindHistory', function (data) {
+	
+			console.log('###', data);
+	
+			var index = -1;
+	
+			for (var i = data.history.length - 1; i > 0 && index < 0; i -= 1) {
+				var step = data.history[i];
+				console.log('###', card, i, step);
+			}
+	
+			var undoCount = index >= 0 ? data.history.length - index - 1 : 0;
+	
+			for (var _i = 0; _i < undoCount; _i += 1) {
+				data.undo();
+			}
 		});
 	});
 

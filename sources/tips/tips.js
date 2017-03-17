@@ -19,6 +19,7 @@ import Field     from 'field'   ;
  * tipsDestination
  * checkFrom
  * fromTo
+ * autoStepToHome
  */
 
 let _showTips = defaults.showTips;
@@ -208,7 +209,7 @@ let fromTo = (from, to) => {
 	return false;
 };
 
-event.listen('autoStepToHome', data => {
+let autoStepToHome = data => {
 
 	console.log('autoStepToHome:', _tips);
 
@@ -256,9 +257,9 @@ event.listen('autoStepToHome', data => {
 
 		event.dispatch('forceMove', forceMoveData);
 	}
+};
 
-
-});
+event.listen('autoStepToHome', autoStepToHome);
 
 export default {
 	tipTypes       ,
