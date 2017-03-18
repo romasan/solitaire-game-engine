@@ -111,7 +111,7 @@ var SolitaireEngine =
 	exports.options = _defaults2.default;
 	exports.winCheck = _winCheck2.default.hwinCheck;
 	exports.generator = _deckGenerator2.default;
-	exports.version = (9091495431).toString().split(9).slice(1).map(function (e) {
+	exports.version = (9091495453).toString().split(9).slice(1).map(function (e) {
 		return parseInt(e, 8);
 	}).join('.');
 	
@@ -1865,19 +1865,28 @@ var SolitaireEngine =
 			}
 		}
 	
+		var toList = [];
+	
 		for (var from in groupByFrom) {
 			var tips = groupByFrom[from];
 			// TODO select best tip
 			var tipIndex = 0; // tips.length == 1 ? 0 : ((Math.random() * tips.length) | 0);
 			var tip = tips[tipIndex];
 	
-			var forceMoveData = {
-				"from": tip.from.deck.name,
-				"to": tip.to.deck.name,
-				"deck": [tip.from.card.name]
-			};
+			if (toList.indexOf(tip.to.deck.name) < 0) {
 	
-			_event2.default.dispatch('forceMove', forceMoveData);
+				var forceMoveData = {
+					"from": tip.from.deck.name,
+					"to": tip.to.deck.name,
+					"deck": [tip.from.card.name]
+				};
+	
+				toList.push(tip.to.deck.name);
+	
+				// event.dispatch('forceMove', forceMoveData);
+	
+				// TODO save to history
+			}
 		}
 	};
 	
@@ -8915,19 +8924,25 @@ var SolitaireEngine =
 	
 	var _event2 = _interopRequireDefault(_event);
 	
+	var _deck = __webpack_require__(14);
+	
+	var _deck2 = _interopRequireDefault(_deck);
+	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
 	_event2.default.listen('specialStep', function (card) {
 	
 		var cardName = card.name;
-		var deckName = card.parent;
+		var deckName = _deck2.default.getDeckById(card.parent).name;
 	
 		_event2.default.dispatch('rewindHistory', function (data) {
 	
 			var index = -1;
 	
 			for (var i = data.history.length - 1; i > 0 && index < 0; i -= 1) {
+	
 				var step = data.history[i];
+	
 				var _iteratorNormalCompletion = true;
 				var _didIteratorError = false;
 				var _iteratorError = undefined;
@@ -8935,6 +8950,7 @@ var SolitaireEngine =
 				try {
 					for (var _iterator = step[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
 						var atom = _step.value;
+	
 	
 						if (atom.move && atom.move.to == deckName && atom.move.deck[0] == cardName) {
 							index = i;
@@ -8956,12 +8972,11 @@ var SolitaireEngine =
 				}
 			}
 	
-			var undoCount = index >= 0 ? data.history.length - index - 1 : 0;
-			console.log('step found on:', index, data.history[index], 'rewind', undoCount, 'steps');
+			var undoCount = index >= 0 ? data.history.length - index : 0;
 	
-			// for(let i = 0; i < undoCount; i += 1) {
-			// 	data.undo();
-			// }
+			for (var _i = 0; _i < undoCount; _i += 1) {
+				data.undo();
+			}
 		});
 	});
 

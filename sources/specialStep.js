@@ -2,18 +2,23 @@
 
 import event from 'event';
 
+import Deck  from 'deck';
+
 event.listen('specialStep', card => {
 
 	let cardName = card.name;
-	let deckName = card.parent;
+	let deckName = Deck.getDeckById(card.parent).name;
 
 	event.dispatch('rewindHistory', data => {
 
 		let index = -1;
 
-		for(let i = data.history.length -1; i > 0 && index < 0; i -= 1) {
+		for(let i = data.history.length - 1; i > 0 && index < 0; i -= 1) {
+
 			let step = data.history[i];
+
 			for(let atom of step) {
+
 				if(
 					atom.move                     &&
 					atom.move.to      == deckName &&
@@ -24,11 +29,10 @@ event.listen('specialStep', card => {
 			}
 		}
 
-		let undoCount = index >= 0 ? data.history.length - index - 1 : 0;
-		console.log('step found on:', index, data.history[index], 'rewind', undoCount, 'steps');
+		let undoCount = index >= 0 ? data.history.length - index : 0;
 
-		// for(let i = 0; i < undoCount; i += 1) {
-		// 	data.undo();
-		// }
+		for(let i = 0; i < undoCount; i += 1) {
+			data.undo();
+		}
 	});
 });

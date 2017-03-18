@@ -243,19 +243,28 @@ let autoStepToHome = data => {
 		// forceMove();
 	}
 
+	let toList = [];
+
 	for(let from in groupByFrom) {
 		let tips = groupByFrom[from];
 		// TODO select best tip
 		let tipIndex = 0;// tips.length == 1 ? 0 : ((Math.random() * tips.length) | 0);
 		let tip = tips[tipIndex];
 
-		let forceMoveData = {
-			"from" : tip.from.deck.name  ,
-			"to"   : tip.to  .deck.name  ,
-			"deck" : [tip.from.card.name]
-		};
+		if(toList.indexOf(tip.to.deck.name) < 0) {
 
-		event.dispatch('forceMove', forceMoveData);
+			let forceMoveData = {
+				"from" : tip.from.deck.name  ,
+				"to"   : tip.to  .deck.name  ,
+				"deck" : [tip.from.card.name]
+			};
+
+			toList.push(tip.to.deck.name);
+
+			// event.dispatch('forceMove', forceMoveData);
+
+			// TODO save to history
+		}
 	}
 };
 
