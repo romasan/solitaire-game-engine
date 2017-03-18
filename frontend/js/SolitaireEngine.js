@@ -111,7 +111,7 @@ var SolitaireEngine =
 	exports.options = _defaults2.default;
 	exports.winCheck = _winCheck2.default.hwinCheck;
 	exports.generator = _deckGenerator2.default;
-	exports.version = (9091495424).toString().split(9).slice(1).map(function (e) {
+	exports.version = (9091495431).toString().split(9).slice(1).map(function (e) {
 		return parseInt(e, 8);
 	}).join('.');
 	
@@ -8919,24 +8919,49 @@ var SolitaireEngine =
 	
 	_event2.default.listen('specialStep', function (card) {
 	
-		console.log('$$$', card);
+		var cardName = card.name;
+		var deckName = card.parent;
 	
 		_event2.default.dispatch('rewindHistory', function (data) {
-	
-			console.log('###', data);
 	
 			var index = -1;
 	
 			for (var i = data.history.length - 1; i > 0 && index < 0; i -= 1) {
 				var step = data.history[i];
-				console.log('###', card, i, step);
+				var _iteratorNormalCompletion = true;
+				var _didIteratorError = false;
+				var _iteratorError = undefined;
+	
+				try {
+					for (var _iterator = step[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+						var atom = _step.value;
+	
+						if (atom.move && atom.move.to == deckName && atom.move.deck[0] == cardName) {
+							index = i;
+						}
+					}
+				} catch (err) {
+					_didIteratorError = true;
+					_iteratorError = err;
+				} finally {
+					try {
+						if (!_iteratorNormalCompletion && _iterator.return) {
+							_iterator.return();
+						}
+					} finally {
+						if (_didIteratorError) {
+							throw _iteratorError;
+						}
+					}
+				}
 			}
 	
 			var undoCount = index >= 0 ? data.history.length - index - 1 : 0;
+			console.log('step found on:', index, data.history[index], 'rewind', undoCount, 'steps');
 	
-			for (var _i = 0; _i < undoCount; _i += 1) {
-				data.undo();
-			}
+			// for(let i = 0; i < undoCount; i += 1) {
+			// 	data.undo();
+			// }
 		});
 	});
 
