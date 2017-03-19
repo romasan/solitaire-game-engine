@@ -111,7 +111,7 @@ var SolitaireEngine =
 	exports.options = _defaults2.default;
 	exports.winCheck = _winCheck2.default.hwinCheck;
 	exports.generator = _deckGenerator2.default;
-	exports.version = (9091495453).toString().split(9).slice(1).map(function (e) {
+	exports.version = (9091495513).toString().split(9).slice(1).map(function (e) {
 		return parseInt(e, 8);
 	}).join('.');
 	
@@ -1253,6 +1253,8 @@ var SolitaireEngine =
 		}
 	});
 	
+	_share2.default.set('stepType', _defaults2.default.stepType);
+	
 	var toggleMarkerMode = function toggleMarkerMode(e) {
 	
 		var mode = _share2.default.get('markerMode');
@@ -1262,8 +1264,6 @@ var SolitaireEngine =
 	};
 	
 	_event2.default.listen('toggleMarkerMode', toggleMarkerMode);
-	
-	_share2.default.set('stepType', _defaults2.default.stepType);
 	
 	var toggleSpecialStepMode = function toggleSpecialStepMode(e) {
 	
@@ -1276,18 +1276,18 @@ var SolitaireEngine =
 	_event2.default.listen('toggleSpecialStepMode', toggleSpecialStepMode);
 	
 	exports.default = {
-		isCurLock: isCurLock,
-		curLock: curLock,
-		curUnLock: curUnLock,
-		getElements: getElements,
-		getElementById: getElementById,
-		getElementsByName: getElementsByName,
-		getElementByName: getElementByName,
-		validateCardName: validateCardName,
-		genId: genId,
-		animationOn: animationOn,
-		animationOff: animationOff,
-		animationDefault: animationDefault
+		"isCurLock": isCurLock,
+		"curLock": curLock,
+		"curUnLock": curUnLock,
+		"getElements": getElements,
+		"getElementById": getElementById,
+		"getElementsByName": getElementsByName,
+		"getElementByName": getElementByName,
+		"validateCardName": validateCardName,
+		"genId": genId,
+		"animationOn": animationOn,
+		"animationOff": animationOff,
+		"animationDefault": animationDefault
 	};
 
 /***/ },
@@ -1603,7 +1603,7 @@ var SolitaireEngine =
 	
 		_event2.default.dispatch('hideTips');
 	
-		var _decks = _deck2.default.getDecks({ visible: true });
+		var _decks = _deck2.default.getDecks({ "visible": true });
 	
 		_tips = (0, _allToAll2.default)({
 			"decks": _decks
@@ -1878,14 +1878,14 @@ var SolitaireEngine =
 				var forceMoveData = {
 					"from": tip.from.deck.name,
 					"to": tip.to.deck.name,
-					"deck": [tip.from.card.name]
+					"deck": [tip.from.card.name],
+					"addStep": true,
+					"save": true
 				};
 	
 				toList.push(tip.to.deck.name);
 	
-				// event.dispatch('forceMove', forceMoveData);
-	
-				// TODO save to history
+				_event2.default.dispatch('forceMove', forceMoveData);
 			}
 		}
 	};
@@ -1893,15 +1893,15 @@ var SolitaireEngine =
 	_event2.default.listen('autoStepToHome', autoStepToHome);
 	
 	exports.default = {
-		tipTypes: tipTypes,
-		getTips: getTips,
-		checkTips: checkTips,
-		showTips: showTips,
-		hideTips: hideTips,
-		tipsMove: tipsMove,
-		checkFrom: checkFrom,
-		fromTo: fromTo,
-		tipsDestination: tipsDestination
+		"tipTypes": tipTypes,
+		"getTips": getTips,
+		"checkTips": checkTips,
+		"showTips": showTips,
+		"hideTips": hideTips,
+		"tipsMove": tipsMove,
+		"checkFrom": checkFrom,
+		"fromTo": fromTo,
+		"tipsDestination": tipsDestination
 	};
 
 /***/ },
@@ -2908,8 +2908,8 @@ var SolitaireEngine =
 	};
 	
 	exports.default = {
-		getByName: getByName,
-		add: add
+		"getByName": getByName,
+		"add": add
 	};
 
 /***/ },
@@ -3555,7 +3555,9 @@ var SolitaireEngine =
 				var filters = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : { "visible": true };
 	
 				if (filters) {
+	
 					var _cards = [];
+	
 					for (var i in this.cards) {
 	
 						var _correct = true;
@@ -3568,6 +3570,7 @@ var SolitaireEngine =
 							_cards.push(this.cards[i]);
 						}
 					}
+	
 					return _cards;
 				} else {
 					return this.cards;
@@ -3659,11 +3662,11 @@ var SolitaireEngine =
 	};
 	
 	exports.default = {
-		deckCardNames: _deckCardNames2.default,
-		addDeck: addDeck,
-		getDeck: _getDeck2.default,
-		getDecks: _getDecks2.default,
-		getDeckById: _getDeckById2.default
+		"deckCardNames": _deckCardNames2.default,
+		"addDeck": addDeck,
+		"getDeck": _getDeck2.default,
+		"getDecks": _getDecks2.default,
+		"getDeckById": _getDeckById2.default
 	};
 
 /***/ },
@@ -5443,8 +5446,6 @@ var SolitaireEngine =
 	var forceMove = function forceMove(data) {
 		// {from, to, deck, <flip>, <callback>}
 	
-		console.log('forceMove:', data);
-	
 		if (!data.from || !data.to || !data.deck) {
 			return;
 		}
@@ -5505,10 +5506,12 @@ var SolitaireEngine =
 			};
 	
 			if (typeof data.callback == 'function') {
+	
 				moveDragDeckParams.callback = function (e) {
 					_event2.default.dispatch('forceMoveEnd');
 					data.callback();
 				};
+	
 				moveDragDeckParams.debug = 'from:forceMove';
 			} else {
 				moveDragDeckParams.callback = function (e) {
@@ -5517,6 +5520,21 @@ var SolitaireEngine =
 			}
 	
 			_event2.default.dispatch('moveDragDeck', moveDragDeckParams);
+	
+			if (data.addStep) {
+	
+				_event2.default.dispatch('addStep', {
+					"move": {
+						"from": data.from,
+						"to": data.to,
+						"deck": data.deck
+					}
+				});
+			}
+	
+			if (data.save) {
+				_event2.default.dispatch('saveSteps');
+			}
 		} else {
 			console.warn('forceMove:Ход невозможен', data);
 		}
@@ -6369,6 +6387,10 @@ var SolitaireEngine =
 	
 	var _deckAction3 = _interopRequireDefault(_deckAction2);
 	
+	var _deck = __webpack_require__(14);
+	
+	var _deck2 = _interopRequireDefault(_deck);
+	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -6376,9 +6398,6 @@ var SolitaireEngine =
 	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 	
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-	// import share      from 'share'     ;
-	// import common     from 'common'    ;
-	// import defaults   from 'defaults'  ;
 	
 	var rollerAction = function (_deckAction) {
 		_inherits(rollerAction, _deckAction);
@@ -6397,14 +6416,14 @@ var SolitaireEngine =
 					return false;
 				}
 	
-				var cardsCount = deck.cardsCount({
-					"visible": true
-				});
-	
 				var openCount = data.actionData.openCount ? data.actionData.openCount : 3;
 	
 				var hiddenCardsCount = deck.cardsCount({
 					"visible": false
+				});
+	
+				var cardsCount = deck.cardsCount({
+					"visible": true
 				});
 	
 				if (cardsCount > 0) {
@@ -6433,8 +6452,6 @@ var SolitaireEngine =
 								});
 							}
 						}
-	
-						// deck.Redraw();
 					}
 	
 					// unflip next cards
@@ -6444,15 +6461,16 @@ var SolitaireEngine =
 					});
 	
 					for (var _i = flipCardsCount - 1; _i >= 0 && _i >= flipCardsCount - openCount; _i -= 1) {
+	
 						deck.cards[_i].flip = false;
+	
+						_event2.default.dispatch('addStep', {
+							"flip": {
+								"card": deck.cards[_i].name,
+								"deck": deck.name
+							}
+						});
 					}
-	
-					// let unflipIndexTo   = cardsCount - unflipCardsCount > 0 ? cardsCount - unflipCardsCount : 0;
-					// let unflipIndexFrom = cardsCount - openCount        > 0 ? cardsCount - openCount        : 0;
-	
-					// for(;unflipIndexFrom < unflipIndexTo; unflipIndexFrom += 1) {
-					// 	deck.cards[unflipIndexFrom].flip = false;
-					// }
 	
 					cardsCount = deck.cardsCount({
 						"visible": true
@@ -6465,10 +6483,28 @@ var SolitaireEngine =
 						deck.flipAllCards();
 	
 						// TODO clear roll history (if no steps)
-					}
+						_event2.default.dispatch('rewindHistory', function (data) {
 	
-					deck.Redraw();
+							var undoCount = 0;
+	
+							if (data.history.length) {
+	
+								// найти был ли ход
+								for (var _i2 = data.history.length - 1; _i2 >= 0; _i2 += 1) {
+									// check undoCount
+								}
+	
+								for (var _i3 = 0; _i3 < undoCount; _i3 += 1) {
+									// data.undo();
+								}
+							}
+						});
+					} else {
+						_event2.default.dispatch('saveSteps');
+					}
 				}
+	
+				deck.Redraw();
 	
 				_get(rollerAction.prototype.__proto__ || Object.getPrototypeOf(rollerAction.prototype), 'end', this).call(this);
 	

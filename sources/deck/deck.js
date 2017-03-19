@@ -340,7 +340,12 @@ class Deck {
 	flipCheck() {
 
 		for(let cardIndex in this.cards) {
-			this.cardFlipCheck(this.cards[cardIndex], cardIndex | 0, this.cards.length, this.cards[this.cards.length - 1].name);
+			this.cardFlipCheck(
+				this.cards[cardIndex]                 ,
+				cardIndex | 0                         ,
+				this.cards.length                     ,
+				this.cards[this.cards.length - 1].name
+			);
 		}
 
 		event.dispatch('redrawDeckFlip', this);
@@ -603,7 +608,9 @@ class Deck {
 
 	getCards(filters = {"visible" : true}) {
 		if(filters) {
+
 			let _cards = [];
+
 			for(let i in this.cards) {
 
 				let _correct = true;
@@ -616,6 +623,7 @@ class Deck {
 					_cards.push(this.cards[i]);
 				}
 			}
+
 			return _cards;
 		} else {
 			return this.cards;
@@ -700,9 +708,9 @@ let addDeck = data => {
 };
 
 export default {
-	deckCardNames,
-	addDeck      ,
-	getDeck      ,
-	getDecks     ,
-	getDeckById
+	"deckCardNames" : deckCardNames,
+	"addDeck"       : addDeck      ,
+	"getDeck"       : getDeck      ,
+	"getDecks"      : getDecks     ,
+	"getDeckById"   : getDeckById
 };

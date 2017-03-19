@@ -141,5 +141,4 @@ export default (moveDeck, cursorMove) => {
 	}
 
 	return _autoTips[_tip_index]
-
 };

@@ -43,7 +43,7 @@ let checkTips = e => {
 
 	event.dispatch('hideTips');
 
-	let _decks = Deck.getDecks({visible : true});
+	let _decks = Deck.getDecks({ "visible" : true });
 
 	_tips = allToAll({
 		"decks" : _decks
@@ -254,16 +254,16 @@ let autoStepToHome = data => {
 		if(toList.indexOf(tip.to.deck.name) < 0) {
 
 			let forceMoveData = {
-				"from" : tip.from.deck.name  ,
-				"to"   : tip.to  .deck.name  ,
-				"deck" : [tip.from.card.name]
+				"from"    : tip.from.deck.name  ,
+				"to"      : tip.to  .deck.name  ,
+				"deck"    : [tip.from.card.name],
+				"addStep" : true                ,
+				"save"    : true
 			};
 
 			toList.push(tip.to.deck.name);
 
-			// event.dispatch('forceMove', forceMoveData);
-
-			// TODO save to history
+			event.dispatch('forceMove', forceMoveData);
 		}
 	}
 };
@@ -271,13 +271,13 @@ let autoStepToHome = data => {
 event.listen('autoStepToHome', autoStepToHome);
 
 export default {
-	tipTypes       ,
-	getTips        ,
-	checkTips      ,
-	showTips       ,
-	hideTips       ,
-	tipsMove       ,
-	checkFrom      ,
-	fromTo         ,
-	tipsDestination
+	"tipTypes"        : tipTypes       ,
+	"getTips"         : getTips        ,
+	"checkTips"       : checkTips      ,
+	"showTips"        : showTips       ,
+	"hideTips"        : hideTips       ,
+	"tipsMove"        : tipsMove       ,
+	"checkFrom"       : checkFrom      ,
+	"fromTo"          : fromTo         ,
+	"tipsDestination" : tipsDestination
 };

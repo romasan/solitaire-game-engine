@@ -243,6 +243,8 @@ event.listen('historyReapeater', data => {
 	}
 });
 
+share.set('stepType', defaults.stepType);
+
 let toggleMarkerMode = e => {
 
 	let mode = share.get('markerMode');
@@ -252,8 +254,6 @@ let toggleMarkerMode = e => {
 }
 
 event.listen('toggleMarkerMode', toggleMarkerMode);
-
-share.set('stepType', defaults.stepType);
 
 let toggleSpecialStepMode = e => {
 
@@ -266,16 +266,16 @@ let toggleSpecialStepMode = e => {
 event.listen('toggleSpecialStepMode', toggleSpecialStepMode);
 
 export default {
-	isCurLock        ,
-	curLock          ,
-	curUnLock        ,
-	getElements      ,
-	getElementById   ,
-	getElementsByName,
-	getElementByName ,
-	validateCardName ,
-	genId            ,
-	animationOn      ,
-	animationOff     ,
-	animationDefault
+	"isCurLock"         : isCurLock        ,
+	"curLock"           : curLock          ,
+	"curUnLock"         : curUnLock        ,
+	"getElements"       : getElements      ,
+	"getElementById"    : getElementById   ,
+	"getElementsByName" : getElementsByName,
+	"getElementByName"  : getElementByName ,
+	"validateCardName"  : validateCardName ,
+	"genId"             : genId            ,
+	"animationOn"       : animationOn      ,
+	"animationOff"      : animationOff     ,
+	"animationDefault"  : animationDefault
 };

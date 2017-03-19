@@ -416,6 +416,6 @@ let add = data => {
 let getByName = name => common.getElementsByName(name, 'group')[0];
 
 export default {
-	getByName,
-	add
+	"getByName" : getByName,
+	"add"       : add
 };

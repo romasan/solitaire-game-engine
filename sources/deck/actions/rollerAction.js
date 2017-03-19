@@ -1,11 +1,9 @@
 'use strict';
 
 import event      from 'event'     ;
-// import share      from 'share'     ;
-// import common     from 'common'    ;
-// import defaults   from 'defaults'  ;
 
 import deckAction from 'deckAction';
+import Deck       from 'deck'      ;
 
 class rollerAction extends deckAction {
 
@@ -19,14 +17,14 @@ class rollerAction extends deckAction {
 			return false;
 		}
 
-		let cardsCount = deck.cardsCount({
-			"visible" : true
-		});
-
 		let openCount = data.actionData.openCount ? data.actionData.openCount : 3;
 
 		let hiddenCardsCount = deck.cardsCount({
 			"visible" : false
+		});
+
+		let cardsCount = deck.cardsCount({
+			"visible" : true
 		});
 
 		if(cardsCount > 0) {
@@ -55,8 +53,6 @@ class rollerAction extends deckAction {
 						});
 					}
 				}
-
-				// deck.Redraw();
 			}
 
 			// unflip next cards
@@ -65,16 +61,21 @@ class rollerAction extends deckAction {
 				"flip"    : true
 			});
 
-			for(let i = flipCardsCount - 1; i >= 0 && i >= flipCardsCount - openCount; i -= 1) {
+			for(
+				let i = flipCardsCount - 1;
+				i >= 0 && i >= flipCardsCount - openCount;
+				i -= 1
+			) {
+
 				deck.cards[i].flip = false;
+
+				event.dispatch('addStep', {
+					"flip" : {
+						"card" : deck.cards[i].name,
+						"deck" : deck.name
+					}
+				});
 			}
-
-			// let unflipIndexTo   = cardsCount - unflipCardsCount > 0 ? cardsCount - unflipCardsCount : 0;
-			// let unflipIndexFrom = cardsCount - openCount        > 0 ? cardsCount - openCount        : 0;
-
-			// for(;unflipIndexFrom < unflipIndexTo; unflipIndexFrom += 1) {
-			// 	deck.cards[unflipIndexFrom].flip = false;
-			// }
 
 			cardsCount = deck.cardsCount({
 				"visible" : true
@@ -87,12 +88,28 @@ class rollerAction extends deckAction {
 				deck.flipAllCards();
 
 				// TODO clear roll history (if no steps)
-			}
+				event.dispatch('rewindHistory', data => {
 
-			deck.Redraw();
+					let undoCount = 0;
+
+					if(data.history.length) {
+
+						// найти был ли ход
+						for(let i = data.history.length - 1; i >= 0; i += 1) {
+							// check undoCount
+						}
+
+						for(let i = 0; i < undoCount; i += 1) {
+							// data.undo();
+						}
+					}
+				});
+			} else {
+				event.dispatch('saveSteps');
+			}
 		}
 
-
+		deck.Redraw();
 
 		super.end();
 
