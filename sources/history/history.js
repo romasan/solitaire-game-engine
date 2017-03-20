@@ -13,6 +13,7 @@ import field        from 'field'       ;
 import inputs       from 'inputs'      ;
 
 // TODO пошаговая анимация
+
 // let _movesCallback = e => {
 // 	if(_movesStack.length) {
 // 		_movesStack.shift()();
@@ -43,10 +44,17 @@ let _undo = data => {
 		stateManager.restore();
 	}
 
-	// FLIP
-	// if(data.flip) {};
+	// undo flip
+	if(data.flip) {
+		let deck = common.getElementByName(data.flip.deckName);
+		let card = deck.getCardByIndex(data.flip.cardIndex | 0);
+		if(card) {
+			card.flip = false;
+			deck.Redraw();
+		}
+	};
 
-	// UNFLIP
+	// undo unflip
 	if(data.unflip) {
 		let deck = common.getElementByName(data.unflip.deckName, 'deck');
 		let card = deck.getCardByIndex(data.unflip.cardIndex);
@@ -59,7 +67,7 @@ let _undo = data => {
 
 	};
 
-	// HIDE
+	// undo hide
 	if(data.hide) {
 		let deck = common.getElementByName(data.hide.deckName, 'deck');
 		if(deck.cards[data.hide.cardIndex].name == data.hide.cardName) {
@@ -68,12 +76,19 @@ let _undo = data => {
 		}
 	}
 
-	// SHOW
+	// undo show
+	if(data.show) {
+		let deck = common.getElementByName(data.show.deckName, 'deck');
+		if(deck.cards[data.show.cardIndex].name == data.show.cardName) {
+			deck.cards[data.show.cardIndex].visible = false;
+			deck.Redraw();
+		}
+	}
 
 	// FULL
 	// if(data.full) {};
 
-	// LOCK
+	// undo lock
 	if(
 		typeof data.lock != 'undefined'
 	) {
@@ -83,7 +98,7 @@ let _undo = data => {
 		}
 	}
 
-	// UNLOCK
+	// undo unlock
 	if(
 		typeof data.unlock != 'undefined'
 	) {
@@ -93,7 +108,7 @@ let _undo = data => {
 		}
 	}
 
-	// MOVE
+	// undo move
 	if(
 		typeof data.move      != 'undefined' &&
 		typeof data.move.from != 'undefined' &&
@@ -198,21 +213,27 @@ let _redo = data => {
 		stateManager.restore();
 	}
 
-	// FLIP
-	// if(data.flip) {};
+	// redo flip
+	if(data.flip) {
+		let deck = common.getElementByName(data.flip.deckName);
+		let card = deck.getCardByIndex(data.flip.cardIndex | 0);
+		if(card) {
+			card.flip = true;
+			deck.Redraw();
+		}
+	};
 
-	// UNFLIP
+	// redo unflip
 	if(data.unflip) {
 		let deck = common.getElementByName(data.unflip.deckName);
 		let card = deck.getCardByIndex(data.unflip.cardIndex | 0);
 		if(card) {
 			card.flip = false;
-			// event.dispatch('redrawDeckFlip', deck);
 			deck.Redraw();
 		}
 	};
 
-	// HIDE
+	// redo hide
 	if(data.hide) {
 		let deck = common.getElementByName(data.hide.deckName, 'deck');
 		if(deck.cards[data.hide.cardIndex].name == data.hide.cardName) {
@@ -221,12 +242,19 @@ let _redo = data => {
 		}
 	}
 
-	// SHOW
+	// redo show
+	if(data.show) {
+		let deck = common.getElementByName(data.show.deckName, 'deck');
+		if(deck.cards[data.show.cardIndex].name == data.show.cardName) {
+			deck.cards[data.show.cardIndex].visible = true;
+			deck.Redraw();
+		}
+	}
 	
 	// FULL
 	// if(data.full) {};
 
-	// LOCK
+	// redo lock
 	if(
 		typeof data.lock != 'undefined'
 	) {
@@ -236,7 +264,7 @@ let _redo = data => {
 		}
 	}
 
-	// UNLOCK
+	// redo unlock
 	if(
 		typeof data.unlock != 'undefined'
 	) {
@@ -246,7 +274,7 @@ let _redo = data => {
 		}
 	}
 
-	// MOVE
+	// redo move
 	if(
 		typeof data.move      != 'undefined' &&
 		typeof data.move.from != 'undefined' &&
@@ -357,7 +385,7 @@ class history {
 			this.reset(true);
 		}
 
-		console.log('History:get', _req);
+		// console.log('History:get', _req);
 
 		return _req;
 	}
@@ -382,6 +410,8 @@ class history {
 }
 
 let _history = new history();
+
+// events
 
 event.listen('addStep', data => {
 	if(data.debug) {
@@ -414,6 +444,10 @@ event.listen('doHistory', e => {
 	}
 
 	// common.animationOn();
-})
+});
+
+event.listen('resetHistory', e => {
+	_history.reset();
+});
 
 export default _history;

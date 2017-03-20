@@ -370,17 +370,39 @@ class Deck {
 		}
 	}
 
-	unflipTopCard() {
+	unflipTopCard(save) {
 
 		if(this.cards.length > 0) {
+
 			this.unflipCardByIndex(this.cards.length - 1);
+
+			if(save) {
+				event.dispatch('addStep', {
+					"unflip" : {
+						"cardName"  : this.cards[this.cards.length - 1].name,
+						"cardIndex" : this.cards.length - 1                 ,
+						"deckName"  : this.name
+					}
+				});
+			}
 		}
 	}
 
-	flipAllCards(redraw = true) {
+	flipAllCards(redraw = true, save) {
 
 		for(let i in this.cards) {
+
 			this.cards[i].flip = true;
+
+			if(save) {
+				event.dispatch('addStep', {
+					"flip" : {
+						"cardName"  : this.cards[i].name,
+						"cardIndex" : i                 ,
+						"deckName"  : this.name
+					}
+				});
+			}
 		}
 
 		if(redraw) {
@@ -388,10 +410,21 @@ class Deck {
 		}
 	}
 
-	unflipAllCards(redraw = true) {
+	unflipAllCards(redraw = true, save) {
 
 		for(let i in this.cards) {
+
 			this.cards[i].flip = false;
+
+			if(save) {
+				event.dispatch('addStep', {
+					"unflip" : {
+						"cardName"  : this.cards[i].name,
+						"cardIndex" : i                 ,
+						"deckName"  : this.name
+					}
+				});
+			}
 		}
 
 		if(redraw) {
@@ -559,10 +592,21 @@ class Deck {
 	// 	return this.getCardsByName(cardName)[0];
 	// }
 
-	hideCards(redraw = true) {
+	hideCards(redraw = true, save) {
 
 		for(let i in this.cards) {
+
 			this.cards[i].visible = false;
+
+			if(save) {
+				event.dispatch('addStep', {
+					"hide" : {
+						"cardName"  : this.cards[i].name,
+						"cardIndex" : i                 ,
+						"deckName"  : this.name
+					}
+				});
+			}
 			// event.dispatch('hideCard', this.cards[i]);
 		}
 
@@ -583,10 +627,21 @@ class Deck {
 		}
 	}
 
-	showCards(redraw = true) {
+	showCards(redraw = true, save) {
 
 		for(let i in this.cards) {
+
 			this.cards[i].visible = true;
+
+			if(save) {
+				event.dispatch('addStep', {
+					"show" : {
+						"cardName"  : this.cards[i].name,
+						"cardIndex" : i                 ,
+						"deckName"  : this.name
+					}
+				});
+			}
 			// event.dispatch('showCard', this.cards[i]);
 		}
 

@@ -17,6 +17,7 @@ class rollerAction extends deckAction {
 			return false;
 		}
 
+		// default openCount = 3
 		let openCount = data.actionData.openCount ? data.actionData.openCount : 3;
 
 		let hiddenCardsCount = deck.cardsCount({
@@ -26,7 +27,6 @@ class rollerAction extends deckAction {
 		let cardsCount = deck.cardsCount({
 			"visible" : true
 		});
-
 
 		if(cardsCount > 0) {
 
@@ -80,17 +80,15 @@ class rollerAction extends deckAction {
 				}
 			}
 
-			// unflip next cards
-			// flipCardsCount = deck.cardsCount({
-			// 	"visible" : true,
-			// 	"flip"    : true
-			// });
+			let _count = 0;
 
+			// unflip next cards
 			for(
-				let i = flipCardsCount - 1;
+				let i = flipCardsCount - 1               ;
 				i >= 0 && i >= flipCardsCount - openCount;
 				i -= 1
 			) {
+				_count += 1;
 
 				deck.cards[i].flip = false;
 
@@ -111,30 +109,39 @@ class rollerAction extends deckAction {
 
 				hiddenCardsCount = deck.cardsCount({
 					"visible" : false
+					// "flip"    : true
 				});
 
 				if(
 					deck.data.rollerActionData                                && 
+					deck.data.rollerActionData.stepsCount                     &&
 					deck.data.rollerActionData.cardsCount                     &&
 					deck.data.rollerActionData.cardsCount == hiddenCardsCount
 				) {
 
+					event.dispatch('resetHistory');
+
 					event.dispatch('rewindHistory', data => {
 
-						for(let i = 0; i < deck.data.rollerActionData.stepsCount; i += 1) {
+						for(let i = 0; i < deck.data.rollerActionData.stepsCount - 1; i += 1) {
 							data.undo();
 						}
+
+						deck.showCards   (false); // redraw, add in history
+						deck.flipAllCards(false); // redraw, add in history
 					});
 				} else {
+
 					// показать все карты
-					deck.showCards();
-					deck.flipAllCards();
+					deck.showCards   (false, true); // redraw, add in history
+					deck.flipAllCards(false, true); // redraw, add in history
+
+					event.dispatch('saveSteps');
 				}
 
 
 				// TODO clear roll history (if no steps)
 			} else {
-				console.log('ROLLER SAVE STEPS');
 				event.dispatch('saveSteps');
 			}
 		}
