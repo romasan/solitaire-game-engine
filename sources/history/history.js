@@ -48,17 +48,25 @@ let _undo = data => {
 
 	// UNFLIP
 	if(data.unflip) {
-		let deck = common.getElementByName(data.unflip.deckName);
+		let deck = common.getElementByName(data.unflip.deckName, 'deck');
 		let card = deck.getCardByIndex(data.unflip.cardIndex);
 		if(card) {
 			// TODO deck.flipCardByIndex(index, false);
 			card.flip = true;
-			event.dispatch('redrawDeckFlip', deck);
+			// event.dispatch('redrawDeckFlip', deck);
+			deck.Redraw();
 		}
 
 	};
 
 	// HIDE
+	if(data.hide) {
+		let deck = common.getElementByName(data.hide.deckName, 'deck');
+		if(deck.cards[data.hide.cardIndex].name == data.hide.cardName) {
+			deck.cards[data.hide.cardIndex].visible = true;
+			deck.Redraw();
+		}
+	}
 
 	// SHOW
 
@@ -199,11 +207,19 @@ let _redo = data => {
 		let card = deck.getCardByIndex(data.unflip.cardIndex | 0);
 		if(card) {
 			card.flip = false;
-			event.dispatch('redrawDeckFlip', deck);
+			// event.dispatch('redrawDeckFlip', deck);
+			deck.Redraw();
 		}
 	};
 
 	// HIDE
+	if(data.hide) {
+		let deck = common.getElementByName(data.hide.deckName, 'deck');
+		if(deck.cards[data.hide.cardIndex].name == data.hide.cardName) {
+			deck.cards[data.hide.cardIndex].visible = false;
+			deck.Redraw();
+		}
+	}
 
 	// SHOW
 	
@@ -341,7 +357,7 @@ class history {
 			this.reset(true);
 		}
 
-		// console.log('History:get', _req);
+		console.log('History:get', _req);
 
 		return _req;
 	}
