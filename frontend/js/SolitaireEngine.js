@@ -111,7 +111,7 @@ var SolitaireEngine =
 	exports.options = _defaults2.default;
 	exports.winCheck = _winCheck2.default.hwinCheck;
 	exports.generator = _deckGenerator2.default;
-	exports.version = (9091495554).toString().split(9).slice(1).map(function (e) {
+	exports.version = (9091495622).toString().split(9).slice(1).map(function (e) {
 		return parseInt(e, 8);
 	}).join('.');
 	
@@ -6470,6 +6470,7 @@ var SolitaireEngine =
 		_createClass(rollerAction, [{
 			key: 'run',
 			value: function run(deck, data) {
+				var _this2 = this;
 	
 				if (data.eventData.to.name != deck.name) {
 					return false;
@@ -6501,29 +6502,29 @@ var SolitaireEngine =
 					// first roll
 					if (hiddenCardsCount == 0 && unflipCardsCount == 0) {
 	
-						deck.data.rollerActionData = {
-							"cardsCount": cardsCount,
-							"stepsCount": 1
-						};
-					} else {
-						// TODO
-						try {
-							deck.data.rollerActionData.stepsCount += 1;
-						} catch (e) {}
-					}
+						// deck.data.rollerActionData = {
+						// 	"cardsCount" : cardsCount,
+						// 	"stepsCount" : 1
+						// }
+	
+						_event2.default.dispatch('addStep', {
+							"rollerActionStart": this.name
+						});
+					} else {}
+					// TODO
+					// try {
+					// 	deck.data.rollerActionData.stepsCount += 1;
+					// } catch(e) {}
+	
 	
 					// hide unflipped cards
 					if (unflipCardsCount > 0) {
 	
 						var cards = deck.getCards();
 	
-						var _count2 = 0;
-	
 						for (var i in cards) {
 	
 							if (cards[i].flip == false) {
-	
-								_count2 += 1;
 	
 								deck.hideCardByIndex(i);
 	
@@ -6538,11 +6539,8 @@ var SolitaireEngine =
 						}
 					}
 	
-					var _count = 0;
-	
 					// unflip next cards
 					for (var _i = flipCardsCount - 1; _i >= 0 && _i >= flipCardsCount - openCount; _i -= 1) {
-						_count += 1;
 	
 						deck.cards[_i].flip = false;
 	
@@ -6572,7 +6570,46 @@ var SolitaireEngine =
 	
 							_event2.default.dispatch('rewindHistory', function (data) {
 	
-								for (var _i2 = 0; _i2 < deck.data.rollerActionData.stepsCount - 1; _i2 += 1) {
+								var found = false;
+	
+								for (var _i2 = data.history.length - 1; _i2 > 0 && !found; _i2 -= 1) {
+	
+									var step = data.history[_i2];
+	
+									var _iteratorNormalCompletion = true;
+									var _didIteratorError = false;
+									var _iteratorError = undefined;
+	
+									try {
+										for (var _iterator = step[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+											var atom = _step.value;
+	
+	
+											if (atom.rollerActionStart == _this2.name) {
+												// found = true
+											}
+	
+											if (atom.move && atom.move.from == _this2.name) {
+												// 
+											}
+										}
+									} catch (err) {
+										_didIteratorError = true;
+										_iteratorError = err;
+									} finally {
+										try {
+											if (!_iteratorNormalCompletion && _iterator.return) {
+												_iterator.return();
+											}
+										} finally {
+											if (_didIteratorError) {
+												throw _iteratorError;
+											}
+										}
+									}
+								}
+	
+								for (var _i3 = 0; _i3 < deck.data.rollerActionData.stepsCount - 1; _i3 += 1) {
 									data.undo();
 								}
 	

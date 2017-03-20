@@ -43,15 +43,19 @@ class rollerAction extends deckAction {
 			// first roll
 			if(hiddenCardsCount == 0 && unflipCardsCount == 0) {
 
-				deck.data.rollerActionData = {
-					"cardsCount" : cardsCount,
-					"stepsCount" : 1
-				}
+				// deck.data.rollerActionData = {
+				// 	"cardsCount" : cardsCount,
+				// 	"stepsCount" : 1
+				// }
+
+				event.dispatch('addStep', {
+					"rollerActionStart" : this.name
+				});
 			} else {
 				// TODO
-				try {
-					deck.data.rollerActionData.stepsCount += 1;
-				} catch(e) {}
+				// try {
+				// 	deck.data.rollerActionData.stepsCount += 1;
+				// } catch(e) {}
 			}
 
 			// hide unflipped cards
@@ -59,13 +63,9 @@ class rollerAction extends deckAction {
 
 				let cards = deck.getCards();
 
-				let _count = 0;
-
 				for(let i in cards) {
 
 					if(cards[i].flip == false) {
-
-						_count += 1;
 
 						deck.hideCardByIndex(i);
 
@@ -80,15 +80,12 @@ class rollerAction extends deckAction {
 				}
 			}
 
-			let _count = 0;
-
 			// unflip next cards
 			for(
 				let i = flipCardsCount - 1               ;
 				i >= 0 && i >= flipCardsCount - openCount;
 				i -= 1
 			) {
-				_count += 1;
 
 				deck.cards[i].flip = false;
 
@@ -122,6 +119,27 @@ class rollerAction extends deckAction {
 					event.dispatch('resetHistory');
 
 					event.dispatch('rewindHistory', data => {
+
+						let found = false;
+
+						for(let i = data.history.length - 1; i > 0 && !found; i -= 1) {
+
+							let step = data.history[i];
+
+							for(let atom of step) {
+
+								if(atom.rollerActionStart == this.name) {
+									// found = true
+								}
+
+								if(
+									atom.move &&
+									atom.move.from == this.name
+								) {
+									// 
+								}
+							}
+						}
 
 						for(let i = 0; i < deck.data.rollerActionData.stepsCount - 1; i += 1) {
 							data.undo();
