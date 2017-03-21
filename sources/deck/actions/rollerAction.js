@@ -5,6 +5,8 @@ import event      from 'event'     ;
 import deckAction from 'deckAction';
 import Deck       from 'deck'      ;
 
+const defaultOpenCount = 3;
+
 class rollerAction extends deckAction {
 
 	constructor() {
@@ -17,8 +19,9 @@ class rollerAction extends deckAction {
 			return false;
 		}
 
-		// default openCount = 3
-		let openCount = data.actionData.openCount ? data.actionData.openCount : 3;
+		let openCount = data.actionData.openCount
+			? data.actionData.openCount
+			: defaultOpenCount;
 
 		let hiddenCardsCount = deck.cardsCount({
 			"visible" : false
@@ -41,21 +44,14 @@ class rollerAction extends deckAction {
 			});
 
 			// first roll
-			if(hiddenCardsCount == 0 && unflipCardsCount == 0) {
-
-				// deck.data.rollerActionData = {
-				// 	"cardsCount" : cardsCount,
-				// 	"stepsCount" : 1
-				// }
+			if(
+				hiddenCardsCount == 0 &&
+				unflipCardsCount == 0
+			) {
 
 				event.dispatch('addStep', {
-					"rollerActionStart" : this.name
+					"rollerActionStart" : deck.name
 				});
-			} else {
-				// TODO
-				// try {
-				// 	deck.data.rollerActionData.stepsCount += 1;
-				// } catch(e) {}
 			}
 
 			// hide unflipped cards
@@ -102,63 +98,65 @@ class rollerAction extends deckAction {
 				"visible" : true
 			});
 
+			// не осталось видимых карт
 			if(cardsCount == 0) {
 
 				hiddenCardsCount = deck.cardsCount({
 					"visible" : false
-					// "flip"    : true
 				});
 
-				if(
-					deck.data.rollerActionData                                && 
-					deck.data.rollerActionData.stepsCount                     &&
-					deck.data.rollerActionData.cardsCount                     &&
-					deck.data.rollerActionData.cardsCount == hiddenCardsCount
-				) {
+				event.dispatch('resetHistory');
 
-					event.dispatch('resetHistory');
+				event.dispatch('rewindHistory', data => {
 
-					event.dispatch('rewindHistory', data => {
+					let found = false;
 
-						let found = false;
+					let stepsCount = 0;
 
-						for(let i = data.history.length - 1; i > 0 && !found; i -= 1) {
+					for(let i = data.history.length - 1; i >= 0 && !found; i -= 1) {
 
-							let step = data.history[i];
+						stepsCount += 1;
 
-							for(let atom of step) {
+						let step = data.history[i];
 
-								if(atom.rollerActionStart == this.name) {
-									// found = true
+						for(let atom of step) {
+
+							if(
+								!found                                    &&
+								typeof atom.rollerActionStart == "string" &&
+								       atom.rollerActionStart == deck.name
+							) {
+
+								found = true;
+
+								// rewind
+								for(let i = 0; i < stepsCount; i += 1) {
+									data.undo();
 								}
 
-								if(
-									atom.move &&
-									atom.move.from == this.name
-								) {
-									// 
-								}
+								// reset deck
+								deck.showCards   (false); // no redraw
+								deck.flipAllCards(false); // no redraw
+							}
+
+							if(
+								!found                            &&
+								atom.move                         &&
+								typeof atom.move.from == "string" &&
+								atom.move.from == deck.name
+							) {
+
+								found = true;
+
+								// reset deck
+								deck.showCards   (false, true); // no redraw, add in history
+								deck.flipAllCards(false, true); // no redraw, add in history
+
+								event.dispatch('saveSteps');
 							}
 						}
-
-						for(let i = 0; i < deck.data.rollerActionData.stepsCount - 1; i += 1) {
-							data.undo();
-						}
-
-						deck.showCards   (false); // redraw, add in history
-						deck.flipAllCards(false); // redraw, add in history
-					});
-				} else {
-
-					// показать все карты
-					deck.showCards   (false, true); // redraw, add in history
-					deck.flipAllCards(false, true); // redraw, add in history
-
-					event.dispatch('saveSteps');
-				}
-
-
-				// TODO clear roll history (if no steps)
+					}
+				});
 			} else {
 				event.dispatch('saveSteps');
 			}

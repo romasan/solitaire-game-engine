@@ -111,7 +111,7 @@ var SolitaireEngine =
 	exports.options = _defaults2.default;
 	exports.winCheck = _winCheck2.default.hwinCheck;
 	exports.generator = _deckGenerator2.default;
-	exports.version = (9091495622).toString().split(9).slice(1).map(function (e) {
+	exports.version = (9091495636).toString().split(9).slice(1).map(function (e) {
 		return parseInt(e, 8);
 	}).join('.');
 	
@@ -6458,6 +6458,8 @@ var SolitaireEngine =
 	
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 	
+	var defaultOpenCount = 3;
+	
 	var rollerAction = function (_deckAction) {
 		_inherits(rollerAction, _deckAction);
 	
@@ -6470,14 +6472,12 @@ var SolitaireEngine =
 		_createClass(rollerAction, [{
 			key: 'run',
 			value: function run(deck, data) {
-				var _this2 = this;
 	
 				if (data.eventData.to.name != deck.name) {
 					return false;
 				}
 	
-				// default openCount = 3
-				var openCount = data.actionData.openCount ? data.actionData.openCount : 3;
+				var openCount = data.actionData.openCount ? data.actionData.openCount : defaultOpenCount;
 	
 				var hiddenCardsCount = deck.cardsCount({
 					"visible": false
@@ -6502,20 +6502,10 @@ var SolitaireEngine =
 					// first roll
 					if (hiddenCardsCount == 0 && unflipCardsCount == 0) {
 	
-						// deck.data.rollerActionData = {
-						// 	"cardsCount" : cardsCount,
-						// 	"stepsCount" : 1
-						// }
-	
 						_event2.default.dispatch('addStep', {
-							"rollerActionStart": this.name
+							"rollerActionStart": deck.name
 						});
-					} else {}
-					// TODO
-					// try {
-					// 	deck.data.rollerActionData.stepsCount += 1;
-					// } catch(e) {}
-	
+					}
 	
 					// hide unflipped cards
 					if (unflipCardsCount > 0) {
@@ -6557,75 +6547,77 @@ var SolitaireEngine =
 						"visible": true
 					});
 	
+					// не осталось видимых карт
 					if (cardsCount == 0) {
 	
 						hiddenCardsCount = deck.cardsCount({
 							"visible": false
-							// "flip"    : true
 						});
 	
-						if (deck.data.rollerActionData && deck.data.rollerActionData.stepsCount && deck.data.rollerActionData.cardsCount && deck.data.rollerActionData.cardsCount == hiddenCardsCount) {
+						_event2.default.dispatch('resetHistory');
 	
-							_event2.default.dispatch('resetHistory');
+						_event2.default.dispatch('rewindHistory', function (data) {
 	
-							_event2.default.dispatch('rewindHistory', function (data) {
+							var found = false;
 	
-								var found = false;
+							var stepsCount = 0;
 	
-								for (var _i2 = data.history.length - 1; _i2 > 0 && !found; _i2 -= 1) {
+							for (var _i2 = data.history.length - 1; _i2 >= 0 && !found; _i2 -= 1) {
 	
-									var step = data.history[_i2];
+								stepsCount += 1;
 	
-									var _iteratorNormalCompletion = true;
-									var _didIteratorError = false;
-									var _iteratorError = undefined;
+								var step = data.history[_i2];
 	
-									try {
-										for (var _iterator = step[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
-											var atom = _step.value;
+								var _iteratorNormalCompletion = true;
+								var _didIteratorError = false;
+								var _iteratorError = undefined;
+	
+								try {
+									for (var _iterator = step[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+										var atom = _step.value;
 	
 	
-											if (atom.rollerActionStart == _this2.name) {
-												// found = true
+										if (!found && typeof atom.rollerActionStart == "string" && atom.rollerActionStart == deck.name) {
+	
+											found = true;
+	
+											// rewind
+											for (var _i3 = 0; _i3 < stepsCount; _i3 += 1) {
+												data.undo();
 											}
 	
-											if (atom.move && atom.move.from == _this2.name) {
-												// 
-											}
+											// reset deck
+											deck.showCards(false); // no redraw
+											deck.flipAllCards(false); // no redraw
 										}
-									} catch (err) {
-										_didIteratorError = true;
-										_iteratorError = err;
+	
+										if (!found && atom.move && typeof atom.move.from == "string" && atom.move.from == deck.name) {
+	
+											found = true;
+	
+											// reset deck
+											deck.showCards(false, true); // no redraw, add in history
+											deck.flipAllCards(false, true); // no redraw, add in history
+	
+											_event2.default.dispatch('saveSteps');
+										}
+									}
+								} catch (err) {
+									_didIteratorError = true;
+									_iteratorError = err;
+								} finally {
+									try {
+										if (!_iteratorNormalCompletion && _iterator.return) {
+											_iterator.return();
+										}
 									} finally {
-										try {
-											if (!_iteratorNormalCompletion && _iterator.return) {
-												_iterator.return();
-											}
-										} finally {
-											if (_didIteratorError) {
-												throw _iteratorError;
-											}
+										if (_didIteratorError) {
+											throw _iteratorError;
 										}
 									}
 								}
-	
-								for (var _i3 = 0; _i3 < deck.data.rollerActionData.stepsCount - 1; _i3 += 1) {
-									data.undo();
-								}
-	
-								deck.showCards(false); // redraw, add in history
-								deck.flipAllCards(false); // redraw, add in history
-							});
-						} else {
-	
-							// показать все карты
-							deck.showCards(false, true); // redraw, add in history
-							deck.flipAllCards(false, true); // redraw, add in history
-	
-							_event2.default.dispatch('saveSteps');
-						}
-	
-						// TODO clear roll history (if no steps)
+							}
+						});
 					} else {
 						_event2.default.dispatch('saveSteps');
 					}
