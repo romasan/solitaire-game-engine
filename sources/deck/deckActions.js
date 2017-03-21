@@ -6,7 +6,6 @@ import defaults from 'defaults'                  ;
 import common   from 'common'                    ;
 
 // Actions
-import twindeck       from 'twindeckAction'      ;
 import dealerdeck     from 'dealerdeckAction'    ;
 import kickAction     from 'kickAction'          ;
 import stepsAround    from 'stepsAroundAction'   ;
@@ -17,7 +16,6 @@ import checkFull      from 'checkFullAction'     ;
 import roller         from 'rollerAction'        ;
 
 let _actions = {
-	"twindeck"       : twindeck      ,
 	"dealerdeck"     : dealerdeck    ,
 	"kick"           : kickAction    ,
 	"stepsAround"    : stepsAround   ,

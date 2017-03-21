@@ -74,21 +74,17 @@ let checkTips = e => {
 				(
 					Field.tipsParams.excludeHomeGroups                  &&
 					_homeGroups                                         &&
-					_homeGroups.length                                  &&
-					_homeGroups.indexOf(_tips[i].from.deck.parent) >= 0
+					_homeGroups.length
 				)
 			) {
-				// ?#$%&!
+				// не выделять подсказки с ходом из "дома"
+				if(_homeGroups.indexOf(_tips[i].from.deck.parent) < 0) {
+					event.dispatch('showTip', {
+						"el"   : _tips[i].from.card, 
+						"type" : 'tipToHome'
+					});
+				}
 			} else {
-
-				event.dispatch('showTip', {
-					"el"   : _tips[i].from.card, 
-					"type" : 'tip'
-				});
-				
-			}
-
-			if(_homeGroups.indexOf(_tips[i].to.deck.parent) >= 0) {
 				event.dispatch('showTip', {
 					"el"   : _tips[i].from.card, 
 					"type" : 'tipToHome'
@@ -161,7 +157,6 @@ let tipsMove = data => {
 };
 
 // tips destination decks
-
 let tipsDestination = data => {
 
 	if(share.get('showTipsDestination')) {
@@ -211,8 +206,6 @@ let fromTo = (from, to) => {
 
 let autoStepToHome = data => {
 
-	console.log('autoStepToHome:', _tips);
-
 	let _homeGroups = Field.homeGroups;
 	let homeGroupDecksNames = [];
 
@@ -235,10 +228,17 @@ let autoStepToHome = data => {
 	let groupByFrom = {};
 
 	for(let tip of suitableTips) {
-		if(groupByFrom[tip.from.deck.name]) {
-			groupByFrom[tip.from.deck.name].push(tip);
-		} else {
-			groupByFrom[tip.from.deck.name] = [tip];
+
+		// исключить ходы из "дома" в "дом"
+		if(homeGroupDecksNames.indexOf(tip.from.deck.name) < 0) {
+
+			if(groupByFrom[tip.from.deck.name]) {
+
+				groupByFrom[tip.from.deck.name].push(tip);
+			} else {
+
+				groupByFrom[tip.from.deck.name] = [tip];
+			}
 		}
 		// forceMove();
 	}
@@ -246,9 +246,11 @@ let autoStepToHome = data => {
 	let toList = [];
 
 	for(let from in groupByFrom) {
+
 		let tips = groupByFrom[from];
+
 		// TODO select best tip
-		let tipIndex = 0;// tips.length == 1 ? 0 : ((Math.random() * tips.length) | 0);
+		let tipIndex = 0; // tips.length == 1 ? 0 : ((Math.random() * tips.length) | 0);
 		let tip = tips[tipIndex];
 
 		if(toList.indexOf(tip.to.deck.name) < 0) {

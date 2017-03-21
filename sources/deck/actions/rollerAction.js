@@ -143,7 +143,7 @@ class rollerAction extends deckAction {
 								!found                            &&
 								atom.move                         &&
 								typeof atom.move.from == "string" &&
-								atom.move.from == deck.name
+								       atom.move.from == deck.name
 							) {
 
 								found = true;

@@ -65,15 +65,15 @@ var SolitaireEngine =
 	
 	var _inputs2 = _interopRequireDefault(_inputs);
 	
-	var _move = __webpack_require__(64);
+	var _move = __webpack_require__(63);
 	
 	var _move2 = _interopRequireDefault(_move);
 	
-	var _forceMove = __webpack_require__(25);
+	var _forceMove = __webpack_require__(23);
 	
 	var _forceMove2 = _interopRequireDefault(_forceMove);
 	
-	var _render = __webpack_require__(67);
+	var _render = __webpack_require__(66);
 	
 	var _render2 = _interopRequireDefault(_render);
 	
@@ -85,11 +85,11 @@ var SolitaireEngine =
 	
 	var _common2 = _interopRequireDefault(_common);
 	
-	var _winCheck = __webpack_require__(65);
+	var _winCheck = __webpack_require__(64);
 	
 	var _winCheck2 = _interopRequireDefault(_winCheck);
 	
-	var _history = __webpack_require__(57);
+	var _history = __webpack_require__(56);
 	
 	var _history2 = _interopRequireDefault(_history);
 	
@@ -97,7 +97,7 @@ var SolitaireEngine =
 	
 	var _tips2 = _interopRequireDefault(_tips);
 	
-	var _deckGenerator = __webpack_require__(81);
+	var _deckGenerator = __webpack_require__(80);
 	
 	var _deckGenerator2 = _interopRequireDefault(_deckGenerator);
 	
@@ -111,7 +111,7 @@ var SolitaireEngine =
 	exports.options = _defaults2.default;
 	exports.winCheck = _winCheck2.default.hwinCheck;
 	exports.generator = _deckGenerator2.default;
-	exports.version = (9091495636).toString().split(9).slice(1).map(function (e) {
+	exports.version = (9091495656).toString().split(9).slice(1).map(function (e) {
 		return parseInt(e, 8);
 	}).join('.');
 	
@@ -158,7 +158,7 @@ var SolitaireEngine =
 	};
 	
 	if (true) {
-		var debug = __webpack_require__(82);
+		var debug = __webpack_require__(81);
 		exports.debug = debug.default;
 	}
 
@@ -1010,23 +1010,23 @@ var SolitaireEngine =
 	
 	var _field2 = _interopRequireDefault(_field);
 	
-	var _history = __webpack_require__(57);
+	var _history = __webpack_require__(56);
 	
 	var _history2 = _interopRequireDefault(_history);
 	
-	var _drawPreferences = __webpack_require__(58);
+	var _drawPreferences = __webpack_require__(57);
 	
 	var _drawPreferences2 = _interopRequireDefault(_drawPreferences);
 	
-	var _preferencesEvents = __webpack_require__(60);
+	var _preferencesEvents = __webpack_require__(59);
 	
 	var _preferencesEvents2 = _interopRequireDefault(_preferencesEvents);
 	
-	var _defaultPreferences = __webpack_require__(62);
+	var _defaultPreferences = __webpack_require__(61);
 	
 	var _defaultPreferences2 = _interopRequireDefault(_defaultPreferences);
 	
-	var _specialStep = __webpack_require__(63);
+	var _specialStep = __webpack_require__(62);
 	
 	var _specialStep2 = _interopRequireDefault(_specialStep);
 	
@@ -1628,17 +1628,15 @@ var SolitaireEngine =
 				// 	_tips[i].to.count === 0                             &&
 				// 	Field.tipsParams.hideOnEmpty
 				// )                                                       ||
-				_field2.default.tipsParams.excludeHomeGroups && _homeGroups && _homeGroups.length && _homeGroups.indexOf(_tips[i].from.deck.parent) >= 0) {
-					// ?#$%&!
+				_field2.default.tipsParams.excludeHomeGroups && _homeGroups && _homeGroups.length) {
+					// не выделять подсказки с ходом из "дома"
+					if (_homeGroups.indexOf(_tips[i].from.deck.parent) < 0) {
+						_event2.default.dispatch('showTip', {
+							"el": _tips[i].from.card,
+							"type": 'tipToHome'
+						});
+					}
 				} else {
-	
-					_event2.default.dispatch('showTip', {
-						"el": _tips[i].from.card,
-						"type": 'tip'
-					});
-				}
-	
-				if (_homeGroups.indexOf(_tips[i].to.deck.parent) >= 0) {
 					_event2.default.dispatch('showTip', {
 						"el": _tips[i].from.card,
 						"type": 'tipToHome'
@@ -1704,7 +1702,6 @@ var SolitaireEngine =
 	};
 	
 	// tips destination decks
-	
 	var tipsDestination = function tipsDestination(data) {
 	
 		if (_share2.default.get('showTipsDestination')) {
@@ -1748,8 +1745,6 @@ var SolitaireEngine =
 	};
 	
 	var autoStepToHome = function autoStepToHome(data) {
-	
-		console.log('autoStepToHome:', _tips);
 	
 		var _homeGroups = _field2.default.homeGroups;
 		var homeGroupDecksNames = [];
@@ -1843,10 +1838,17 @@ var SolitaireEngine =
 			for (var _iterator3 = suitableTips[Symbol.iterator](), _step3; !(_iteratorNormalCompletion3 = (_step3 = _iterator3.next()).done); _iteratorNormalCompletion3 = true) {
 				var _tip2 = _step3.value;
 	
-				if (groupByFrom[_tip2.from.deck.name]) {
-					groupByFrom[_tip2.from.deck.name].push(_tip2);
-				} else {
-					groupByFrom[_tip2.from.deck.name] = [_tip2];
+	
+				// исключить ходы из "дома" в "дом"
+				if (homeGroupDecksNames.indexOf(_tip2.from.deck.name) < 0) {
+	
+					if (groupByFrom[_tip2.from.deck.name]) {
+	
+						groupByFrom[_tip2.from.deck.name].push(_tip2);
+					} else {
+	
+						groupByFrom[_tip2.from.deck.name] = [_tip2];
+					}
 				}
 				// forceMove();
 			}
@@ -1868,7 +1870,9 @@ var SolitaireEngine =
 		var toList = [];
 	
 		for (var from in groupByFrom) {
+	
 			var tips = groupByFrom[from];
+	
 			// TODO select best tip
 			var tipIndex = 0; // tips.length == 1 ? 0 : ((Math.random() * tips.length) | 0);
 			var tip = tips[tipIndex];
@@ -2240,11 +2244,11 @@ var SolitaireEngine =
 	
 	var _tips2 = _interopRequireDefault(_tips);
 	
-	var _addAutoSteps = __webpack_require__(53);
+	var _addAutoSteps = __webpack_require__(52);
 	
 	var _addAutoSteps2 = _interopRequireDefault(_addAutoSteps);
 	
-	var _storage = __webpack_require__(56);
+	var _storage = __webpack_require__(55);
 	
 	var _storage2 = _interopRequireDefault(_storage);
 	
@@ -2492,15 +2496,15 @@ var SolitaireEngine =
 	
 	var _deck2 = _interopRequireDefault(_deck);
 	
-	var _groupFill = __webpack_require__(39);
+	var _groupFill = __webpack_require__(38);
 	
 	var _groupFill2 = _interopRequireDefault(_groupFill);
 	
-	var _groupRedraw = __webpack_require__(40);
+	var _groupRedraw = __webpack_require__(39);
 	
 	var _groupRedraw2 = _interopRequireDefault(_groupRedraw);
 	
-	var _groupGenerator = __webpack_require__(41);
+	var _groupGenerator = __webpack_require__(40);
 	
 	var _groupGenerator2 = _interopRequireDefault(_groupGenerator);
 	
@@ -2964,15 +2968,15 @@ var SolitaireEngine =
 	
 	var _deckActions2 = _interopRequireDefault(_deckActions);
 	
-	var _deckTake = __webpack_require__(34);
+	var _deckTake = __webpack_require__(33);
 	
 	var _deckTake2 = _interopRequireDefault(_deckTake);
 	
-	var _deckPut = __webpack_require__(35);
+	var _deckPut = __webpack_require__(34);
 	
 	var _deckPut2 = _interopRequireDefault(_deckPut);
 	
-	var _genCardByName2 = __webpack_require__(36);
+	var _genCardByName2 = __webpack_require__(35);
 	
 	var _genCardByName3 = _interopRequireDefault(_genCardByName2);
 	
@@ -2988,11 +2992,11 @@ var SolitaireEngine =
 	
 	var _getDeckById2 = _interopRequireDefault(_getDeckById);
 	
-	var _deckCardNames = __webpack_require__(37);
+	var _deckCardNames = __webpack_require__(36);
 	
 	var _deckCardNames2 = _interopRequireDefault(_deckCardNames);
 	
-	var _getDeck = __webpack_require__(38);
+	var _getDeck = __webpack_require__(37);
 	
 	var _getDeck2 = _interopRequireDefault(_getDeck);
 	
@@ -3855,6 +3859,7 @@ var SolitaireEngine =
 	 * ascendDeck
 	 * descendDeck
 	 * oneRankDeck
+	 * oneSuitDeck
 	 * ascend
 	 * descent
 	 * descentOne
@@ -4052,6 +4057,28 @@ var SolitaireEngine =
 		},
 	
 		"oneRankDeck": function oneRankDeck(deck) {
+	
+			if (deck.putDeck.length == 1) {
+				return true;
+			}
+	
+			var ruleCorrect = true;
+	
+			for (var i in deck.putDeck) {
+	
+				if (i > 0) {
+	
+					var down = _common2.default.validateCardName(deck.putDeck[i - 1].card.name).rank,
+					    up = _common2.default.validateCardName(deck.putDeck[i].card.name).rank;
+	
+					ruleCorrect = ruleCorrect && down == up;
+				}
+			};
+	
+			return ruleCorrect;
+		},
+	
+		"oneSuitDeck": function oneSuitDeck(deck) {
 	
 			if (deck.putDeck.length == 1) {
 				return true;
@@ -4931,46 +4958,42 @@ var SolitaireEngine =
 	
 	var _common2 = _interopRequireDefault(_common);
 	
-	var _twindeckAction = __webpack_require__(22);
-	
-	var _twindeckAction2 = _interopRequireDefault(_twindeckAction);
-	
-	var _dealerdeckAction = __webpack_require__(24);
+	var _dealerdeckAction = __webpack_require__(22);
 	
 	var _dealerdeckAction2 = _interopRequireDefault(_dealerdeckAction);
 	
-	var _kickAction = __webpack_require__(26);
+	var _kickAction = __webpack_require__(25);
 	
 	var _kickAction2 = _interopRequireDefault(_kickAction);
 	
-	var _stepsAroundAction = __webpack_require__(27);
+	var _stepsAroundAction = __webpack_require__(26);
 	
 	var _stepsAroundAction2 = _interopRequireDefault(_stepsAroundAction);
 	
-	var _changeStepTypeAction = __webpack_require__(28);
+	var _changeStepTypeAction = __webpack_require__(27);
 	
 	var _changeStepTypeAction2 = _interopRequireDefault(_changeStepTypeAction);
 	
-	var _lockAction = __webpack_require__(29);
+	var _lockAction = __webpack_require__(28);
 	
 	var _lockAction2 = _interopRequireDefault(_lockAction);
 	
-	var _unlockAction = __webpack_require__(31);
+	var _unlockAction = __webpack_require__(30);
 	
 	var _unlockAction2 = _interopRequireDefault(_unlockAction);
 	
-	var _checkFullAction = __webpack_require__(32);
+	var _checkFullAction = __webpack_require__(31);
 	
 	var _checkFullAction2 = _interopRequireDefault(_checkFullAction);
 	
-	var _rollerAction = __webpack_require__(33);
+	var _rollerAction = __webpack_require__(32);
 	
 	var _rollerAction2 = _interopRequireDefault(_rollerAction);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
+	// Actions
 	var _actions = {
-		"twindeck": _twindeckAction2.default,
 		"dealerdeck": _dealerdeckAction2.default,
 		"kick": _kickAction2.default,
 		"stepsAround": _stepsAroundAction2.default,
@@ -4987,7 +5010,6 @@ var SolitaireEngine =
 	 * autoRunActions
 	 */
 	
-	// Actions
 	var _decksActions = [],
 	    _events = [];
 	
@@ -5131,111 +5153,6 @@ var SolitaireEngine =
 	
 	var _get = function get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
 	
-	var _deckAction2 = __webpack_require__(23);
-	
-	var _deckAction3 = _interopRequireDefault(_deckAction2);
-	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-	
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-	
-	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-	
-	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-	
-	var stepType = 'twindeckStepType';
-	
-	var twindeckAction = function (_deckAction) {
-		_inherits(twindeckAction, _deckAction);
-	
-		function twindeckAction() {
-			_classCallCheck(this, twindeckAction);
-	
-			return _possibleConstructorReturn(this, (twindeckAction.__proto__ || Object.getPrototypeOf(twindeckAction)).call(this));
-		}
-	
-		// TODO переделать
-	
-	
-		_createClass(twindeckAction, [{
-			key: 'run',
-			value: function run(deck, data) {
-	
-				// !data.actionData.dispatch
-				_get(twindeckAction.prototype.__proto__ || Object.getPrototypeOf(twindeckAction.prototype), 'end', this).call(this);
-			}
-		}]);
-	
-		return twindeckAction;
-	}(_deckAction3.default);
-	
-	exports.default = new twindeckAction();
-
-/***/ },
-/* 23 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	Object.defineProperty(exports, "__esModule", {
-		value: true
-	});
-	
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-	
-	var _event = __webpack_require__(2);
-	
-	var _event2 = _interopRequireDefault(_event);
-	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-	
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-	
-	/*
-	 * run
-	 * end
-	 * break
-	 */
-	
-	var deckAction = function () {
-		function deckAction() {
-			_classCallCheck(this, deckAction);
-		}
-	
-		_createClass(deckAction, [{
-			key: 'run',
-			value: function run() {}
-		}, {
-			key: 'end',
-			value: function end() {
-				_event2.default.dispatch('stopSession');
-			}
-		}, {
-			key: 'break',
-			value: function _break() {
-				// TODO
-			}
-		}]);
-	
-		return deckAction;
-	}();
-	
-	exports.default = deckAction;
-
-/***/ },
-/* 24 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	Object.defineProperty(exports, "__esModule", {
-		value: true
-	});
-	
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-	
-	var _get = function get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
-	
 	var _event = __webpack_require__(2);
 	
 	var _event2 = _interopRequireDefault(_event);
@@ -5252,11 +5169,11 @@ var SolitaireEngine =
 	
 	var _common2 = _interopRequireDefault(_common);
 	
-	var _forceMove = __webpack_require__(25);
+	var _forceMove = __webpack_require__(23);
 	
 	var _forceMove2 = _interopRequireDefault(_forceMove);
 	
-	var _deckAction2 = __webpack_require__(23);
+	var _deckAction2 = __webpack_require__(24);
 	
 	var _deckAction3 = _interopRequireDefault(_deckAction2);
 	
@@ -5471,7 +5388,7 @@ var SolitaireEngine =
 	exports.default = new dealerdeckAction();
 
 /***/ },
-/* 25 */
+/* 23 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -5606,7 +5523,58 @@ var SolitaireEngine =
 	exports.default = forceMove;
 
 /***/ },
-/* 26 */
+/* 24 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+		value: true
+	});
+	
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	
+	var _event = __webpack_require__(2);
+	
+	var _event2 = _interopRequireDefault(_event);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	/*
+	 * run
+	 * end
+	 * break
+	 */
+	
+	var deckAction = function () {
+		function deckAction() {
+			_classCallCheck(this, deckAction);
+		}
+	
+		_createClass(deckAction, [{
+			key: 'run',
+			value: function run() {}
+		}, {
+			key: 'end',
+			value: function end() {
+				_event2.default.dispatch('stopSession');
+			}
+		}, {
+			key: 'break',
+			value: function _break() {
+				// TODO
+			}
+		}]);
+	
+		return deckAction;
+	}();
+	
+	exports.default = deckAction;
+
+/***/ },
+/* 25 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -5635,7 +5603,7 @@ var SolitaireEngine =
 	
 	var _defaults2 = _interopRequireDefault(_defaults);
 	
-	var _deckAction2 = __webpack_require__(23);
+	var _deckAction2 = __webpack_require__(24);
 	
 	var _deckAction3 = _interopRequireDefault(_deckAction2);
 	
@@ -5783,7 +5751,7 @@ var SolitaireEngine =
 	exports.default = new kickAction();
 
 /***/ },
-/* 27 */
+/* 26 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -5812,7 +5780,7 @@ var SolitaireEngine =
 	
 	var _defaults2 = _interopRequireDefault(_defaults);
 	
-	var _deckAction2 = __webpack_require__(23);
+	var _deckAction2 = __webpack_require__(24);
 	
 	var _deckAction3 = _interopRequireDefault(_deckAction2);
 	
@@ -5958,7 +5926,7 @@ var SolitaireEngine =
 	exports.default = new stepsAroundAction();
 
 /***/ },
-/* 28 */
+/* 27 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -5987,7 +5955,7 @@ var SolitaireEngine =
 	
 	var _common2 = _interopRequireDefault(_common);
 	
-	var _deckAction2 = __webpack_require__(23);
+	var _deckAction2 = __webpack_require__(24);
 	
 	var _deckAction3 = _interopRequireDefault(_deckAction2);
 	
@@ -6038,7 +6006,7 @@ var SolitaireEngine =
 	exports.default = new changeStepTypeAction();
 
 /***/ },
-/* 29 */
+/* 28 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -6067,11 +6035,11 @@ var SolitaireEngine =
 	
 	var _common2 = _interopRequireDefault(_common);
 	
-	var _deckAction2 = __webpack_require__(23);
+	var _deckAction2 = __webpack_require__(24);
 	
 	var _deckAction3 = _interopRequireDefault(_deckAction2);
 	
-	var _lockActionCommon = __webpack_require__(30);
+	var _lockActionCommon = __webpack_require__(29);
 	
 	var _lockActionCommon2 = _interopRequireDefault(_lockActionCommon);
 	
@@ -6113,7 +6081,7 @@ var SolitaireEngine =
 	exports.default = new lockAction();
 
 /***/ },
-/* 30 */
+/* 29 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -6181,7 +6149,7 @@ var SolitaireEngine =
 	};
 
 /***/ },
-/* 31 */
+/* 30 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -6210,11 +6178,11 @@ var SolitaireEngine =
 	
 	var _common2 = _interopRequireDefault(_common);
 	
-	var _deckAction2 = __webpack_require__(23);
+	var _deckAction2 = __webpack_require__(24);
 	
 	var _deckAction3 = _interopRequireDefault(_deckAction2);
 	
-	var _lockActionCommon = __webpack_require__(30);
+	var _lockActionCommon = __webpack_require__(29);
 	
 	var _lockActionCommon2 = _interopRequireDefault(_lockActionCommon);
 	
@@ -6256,7 +6224,7 @@ var SolitaireEngine =
 	exports.default = new unlockAction();
 
 /***/ },
-/* 32 */
+/* 31 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -6277,7 +6245,7 @@ var SolitaireEngine =
 	
 	var _group3 = _interopRequireDefault(_group2);
 	
-	var _deckAction2 = __webpack_require__(23);
+	var _deckAction2 = __webpack_require__(24);
 	
 	var _deckAction3 = _interopRequireDefault(_deckAction2);
 	
@@ -6425,7 +6393,7 @@ var SolitaireEngine =
 	exports.default = new checkFullAction();
 
 /***/ },
-/* 33 */
+/* 32 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -6442,7 +6410,7 @@ var SolitaireEngine =
 	
 	var _event2 = _interopRequireDefault(_event);
 	
-	var _deckAction2 = __webpack_require__(23);
+	var _deckAction2 = __webpack_require__(24);
 	
 	var _deckAction3 = _interopRequireDefault(_deckAction2);
 	
@@ -6637,7 +6605,7 @@ var SolitaireEngine =
 	exports.default = new rollerAction();
 
 /***/ },
-/* 34 */
+/* 33 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -6751,7 +6719,7 @@ var SolitaireEngine =
 	};
 
 /***/ },
-/* 35 */
+/* 34 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -6841,7 +6809,7 @@ var SolitaireEngine =
 	};
 
 /***/ },
-/* 36 */
+/* 35 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -6917,7 +6885,7 @@ var SolitaireEngine =
 	};
 
 /***/ },
-/* 37 */
+/* 36 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -6943,7 +6911,7 @@ var SolitaireEngine =
 	};
 
 /***/ },
-/* 38 */
+/* 37 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -6977,7 +6945,7 @@ var SolitaireEngine =
 	};
 
 /***/ },
-/* 39 */
+/* 38 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -7060,7 +7028,7 @@ var SolitaireEngine =
 	};
 
 /***/ },
-/* 40 */
+/* 39 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -7168,7 +7136,7 @@ var SolitaireEngine =
 	};
 
 /***/ },
-/* 41 */
+/* 40 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*
@@ -7181,23 +7149,23 @@ var SolitaireEngine =
 		value: true
 	});
 	
-	var _countGenerator = __webpack_require__(42);
+	var _countGenerator = __webpack_require__(41);
 	
 	var _countGenerator2 = _interopRequireDefault(_countGenerator);
 	
-	var _fanGenerator = __webpack_require__(43);
+	var _fanGenerator = __webpack_require__(42);
 	
 	var _fanGenerator2 = _interopRequireDefault(_fanGenerator);
 	
-	var _mapGenerator = __webpack_require__(44);
+	var _mapGenerator = __webpack_require__(43);
 	
 	var _mapGenerator2 = _interopRequireDefault(_mapGenerator);
 	
-	var _lineGenerator = __webpack_require__(51);
+	var _lineGenerator = __webpack_require__(50);
 	
 	var _lineGenerator2 = _interopRequireDefault(_lineGenerator);
 	
-	var _rhombusGenerator = __webpack_require__(52);
+	var _rhombusGenerator = __webpack_require__(51);
 	
 	var _rhombusGenerator2 = _interopRequireDefault(_rhombusGenerator);
 	
@@ -7212,7 +7180,7 @@ var SolitaireEngine =
 	};
 
 /***/ },
-/* 42 */
+/* 41 */
 /***/ function(module, exports) {
 
 	/*
@@ -7248,7 +7216,7 @@ var SolitaireEngine =
 	};
 
 /***/ },
-/* 43 */
+/* 42 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*
@@ -7326,7 +7294,7 @@ var SolitaireEngine =
 	};
 
 /***/ },
-/* 44 */
+/* 43 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*
@@ -7343,11 +7311,11 @@ var SolitaireEngine =
 	
 	var _defaults2 = _interopRequireDefault(_defaults);
 	
-	var _relationsGenerator = __webpack_require__(45);
+	var _relationsGenerator = __webpack_require__(44);
 	
 	var _relationsGenerator2 = _interopRequireDefault(_relationsGenerator);
 	
-	var _mapCommon = __webpack_require__(47);
+	var _mapCommon = __webpack_require__(46);
 	
 	var _mapCommon2 = _interopRequireDefault(_mapCommon);
 	
@@ -7466,7 +7434,7 @@ var SolitaireEngine =
 	};
 
 /***/ },
-/* 45 */
+/* 44 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -7475,19 +7443,19 @@ var SolitaireEngine =
 		value: true
 	});
 	
-	var _mapFallRelations = __webpack_require__(46);
+	var _mapFallRelations = __webpack_require__(45);
 	
 	var _mapFallRelations2 = _interopRequireDefault(_mapFallRelations);
 	
-	var _mapAroundRelations = __webpack_require__(48);
+	var _mapAroundRelations = __webpack_require__(47);
 	
 	var _mapAroundRelations2 = _interopRequireDefault(_mapAroundRelations);
 	
-	var _mapBesideRelations = __webpack_require__(49);
+	var _mapBesideRelations = __webpack_require__(48);
 	
 	var _mapBesideRelations2 = _interopRequireDefault(_mapBesideRelations);
 	
-	var _lineBesideRelations = __webpack_require__(50);
+	var _lineBesideRelations = __webpack_require__(49);
 	
 	var _lineBesideRelations2 = _interopRequireDefault(_lineBesideRelations);
 	
@@ -7501,7 +7469,7 @@ var SolitaireEngine =
 	};
 
 /***/ },
-/* 46 */
+/* 45 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -7510,7 +7478,7 @@ var SolitaireEngine =
 		value: true
 	});
 	
-	var _mapCommon = __webpack_require__(47);
+	var _mapCommon = __webpack_require__(46);
 	
 	var _mapCommon2 = _interopRequireDefault(_mapCommon);
 	
@@ -7615,7 +7583,7 @@ var SolitaireEngine =
 	};
 
 /***/ },
-/* 47 */
+/* 46 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -7673,7 +7641,7 @@ var SolitaireEngine =
 	};
 
 /***/ },
-/* 48 */
+/* 47 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -7682,7 +7650,7 @@ var SolitaireEngine =
 		value: true
 	});
 	
-	var _mapCommon = __webpack_require__(47);
+	var _mapCommon = __webpack_require__(46);
 	
 	var _mapCommon2 = _interopRequireDefault(_mapCommon);
 	
@@ -7709,7 +7677,7 @@ var SolitaireEngine =
 	};
 
 /***/ },
-/* 49 */
+/* 48 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -7718,7 +7686,7 @@ var SolitaireEngine =
 		value: true
 	});
 	
-	var _mapCommon = __webpack_require__(47);
+	var _mapCommon = __webpack_require__(46);
 	
 	var _mapCommon2 = _interopRequireDefault(_mapCommon);
 	
@@ -7778,7 +7746,7 @@ var SolitaireEngine =
 	};
 
 /***/ },
-/* 50 */
+/* 49 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -7787,7 +7755,7 @@ var SolitaireEngine =
 		value: true
 	});
 	
-	var _mapCommon = __webpack_require__(47);
+	var _mapCommon = __webpack_require__(46);
 	
 	var _mapCommon2 = _interopRequireDefault(_mapCommon);
 	
@@ -7822,7 +7790,7 @@ var SolitaireEngine =
 	};
 
 /***/ },
-/* 51 */
+/* 50 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*
@@ -7835,7 +7803,7 @@ var SolitaireEngine =
 		value: true
 	});
 	
-	var _relationsGenerator = __webpack_require__(45);
+	var _relationsGenerator = __webpack_require__(44);
 	
 	var _relationsGenerator2 = _interopRequireDefault(_relationsGenerator);
 	
@@ -7927,7 +7895,7 @@ var SolitaireEngine =
 	};
 
 /***/ },
-/* 52 */
+/* 51 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -7939,7 +7907,7 @@ var SolitaireEngine =
 	exports.default = function (group, data) {};
 
 /***/ },
-/* 53 */
+/* 52 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -7948,7 +7916,7 @@ var SolitaireEngine =
 		value: true
 	});
 	
-	var _fallAutoStep = __webpack_require__(54);
+	var _fallAutoStep = __webpack_require__(53);
 	
 	var _fallAutoStep2 = _interopRequireDefault(_fallAutoStep);
 	
@@ -7979,7 +7947,7 @@ var SolitaireEngine =
 	};
 
 /***/ },
-/* 54 */
+/* 53 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -8004,7 +7972,7 @@ var SolitaireEngine =
 	
 	var _event2 = _interopRequireDefault(_event);
 	
-	var _autoStep2 = __webpack_require__(55);
+	var _autoStep2 = __webpack_require__(54);
 	
 	var _autoStep3 = _interopRequireDefault(_autoStep2);
 	
@@ -8117,7 +8085,7 @@ var SolitaireEngine =
 	exports.default = fallAutoStep;
 
 /***/ },
-/* 55 */
+/* 54 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -8267,7 +8235,7 @@ var SolitaireEngine =
 	exports.default = _class;
 
 /***/ },
-/* 56 */
+/* 55 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -8340,7 +8308,7 @@ var SolitaireEngine =
 	exports.default = new storage();
 
 /***/ },
-/* 57 */
+/* 56 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -8371,7 +8339,7 @@ var SolitaireEngine =
 	
 	var _stateManager2 = _interopRequireDefault(_stateManager);
 	
-	var _forceMove = __webpack_require__(25);
+	var _forceMove = __webpack_require__(23);
 	
 	var _forceMove2 = _interopRequireDefault(_forceMove);
 	
@@ -8825,7 +8793,7 @@ var SolitaireEngine =
 	exports.default = _history;
 
 /***/ },
-/* 58 */
+/* 57 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -8842,7 +8810,7 @@ var SolitaireEngine =
 	
 	exports.default = function (e) {
 	
-		var _html = __webpack_require__(59);
+		var _html = __webpack_require__(58);
 	
 		// $("#gpCommit")
 		// 	.parent()
@@ -8855,13 +8823,13 @@ var SolitaireEngine =
 	};
 
 /***/ },
-/* 59 */
+/* 58 */
 /***/ function(module, exports) {
 
 	module.exports = "<div id=\"solitaire-engine-style-preferences\">\n\t<h4>Настройки оформления</h4>\n\t<div>\n\t\t<span class=\"solitaire-engine-style-preferences-label\">Фон:</span>\n\t\t<!-- <select id=\"pref_field\" class=\"solitaire-engine-style-preferences-element\"> -->\n\t\t<label>\n\t\t\t<input type=\"radio\" name=\"pref_field\" value=\"default_field\">\n\t\t\tКлассический\n\t\t</label>\n\t\t<label>\n\t\t\t<input type=\"radio\" name=\"pref_field\" value=\"alternative_field\">\n\t\t\tАльтернативный\n\t\t</label>\n\t\t<!-- </select> -->\n\t</div>\n\t<div>\n\t\t<span class=\"solitaire-engine-style-preferences-label\">Лицевая сторона:</span>\n\t\t<!-- <select id=\"pref_face\" class=\"solitaire-engine-style-preferences-element\"> -->\n\t\t<label>\n\t\t\t<input type=\"radio\" name=\"pref_face\" value=\"default_face\">\n\t\t\tКлассическая\n\t\t</label>\n\t\t<label>\n\t\t\t<input type=\"radio\" name=\"pref_face\" value=\"alternative_face\">\n\t\t\tАнгло-американская\n\t\t</label>\n\t\t<!-- </select> -->\n\t</div>\n\t<div>\n\t\t<span class=\"solitaire-engine-style-preferences-label\">Рубашка:</span>\n\t\t<!-- <select id=\"pref_back\" class=\"solitaire-engine-style-preferences-element\"> -->\n\t\t<label>\n\t\t\t<input type=\"radio\" name=\"pref_back\" value=\"default_back\">\n\t\t\tКлассическая\n\t\t</label>\n\t\t<label>\n\t\t\t<input type=\"radio\" name=\"pref_back\" value=\"alternative_back\">\n\t\t\tАльтернативная\n\t\t</label>\n\t\t<!-- <label>\n\t\t\t<input type=\"radio\" name=\"pref_back\" value=\"red_back\">\n\t\t\tКрасная\n\t\t</label>\n\t\t<label>\n\t\t\t<input type=\"radio\" name=\"pref_back\" value=\"blue_back\">\n\t\t\tСиняя\n\t\t</label> -->\n\t\t<!-- </select> -->\n\t</div>\n\t<div id=\"gamePreferences\"></div>\n\t<!-- <div>\n\t\t<span class=\"solitaire-engine-style-preferences-label\">Пустая ячейка:</span>\n\t\t<select id=\"pref_empty\" class=\"solitaire-engine-style-preferences-element\">\n\t\t\t<option value=0>Классическая</option>\n\t\t\t<option value=1>С обводкой</option>\n\t\t</select>\n\t</div> -->\n</div>";
 
 /***/ },
-/* 60 */
+/* 59 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -8882,11 +8850,11 @@ var SolitaireEngine =
 	
 	var _defaults2 = _interopRequireDefault(_defaults);
 	
-	var _storage = __webpack_require__(56);
+	var _storage = __webpack_require__(55);
 	
 	var _storage2 = _interopRequireDefault(_storage);
 	
-	var _gamePreferences = __webpack_require__(61);
+	var _gamePreferences = __webpack_require__(60);
 	
 	var _gamePreferences2 = _interopRequireDefault(_gamePreferences);
 	
@@ -8971,7 +8939,7 @@ var SolitaireEngine =
 	};
 
 /***/ },
-/* 61 */
+/* 60 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -9078,7 +9046,7 @@ var SolitaireEngine =
 	exports.default = new gamePreferences();
 
 /***/ },
-/* 62 */
+/* 61 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -9095,7 +9063,7 @@ var SolitaireEngine =
 	
 	var _defaults2 = _interopRequireDefault(_defaults);
 	
-	var _storage = __webpack_require__(56);
+	var _storage = __webpack_require__(55);
 	
 	var _storage2 = _interopRequireDefault(_storage);
 	
@@ -9120,7 +9088,7 @@ var SolitaireEngine =
 	};
 
 /***/ },
-/* 63 */
+/* 62 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -9186,7 +9154,7 @@ var SolitaireEngine =
 	});
 
 /***/ },
-/* 64 */
+/* 63 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -9219,7 +9187,7 @@ var SolitaireEngine =
 	
 	var _bestTip2 = _interopRequireDefault(_bestTip);
 	
-	var _winCheck = __webpack_require__(65);
+	var _winCheck = __webpack_require__(64);
 	
 	var _winCheck2 = _interopRequireDefault(_winCheck);
 	
@@ -9434,7 +9402,7 @@ var SolitaireEngine =
 	});
 
 /***/ },
-/* 65 */
+/* 64 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -9455,9 +9423,9 @@ var SolitaireEngine =
 	
 	var _common2 = _interopRequireDefault(_common);
 	
-	var _winCheckRules2 = __webpack_require__(66);
+	var _winCheckRules = __webpack_require__(65);
 	
-	var _winCheckRules3 = _interopRequireDefault(_winCheckRules2);
+	var _winCheckRules2 = _interopRequireDefault(_winCheckRules);
 	
 	var _deck = __webpack_require__(14);
 	
@@ -9468,41 +9436,43 @@ var SolitaireEngine =
 	var winCheck = function winCheck(params) {
 	
 		var rulesCorrect = true;
-		var _hasRules = false;
+		var hasRules = false;
 	
-		var _winCheck = _share2.default.get('winCheck');
+		var winCheck = _share2.default.get('winCheck');
 	
-		if (!_winCheck) {
+		if (!winCheck) {
 			return false;
 		}
 	
-		// if(_winCheck.rules) {
-		// 	_winCheck = winCheck.rules;
-		// }
+		winCheck = winCheck.rules ? winCheck.rules : winCheck;
 	
-		var _winCheckRules = _winCheck.rules ? _winCheck.rules : _winCheck;
+		for (var ruleName in winCheck) {
 	
-		for (var ruleName in _winCheckRules) {
+			hasRules = true;
 	
-			var _ruleName = ruleName.length == 1 && ruleName | 0 == 0 ? _winCheckRules[ruleName] : ruleName;
-	
-			_hasRules = true;
-	
-			if (_winCheckRules3.default[_ruleName]) {
-	
-				var _result = _winCheckRules3.default[_ruleName]({
-					"decks": _deck2.default.getDecks({ "visible": true }),
-					"rulesArgs": _winCheckRules[_ruleName]
+			// winCheck - Object
+			if (typeof ruleName == "string" && winCheck[ruleName]) {
+				rulesCorrect = rulesCorrect && _winCheckRules2.default[ruleName]({
+					"decks": _deck2.default.getDecks({
+						"visible": true
+					}),
+					"rulesArgs": winCheck[ruleName]
 				});
 	
-				rulesCorrect &= _result;
+				// winCheck - Array of string
+			} else if (typeof ruleName == "number" && winCheck[winCheck[ruleName]]) {
+				rulesCorrect = rulesCorrect && _winCheckRules2.default[ruleName]({
+					"decks": _deck2.default.getDecks({
+						"visible": true
+					})
+				});
 			} else {
-				rulesCorrect &= _winCheckRules3.default.newerWin();
+				rulesCorrect = rulesCorrect && _winCheckRules2.default.newerWin();
 			}
 		}
 	
-		if (!_hasRules) {
-			rulesCorrect &= _winCheckRules3.default.newerWin();
+		if (!hasRules) {
+			rulesCorrect = rulesCorrect && _winCheckRules2.default.newerWin();
 		}
 	
 		if (rulesCorrect) {
@@ -9534,16 +9504,15 @@ var SolitaireEngine =
 		}
 	
 		winCheck(params);
-		// return winCheck({noCallback : true});
 	};
 	
 	exports.default = {
-		winCheck: winCheck,
-		hwinCheck: hwinCheck
+		"winCheck": winCheck,
+		"hwinCheck": hwinCheck
 	};
 
 /***/ },
-/* 66 */
+/* 65 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -9561,8 +9530,6 @@ var SolitaireEngine =
 	var _defaults2 = _interopRequireDefault(_defaults);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-	
-	// import Deck     from 'deck';
 	
 	/*
 	
@@ -9603,66 +9570,53 @@ var SolitaireEngine =
 	
 		// возвращает колоды определённой группы/групп
 		"group": function group(data) {
+			// string | Array of string
 	
 			if (!data.filter || !data.filterArgs) {
 				return false;
 			}
 	
-			var _decks = [];
-			for (var _i in data.decks) {
+			var decksLength = 0;
+			var decks = {};
 	
-				// let _parent = data.decks[_i].parent
-				// if(data.filterArgs.indexOf(data.decks[_i].parent)) {
-				if (typeof data.filterArgs == 'string' && data.decks[_i].parent == data.filterArgs || data.filterArgs.length && data.filterArgs.indexOf(data.decks[_i].parent) >= 0) {
-					_decks.push(data.decks[_i]);
+			for (var _deckName in data.decks) {
+	
+				if (typeof data.filterArgs == 'string' && data.decks[_deckName].parent == data.filterArgs || data.filterArgs.length && data.filterArgs.indexOf(data.decks[_deckName].parent) >= 0) {
+					decksLength += 1;
+					decks[_deckName] = data.decks[_deckName];
 				}
 			}
 	
-			data.decks = _decks;
+			data.decks = decks;
 	
-			return _decks.length;
+			return decksLength;
 		},
 	
 		"groups": function groups(data) {
 			return winCheckRules.group(data);
 		},
 	
+		// by Tag
 		"select": function select(data) {
-			// by Tag
+			// string
 	
-			var _decks = [];
+			if (!data.filter || !data.filterArgs) {
+				return false;
+			}
 	
-			var _iteratorNormalCompletion = true;
-			var _didIteratorError = false;
-			var _iteratorError = undefined;
+			var decksLength = 0;
+			var decks = {};
 	
-			try {
-				for (var _iterator = data.decks[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
-					var deck = _step.value;
-	
-					// let maxDeckIndex = Group.getGroup(deck.parent).decksCount();
-					if (deck.tags.indexOf(data.filterArgs) >= 0) {
-						_decks.push(deck);
-					}
-				}
-			} catch (err) {
-				_didIteratorError = true;
-				_iteratorError = err;
-			} finally {
-				try {
-					if (!_iteratorNormalCompletion && _iterator.return) {
-						_iterator.return();
-					}
-				} finally {
-					if (_didIteratorError) {
-						throw _iteratorError;
-					}
+			for (var _deckName2 in data.decks) {
+				if (data.decks[_deckName2].tags.indexOf(data.filterArgs) >= 0) {
+					decksLength += 1;
+					decks[_deckName2] = deck;
 				}
 			}
 	
-			data.decks = _decks;
+			data.decks = decks;
 	
-			return _decks.length;
+			return decksLength;
 		},
 	
 		"deck": function deck(data) {
@@ -9671,16 +9625,19 @@ var SolitaireEngine =
 				return false;
 			}
 	
-			var _decks = [];
+			var decksLength = 0;
+			var decks = {};
 	
-			for (var _i in data.decks) {
-				if (typeof data.filterArgs == 'string' && data.decks[_i].name == data.filterArgs || data.filterArgs.indexOf(data.decks[_i].name) >= 0) {
-					_decks.push(data.decks[_i]);
+			for (var _deckName3 in data.decks) {
+				if (typeof data.filterArgs == 'string' && data.decks[_deckName3].name == data.filterArgs || data.filterArgs.indexOf(data.decks[_deckName3].name) >= 0) {
+					decksLength += 1;
+					decks[_deckName3] = data.decks[_deckName3];
 				}
 			}
 	
-			data.decks = _decks;
-			return _decks.length;
+			data.decks = decks;
+	
+			return decksLength;
 		},
 	
 		"decks": function decks(data) {
@@ -9691,17 +9648,19 @@ var SolitaireEngine =
 	
 		"firstEmpty": function firstEmpty(data) {
 	
-			var _decks = [];
+			var decks = {};
+			var decksLength = 0;
 	
-			for (var _i in data.decks) {
-				if (data.decks[_i].tags.indexOf('last') >= 0) {
-					_decks.push(data.decks[_i]);
+			for (var _deckName4 in data.decks) {
+				if (data.decks[_deckName4].tags.indexOf('last') >= 0) {
+					decksLength += 1;
+					decks[_deckName4] = data.decks[_deckName4];
 				}
 			}
 	
-			data.decks = _decks;
+			data.decks = decks;
 	
-			return _decks.length;
+			return decksLength;
 		},
 	
 		// Internal use
@@ -9712,30 +9671,30 @@ var SolitaireEngine =
 				return false;
 			}
 	
-			var _correct = true;
+			var correct = true;
 	
-			for (var deckIndex in data.decks) {
+			for (var _deckName5 in data.decks) {
 	
-				if (!_correct) {
+				if (!correct) {
 					return false;
 				}
 	
-				var _cards = data.decks[deckIndex].cards;
+				var cards = data.decks[_deckName5].cards;
 	
-				for (var cardIndex in _cards) {
+				for (var cardIndex in cards) {
 					if (cardIndex > 0) {
 	
-						var down = _common2.default.validateCardName(_cards[(cardIndex | 0) - 1].name),
-						    up = _common2.default.validateCardName(_cards[cardIndex | 0].name);
+						var down = _common2.default.validateCardName(cards[(cardIndex | 0) - 1].name),
+						    up = _common2.default.validateCardName(cards[cardIndex | 0].name);
 	
-						var _cardsRankS = _defaults2.default.card.ranks;
+						var cardsRankS = _defaults2.default.card.ranks;
 	
-						_correct = _correct && down && up && _cardsRankS.indexOf(down.rank) == _cardsRankS.indexOf(up.rank) + data.asc_desk;
+						correct = correct && down && up && cardsRankS.indexOf(down.rank) == cardsRankS.indexOf(up.rank) + data.asc_desk;
 					}
 				}
 			}
 	
-			return _correct;
+			return correct;
 		},
 	
 		// Simple rules
@@ -9750,17 +9709,17 @@ var SolitaireEngine =
 		// все колоды пусты
 		"allEmpty": function allEmpty(data) {
 	
-			var _correct = true;
+			var correct = true;
 	
-			for (var _i in data.decks) {
-				_correct = _correct && data.decks[_i].cards.length == 0;
+			for (var _deckName6 in data.decks) {
+				correct = correct && data.decks[_deckName6].cards.length == 0;
 			}
 	
-			return _correct;
+			return correct;
 		},
 	
 		"empty": function empty(data) {
-			winCheckRules.allEmpty(data);
+			return winCheckRules.allEmpty(data);
 		},
 	
 		// Combined rules (use like filter)
@@ -9768,26 +9727,28 @@ var SolitaireEngine =
 		// все карты в одной колоде
 		"allInOne": function allInOne(data) {
 	
-			var _emptyDecksCount = 0,
-			    _decksLength = 0,
-			    _fillIndex = 0;
+			var emptyDecksCount = 0,
+			    decksLength = 0,
+			    fillIndex = 0;
 	
-			for (var i in data.decks) {
-				if (data.decks[i].cards.length == 0) {
-					_emptyDecksCount += 1;
+			for (var _deckName7 in data.decks) {
+				if (data.decks[_deckName7].cards.length == 0) {
+					emptyDecksCount += 1;
 				} else {
-					_fillIndex = i;
+					fillIndex = _deckName7;
 				}
-				_decksLength += 1;
+				decksLength += 1;
 			}
 	
-			var _correct = _emptyDecksCount == _decksLength - 1;
+			var correct = emptyDecksCount == decksLength - 1;
 	
-			if (data.filter) {
-				data.decks = _correct ? [data.decks[_fillIndex]] : [];
+			if (data.filter && correct) {
+				var decks = {};
+				decks[deckName] = data.decks[deckName];
+				data.decks = decks;
 			}
 	
-			return _correct;
+			return correct;
 		},
 	
 		// step by step 1, 2, 3
@@ -9810,11 +9771,11 @@ var SolitaireEngine =
 	
 		"topKing": function topKing(data) {
 	
-			for (var i in data.decks) {
+			for (var _deckName8 in data.decks) {
 	
-				var deck = data.decks[i];
+				var _deck = data.decks[_deckName8];
 	
-				var topCard = deck.getTopCard();
+				var topCard = _deck.getTopCard();
 	
 				var topCardRank = _common2.default.validateCardName(topCard.name).rank;
 	
@@ -9827,7 +9788,21 @@ var SolitaireEngine =
 		},
 	
 		"topAce": function topAce(data) {
-			return false;
+	
+			for (var _deckName9 in data.decks) {
+	
+				var _deck2 = data.decks[_deckName9];
+	
+				var topCard = _deck2.getTopCard();
+	
+				var topCardRank = _common2.default.validateCardName(topCard.name).rank;
+	
+				if (typeof topCardRank != 'undefined' && topCardRank != _defaults2.default.card.ranks[0]) {
+					return false;
+				}
+			}
+	
+			return true;
 		},
 	
 		// Composite rules (input arguments)
@@ -9850,8 +9825,9 @@ var SolitaireEngine =
 	
 				var _decksClone = {};
 	
-				for (var i in data.decks) {
-					_decksClone[i] = data.decks[i];
+				// TODO 
+				for (var _deckName10 in data.decks) {
+					_decksClone[_deckName10] = data.decks[_deckName10];
 				}
 	
 				var queryData = {
@@ -9865,21 +9841,28 @@ var SolitaireEngine =
 	
 					queryData.filter = true;
 	
-					for (var _i2 in data.rulesArgs[next].filters) {
-						if (typeof data.rulesArgs[next].filters[_i2] == 'string' && winCheckRules[data.rulesArgs[next].filters[_i2]]) {
+					// пробегаемся по фильтрам
+					for (var i in data.rulesArgs[next].filters) {
+	
+						// фильтр - строковый параметр
+						if (typeof data.rulesArgs[next].filters[i] == 'string' && winCheckRules[data.rulesArgs[next].filters[i]]) {
 	
 							queryData.filterArgs = null;
-							_correct = _correct && winCheckRules[data.rulesArgs[next].filters[_i2]](queryData);
+							_correct = _correct && winCheckRules[data.rulesArgs[next].filters[i]](queryData);
 						} else {
 	
-							// if(typeof data.rulesArgs[next].filters[i] == 'object') {
-							if (data.rulesArgs[next].filters[_i2] && data.rulesArgs[next].filters[_i2].toString() == '[object Object]') {
+							// фильтр - обьект
+							if (data.rulesArgs[next].filters[i] && data.rulesArgs[next].filters[i].toString() == '[object Object]') {
 	
-								for (var filterName in data.rulesArgs[next].filters[_i2]) {
-									// console.log('>>> filterName', filterName, typeof winCheckRules[filterName]);
+								for (var filterName in data.rulesArgs[next].filters[i]) {
+	
 									if (winCheckRules[filterName]) {
-										queryData.filterArgs = data.rulesArgs[next].filters[_i2][filterName];
-										_correct = _correct && winCheckRules[filterName](queryData);
+	
+										queryData.filterArgs = data.rulesArgs[next].filters[i][filterName];
+	
+										var __data = winCheckRules[filterName](queryData);
+	
+										_correct = _correct && __data;
 									} else {
 										_correct = _correct && winCheckRules.newerWin();
 									}
@@ -9896,9 +9879,9 @@ var SolitaireEngine =
 				// применяем правила к оставшимся колодам
 				if (data.rulesArgs[next].rules) {
 	
-					for (var _i3 in data.rulesArgs[next].rules) {
-						if (winCheckRules[data.rulesArgs[next].rules[_i3]]) {
-							_correct = _correct && winCheckRules[data.rulesArgs[next].rules[_i3]](queryData);
+					for (var _i in data.rulesArgs[next].rules) {
+						if (winCheckRules[data.rulesArgs[next].rules[_i]]) {
+							_correct = _correct && winCheckRules[data.rulesArgs[next].rules[_i]](queryData);
 						} else {
 							_correct = _correct && winCheckRules.newerWin();
 						}
@@ -9917,7 +9900,7 @@ var SolitaireEngine =
 	exports.default = winCheckRules;
 
 /***/ },
-/* 67 */
+/* 66 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -9930,43 +9913,43 @@ var SolitaireEngine =
 	
 	var _share2 = _interopRequireDefault(_share);
 	
-	var _elRender = __webpack_require__(68);
+	var _elRender = __webpack_require__(67);
 	
 	var _elRender2 = _interopRequireDefault(_elRender);
 	
-	var _initField = __webpack_require__(71);
+	var _initField = __webpack_require__(70);
 	
 	var _initField2 = _interopRequireDefault(_initField);
 	
-	var _drawDeck = __webpack_require__(72);
+	var _drawDeck = __webpack_require__(71);
 	
 	var _drawDeck2 = _interopRequireDefault(_drawDeck);
 	
-	var _drawCard = __webpack_require__(73);
+	var _drawCard = __webpack_require__(72);
 	
 	var _drawCard2 = _interopRequireDefault(_drawCard);
 	
-	var _drawTip = __webpack_require__(74);
+	var _drawTip = __webpack_require__(73);
 	
 	var _drawTip2 = _interopRequireDefault(_drawTip);
 	
-	var _moveDragDeck = __webpack_require__(75);
+	var _moveDragDeck = __webpack_require__(74);
 	
 	var _moveDragDeck2 = _interopRequireDefault(_moveDragDeck);
 	
-	var _moveCardToHome = __webpack_require__(76);
+	var _moveCardToHome = __webpack_require__(75);
 	
 	var _moveCardToHome2 = _interopRequireDefault(_moveCardToHome);
 	
-	var _fieldThemesSet = __webpack_require__(77);
+	var _fieldThemesSet = __webpack_require__(76);
 	
 	var _fieldThemesSet2 = _interopRequireDefault(_fieldThemesSet);
+	
+	__webpack_require__(77);
 	
 	__webpack_require__(78);
 	
 	__webpack_require__(79);
-	
-	__webpack_require__(80);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
@@ -9995,7 +9978,7 @@ var SolitaireEngine =
 	});
 
 /***/ },
-/* 68 */
+/* 67 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -10020,11 +10003,11 @@ var SolitaireEngine =
 	
 	var _event2 = _interopRequireDefault(_event);
 	
-	var _elClass = __webpack_require__(69);
+	var _elClass = __webpack_require__(68);
 	
 	var _elClass2 = _interopRequireDefault(_elClass);
 	
-	var _allElClass = __webpack_require__(70);
+	var _allElClass = __webpack_require__(69);
 	
 	var _allElClass2 = _interopRequireDefault(_allElClass);
 	
@@ -10094,7 +10077,7 @@ var SolitaireEngine =
 	exports.default = _allEl;
 
 /***/ },
-/* 69 */
+/* 68 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -10463,7 +10446,7 @@ var SolitaireEngine =
 	exports.default = elClass;
 
 /***/ },
-/* 70 */
+/* 69 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -10478,7 +10461,7 @@ var SolitaireEngine =
 	
 	var _defaults2 = _interopRequireDefault(_defaults);
 	
-	var _elClass = __webpack_require__(69);
+	var _elClass = __webpack_require__(68);
 	
 	var _elClass2 = _interopRequireDefault(_elClass);
 	
@@ -10629,7 +10612,7 @@ var SolitaireEngine =
 	exports.default = allElClass;
 
 /***/ },
-/* 71 */
+/* 70 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -10650,7 +10633,7 @@ var SolitaireEngine =
 	
 	var _field2 = _interopRequireDefault(_field);
 	
-	var _elRender = __webpack_require__(68);
+	var _elRender = __webpack_require__(67);
 	
 	var _elRender2 = _interopRequireDefault(_elRender);
 	
@@ -10700,7 +10683,7 @@ var SolitaireEngine =
 	});
 
 /***/ },
-/* 72 */
+/* 71 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -10721,7 +10704,7 @@ var SolitaireEngine =
 	
 	var _field2 = _interopRequireDefault(_field);
 	
-	var _elRender = __webpack_require__(68);
+	var _elRender = __webpack_require__(67);
 	
 	var _elRender2 = _interopRequireDefault(_elRender);
 	
@@ -10890,7 +10873,7 @@ var SolitaireEngine =
 	});
 
 /***/ },
-/* 73 */
+/* 72 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -10915,7 +10898,7 @@ var SolitaireEngine =
 	
 	var _field2 = _interopRequireDefault(_field);
 	
-	var _elRender = __webpack_require__(68);
+	var _elRender = __webpack_require__(67);
 	
 	var _elRender2 = _interopRequireDefault(_elRender);
 	
@@ -10960,7 +10943,7 @@ var SolitaireEngine =
 	});
 
 /***/ },
-/* 74 */
+/* 73 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -10973,7 +10956,7 @@ var SolitaireEngine =
 	
 	var _share2 = _interopRequireDefault(_share);
 	
-	var _elRender = __webpack_require__(68);
+	var _elRender = __webpack_require__(67);
 	
 	var _elRender2 = _interopRequireDefault(_elRender);
 	
@@ -11016,7 +10999,7 @@ var SolitaireEngine =
 	});
 
 /***/ },
-/* 75 */
+/* 74 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -11037,7 +11020,7 @@ var SolitaireEngine =
 	
 	var _defaults2 = _interopRequireDefault(_defaults);
 	
-	var _elRender = __webpack_require__(68);
+	var _elRender = __webpack_require__(67);
 	
 	var _elRender2 = _interopRequireDefault(_elRender);
 	
@@ -11177,7 +11160,7 @@ var SolitaireEngine =
 	});
 
 /***/ },
-/* 76 */
+/* 75 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -11194,7 +11177,7 @@ var SolitaireEngine =
 	
 	var _common2 = _interopRequireDefault(_common);
 	
-	var _elRender = __webpack_require__(68);
+	var _elRender = __webpack_require__(67);
 	
 	var _elRender2 = _interopRequireDefault(_elRender);
 	
@@ -11233,7 +11216,7 @@ var SolitaireEngine =
 	});
 
 /***/ },
-/* 77 */
+/* 76 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -11254,7 +11237,7 @@ var SolitaireEngine =
 	
 	var _field2 = _interopRequireDefault(_field);
 	
-	var _elRender = __webpack_require__(68);
+	var _elRender = __webpack_require__(67);
 	
 	var _elRender2 = _interopRequireDefault(_elRender);
 	
@@ -11283,6 +11266,12 @@ var SolitaireEngine =
 	});
 
 /***/ },
+/* 77 */
+/***/ function(module, exports) {
+
+	// removed by extract-text-webpack-plugin
+
+/***/ },
 /* 78 */
 /***/ function(module, exports) {
 
@@ -11296,12 +11285,6 @@ var SolitaireEngine =
 
 /***/ },
 /* 80 */
-/***/ function(module, exports) {
-
-	// removed by extract-text-webpack-plugin
-
-/***/ },
-/* 81 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -11498,7 +11481,7 @@ var SolitaireEngine =
 	};
 
 /***/ },
-/* 82 */
+/* 81 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -11531,11 +11514,11 @@ var SolitaireEngine =
 	
 	var _deck2 = _interopRequireDefault(_deck);
 	
-	var _deckGenerator = __webpack_require__(81);
+	var _deckGenerator = __webpack_require__(80);
 	
 	var _deckGenerator2 = _interopRequireDefault(_deckGenerator);
 	
-	var _elRender = __webpack_require__(68);
+	var _elRender = __webpack_require__(67);
 	
 	var _elRender2 = _interopRequireDefault(_elRender);
 	
@@ -11543,11 +11526,11 @@ var SolitaireEngine =
 	
 	var _stateManager2 = _interopRequireDefault(_stateManager);
 	
-	var _history = __webpack_require__(57);
+	var _history = __webpack_require__(56);
 	
 	var _history2 = _interopRequireDefault(_history);
 	
-	var _mapCommon = __webpack_require__(47);
+	var _mapCommon = __webpack_require__(46);
 	
 	var _mapCommon2 = _interopRequireDefault(_mapCommon);
 	
