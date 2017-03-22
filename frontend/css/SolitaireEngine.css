@@ -136,6 +136,12 @@ body {
   height: 100%;
   display: block;
   margin: 0px; }
+
+#markCard.markCardButtonActive {
+  color: yellow; }
+
+#specialMoveBtn.specialStepButtonActive {
+  background: #EFCEEF; }
 .default_field {
   background: green; }
 

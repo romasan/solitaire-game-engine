@@ -356,9 +356,7 @@ let winCheckRules = {
 
 									queryData.filterArgs = data.rulesArgs[next].filters[i][filterName];
 
-									let __data = winCheckRules[filterName](queryData);
-
-									_correct = _correct && __data;
+									_correct = _correct && winCheckRules[filterName](queryData);
 								} else {
 									_correct = _correct && winCheckRules.newerWin();
 								}

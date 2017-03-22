@@ -20,7 +20,7 @@ event.listen('addCardEl', data => {
 		"height" : defaults.card.height + 'px'
 	};
 
-	let _domElement = elRender('<div>')
+	let _domElement = elRender('<div>');
 
 	elRender(_domElement)
 		.addClass('el card draggable ' + data.name)
@@ -39,13 +39,21 @@ event.listen('addCardEl', data => {
 
 event.listen('toggleMarkCard', data => {
 
-	let el = share.get('domElement:' + data.id);
+	let el = share.get('domElement:' + data.card.id);
 
-	if(el) {
+	if(
+		el                   &&
+		!el.hasClass('flip')
+	) {
+
 		if(el.hasClass('marker')) {
 			el.removeClass('marker');
 		} else {
-			el.addClass('marker')
+			el.addClass('marker');
+		}
+
+		if(typeof data.callback == "function") {
+			data.callback();
 		}
 	}
 });

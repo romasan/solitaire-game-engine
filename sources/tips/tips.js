@@ -1,14 +1,14 @@
 'use strict';
 
-import event     from 'event'   ;
-import share     from 'share'   ;
-import defaults  from 'defaults';
-import common    from 'common'  ;
+import event    from 'event'   ;
+import share    from 'share'   ;
+import defaults from 'defaults';
+import common   from 'common'  ;
 
-import allToAll  from 'allToAll';
-import bestTip   from 'bestTip' ;
-import Deck      from 'deck'    ;
-import Field     from 'field'   ;
+import allToAll from 'allToAll';
+import bestTip  from 'bestTip' ;
+import Deck     from 'deck'    ;
+import Field    from 'field'   ;
 
 /*
  * getTips
@@ -43,7 +43,9 @@ let checkTips = e => {
 
 	event.dispatch('hideTips');
 
-	let _decks = Deck.getDecks({ "visible" : true });
+	let _decks = Deck.getDecks({
+		"visible" : true
+	});
 
 	_tips = allToAll({
 		"decks" : _decks
@@ -68,12 +70,12 @@ let checkTips = e => {
 			// TODO инициализировать "hideTipsInDom" в Field.js 
 			if(
 				// (
-				// 	_tips[i].to.count === 0                             &&
+				// 	_tips[i].to.count === 0            &&
 				// 	Field.tipsParams.hideOnEmpty
-				// )                                                       ||
+				// )                                   ||
 				(
-					Field.tipsParams.excludeHomeGroups                  &&
-					_homeGroups                                         &&
+					Field.tipsParams.excludeHomeGroups &&
+					_homeGroups                        &&
 					_homeGroups.length
 				)
 			) {
@@ -97,7 +99,7 @@ let checkTips = e => {
 event.listen('makeStep' , checkTips);
 event.listen('checkTips', checkTips);
 
-// show/hide tips
+// вкл./выкл. показа подсказок
 
 let showTips = data => {
 
@@ -125,8 +127,7 @@ let hideTips = data => {
 event.listen('tips:off', hideTips);
 event.listen('tipsOFF' , hideTips);
 
-// best tip on move
-
+// лучший ход на в текущем положении перетаскиваемой стопки
 let tipsMove = data => {
 
 	if(!share.get('showTipPriority')) {
@@ -177,6 +178,7 @@ let tipsDestination = data => {
 	}
 };
 
+// has tips with from
 let checkFrom = from => {
 
 	for(let i in _tips) {
@@ -190,6 +192,7 @@ let checkFrom = from => {
 	return false;
 };
 
+// has tips with from and to
 let fromTo = (from, to) => {
 
 	for(let i in _tips) {
@@ -204,6 +207,7 @@ let fromTo = (from, to) => {
 	return false;
 };
 
+// Автоход в "дом"
 let autoStepToHome = data => {
 
 	let _homeGroups = Field.homeGroups;
@@ -233,14 +237,11 @@ let autoStepToHome = data => {
 		if(homeGroupDecksNames.indexOf(tip.from.deck.name) < 0) {
 
 			if(groupByFrom[tip.from.deck.name]) {
-
 				groupByFrom[tip.from.deck.name].push(tip);
 			} else {
-
 				groupByFrom[tip.from.deck.name] = [tip];
 			}
 		}
-		// forceMove();
 	}
 
 	let toList = [];
@@ -256,8 +257,8 @@ let autoStepToHome = data => {
 		if(toList.indexOf(tip.to.deck.name) < 0) {
 
 			let forceMoveData = {
-				"from"    : tip.from.deck.name  ,
-				"to"      : tip.to  .deck.name  ,
+				"from"    :  tip.from.deck.name ,
+				"to"      :  tip.to  .deck.name ,
 				"deck"    : [tip.from.card.name],
 				"addStep" : true                ,
 				"save"    : true

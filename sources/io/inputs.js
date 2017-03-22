@@ -173,13 +173,17 @@ class inputs {
 			    _parent = _card && _card.parent ? _card.parent               : null,
 			    _deck   = _parent               ? Deck.getDeckById(_parent)  : null;
 
-			if(share.get('markerMode')) { // break;
-				event.dispatch('toggleMarkCard', _card);
-				event.dispatch('toggleMarkerMode');
+			if(_deck && share.get('markerMode')) { // break;
+				event.dispatch('toggleMarkCard', {
+					"card"     : _card,
+					"callback" : e => {
+						event.dispatch('toggleMarkerMode');
+					}
+				});
 				_deck = null;
 			}
 
-			if(share.get('specialStepMode')) { // break;
+			if(_deck && share.get('specialStepMode')) { // break;
 				event.dispatch('specialStep', _card);
 				event.dispatch('toggleSpecialStepMode');
 				_deck = null;

@@ -385,7 +385,7 @@ class history {
 			this.reset(true);
 		}
 
-		// console.log('History:get', _req);
+		console.log('History:get', _req);
 
 		return _req;
 	}

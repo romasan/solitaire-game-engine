@@ -48,6 +48,7 @@ class rollerAction extends deckAction {
 				hiddenCardsCount == 0 &&
 				unflipCardsCount == 0
 			) {
+				console.log('first roll');
 
 				event.dispatch('addStep', {
 					"rollerActionStart" : deck.name
@@ -72,6 +73,7 @@ class rollerAction extends deckAction {
 								"deckName"  : deck.name
 							}
 						});
+						console.log('>>>', i)
 					}
 				}
 			}
@@ -109,6 +111,8 @@ class rollerAction extends deckAction {
 
 				event.dispatch('rewindHistory', data => {
 
+					console.log('rollerAction:rewindHistory', data);
+
 					let found = false;
 
 					let stepsCount = 0;
@@ -130,23 +134,31 @@ class rollerAction extends deckAction {
 								found = true;
 
 								// rewind
-								for(let i = 0; i < stepsCount; i += 1) {
+								for(let i = 0; i <= stepsCount; i += 1) {
 									data.undo();
 								}
 
 								// reset deck
-								deck.showCards   (false); // no redraw
-								deck.flipAllCards(false); // no redraw
+								deck.showCards   (false); // no redraw, add in history
+								deck.flipAllCards(false); // no redraw, add in history
+
+								// event.dispatch('saveSteps');
 							}
 
 							if(
-								!found                            &&
-								atom.move                         &&
-								typeof atom.move.from == "string" &&
-								       atom.move.from == deck.name
+								!found    &&
+								atom.move
+								// typeof atom.move.from == "string" &&
+								//        atom.move.from == deck.name
 							) {
 
+								console.log('reset');
+
 								found = true;
+
+								event.dispatch('addStep', {
+									"_debug" : true
+								});
 
 								// reset deck
 								deck.showCards   (false, true); // no redraw, add in history
@@ -160,6 +172,10 @@ class rollerAction extends deckAction {
 			} else {
 				event.dispatch('saveSteps');
 			}
+		} else {
+			console.log('В колоде', deck.name, 'не осталось видимых карт');
+			// deck.showCards   (false); // no redraw
+			// deck.flipAllCards(false); // no redraw
 		}
 
 		deck.Redraw();

@@ -168,3 +168,11 @@ body {
 	display          : block;
 	margin           : 0px;
 }
+
+#markCard.markCardButtonActive {
+	color: yellow;
+}
+
+#specialMoveBtn.specialStepButtonActive {
+	background: #EFCEEF;
+}

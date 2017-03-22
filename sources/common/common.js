@@ -91,7 +91,7 @@ let curLock = e => {
 	share.set('curLockState', true);
 };
 
-let curUnLock = e => {	
+let curUnLock = e => {
 	share.set('curLockState', false);
 }
 
@@ -179,7 +179,7 @@ let validateCardName = name => {
 		}
 	}
 
-	if( 
+	if(
 		defaults.card.suits.indexOf(suit) >= 0 &&
 		defaults.card.ranks.indexOf(rank) >= 0
 	) {
@@ -250,7 +250,12 @@ let toggleMarkerMode = e => {
 	let mode = share.get('markerMode');
 
 	share.set('markerMode', !mode);
-	// TODO Visual
+
+	if(mode) {
+		document.getElementById('markCard').className = '';
+	} else {
+		document.getElementById('markCard').className = 'markCardButtonActive';
+	}
 }
 
 event.listen('toggleMarkerMode', toggleMarkerMode);
@@ -260,7 +265,16 @@ let toggleSpecialStepMode = e => {
 	let mode = share.get('specialStepMode');
 
 	share.set('specialStepMode', !mode);
-	// TODO button change
+
+	let classList = document.getElementById('specialMoveBtn').className.split(' ');
+
+	if(mode) {
+		classList = classList.filter(className => className != 'specialStepButtonActive');
+	} else {
+		classList.push('specialStepButtonActive');
+	}
+
+	document.getElementById('specialMoveBtn').className = classList.join(' ');
 }
 
 event.listen('toggleSpecialStepMode', toggleSpecialStepMode);

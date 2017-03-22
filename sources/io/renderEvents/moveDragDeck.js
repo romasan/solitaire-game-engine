@@ -35,6 +35,16 @@ event.listen('moveDragDeck', data => {
 	for(let i in data.moveDeck) {
 
 		let _position = data.destination.padding(data.destination.cardsCount() - 1 + (i | 0));
+		_position.random = Math.random();
+
+		// console.log(
+		// 	'>>>',
+		// 	_position,
+		// 	i,
+		// 	data.destination.cardsCount() - 1 + (i | 0),
+		// 	data.destination.name,
+		// 	data.destination.cards.length
+		// );
 
 		let departureAngle   = angleValidate(data.departure	 .rotate), 
 		    destinationAngle = angleValidate(data.destination.rotate);
@@ -73,7 +83,6 @@ event.listen('moveDragDeck', data => {
 			if(_stop) {
 				return;
 			}
-		// let _callback = e => {
 
 			data.departure	.Redraw();
 			data.destination.Redraw();
@@ -90,7 +99,6 @@ event.listen('moveDragDeck', data => {
 			event.dispatch('moveDragDeckDone', {
 				"deck" : data.destination
 			});
-		// };
 		}.bind(null, data, i == _lastIndex);
 
 		event.once('clearCallbacks', e => {
