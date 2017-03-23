@@ -87,7 +87,7 @@ let add = deck => {
 	for(let actionName in deck.actions) {
 
 		// если такой action существует
-		if(_actions[actionName]) {
+		if(typeof _actions[actionName] != 'undefined') {
 
 			if(!deck.actions[actionName].events) {
 				// если не описано событие выполнять по клику

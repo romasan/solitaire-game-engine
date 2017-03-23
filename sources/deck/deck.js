@@ -231,7 +231,7 @@ class Deck {
 				: paddingTypes[defaults.paddingType]                   // use default
 			: paddingTypes[defaults.paddingType];                      // use default
 
-		this.padding = index => {
+		this.padding = (index) => {
 
 			let _cards = this.getCards();
 			let _index = index < _cards.length ? index : _cards.length - 1;

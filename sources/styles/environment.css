@@ -1,0 +1,11 @@
+#gamePreferences span {
+	width : 100%;
+}
+
+#markCard.markCardButtonActive {
+	color: yellow;
+}
+
+#specialMoveBtn.specialStepButtonActive {
+	background: #EFCEEF;
+}

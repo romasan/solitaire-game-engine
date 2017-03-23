@@ -122,13 +122,14 @@ body {
 
 #solitaire-engine-style-preferences {
 	margin : 15px 0px 20px 0px;
-}
-#solitaire-engine-style-preferences label {
-	display : block;
-}
+	
+	label {
+		display : block;
+	}
 
-#solitaire-engine-style-preferences>h4 {
-	margin : 20px 0px 20px 0px;
+	h4 {
+		margin : 20px 0px 20px 0px;
+	}
 }
 
 .solitaire-engine-style-preferences-label {
@@ -156,10 +157,6 @@ body {
 	}
 }
 
-#gamePreferences span {
-	width : 100%;
-}
-
 .marker:after {
 	content          : attr(data-content);
 	background-image : url('#{$img_dir}marker.png');
@@ -167,12 +164,4 @@ body {
 	height           : 100%;
 	display          : block;
 	margin           : 0px;
-}
-
-#markCard.markCardButtonActive {
-	color: yellow;
-}
-
-#specialMoveBtn.specialStepButtonActive {
-	background: #EFCEEF;
 }

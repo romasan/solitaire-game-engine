@@ -11,7 +11,12 @@ export default e => {
 	// 	.before(_html);
 
 	try {
-		let el = document.getElementById('gpCommit').parentNode;
-		el.innerHTML = _html + el.innerHTML;
+
+		let el = document.getElementById('gpCommit');
+
+		let div = document.createElement('div');
+		div.innerHTML = _html;
+
+		el.parentNode.insertBefore(div, el);
 	} catch(e) {}
 };

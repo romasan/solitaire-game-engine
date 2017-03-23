@@ -17,6 +17,7 @@ import fieldThemesSet from 'fieldThemesSet';
 import 'common.scss'                       ;
 import 'default_theme.scss'                ;
 import 'alternative_theme.scss'            ;
+import 'environment.css'                   ;
 
 event.listen('removeEl', data => {
 

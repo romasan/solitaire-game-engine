@@ -3,6 +3,7 @@
 const webpack = require("webpack");
 const path = require('path');
 const ExtractTextPlugin = require("extract-text-webpack-plugin");
+const OptimizeCssAssetsPlugin = require("optimize-css-assets-webpack-plugin");
 
 let WebpackNotifierPlugin = require('webpack-notifier');
 
@@ -35,54 +36,34 @@ let getTree = data => {
 let dirTree = ['./sources/', ...getTree(directoryTree('./sources/'))];
 
 let config = {
-	entry: "index",
-	output: {
-		path     : "./frontend/js/",
-		filename : "SolitaireEngine.js",
-		library  : "SolitaireEngine"
+	"entry": "index",
+	"output": {
+		"path"     : "./frontend/js/",
+		"filename" : "SolitaireEngine.js",
+		"library"  : "SolitaireEngine"
 	},
-	resolve: {
-		modulesDirectories : dirTree,
-		extensions         : ['', '.js']
+	"resolve": {
+		"modulesDirectories" : dirTree,
+		"extensions"         : ['', '.js']
 	},
-	module: {
-		loaders: [
+	"module": {
+		"loaders": [
 			{
-				test   :	 /\.js$/,
-				loader : 'babel',
-				query  : {
-					presets: ['es2015']
+				"test"   :	 /\.js$/,
+				"loader" : 'babel',
+				"query"  : {
+					"presets" : ['es2015']
 				}
 			},
 			
-			// {
-			//	 test: /\.css$/,
-			//	 loader: ExtractTextPlugin.extract('css!')
-			// },
-			
 			{
-				test   : /\.scss$/,
-				loader : ExtractTextPlugin.extract('style', 'css!sass')
+				"test"   : /\.scss$|\.css$/,
+				"loader" : ExtractTextPlugin.extract('style', 'css!sass')
 			},
-			
-			// {
-			// 	test:	 /\.(svg|png|jpg|jpeg|eot|ttf|woff|woff2)$/,
-			// 	loader: 'url=loader?limit=10000'
-			// },
-
-			// {
-			// 	test: /\.(png|jpg)$/,
-			// 	loader: 'url-loader?limit=1048576'
-			// },
-			
-			// {
-			//	 test:	 /\.(png|jpg|svg|ttf|eot|woff|woff2)$/,
-			//	 loader: 'file?name=../img/[name].[ext]'
-			// }
 
 			{
-				test   : /\.hamlc$/,
-				loader : "hamlc-loader"
+				"test"   : /\.hamlc$/,
+				"loader" : "hamlc-loader"
 			}
 
 			// {
@@ -91,17 +72,29 @@ let config = {
 			// }
 		]
 	},
-	plugins: [
+	"plugins": [
 		
 		new ExtractTextPlugin("../css/SolitaireEngine.css", {
-			allChunks: true
+			"allChunks" : true
+		}),
+
+		new OptimizeCssAssetsPlugin({
+			"assetNameRegExp"     : "../css/SolitaireEngine.css$",
+			"cssProcessor"        : require('cssnano'),
+			"cssProcessorOptions" : {
+				"discardComments" : {
+					"removeAll" : true
+				}
+			},
+			"canPrint"            : true
 		}),
 
 		new webpack.DefinePlugin({
-			dev,
-			version
+			"dev"     : dev    ,
+			"version" : version
 		}),
 
+		// My plugin
 		new function() {
 			this.apply = function(e) {
 				e.plugin('done', function() {
@@ -123,7 +116,9 @@ let config = {
 			};
 		},
 
-		new WebpackNotifierPlugin({alwaysNotify: dev})
+		new WebpackNotifierPlugin({
+			"alwaysNotify" : dev
+		})
 	]
 };
 
@@ -133,7 +128,7 @@ if(dev) {
 	
 		config.watch = true;
 		config.watchOptions = {
-			aggregateTimeout: 100
+			"aggregateTimeout": 100
 		};
 	
 		config.devtool = "source-map";
@@ -150,13 +145,13 @@ if(dev) {
  */`;
 	config.plugins.push(
 		new webpack.optimize.UglifyJsPlugin({
-			output: {
-				preamble
+			"output": {
+				"preamble" : preamble
 			},
-			compressor: {
-				unsafe       : true,
-				drop_console : true,
-				warnings     : true
+			"compressor": {
+				"unsafe"       : true,
+				"drop_console" : true,
+				"warnings"     : true
 			}
 		})
 	);

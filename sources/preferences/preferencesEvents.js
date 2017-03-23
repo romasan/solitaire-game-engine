@@ -69,6 +69,7 @@ export default e => {
 	try {
 
 	$('#bbParameters').click(onShowParameters);
+	
 	// event.dispatch('addDomEvent', {
 	// 	"event"    : "click"
 	// 	"element"  : "#bbParameters",

@@ -97,7 +97,7 @@ var SolitaireEngine =
 	
 	var _tips2 = _interopRequireDefault(_tips);
 	
-	var _deckGenerator = __webpack_require__(80);
+	var _deckGenerator = __webpack_require__(81);
 	
 	var _deckGenerator2 = _interopRequireDefault(_deckGenerator);
 	
@@ -111,7 +111,7 @@ var SolitaireEngine =
 	exports.options = _defaults2.default;
 	exports.winCheck = _winCheck2.default.hwinCheck;
 	exports.generator = _deckGenerator2.default;
-	exports.version = (9091496041).toString().split(9).slice(1).map(function (e) {
+	exports.version = (9091496132).toString().split(9).slice(1).map(function (e) {
 		return parseInt(e, 8);
 	}).join('.');
 	
@@ -158,7 +158,7 @@ var SolitaireEngine =
 	};
 	
 	if (true) {
-		var debug = __webpack_require__(81);
+		var debug = __webpack_require__(82);
 		exports.debug = debug.default;
 	}
 
@@ -5077,7 +5077,7 @@ var SolitaireEngine =
 		for (var actionName in deck.actions) {
 	
 			// если такой action существует
-			if (_actions[actionName]) {
+			if (typeof _actions[actionName] != 'undefined') {
 	
 				if (!deck.actions[actionName].events) {
 					// если не описано событие выполнять по клику
@@ -6546,8 +6546,6 @@ var SolitaireEngine =
 							"visible": false
 						});
 	
-						// event.dispatch('resetHistory');
-	
 						_event2.default.dispatch('rewindHistory', function (data) {
 	
 							var found = false;
@@ -6574,7 +6572,9 @@ var SolitaireEngine =
 	
 											found = true;
 	
-											for (var _i3 = 0; _i3 <= stepsCount; _i3 += 1) {
+											_event2.default.dispatch('resetHistory');
+	
+											for (var _i3 = 0; _i3 < stepsCount; _i3 += 1) {
 												data.undo();
 											}
 	
@@ -6619,9 +6619,21 @@ var SolitaireEngine =
 						_event2.default.dispatch('saveSteps');
 					}
 				} else {
-					console.log('В колоде', deck.name, 'не осталось видимых карт');
-					// deck.showCards   (false); // no redraw
-					// deck.flipAllCards(false); // no redraw
+	
+					hiddenCardsCount = deck.cardsCount({
+						"visible": false
+					});
+	
+					if (hiddenCardsCount > 0) {
+	
+						deck.showCards(false, true); // no redraw
+						deck.flipAllCards(false, true); // no redraw
+	
+						// event.dispatch('saveSteps');
+						this.run(deck, data);
+	
+						return;
+					}
 				}
 	
 				deck.Redraw();
@@ -8853,8 +8865,13 @@ var SolitaireEngine =
 		// 	.before(_html);
 	
 		try {
-			var el = document.getElementById('gpCommit').parentNode;
-			el.innerHTML = _html + el.innerHTML;
+	
+			var el = document.getElementById('gpCommit');
+	
+			var div = document.createElement('div');
+			div.innerHTML = _html;
+	
+			el.parentNode.insertBefore(div, el);
 		} catch (e) {}
 	};
 
@@ -8955,6 +8972,7 @@ var SolitaireEngine =
 		try {
 	
 			$('#bbParameters').click(onShowParameters);
+	
 			// event.dispatch('addDomEvent', {
 			// 	"event"    : "click"
 			// 	"element"  : "#bbParameters",
@@ -9985,8 +10003,11 @@ var SolitaireEngine =
 	
 	__webpack_require__(79);
 	
+	__webpack_require__(80);
+	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
+	// styles DOM
 	_event2.default.listen('removeEl', function (data) {
 	
 		var _elDomElement = _share2.default.get('domElement:' + data.id);
@@ -9999,9 +10020,6 @@ var SolitaireEngine =
 			console.warn('Dom element for', data.id, 'not found');
 		}
 	});
-	
-	// styles DOM
-	
 	
 	_event2.default.listen('showCard', function (target) {
 		(0, _elRender2.default)(target).show();
@@ -11092,17 +11110,8 @@ var SolitaireEngine =
 	
 		var _loop = function _loop(i) {
 	
-			var _position = data.destination.padding(data.destination.cardsCount() - 1 + (i | 0));
+			var _position = data.destination.padding(data.destination.cardsCount() - data.moveDeck.length + (i | 0), true);
 			_position.random = Math.random();
-	
-			// console.log(
-			// 	'>>>',
-			// 	_position,
-			// 	i,
-			// 	data.destination.cardsCount() - 1 + (i | 0),
-			// 	data.destination.name,
-			// 	data.destination.cards.length
-			// );
 	
 			var departureAngle = angleValidate(data.departure.rotate),
 			    destinationAngle = angleValidate(data.destination.rotate);
@@ -11332,6 +11341,12 @@ var SolitaireEngine =
 
 /***/ },
 /* 80 */
+/***/ function(module, exports) {
+
+	// removed by extract-text-webpack-plugin
+
+/***/ },
+/* 81 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -11528,7 +11543,7 @@ var SolitaireEngine =
 	};
 
 /***/ },
-/* 81 */
+/* 82 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -11561,7 +11576,7 @@ var SolitaireEngine =
 	
 	var _deck2 = _interopRequireDefault(_deck);
 	
-	var _deckGenerator = __webpack_require__(80);
+	var _deckGenerator = __webpack_require__(81);
 	
 	var _deckGenerator2 = _interopRequireDefault(_deckGenerator);
 	

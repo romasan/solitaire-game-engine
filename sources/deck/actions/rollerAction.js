@@ -105,8 +105,6 @@ class rollerAction extends deckAction {
 					"visible" : false
 				});
 
-				// event.dispatch('resetHistory');
-
 				event.dispatch('rewindHistory', data => {
 
 					let found = false;
@@ -130,7 +128,9 @@ class rollerAction extends deckAction {
 
 								found = true;
 
-								for(let i = 0; i <= stepsCount; i += 1) {
+								event.dispatch('resetHistory');
+
+								for(let i = 0; i < stepsCount; i += 1) {
 									data.undo();
 								}
 
@@ -163,9 +163,21 @@ class rollerAction extends deckAction {
 				event.dispatch('saveSteps');
 			}
 		} else {
-			console.log('В колоде', deck.name, 'не осталось видимых карт');
-			// deck.showCards   (false); // no redraw
-			// deck.flipAllCards(false); // no redraw
+
+			hiddenCardsCount = deck.cardsCount({
+				"visible" : false
+			});
+
+			if(hiddenCardsCount > 0) {
+
+				deck.showCards   (false, true); // no redraw
+				deck.flipAllCards(false, true); // no redraw
+
+				// event.dispatch('saveSteps');
+				this.run(deck, data);
+
+				return;
+			}
 		}
 
 		deck.Redraw();
