@@ -4,6 +4,7 @@ import event      from 'event'     ;
 
 import deckAction from 'deckAction';
 import Deck       from 'deck'      ;
+import History    from 'history'   ;
 
 const defaultOpenCount = 3;
 
@@ -48,8 +49,6 @@ class rollerAction extends deckAction {
 				hiddenCardsCount == 0 &&
 				unflipCardsCount == 0
 			) {
-				console.log('first roll');
-
 				event.dispatch('addStep', {
 					"rollerActionStart" : deck.name
 				});
@@ -73,7 +72,6 @@ class rollerAction extends deckAction {
 								"deckName"  : deck.name
 							}
 						});
-						console.log('>>>', i)
 					}
 				}
 			}
@@ -107,11 +105,9 @@ class rollerAction extends deckAction {
 					"visible" : false
 				});
 
-				event.dispatch('resetHistory');
+				// event.dispatch('resetHistory');
 
 				event.dispatch('rewindHistory', data => {
-
-					console.log('rollerAction:rewindHistory', data);
 
 					let found = false;
 
@@ -125,6 +121,7 @@ class rollerAction extends deckAction {
 
 						for(let atom of step) {
 
+							// rewind
 							if(
 								!found                                    &&
 								typeof atom.rollerActionStart == "string" &&
@@ -133,7 +130,6 @@ class rollerAction extends deckAction {
 
 								found = true;
 
-								// rewind
 								for(let i = 0; i <= stepsCount; i += 1) {
 									data.undo();
 								}
@@ -143,22 +139,16 @@ class rollerAction extends deckAction {
 								deck.flipAllCards(false); // no redraw, add in history
 
 								// event.dispatch('saveSteps');
-							}
 
-							if(
+							// reset
+							} else if(
 								!found    &&
 								atom.move
 								// typeof atom.move.from == "string" &&
 								//        atom.move.from == deck.name
 							) {
 
-								console.log('reset');
-
 								found = true;
-
-								event.dispatch('addStep', {
-									"_debug" : true
-								});
 
 								// reset deck
 								deck.showCards   (false, true); // no redraw, add in history

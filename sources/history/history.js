@@ -365,7 +365,10 @@ class history {
 		this.steps = [];
 	}
 
-	reset(interior) {
+	reset() {
+
+		// console.log('History:clear');
+
 		this.steps = [];
 	}
 
@@ -385,7 +388,7 @@ class history {
 			this.reset(true);
 		}
 
-		console.log('History:get', _req);
+		// console.log('History:get', _req);
 
 		return _req;
 	}
