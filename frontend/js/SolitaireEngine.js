@@ -111,7 +111,7 @@ var SolitaireEngine =
 	exports.options = _defaults2.default;
 	exports.winCheck = _winCheck2.default.hwinCheck;
 	exports.generator = _deckGenerator2.default;
-	exports.version = (9091496132).toString().split(9).slice(1).map(function (e) {
+	exports.version = (9091496133).toString().split(9).slice(1).map(function (e) {
 		return parseInt(e, 8);
 	}).join('.');
 	
@@ -1783,27 +1783,27 @@ var SolitaireEngine =
 	
 				var group = _common2.default.getElementsByName(groupName, 'deck')[0];
 				var decks = group.getDecks();
-				var _iteratorNormalCompletion4 = true;
-				var _didIteratorError4 = false;
-				var _iteratorError4 = undefined;
+				var _iteratorNormalCompletion3 = true;
+				var _didIteratorError3 = false;
+				var _iteratorError3 = undefined;
 	
 				try {
-					for (var _iterator4 = decks[Symbol.iterator](), _step4; !(_iteratorNormalCompletion4 = (_step4 = _iterator4.next()).done); _iteratorNormalCompletion4 = true) {
-						var deck = _step4.value;
+					for (var _iterator3 = decks[Symbol.iterator](), _step3; !(_iteratorNormalCompletion3 = (_step3 = _iterator3.next()).done); _iteratorNormalCompletion3 = true) {
+						var deck = _step3.value;
 	
 						homeGroupDecksNames.push(deck.name);
 					}
 				} catch (err) {
-					_didIteratorError4 = true;
-					_iteratorError4 = err;
+					_didIteratorError3 = true;
+					_iteratorError3 = err;
 				} finally {
 					try {
-						if (!_iteratorNormalCompletion4 && _iterator4.return) {
-							_iterator4.return();
+						if (!_iteratorNormalCompletion3 && _iterator3.return) {
+							_iterator3.return();
 						}
 					} finally {
-						if (_didIteratorError4) {
-							throw _iteratorError4;
+						if (_didIteratorError3) {
+							throw _iteratorError3;
 						}
 					}
 				}
@@ -1833,7 +1833,7 @@ var SolitaireEngine =
 			for (var _iterator2 = _tips[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
 				var _tip = _step2.value;
 	
-				if (homeGroupDecksNames.indexOf(_tip.to.deck.name) >= 0) {
+				if (homeGroupDecksNames.indexOf(_tip.to.deck.name) >= 0 && homeGroupDecksNames.indexOf(_tip.from.deck.name) < 0) {
 					suitableTips.push(_tip);
 				}
 			}
@@ -1852,66 +1852,23 @@ var SolitaireEngine =
 			}
 		}
 	
-		var groupByFrom = {};
+		if (suitableTips.length > 0) {
 	
-		var _iteratorNormalCompletion3 = true;
-		var _didIteratorError3 = false;
-		var _iteratorError3 = undefined;
+			var tip = suitableTips[0];
 	
-		try {
-			for (var _iterator3 = suitableTips[Symbol.iterator](), _step3; !(_iteratorNormalCompletion3 = (_step3 = _iterator3.next()).done); _iteratorNormalCompletion3 = true) {
-				var _tip2 = _step3.value;
+			var forceMoveData = {
+				"from": tip.from.deck.name,
+				"to": tip.to.deck.name,
+				"deck": [tip.from.card.name],
+				"addStep": true,
+				"save": true
+			};
 	
+			_event2.default.dispatch('forceMove', forceMoveData);
 	
-				// исключить ходы из "дома" в "дом"
-				if (homeGroupDecksNames.indexOf(_tip2.from.deck.name) < 0) {
+			checkTips();
 	
-					if (groupByFrom[_tip2.from.deck.name]) {
-						groupByFrom[_tip2.from.deck.name].push(_tip2);
-					} else {
-						groupByFrom[_tip2.from.deck.name] = [_tip2];
-					}
-				}
-			}
-		} catch (err) {
-			_didIteratorError3 = true;
-			_iteratorError3 = err;
-		} finally {
-			try {
-				if (!_iteratorNormalCompletion3 && _iterator3.return) {
-					_iterator3.return();
-				}
-			} finally {
-				if (_didIteratorError3) {
-					throw _iteratorError3;
-				}
-			}
-		}
-	
-		var toList = [];
-	
-		for (var from in groupByFrom) {
-	
-			var tips = groupByFrom[from];
-	
-			// TODO select best tip
-			var tipIndex = 0; // tips.length == 1 ? 0 : ((Math.random() * tips.length) | 0);
-			var tip = tips[tipIndex];
-	
-			if (toList.indexOf(tip.to.deck.name) < 0) {
-	
-				var forceMoveData = {
-					"from": tip.from.deck.name,
-					"to": tip.to.deck.name,
-					"deck": [tip.from.card.name],
-					"addStep": true,
-					"save": true
-				};
-	
-				toList.push(tip.to.deck.name);
-	
-				_event2.default.dispatch('forceMove', forceMoveData);
-			}
+			autoStepToHome(data);
 		}
 	};
 	
@@ -5451,8 +5408,10 @@ var SolitaireEngine =
 			return;
 		}
 	
+		// departure
 		var deckFrom = typeof data.from == 'string' ? _deck2.default.getDeck(data.from) : data.from;
 	
+		// destination
 		var deckTo = typeof data.to == 'string' ? _deck2.default.getDeck(data.to) : data.to;
 	
 		if (!deckFrom || deckFrom.type != 'deck' || !deckTo || deckTo.type != 'deck') {
@@ -5527,6 +5486,10 @@ var SolitaireEngine =
 						"deck": data.deck
 					}
 				});
+			}
+	
+			if (deckFrom.autoUnflipTop && deckFrom.cards.length > 0 && deckFrom.cards[deckFrom.cards.length - 1].flip) {
+				deckFrom.unflipTopCard(data.addStep);
 			}
 	
 			if (data.save) {

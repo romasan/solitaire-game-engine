@@ -21,10 +21,12 @@ let forceMove = data => {// {from, to, deck, <flip>, <callback>}
 		return;
 	}
 
+	// departure
 	let deckFrom = typeof data.from == 'string'
 		? Deck.getDeck(data.from)
 		: data.from;
 
+	// destination
 	let deckTo   = typeof data.to   == 'string'
 		? Deck.getDeck(data.to)
 		: data.to;
@@ -109,6 +111,14 @@ let forceMove = data => {// {from, to, deck, <flip>, <callback>}
 					"deck" : data.deck
 				}
 			});
+		}
+
+		if(
+			deckFrom.autoUnflipTop                                &&
+			deckFrom.cards.length > 0                             &&
+			deckFrom.cards[deckFrom.cards.length - 1].flip
+		) {
+			deckFrom.unflipTopCard(data.addStep);
 		}
 
 		if(data.save) {

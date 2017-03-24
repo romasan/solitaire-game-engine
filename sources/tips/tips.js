@@ -224,50 +224,31 @@ let autoStepToHome = data => {
 	let suitableTips = [];
 
 	for(let tip of _tips) {
-		if(homeGroupDecksNames.indexOf(tip.to.deck.name) >= 0) {
+		if(
+			homeGroupDecksNames.indexOf(tip.to  .deck.name) >= 0 &&
+			homeGroupDecksNames.indexOf(tip.from.deck.name) <  0
+		) {
 			suitableTips.push(tip);
 		}
 	}
 
-	let groupByFrom = {};
+	if(suitableTips.length > 0) {
 
-	for(let tip of suitableTips) {
+		let tip = suitableTips[0];
 
-		// исключить ходы из "дома" в "дом"
-		if(homeGroupDecksNames.indexOf(tip.from.deck.name) < 0) {
+		let forceMoveData = {
+			"from"    :  tip.from.deck.name ,
+			"to"      :  tip.to  .deck.name ,
+			"deck"    : [tip.from.card.name],
+			"addStep" : true                ,
+			"save"    : true
+		};
 
-			if(groupByFrom[tip.from.deck.name]) {
-				groupByFrom[tip.from.deck.name].push(tip);
-			} else {
-				groupByFrom[tip.from.deck.name] = [tip];
-			}
-		}
-	}
+		event.dispatch('forceMove', forceMoveData);
 
-	let toList = [];
+		checkTips();
 
-	for(let from in groupByFrom) {
-
-		let tips = groupByFrom[from];
-
-		// TODO select best tip
-		let tipIndex = 0; // tips.length == 1 ? 0 : ((Math.random() * tips.length) | 0);
-		let tip = tips[tipIndex];
-
-		if(toList.indexOf(tip.to.deck.name) < 0) {
-
-			let forceMoveData = {
-				"from"    :  tip.from.deck.name ,
-				"to"      :  tip.to  .deck.name ,
-				"deck"    : [tip.from.card.name],
-				"addStep" : true                ,
-				"save"    : true
-			};
-
-			toList.push(tip.to.deck.name);
-
-			event.dispatch('forceMove', forceMoveData);
-		}
+		autoStepToHome(data);
 	}
 };
 
