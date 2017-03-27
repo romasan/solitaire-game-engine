@@ -70,18 +70,28 @@ let _undo = data => {
 	// undo hide
 	if(data.hide) {
 		let deck = common.getElementByName(data.hide.deckName, 'deck');
-		if(deck.cards[data.hide.cardIndex].name == data.hide.cardName) {
+		if(
+			deck &&
+			deck.cards[data.hide.cardIndex].name == data.hide.cardName
+		) {
 			deck.cards[data.hide.cardIndex].visible = true;
 			deck.Redraw();
+		} else {
+			console.warn('Incorrect history substep:', data.hide);
 		}
 	}
 
 	// undo show
 	if(data.show) {
 		let deck = common.getElementByName(data.show.deckName, 'deck');
-		if(deck.cards[data.show.cardIndex].name == data.show.cardName) {
+		if(
+			deck &&
+			deck.cards[data.show.cardIndex].name == data.show.cardName
+		) {
 			deck.cards[data.show.cardIndex].visible = false;
 			deck.Redraw();
+		} else {
+			console.warn('Incorrect history substep:', data.hide);
 		}
 	}
 
@@ -236,18 +246,28 @@ let _redo = data => {
 	// redo hide
 	if(data.hide) {
 		let deck = common.getElementByName(data.hide.deckName, 'deck');
-		if(deck.cards[data.hide.cardIndex].name == data.hide.cardName) {
+		if(
+			deck &&
+			deck.cards[data.hide.cardIndex].name == data.hide.cardName // TODO check
+		) {
 			deck.cards[data.hide.cardIndex].visible = false;
 			deck.Redraw();
+		} else {
+			console.warn('Incorrect history substep:', data.hide);
 		}
 	}
 
 	// redo show
 	if(data.show) {
 		let deck = common.getElementByName(data.show.deckName, 'deck');
-		if(deck.cards[data.show.cardIndex].name == data.show.cardName) {
+		if(
+			deck &&
+			deck.cards[data.show.cardIndex].name == data.show.cardName
+		) {
 			deck.cards[data.show.cardIndex].visible = true;
 			deck.Redraw();
+		} else {
+			console.warn('Incorrect history substep:', data.hide);
 		}
 	}
 	

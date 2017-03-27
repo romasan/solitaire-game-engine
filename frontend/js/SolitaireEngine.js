@@ -111,7 +111,7 @@ var SolitaireEngine =
 	exports.options = _defaults2.default;
 	exports.winCheck = _winCheck2.default.hwinCheck;
 	exports.generator = _deckGenerator2.default;
-	exports.version = (9091496133).toString().split(9).slice(1).map(function (e) {
+	exports.version = (9091496142).toString().split(9).slice(1).map(function (e) {
 		return parseInt(e, 8);
 	}).join('.');
 	
@@ -6601,6 +6601,8 @@ var SolitaireEngine =
 	
 				deck.Redraw();
 	
+				_event2.default.dispatch('logCardsInDeck', deck);
+	
 				_get(rollerAction.prototype.__proto__ || Object.getPrototypeOf(rollerAction.prototype), 'end', this).call(this);
 	
 				_event2.default.dispatch('checkTips');
@@ -6725,18 +6727,22 @@ var SolitaireEngine =
 		// undo hide
 		if (data.hide) {
 			var _deck2 = _common2.default.getElementByName(data.hide.deckName, 'deck');
-			if (_deck2.cards[data.hide.cardIndex].name == data.hide.cardName) {
+			if (_deck2 && _deck2.cards[data.hide.cardIndex].name == data.hide.cardName) {
 				_deck2.cards[data.hide.cardIndex].visible = true;
 				_deck2.Redraw();
+			} else {
+				console.warn('Incorrect history substep:', data.hide);
 			}
 		}
 	
 		// undo show
 		if (data.show) {
 			var _deck3 = _common2.default.getElementByName(data.show.deckName, 'deck');
-			if (_deck3.cards[data.show.cardIndex].name == data.show.cardName) {
+			if (_deck3 && _deck3.cards[data.show.cardIndex].name == data.show.cardName) {
 				_deck3.cards[data.show.cardIndex].visible = false;
 				_deck3.Redraw();
+			} else {
+				console.warn('Incorrect history substep:', data.hide);
 			}
 		}
 	
@@ -6882,18 +6888,23 @@ var SolitaireEngine =
 		// redo hide
 		if (data.hide) {
 			var _deck5 = _common2.default.getElementByName(data.hide.deckName, 'deck');
-			if (_deck5.cards[data.hide.cardIndex].name == data.hide.cardName) {
-				_deck5.cards[data.hide.cardIndex].visible = false;
-				_deck5.Redraw();
+			if (_deck5 && _deck5.cards[data.hide.cardIndex].name == data.hide.cardName // TODO check
+			) {
+					_deck5.cards[data.hide.cardIndex].visible = false;
+					_deck5.Redraw();
+				} else {
+				console.warn('Incorrect history substep:', data.hide);
 			}
 		}
 	
 		// redo show
 		if (data.show) {
 			var _deck6 = _common2.default.getElementByName(data.show.deckName, 'deck');
-			if (_deck6.cards[data.show.cardIndex].name == data.show.cardName) {
+			if (_deck6 && _deck6.cards[data.show.cardIndex].name == data.show.cardName) {
 				_deck6.cards[data.show.cardIndex].visible = true;
 				_deck6.Redraw();
+			} else {
+				console.warn('Incorrect history substep:', data.hide);
 			}
 		}
 	
@@ -11535,9 +11546,9 @@ var SolitaireEngine =
 	
 	var _field2 = _interopRequireDefault(_field);
 	
-	var _deck = __webpack_require__(14);
+	var _deck2 = __webpack_require__(14);
 	
-	var _deck2 = _interopRequireDefault(_deck);
+	var _deck3 = _interopRequireDefault(_deck2);
 	
 	var _deckGenerator = __webpack_require__(81);
 	
@@ -11614,6 +11625,52 @@ var SolitaireEngine =
 			})(document, 'createElement', 'setAttribute', 'getElementsByTagName', 'FirebugLite', '4', 'firebug-lite.js', 'releases/lite/latest/skin/xp/sprite.png', 'https://getfirebug.com/', '#startOpened');
 		}
 	});
+	
+	var logCardsInDeck = function logCardsInDeck(deck) {
+	
+		var _log = [''];
+	
+		var _iteratorNormalCompletion = true;
+		var _didIteratorError = false;
+		var _iteratorError = undefined;
+	
+		try {
+			for (var _iterator = deck.cards[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+				var card = _step.value;
+	
+				_log[0] += '%c' + card.name + ' ';
+				_log.push(card.visible ? card.flip ? 'color:blue;text-decoration:underline;' : 'color:blue;' : card.flip ? 'color:grey;text-decoration:underline;' : 'color:grey;');
+			}
+		} catch (err) {
+			_didIteratorError = true;
+			_iteratorError = err;
+		} finally {
+			try {
+				if (!_iteratorNormalCompletion && _iterator.return) {
+					_iterator.return();
+				}
+			} finally {
+				if (_didIteratorError) {
+					throw _iteratorError;
+				}
+			}
+		}
+	
+		console.log.apply(console, _log);
+	};
+	
+	_event2.default.listen('logCardsInDeck', logCardsInDeck);
+	
+	var keys = {
+		"d": 68 // debug
+	};
+	
+	document.onkeyup = function (e) {
+		if (e.keyCode == keys.d) {
+			var _deck = _common2.default.getElementByName('rollerDeck');
+			logCardsInDeck(_deck);
+		}
+	};
 	
 	exports.default = {
 		share: _share2.default,

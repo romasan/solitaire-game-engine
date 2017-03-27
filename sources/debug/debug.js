@@ -78,6 +78,39 @@ document.addEventListener("DOMContentLoaded", e => {
 	}
 });
 
+let logCardsInDeck = deck => {
+
+	let _log = [''];
+
+	for(let card of deck.cards) {
+		_log[0] += '%c' + card.name + ' ';
+		_log.push(
+			card.visible
+				? card.flip
+					? 'color:blue;text-decoration:underline;'
+					: 'color:blue;'
+				: card.flip
+					? 'color:grey;text-decoration:underline;'
+					: 'color:grey;'
+		)
+	}
+
+	console.log.apply(console, _log);
+}
+
+event.listen('logCardsInDeck', logCardsInDeck);
+
+let keys = {
+	"d" : 68 // debug
+}
+
+document.onkeyup = e => {
+	if(e.keyCode == keys.d) {
+		let deck = common.getElementByName('rollerDeck');
+		logCardsInDeck(deck);
+	}
+}
+
 export default {
 	share        ,
 	defaults     ,

@@ -182,6 +182,8 @@ class rollerAction extends deckAction {
 
 		deck.Redraw();
 
+		event.dispatch('logCardsInDeck', deck);
+
 		super.end();
 
 		event.dispatch('checkTips');
