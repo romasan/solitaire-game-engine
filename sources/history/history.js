@@ -77,7 +77,7 @@ let _undo = data => {
 			deck.cards[data.hide.cardIndex].visible = true;
 			deck.Redraw();
 		} else {
-			console.warn('Incorrect history substep:', data.hide);
+			console.warn('Incorrect history substep [undo hide]:', data.hide);
 		}
 	}
 
@@ -91,7 +91,7 @@ let _undo = data => {
 			deck.cards[data.show.cardIndex].visible = false;
 			deck.Redraw();
 		} else {
-			console.warn('Incorrect history substep:', data.hide);
+			console.warn('Incorrect history substep [undo show]:', data.hide);
 		}
 	}
 
@@ -253,7 +253,7 @@ let _redo = data => {
 			deck.cards[data.hide.cardIndex].visible = false;
 			deck.Redraw();
 		} else {
-			console.warn('Incorrect history substep:', data.hide);
+			console.warn('Incorrect history substep [redo hide]:', data.hide);
 		}
 	}
 
@@ -267,7 +267,7 @@ let _redo = data => {
 			deck.cards[data.show.cardIndex].visible = true;
 			deck.Redraw();
 		} else {
-			console.warn('Incorrect history substep:', data.hide);
+			console.warn('Incorrect history substep [redo show]:', data.hide);
 		}
 	}
 	

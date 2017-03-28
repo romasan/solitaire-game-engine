@@ -54,6 +54,8 @@ class rollerAction extends deckAction {
 				});
 			}
 
+			let _unflippedCount = 0;
+
 			// hide unflipped cards
 			if(unflipCardsCount > 0) {
 
@@ -62,6 +64,8 @@ class rollerAction extends deckAction {
 				for(let i in cards) {
 
 					if(cards[i].flip == false) {
+
+						_unflippedCount += 1;
 
 						deck.hideCardByIndex(i);
 
@@ -76,12 +80,30 @@ class rollerAction extends deckAction {
 				}
 			}
 
+			// swap unflipped
+			if(openCount > 1) {
+
+				for(let i = cardsCount - _unflippedCount; i < cardsCount; i += 1) {
+
+					let next = cardsCount * 2 - i - _unflippedCount - 1;
+
+					if(i < next) {
+						let tmp = deck.cards[i];
+						deck.cards[i] = deck.cards[next];
+						deck.cards[next] = tmp;
+					}
+				}
+			}
+
 			// unflip next cards
+			_unflippedCount = 0;
 			for(
 				let i = flipCardsCount - 1               ;
 				i >= 0 && i >= flipCardsCount - openCount;
 				i -= 1
 			) {
+
+				_unflippedCount += 1;
 
 				deck.cards[i].flip = false;
 
@@ -98,6 +120,21 @@ class rollerAction extends deckAction {
 				"visible" : true
 			});
 
+			// swap unflipped
+			if(openCount > 1) {
+
+				for(let i = cardsCount - _unflippedCount; i < cardsCount; i += 1) {
+
+					let next = cardsCount * 2 - i - _unflippedCount - 1;
+
+					if(i < next) {
+						let tmp = deck.cards[i];
+						deck.cards[i] = deck.cards[next];
+						deck.cards[next] = tmp;
+					}
+				}
+			}
+
 			// не осталось видимых карт
 			if(cardsCount == 0) {
 
@@ -107,9 +144,13 @@ class rollerAction extends deckAction {
 
 				event.dispatch('rewindHistory', data => {
 
+					console.log('>>> не осталось видимых карт');
+
 					let found = false;
 
 					let stepsCount = 0;
+
+					console.log('###', data.history);
 
 					for(let i = data.history.length - 1; i >= 0 && !found; i -= 1) {
 
@@ -125,6 +166,7 @@ class rollerAction extends deckAction {
 								typeof atom.rollerActionStart == "string" &&
 								       atom.rollerActionStart == deck.name
 							) {
+								console.log('>>> reset history');
 
 								found = true;
 
@@ -147,6 +189,7 @@ class rollerAction extends deckAction {
 								// typeof atom.move.from == "string" &&
 								//        atom.move.from == deck.name
 							) {
+								console.log('>>> reset deck');
 
 								found = true;
 
@@ -158,6 +201,8 @@ class rollerAction extends deckAction {
 							}
 						}
 					}
+
+					console.log('>>>');
 				});
 			} else {
 				event.dispatch('saveSteps');
@@ -180,6 +225,7 @@ class rollerAction extends deckAction {
 			}
 		}
 
+		console.log('REDRAW');
 		deck.Redraw();
 
 		event.dispatch('logCardsInDeck', deck);
