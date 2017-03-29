@@ -494,11 +494,30 @@ class Deck {
 		event.dispatch('removeEl', this);
 	}
 
-	Push(deck) {
+	Push(deck, afterVisible = true) {
+
+		let visibleCardsCount = null;
+
+		if(afterVisible) {
+			visibleCardsCount = this.cardsCount();
+		}
 
 		for(let i in deck) {
+
 			deck[i].parent = this.id;
-			this.cards.push(deck[i]);
+
+			if(
+				afterVisible                          &&
+				visibleCardsCount < this.cards.length
+			) {
+				this.cards = [].concat(
+					this.cards.slice(0, visibleCardsCount),
+					deck[i]                               ,
+					this.cards.slice(visibleCardsCount)
+				);
+			} else {
+				this.cards.push(deck[i]);
+			}
 		}
 	}
 
@@ -520,10 +539,10 @@ class Deck {
 			// remove this card from cards list
 			for(let i = 0; i < this.cards.length;i += 1) {
 				if(this.cards[i].id == _pop.id) {
-					this.cards = [
-						...this.cards.slice(0, i),
-						...this.cards.slice(i + 1)
-					];
+					this.cards = [].concat(
+						this.cards.slice(0, i)       ,
+						this.cards.slice((i | 0) + 1)
+					)
 				}
 			}
 

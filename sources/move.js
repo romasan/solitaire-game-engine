@@ -113,6 +113,7 @@ let Move = (moveDeck, to, cursorMove) => {
 					}
 				}
 
+				// TODO add card index ?
 				event.dispatch('addStep', {
 					"move" : {
 						"from"     : _deck_departure  .name      ,

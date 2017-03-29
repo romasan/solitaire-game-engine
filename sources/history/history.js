@@ -11,6 +11,8 @@ import Deck         from 'deck'        ;
 import Tips         from 'tips'        ;
 import field        from 'field'       ;
 import inputs       from 'inputs'      ;
+import undo         from 'undo'        ;
+import redo         from 'redo'        ;
 
 // TODO пошаговая анимация
 
@@ -32,353 +34,16 @@ import inputs       from 'inputs'      ;
 // };
 // let _stepsStack = [];
 
-// undo
-
-let historyStack = [];
-
-let _undo = data => {
-
-	if(share.get('sessionStarted')) {
-		// _undoMoveStack = [];
-		event.dispatch('stopAnimations');
-		stateManager.restore();
-	}
-
-	// undo flip
-	if(data.flip) {
-		let deck = common.getElementByName(data.flip.deckName);
-		let card = deck.getCardByIndex(data.flip.cardIndex | 0);
-		if(card) {
-			card.flip = false;
-			deck.Redraw();
-		}
-	};
-
-	// undo unflip
-	if(data.unflip) {
-		let deck = common.getElementByName(data.unflip.deckName, 'deck');
-		let card = deck.getCardByIndex(data.unflip.cardIndex);
-		if(card) {
-			// TODO deck.flipCardByIndex(index, false);
-			card.flip = true;
-			// event.dispatch('redrawDeckFlip', deck);
-			deck.Redraw();
-		}
-
-	};
-
-	// undo hide
-	if(data.hide) {
-		let deck = common.getElementByName(data.hide.deckName, 'deck');
-		if(
-			deck &&
-			deck.cards[data.hide.cardIndex].name == data.hide.cardName
-		) {
-			deck.cards[data.hide.cardIndex].visible = true;
-			deck.Redraw();
-		} else {
-			console.warn('Incorrect history substep [undo hide]:', data.hide);
-		}
-	}
-
-	// undo show
-	if(data.show) {
-		let deck = common.getElementByName(data.show.deckName, 'deck');
-		if(
-			deck &&
-			deck.cards[data.show.cardIndex].name == data.show.cardName
-		) {
-			deck.cards[data.show.cardIndex].visible = false;
-			deck.Redraw();
-		} else {
-			console.warn('Incorrect history substep [undo show]:', data.hide);
-		}
-	}
-
-	// FULL
-	// if(data.full) {};
-
-	// undo lock
-	if(
-		typeof data.lock != 'undefined'
-	) {
-		for(let i in data.lock) {
-			let _element = common.getElementsByName(data.lock[i])[0];
-			_element.unlock();
-		}
-	}
-
-	// undo unlock
-	if(
-		typeof data.unlock != 'undefined'
-	) {
-		for(let i in data.unlock) {
-			let _element = common.getElementsByName(data.unlock[i])[0];
-			_element.lock();
-		}
-	}
-
-	// undo move
-	if(
-		typeof data.move      != 'undefined' &&
-		typeof data.move.from != 'undefined' &&
-		typeof data.move.to   != 'undefined' &&
-		typeof data.move.deck != 'undefined'
-	) {
-
-		// TODO
-		let movesAnimation = share.get('movesAnimation');
-
-		if(data.move.stepType) {
-
-			if(typeof data.move.stepType == 'string') {
-				share.set('stepType', data.move.stepType);
-			}
-
-			if(typeof data.move.stepType.undo == 'string') {
-				share.set('stepType', data.move.stepType.undo);
-			}
-		}
-
-		// TODO
-		// _movesStack.push(e => {
-
-		let forceMoveData = {
-			"from" : data.move.to  , // from ->
-			"to"   : data.move.from, //      <- to
-			"deck" : data.move.deck,
-			"flip" : data.move.flip,
-		};
-
-		if(!share.get('showHistoryAnimation')) {
-
-			common.animationOff();
-
-			forceMoveData.callback = e => {
-				common.animationOn();
-			};
-		}
-		// forceMoveData.callback = _movesCallback
-		forceMove(forceMoveData);
-
-		// });
-
-		// if(_movesStack.length == 1) {
-			// _movesStack.shift()();
-		// }
-	}
-};
-
-event.listen('undo', undoData => {
-
-	if(!undoData) {
-		return;
-	};
-
-	// let e = undoData.length ? undoData[undoData.length - 1] : undoData;
-
-	// if(e.move) {
-
-	// 	let _lastDragDeck = share.get('lastDragDeck');
-	//     let _deck = common.getElementById(_lastDragDeck.dragDeckParentId);
-
-	// 	common.animationOff();
-	// 	event.dispatch('moveCardToHome', {
-	// 		"departure" : _deck        ,
-	// 		"moveDeck"  : _lastDragDeck.dragDeck
-	// 	});
-	// 	common.animationOn();
-	// }
-
-	inputs.break();
-
-	_history.reset();
-
-	if(share.get('animation')) {
-		event.dispatch('stopAnimations');
-	}
-	// Обратная совместимость
-	if(undoData instanceof Array) {
-
-		undoData.reverse();
-		for(let _i in undoData) {
-			let data = undoData[_i];
-			_undo(data);
-		}
-		undoData.reverse();
-	} else {
-		_undo(undoData);
-	}
-
-	Tips.checkTips();
-});
-
-// redo
-
-let _redo = data => {
-
-	if(share.get('sessionStarted')) {
-		// _undoMoveStack = [];
-		event.dispatch('stopAnimations');
-		stateManager.restore();
-	}
-
-	// redo flip
-	if(data.flip) {
-		let deck = common.getElementByName(data.flip.deckName);
-		let card = deck.getCardByIndex(data.flip.cardIndex | 0);
-		if(card) {
-			card.flip = true;
-			deck.Redraw();
-		}
-	};
-
-	// redo unflip
-	if(data.unflip) {
-		let deck = common.getElementByName(data.unflip.deckName);
-		let card = deck.getCardByIndex(data.unflip.cardIndex | 0);
-		if(card) {
-			card.flip = false;
-			deck.Redraw();
-		}
-	};
-
-	// redo hide
-	if(data.hide) {
-		let deck = common.getElementByName(data.hide.deckName, 'deck');
-		if(
-			deck &&
-			deck.cards[data.hide.cardIndex].name == data.hide.cardName // TODO check
-		) {
-			deck.cards[data.hide.cardIndex].visible = false;
-			deck.Redraw();
-		} else {
-			console.warn('Incorrect history substep [redo hide]:', data.hide);
-		}
-	}
-
-	// redo show
-	if(data.show) {
-		let deck = common.getElementByName(data.show.deckName, 'deck');
-		if(
-			deck &&
-			deck.cards[data.show.cardIndex].name == data.show.cardName
-		) {
-			deck.cards[data.show.cardIndex].visible = true;
-			deck.Redraw();
-		} else {
-			console.warn('Incorrect history substep [redo show]:', data.hide);
-		}
-	}
-	
-	// FULL
-	// if(data.full) {};
-
-	// redo lock
-	if(
-		typeof data.lock != 'undefined'
-	) {
-		for(let i in data.lock) {
-			let _element = common.getElementsByName(data.lock[i])[0];
-			_element.lock();
-		}
-	}
-
-	// redo unlock
-	if(
-		typeof data.unlock != 'undefined'
-	) {
-		for(let i in data.unlock) {
-			let _element = common.getElementsByName(data.unlock[i])[0];
-			_element.unlock();
-		}
-	}
-
-	// redo move
-	if(
-		typeof data.move      != 'undefined' &&
-		typeof data.move.from != 'undefined' &&
-		typeof data.move.to   != 'undefined' &&
-		typeof data.move.deck != 'undefined'
-	) {
-
-		if(data.move.stepType) {
-
-			if(typeof data.move.stepType == 'string') {
-				share.set('stepType', data.move.stepType);
-			}
-
-			if(typeof data.move.stepType.redo == 'string') {
-				share.set('stepType', data.move.stepType.redo);
-			}
-		}
-
-		let forceMoveData = {
-			"from" : data.move.from,
-			"to"   : data.move.to  ,
-			"deck" : data.move.deck,
-			"flip" : data.move.flip,
-		};
-
-		if(!share.get('showHistoryAnimation')) {
-
-			common.animationOff();
-
-			forceMoveData.callback = e => {
-				common.animationOn();
-			};
-		}
-
-		forceMove(forceMoveData);
-	}
-
-	if(
-		data.redo                            &&
-		typeof data.redo.stepType == 'string'
-	) {
-		share.set('stepType', data.redo.stepType);
-	}
-};
-
-event.listen('redo', redoData => {
-
-	inputs.break();
-
-	_history.reset();
-
-	if(share.get('animation')) {
-		event.dispatch('stopAnimations');
-	}
-
-	if(!redoData) {
-		return;
-	}
-
-	// Обратная совместимость
-	if(redoData instanceof Array) {
-
-		for(let _i in redoData) {
-			let data = redoData[_i];
-			_redo(data);
-		}
-	} else {
-		_redo(redoData);
-	}
-
-	Tips.checkTips();
-
-	if(
-		share.get('stepType') != defaults.stepType &&
-		Tips.getTips().length == 0
-	) {
-		share.set('stepType', defaults.stepType);
-		Tips.checkTips();
-	}
-});
-
-// history
-
-class history {
+// let historyStack = [];
+
+/*
+ * reset
+ * add
+ * get
+ * count
+ */
+
+class historyClass {
 
 	constructor() {
 
@@ -432,20 +97,24 @@ class history {
 	// }
 }
 
-let _history = new history();
+let history = new historyClass();
 
 // events
 
 event.listen('addStep', data => {
+
 	if(data.debug) {
 		delete data.debug;
 	}
-	_history.add(data)
+
+	history.add(data)
 });
 
 // save steps to client history
 event.listen('saveSteps', e => {
-	let data = _history.get();
+
+	let data = history.get();
+
 	if(data.length) {
 		event.dispatch('makeStep', data);
 	} else {
@@ -470,7 +139,7 @@ event.listen('doHistory', e => {
 });
 
 event.listen('resetHistory', e => {
-	_history.reset();
+	history.reset();
 });
 
-export default _history;
+export default history;
