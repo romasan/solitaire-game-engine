@@ -8,6 +8,7 @@ import defaults from 'defaults';
 import inputs   from 'inputs'  ;
 import History  from 'history' ;
 import Tips     from 'tips'    ;
+import atom     from 'atom'    ;
 
 /*
  * flip
@@ -17,13 +18,14 @@ import Tips     from 'tips'    ;
  * full
  * lock
  * unlock
+ * swap
  * move
  */
 
 let redo = data => {
 
 	if(share.get('sessionStarted')) {
-		// _undoMoveStack = [];
+
 		event.dispatch('stopAnimations');
 		stateManager.restore();
 	}
@@ -39,12 +41,12 @@ let redo = data => {
 			card.flip = true;
 			deck.Redraw();
 		}
-	};
+	}
 
 	// redo unflip
 	if(data.unflip) {
 
-		let deck = common.getElementByName(data.unflip.deckName);
+		let deck = common.getElementByName(data.unflip.deckName, 'deck');
 
 		let card = deck.getCardByIndex(data.unflip.cardIndex | 0);
 
@@ -52,7 +54,7 @@ let redo = data => {
 			card.flip = false;
 			deck.Redraw();
 		}
-	};
+	}
 
 	// redo hide
 	if(data.hide) {
@@ -87,7 +89,9 @@ let redo = data => {
 	}
 	
 	// redo full
-	// if(data.full) {};
+	if(data.full) {
+		// 
+	}
 
 	// redo lock
 	if(
@@ -107,6 +111,17 @@ let redo = data => {
 			let _element = common.getElementsByName(data.unlock[i])[0];
 			_element.unlock();
 		}
+	}
+
+	// redo swap
+	if(
+		typeof data.swap           != 'undefined' &&
+		typeof data.swap.deckName  != 'undefined' &&
+		typeof data.swap.fromIndex != 'undefined' &&
+		typeof data.swap.toIndex   != 'undefined'
+	) {
+		let deck = common.getElementByName(data.swap.deckName, 'deck');
+		atom.swap(deck, data.swap.fromIndex, data.swap.toIndex, false);
 	}
 
 	// redo move
@@ -147,15 +162,20 @@ let redo = data => {
 		event.dispatch('forceMove', forceMoveData);
 	}
 
-	if(
-		data.redo                            &&
-		typeof data.redo.stepType == 'string'
-	) {
-		share.set('stepType', data.redo.stepType);
-	}
+	// TODO актуально ли ещё?
+	// if(
+	// 	data.redo                            &&
+	// 	typeof data.redo.stepType == 'string'
+	// ) {
+	// 	share.set('stepType', data.redo.stepType);
+	// }
 };
 
 event.listen('redo', redoData => {
+
+	if(!redoData) {
+		return;
+	}
 
 	inputs.break();
 
@@ -163,10 +183,6 @@ event.listen('redo', redoData => {
 
 	if(share.get('animation')) {
 		event.dispatch('stopAnimations');
-	}
-
-	if(!redoData) {
-		return;
 	}
 
 	// Обратная совместимость
@@ -182,11 +198,12 @@ event.listen('redo', redoData => {
 
 	Tips.checkTips();
 
-	if(
-		share.get('stepType') != defaults.stepType &&
-		Tips.getTips().length == 0
-	) {
-		share.set('stepType', defaults.stepType);
-		Tips.checkTips();
-	}
+	// TODO актуально ли ещё?
+	// if(
+	// 	share.get('stepType') != defaults.stepType &&
+	// 	Tips.getTips().length == 0
+	// ) {
+	// 	share.set('stepType', defaults.stepType);
+	// 	Tips.checkTips();
+	// }
 });

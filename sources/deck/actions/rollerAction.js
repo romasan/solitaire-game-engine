@@ -5,6 +5,7 @@ import event      from 'event'     ;
 import deckAction from 'deckAction';
 import Deck       from 'deck'      ;
 import History    from 'history'   ;
+import atom       from 'atom'      ;
 
 const defaultOpenCount = 3;
 
@@ -88,15 +89,17 @@ class rollerAction extends deckAction {
 					let next = cardsCount * 2 - i - _unflippedCount - 1;
 
 					if(i < next) {
-						let tmp = deck.cards[i];
-						deck.cards[i] = deck.cards[next];
-						deck.cards[next] = tmp;
+						// let tmp          = deck.cards[i]   ;
+						// deck.cards[i]    = deck.cards[next];
+						// deck.cards[next] = tmp             ;
+						atom.swap(deck, i, next, true);
 					}
 				}
 			}
 
 			// unflip next cards
 			_unflippedCount = 0;
+
 			for(
 				let i = flipCardsCount - 1               ;
 				i >= 0 && i >= flipCardsCount - openCount;
@@ -128,9 +131,10 @@ class rollerAction extends deckAction {
 					let next = cardsCount * 2 - i - _unflippedCount - 1;
 
 					if(i < next) {
-						let tmp = deck.cards[i];
-						deck.cards[i] = deck.cards[next];
-						deck.cards[next] = tmp;
+						// let tmp          = deck.cards[i]   ;
+						// deck.cards[i]    = deck.cards[next];
+						// deck.cards[next] = tmp             ;
+						atom.swap(deck, i, next, true);
 					}
 				}
 			}
@@ -144,13 +148,9 @@ class rollerAction extends deckAction {
 
 				event.dispatch('rewindHistory', data => {
 
-					console.log('>>> не осталось видимых карт');
-
 					let found = false;
 
 					let stepsCount = 0;
-
-					console.log('###', data.history);
 
 					for(let i = data.history.length - 1; i >= 0 && !found; i -= 1) {
 
@@ -166,7 +166,6 @@ class rollerAction extends deckAction {
 								typeof atom.rollerActionStart == "string" &&
 								       atom.rollerActionStart == deck.name
 							) {
-								console.log('>>> reset history');
 
 								found = true;
 
@@ -189,7 +188,6 @@ class rollerAction extends deckAction {
 								// typeof atom.move.from == "string" &&
 								//        atom.move.from == deck.name
 							) {
-								console.log('>>> reset deck');
 
 								found = true;
 
@@ -201,8 +199,6 @@ class rollerAction extends deckAction {
 							}
 						}
 					}
-
-					console.log('>>>');
 				});
 			} else {
 				event.dispatch('saveSteps');
@@ -225,7 +221,6 @@ class rollerAction extends deckAction {
 			}
 		}
 
-		console.log('REDRAW');
 		deck.Redraw();
 
 		event.dispatch('logCardsInDeck', deck);

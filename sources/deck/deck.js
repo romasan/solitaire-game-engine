@@ -20,6 +20,7 @@ import getDecks      from 'getDecks'     ;
 import getDeckById   from 'getDeckById'  ;
 import deckCardNames from 'deckCardNames';
 import getDeck       from 'getDeck'      ;
+import atom          from 'atom'         ;
 
 /*
  * Redraw

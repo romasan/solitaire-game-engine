@@ -8,6 +8,7 @@ import defaults from 'defaults';
 import inputs   from 'inputs'  ;
 import History  from 'history' ;
 import Tips     from 'tips'    ;
+import atom     from 'atom'    ;
 
 /*
  * flip
@@ -17,13 +18,14 @@ import Tips     from 'tips'    ;
  * full
  * lock
  * unlock
+ * swap
  * move
  */
 
 let undo = data => {
 
 	if(share.get('sessionStarted')) {
-		// _undoMoveStack = [];
+
 		event.dispatch('stopAnimations');
 		stateManager.restore();
 	}
@@ -39,23 +41,20 @@ let undo = data => {
 			card.flip = false;
 			deck.Redraw();
 		}
-	};
+	}
 
 	// undo unflip
 	if(data.unflip) {
 
 		let deck = common.getElementByName(data.unflip.deckName, 'deck');
 
-		let card = deck.getCardByIndex(data.unflip.cardIndex);
+		let card = deck.getCardByIndex(data.unflip.cardIndex | 0);
 
 		if(card) {
-			// TODO deck.flipCardByIndex(index, false);
 			card.flip = true;
-			// event.dispatch('redrawDeckFlip', deck);
 			deck.Redraw();
 		}
-
-	};
+	}
 
 	// undo hide
 	if(data.hide) {
@@ -70,12 +69,15 @@ let undo = data => {
 			deck.Redraw();
 		} else {
 			console.warn('Incorrect history substep [undo hide]:', data.hide);
+			console.log('###', deck.cards, data.hide);
 		}
 	}
 
 	// undo show
 	if(data.show) {
+
 		let deck = common.getElementByName(data.show.deckName, 'deck');
+
 		if(
 			deck &&
 			deck.cards[data.show.cardIndex].name == data.show.cardName
@@ -88,7 +90,9 @@ let undo = data => {
 	}
 
 	// undo full
-	// if(data.full) {};
+	if(data.full) {
+		// 
+	}
 
 	// undo lock
 	if(
@@ -110,6 +114,17 @@ let undo = data => {
 		}
 	}
 
+	// redo swap
+	if(
+		typeof data.swap           != 'undefined' &&
+		typeof data.swap.deckName  != 'undefined' &&
+		typeof data.swap.fromIndex != 'undefined' &&
+		typeof data.swap.toIndex   != 'undefined'
+	) {
+		let deck = common.getElementByName(data.swap.deckName, 'deck');
+		atom.swap(deck, data.swap.fromIndex, data.swap.toIndex, false);
+	}
+
 	// undo move
 	if(
 		typeof data.move      != 'undefined' &&
@@ -117,9 +132,6 @@ let undo = data => {
 		typeof data.move.to   != 'undefined' &&
 		typeof data.move.deck != 'undefined'
 	) {
-
-		// TODO
-		let movesAnimation = share.get('movesAnimation');
 
 		if(data.move.stepType) {
 
@@ -131,9 +143,6 @@ let undo = data => {
 				share.set('stepType', data.move.stepType.undo);
 			}
 		}
-
-		// TODO
-		// _movesStack.push(e => {
 
 		let forceMoveData = {
 			"from" : data.move.to  , // from ->
@@ -152,37 +161,14 @@ let undo = data => {
 		}
 
 		event.dispatch('forceMove', forceMoveData);
-
-		// });
-
-		// if(_movesStack.length == 1) {
-			// _movesStack.shift()();
-		// }
 	}
 };
 
 event.listen('undo', undoData => {
 
-	console.log('### UNDO:', undoData);
-
 	if(!undoData) {
 		return;
-	};
-
-	// let e = undoData.length ? undoData[undoData.length - 1] : undoData;
-
-	// if(e.move) {
-
-	// 	let _lastDragDeck = share.get('lastDragDeck');
-	//     let _deck = common.getElementById(_lastDragDeck.dragDeckParentId);
-
-	// 	common.animationOff();
-	// 	event.dispatch('moveCardToHome', {
-	// 		"departure" : _deck        ,
-	// 		"moveDeck"  : _lastDragDeck.dragDeck
-	// 	});
-	// 	common.animationOn();
-	// }
+	}
 
 	inputs.break();
 
@@ -191,14 +177,17 @@ event.listen('undo', undoData => {
 	if(share.get('animation')) {
 		event.dispatch('stopAnimations');
 	}
+
 	// Обратная совместимость
 	if(undoData instanceof Array) {
 
 		undoData.reverse();
+
 		for(let _i in undoData) {
 			let data = undoData[_i];
 			undo(data);
 		}
+
 		undoData.reverse();
 	} else {
 		undo(undoData);

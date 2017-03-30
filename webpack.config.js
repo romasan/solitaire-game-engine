@@ -78,17 +78,6 @@ let config = {
 			"allChunks" : true
 		}),
 
-		new OptimizeCssAssetsPlugin({
-			"assetNameRegExp"     : "../css/SolitaireEngine.css$",
-			"cssProcessor"        : require('cssnano'),
-			"cssProcessorOptions" : {
-				"discardComments" : {
-					"removeAll" : true
-				}
-			},
-			"canPrint"            : true
-		}),
-
 		new webpack.DefinePlugin({
 			"dev"     : dev    ,
 			"version" : version
@@ -135,6 +124,19 @@ if(dev) {
 	}
 
 } else {
+
+	config.plugins.push(
+		new OptimizeCssAssetsPlugin({
+			"assetNameRegExp"     : "../css/SolitaireEngine.css$",
+			"cssProcessor"        : require('cssnano'),
+			"cssProcessorOptions" : {
+				"discardComments" : {
+					"removeAll" : true
+				}
+			},
+			"canPrint"            : true
+		})
+	);
 
 	let preamble = `\
 /*

@@ -36,6 +36,8 @@ Methods:
  * getElements
  * getElementById
  * getElementsByName
+ * getElementByName
+ * getElementsByType
  * validateCardName
  * genId
  * animationOn
@@ -287,6 +289,7 @@ export default {
 	"getElementById"    : getElementById   ,
 	"getElementsByName" : getElementsByName,
 	"getElementByName"  : getElementByName ,
+	"getElementsByType" : getElementsByType,
 	"validateCardName"  : validateCardName ,
 	"genId"             : genId            ,
 	"animationOn"       : animationOn      ,
