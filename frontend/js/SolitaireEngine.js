@@ -111,7 +111,7 @@ var SolitaireEngine =
 	exports.options = _defaults2.default;
 	exports.winCheck = _winCheck2.default.hwinCheck;
 	exports.generator = _deckGenerator2.default;
-	exports.version = (9091496207).toString().split(9).slice(1).map(function (e) {
+	exports.version = (9091496241).toString().split(9).slice(1).map(function (e) {
 		return parseInt(e, 8);
 	}).join('.');
 	
@@ -6452,9 +6452,26 @@ var SolitaireEngine =
 			key: 'run',
 			value: function run(deck, data) {
 	
+				if (data.eventName == 'moveEnd') {
+	
+					if (data.eventData.from.name != deck.name) {
+						return;
+					}
+	
+					console.log('взяли карту из', deck.name);
+	
+					// TODO
+					// сколько открыто карт
+					// если 0 показать предыдущую скрытую
+	
+					return;
+				}
+	
 				if (data.eventData.to.name != deck.name) {
 					return false;
 				}
+	
+				console.log('>>>', data);
 	
 				var openCount = data.actionData.openCount ? data.actionData.openCount : defaultOpenCount;
 	
@@ -6809,32 +6826,12 @@ var SolitaireEngine =
 				}
 	
 				// console.log('History:get', _req);
-				var _iteratorNormalCompletion = true;
-				var _didIteratorError = false;
-				var _iteratorError = undefined;
 	
-				try {
-					for (var _iterator = _req[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
-						var line = _step.value;
-	
-						for (var name in line) {
-							console.log('History:get', name, line[name]);
-						}
-					}
-				} catch (err) {
-					_didIteratorError = true;
-					_iteratorError = err;
-				} finally {
-					try {
-						if (!_iteratorNormalCompletion && _iterator.return) {
-							_iterator.return();
-						}
-					} finally {
-						if (_didIteratorError) {
-							throw _iteratorError;
-						}
-					}
-				}
+				// for(let line of _req) {
+				// 	for(let name in line) {
+				// 		console.log('History:get', name, line[name]);
+				// 	}
+				// }
 	
 				return _req;
 			}
@@ -7157,7 +7154,7 @@ var SolitaireEngine =
 		var save = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : true;
 	
 	
-		console.log('atomSwap:', deck, fromIndex, toIndex, save);
+		// console.log('atomSwap:', deck, fromIndex, toIndex, save);
 	
 		var tmp = deck.cards[fromIndex];
 		deck.cards[fromIndex] = deck.cards[toIndex];
@@ -11253,6 +11250,15 @@ var SolitaireEngine =
 			if (typeof data.callback == "function") {
 				data.callback();
 			}
+		}
+	});
+	
+	_event2.default.listen('removeMarkCard', function (data) {
+	
+		var el = _share2.default.get('domElement:' + data.card.id);
+	
+		if (el && !el.hasClass('flip')) {
+			el.removeClass('marker');
 		}
 	});
 

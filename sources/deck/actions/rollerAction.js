@@ -17,9 +17,26 @@ class rollerAction extends deckAction {
 
 	run(deck, data) {
 
+		if(data.eventName == 'moveEnd') {
+
+			if(data.eventData.from.name != deck.name) {
+				return;
+			}
+
+			console.log('взяли карту из', deck.name);
+
+			// TODO
+			// сколько открыто карт
+			// если 0 показать предыдущую скрытую
+
+			return;
+		}
+
 		if(data.eventData.to.name != deck.name) {
 			return false;
 		}
+
+		console.log('>>>', data);
 
 		let openCount = data.actionData.openCount
 			? data.actionData.openCount

@@ -74,11 +74,12 @@ class historyClass {
 		}
 
 		// console.log('History:get', _req);
-		for(let line of _req) {
-			for(let name in line) {
-				console.log('History:get', name, line[name]);
-			}
-		}
+
+		// for(let line of _req) {
+		// 	for(let name in line) {
+		// 		console.log('History:get', name, line[name]);
+		// 	}
+		// }
 
 		return _req;
 	}

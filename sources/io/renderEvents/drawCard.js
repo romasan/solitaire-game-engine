@@ -57,3 +57,15 @@ event.listen('toggleMarkCard', data => {
 		}
 	}
 });
+
+event.listen('removeMarkCard', data => {
+
+	let el = share.get('domElement:' + data.card.id);
+
+	if(
+		el                   &&
+		!el.hasClass('flip')
+	) {
+		el.removeClass('marker');
+	}
+});

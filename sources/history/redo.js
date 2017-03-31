@@ -62,7 +62,7 @@ let redo = data => {
 		let deck = common.getElementByName(data.hide.deckName, 'deck');
 
 		if(
-			deck &&
+			deck                                                       &&
 			deck.cards[data.hide.cardIndex].name == data.hide.cardName // TODO check
 		) {
 			deck.cards[data.hide.cardIndex].visible = false;
@@ -78,7 +78,7 @@ let redo = data => {
 		let deck = common.getElementByName(data.show.deckName, 'deck');
 
 		if(
-			deck &&
+			deck                                                       &&
 			deck.cards[data.show.cardIndex].name == data.show.cardName
 		) {
 			deck.cards[data.show.cardIndex].visible = true;
