@@ -100,7 +100,7 @@ let Move = (moveDeck, to, cursorMove) => {
 			if(_pop) {
 
 				// ложим карты в колоду назначения
-				_deck_destination.Push(_pop);
+				_deck_destination.Push(_pop, false);
 
 				// режим анимации по умолчанию
 				common.animationDefault();

@@ -69,7 +69,6 @@ let undo = data => {
 			deck.Redraw();
 		} else {
 			console.warn('Incorrect history substep [undo hide]:', data.hide);
-			console.log('###', deck.cards, data.hide);
 		}
 	}
 
@@ -121,8 +120,12 @@ let undo = data => {
 		typeof data.swap.fromIndex != 'undefined' &&
 		typeof data.swap.toIndex   != 'undefined'
 	) {
+
 		let deck = common.getElementByName(data.swap.deckName, 'deck');
+
 		atom.swap(deck, data.swap.fromIndex, data.swap.toIndex, false);
+
+		deck.Redraw();
 	}
 
 	// undo move

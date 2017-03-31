@@ -497,6 +497,10 @@ class Deck {
 
 	Push(deck, afterVisible = true) {
 
+		// console.log('Push:', afterVisible);
+
+		// afterVisible = false;
+
 		let visibleCardsCount = null;
 
 		if(afterVisible) {
@@ -670,6 +674,17 @@ class Deck {
 		}
 	}
 
+	showCardByIndex(index, redraw) {
+		if(this.cards[index]) {
+
+			this.cards[index].visible = true;
+
+			if(redraw) {
+				this.Redraw();
+			}
+		}
+	}
+
 	getCardsNames() {
 
 		let _cardsNames = [];
@@ -682,27 +697,27 @@ class Deck {
 	}
 
 	getCards(filters = {"visible" : true}) {
-		if(filters) {
 
-			let _cards = [];
+		let _cards = [];
 
-			for(let i in this.cards) {
+		for(let i in this.cards) {
 
-				let _correct = true;
+			let _correct = true;
 
-				for(let filterName in filters) {
+			for(let filterName in filters) {
+				try{
 					_correct = _correct && this.cards[i][filterName] == filters[filterName];
-				}
-
-				if(_correct) {
-					_cards.push(this.cards[i]);
+				} catch(e) {
+					console.log('###', this.cards[i], filters);
 				}
 			}
 
-			return _cards;
-		} else {
-			return this.cards;
+			if(_correct) {
+				_cards.push(this.cards[i]);
+			}
 		}
+
+		return _cards;
 	}
 
 	cardsCount(filters) {
@@ -753,7 +768,6 @@ class Deck {
 }
 
 // add deck
-
 let addDeck = data => {
 
 	if(!data) {

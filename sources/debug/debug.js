@@ -49,6 +49,7 @@ let stamp = e => {
 }
 */
 
+// Firebug
 document.addEventListener("DOMContentLoaded", e => {
 	if(document.location.hash == '#debug') {
 		(function(F, i, r, e, b, u, g, L, I, T, E) {
@@ -79,6 +80,8 @@ document.addEventListener("DOMContentLoaded", e => {
 });
 
 let logCardsInDeck = deck => {
+
+	return;
 
 	let _log = [''];
 

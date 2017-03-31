@@ -25,9 +25,35 @@ class rollerAction extends deckAction {
 
 			console.log('взяли карту из', deck.name);
 
-			// TODO
 			// сколько открыто карт
-			// если 0 показать предыдущую скрытую
+			let unflippedCardsCount = deck.cardsCount({
+				"visible" : true ,
+				"flip"    : false
+			});
+
+			let invisibleCardsCount = deck.cardsCount({
+				"visible" : false
+			});
+
+			// если нет открытых карт показать предыдущую скрытую
+			if(
+				unflippedCardsCount == 0 &&
+				invisibleCardsCount >  0
+			) {
+
+				let next = deck.cards.length - invisibleCardsCount;
+
+				deck.showCardByIndex(next, true);
+
+				// save step
+				event.dispatch('addStep', {
+					"show" : {
+						"cardIndex" : next                 ,
+						"cardName"  : deck.cards[next].name,
+						"deckName"  : deck.name
+					}
+				});
+			}
 
 			return;
 		}
@@ -35,8 +61,6 @@ class rollerAction extends deckAction {
 		if(data.eventData.to.name != deck.name) {
 			return false;
 		}
-
-		console.log('>>>', data);
 
 		let openCount = data.actionData.openCount
 			? data.actionData.openCount
@@ -106,9 +130,6 @@ class rollerAction extends deckAction {
 					let next = cardsCount * 2 - i - _unflippedCount - 1;
 
 					if(i < next) {
-						// let tmp          = deck.cards[i]   ;
-						// deck.cards[i]    = deck.cards[next];
-						// deck.cards[next] = tmp             ;
 						atom.swap(deck, i, next, true);
 					}
 				}

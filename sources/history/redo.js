@@ -120,8 +120,12 @@ let redo = data => {
 		typeof data.swap.fromIndex != 'undefined' &&
 		typeof data.swap.toIndex   != 'undefined'
 	) {
+
 		let deck = common.getElementByName(data.swap.deckName, 'deck');
+
 		atom.swap(deck, data.swap.fromIndex, data.swap.toIndex, false);
+
+		deck.Redraw();
 	}
 
 	// redo move
