@@ -111,7 +111,7 @@ var SolitaireEngine =
 	exports.options = _defaults2.default;
 	exports.winCheck = _winCheck2.default.hwinCheck;
 	exports.generator = _deckGenerator2.default;
-	exports.version = (9091496252).toString().split(9).slice(1).map(function (e) {
+	exports.version = (9091496303).toString().split(9).slice(1).map(function (e) {
 		return parseInt(e, 8);
 	}).join('.');
 	
@@ -3641,7 +3641,7 @@ var SolitaireEngine =
 						try {
 							_correct = _correct && this.cards[i][filterName] == filters[filterName];
 						} catch (e) {
-							console.log('###', this.cards[i], filters);
+							console.warn('Incorrect filter ' + filterName + ' in deck:getCards');
 						}
 					}
 	
@@ -6475,10 +6475,8 @@ var SolitaireEngine =
 						return;
 					}
 	
-					console.log('взяли карту из', deck.name);
-	
 					// сколько открыто карт
-					var unflippedCardsCount = deck.cardsCount({
+					var unflipCardsCount = deck.cardsCount({
 						"visible": true,
 						"flip": false
 					});
@@ -6488,7 +6486,7 @@ var SolitaireEngine =
 					});
 	
 					// если нет открытых карт показать предыдущую скрытую
-					if (unflippedCardsCount == 0 && invisibleCardsCount > 0) {
+					if (unflipCardsCount == 0 && invisibleCardsCount > 0) {
 	
 						var next = deck.cards.length - invisibleCardsCount;
 	
@@ -6502,6 +6500,8 @@ var SolitaireEngine =
 								"deckName": deck.name
 							}
 						});
+	
+						_event2.default.dispatch('checkTips');
 					}
 	
 					return;
@@ -6523,7 +6523,7 @@ var SolitaireEngine =
 	
 				if (cardsCount > 0) {
 	
-					var unflipCardsCount = deck.cardsCount({
+					var _unflipCardsCount = deck.cardsCount({
 						"visible": true,
 						"flip": false
 					});
@@ -6534,7 +6534,7 @@ var SolitaireEngine =
 					});
 	
 					// first roll
-					if (hiddenCardsCount == 0 && unflipCardsCount == 0) {
+					if (hiddenCardsCount == 0 && _unflipCardsCount == 0) {
 						_event2.default.dispatch('addStep', {
 							"rollerActionStart": deck.name
 						});
@@ -6543,7 +6543,7 @@ var SolitaireEngine =
 					var _unflippedCount = 0;
 	
 					// hide unflipped cards
-					if (unflipCardsCount > 0) {
+					if (_unflipCardsCount > 0) {
 	
 						var cards = deck.getCards();
 	
@@ -6625,6 +6625,8 @@ var SolitaireEngine =
 						});
 	
 						_event2.default.dispatch('rewindHistory', function (data) {
+	
+							console.log('rewindHistory');
 	
 							var found = false;
 	
@@ -6715,8 +6717,6 @@ var SolitaireEngine =
 				}
 	
 				deck.Redraw();
-	
-				_event2.default.dispatch('logCardsInDeck', deck);
 	
 				_get(rollerAction.prototype.__proto__ || Object.getPrototypeOf(rollerAction.prototype), 'end', this).call(this);
 	
@@ -11957,8 +11957,6 @@ var SolitaireEngine =
 	});
 	
 	var logCardsInDeck = function logCardsInDeck(deck) {
-	
-		return;
 	
 		var _log = [''];
 	

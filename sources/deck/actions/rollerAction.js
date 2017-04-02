@@ -23,10 +23,8 @@ class rollerAction extends deckAction {
 				return;
 			}
 
-			console.log('взяли карту из', deck.name);
-
 			// сколько открыто карт
-			let unflippedCardsCount = deck.cardsCount({
+			let unflipCardsCount = deck.cardsCount({
 				"visible" : true ,
 				"flip"    : false
 			});
@@ -37,7 +35,7 @@ class rollerAction extends deckAction {
 
 			// если нет открытых карт показать предыдущую скрытую
 			if(
-				unflippedCardsCount == 0 &&
+				unflipCardsCount    == 0 &&
 				invisibleCardsCount >  0
 			) {
 
@@ -53,6 +51,8 @@ class rollerAction extends deckAction {
 						"deckName"  : deck.name
 					}
 				});
+
+				event.dispatch('checkTips');
 			}
 
 			return;
@@ -186,6 +186,8 @@ class rollerAction extends deckAction {
 
 				event.dispatch('rewindHistory', data => {
 
+					console.log('rewindHistory');
+
 					let found = false;
 
 					let stepsCount = 0;
@@ -260,8 +262,6 @@ class rollerAction extends deckAction {
 		}
 
 		deck.Redraw();
-
-		event.dispatch('logCardsInDeck', deck);
 
 		super.end();
 

@@ -81,8 +81,6 @@ document.addEventListener("DOMContentLoaded", e => {
 
 let logCardsInDeck = deck => {
 
-	return;
-
 	let _log = [''];
 
 	for(let card of deck.cards) {

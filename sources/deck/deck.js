@@ -708,7 +708,7 @@ class Deck {
 				try{
 					_correct = _correct && this.cards[i][filterName] == filters[filterName];
 				} catch(e) {
-					console.log('###', this.cards[i], filters);
+					console.warn('Incorrect filter ' + filterName + ' in deck:getCards');
 				}
 			}
 
