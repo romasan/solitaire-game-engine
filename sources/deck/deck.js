@@ -48,6 +48,7 @@ import atom          from 'atom'         ;
  * getCards
  * cardsCount
  * getCardByIndex
+ * getCardIndexById
  * getRelationsByName
  * hasTag
  */
@@ -726,6 +727,19 @@ class Deck {
 
 	getCardByIndex(index) {
 		return this.cards[index] ? this.cards[index] : false;
+	}
+
+	getCardIndexById(id) {
+
+		let index = false;
+
+		for(let i in thus.cards) {
+			if(this.cards[i].id == id) {
+				index = i;
+			}
+		}
+
+		return index;
 	}
 
 	getRelationsByName(relationName, filters) {

@@ -46,19 +46,36 @@ event.listen('toggleMarkCard', data => {
 		!el.hasClass('flip')
 	) {
 
+		let cardIsMarked = null;
+
 		if(el.hasClass('marker')) {
+
+			cardIsMarked = false;
+
 			el.removeClass('marker');
 		} else {
+
+			cardIsMarked = true;
+
 			el.addClass('marker');
 		}
 
 		if(typeof data.callback == "function") {
-			data.callback();
+			data.callback(cardIsMarked);
 		}
 	}
 });
 
-event.listen('removeMarkCard', data => {
+event.listen('markCard', data => {
+
+	let el = share.get('domElement:' + data.card.id);
+
+	if(el) {
+		el.removeClass('marker');
+	}
+});
+
+event.listen('unmarkCard', data => {
 
 	let el = share.get('domElement:' + data.card.id);
 

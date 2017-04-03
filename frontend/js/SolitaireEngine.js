@@ -111,7 +111,7 @@ var SolitaireEngine =
 	exports.options = _defaults2.default;
 	exports.winCheck = _winCheck2.default.hwinCheck;
 	exports.generator = _deckGenerator2.default;
-	exports.version = (9091496323).toString().split(9).slice(1).map(function (e) {
+	exports.version = (9091496347).toString().split(9).slice(1).map(function (e) {
 		return parseInt(e, 8);
 	}).join('.');
 	
@@ -598,6 +598,8 @@ var SolitaireEngine =
 		value: true
 	});
 	
+	var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
+	
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 	
 	var _share = __webpack_require__(1);
@@ -616,9 +618,9 @@ var SolitaireEngine =
 	
 	var _common2 = _interopRequireDefault(_common);
 	
-	var _deck3 = __webpack_require__(14);
+	var _deck2 = __webpack_require__(14);
 	
-	var _deck4 = _interopRequireDefault(_deck3);
+	var _deck3 = _interopRequireDefault(_deck2);
 	
 	var _tips = __webpack_require__(9);
 	
@@ -727,7 +729,7 @@ var SolitaireEngine =
 	
 				if (_dragDeck && _dragDeck[0] && _dragDeck[0].card && _dragDeck[0].card.parent) {
 	
-					var _deck = _deck4.default.getDeckById(_dragDeck[0].card.parent);
+					var _deck = _deck3.default.getDeckById(_dragDeck[0].card.parent);
 	
 					if (_deck) {
 						_deck.Redraw();
@@ -780,68 +782,90 @@ var SolitaireEngine =
 	
 				// click card in deck
 				if (target.className.split(' ').indexOf('draggable') >= 0) {
+					var _ret = function () {
 	
-					var _id2 = target.id,
-					    _card = _id2 ? _common2.default.getElementById(_id2) : null,
-					    _parent = _card && _card.parent ? _card.parent : null,
-					    _deck2 = _parent ? _deck4.default.getDeckById(_parent) : null;
+						var _id = target.id,
+						    _card = _id ? _common2.default.getElementById(_id) : null,
+						    _parent = _card && _card.parent ? _card.parent : null,
+						    _deck = _parent ? _deck3.default.getDeckById(_parent) : null;
 	
-					if (_deck2 && _share2.default.get('markerMode')) {
-						// break;
-						_event2.default.dispatch('toggleMarkCard', {
-							"card": _card,
-							"callback": function callback(e) {
-								_event2.default.dispatch('toggleMarkerMode');
+						// mark card
+						if (_deck && _share2.default.get('markerMode')) {
+							// break;
+	
+							_event2.default.dispatch('toggleMarkCard', {
+								"card": _card,
+								"callback": function callback(cardIsMarked) {
+	
+									var cardIndex = _deck.getCardIndexById(_card.id);
+	
+									var stepData = {};
+	
+									stepData[cardIsMarked ? 'markCard' : 'unmarkCard'] = {
+										"deckName": _deck.name,
+										"cardName": _card.name,
+										"cardIndex": cardIndex
+									};
+	
+									_event2.default.dispatch('addStep', stepData);
+	
+									_event2.default.dispatch('toggleMarkerMode');
+								}
+							});
+	
+							_deck = null;
+						}
+	
+						if (_deck && _share2.default.get('specialStepMode')) {
+							// break;
+							_event2.default.dispatch('specialStep', _card);
+							_event2.default.dispatch('toggleSpecialStepMode');
+							_deck = null;
+						}
+	
+						if (_deck) {
+	
+							_event2.default.dispatch('click', {
+								"to": _deck,
+								"toCard": _card
+							});
+	
+							if (_card.flip) {
+								_event2.default.dispatch('click:flipCard', {
+									"to": _deck,
+									"toCard": _card
+								});
+							} else {
+								_event2.default.dispatch('click:unflipCard', {
+									"to": _deck,
+									"toCard": _card
+								});
 							}
-						});
-						_deck2 = null;
-					}
 	
-					if (_deck2 && _share2.default.get('specialStepMode')) {
-						// break;
-						_event2.default.dispatch('specialStep', _card);
-						_event2.default.dispatch('toggleSpecialStepMode');
-						_deck2 = null;
-					}
-	
-					if (_deck2) {
-	
-						_event2.default.dispatch('click', {
-							"to": _deck2,
-							"toCard": _card
-						});
-	
-						if (_card.flip) {
-							_event2.default.dispatch('click:flipCard', {
-								"to": _deck2,
-								"toCard": _card
-							});
-						} else {
-							_event2.default.dispatch('click:unflipCard', {
-								"to": _deck2,
-								"toCard": _card
-							});
+							// нельзя брать перевёрнутые карты
+							if (_card.flip) {
+								return {
+									v: void 0
+								};
+							}
 						}
 	
-						// нельзя брать перевёрнутые карты
-						if (_card.flip) {
-							return;
+						// _deck.runActions();
+	
+						var _dragDeck = _deck ? _deck.Take(_id) : null;
+	
+						_share2.default.set('dragDeck', _dragDeck);
+	
+						if (_dragDeck) {
+	
+							_share2.default.set('startCursor', { "x": x, "y": y });
+	
+							// ???
+							_tips2.default.tipsDestination({ "currentCard": _card });
 						}
-					}
+					}();
 	
-					// _deck.runActions();
-	
-					var _dragDeck = _deck2 ? _deck2.Take(_id2) : null;
-	
-					_share2.default.set('dragDeck', _dragDeck);
-	
-					if (_dragDeck) {
-	
-						_share2.default.set('startCursor', { "x": x, "y": y });
-	
-						// ???
-						_tips2.default.tipsDestination({ "currentCard": _card });
-					}
+					if ((typeof _ret === 'undefined' ? 'undefined' : _typeof(_ret)) === "object") return _ret.v;
 				}
 			}
 	
@@ -3015,6 +3039,7 @@ var SolitaireEngine =
 	 * getCards
 	 * cardsCount
 	 * getCardByIndex
+	 * getCardIndexById
 	 * getRelationsByName
 	 * hasTag
 	 */
@@ -3661,6 +3686,20 @@ var SolitaireEngine =
 			key: 'getCardByIndex',
 			value: function getCardByIndex(index) {
 				return this.cards[index] ? this.cards[index] : false;
+			}
+		}, {
+			key: 'getCardIndexById',
+			value: function getCardIndexById(id) {
+	
+				var index = false;
+	
+				for (var i in thus.cards) {
+					if (this.cards[i].id == id) {
+						index = i;
+					}
+				}
+	
+				return index;
 			}
 		}, {
 			key: 'getRelationsByName',
@@ -5475,7 +5514,7 @@ var SolitaireEngine =
 			var cardsPop = deckFrom.Pop(data.deck.length);
 	
 			// перевернуть карты во время хода
-			if (data.flip) {
+			if (typeof data.flip == "boolean" && data.flip == true) {
 				for (var _i in cardsPop) {
 					cardsPop[_i].flip = !cardsPop[_i].flip;
 				}
@@ -6757,30 +6796,6 @@ var SolitaireEngine =
 	
 	var _defaults2 = _interopRequireDefault(_defaults);
 	
-	var _stateManager = __webpack_require__(6);
-	
-	var _stateManager2 = _interopRequireDefault(_stateManager);
-	
-	var _forceMove = __webpack_require__(23);
-	
-	var _forceMove2 = _interopRequireDefault(_forceMove);
-	
-	var _deck = __webpack_require__(14);
-	
-	var _deck2 = _interopRequireDefault(_deck);
-	
-	var _tips = __webpack_require__(9);
-	
-	var _tips2 = _interopRequireDefault(_tips);
-	
-	var _field = __webpack_require__(12);
-	
-	var _field2 = _interopRequireDefault(_field);
-	
-	var _inputs = __webpack_require__(4);
-	
-	var _inputs2 = _interopRequireDefault(_inputs);
-	
 	var _undo = __webpack_require__(34);
 	
 	var _undo2 = _interopRequireDefault(_undo);
@@ -6841,7 +6856,7 @@ var SolitaireEngine =
 			key: 'add',
 			value: function add(step) {
 	
-				// console.log('History:add', step);
+				console.log('History:add', step);
 	
 				this.steps.push(step);
 			}
@@ -6860,7 +6875,7 @@ var SolitaireEngine =
 					this.reset(true);
 				}
 	
-				// console.log('History:get', _req);
+				console.log('History:get', _req);
 	
 				// for(let line of _req) {
 				// 	for(let name in line) {
@@ -6947,6 +6962,8 @@ var SolitaireEngine =
 /* 34 */
 /***/ function(module, exports, __webpack_require__) {
 
+	
+	
 	'use strict';
 	
 	var _event = __webpack_require__(2);
@@ -6981,6 +6998,10 @@ var SolitaireEngine =
 	
 	var _atom2 = _interopRequireDefault(_atom);
 	
+	var _stateManager = __webpack_require__(6);
+	
+	var _stateManager2 = _interopRequireDefault(_stateManager);
+	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
 	/*
@@ -7000,7 +7021,7 @@ var SolitaireEngine =
 		if (_share2.default.get('sessionStarted')) {
 	
 			_event2.default.dispatch('stopAnimations');
-			stateManager.restore();
+			_stateManager2.default.restore();
 		}
 	
 		// undo flip
@@ -7130,6 +7151,8 @@ var SolitaireEngine =
 			return;
 		}
 	
+		console.log('UNDO:', undoData);
+	
 		_inputs2.default.break();
 	
 		_history2.default.reset();
@@ -7249,6 +7272,10 @@ var SolitaireEngine =
 	
 	var _atom2 = _interopRequireDefault(_atom);
 	
+	var _stateManager = __webpack_require__(6);
+	
+	var _stateManager2 = _interopRequireDefault(_stateManager);
+	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
 	/*
@@ -7268,7 +7295,7 @@ var SolitaireEngine =
 		if (_share2.default.get('sessionStarted')) {
 	
 			_event2.default.dispatch('stopAnimations');
-			stateManager.restore();
+			_stateManager2.default.restore();
 		}
 	
 		// redo flip
@@ -7386,6 +7413,32 @@ var SolitaireEngine =
 			}
 	
 			_event2.default.dispatch('forceMove', forceMoveData);
+		}
+	
+		if (data.markCard) {
+	
+			var _deck5 = _common2.default.getElementByName(data.unflip.deckName, 'deck');
+	
+			var _card2 = _deck5.getCardByIndex(data.unflip.cardIndex | 0);
+	
+			if (_card2) {
+				_event2.default.dispatch('markCard', {
+					"card": _card2
+				});
+			}
+		}
+	
+		if (data.unmarkCard) {
+	
+			var _deck6 = _common2.default.getElementByName(data.unflip.deckName, 'deck');
+	
+			var _card3 = _deck6.getCardByIndex(data.unflip.cardIndex | 0);
+	
+			if (_card3) {
+				_event2.default.dispatch('unmarkCard', {
+					"card": _card3
+				});
+			}
 		}
 	
 		// TODO актуально ли ещё?
@@ -11302,19 +11355,36 @@ var SolitaireEngine =
 	
 		if (el && !el.hasClass('flip')) {
 	
+			var cardIsMarked = null;
+	
 			if (el.hasClass('marker')) {
+	
+				cardIsMarked = false;
+	
 				el.removeClass('marker');
 			} else {
+	
+				cardIsMarked = true;
+	
 				el.addClass('marker');
 			}
 	
 			if (typeof data.callback == "function") {
-				data.callback();
+				data.callback(cardIsMarked);
 			}
 		}
 	});
 	
-	_event2.default.listen('removeMarkCard', function (data) {
+	_event2.default.listen('markCard', function (data) {
+	
+		var el = _share2.default.get('domElement:' + data.card.id);
+	
+		if (el) {
+			el.removeClass('marker');
+		}
+	});
+	
+	_event2.default.listen('unmarkCard', function (data) {
 	
 		var el = _share2.default.get('domElement:' + data.card.id);
 	

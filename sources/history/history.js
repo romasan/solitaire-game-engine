@@ -1,18 +1,12 @@
 'use strict';
 
-import event        from 'event'       ;
-import share        from 'share'       ;
-import common       from 'common'      ;
-import defaults     from 'defaults'    ;
-import stateManager from 'stateManager';
+import event    from 'event'   ;
+import share    from 'share'   ;
+import common   from 'common'  ;
+import defaults from 'defaults';
 
-import forceMove    from 'forceMove'   ;
-import Deck         from 'deck'        ;
-import Tips         from 'tips'        ;
-import field        from 'field'       ;
-import inputs       from 'inputs'      ;
-import undo         from 'undo'        ;
-import redo         from 'redo'        ;
+import undo     from 'undo'    ;
+import redo     from 'redo'    ;
 
 // TODO пошаговая анимация
 
@@ -59,7 +53,7 @@ class historyClass {
 
 	add(step) {
 
-		// console.log('History:add', step);
+		console.log('History:add', step);
 
 		this.steps.push(step);
 	}
@@ -73,7 +67,7 @@ class historyClass {
 			this.reset(true);
 		}
 
-		// console.log('History:get', _req);
+		console.log('History:get', _req);
 
 		// for(let line of _req) {
 		// 	for(let name in line) {

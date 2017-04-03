@@ -1,14 +1,17 @@
+
+
 'use strict';
 
-import event    from 'event'   ;
-import share    from 'share'   ;
-import common   from 'common'  ;
-import defaults from 'defaults';
+import event        from 'event'       ;
+import share        from 'share'       ;
+import common       from 'common'      ;
+import defaults     from 'defaults'    ;
 
-import inputs   from 'inputs'  ;
-import History  from 'history' ;
-import Tips     from 'tips'    ;
-import atom     from 'atom'    ;
+import inputs       from 'inputs'      ;
+import History      from 'history'     ;
+import Tips         from 'tips'        ;
+import atom         from 'atom'        ;
+import stateManager from 'stateManager';
 
 /*
  * flip
@@ -176,6 +179,8 @@ event.listen('undo', undoData => {
 	if(!undoData) {
 		return;
 	}
+
+	console.log('UNDO:', undoData);
 
 	inputs.break();
 

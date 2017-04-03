@@ -1,14 +1,15 @@
 'use strict';
 
-import event    from 'event'   ;
-import share    from 'share'   ;
-import common   from 'common'  ;
-import defaults from 'defaults';
+import event        from 'event'       ;
+import share        from 'share'       ;
+import common       from 'common'      ;
+import defaults     from 'defaults'    ;
 
-import inputs   from 'inputs'  ;
-import History  from 'history' ;
-import Tips     from 'tips'    ;
-import atom     from 'atom'    ;
+import inputs       from 'inputs'      ;
+import History      from 'history'     ;
+import Tips         from 'tips'        ;
+import atom         from 'atom'        ;
+import stateManager from 'stateManager';
 
 /*
  * flip
@@ -164,6 +165,32 @@ let redo = data => {
 		}
 
 		event.dispatch('forceMove', forceMoveData);
+	}
+
+	if(data.markCard) {
+		
+		let deck = common.getElementByName(data.unflip.deckName, 'deck');
+
+		let card = deck.getCardByIndex(data.unflip.cardIndex | 0);
+
+		if(card) {
+			event.dispatch('markCard', {
+				"card" : card
+			});
+		}
+	}
+
+	if(data.unmarkCard) {
+
+		let deck = common.getElementByName(data.unflip.deckName, 'deck');
+
+		let card = deck.getCardByIndex(data.unflip.cardIndex | 0);
+
+		if(card) {
+			event.dispatch('unmarkCard', {
+				"card" : card
+			});
+		}
 	}
 
 	// TODO актуально ли ещё?

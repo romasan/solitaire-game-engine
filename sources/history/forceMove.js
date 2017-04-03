@@ -64,7 +64,10 @@ let forceMove = data => {// {from, to, deck, <flip>, <callback>}
 		let cardsPop = deckFrom.Pop(data.deck.length);
 
 		// перевернуть карты во время хода
-		if(data.flip) {
+		if(
+			typeof data.flip == "boolean" &&
+			       data.flip == true
+		) {
 			for(let i in cardsPop) {
 				cardsPop[i].flip = !cardsPop[i].flip;
 			}
