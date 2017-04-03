@@ -50,6 +50,10 @@ let undo = data => {
 
 		let card = deck.getCardByIndex(data.unflip.cardIndex | 0);
 
+		event.dispatch('removeMarkCard', {
+			"card" : card
+		});
+
 		if(card) {
 			card.flip = true;
 			deck.Redraw();

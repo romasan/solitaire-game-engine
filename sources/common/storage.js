@@ -24,9 +24,13 @@ class storage {
 	set(key, data) {
 
 		try {
+
 			let _ls = JSON.parse(localStorage.SolitaireEngine);
+
 			_ls[key] = data;
+
 			let _data = JSON.stringify(_ls);
+
 			localStorage.SolitaireEngine = _data;
 		} catch(e) {}
 	}
@@ -34,7 +38,9 @@ class storage {
 	get(key) {
 
 		try {
+
 			let _ls = JSON.parse(localStorage.SolitaireEngine);
+
 			return _ls[key];
 		} catch(e) {
 			return null;

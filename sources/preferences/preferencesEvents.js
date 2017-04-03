@@ -16,17 +16,19 @@ import gamePreferences from 'gamePreferences';
 let onShowParameters = e => {
 
 	let pref = storage.get('pref');
+
 	!pref && (pref = defaults.pref);
+
 	try {
-	for(let prefName in defaults.themes) {
+		for(let prefName in defaults.themes) {
 
-		let _pref = pref[prefName] && defaults.themes[prefName].indexOf(pref[prefName]) >= 0
-			? pref[prefName]
-			: defaults.pref[prefName];
+			let _pref = pref[prefName] && defaults.themes[prefName].indexOf(pref[prefName]) >= 0
+				? pref[prefName]
+				: defaults.pref[prefName];
 
-		$(`input[name='pref_${prefName}'][value='${(_pref).toString()}']`)
-			.prop({checked: true});
-	}
+			$(`input[name='pref_${prefName}'][value='${(_pref).toString()}']`)
+				.prop({checked: true});
+		}
 	} catch(e) {}
 
 	gamePreferences.show(pref);
@@ -35,13 +37,21 @@ let onShowParameters = e => {
 let applyParameters = e => {
 
 	let pref = {};
+
 	try {
 
-	for(let prefName in defaults.themes) {
-		let _value = $(`input[name='pref_${prefName}']:checked`).val();
-		_value = _value == 'true' ? true : _value == 'false' ? false : _value;
-		pref[prefName] = _value;
-	}
+		for(let prefName in defaults.themes) {
+
+			let _value = $(`input[name='pref_${prefName}']:checked`).val();
+
+			_value = _value == 'true'
+				? true
+				: _value == 'false'
+					? false
+					: _value;
+
+			pref[prefName] = _value;
+		}
 	} catch(e) {}
 
 	event.dispatch('fieldThemesSet', pref);
@@ -53,8 +63,11 @@ let applyParameters = e => {
 	saveParameters(pref);
 
 	let changePreferencesCallback = share.get('changePreferencesCallback');
+
 	if(typeof changePreferencesCallback == 'function') {
+
 		let _data = pref;
+
 		changePreferencesCallback(_data);
 	}
 };
@@ -68,23 +81,23 @@ export default e => {
 	// TODO переделать без jQuery
 	try {
 
-	$('#bbParameters').click(onShowParameters);
-	
-	// event.dispatch('addDomEvent', {
-	// 	"event"    : "click"
-	// 	"element"  : "#bbParameters",
-	// 	"callback" : onShowParameters
-	// });
+		$('#bbParameters').click(onShowParameters);
+		
+		// event.dispatch('addDomEvent', {
+		// 	"event"    : "click"
+		// 	"element"  : "#bbParameters",
+		// 	"callback" : onShowParameters
+		// });
 
-	// $("#gpCommit").click(saveParameters);
+		// $("#gpCommit").click(saveParameters);
 
-	$('#parametersPanel').on('change', 'input', applyParameters);
-	// $("#solitaire-engine-style-preferences input").change(applyParameters);
+		$('#parametersPanel').on('change', 'input', applyParameters);
+		// $("#solitaire-engine-style-preferences input").change(applyParameters);
 
-	// event.dispatch('addDomEvent', {
-	// 	"event"    : "change"
-	// 	"element"  : ".solitaire-engine-style-preferences-element",
-	// 	"callback" : applyParameters
-	// });
+		// event.dispatch('addDomEvent', {
+		// 	"event"    : "change"
+		// 	"element"  : ".solitaire-engine-style-preferences-element",
+		// 	"callback" : applyParameters
+		// });
 	} catch(e) {}
 };

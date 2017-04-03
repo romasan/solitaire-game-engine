@@ -111,7 +111,7 @@ var SolitaireEngine =
 	exports.options = _defaults2.default;
 	exports.winCheck = _winCheck2.default.hwinCheck;
 	exports.generator = _deckGenerator2.default;
-	exports.version = (9091496303).toString().split(9).slice(1).map(function (e) {
+	exports.version = (9091496323).toString().split(9).slice(1).map(function (e) {
 		return parseInt(e, 8);
 	}).join('.');
 	
@@ -7023,6 +7023,10 @@ var SolitaireEngine =
 	
 			var _card = _deck.getCardByIndex(data.unflip.cardIndex | 0);
 	
+			_event2.default.dispatch('removeMarkCard', {
+				"card": _card
+			});
+	
 			if (_card) {
 				_card.flip = true;
 				_deck.Redraw();
@@ -9101,9 +9105,13 @@ var SolitaireEngine =
 			value: function set(key, data) {
 	
 				try {
+	
 					var _ls = JSON.parse(localStorage.SolitaireEngine);
+	
 					_ls[key] = data;
+	
 					var _data = JSON.stringify(_ls);
+	
 					localStorage.SolitaireEngine = _data;
 				} catch (e) {}
 			}
@@ -9112,7 +9120,9 @@ var SolitaireEngine =
 			value: function get(key) {
 	
 				try {
+	
 					var _ls = JSON.parse(localStorage.SolitaireEngine);
+	
 					return _ls[key];
 				} catch (e) {
 					return null;
@@ -9215,7 +9225,9 @@ var SolitaireEngine =
 	var onShowParameters = function onShowParameters(e) {
 	
 		var pref = _storage2.default.get('pref');
+	
 		!pref && (pref = _defaults2.default.pref);
+	
 		try {
 			for (var prefName in _defaults2.default.themes) {
 	
@@ -9231,11 +9243,15 @@ var SolitaireEngine =
 	var applyParameters = function applyParameters(e) {
 	
 		var pref = {};
+	
 		try {
 	
 			for (var prefName in _defaults2.default.themes) {
+	
 				var _value = $('input[name=\'pref_' + prefName + '\']:checked').val();
+	
 				_value = _value == 'true' ? true : _value == 'false' ? false : _value;
+	
 				pref[prefName] = _value;
 			}
 		} catch (e) {}
@@ -9249,8 +9265,11 @@ var SolitaireEngine =
 		saveParameters(pref);
 	
 		var changePreferencesCallback = _share2.default.get('changePreferencesCallback');
+	
 		if (typeof changePreferencesCallback == 'function') {
+	
 			var _data = pref;
+	
 			changePreferencesCallback(_data);
 		}
 	};
@@ -9419,13 +9438,15 @@ var SolitaireEngine =
 	exports.default = function (e) {
 	
 		var pref = _storage2.default.get('pref');
+	
 		!pref && (pref = _defaults2.default.pref);
 	
 		for (var prefName in pref) {
 	
 			if (_defaults2.default.themes[prefName]) {
 	
-				if (!_defaults2.default.themes[prefName].indexOf(pref[prefName]) >= 0) {
+				if (_defaults2.default.themes[prefName].indexOf(pref[prefName]) < 0) {
+	
 					pref[prefName] = _defaults2.default.pref[prefName];
 				}
 			}
