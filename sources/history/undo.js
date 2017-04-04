@@ -157,9 +157,12 @@ let undo = data => {
 		let forceMoveData = {
 			"from" : data.move.to  , // from ->
 			"to"   : data.move.from, //      <- to
-			"deck" : data.move.deck,
-			"flip" : data.move.flip,
+			"deck" : data.move.deck
 		};
+
+		if(typeof data.move.flip == "boolean") {
+			forceMoveData.flip = !data.move.flip;
+		}
 
 		if(!share.get('showHistoryAnimation')) {
 

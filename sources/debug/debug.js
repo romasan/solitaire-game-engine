@@ -79,6 +79,18 @@ document.addEventListener("DOMContentLoaded", e => {
 	}
 });
 
+let eachDecksInGroup = (groupName, callback) => {
+
+	let group = common.getElementByName(groupName, 'group');
+	let decks = group.getDecks();
+
+	for(let deckName in deck) {
+		if(typeof callback == "function") {
+			callback(deck[deckName]);
+		}
+	}
+}
+
 let logCardsInDeck = deck => {
 
 	let _log = [''];
@@ -106,9 +118,13 @@ let keys = {
 }
 
 document.onkeyup = e => {
+
 	if(e.keyCode == keys.d) {
-		let deck = common.getElementByName('rollerDeck');
-		logCardsInDeck(deck);
+
+		// let deck = common.getElementByName('rollerDeck');
+		// logCardsInDeck(deck);
+
+		eachDecksInGroup('group_row', logCardsInDeck);
 	}
 }
 

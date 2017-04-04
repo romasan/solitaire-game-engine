@@ -152,8 +152,12 @@ let redo = data => {
 			"from" : data.move.from,
 			"to"   : data.move.to  ,
 			"deck" : data.move.deck,
-			"flip" : data.move.flip,
+			"flip" : data.move.flip
 		};
+
+		if(typeof data.move.flip == "boolean") {
+			forceMoveData.flip = data.move.flip;
+		}
 
 		if(!share.get('showHistoryAnimation')) {
 

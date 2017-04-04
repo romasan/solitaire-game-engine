@@ -44,11 +44,14 @@ let forceMove = data => {// {from, to, deck, <flip>, <callback>}
 
 	let deckFromCards = deckFrom.cards;
 
+
 	for(let i in deckFromCards) {
 
 		if(i >= deckFromCards.length - data.deck.length) {
 
 			let _id = i - (deckFromCards.length | 0) + (data.deck.length | 0);
+
+			console.log('###', i, _id, data.deck,deckFromCards);
 
 			if(
 				data.deck[_id]                          &&
@@ -64,12 +67,9 @@ let forceMove = data => {// {from, to, deck, <flip>, <callback>}
 		let cardsPop = deckFrom.Pop(data.deck.length);
 
 		// перевернуть карты во время хода
-		if(
-			typeof data.flip == "boolean" &&
-			       data.flip == true
-		) {
+		if(typeof data.flip == "boolean") {
 			for(let i in cardsPop) {
-				cardsPop[i].flip = !cardsPop[i].flip;
+				cardsPop[i].flip = data.flip; // !cardsPop[i].flip;
 			}
 		}
 
@@ -117,8 +117,8 @@ let forceMove = data => {// {from, to, deck, <flip>, <callback>}
 		}
 
 		if(
-			deckFrom.autoUnflipTop                                &&
-			deckFrom.cards.length > 0                             &&
+			deckFrom.autoUnflipTop                         &&
+			deckFrom.cards.length > 0                      &&
 			deckFrom.cards[deckFrom.cards.length - 1].flip
 		) {
 			deckFrom.unflipTopCard(data.addStep);

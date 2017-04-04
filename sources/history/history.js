@@ -53,7 +53,7 @@ class historyClass {
 
 	add(step) {
 
-		console.log('History:add', step);
+		// console.log('History:add', step);
 
 		this.steps.push(step);
 	}
@@ -67,7 +67,7 @@ class historyClass {
 			this.reset(true);
 		}
 
-		console.log('History:get', _req);
+		// console.log('History:get', _req);
 
 		// for(let line of _req) {
 		// 	for(let name in line) {
@@ -78,23 +78,18 @@ class historyClass {
 		return _req;
 	}
 
-	// log() {}
-
 	count() {
 		return this.steps.length;
 	}
 
-	// addUndoMethods(data) {
-	// 	for(let i in data) {
-	// 		_undoMethods[i] = data[i];
-	// 	}
-	// }
+	// TODO
+	zip() {
+		// 
+	}
 
-	// addRedoMethods(data) {
-	// 	for(let i in data) {
-	// 		_redoMethods[i] = data[i];
-	// 	}
-	// }
+	unzip(data) {
+		// 
+	}
 }
 
 let history = new historyClass();
@@ -139,6 +134,10 @@ event.listen('doHistory', e => {
 });
 
 event.listen('resetHistory', e => {
+	history.reset();
+});
+
+event.listen('newGame', e => {
 	history.reset();
 });
 

@@ -111,7 +111,7 @@ var SolitaireEngine =
 	exports.options = _defaults2.default;
 	exports.winCheck = _winCheck2.default.hwinCheck;
 	exports.generator = _deckGenerator2.default;
-	exports.version = (9091496347).toString().split(9).slice(1).map(function (e) {
+	exports.version = (9091496361).toString().split(9).slice(1).map(function (e) {
 		return parseInt(e, 8);
 	}).join('.');
 	
@@ -5503,6 +5503,8 @@ var SolitaireEngine =
 	
 				var _id = i - (deckFromCards.length | 0) + (data.deck.length | 0);
 	
+				console.log('###', i, _id, data.deck, deckFromCards);
+	
 				if (data.deck[_id] && deckFromCards[i].name != data.deck[_id]) {
 					_check = false;
 				}
@@ -5514,9 +5516,9 @@ var SolitaireEngine =
 			var cardsPop = deckFrom.Pop(data.deck.length);
 	
 			// перевернуть карты во время хода
-			if (typeof data.flip == "boolean" && data.flip == true) {
+			if (typeof data.flip == "boolean") {
 				for (var _i in cardsPop) {
-					cardsPop[_i].flip = !cardsPop[_i].flip;
+					cardsPop[_i].flip = data.flip; // !cardsPop[i].flip;
 				}
 			}
 	
@@ -6856,7 +6858,7 @@ var SolitaireEngine =
 			key: 'add',
 			value: function add(step) {
 	
-				console.log('History:add', step);
+				// console.log('History:add', step);
 	
 				this.steps.push(step);
 			}
@@ -6875,7 +6877,7 @@ var SolitaireEngine =
 					this.reset(true);
 				}
 	
-				console.log('History:get', _req);
+				// console.log('History:get', _req);
 	
 				// for(let line of _req) {
 				// 	for(let name in line) {
@@ -6885,27 +6887,24 @@ var SolitaireEngine =
 	
 				return _req;
 			}
-	
-			// log() {}
-	
 		}, {
 			key: 'count',
 			value: function count() {
 				return this.steps.length;
 			}
 	
-			// addUndoMethods(data) {
-			// 	for(let i in data) {
-			// 		_undoMethods[i] = data[i];
-			// 	}
-			// }
+			// TODO
 	
-			// addRedoMethods(data) {
-			// 	for(let i in data) {
-			// 		_redoMethods[i] = data[i];
-			// 	}
-			// }
-	
+		}, {
+			key: 'zip',
+			value: function zip() {
+				// 
+			}
+		}, {
+			key: 'unzip',
+			value: function unzip(data) {
+				// 
+			}
 		}]);
 	
 		return historyClass;
@@ -6953,6 +6952,10 @@ var SolitaireEngine =
 	});
 	
 	_event2.default.listen('resetHistory', function (e) {
+		history.reset();
+	});
+	
+	_event2.default.listen('newGame', function (e) {
 		history.reset();
 	});
 	
@@ -7128,9 +7131,12 @@ var SolitaireEngine =
 			var forceMoveData = {
 				"from": data.move.to, // from ->
 				"to": data.move.from, //      <- to
-				"deck": data.move.deck,
-				"flip": data.move.flip
+				"deck": data.move.deck
 			};
+	
+			if (typeof data.move.flip == "boolean") {
+				forceMoveData.flip = !data.move.flip;
+			}
 	
 			if (!_share2.default.get('showHistoryAnimation')) {
 	
@@ -7402,6 +7408,10 @@ var SolitaireEngine =
 				"deck": data.move.deck,
 				"flip": data.move.flip
 			};
+	
+			if (typeof data.move.flip == "boolean") {
+				forceMoveData.flip = data.move.flip;
+			}
 	
 			if (!_share2.default.get('showHistoryAnimation')) {
 	
@@ -11966,9 +11976,9 @@ var SolitaireEngine =
 	
 	var _field2 = _interopRequireDefault(_field);
 	
-	var _deck2 = __webpack_require__(14);
+	var _deck = __webpack_require__(14);
 	
-	var _deck3 = _interopRequireDefault(_deck2);
+	var _deck2 = _interopRequireDefault(_deck);
 	
 	var _deckGenerator = __webpack_require__(85);
 	
@@ -12047,6 +12057,18 @@ var SolitaireEngine =
 		}
 	});
 	
+	var eachDecksInGroup = function eachDecksInGroup(groupName, callback) {
+	
+		var group = _common2.default.getElementByName(groupName, 'group');
+		var decks = group.getDecks();
+	
+		for (var deckName in _deck2.default) {
+			if (typeof callback == "function") {
+				callback(_deck2.default[deckName]);
+			}
+		}
+	};
+	
 	var logCardsInDeck = function logCardsInDeck(deck) {
 	
 		var _log = [''];
@@ -12087,9 +12109,13 @@ var SolitaireEngine =
 	};
 	
 	document.onkeyup = function (e) {
+	
 		if (e.keyCode == keys.d) {
-			var _deck = _common2.default.getElementByName('rollerDeck');
-			logCardsInDeck(_deck);
+	
+			// let deck = common.getElementByName('rollerDeck');
+			// logCardsInDeck(deck);
+	
+			eachDecksInGroup('group_row', logCardsInDeck);
 		}
 	};
 	
