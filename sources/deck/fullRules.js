@@ -146,7 +146,9 @@ let fullRules = {
 
 		// Groups
 		if(data.groups) {
-			for(let groupName of data.groups) {
+			for(let groupNameIndex in data.groups) {
+
+				let groupName = data.groups[groupNameIndex];
 
 				let _group = Group.getByName(groupName);
 
@@ -172,8 +174,9 @@ let fullRules = {
 
 		// Decks
 		if(data.decks) {
-			for(let deckName of data.decks) {
+			for(let deckNameIndex in data.decks) {
 
+				let deckName = data.decks[deckNameIndex];
 				// get deck by name
 				let _deck = Deck.getDeck(deckName);
 
@@ -184,9 +187,13 @@ let fullRules = {
 		}
 
 		// Rules
-		for(let deck of queryDecks) {
+		for(let deckIndex in queryDecks) {
 
-			for(let rule of data.rules) {
+			let deck = queryDecks[deckIndex];
+
+			for(let ruleIndex in data.rules) {
+
+				let rule = data.rules[ruleIndex];
 
 				// TODO тут предполагается что все "подправила" будут только строковые
 				if(fullRules[rule]) {

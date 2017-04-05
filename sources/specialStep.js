@@ -17,7 +17,9 @@ event.listen('specialStep', card => {
 
 			let step = data.history[i];
 
-			for(let atom of step) {
+			for(let atomIndex in step) {
+
+				let atom = step[atomIndex];
 
 				if(
 					atom.move                     &&

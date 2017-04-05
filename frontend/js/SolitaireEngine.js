@@ -111,7 +111,7 @@ var SolitaireEngine =
 	exports.options = _defaults2.default;
 	exports.winCheck = _winCheck2.default.hwinCheck;
 	exports.generator = _deckGenerator2.default;
-	exports.version = (9091496405).toString().split(9).slice(1).map(function (e) {
+	exports.version = (9091496407).toString().split(9).slice(1).map(function (e) {
 		return parseInt(e, 8);
 	}).join('.');
 	
@@ -1800,93 +1800,40 @@ var SolitaireEngine =
 		var _homeGroups = _field2.default.homeGroups;
 		var homeGroupDecksNames = [];
 	
-		var _iteratorNormalCompletion = true;
-		var _didIteratorError = false;
-		var _iteratorError = undefined;
+		for (var groupNameIndex in _homeGroups) {
 	
-		try {
-			for (var _iterator = _homeGroups[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
-				var groupName = _step.value;
+			var groupName = _homeGroups[groupNameIndex];
 	
-				var group = _common2.default.getElementsByName(groupName, 'deck')[0];
-				var decks = group.getDecks();
-				var _iteratorNormalCompletion3 = true;
-				var _didIteratorError3 = false;
-				var _iteratorError3 = undefined;
+			var group = _common2.default.getElementsByName(groupName, 'deck')[0];
+			var decks = group.getDecks();
 	
-				try {
-					for (var _iterator3 = decks[Symbol.iterator](), _step3; !(_iteratorNormalCompletion3 = (_step3 = _iterator3.next()).done); _iteratorNormalCompletion3 = true) {
-						var deck = _step3.value;
+			for (var deckIndex in decks) {
 	
-						homeGroupDecksNames.push(deck.name);
-					}
-				} catch (err) {
-					_didIteratorError3 = true;
-					_iteratorError3 = err;
-				} finally {
-					try {
-						if (!_iteratorNormalCompletion3 && _iterator3.return) {
-							_iterator3.return();
-						}
-					} finally {
-						if (_didIteratorError3) {
-							throw _iteratorError3;
-						}
-					}
-				}
-			}
-		} catch (err) {
-			_didIteratorError = true;
-			_iteratorError = err;
-		} finally {
-			try {
-				if (!_iteratorNormalCompletion && _iterator.return) {
-					_iterator.return();
-				}
-			} finally {
-				if (_didIteratorError) {
-					throw _iteratorError;
-				}
+				var deck = decks[deckIndex];
+	
+				homeGroupDecksNames.push(deck.name);
 			}
 		}
 	
 		var suitableTips = [];
 	
-		var _iteratorNormalCompletion2 = true;
-		var _didIteratorError2 = false;
-		var _iteratorError2 = undefined;
+		for (var tipIndex in _tips) {
 	
-		try {
-			for (var _iterator2 = _tips[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
-				var _tip = _step2.value;
+			var tip = _tips[tipIndex];
 	
-				if (homeGroupDecksNames.indexOf(_tip.to.deck.name) >= 0 && homeGroupDecksNames.indexOf(_tip.from.deck.name) < 0) {
-					suitableTips.push(_tip);
-				}
-			}
-		} catch (err) {
-			_didIteratorError2 = true;
-			_iteratorError2 = err;
-		} finally {
-			try {
-				if (!_iteratorNormalCompletion2 && _iterator2.return) {
-					_iterator2.return();
-				}
-			} finally {
-				if (_didIteratorError2) {
-					throw _iteratorError2;
-				}
+			if (homeGroupDecksNames.indexOf(tip.to.deck.name) >= 0 && homeGroupDecksNames.indexOf(tip.from.deck.name) < 0) {
+				suitableTips.push(tip);
 			}
 		}
 	
 		if (suitableTips.length > 0) {
 	
-			var tip = suitableTips[0];
+			var _tip = suitableTips[0];
 	
 			var forceMoveData = {
-				"from": tip.from.deck.name,
-				"to": tip.to.deck.name,
-				"deck": [tip.from.card.name],
+				"from": _tip.from.deck.name,
+				"to": _tip.to.deck.name,
+				"deck": [_tip.from.card.name],
 				"addStep": true,
 				"save": true
 			};
@@ -4497,151 +4444,75 @@ var SolitaireEngine =
 	
 			// Groups
 			if (data.groups) {
-				var _iteratorNormalCompletion = true;
-				var _didIteratorError = false;
-				var _iteratorError = undefined;
+				for (var groupNameIndex in data.groups) {
 	
-				try {
-					for (var _iterator = data.groups[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
-						var groupName = _step.value;
+					var groupName = data.groups[groupNameIndex];
 	
+					var _group = _group3.default.getByName(groupName);
 	
-						var _group = _group3.default.getByName(groupName);
+					var _decks = _group.getDecks();
 	
-						var _decks = _group.getDecks();
+					var _select = data.select ? data.select : 'all';
 	
-						var _select = data.select ? data.select : 'all';
+					// 	select: first | second | last | all
+					if (_select == "first") {
+						// TODO select deck with index 0
+						var _deck = _group.getDeckByIndex(1);
 	
-						// 	select: first | second | last | all
-						if (_select == "first") {
-							// TODO select deck with index 0
-							var _deck = _group.getDeckByIndex(1);
-	
-							queryDecks.push(_deck);
-						} else if (_select == "second") {
-							// --/-- index 0
-						} else if (_select == "last") {
-							// --/-- max index
-						} else {
-								// all
-							}
-					}
-				} catch (err) {
-					_didIteratorError = true;
-					_iteratorError = err;
-				} finally {
-					try {
-						if (!_iteratorNormalCompletion && _iterator.return) {
-							_iterator.return();
+						queryDecks.push(_deck);
+					} else if (_select == "second") {
+						// --/-- index 0
+					} else if (_select == "last") {
+						// --/-- max index
+					} else {
+							// all
 						}
-					} finally {
-						if (_didIteratorError) {
-							throw _iteratorError;
-						}
-					}
 				}
 			}
 	
 			// Decks
 			if (data.decks) {
-				var _iteratorNormalCompletion2 = true;
-				var _didIteratorError2 = false;
-				var _iteratorError2 = undefined;
+				for (var deckNameIndex in data.decks) {
 	
-				try {
-					for (var _iterator2 = data.decks[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
-						var deckName = _step2.value;
+					var deckName = data.decks[deckNameIndex];
+					// get deck by name
+					var _deck2 = _deck5.default.getDeck(deckName);
 	
-	
-						// get deck by name
-						var _deck2 = _deck5.default.getDeck(deckName);
-	
-						if (_deck2) {
-							queryDecks.push(_deck2);
-						}
-					}
-				} catch (err) {
-					_didIteratorError2 = true;
-					_iteratorError2 = err;
-				} finally {
-					try {
-						if (!_iteratorNormalCompletion2 && _iterator2.return) {
-							_iterator2.return();
-						}
-					} finally {
-						if (_didIteratorError2) {
-							throw _iteratorError2;
-						}
+					if (_deck2) {
+						queryDecks.push(_deck2);
 					}
 				}
 			}
 	
 			// Rules
-			var _iteratorNormalCompletion3 = true;
-			var _didIteratorError3 = false;
-			var _iteratorError3 = undefined;
+			for (var deckIndex in queryDecks) {
 	
-			try {
-				for (var _iterator3 = queryDecks[Symbol.iterator](), _step3; !(_iteratorNormalCompletion3 = (_step3 = _iterator3.next()).done); _iteratorNormalCompletion3 = true) {
-					var _deck3 = _step3.value;
-					var _iteratorNormalCompletion4 = true;
-					var _didIteratorError4 = false;
-					var _iteratorError4 = undefined;
+				var _deck3 = queryDecks[deckIndex];
 	
-					try {
+				for (var ruleIndex in data.rules) {
 	
-						for (var _iterator4 = data.rules[Symbol.iterator](), _step4; !(_iteratorNormalCompletion4 = (_step4 = _iterator4.next()).done); _iteratorNormalCompletion4 = true) {
-							var rule = _step4.value;
+					var rule = data.rules[ruleIndex];
 	
-	
-							// TODO тут предполагается что все "подправила" будут только строковые
-							if (fullRules[rule]) {
-								_correct = _correct && fullRules[rule](_deck3);
-							}
-						}
-					} catch (err) {
-						_didIteratorError4 = true;
-						_iteratorError4 = err;
-					} finally {
-						try {
-							if (!_iteratorNormalCompletion4 && _iterator4.return) {
-								_iterator4.return();
-							}
-						} finally {
-							if (_didIteratorError4) {
-								throw _iteratorError4;
-							}
-						}
-					}
-	
-					if (data.anyRule) {
-	
-						var _anyCorrect = false;
-	
-						for (var ruleIndex in data.anyRule) {
-	
-							var _rule = data.anyRule[ruleIndex];
-	
-							if (fullRules[_rule]) {
-								_anyCorrect = _anyCorrect || fullRules[_rule](_deck3);
-							}
-						}
-	
-						_correct = _correct && _anyCorrect;
+					// TODO тут предполагается что все "подправила" будут только строковые
+					if (fullRules[rule]) {
+						_correct = _correct && fullRules[rule](_deck3);
 					}
 				}
-			} catch (err) {
-				_didIteratorError3 = true;
-				_iteratorError3 = err;
-			} finally {
-				try {
-					if (!_iteratorNormalCompletion3 && _iterator3.return) {
-						_iterator3.return();
+	
+				if (data.anyRule) {
+	
+					var _anyCorrect = false;
+	
+					for (var _ruleIndex in data.anyRule) {
+	
+						var _rule = data.anyRule[_ruleIndex];
+	
+						if (fullRules[_rule]) {
+							_anyCorrect = _anyCorrect || fullRules[_rule](_deck3);
+						}
 					}
-				} finally {
-					if (_didIteratorError3) {
-						throw _iteratorError3;
-					}
+	
+					_correct = _correct && _anyCorrect;
 				}
 			}
 	
@@ -5126,46 +4997,27 @@ var SolitaireEngine =
 					}
 				}
 	
-				var _iteratorNormalCompletion = true;
-				var _didIteratorError = false;
-				var _iteratorError = undefined;
+				for (var i in deck.actions[actionName].events) {
 	
-				try {
-					for (var _iterator = deck.actions[actionName].events[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
-						var _event = _step.value;
+					var _event = deck.actions[actionName].events[i];
 	
+					// сохраняем action
+					_decksActions.push({
+						"deck": deck,
+						"event": _event,
+						"action": actionName
+					});
 	
-						// сохраняем action
-						_decksActions.push({
-							"deck": deck,
-							"event": _event,
-							"action": actionName
-						});
+					_share2.default.set('actionEvent:' + deck.name + ':' + _event, true);
 	
-						_share2.default.set('actionEvent:' + deck.name + ':' + _event, true);
+					// создаём событие если оно еще не создано
+					if (!_events.indexOf(_event) >= 0) {
 	
-						// создаём событие если оно еще не создано
-						if (!_events.indexOf(_event) >= 0) {
+						// сохраняем событие в список с уже созданными
+						_events.push(_event);
 	
-							// сохраняем событие в список с уже созданными
-							_events.push(_event);
-	
-							// вешаем событие
-							addActionEvent(_event);
-						}
-					}
-				} catch (err) {
-					_didIteratorError = true;
-					_iteratorError = err;
-				} finally {
-					try {
-						if (!_iteratorNormalCompletion && _iterator.return) {
-							_iterator.return();
-						}
-					} finally {
-						if (_didIteratorError) {
-							throw _iteratorError;
-						}
+						// вешаем событие
+						addActionEvent(_event);
 					}
 				}
 			} else {
@@ -6353,90 +6205,52 @@ var SolitaireEngine =
 	
 						var _select = _query.select ? _query.select : 'all';
 	
-						var _iteratorNormalCompletion = true;
-						var _didIteratorError = false;
-						var _iteratorError = undefined;
+						for (var groupNameIndex in _query.groups) {
 	
-						try {
-							for (var _iterator = _query.groups[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
-								var groupName = _step.value;
+							var groupName = _query.groups[groupNameIndex];
 	
+							var _group = _group3.default.getByName(groupName);
 	
-								var _group = _group3.default.getByName(groupName);
+							if (_select == 'first') {
 	
-								if (_select == 'first') {
+								var _deck = _group.getDeckByIndex(1);
 	
-									var _deck = _group.getDeckByIndex(1);
-	
-									if (_deck) {
-										_selectedDecks.push(_deck);
-									}
-								} else if (_select == 'last') {
-	
-									var _index = _group.decksCount;
-	
-									var _deck2 = _group.getDeckByIndex(_index);
-	
-									if (_deck2) {
-	
-										var _index2 = _group.decksCount;
-	
-										var _deck3 = _group.getDeckByIndex(_index2);
-	
-										_selectedDecks.push(_deck3);
-									}
-								} else if (_select == 'all') {
-	
-									var _decks = _group.getDecks();
-	
-									_selectedDecks = _selectedDecks.concat(_decks);
+								if (_deck) {
+									_selectedDecks.push(_deck);
 								}
-							}
-						} catch (err) {
-							_didIteratorError = true;
-							_iteratorError = err;
-						} finally {
-							try {
-								if (!_iteratorNormalCompletion && _iterator.return) {
-									_iterator.return();
+							} else if (_select == 'last') {
+	
+								var _index = _group.decksCount;
+	
+								var _deck2 = _group.getDeckByIndex(_index);
+	
+								if (_deck2) {
+	
+									var _index2 = _group.decksCount;
+	
+									var _deck3 = _group.getDeckByIndex(_index2);
+	
+									_selectedDecks.push(_deck3);
 								}
-							} finally {
-								if (_didIteratorError) {
-									throw _iteratorError;
-								}
+							} else if (_select == 'all') {
+	
+								var _decks = _group.getDecks();
+	
+								_selectedDecks = _selectedDecks.concat(_decks);
 							}
 						}
 					}
 	
 					if (_query.decks) {
-						var _iteratorNormalCompletion2 = true;
-						var _didIteratorError2 = false;
-						var _iteratorError2 = undefined;
 	
-						try {
+						for (var deckNameIndex in _query.decks) {
 	
-							for (var _iterator2 = _query.decks[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
-								var deckName = _step2.value;
+							var deckName = _query.decks[deckNameIndex];
 	
+							var _deck4 = Deck.getByName(deckName);
 	
-								var _deck4 = Deck.getByName(deckName);
-	
-								if (_deck4) {
-									_selectedDecks.push(_deck4);
-								}
-							}
-						} catch (err) {
-							_didIteratorError2 = true;
-							_iteratorError2 = err;
-						} finally {
-							try {
-								if (!_iteratorNormalCompletion2 && _iterator2.return) {
-									_iterator2.return();
-								}
-							} finally {
-								if (_didIteratorError2) {
-									throw _iteratorError2;
-								}
+							if (_deck4) {
+								_selectedDecks.push(_deck4);
 							}
 						}
 					}
@@ -6687,60 +6501,41 @@ var SolitaireEngine =
 	
 								var step = data.history[_i4];
 	
-								var _iteratorNormalCompletion = true;
-								var _didIteratorError = false;
-								var _iteratorError = undefined;
+								for (var atomIndex in step) {
 	
-								try {
-									for (var _iterator = step[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
-										var _atom = _step.value;
+									var _atom = step[atomIndex];
 	
+									// rewind
+									if (!found && typeof _atom.rollerActionStart == "string" && _atom.rollerActionStart == deck.name) {
 	
-										// rewind
-										if (!found && typeof _atom.rollerActionStart == "string" && _atom.rollerActionStart == deck.name) {
+										found = true;
+	
+										_event2.default.dispatch('resetHistory');
+	
+										for (var _i5 = 0; _i5 < stepsCount; _i5 += 1) {
+											data.undo();
+										}
+	
+										// reset deck
+										deck.showCards(false); // no redraw, add in history
+										deck.flipAllCards(false); // no redraw, add in history
+	
+										// event.dispatch('saveSteps');
+	
+										// reset
+									} else if (!found && _atom.move
+									// typeof atom.move.from == "string" &&
+									//        atom.move.from == deck.name
+									) {
 	
 											found = true;
 	
-											_event2.default.dispatch('resetHistory');
-	
-											for (var _i5 = 0; _i5 < stepsCount; _i5 += 1) {
-												data.undo();
-											}
-	
 											// reset deck
-											deck.showCards(false); // no redraw, add in history
-											deck.flipAllCards(false); // no redraw, add in history
+											deck.showCards(false, true); // no redraw, add in history
+											deck.flipAllCards(false, true); // no redraw, add in history
 	
-											// event.dispatch('saveSteps');
-	
-											// reset
-										} else if (!found && _atom.move
-										// typeof atom.move.from == "string" &&
-										//        atom.move.from == deck.name
-										) {
-	
-												found = true;
-	
-												// reset deck
-												deck.showCards(false, true); // no redraw, add in history
-												deck.flipAllCards(false, true); // no redraw, add in history
-	
-												_event2.default.dispatch('saveSteps');
-											}
-									}
-								} catch (err) {
-									_didIteratorError = true;
-									_iteratorError = err;
-								} finally {
-									try {
-										if (!_iteratorNormalCompletion && _iterator.return) {
-											_iterator.return();
+											_event2.default.dispatch('saveSteps');
 										}
-									} finally {
-										if (_didIteratorError) {
-											throw _iteratorError;
-										}
-									}
 								}
 							}
 						});
@@ -9555,31 +9350,12 @@ var SolitaireEngine =
 	
 				var step = data.history[i];
 	
-				var _iteratorNormalCompletion = true;
-				var _didIteratorError = false;
-				var _iteratorError = undefined;
+				for (var atomIndex in step) {
 	
-				try {
-					for (var _iterator = step[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
-						var atom = _step.value;
+					var atom = step[atomIndex];
 	
-	
-						if (atom.move && atom.move.to == deckName && atom.move.deck[0] == cardName) {
-							index = i;
-						}
-					}
-				} catch (err) {
-					_didIteratorError = true;
-					_iteratorError = err;
-				} finally {
-					try {
-						if (!_iteratorNormalCompletion && _iterator.return) {
-							_iterator.return();
-						}
-					} finally {
-						if (_didIteratorError) {
-							throw _iteratorError;
-						}
+					if (atom.move && atom.move.to == deckName && atom.move.deck[0] == cardName) {
+						index = i;
 					}
 				}
 			}
@@ -11787,50 +11563,15 @@ var SolitaireEngine =
 	
 		var _deck = [];
 	
-		var _iteratorNormalCompletion = true;
-		var _didIteratorError = false;
-		var _iteratorError = undefined;
+		for (var cardColorIndex in _cardsColors) {
 	
-		try {
-			for (var _iterator = _cardsColors[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
-				var cardColor = _step.value;
-				var _iteratorNormalCompletion2 = true;
-				var _didIteratorError2 = false;
-				var _iteratorError2 = undefined;
+			var cardColor = _cardsColors[cardColorIndex];
 	
-				try {
-					for (var _iterator2 = _cardsRanks[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
-						var cardRank = _step2.value;
+			for (var cardRankIndex in _cardsRanks) {
 	
-						_deck.push(cardColor + cardRank);
-					}
-				} catch (err) {
-					_didIteratorError2 = true;
-					_iteratorError2 = err;
-				} finally {
-					try {
-						if (!_iteratorNormalCompletion2 && _iterator2.return) {
-							_iterator2.return();
-						}
-					} finally {
-						if (_didIteratorError2) {
-							throw _iteratorError2;
-						}
-					}
-				}
-			}
-		} catch (err) {
-			_didIteratorError = true;
-			_iteratorError = err;
-		} finally {
-			try {
-				if (!_iteratorNormalCompletion && _iterator.return) {
-					_iterator.return();
-				}
-			} finally {
-				if (_didIteratorError) {
-					throw _iteratorError;
-				}
+				var cardRank = _cardsRanks[cardRankIndex];
+	
+				_deck.push(cardColor + cardRank);
 			}
 		}
 	

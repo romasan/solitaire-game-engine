@@ -213,17 +213,27 @@ let autoStepToHome = data => {
 	let _homeGroups = Field.homeGroups;
 	let homeGroupDecksNames = [];
 
-	for(let groupName of _homeGroups) {
+	for(let groupNameIndex in _homeGroups) {
+
+		let groupName = _homeGroups[groupNameIndex];
+
 		let group = common.getElementsByName(groupName, 'deck')[0];
 		let decks = group.getDecks();
-		for(let deck of decks) {
+
+		for(let deckIndex in decks) {
+
+			let deck = decks[deckIndex];
+
 			homeGroupDecksNames.push(deck.name);
 		}
 	}
 
 	let suitableTips = [];
 
-	for(let tip of _tips) {
+	for(let tipIndex in _tips) {
+
+		let tip = _tips[tipIndex];
+
 		if(
 			homeGroupDecksNames.indexOf(tip.to  .deck.name) >= 0 &&
 			homeGroupDecksNames.indexOf(tip.from.deck.name) <  0

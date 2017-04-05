@@ -98,7 +98,9 @@ let add = deck => {
 				}
 			}
 
-			for(let _event of deck.actions[actionName].events) {
+			for(let i in deck.actions[actionName].events) {
+
+				let _event = deck.actions[actionName].events[i];
 
 				// сохраняем action
 				_decksActions.push({
