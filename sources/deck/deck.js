@@ -735,7 +735,7 @@ class Deck {
 
 		let index = false;
 
-		for(let i in thus.cards) {
+		for(let i in this.cards) {
 			if(this.cards[i].id == id) {
 				index = i;
 			}

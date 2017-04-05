@@ -111,7 +111,7 @@ var SolitaireEngine =
 	exports.options = _defaults2.default;
 	exports.winCheck = _winCheck2.default.hwinCheck;
 	exports.generator = _deckGenerator2.default;
-	exports.version = (9091496434).toString().split(9).slice(1).map(function (e) {
+	exports.version = (9091496441).toString().split(9).slice(1).map(function (e) {
 		return parseInt(e, 8);
 	}).join('.');
 	
@@ -3646,7 +3646,7 @@ var SolitaireEngine =
 	
 				var index = false;
 	
-				for (var i in thus.cards) {
+				for (var i in this.cards) {
 					if (this.cards[i].id == id) {
 						index = i;
 					}
@@ -6838,7 +6838,7 @@ var SolitaireEngine =
 	
 			var card = deck.getCardByIndex(data.flip.cardIndex | 0);
 	
-			if (card) {
+			if (card && card.name == data.flip.cardName) {
 				card.flip = false;
 				deck.Redraw();
 			}
@@ -6855,7 +6855,7 @@ var SolitaireEngine =
 				"card": _card
 			});
 	
-			if (_card) {
+			if (_card && _card.name == data.unflip.cardName) {
 				_card.flip = true;
 				_deck.Redraw();
 			}
@@ -7119,7 +7119,7 @@ var SolitaireEngine =
 	
 			var card = deck.getCardByIndex(data.flip.cardIndex | 0);
 	
-			if (card) {
+			if (card && card.name == data.flip.cardName) {
 				card.flip = true;
 				deck.Redraw();
 			}
@@ -7132,7 +7132,7 @@ var SolitaireEngine =
 	
 			var _card = _deck.getCardByIndex(data.unflip.cardIndex | 0);
 	
-			if (_card) {
+			if (_card && _card.name == data.unflip.cardName) {
 				_card.flip = false;
 				_deck.Redraw();
 			}
@@ -7235,11 +7235,11 @@ var SolitaireEngine =
 	
 		if (data.markCard) {
 	
-			var _deck5 = _common2.default.getElementByName(data.unflip.deckName, 'deck');
+			var _deck5 = _common2.default.getElementByName(data.markCard.deckName, 'deck');
 	
-			var _card2 = _deck5.getCardByIndex(data.unflip.cardIndex | 0);
+			var _card2 = _deck5.getCardByIndex(data.markCard.cardIndex | 0);
 	
-			if (_card2) {
+			if (_card2 && data.markCard.cardName == _card2.name) {
 				_event2.default.dispatch('markCard', {
 					"card": _card2
 				});
@@ -7248,11 +7248,11 @@ var SolitaireEngine =
 	
 		if (data.unmarkCard) {
 	
-			var _deck6 = _common2.default.getElementByName(data.unflip.deckName, 'deck');
+			var _deck6 = _common2.default.getElementByName(data.unmarkCard.deckName, 'deck');
 	
-			var _card3 = _deck6.getCardByIndex(data.unflip.cardIndex | 0);
+			var _card3 = _deck6.getCardByIndex(data.unmarkCard.cardIndex | 0);
 	
-			if (_card3) {
+			if (_card3 && data.unmarkCard.cardName == _card3.name) {
 				_event2.default.dispatch('unmarkCard', {
 					"card": _card3
 				});

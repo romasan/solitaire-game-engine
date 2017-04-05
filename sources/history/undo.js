@@ -40,7 +40,10 @@ let undo = data => {
 
 		let card = deck.getCardByIndex(data.flip.cardIndex | 0);
 
-		if(card) {
+		if(
+			card                            &&
+			card.name == data.flip.cardName
+		) {
 			card.flip = false;
 			deck.Redraw();
 		}
@@ -57,7 +60,10 @@ let undo = data => {
 			"card" : card
 		});
 
-		if(card) {
+		if(
+			card                              &&
+			card.name == data.unflip.cardName
+		) {
 			card.flip = true;
 			deck.Redraw();
 		}

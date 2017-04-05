@@ -38,7 +38,10 @@ let redo = data => {
 
 		let card = deck.getCardByIndex(data.flip.cardIndex | 0);
 
-		if(card) {
+		if(
+			card                            &&
+			card.name == data.flip.cardName
+		) {
 			card.flip = true;
 			deck.Redraw();
 		}
@@ -51,7 +54,10 @@ let redo = data => {
 
 		let card = deck.getCardByIndex(data.unflip.cardIndex | 0);
 
-		if(card) {
+		if(
+			card                              &&
+			card.name == data.unflip.cardName
+		) {
 			card.flip = false;
 			deck.Redraw();
 		}
@@ -173,11 +179,14 @@ let redo = data => {
 
 	if(data.markCard) {
 		
-		let deck = common.getElementByName(data.unflip.deckName, 'deck');
+		let deck = common.getElementByName(data.markCard.deckName, 'deck');
 
-		let card = deck.getCardByIndex(data.unflip.cardIndex | 0);
+		let card = deck.getCardByIndex(data.markCard.cardIndex | 0);
 
-		if(card) {
+		if(
+			card                                &&
+			data.markCard.cardName == card.name
+		) {
 			event.dispatch('markCard', {
 				"card" : card
 			});
@@ -186,11 +195,14 @@ let redo = data => {
 
 	if(data.unmarkCard) {
 
-		let deck = common.getElementByName(data.unflip.deckName, 'deck');
+		let deck = common.getElementByName(data.unmarkCard.deckName, 'deck');
 
-		let card = deck.getCardByIndex(data.unflip.cardIndex | 0);
+		let card = deck.getCardByIndex(data.unmarkCard.cardIndex | 0);
 
-		if(card) {
+		if(
+			card                                  &&
+			data.unmarkCard.cardName == card.name
+		) {
 			event.dispatch('unmarkCard', {
 				"card" : card
 			});
