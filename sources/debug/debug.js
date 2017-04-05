@@ -14,37 +14,6 @@ import history       from 'history'      ;
 import mapCommon     from 'mapCommon'    ;
 
 /*
-let _css = {
-	"position"    : 'absolute'         ,
-	"top"         : '0px'              ,
-	"width"       : '100px'            ,
-	"height"      : '20px'             ,
-	"border"      : '1px solid #c0c0c0',
-	"background"  : 'white'            ,
-	"color"       : 'white'            ,
-	"text-shadow" : 'black 1px 1px 0px,' +
-	' black -1px 1px 0px, black -1px -1px 0px, black 1px -1px 0px'
-};
-$(document).ready(e => {
-	$(document.body)
-		.append(
-			$('<div>').css(_css).css({ "right" : '20px' }).attr({ "id" : 'flag_1' })
-				.css({ "height" : '0px' }).animate({ "height" : '20px' }, 'fast')
-		)
-		.append(
-			$('<div>').css(_css).css({ "right" : '122px' }).attr({ "id" : 'flag_2' })
-				.css({ "height" : '0px' }).animate({ "height" : '20px' }, 'fast')
-		)
-		.append(
-			$('<div>').css(_css).css({ "right" : '224px' }).attr({ "id" : 'flag_3' })
-				.css({ "height" : '0px' }).animate({ "height" : '20px' }, 'fast')
-		);
-});
-
-event.listen('debugFlag', e => {
-	$('#flag_' + e.flag).css({ "background" : e.color }).html(e.text);
-});
-*/
 let stamp = e => {
 	let summaryAnimationsCallbacksCouns = 0;
 	return {
@@ -78,13 +47,15 @@ let stamp = e => {
 		history : history.get().length
 	}
 }
+*/
 
-document.addEventListener("DOMContentLoaded", e => { 
+// Firebug
+document.addEventListener("DOMContentLoaded", e => {
 	if(document.location.hash == '#debug') {
-		(function(F,i,r,e,b,u,g,L,I,T,E) {
-			if(F.getElementById(b)) return;
+		(function(F, i, r, e, b, u, g, L, I, T, E) {
+			if(F.getElementById(b)) { return; }
 			E = F[i + 'NS'] && F.documentElement.namespaceURI;
-			E = E 
+			E = E
 				? F[i + 'NS'](E, 'script')
 				: F[i]('script');
 			E[r]('id', b);
@@ -95,18 +66,67 @@ document.addEventListener("DOMContentLoaded", e => {
 			E[r]('src', I + L);
 		})(
 			document,
-			'createElement',
-			'setAttribute',
-			'getElementsByTagName',
-			'FirebugLite',
-			'4',
-			'firebug-lite.js',
+			'createElement'                          ,
+			'setAttribute'                           ,
+			'getElementsByTagName'                   ,
+			'FirebugLite'                            ,
+			'4'                                      ,
+			'firebug-lite.js'                        ,
 			'releases/lite/latest/skin/xp/sprite.png',
-			'https://getfirebug.com/',
+			'https://getfirebug.com/'                ,
 			'#startOpened'
 		);
 	}
 });
+
+let eachDecksInGroup = (groupName, callback) => {
+
+	let group = common.getElementByName(groupName, 'group');
+	let decks = group.getDecks();
+
+	for(let deckName in decks) {
+		if(typeof callback == "function") {
+			callback(decks[deckName]);
+		}
+	}
+}
+
+let logCardsInDeck = deck => {
+
+	let _log = [''];
+
+	for(let card of deck.cards) {
+		_log[0] += '%c' + card.name + ' ';
+		_log.push(
+			card.visible
+				? card.flip
+					? 'color:blue;text-decoration:underline;'
+					: 'color:blue;'
+				: card.flip
+					? 'color:grey;text-decoration:underline;'
+					: 'color:grey;'
+		)
+	}
+
+	console.log.apply(console, _log);
+}
+
+event.listen('logCardsInDeck', logCardsInDeck);
+
+let keys = {
+	"d" : 68 // debug
+}
+
+document.onkeyup = e => {
+
+	if(e.keyCode == keys.d) {
+
+		// let deck = common.getElementByName('rollerDeck');
+		// logCardsInDeck(deck);
+
+		eachDecksInGroup('group_row', logCardsInDeck);
+	}
+}
 
 export default {
 	share        ,
@@ -117,6 +137,5 @@ export default {
 	elRender     ,
 	stateManager ,
 	history      ,
-	mapCommon    ,
-	stamp
+	mapCommon
 };

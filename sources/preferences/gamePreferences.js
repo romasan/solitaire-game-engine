@@ -24,11 +24,17 @@ class gamePreferences {
 
 		for(let prefName in _preferences) {
 			
-			let _label = $('<div>').append(
-				$('<span>')
-					.addClass('solitaire-engine-style-preferences-label')
-					.html(_preferences[prefName].title)
-			);
+			// let _label = $('<div>').append(
+			// 	$('<span>')
+			// 		.addClass('solitaire-engine-style-preferences-label')
+			// 		.html(_preferences[prefName].title)
+			// );
+
+			let el = document.createElement('span');
+			    el.setAttribute('class', 'solitaire-engine-style-preferences-label');
+			    el.innerHTML = _preferences[prefName].title;
+			let _label = document.createElement('div');
+			    _label.appendChild(el);
 
 			for(let i in _preferences[prefName].options) {
 				$(_label).append(

@@ -32,6 +32,7 @@ Rules:
  * ascendDeck
  * descendDeck
  * oneRankDeck
+ * oneSuitDeck
  * ascend
  * descent
  * descentOne
@@ -226,6 +227,28 @@ let readyPutRules = {
 	},
 
 	"oneRankDeck" : deck => {
+
+		if(deck.putDeck.length == 1) {
+			return true;
+		}
+
+		let ruleCorrect = true;
+
+		for(let i in deck.putDeck) {
+
+			if(i > 0) {
+
+				let down = common.validateCardName(deck.putDeck[i - 1].card.name).rank,
+				    up   = common.validateCardName(deck.putDeck[i].card.name).rank
+
+				ruleCorrect = ruleCorrect && down == up;
+			}
+		};
+
+		return ruleCorrect;
+	},
+
+	"oneSuitDeck" : deck => {
 
 		if(deck.putDeck.length == 1) {
 			return true;

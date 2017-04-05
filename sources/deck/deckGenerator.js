@@ -16,8 +16,14 @@ let genType = (_cardsColors, _cardsRanks) => {
 
 	let _deck = [];
 
-	for(let cardColor of _cardsColors) {
-		for(let cardRank of _cardsRanks) {
+	for(let cardColorIndex in _cardsColors) {
+
+		let cardColor = _cardsColors[cardColorIndex];
+
+		for(let cardRankIndex in _cardsRanks) {
+
+			let cardRank = _cardsRanks[cardRankIndex];
+
 			_deck.push(cardColor + cardRank);
 		}
 	}

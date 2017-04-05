@@ -178,10 +178,6 @@ event.listen('redrawDeck', data => {
 		applyChangedParameters(data);
 	}
 
-	if(data.deck.full) {
-		console.log('%credrawDeck:', 'background: green;', data.deck.name, data.deck.full);
-	}
-
 	// перерисовка стопки
 	let _params = {
 		"transform" : 'rotate(' + (data.params.rotate | 0) + 'deg)',
@@ -221,7 +217,9 @@ event.listen('redrawDeck', data => {
 			"left"              : _card_position.x + 'px'                      ,
 			"top"               : _card_position.y + 'px'                      ,
 			"z-index"           : _zIndex                                      ,
-			"display"           : data.deck.visible ? 'block' : 'none'
+			"display"           : data.deck.visible && data.cards[i].visible
+			                    	? 'block'
+			                    	: 'none'
 		};
 
 		let _cardDomElement = share.get('domElement:' + data.cards[i].id);

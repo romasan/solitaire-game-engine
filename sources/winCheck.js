@@ -1,55 +1,60 @@
 'use strict';
 
-import share           from 'share';
-import event           from 'event';
-import common          from 'common';
+import share         from 'share'        ;
+import event         from 'event'        ;
+import common        from 'common'       ;
 
-import winCheckRules   from 'winCheckRules';
-import Deck            from 'deck';
+import winCheckRules from 'winCheckRules';
+import Deck          from 'deck'         ;
 
 let winCheck = params => {
 
 	let rulesCorrect = true;
-	let _hasRules = false;
+	let hasRules     = false;
 
-	let _winCheck = share.get('winCheck');
+	let winCheck = share.get('winCheck');
 
-	if(!_winCheck) {
+	if(!winCheck) {
 		return false;
 	}
 
-	// if(_winCheck.rules) {
-	// 	_winCheck = winCheck.rules;
-	// }
+	winCheck = winCheck.rules
+		? winCheck.rules
+		: winCheck;
 
-	let _winCheckRules = _winCheck.rules
-		? _winCheck.rules
-		: _winCheck;
+	for(let ruleName in winCheck) {
 
-	for(let ruleName in _winCheckRules) {
+		hasRules = true;
 
-		let _ruleName = ruleName.length == 1 && ruleName | 0 == 0
-			? _winCheckRules[ruleName]
-			: ruleName;
-
-		_hasRules = true;
-
-		if(winCheckRules[_ruleName]) {
-
-			let _result = winCheckRules[_ruleName]({
-				"decks"     : Deck.getDecks({ "visible" : true }), 
-				"rulesArgs" : _winCheckRules[_ruleName]
+		// winCheck - Object
+		if(
+			typeof ruleName == "string" &&
+			winCheck[ruleName]
+		) {
+			rulesCorrect = rulesCorrect && winCheckRules[ruleName]({
+				"decks"     : Deck.getDecks({
+					"visible" : true
+				}),
+				"rulesArgs" : winCheck[ruleName]
 			});
 
-			rulesCorrect &= _result;
-
+		// winCheck - Array of string
+		} else if(
+			typeof ruleName == "number"  &&
+			winCheck[winCheck[ruleName]]
+		) {
+			rulesCorrect = rulesCorrect && winCheckRules[ruleName]({
+				"decks" : Deck.getDecks({
+					"visible" : true
+				})
+			});
 		} else {
-			rulesCorrect &= winCheckRules.newerWin();
+			rulesCorrect = rulesCorrect && winCheckRules.newerWin();
 		}
 	}
 
-	if(!_hasRules) {
-		rulesCorrect &= winCheckRules.newerWin();
+	if(!hasRules) {
+		rulesCorrect = rulesCorrect && winCheckRules.newerWin();
 	}
 
 	if(rulesCorrect) {
@@ -69,6 +74,8 @@ let winCheck = params => {
 	return false;
 };
 
+event.listen('winCheck', winCheck);
+
 // hidden check
 let hwinCheck = params => {
 
@@ -81,10 +88,9 @@ let hwinCheck = params => {
 	}
 
 	winCheck(params);
-	// return winCheck({noCallback : true});
 };
 
 export default {
-	winCheck , 
-	hwinCheck
+	"winCheck"  : winCheck , 
+	"hwinCheck" : hwinCheck
 };

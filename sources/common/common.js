@@ -12,6 +12,7 @@ import History            from 'history'           ;
 import drawPreferences    from 'drawPreferences'   ;
 import preferencesEvents  from 'preferencesEvents' ;
 import defaultPreferences from 'defaultPreferences';
+import specialStep        from 'specialStep'       ;
 
 /*
 
@@ -35,6 +36,8 @@ Methods:
  * getElements
  * getElementById
  * getElementsByName
+ * getElementByName
+ * getElementsByType
  * validateCardName
  * genId
  * animationOn
@@ -47,6 +50,8 @@ event.listen('gameInit', data => {
 
 	share.set('stepType', defaults.stepType);
 	share.delete('sessionStarted');
+
+	share.set('markerMode', false);
 
 	curUnLock();
 
@@ -88,7 +93,7 @@ let curLock = e => {
 	share.set('curLockState', true);
 };
 
-let curUnLock = e => {	
+let curUnLock = e => {
 	share.set('curLockState', false);
 }
 
@@ -132,6 +137,8 @@ let getElementsByName = (name, type) => {
 	return response;
 };
 
+let getElementByName = (name, type) => getElementsByName(name, type)[0];
+
 let getElementsByType = type => {
 
 	let response = [];
@@ -160,8 +167,6 @@ let validateCardName = name => {
 
 		console.warn('Warning: validate name must have string type "' + name + '"', name);
 
-		// throw new Error('validateCardName');
-
 		return false;
 	}
 
@@ -176,7 +181,7 @@ let validateCardName = name => {
 		}
 	}
 
-	if( 
+	if(
 		defaults.card.suits.indexOf(suit) >= 0 &&
 		defaults.card.ranks.indexOf(rank) >= 0
 	) {
@@ -242,16 +247,52 @@ event.listen('historyReapeater', data => {
 
 share.set('stepType', defaults.stepType);
 
+let toggleMarkerMode = e => {
+
+	let mode = share.get('markerMode');
+
+	share.set('markerMode', !mode);
+
+	if(mode) {
+		document.getElementById('markCard').className = '';
+	} else {
+		document.getElementById('markCard').className = 'markCardButtonActive';
+	}
+}
+
+event.listen('toggleMarkerMode', toggleMarkerMode);
+
+let toggleSpecialStepMode = e => {
+
+	let mode = share.get('specialStepMode');
+
+	share.set('specialStepMode', !mode);
+
+	let classList = document.getElementById('specialMoveBtn').className.split(' ');
+
+	if(mode) {
+		classList = classList.filter(className => className != 'specialStepButtonActive');
+	} else {
+		classList.push('specialStepButtonActive');
+	}
+
+	document.getElementById('specialMoveBtn').className = classList.join(' ');
+}
+
+event.listen('toggleSpecialStepMode', toggleSpecialStepMode);
+
 export default {
-	isCurLock        ,
-	curLock          ,
-	curUnLock        ,
-	getElements      ,
-	getElementById   ,
-	getElementsByName,
-	validateCardName ,
-	genId            ,
-	animationOn      ,
-	animationOff     ,
-	animationDefault
+	"isCurLock"         : isCurLock        ,
+	"curLock"           : curLock          ,
+	"curUnLock"         : curUnLock        ,
+	"getElements"       : getElements      ,
+	"getElementById"    : getElementById   ,
+	"getElementsByName" : getElementsByName,
+	"getElementByName"  : getElementByName ,
+	"getElementsByType" : getElementsByType,
+	"validateCardName"  : validateCardName ,
+	"genId"             : genId            ,
+	"animationOn"       : animationOn      ,
+	"animationOff"      : animationOff     ,
+	"animationDefault"  : animationDefault
 };

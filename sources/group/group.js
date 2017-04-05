@@ -11,15 +11,17 @@ import groupRedraw    from 'groupRedraw'   ;
 import groupGenerator from 'groupGenerator';
 
 const PARAMS = {
-	"paddingType"  : { "type" : 'any' },
 	"flip"         : { "type" : 'any' },
 	"showSlot"     : { "type" : 'any' },
 	"takeRules"    : { "type" : 'any' },
 	"putRules"     : { "type" : 'any' },
 	"fullRules"    : { "type" : 'any' },
 	"autoHide"     : { "type" : 'any' },
+	"paddingType"  : { "type" : 'any' },
+	"padding"      : { "type" : 'any' },
 	"paddingX"     : { "type" : 'any' },
 	"paddingY"     : { "type" : 'any' },
+	"flipPadding"  : { "type" : 'any' },
 	"flipPaddingX" : { "type" : 'any' },
 	"flipPaddingY" : { "type" : 'any' },
 	"actions"      : { "type" : 'any' },
@@ -27,6 +29,10 @@ const PARAMS = {
 	"save"         : {
 		"type"    : 'boolean',
 		"default" : true
+	},
+	"autoUnflipTop" : {
+		"type"    : 'boolean'             ,
+		"default" : defaults.autoUnflipTop
 	}
 };
 
@@ -114,9 +120,6 @@ class groupClass {
 
 		// сортировка элементов в группе по заданному индексу и порядку добавления
 
-		// if(!data.position.x) { data.position.x = 0; }
-		// if(!data.position.y) { data.position.y = 0; }
-
 		if(!data.parent) {
 			data.parent = this.name;
 		}
@@ -176,7 +179,7 @@ class groupClass {
 			}
 
 		} else {
-			for(;typeof this.deckIndex[_index] != 'undefined';_index += 1) {};
+			for(;typeof this.deckIndex[_index] != 'undefined';_index += 1);
 			this.deckIndex[_index] = true;
 		}
 
@@ -413,6 +416,6 @@ let add = data => {
 let getByName = name => common.getElementsByName(name, 'group')[0];
 
 export default {
-	getByName,
-	add
+	"getByName" : getByName,
+	"add"       : add
 };

@@ -1,9 +1,7 @@
 'use strict';
 
-import common   from 'common';
+import common   from 'common'  ;
 import defaults from 'defaults';
-
-// import Deck     from 'deck';
 
 /*
 
@@ -43,74 +41,84 @@ let winCheckRules = {
 	// Filters
 
 	// возвращает колоды определённой группы/групп
-	"group" : data => {
+	"group" : data => { // string | Array of string
 
 		if(!data.filter || !data.filterArgs) {
 			return false;
 		}
 
-		let _decks = [];
-		for(let _i in data.decks) {
+		let decksLength = 0;
+		let decks = {};
 
-			// let _parent = data.decks[_i].parent
-			// if(data.filterArgs.indexOf(data.decks[_i].parent)) {
+		for(let deckName in data.decks) {
+
 			if(
 				(
-					typeof data.filterArgs == 'string'     &&
-					data.decks[_i].parent  == data.filterArgs
+					typeof data.filterArgs       == 'string'        &&
+					data.decks[deckName].parent  == data.filterArgs
 				) ||
 				(
-					data.filterArgs.length                              &&
-					data.filterArgs.indexOf(data.decks[_i].parent) >= 0
+					data.filterArgs.length                                    &&
+					data.filterArgs.indexOf(data.decks[deckName].parent) >= 0
 				)
 			) {
-				_decks.push(data.decks[_i]);
+				decksLength += 1;
+				decks[deckName] = data.decks[deckName];
 			}
 		}
 
-		data.decks = _decks;
+		data.decks = decks;
 
-		return _decks.length;
+		return decksLength;
 	},
 
 	"groups" : data => winCheckRules.group(data),
 
-	"select" : data => {// by Tag
+	// by Tag
+	"select" : data => { // string
 
-		let _decks = [];
-
-		for(let deck of data.decks) {
-			// let maxDeckIndex = Group.getGroup(deck.parent).decksCount();
-			if(deck.tags.indexOf(data.filterArgs) >= 0) {
-				_decks.push(deck);
-			}
-		}
-
-		data.decks = _decks;
-
-		return _decks.length;
-	},
-
-	"deck" : data => {
-		
 		if(!data.filter || !data.filterArgs) {
 			return false;
 		}
 
-		let _decks = [];
+		let decksLength = 0;
+		let decks = {};
 
-		for(let _i in data.decks) {
-			if(
-				typeof data.filterArgs == 'string'                &&
-				data.decks[_i].name == data.filterArgs            ||
-				data.filterArgs.indexOf(data.decks[_i].name) >= 0
-			) {
-				_decks.push(data.decks[_i]);
+		for(let deckName in data.decks) {
+			if(data.decks[deckName].tags.indexOf(data.filterArgs) >= 0) {
+				decksLength += 1;
+				decks[deckName] = deck;
 			}
 		}
 
-		data.decks = _decks;
-		return _decks.length;
+		data.decks = decks;
+
+		return decksLength;
+	},
+
+	"deck" : data => {
+
+		if(!data.filter || !data.filterArgs) {
+			return false;
+		}
+
+		let decksLength = 0;
+		let decks = {};
+
+		for(let deckName in data.decks) {
+			if(
+				typeof data.filterArgs    == 'string'                   &&
+				data.decks[deckName].name == data.filterArgs            ||
+				data.filterArgs.indexOf(data.decks[deckName].name) >= 0
+			) {
+				decksLength += 1;
+				decks[deckName] = data.decks[deckName];
+			}
+		}
+
+		data.decks = decks;
+
+		return decksLength;
 	},
 
 	"decks" : data => winCheckRules.deck(data),
@@ -119,17 +127,19 @@ let winCheckRules = {
 
 	"firstEmpty" : data => {
 
-		let _decks = [];
+		let decks = {};
+		let decksLength = 0;
 
-		for(let _i in data.decks) {
-			if(data.decks[_i].tags.indexOf('last') >= 0) {
-				_decks.push(data.decks[_i]);
+		for(let deckName in data.decks) {
+			if(data.decks[deckName].tags.indexOf('last') >= 0) {
+				decksLength += 1
+				decks[deckName] = data.decks[deckName];
 			}
 		}
 
-		data.decks = _decks;
+		data.decks = decks;
 
-		return _decks.length;
+		return decksLength;
 	},
 
 	// Internal use
@@ -143,31 +153,31 @@ let winCheckRules = {
 			return false;
 		}
 
-		let _correct = true;
+		let correct = true;
 
-		for(let deckIndex in data.decks) {
+		for(let deckName in data.decks) {
 
-			if(!_correct) {
+			if(!correct) {
 				return false;
 			}
 
-			let _cards = data.decks[deckIndex].cards;
+			let cards = data.decks[deckName].cards;
 
-			for(let cardIndex in _cards) {
+			for(let cardIndex in cards) {
 				if(cardIndex > 0) {
 
-					let down = common.validateCardName(_cards[(cardIndex | 0) - 1].name),
-					      up = common.validateCardName(_cards[(cardIndex | 0)]    .name);
+					let down = common.validateCardName(cards[(cardIndex | 0) - 1].name),
+					      up = common.validateCardName(cards[(cardIndex | 0)]    .name);
 
-					let _cardsRankS = defaults.card.ranks;
+					let cardsRankS = defaults.card.ranks;
 
-					_correct = _correct && down && up && _cardsRankS.indexOf(down.rank) == (_cardsRankS.indexOf(up.rank) + data.asc_desk);
+					correct = correct && down && up && cardsRankS.indexOf(down.rank) == (cardsRankS.indexOf(up.rank) + data.asc_desk);
 				}
 			}
 
 		}
 
-		return _correct;
+		return correct;
 	},
 
 	// Simple rules
@@ -182,44 +192,44 @@ let winCheckRules = {
 	// все колоды пусты
 	"allEmpty" : data => {
 
-		let _correct = true;
+		let correct = true;
 
-		for(let _i in data.decks) {
-			_correct = _correct && data.decks[_i].cards.length == 0;
+		for(let deckName in data.decks) {
+			correct = correct && data.decks[deckName].cards.length == 0;
 		}
 
-		return _correct;
+		return correct;
 	},
 
-	"empty" : data => {
-		winCheckRules.allEmpty(data);
-	},
+	"empty" : data => winCheckRules.allEmpty(data),
 
 	// Combined rules (use like filter)
 
 	// все карты в одной колоде
 	"allInOne" : data => {
 
-		let _emptyDecksCount = 0,
-			_decksLength     = 0,
-			_fillIndex       = 0;
+		let emptyDecksCount = 0,
+			decksLength     = 0,
+			fillIndex       = 0;
 
-		for(let i in data.decks) {
-			if(data.decks[i].cards.length == 0) {
-				_emptyDecksCount += 1;
+		for(let deckName in data.decks) {
+			if(data.decks[deckName].cards.length == 0) {
+				emptyDecksCount += 1;
 			} else {
-				_fillIndex = i;
+				fillIndex = deckName;
 			}
-			_decksLength += 1;
+			decksLength += 1;
 		}
 
-		let _correct = _emptyDecksCount == _decksLength - 1;
+		let correct = emptyDecksCount == decksLength - 1;
 
-		if(data.filter) {
-			data.decks = _correct ? [data.decks[_fillIndex]] : [];
+		if(data.filter && correct) {
+			let decks = {};
+			decks[deckName] = data.decks[deckName];
+			data.decks = decks;
 		}
 
-		return _correct
+		return correct;
 	},
 
 	// step by step 1, 2, 3
@@ -242,14 +252,13 @@ let winCheckRules = {
 
 	"topKing"    : data => {
 
-		for(let i in data.decks) {
+		for(let deckName in data.decks) {
 
-			let deck = data.decks[i];
+			let deck = data.decks[deckName];
 
 			let topCard = deck.getTopCard();
 
 			let topCardRank = common.validateCardName(topCard.name).rank;
-			console.log('topKing', deck.name, topCardRank, defaults.card.ranks[defaults.card.ranks.length - 1]);
 
 			if(
 				typeof topCardRank != 'undefined'                                  &&
@@ -262,16 +271,35 @@ let winCheckRules = {
 		return true;
 	},
 
-	"topAce"     : data => false,
+	"topAce"     : data => {
+
+		for(let deckName in data.decks) {
+
+			let deck = data.decks[deckName];
+
+			let topCard = deck.getTopCard();
+
+			let topCardRank = common.validateCardName(topCard.name).rank;
+
+			if(
+				typeof topCardRank != 'undefined'                                  &&
+				topCardRank != defaults.card.ranks[0]
+			) {
+				return false;
+			}
+		}
+
+		return true;
+	},
 
 	// Composite rules (input arguments)
 
 	// комбинированное правило
 	"query" : data => {
-	// {
-	// 	decks[],  - all visible decks
-	// 	rulesArgs
-	// }
+		// {
+		// 	decks[],  - all visible decks
+		// 	rulesArgs
+		// }
 
 		if(
 			!data           ||
@@ -287,8 +315,9 @@ let winCheckRules = {
 
 			let _decksClone = {};
 
-			for(let i in data.decks) {
-				_decksClone[i] = data.decks[i];
+			// TODO 
+			for(let deckName in data.decks) {
+				_decksClone[deckName] = data.decks[deckName];
 			}
 
 			let queryData = {
@@ -302,23 +331,31 @@ let winCheckRules = {
 
 				queryData.filter = true;
 
+				// пробегаемся по фильтрам
 				for(let i in data.rulesArgs[next].filters) {
-					if(typeof data.rulesArgs[next].filters[i] == 'string' && winCheckRules[data.rulesArgs[next].filters[i]]) {
+
+					// фильтр - строковый параметр
+					if(
+						typeof data.rulesArgs[next].filters[i] == 'string' &&
+						winCheckRules[data.rulesArgs[next].filters[i]]
+					) {
 
 						queryData.filterArgs = null;
 						_correct = _correct && winCheckRules[data.rulesArgs[next].filters[i]](queryData);
 					} else {
 
-						// if(typeof data.rulesArgs[next].filters[i] == 'object') {
+						// фильтр - обьект
 						if (
 							data.rulesArgs[next].filters[i]                                 &&
 							data.rulesArgs[next].filters[i].toString() == '[object Object]'
 						) {
 
 							for(let filterName in data.rulesArgs[next].filters[i]) {
-								// console.log('>>> filterName', filterName, typeof winCheckRules[filterName]);
+
 								if(winCheckRules[filterName]) {
-									queryData.filterArgs = data.rulesArgs[next].filters[i][filterName]
+
+									queryData.filterArgs = data.rulesArgs[next].filters[i][filterName];
+
 									_correct = _correct && winCheckRules[filterName](queryData);
 								} else {
 									_correct = _correct && winCheckRules.newerWin();

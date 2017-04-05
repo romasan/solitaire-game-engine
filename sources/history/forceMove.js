@@ -21,10 +21,12 @@ let forceMove = data => {// {from, to, deck, <flip>, <callback>}
 		return;
 	}
 
+	// departure
 	let deckFrom = typeof data.from == 'string'
 		? Deck.getDeck(data.from)
 		: data.from;
 
+	// destination
 	let deckTo   = typeof data.to   == 'string'
 		? Deck.getDeck(data.to)
 		: data.to;
@@ -40,7 +42,8 @@ let forceMove = data => {// {from, to, deck, <flip>, <callback>}
 
 	let _check = true;
 
-	let deckFromCards = deckFrom.cards;
+	// let deckFromCards = deckFrom.cards;
+	let deckFromCards = deckFrom.getCards();
 
 	for(let i in deckFromCards) {
 
@@ -62,13 +65,17 @@ let forceMove = data => {// {from, to, deck, <flip>, <callback>}
 		let cardsPop = deckFrom.Pop(data.deck.length);
 
 		// перевернуть карты во время хода
-		if(data.flip) {
+		if(typeof data.flip == "boolean") {
 			for(let i in cardsPop) {
-				cardsPop[i].flip = !cardsPop[i].flip;
+				cardsPop[i].flip = data.flip; // !cardsPop[i].flip;
 			}
 		}
 
-		deckTo.Push(cardsPop);
+		let deckToInvisibleCardsCount = deckTo.cardsCount({
+			"visible" : false
+		});
+
+		deckTo.Push(cardsPop, deckToInvisibleCardsCount > 0);
 
 		let cardsMove = [];
 
@@ -85,10 +92,12 @@ let forceMove = data => {// {from, to, deck, <flip>, <callback>}
 		};
 
 		if(typeof data.callback == 'function') {
+
 			moveDragDeckParams.callback = e => {
 				event.dispatch('forceMoveEnd');
 				data.callback();
 			}
+
 			moveDragDeckParams.debug = 'from:forceMove';
 		} else {
 			moveDragDeckParams.callback = e => {
@@ -97,6 +106,29 @@ let forceMove = data => {// {from, to, deck, <flip>, <callback>}
 		}
 
 		event.dispatch('moveDragDeck', moveDragDeckParams);
+
+		if(data.addStep) {
+
+			event.dispatch('addStep', {
+				"move" : {
+					"from" : data.from,
+					"to"   : data.to  ,
+					"deck" : data.deck
+				}
+			});
+		}
+
+		if(
+			deckFrom.autoUnflipTop                         &&
+			deckFrom.cards.length > 0                      &&
+			deckFrom.cards[deckFrom.cards.length - 1].flip
+		) {
+			deckFrom.unflipTopCard(data.addStep);
+		}
+
+		if(data.save) {
+			event.dispatch('saveSteps');
+		}
 	} else {
 		console.warn('forceMove:Ход невозможен', data);
 	}

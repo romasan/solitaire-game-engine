@@ -30,7 +30,9 @@ class checkFullAction extends deckAction {
 
 				let _select = _query.select ? _query.select : 'all';
 
-				for(let groupName of _query.groups) {
+				for(let groupNameIndex in _query.groups) {
+
+					let groupName = _query.groups[groupNameIndex];
 
 					let _group = Group.getByName(groupName);
 
@@ -67,7 +69,9 @@ class checkFullAction extends deckAction {
 
 			if(_query.decks) {
 
-				for(let deckName of _query.decks) {
+				for(let deckNameIndex in _query.decks) {
+
+					let deckName = _query.decks[deckNameIndex];
 
 					let _deck = Deck.getByName(deckName);
 

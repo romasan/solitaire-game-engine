@@ -8,19 +8,19 @@ import common   from 'common'  ;
 import Field    from 'field'   ;
 import elRender from 'elRender';
 
+/*
+ * addCardEl
+ * toggleMarkCard
+ */
+
 event.listen('addCardEl', data => {
 
-	let _card = {
-		width  : defaults.card.width .toFixed(3) * 1,
-		height : defaults.card.height.toFixed(3) * 1
-	};
-
 	let _params = {
-		"width"  : _card.width  + 'px',
-		"height" : _card.height + 'px'
+		"width"  : defaults.card.width  + 'px',
+		"height" : defaults.card.height + 'px'
 	};
 
-	let _domElement = elRender('<div>')
+	let _domElement = elRender('<div>');
 
 	elRender(_domElement)
 		.addClass('el card draggable ' + data.name)
@@ -35,4 +35,54 @@ event.listen('addCardEl', data => {
 
 	elRender(_fieldDomElement)
 		.append(_domElement);
+});
+
+event.listen('toggleMarkCard', data => {
+
+	let el = share.get('domElement:' + data.card.id);
+
+	if(
+		el                   &&
+		!el.hasClass('flip')
+	) {
+
+		let cardIsMarked = null;
+
+		if(el.hasClass('marker')) {
+
+			cardIsMarked = false;
+
+			el.removeClass('marker');
+		} else {
+
+			cardIsMarked = true;
+
+			el.addClass('marker');
+		}
+
+		if(typeof data.callback == "function") {
+			data.callback(cardIsMarked);
+		}
+	}
+});
+
+event.listen('markCard', data => {
+
+	let el = share.get('domElement:' + data.card.id);
+
+	if(el) {
+		el.removeClass('marker');
+	}
+});
+
+event.listen('unmarkCard', data => {
+
+	let el = share.get('domElement:' + data.card.id);
+
+	if(
+		el                   &&
+		!el.hasClass('flip')
+	) {
+		el.removeClass('marker');
+	}
 });

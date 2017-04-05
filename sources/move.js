@@ -8,7 +8,6 @@ import common   from 'common'  ;
 import Deck     from 'deck'    ;
 import Tips     from 'tips'    ;
 import bestTip  from 'bestTip' ;
-import winCheck from 'winCheck';
 import Field    from 'field'   ;
 
 let Move = (moveDeck, to, cursorMove) => {
@@ -100,7 +99,7 @@ let Move = (moveDeck, to, cursorMove) => {
 			if(_pop) {
 
 				// ложим карты в колоду назначения
-				_deck_destination.Push(_pop);
+				_deck_destination.Push(_pop, false);
 
 				// режим анимации по умолчанию
 				common.animationDefault();
@@ -113,6 +112,7 @@ let Move = (moveDeck, to, cursorMove) => {
 					}
 				}
 
+				// TODO add card index ?
 				event.dispatch('addStep', {
 					"move" : {
 						"from"     : _deck_departure  .name      ,
@@ -149,32 +149,48 @@ let Move = (moveDeck, to, cursorMove) => {
 
 					Tips.checkTips();
 
-					let _tips = Tips.getTips();
 					if(
-						_deck_destination.save                             ||
-						_tips.length > 0 && _stepType != defaults.stepType
+						_deck_departure.autoUnflipTop                                &&
+						_deck_departure.cards.length > 0                             &&
+						_deck_departure.cards[_deck_departure.cards.length - 1].flip
+					) {
+						_deck_departure.unflipTopCard();
+					}
+
+					let moveEndData = {
+						"from"     : _deck_departure      ,
+						"to"       : _deck_destination    ,
+						"moveDeck" : moveDeck             ,
+						"stepType" : share.get('stepType')
+					};
+
+					event.dispatch('moveEnd:beforeSave', moveEndData);
+
+					let _tips = Tips.getTips();
+
+					if(
+						_deck_destination.save         ||
+						_tips.length > 0               &&
+						_stepType != defaults.stepType
 					) {
 						event.dispatch('saveSteps', 'MOVE');
 					}
 
-					event.dispatch('moveEnd:' + share.get('stepType'));
-					event.dispatch('moveEnd', {
-						"from"     : _deck_departure      ,
-						"to"       : _deck_destination    ,
-						"moveDeck" : moveDeck             ,
-						"stepType" : share.get('stepType'),
-						"before"   : data => {
-							if(data && typeof data.stepType == 'string') {
-								event.dispatch('addStep', {
-									"redo": {
-										"stepType": data.stepType
-									}
-								})
-							}
+					moveEndData.before = data => {
+						if(data && typeof data.stepType == 'string') {
+							event.dispatch('addStep', {
+								"redo": {
+									"stepType": data.stepType
+								}
+							})
 						}
-					});
+					};
 
-					winCheck.winCheck({
+					event.dispatch('moveEnd:' + share.get('stepType'));
+
+					event.dispatch('moveEnd', moveEndData);
+
+					event.dispatch('winCheck', {
 						"show" : true
 					});
 				};
@@ -231,13 +247,4 @@ let Move = (moveDeck, to, cursorMove) => {
 
 event.listen('Move', data => {
 	Move(data.moveDeck, data.to, data.cursorMove);
-});
-
-event.listen('autoStepToHome', e => {
-
-	let _tips = Tips.getTips();
-
-	// TODO
-
-	// Move(_moveDeck, _to, _cursorMove);
 });

@@ -17,16 +17,12 @@ export default {
 			'default_back'    ,
 			'alternative_back'
 		]
-		// empty : [
-		// 	"default_empty"    ,
-		// 	"alternative_empty"
-		// ]
 	},
 
 	"pref" : {
-		"field" : 'default_field'   , // 0
-		"face"  : 'alternative_face', // 1
-		"back"  : 'default_back'      // 0
+		"field" : 'default_field'   ,
+		"face"  : 'alternative_face',
+		"back"  : 'default_back'
 	},
 
 // Tips
@@ -61,29 +57,33 @@ export default {
 
 // Deck
 
-	"can_move_flip"       : false      ,
-	"showSlot"            : true       ,
-	"autohide"            : false      ,
+	"can_move_flip"       : false     ,
+	"showSlot"            : true      ,
 
-	"paddingType"         : 'none'     ,
-	"flip_type"           : 'none'     ,
+	"autohide"            : false     ,
+	"autoUnflipTop"       : true      ,
 
-	"rotate"              : 0          ,
+	"paddingType"         : '_default',
+	"flip_type"           : 'none'    ,
 
-	"takeRules"           : ['onlytop'],
-	"putRule"             : 'any'      ,
+	"rotate"              : 0         ,
 
-	"moveDistance"        : 0          ,
+	"takeRules"           : ['any']   ,
+	"putRules"            : ['any']   ,
 
-	"padding_y"           : 0          ,
-	"padding_x"           : 0          ,
-	"flip_padding_y"      : 0          , // 5,
-	"flip_padding_x"      : 0          , // 20,
-	"move_distance"       : 10         ,
-	"debugLabels"         : false      ,
+	"fullRules"           : ['not']   ,
 
-	"startZIndex"         : 100        ,
-	"topZIndex"           : 900        ,
+	"moveDistance"        : 0         ,
+
+	"padding_y"           : 0         ,
+	"padding_x"           : 0         ,
+	"flip_padding_y"      : 0         ,
+	"flip_padding_x"      : 0         ,
+	"move_distance"       : 10        ,
+	"debugLabels"         : false     ,
+
+	"startZIndex"         : 100       ,
+	"topZIndex"           : 900       ,
 
 // Card
 
@@ -91,14 +91,14 @@ export default {
 		"width"  : 71,
 		"height" : 96,
 
-		"suits"   : ['h', 'd', 'c', 's']                                              ,
-		"ranks"   : ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', 'j', 'q', 'k'],
-		"values"  : [ 1,   2,   3,   4,   5,   6,   7,   8,   9,   10,   11,  12,  13],
-		"ranks36" : ['1',                     '6', '7', '8', '9', '10', 'j', 'q', 'k'],
+		"suits"   : [ 'h', 'd', 'c', 's'                                               ],
+		"ranks"   : [ '1', '2', '3', '4', '5', '6', '7', '8', '9', '10', 'j', 'q', 'k' ],
+		"values"  : [  1 ,  2 ,  3 ,  4 ,  5 ,  6 ,  7 ,  8 ,  9 ,  10 ,  11,  12,  13 ],
+		"ranks36" : [ '1',                     '6', '7', '8', '9', '10', 'j', 'q', 'k' ],
 
 		"colors" : {
-			"red"   : ['h', 'd'],
-			"black" : ['c', 's']
+			"red"   : [ 'h', 'd' ],
+			"black" : [ 'c', 's' ]
 		}
 	},
 

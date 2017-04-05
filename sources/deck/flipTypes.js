@@ -7,40 +7,53 @@ Types:
  * none
  * all
  * notlast
- * first_1
- * first_2
- * first_3
  * bee
+ * beeFlip
+ * _direction_type
+ * bottomFlip
+ * bottomUnflip
+ * topFlip
+ * topUnflip
 
  */
 
-export default {
+let flipTypes = {
 
-	"none"    : (card, i, length) => {
-		card.flip = false;
-	},
+	"none"            : (i, length) => false                                                   ,
 
-	"all"     : (card, i, length) => {
-		card.flip = true;
-	},
+	"all"             : (i, length) => true                                                    ,
 
-	"notlast" : (card, i, length) => {
-		card.flip = (i < length - 1) ? true : false;
-	},
+	"notlast"         : (i, length) => (i < length - 1) ? true : false                         ,
 
-	"first_1" : (card, i, length) => {
-		card.flip = (i < 1) ? true : false;
-	},
+	"bee"             : (i, length) => (i == length - 1) ? false : (i % 2 == 0) ? true  : false,
 
-	"first_2" : (card, i, length) => {
-		card.flip = (i < 2) ? true : false;
-	},
+	"beeFlip"         : (i, length) => (i == length - 1) ? true  : (i % 2 == 0) ? false : true ,
 
-	"first_3" : (card, i, length) => {
-		card.flip = (i < 3) ? true : false;
-	},
+	"_direction_type" : (direction, type, i, length, data) => data && (data | 0) > 0
+		? direction == "top"
+			? i > length - data - 1 // top
+				? type == "flip"
+					? true
+					: false
+				: type == "flip"
+					? false
+					: true
+			: i < data              // bottom
+				? type == "flip"
+					? true
+					: false
+				: type == "flip"
+					? false
+					: true
+		: false,
 
-	"bee"     : (card, i, length) => {
-		card.flip = (i == length - 1) ? false : (i % 2 == 0) ? true : false;
-	}
+	"bottomFlip"      : (i, length, data) => flipTypes._direction_type("bootom", "flip"  , i, length, data),
+
+	"bottomUnflip"    : (i, length, data) => flipTypes._direction_type("bootom", "unflip", i, length, data),
+
+	"topFlip"         : (i, length, data) => flipTypes._direction_type("top"   , "flip"  , i, length, data),
+
+	"topUnflip"       : (i, length, data) => flipTypes._direction_type("top"   , "unflip", i, length, data)
 };
+
+export default flipTypes;

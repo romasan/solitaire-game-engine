@@ -44,10 +44,6 @@ class inputs {
 				this.put(data.target, data.clientX, data.clientY);
 			};
 
-			// document.mouseleave = data => {
-			// 	console.log('mouseleave:', data);
-			// }
-
 			// TODO
 			// Решение: (if distance > 0)
 			// Click
@@ -140,35 +136,101 @@ class inputs {
 			return;
 		}
 
+		// click empty deck
 		if( target.className.split(' ').indexOf('slot') >= 0 ) {
 
 			let _id   = target.id                 ,
 			    _deck = common.getElementById(_id);
 
+			if(
+				share.get('markerMode')      ||
+				share.get('specialStepMode')
+			) { // break;
+				_deck = null;
+			}
+
 			if(_deck) {
+
 				event.dispatch('click', {
-					"to" : _deck
+					"to"     : _deck,
+					"toCard" : null
+				});
+
+				event.dispatch('click:emptyDeck', {
+					"to"     : _deck,
+					"toCard" : null
 				});
 			}
 		}
 
-		if( target.className.split(' ').indexOf('draggable') >= 0 ) {
+		// click card in deck
+		if(
+			target.className.split(' ').indexOf('draggable') >= 0
+		) {
 
 			let _id     = target.id                                                ,
 			    _card   = _id                   ? common.getElementById(_id) : null,
 			    _parent = _card && _card.parent ? _card.parent               : null,
 			    _deck   = _parent               ? Deck.getDeckById(_parent)  : null;
 
-			if(_deck) {
-				event.dispatch('click', {
-					"to" : _deck
+			// mark card
+			if(_deck && share.get('markerMode')) { // break;
+
+				event.dispatch('toggleMarkCard', {
+					"card"     : _card,
+					"callback" : cardIsMarked => {
+
+						let cardIndex = _deck.getCardIndexById(_card.id);
+
+						let stepData = {};
+
+						stepData[cardIsMarked ? 'markCard' : 'unmarkCard'] = {
+							"deckName"  : _deck.name,
+							"cardName"  : _card.name,
+							"cardIndex" : cardIndex
+						};
+
+						event.dispatch('addStep', stepData);
+
+						event.dispatch('toggleMarkerMode');
+					}
 				});
+
+				_deck = null;
+			}
+
+			if(_deck && share.get('specialStepMode')) { // break;
+				event.dispatch('specialStep', _card);
+				event.dispatch('toggleSpecialStepMode');
+				_deck = null;
+			}
+
+			if(_deck) {
+
+				event.dispatch('click', {
+					"to"     : _deck,
+					"toCard" : _card
+				});
+
+				if(_card.flip) {
+					event.dispatch('click:flipCard', {
+						"to"     : _deck,
+						"toCard" : _card
+					});
+				} else {
+					event.dispatch('click:unflipCard', {
+						"to"     : _deck,
+						"toCard" : _card
+					});
+				}
+
+				// нельзя брать перевёрнутые карты
+				if(_card.flip) {
+					return;
+				}
 			}
 
 			// _deck.runActions();
-
-			// TODO
-			// в данной ситуации обрабатывается только клик по карте, пустые колоды никак не обрабатываются
 
 			let _dragDeck = _deck ? _deck.Take(_id) : null;
 

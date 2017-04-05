@@ -1,25 +1,26 @@
 'use strict';
 
-import event          from 'event'         ;
-import share          from 'share'         ;
-import defaults       from 'defaults'      ;
-import common         from 'common'        ;
+import event         from 'event'        ;
+import share         from 'share'        ;
+import defaults      from 'defaults'     ;
+import common        from 'common'       ;
 
-import flipTypes      from 'flipTypes'     ;
-import readyPutRules  from 'readyPutRules' ;
-import readyTakeRules from 'readyTakeRules';
-import fullRules      from 'fullRules'     ;
-import paddingTypes   from 'paddingTypes'  ;
-import deckActions    from 'deckActions'   ;
-import Take           from 'deckTake'      ;
-import Put            from 'deckPut'       ;
-import genCardByName  from 'genCardByName' ;
-import Group          from 'group'         ;
+import flipTypes     from 'flipTypes'    ;
+import putRules      from 'putRules'     ;
+import takeRules     from 'takeRules'    ;
+import fullRules     from 'fullRules'    ;
+import paddingTypes  from 'paddingTypes' ;
+import deckActions   from 'deckActions'  ;
+import Take          from 'deckTake'     ;
+import Put           from 'deckPut'      ;
+import genCardByName from 'genCardByName';
+import Group         from 'group'        ;
 
-import getDecks       from 'getDecks'      ;
-import getDeckById    from 'getDeckById'   ;
-import deckCardNames  from 'deckCardNames' ;
-import getDeck        from 'getDeck'       ;
+import getDecks      from 'getDecks'     ;
+import getDeckById   from 'getDeckById'  ;
+import deckCardNames from 'deckCardNames';
+import getDeck       from 'getDeck'      ;
+import atom          from 'atom'         ;
 
 /*
  * Redraw
@@ -27,6 +28,9 @@ import getDeck        from 'getDeck'       ;
  * lock
  * unlock
  * flipCheck
+ * unflipTopCard
+ * flipAllCards
+ * unflipAllCards
  * checkFull
  * Fill
  * clear
@@ -37,11 +41,14 @@ import getDeck        from 'getDeck'       ;
  * genCardByName
  * hide
  * show
- * getCards
  * hideCards
+ * hideCardByIndex
  * showCards
  * getCardsNames
+ * getCards
  * cardsCount
+ * getCardByIndex
+ * getCardIndexById
  * getRelationsByName
  * hasTag
  */
@@ -77,9 +84,41 @@ class Deck {
 		this.parent    = typeof data.parent    == 'string'  ? data.parent    : 'field'          ;
 		this.autoHide  = typeof data.autoHide  == 'boolean' ? data.autoHide  : defaults.autohide;
 
+		this.data = {};
+
 		// changed parameters
 		if(typeof data.showSlot == 'undefined') {
 			data.showSlot = defaults.showSlot;
+		}
+
+		if(data.padding) {
+			if(
+				typeof data.padding.x == 'number' &&
+				typeof data.paddingX  != 'number'
+			) {
+				data.paddingX = data.padding.x;
+			}
+			if(
+				typeof data.padding.y == 'number' &&
+				typeof data.paddingY  != 'number'
+			) {
+				data.paddingY = data.padding.y;
+			}
+		}
+
+		if(data.flipPadding) {
+			if(
+				typeof data.flipPadding.x == 'number' &&
+				typeof data.flipPaddingX  != 'number'
+			) {
+				data.flipPaddingX = data.flipPadding.x;
+			}
+			if(
+				typeof data.flipPadding.y == 'number' &&
+				typeof data.flipPaddingY  != 'number'
+			) {
+				data.flipPaddingY = data.flipPadding.y;
+			}
 		}
 
 		this._params = {
@@ -95,51 +134,120 @@ class Deck {
 
 		this.rotate = this._params.rotate;
 
+		this.autoUnflipTop = typeof data.autoUnflipTop == 'boolean' ? data.autoUnflipTop : defaults.autoUnflipTop;
+
 		// Flip
+		let flipData = null;
 		let flipType = data.flip && typeof data.flip == 'string' 
-			? data.flip 
+			? data.flip.indexOf(':') >= 0
+				? (e => {
+
+					let name = e[0];
+
+					if(e.length == 2) {
+						flipData = e[1];
+					}
+
+					return flipTypes[name]
+						? name
+						: defaults.flip_type;
+				})(data.flip.split(':'))
+				: flipTypes[data.flip]
+					? data.flip
+					: defaults.flip_type
 			: defaults.flip_type;
 
-		this.cardFlipCheck = flipTypes[flipType];
+		this.cardFlipCheck = (card, i, length) => {
+			card.flip = flipTypes[flipType](i, length, flipData);
+		};
 
 		// Put
-		this.putRules = data.putRules 
-			? typeof data.putRules == 'function' 
-				? data.putRules
-				: typeof data.putRules == 'string' 
-					? readyPutRules[data.putRules] 
-						? readyPutRules[data.putRules]
-						: readyPutRules[defaults.putRule]
-					: data.putRules.constructor == Array 
-						? data.putRules
-						: readyPutRules[defaults.putRule]
-			: readyPutRules[defaults.putRule];
+		this.putRules = data.putRules
+			? typeof data.putRules == 'string'
+				? putRules[data.putRules]
+					? [data.putRules]
+					: defaults.putRules
+				: data.putRules.constructor == Array
+					? data.putRules.filter(
+						ruleName => typeof ruleName == 'string' && putRules[ruleName] // TODO Exception (putRule "***" not found)
+							? true
+							: false
+					)
+					: defaults.putRules
+			: defaults.putRules;
+
+		if(this.putRules.length == 0) {
+			this.putRules = defaults.putRules;
+		}
 
 		// Take
 		// можно ли взять карту/стопку
-		this.takeRules = data.takeRules;
+		this.takeRules = data.takeRules
+			? typeof data.takeRules == 'string'
+				? takeRules[data.takeRules]
+					? [data.takeRules]
+					: defaults.takeRules
+				: data.takeRules.constructor == Array
+					? data.takeRules.filter(
+						ruleName => typeof ruleName == 'string' && takeRules[ruleName] // TODO Exception (putRule "***" not found)
+					)
+					: defaults.takeRules
+			: defaults.takeRules;
 
 		// Full
-		this.fullRules = null;
-
-		if(data.fullRules) {
-			this.fullRules = data.fullRules;
-		}
+		// Правила сложенной колоды
+		// Сложенная колода может использоваться для определения выиигрыша
+		// В сложенную колоду нельзя класть новые карты
+		this.fullRules = data.fullRules
+			? typeof data.fullRules == "string"
+				? fullRules[data.fullRules]
+					? [data.fullRules]
+					: defaults.fullRules
+				: data.putRules.constructor == Array
+					? data.fullRules.filter(
+						ruleName => typeof ruleName == "string" && fullRules[ruleName]
+					)
+					: defaults.fullRules
+			: defaults.fullRules;
 
 		// Padding
 		// порядок карт в колоде
-		let padding = data.paddingX || data.paddingY
-			? paddingTypes.special 
-			: data.paddingType 
-				? (
-					typeof data.paddingType == 'string' && 
-					paddingTypes[data.paddingType]
-				) 
-					? paddingTypes[data.paddingType] 
-					: paddingTypes.none
-				: paddingTypes[defaults.paddingType];
+		let paddingData = null;
+		let padding = data.paddingType                                 // isset data.paddingType
+			? typeof data.paddingType == 'string'                      // is string
+				? paddingTypes[data.paddingType]                       // isset method
+					? paddingTypes[data.paddingType]                   // use method(data.paddingType)
+					: data.paddingType.indexOf(':') >= 0               // is method with attribute
+						? (e => {
 
-		this.padding = index => padding(this._params, this.cards[index], index, this.cards.length, this.cards);
+							let name = e[0];                           // method name
+
+							if(paddingTypes[name]) {
+								paddingData = e[1];                    // save method data
+								return paddingTypes[name];             // use method(data.paddingType:)(:data.paddingType)
+							}
+
+							return paddingTypes[defaults.paddingType]; // use default
+						})(data.paddingType.split(':'))
+						: paddingTypes[defaults.paddingType]           // use default
+				: paddingTypes[defaults.paddingType]                   // use default
+			: paddingTypes[defaults.paddingType];                      // use default
+
+		this.padding = (index) => {
+
+			let _cards = this.getCards();
+			let _index = index < _cards.length ? index : _cards.length - 1;
+			let _card  = _cards[_index] ? _cards[_index] : this.cards[index];
+
+			return padding(
+				this._params ,
+				_card        ,
+				_index       ,
+				_cards.length,
+				_cards       ,
+				paddingData
+			);
+		}
 
 		this.actions = [];
 		if(data.actions) {
@@ -234,10 +342,96 @@ class Deck {
 	flipCheck() {
 
 		for(let cardIndex in this.cards) {
-			this.cardFlipCheck(this.cards[cardIndex], cardIndex | 0, this.cards.length);
+			this.cardFlipCheck(
+				this.cards[cardIndex]                 ,
+				cardIndex | 0                         ,
+				this.cards.length                     ,
+				this.cards[this.cards.length - 1].name
+			);
 		}
 
 		event.dispatch('redrawDeckFlip', this);
+	}
+
+	unflipCardByIndex(index) {
+
+		if(this.cards[index]) {
+
+			this.cards[index].flip = false;
+
+			// event.dispatch('redrawDeckFlip', this);
+			this.Redraw();
+
+			event.dispatch('addStep', {
+				"unflip" : {
+					"deckName"  : this.name             ,
+					"cardIndex" : index                 ,
+					"cardName"  : this.cards[index].name
+				}
+			});
+		}
+	}
+
+	unflipTopCard(save) {
+
+		if(this.cards.length > 0) {
+
+			this.unflipCardByIndex(this.cards.length - 1);
+
+			if(save) {
+				event.dispatch('addStep', {
+					"unflip" : {
+						"cardName"  : this.cards[this.cards.length - 1].name,
+						"cardIndex" : this.cards.length - 1                 ,
+						"deckName"  : this.name
+					}
+				});
+			}
+		}
+	}
+
+	flipAllCards(redraw = true, save) {
+
+		for(let i in this.cards) {
+
+			this.cards[i].flip = true;
+
+			if(save) {
+				event.dispatch('addStep', {
+					"flip" : {
+						"cardName"  : this.cards[i].name,
+						"cardIndex" : i                 ,
+						"deckName"  : this.name
+					}
+				});
+			}
+		}
+
+		if(redraw) {
+			this.Redraw();
+		}
+	}
+
+	unflipAllCards(redraw = true, save) {
+
+		for(let i in this.cards) {
+
+			this.cards[i].flip = false;
+
+			if(save) {
+				event.dispatch('addStep', {
+					"unflip" : {
+						"cardName"  : this.cards[i].name,
+						"cardIndex" : i                 ,
+						"deckName"  : this.name
+					}
+				});
+			}
+		}
+
+		if(redraw) {
+			this.Redraw();
+		}
 	}
 
 	checkFull() {
@@ -302,17 +496,44 @@ class Deck {
 		event.dispatch('removeEl', this);
 	}
 
-	Push(deck) {
+	Push(deck, afterVisible = false) {
+
+		let visibleCardsCount = null;
+
+		if(afterVisible) {
+			visibleCardsCount = this.cardsCount();
+		}
 
 		for(let i in deck) {
+
 			deck[i].parent = this.id;
-			this.cards.push(deck[i]);
+
+			if(
+				afterVisible                          &&
+				visibleCardsCount < this.cards.length
+			) {
+
+				// TODO
+				// let a=[this.name, 'Push:before'];for(let card of this.cards)a.push(card.name);console.log.apply(console, a);
+
+				this.cards = [].concat(
+					this.cards.slice(0, visibleCardsCount),
+					deck[i]                               ,
+					this.cards.slice(visibleCardsCount)
+				);
+
+				// a=[this.name, 'Push:after'];for(let card of this.cards)a.push(card.name);console.log.apply(console, a);
+			} else {
+				this.cards.push(deck[i]);
+			}
 		}
 	}
 
 	Pop(count, clearParent) {
 
-		if(this.cards.length < count) {
+		let _cards = this.getCards();
+
+		if(_cards.length < count) {
 			return false;
 		}
 
@@ -320,8 +541,20 @@ class Deck {
 
 		for(;count;count -= 1) {
 
-			let _pop = this.cards.pop();
+			// get top visible card
+			let _pop = _cards.pop();
 
+			// remove this card from cards list
+			for(let i = 0; i < this.cards.length;i += 1) {
+				if(this.cards[i].id == _pop.id) {
+					this.cards = [].concat(
+						this.cards.slice(0, i)       ,
+						this.cards.slice((i | 0) + 1)
+					)
+				}
+			}
+
+			// clear card parent value
 			if(clearParent) {
 				_pop.parent = null;
 			}
@@ -332,7 +565,7 @@ class Deck {
 
 		_deck.reverse();
 
-		// что делать если вынули все карты
+		// скрыть стопку если вынули все карты
 		if(
 			this.autoHide           && 
 			this.cards.length == 0
@@ -386,28 +619,72 @@ class Deck {
 	// 	return this.getCardsByName(cardName)[0];
 	// }
 
-	getCards() {
+	hideCards(redraw = true, save) {
 
-		// let _cards = [];
-		// for(let i in this.cards) {
-		// 	let _card = common.getElementById(this.cards[i]);
-		// 	_cards.push(_card);
-		// }
-
-		return this.cards;
-	}
-
-	hideCards() {
 		for(let i in this.cards) {
+
 			this.cards[i].visible = false;
-			event.dispatch('hideCard', this.cards[i]);
+
+			if(save) {
+				event.dispatch('addStep', {
+					"hide" : {
+						"cardName"  : this.cards[i].name,
+						"cardIndex" : i                 ,
+						"deckName"  : this.name
+					}
+				});
+			}
+			// event.dispatch('hideCard', this.cards[i]);
+		}
+
+		if(redraw) {
+			this.Redraw();
 		}
 	}
 
-	showCards() {
+	// TODO можно использовать только для карт сверху
+	hideCardByIndex(index, redraw) {
+		if(this.cards[index]) {
+
+			this.cards[index].visible = false;
+
+			if(redraw) {
+				this.Redraw();
+			}
+		}
+	}
+
+	showCards(redraw = true, save) {
+
 		for(let i in this.cards) {
+
 			this.cards[i].visible = true;
-			event.dispatch('showCard', this.cards[i]);
+
+			if(save) {
+				event.dispatch('addStep', {
+					"show" : {
+						"cardName"  : this.cards[i].name,
+						"cardIndex" : i                 ,
+						"deckName"  : this.name
+					}
+				});
+			}
+			// event.dispatch('showCard', this.cards[i]);
+		}
+
+		if(redraw) {
+			this.Redraw();
+		}
+	}
+
+	showCardByIndex(index, redraw) {
+		if(this.cards[index]) {
+
+			this.cards[index].visible = true;
+
+			if(redraw) {
+				this.Redraw();
+			}
 		}
 	}
 
@@ -422,30 +699,67 @@ class Deck {
 		return _cardsNames;
 	}
 
-	cardsCount() {
-		return this.cards.length;
+	getCards(filters = {"visible" : true}) {
+
+		let _cards = [];
+
+		for(let i in this.cards) {
+
+			let _correct = true;
+
+			for(let filterName in filters) {
+				try{
+					_correct = _correct && this.cards[i][filterName] == filters[filterName];
+				} catch(e) {
+					console.warn('Incorrect filter ' + filterName + ' in deck:getCards');
+				}
+			}
+
+			if(_correct) {
+				_cards.push(this.cards[i]);
+			}
+		}
+
+		return _cards;
 	}
 
-	getRelationsByName(relationName, filter) {
+	cardsCount(filters) {
+		return this.getCards(filters).length;
+	}
 
+	getCardByIndex(index) {
+		return this.cards[index] ? this.cards[index] : false;
+	}
+
+	getCardIndexById(id) {
+
+		let index = false;
+
+		for(let i in this.cards) {
+			if(this.cards[i].id == id) {
+				index = i;
+			}
+		}
+
+		return index;
+	}
+
+	getRelationsByName(relationName, filters) {
 
 		let _relations = [];
 
 		for(let i in this.relations) {
 			if(this.relations[i].name == relationName) {
 
-				if(filter) {
+				if(filters) {
 
-					let _checked = 0, _count = 0;
+					let _correct = true;
 
-					for(let attr in filter) {
-						_count += 1;
-						if(this.relations[i][attr] == filter[attr]) {
-							_checked += 1;
-						}
+					for(let attr in filters) {
+						_correct = _correct && this.relations[i][attr] == filters[attr];
 					}
 
-					if(_checked == _count) {
+					if(_correct) {
 						_relations.push(this.relations[i]);
 					}
 				} else {
@@ -470,7 +784,6 @@ class Deck {
 }
 
 // add deck
-
 let addDeck = data => {
 
 	if(!data) {
@@ -500,9 +813,9 @@ let addDeck = data => {
 };
 
 export default {
-	deckCardNames,
-	addDeck      ,
-	getDeck      ,
-	getDecks     ,
-	getDeckById
+	"deckCardNames" : deckCardNames,
+	"addDeck"       : addDeck      ,
+	"getDeck"       : getDeck      ,
+	"getDecks"      : getDecks     ,
+	"getDeckById"   : getDeckById
 };

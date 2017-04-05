@@ -1,14 +1,14 @@
 'use strict';
 
-import event     from 'event'   ;
-import share     from 'share'   ;
-import defaults  from 'defaults';
-import common    from 'common'  ;
+import event    from 'event'   ;
+import share    from 'share'   ;
+import defaults from 'defaults';
+import common   from 'common'  ;
 
-import allToAll  from 'allToAll';
-import bestTip   from 'bestTip' ;
-import Deck      from 'deck'    ;
-import Field     from 'field'   ;
+import allToAll from 'allToAll';
+import bestTip  from 'bestTip' ;
+import Deck     from 'deck'    ;
+import Field    from 'field'   ;
 
 /*
  * getTips
@@ -19,6 +19,7 @@ import Field     from 'field'   ;
  * tipsDestination
  * checkFrom
  * fromTo
+ * autoStepToHome
  */
 
 let _showTips = defaults.showTips;
@@ -42,7 +43,9 @@ let checkTips = e => {
 
 	event.dispatch('hideTips');
 
-	let _decks = Deck.getDecks({visible : true});
+	let _decks = Deck.getDecks({
+		"visible" : true
+	});
 
 	_tips = allToAll({
 		"decks" : _decks
@@ -67,27 +70,23 @@ let checkTips = e => {
 			// TODO инициализировать "hideTipsInDom" в Field.js 
 			if(
 				// (
-				// 	_tips[i].to.count === 0                             &&
+				// 	_tips[i].to.count === 0            &&
 				// 	Field.tipsParams.hideOnEmpty
-				// )                                                       ||
+				// )                                   ||
 				(
-					Field.tipsParams.excludeHomeGroups                  &&
-					_homeGroups                                         &&
-					_homeGroups.length                                  &&
-					_homeGroups.indexOf(_tips[i].from.deck.parent) >= 0
+					Field.tipsParams.excludeHomeGroups &&
+					_homeGroups                        &&
+					_homeGroups.length
 				)
 			) {
-				// ?#$%&!
+				// не выделять подсказки с ходом из "дома"
+				if(_homeGroups.indexOf(_tips[i].from.deck.parent) < 0) {
+					event.dispatch('showTip', {
+						"el"   : _tips[i].from.card, 
+						"type" : 'tipToHome'
+					});
+				}
 			} else {
-
-				event.dispatch('showTip', {
-					"el"   : _tips[i].from.card, 
-					"type" : 'tip'
-				});
-				
-			}
-
-			if(_homeGroups.indexOf(_tips[i].to.deck.parent) >= 0) {
 				event.dispatch('showTip', {
 					"el"   : _tips[i].from.card, 
 					"type" : 'tipToHome'
@@ -100,7 +99,7 @@ let checkTips = e => {
 event.listen('makeStep' , checkTips);
 event.listen('checkTips', checkTips);
 
-// show/hide tips
+// вкл./выкл. показа подсказок
 
 let showTips = data => {
 
@@ -128,8 +127,7 @@ let hideTips = data => {
 event.listen('tips:off', hideTips);
 event.listen('tipsOFF' , hideTips);
 
-// best tip on move
-
+// лучший ход на в текущем положении перетаскиваемой стопки
 let tipsMove = data => {
 
 	if(!share.get('showTipPriority')) {
@@ -160,7 +158,6 @@ let tipsMove = data => {
 };
 
 // tips destination decks
-
 let tipsDestination = data => {
 
 	if(share.get('showTipsDestination')) {
@@ -181,6 +178,7 @@ let tipsDestination = data => {
 	}
 };
 
+// has tips with from
 let checkFrom = from => {
 
 	for(let i in _tips) {
@@ -194,6 +192,7 @@ let checkFrom = from => {
 	return false;
 };
 
+// has tips with from and to
 let fromTo = (from, to) => {
 
 	for(let i in _tips) {
@@ -208,14 +207,75 @@ let fromTo = (from, to) => {
 	return false;
 };
 
+// Автоход в "дом"
+let autoStepToHome = data => {
+
+	let _homeGroups = Field.homeGroups;
+	let homeGroupDecksNames = [];
+
+	for(let groupNameIndex in _homeGroups) {
+
+		let groupName = _homeGroups[groupNameIndex];
+
+		let group = common.getElementsByName(groupName, 'deck')[0];
+		let decks = group.getDecks();
+
+		for(let deckIndex in decks) {
+
+			let deck = decks[deckIndex];
+
+			homeGroupDecksNames.push(deck.name);
+		}
+	}
+
+	let suitableTips = [];
+
+	for(let tipIndex in _tips) {
+
+		let tip = _tips[tipIndex];
+
+		if(
+			homeGroupDecksNames.indexOf(tip.to  .deck.name) >= 0 &&
+			homeGroupDecksNames.indexOf(tip.from.deck.name) <  0
+		) {
+			suitableTips.push(tip);
+		}
+	}
+
+	if(suitableTips.length > 0) {
+
+		let tip = suitableTips[0];
+
+		let forceMoveData = {
+			"from"    :  tip.from.deck.name ,
+			"to"      :  tip.to  .deck.name ,
+			"deck"    : [tip.from.card.name],
+			"addStep" : true                ,
+			"save"    : true
+		};
+
+		event.dispatch('forceMove', forceMoveData);
+
+		checkTips();
+
+		autoStepToHome(data);
+	} else {
+		event.dispatch('winCheck', {
+			"show" : true
+		});
+	}
+};
+
+event.listen('autoStepToHome', autoStepToHome);
+
 export default {
-	tipTypes       ,
-	getTips        ,
-	checkTips      ,
-	showTips       ,
-	hideTips       ,
-	tipsMove       ,
-	checkFrom      ,
-	fromTo         ,
-	tipsDestination
+	"tipTypes"        : tipTypes       ,
+	"getTips"         : getTips        ,
+	"checkTips"       : checkTips      ,
+	"showTips"        : showTips       ,
+	"hideTips"        : hideTips       ,
+	"tipsMove"        : tipsMove       ,
+	"checkFrom"       : checkFrom      ,
+	"fromTo"          : fromTo         ,
+	"tipsDestination" : tipsDestination
 };
