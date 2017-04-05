@@ -496,7 +496,7 @@ class Deck {
 		event.dispatch('removeEl', this);
 	}
 
-	Push(deck, afterVisible = true) {
+	Push(deck, afterVisible = false) {
 
 		// console.log('Push:', afterVisible);
 
@@ -516,11 +516,17 @@ class Deck {
 				afterVisible                          &&
 				visibleCardsCount < this.cards.length
 			) {
+
+				// TODO
+				// let a=[this.name, 'Push:before'];for(let card of this.cards)a.push(card.name);console.log.apply(console, a);
+
 				this.cards = [].concat(
 					this.cards.slice(0, visibleCardsCount),
 					deck[i]                               ,
 					this.cards.slice(visibleCardsCount)
 				);
+
+				// a=[this.name, 'Push:after'];for(let card of this.cards)a.push(card.name);console.log.apply(console, a);
 			} else {
 				this.cards.push(deck[i]);
 			}

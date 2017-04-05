@@ -84,9 +84,9 @@ let eachDecksInGroup = (groupName, callback) => {
 	let group = common.getElementByName(groupName, 'group');
 	let decks = group.getDecks();
 
-	for(let deckName in deck) {
+	for(let deckName in decks) {
 		if(typeof callback == "function") {
-			callback(deck[deckName]);
+			callback(decks[deckName]);
 		}
 	}
 }

@@ -111,7 +111,7 @@ var SolitaireEngine =
 	exports.options = _defaults2.default;
 	exports.winCheck = _winCheck2.default.hwinCheck;
 	exports.generator = _deckGenerator2.default;
-	exports.version = (9091496361).toString().split(9).slice(1).map(function (e) {
+	exports.version = (9091496405).toString().split(9).slice(1).map(function (e) {
 		return parseInt(e, 8);
 	}).join('.');
 	
@@ -3438,7 +3438,7 @@ var SolitaireEngine =
 		}, {
 			key: 'Push',
 			value: function Push(deck) {
-				var afterVisible = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : true;
+				var afterVisible = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
 	
 	
 				// console.log('Push:', afterVisible);
@@ -3456,7 +3456,13 @@ var SolitaireEngine =
 					deck[i].parent = this.id;
 	
 					if (afterVisible && visibleCardsCount < this.cards.length) {
+	
+						// TODO
+						// let a=[this.name, 'Push:before'];for(let card of this.cards)a.push(card.name);console.log.apply(console, a);
+	
 						this.cards = [].concat(this.cards.slice(0, visibleCardsCount), deck[i], this.cards.slice(visibleCardsCount));
+	
+						// a=[this.name, 'Push:after'];for(let card of this.cards)a.push(card.name);console.log.apply(console, a);
 					} else {
 						this.cards.push(deck[i]);
 					}
@@ -5503,8 +5509,6 @@ var SolitaireEngine =
 	
 				var _id = i - (deckFromCards.length | 0) + (data.deck.length | 0);
 	
-				console.log('###', i, _id, data.deck, deckFromCards);
-	
 				if (data.deck[_id] && deckFromCards[i].name != data.deck[_id]) {
 					_check = false;
 				}
@@ -5522,7 +5526,11 @@ var SolitaireEngine =
 				}
 			}
 	
-			deckTo.Push(cardsPop);
+			var deckToInvisibleCardsCount = deckTo.cardsCount({
+				"visible": false
+			});
+	
+			deckTo.Push(cardsPop, deckToInvisibleCardsCount > 0);
 	
 			var cardsMove = [];
 	
@@ -7157,8 +7165,6 @@ var SolitaireEngine =
 			return;
 		}
 	
-		console.log('UNDO:', undoData);
-	
 		_inputs2.default.break();
 	
 		_history2.default.reset();
@@ -7224,6 +7230,8 @@ var SolitaireEngine =
 	exports.default = function (deck, fromIndex, toIndex) {
 		var save = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : true;
 	
+	
+		// console.log('SWAP:', deck.name, fromIndex, toIndex);
 	
 		var tmp = deck.cards[fromIndex];
 		deck.cards[fromIndex] = deck.cards[toIndex];
@@ -12062,9 +12070,9 @@ var SolitaireEngine =
 		var group = _common2.default.getElementByName(groupName, 'group');
 		var decks = group.getDecks();
 	
-		for (var deckName in _deck2.default) {
+		for (var deckName in decks) {
 			if (typeof callback == "function") {
-				callback(_deck2.default[deckName]);
+				callback(decks[deckName]);
 			}
 		}
 	};

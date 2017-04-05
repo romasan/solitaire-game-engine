@@ -183,8 +183,6 @@ event.listen('undo', undoData => {
 		return;
 	}
 
-	console.log('UNDO:', undoData);
-
 	inputs.break();
 
 	History.reset();

@@ -51,8 +51,6 @@ let forceMove = data => {// {from, to, deck, <flip>, <callback>}
 
 			let _id = i - (deckFromCards.length | 0) + (data.deck.length | 0);
 
-			console.log('###', i, _id, data.deck,deckFromCards);
-
 			if(
 				data.deck[_id]                          &&
 				deckFromCards[i].name != data.deck[_id]
@@ -73,7 +71,11 @@ let forceMove = data => {// {from, to, deck, <flip>, <callback>}
 			}
 		}
 
-		deckTo.Push(cardsPop);
+		let deckToInvisibleCardsCount = deckTo.cardsCount({
+			"visible" : false
+		});
+
+		deckTo.Push(cardsPop, deckToInvisibleCardsCount > 0);
 
 		let cardsMove = [];
 
