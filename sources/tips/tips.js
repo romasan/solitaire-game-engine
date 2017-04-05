@@ -259,6 +259,10 @@ let autoStepToHome = data => {
 		checkTips();
 
 		autoStepToHome(data);
+	} else {
+		event.dispatch('winCheck', {
+			"show" : true
+		});
 	}
 };
 

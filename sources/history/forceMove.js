@@ -42,8 +42,8 @@ let forceMove = data => {// {from, to, deck, <flip>, <callback>}
 
 	let _check = true;
 
-	let deckFromCards = deckFrom.cards;
-
+	// let deckFromCards = deckFrom.cards;
+	let deckFromCards = deckFrom.getCards();
 
 	for(let i in deckFromCards) {
 

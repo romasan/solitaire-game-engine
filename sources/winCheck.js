@@ -74,6 +74,8 @@ let winCheck = params => {
 	return false;
 };
 
+event.listen('winCheck', winCheck);
+
 // hidden check
 let hwinCheck = params => {
 

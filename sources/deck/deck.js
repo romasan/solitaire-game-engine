@@ -498,10 +498,6 @@ class Deck {
 
 	Push(deck, afterVisible = false) {
 
-		// console.log('Push:', afterVisible);
-
-		// afterVisible = false;
-
 		let visibleCardsCount = null;
 
 		if(afterVisible) {

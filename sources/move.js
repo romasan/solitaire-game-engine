@@ -8,7 +8,6 @@ import common   from 'common'  ;
 import Deck     from 'deck'    ;
 import Tips     from 'tips'    ;
 import bestTip  from 'bestTip' ;
-import winCheck from 'winCheck';
 import Field    from 'field'   ;
 
 let Move = (moveDeck, to, cursorMove) => {
@@ -184,7 +183,7 @@ let Move = (moveDeck, to, cursorMove) => {
 						}
 					});
 
-					winCheck.winCheck({
+					event.dispatch('winCheck', {
 						"show" : true
 					});
 				};
