@@ -157,7 +157,17 @@ let Move = (moveDeck, to, cursorMove) => {
 						_deck_departure.unflipTopCard();
 					}
 
+					let moveEndData = {
+						"from"     : _deck_departure      ,
+						"to"       : _deck_destination    ,
+						"moveDeck" : moveDeck             ,
+						"stepType" : share.get('stepType')
+					};
+
+					event.dispatch('moveEnd:beforeSave', moveEndData);
+
 					let _tips = Tips.getTips();
+
 					if(
 						_deck_destination.save         ||
 						_tips.length > 0               &&
@@ -166,22 +176,19 @@ let Move = (moveDeck, to, cursorMove) => {
 						event.dispatch('saveSteps', 'MOVE');
 					}
 
-					event.dispatch('moveEnd:' + share.get('stepType'));
-					event.dispatch('moveEnd', {
-						"from"     : _deck_departure      ,
-						"to"       : _deck_destination    ,
-						"moveDeck" : moveDeck             ,
-						"stepType" : share.get('stepType'),
-						"before"   : data => {
-							if(data && typeof data.stepType == 'string') {
-								event.dispatch('addStep', {
-									"redo": {
-										"stepType": data.stepType
-									}
-								})
-							}
+					moveEndData.before = data => {
+						if(data && typeof data.stepType == 'string') {
+							event.dispatch('addStep', {
+								"redo": {
+									"stepType": data.stepType
+								}
+							})
 						}
-					});
+					};
+
+					event.dispatch('moveEnd:' + share.get('stepType'));
+
+					event.dispatch('moveEnd', moveEndData);
 
 					event.dispatch('winCheck', {
 						"show" : true

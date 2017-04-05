@@ -17,7 +17,7 @@ class rollerAction extends deckAction {
 
 	run(deck, data) {
 
-		if(data.eventName == 'moveEnd') {
+		if(data.eventName.indexOf('moveEnd') >= 0) {
 
 			if(data.eventData.from.name != deck.name) {
 				return;

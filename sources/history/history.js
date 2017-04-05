@@ -53,7 +53,7 @@ class historyClass {
 
 	add(step) {
 
-		// console.log('History:add', step);
+		console.log('History:add', step);
 
 		this.steps.push(step);
 	}
@@ -67,7 +67,7 @@ class historyClass {
 			this.reset(true);
 		}
 
-		// console.log('History:get', _req);
+		console.log('History:get', _req);
 
 		// for(let line of _req) {
 		// 	for(let name in line) {

@@ -73,7 +73,7 @@ var SolitaireEngine =
 	
 	var _forceMove2 = _interopRequireDefault(_forceMove);
 	
-	var _render = __webpack_require__(70);
+	var _render = __webpack_require__(68);
 	
 	var _render2 = _interopRequireDefault(_render);
 	
@@ -85,7 +85,7 @@ var SolitaireEngine =
 	
 	var _common2 = _interopRequireDefault(_common);
 	
-	var _winCheck = __webpack_require__(68);
+	var _winCheck = __webpack_require__(83);
 	
 	var _winCheck2 = _interopRequireDefault(_winCheck);
 	
@@ -111,7 +111,7 @@ var SolitaireEngine =
 	exports.options = _defaults2.default;
 	exports.winCheck = _winCheck2.default.hwinCheck;
 	exports.generator = _deckGenerator2.default;
-	exports.version = (9091496426).toString().split(9).slice(1).map(function (e) {
+	exports.version = (9091496434).toString().split(9).slice(1).map(function (e) {
 		return parseInt(e, 8);
 	}).join('.');
 	
@@ -6333,7 +6333,7 @@ var SolitaireEngine =
 			key: 'run',
 			value: function run(deck, data) {
 	
-				if (data.eventName == 'moveEnd') {
+				if (data.eventName.indexOf('moveEnd') >= 0) {
 	
 					if (data.eventData.from.name != deck.name) {
 						return;
@@ -6662,7 +6662,7 @@ var SolitaireEngine =
 			key: 'add',
 			value: function add(step) {
 	
-				// console.log('History:add', step);
+				console.log('History:add', step);
 	
 				this.steps.push(step);
 			}
@@ -6681,7 +6681,7 @@ var SolitaireEngine =
 					this.reset(true);
 				}
 	
-				// console.log('History:get', _req);
+				console.log('History:get', _req);
 	
 				// for(let line of _req) {
 				// 	for(let name in line) {
@@ -6877,6 +6877,8 @@ var SolitaireEngine =
 		// undo show
 		if (data.show) {
 	
+			console.log('UNDO SHOW:', data.show);
+	
 			var _deck3 = _common2.default.getElementByName(data.show.deckName, 'deck');
 	
 			if (_deck3 && _deck3.cards[data.show.cardIndex].name == data.show.cardName) {
@@ -6885,6 +6887,8 @@ var SolitaireEngine =
 			} else {
 				console.warn('Incorrect history substep [undo show]:', data.hide);
 			}
+	
+			_deck3.Redraw();
 		}
 	
 		// undo full
@@ -9538,27 +9542,34 @@ var SolitaireEngine =
 							_deck_departure.unflipTopCard();
 						}
 	
+						var moveEndData = {
+							"from": _deck_departure,
+							"to": _deck_destination,
+							"moveDeck": moveDeck,
+							"stepType": _share2.default.get('stepType')
+						};
+	
+						_event2.default.dispatch('moveEnd:beforeSave', moveEndData);
+	
 						var _tips = _tips3.default.getTips();
+	
 						if (_deck_destination.save || _tips.length > 0 && _stepType != _defaults2.default.stepType) {
 							_event2.default.dispatch('saveSteps', 'MOVE');
 						}
 	
-						_event2.default.dispatch('moveEnd:' + _share2.default.get('stepType'));
-						_event2.default.dispatch('moveEnd', {
-							"from": _deck_departure,
-							"to": _deck_destination,
-							"moveDeck": moveDeck,
-							"stepType": _share2.default.get('stepType'),
-							"before": function before(data) {
-								if (data && typeof data.stepType == 'string') {
-									_event2.default.dispatch('addStep', {
-										"redo": {
-											"stepType": data.stepType
-										}
-									});
-								}
+						moveEndData.before = function (data) {
+							if (data && typeof data.stepType == 'string') {
+								_event2.default.dispatch('addStep', {
+									"redo": {
+										"stepType": data.stepType
+									}
+								});
 							}
-						});
+						};
+	
+						_event2.default.dispatch('moveEnd:' + _share2.default.get('stepType'));
+	
+						_event2.default.dispatch('moveEnd', moveEndData);
 	
 						_event2.default.dispatch('winCheck', {
 							"show": true
@@ -9620,6 +9631,1426 @@ var SolitaireEngine =
 
 	'use strict';
 	
+	var _event = __webpack_require__(2);
+	
+	var _event2 = _interopRequireDefault(_event);
+	
+	var _share = __webpack_require__(1);
+	
+	var _share2 = _interopRequireDefault(_share);
+	
+	var _elRender = __webpack_require__(69);
+	
+	var _elRender2 = _interopRequireDefault(_elRender);
+	
+	var _initField = __webpack_require__(72);
+	
+	var _initField2 = _interopRequireDefault(_initField);
+	
+	var _drawDeck = __webpack_require__(73);
+	
+	var _drawDeck2 = _interopRequireDefault(_drawDeck);
+	
+	var _drawCard = __webpack_require__(74);
+	
+	var _drawCard2 = _interopRequireDefault(_drawCard);
+	
+	var _drawTip = __webpack_require__(75);
+	
+	var _drawTip2 = _interopRequireDefault(_drawTip);
+	
+	var _moveDragDeck = __webpack_require__(76);
+	
+	var _moveDragDeck2 = _interopRequireDefault(_moveDragDeck);
+	
+	var _moveCardToHome = __webpack_require__(77);
+	
+	var _moveCardToHome2 = _interopRequireDefault(_moveCardToHome);
+	
+	var _fieldThemesSet = __webpack_require__(78);
+	
+	var _fieldThemesSet2 = _interopRequireDefault(_fieldThemesSet);
+	
+	__webpack_require__(79);
+	
+	__webpack_require__(80);
+	
+	__webpack_require__(81);
+	
+	__webpack_require__(82);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	// styles DOM
+	_event2.default.listen('removeEl', function (data) {
+	
+		var _elDomElement = _share2.default.get('domElement:' + data.id);
+	
+		try {
+			_elDomElement.remove();
+	
+			_share2.default.delete('domElement:' + data.id);
+		} catch (e) {
+			console.warn('Dom element for', data.id, 'not found');
+		}
+	});
+	
+	_event2.default.listen('showCard', function (target) {
+		(0, _elRender2.default)(target).show();
+	});
+	
+	_event2.default.listen('hideCard', function (target) {
+		(0, _elRender2.default)(target).hide();
+	});
+
+/***/ },
+/* 69 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	// let jquery = require("script!../../../frontend/js/jquery-2.2.4.min.js");
+	
+	// export default jquery;
+	
+	Object.defineProperty(exports, "__esModule", {
+		value: true
+	});
+	
+	var _defaults = __webpack_require__(3);
+	
+	var _defaults2 = _interopRequireDefault(_defaults);
+	
+	var _share = __webpack_require__(1);
+	
+	var _share2 = _interopRequireDefault(_share);
+	
+	var _event = __webpack_require__(2);
+	
+	var _event2 = _interopRequireDefault(_event);
+	
+	var _elClass = __webpack_require__(70);
+	
+	var _elClass2 = _interopRequireDefault(_elClass);
+	
+	var _allElClass = __webpack_require__(71);
+	
+	var _allElClass2 = _interopRequireDefault(_allElClass);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	_share2.default.set('animatedElements', 0);
+	_share2.default.set('animatedElementsStack', []);
+	_share2.default.set('animatedCallback', function (e) {
+		return null;
+	});
+	
+	var _allEl = function _allEl(data) {
+	
+		if (!data) {
+			throw new Error('elRender:empty arguments.');
+		}
+	
+		if (typeof data == 'string') {
+	
+			try {
+	
+				if (data[0] == '#') {
+	
+					var _element = document.getElementById(data.slice(1, Infinity));
+	
+					return new _elClass2.default(_element);
+				} else if (data[0] == '.') {
+	
+					var _elements = document.getElementsByClassName(data.slice(1, Infinity));
+	
+					return new _allElClass2.default(_elements);
+				} else if (data[0] == '<') {
+	
+					var _temp = document.createElement('temp');
+					_temp.innerHTML = data;
+					var _element2 = _temp.children[0];
+	
+					return new _elClass2.default(_element2);
+				}
+			} catch (data) {}
+		} else if (data.el || data.elements) {
+			return data;
+		} else {
+			return new _elClass2.default(data);
+		}
+	};
+	
+	// TODO
+	_allEl.stopAnimations = function (e) {
+	
+		// if(!share.get('animation')) {
+		// 	return;
+		// }
+	
+		// return;
+		_event2.default.dispatch('clearCallbacks');
+	
+		_allEl('.animated').stop()
+		// .css({transition: '0s'})
+		.css({
+			"transition": false
+		}).removeClass('animated');
+	};
+	
+	_event2.default.listen('stopAnimations', _allEl.stopAnimations);
+	
+	exports.default = _allEl;
+
+/***/ },
+/* 70 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+		value: true
+	});
+	
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	
+	var _event = __webpack_require__(2);
+	
+	var _event2 = _interopRequireDefault(_event);
+	
+	var _share = __webpack_require__(1);
+	
+	var _share2 = _interopRequireDefault(_share);
+	
+	var _defaults = __webpack_require__(3);
+	
+	var _defaults2 = _interopRequireDefault(_defaults);
+	
+	var _common = __webpack_require__(5);
+	
+	var _common2 = _interopRequireDefault(_common);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	/*
+	 * attr
+	 * hasClass
+	 * toggleClass
+	 * addClass
+	 * removeClass
+	 * css
+	 * hide
+	 * show
+	 * append
+	 * html
+	 * animate
+	 * stop
+	 * remove
+	 * parent
+	 * after
+	 * before
+	 * listen
+	 * trigger
+	 * click
+	 */
+	
+	var elClass = function () {
+		function elClass(data) {
+			_classCallCheck(this, elClass);
+	
+			this.el = data;
+	
+			if (!data) {
+				// if(window._debug) throw new Error("test");
+				this.el = null;
+			}
+	
+			this._animationCallbacks = [];
+			this._animationIndex = 0;
+		}
+	
+		_createClass(elClass, [{
+			key: 'attr',
+			value: function attr(attributes) {
+				try {
+	
+					for (var attrName in attributes) {
+						this.el[attrName] = attributes[attrName];
+					}
+	
+					return this;
+				} catch (e) {}
+			}
+		}, {
+			key: 'hasClass',
+			value: function hasClass(className) {
+				try {
+	
+					var _classes = this.el.className.split(' ');
+	
+					return _classes.indexOf(className) >= 0;
+				} catch (e) {}
+			}
+		}, {
+			key: 'toggleClass',
+			value: function toggleClass(className) {
+				try {
+	
+					if (this.hasClass(className)) {
+						this.removeClass(className);
+					} else {
+						this.addClass(className);
+					}
+				} catch (e) {}
+			}
+		}, {
+			key: 'addClass',
+			value: function addClass(className) {
+	
+				try {
+	
+					var _classes = this.el.className.split(' ');
+	
+					if (!this.hasClass(className)) {
+						_classes.push(className);
+						this.el.className = _classes.join(' ');
+					}
+	
+					return this;
+				} catch (e) {}
+			}
+		}, {
+			key: 'removeClass',
+			value: function removeClass(className) {
+	
+				if (!this.el || !this.el.className) {
+					return this;
+				}
+	
+				try {
+	
+					var _classes = this.el.className.split(' ');
+	
+					// if(this.hasClass(className)) {
+					var _clone = [];
+	
+					for (var i in _classes) {
+						if (_classes[i] != className) {
+							_clone.push(_classes[i]);
+						}
+					}
+	
+					_classes = _clone;
+	
+					this.el.className = _classes.join(' ');
+					// }
+	
+					return this;
+				} catch (e) {}
+			}
+		}, {
+			key: 'css',
+			value: function css(a) {
+	
+				if (!this.el) {
+					return this;
+				}
+	
+				try {
+	
+					for (var attrName in a) {
+						this.el.style[attrName] = a[attrName];
+					}
+	
+					return this;
+				} catch (e) {}
+			}
+		}, {
+			key: 'hide',
+			value: function hide() {
+				try {
+					return this.css({
+						"display": 'none'
+					});
+				} catch (e) {}
+			}
+		}, {
+			key: 'show',
+			value: function show() {
+				try {
+					return this.css({
+						"display": 'block'
+					});
+				} catch (e) {}
+			}
+		}, {
+			key: 'append',
+			value: function append(el) {
+				try {
+	
+					if (el.el) {
+						el = el.el;
+					}
+	
+					this.el.appendChild(el);
+	
+					return this;
+				} catch (e) {}
+			}
+		}, {
+			key: 'html',
+			value: function html(el) {
+				try {
+	
+					if (typeof el == 'undefined') {
+						return this.el.innerHTML;
+					}
+	
+					if (el.el) {
+						el = el.el;
+					}
+	
+					this.el.innerHTML = el;
+	
+					return this;
+				} catch (e) {}
+			}
+		}, {
+			key: 'animate',
+			value: function animate(params, animationTime, callback, animationName) {
+				var _this = this;
+	
+				try {
+					(function () {
+	
+						var _animation = _share2.default.get('animation');
+	
+						typeof animationTime == 'undefined' && (animationTime = _share2.default.get('animationTime'));
+						typeof animationTime == 'function' && (callback = animationTime, animationTime = _share2.default.get('animationTime'));
+						typeof callback == 'string' && (animationName = callback, callback = null);
+	
+						animationName = animationName ? animationName : 'animation_' + _this._animationIndex;
+						_this._animationCallbacks[animationName] = callback;
+						_this._animationIndex += 1;
+	
+						// Thread
+						setTimeout(function (e) {
+	
+							if (_animation) {
+								_this.css({
+									"transition": animationTime / 1000 + 's'
+								});
+							}
+	
+							var counter = 0;
+	
+							var reType = function reType(data) {
+								// crutch
+	
+								var _e = data + '';
+	
+								var _px = _e.split('px');
+								if (_px.length == 2) {
+									return (_px[0] | 0) + 'px';
+								}
+	
+								return data;
+							};
+	
+							for (var attrName in params) {
+	
+								if (reType(_this.el.style[attrName]) != reType(params[attrName])) {
+									counter += 1;
+								}
+	
+								_this.el.style[attrName] = params[attrName];
+							}
+	
+							if (_animation) {
+	
+								_this.addClass('animated');
+	
+								_this.el.addEventListener('transitionend', function (e) {
+	
+									counter -= 1;
+	
+									// event.dispatch('animationEnd', this);
+	
+									if (!counter) {
+	
+										_this.removeClass('animated');
+	
+										_this.css({
+											"transition": null
+										});
+	
+										if (typeof _this._animationCallbacks[animationName] == 'function') {
+											_this._animationCallbacks[animationName]();
+											_this._animationCallbacks[animationName] = null;
+										}
+	
+										_event2.default.dispatch('allAnimationsEnd', animationName);
+									}
+								}, false);
+							} else {
+	
+								// event.dispatch('animationEnd', this);
+	
+								if (typeof _this._animationCallbacks[animationName] == 'function') {
+									_this._animationCallbacks[animationName]();
+									_this._animationCallbacks[animationName] = null;
+								}
+	
+								_event2.default.dispatch('allAnimationsEnd', animationName);
+							}
+						}, 0);
+					})();
+				} catch (e) {}
+			}
+		}, {
+			key: 'stop',
+			value: function stop() {
+				this._animationCallbacks = [];
+			}
+		}, {
+			key: 'remove',
+			value: function remove() {
+				try {
+					// this.el.remove();
+					this.el.parentNode.removeChild(this.el);
+				} catch (e) {}
+			}
+		}, {
+			key: 'parent',
+			value: function parent() {
+				return new elClass(this.el.parentNode);
+			}
+		}, {
+			key: 'after',
+			value: function after(html) {
+	
+				try {
+					this.el.parentNode.insertBefore(html, this.el.nextElementSibling);
+				} catch (e) {}
+	
+				return this;
+			}
+		}, {
+			key: 'before',
+			value: function before(html) {
+	
+				try {
+					this.el.parentNode.insertBefore(html, this.el);
+				} catch (e) {}
+	
+				return this;
+			}
+		}, {
+			key: 'listen',
+			value: function listen(eventName, callback) {
+				this.el.addEventListener(eventName, callback);
+			}
+		}, {
+			key: 'trigger',
+			value: function trigger(eventName) {
+				if (typeof this.el[eventName] == 'function') {
+					this.el[eventName]();
+				}
+			}
+		}, {
+			key: 'click',
+			value: function click(callback) {
+				this.listen('click', callback);
+			}
+		}]);
+	
+		return elClass;
+	}();
+	
+	exports.default = elClass;
+
+/***/ },
+/* 71 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+		value: true
+	});
+	
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	
+	var _defaults = __webpack_require__(3);
+	
+	var _defaults2 = _interopRequireDefault(_defaults);
+	
+	var _elClass = __webpack_require__(70);
+	
+	var _elClass2 = _interopRequireDefault(_elClass);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	/*
+	 * attr
+	 * toggleClass
+	 * addClass
+	 * removeClass
+	 * css
+	 * hide
+	 * show
+	 * animate
+	 * stop
+	 * remove
+	 */
+	
+	var allElClass = function () {
+		function allElClass(elements) {
+			_classCallCheck(this, allElClass);
+	
+			this.elements = [];
+	
+			for (var i in elements) {
+				this.elements.push(new _elClass2.default(elements[i]));
+			}
+		}
+	
+		_createClass(allElClass, [{
+			key: 'attr',
+			value: function attr(attributes) {
+	
+				for (var i in this.elements) {
+					this.elements[i].attr(attributes);
+				}
+	
+				return this;
+			}
+		}, {
+			key: 'toggleClass',
+			value: function toggleClass(className) {
+	
+				for (var i in this.elements) {
+					this.elements[i].toggleClass(className);
+				}
+	
+				return this;
+			}
+		}, {
+			key: 'addClass',
+			value: function addClass(className) {
+	
+				for (var i in this.elements) {
+					this.elements[i].addClass(className);
+				}
+	
+				return this;
+			}
+		}, {
+			key: 'removeClass',
+			value: function removeClass(className) {
+	
+				for (var i in this.elements) {
+					this.elements[i].removeClass(className);
+				}
+	
+				return this;
+			}
+		}, {
+			key: 'css',
+			value: function css(a) {
+	
+				for (var i in this.elements) {
+					this.elements[i].css(a);
+				}
+	
+				return this;
+			}
+		}, {
+			key: 'hide',
+			value: function hide() {
+	
+				for (var i in this.elements) {
+					this.elements[i].hide();
+				}
+	
+				return this;
+			}
+		}, {
+			key: 'show',
+			value: function show() {
+	
+				for (var i in this.elements) {
+					this.elements[i].show();
+				}
+	
+				return this;
+			}
+		}, {
+			key: 'animate',
+			value: function animate(params, animationTime, callback, animationName) {
+	
+				typeof animationTime == 'undefined' && (animationTime = share.get('animationTime'));
+				typeof animationTime == 'function' && (callback = animationTime, animationTime = share.get('animationTime'));
+				typeof callback == 'string' && (animationName = callback, callback = null);
+	
+				var counter = 0;
+	
+				for (var i in this.elements) {
+					counter += 1;
+					this.elements[i].animate(params, animationTime, function () {
+						counter -= 1;
+						if (!counter) callback();
+					});
+				}
+	
+				return this;
+			}
+		}, {
+			key: 'stop',
+			value: function stop() {
+	
+				for (var i in this.elements) {
+					this.elements[i].stop();
+				}
+	
+				return this;
+			}
+		}, {
+			key: 'remove',
+			value: function remove() {
+	
+				for (var i in this.elements) {
+					// this.elements[i].remove();
+					this.elements[i].parentNode.removeChild(this.elements[i]);
+				}
+	
+				return this;
+			}
+		}]);
+	
+		return allElClass;
+	}();
+	
+	exports.default = allElClass;
+
+/***/ },
+/* 72 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	var _share = __webpack_require__(1);
+	
+	var _share2 = _interopRequireDefault(_share);
+	
+	var _event = __webpack_require__(2);
+	
+	var _event2 = _interopRequireDefault(_event);
+	
+	var _defaults = __webpack_require__(3);
+	
+	var _defaults2 = _interopRequireDefault(_defaults);
+	
+	var _field = __webpack_require__(12);
+	
+	var _field2 = _interopRequireDefault(_field);
+	
+	var _elRender = __webpack_require__(69);
+	
+	var _elRender2 = _interopRequireDefault(_elRender);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	_event2.default.listen('initField', function (data) {
+	
+		var domElement = data.field ? data.field : '#map';
+	
+		if (typeof domElement == 'string') {
+			if (domElement.split('.').length == 2) {
+				domElement = document.getElementsByClassName(domElement.split('.')[1])[0];
+			} else if (domElement.split('#').length == 2) {
+				domElement = document.getElementById(domElement.split('#')[1]);
+			} else {
+				domElement = document.getElementsByTagName(domElement);
+			}
+			if (!domElement) {
+				domElement = document.getElementById('mat');
+			}
+		};
+	
+		var _params = {};
+	
+		if (data.width && typeof data.width == 'number') {
+			_params.width = data.width + 'px';
+		}
+		if (data.height && typeof data.height == 'number') {
+			_params.height = data.height + 'px';
+		}
+		if (data.top && typeof data.top == 'number') {
+			_params.top = data.top + 'px';
+		}
+		if (data.left && typeof data.left == 'number') {
+			_params.left = data.left + 'px';
+		}
+	
+		var _zoom = _share2.default.get('zoom');
+		if (_zoom != _defaults2.default.zoom || _zoom != 1) {
+			_params.transform = 'scale(' + _zoom + ')';
+			_params['transform-origin'] = '0 0';
+		}
+	
+		(0, _elRender2.default)(domElement).css(_params).addClass('solitaireField');
+	
+		_share2.default.set('domElement:field', domElement);
+	});
+
+/***/ },
+/* 73 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	var _event = __webpack_require__(2);
+	
+	var _event2 = _interopRequireDefault(_event);
+	
+	var _share = __webpack_require__(1);
+	
+	var _share2 = _interopRequireDefault(_share);
+	
+	var _defaults = __webpack_require__(3);
+	
+	var _defaults2 = _interopRequireDefault(_defaults);
+	
+	var _field = __webpack_require__(12);
+	
+	var _field2 = _interopRequireDefault(_field);
+	
+	var _elRender = __webpack_require__(69);
+	
+	var _elRender2 = _interopRequireDefault(_elRender);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	/*
+	 * addDeckEl
+	 * redrawDeckFlip
+	 * redrawDeckIndexes
+	 * redrawDeck
+	 */
+	
+	var applyChangedParameters = function applyChangedParameters(data) {
+	
+		data.params.x = ((data.deckData.position && typeof data.deckData.position.x == 'number' ? data.deckData.position.x : 0) | 0) + ((data.deckData.parentPosition && typeof data.deckData.parentPosition.x == 'number' ? data.deckData.parentPosition.x : 0) | 0);
+	
+		data.params.y = ((data.deckData.position && typeof data.deckData.position.y == 'number' ? data.deckData.position.y : 0) | 0) + ((data.deckData.parentPosition && typeof data.deckData.parentPosition.y == 'number' ? data.deckData.parentPosition.y : 0) | 0);
+	
+		data.deck.rotate = data.params.rotate = data.deckData.rotate && typeof data.deckData.rotate == 'number' ? data.deckData.rotate : 0;
+	
+		data.params.padding_y = data.deckData.paddingY && typeof data.deckData.paddingY == 'number' ? data.deckData.paddingY : data.deckData.paddingType ? _defaults2.default.padding_y : 0;
+	
+		data.params.padding_x = data.deckData.paddingX && typeof data.deckData.paddingX == 'number' ? data.deckData.paddingX : data.deckData.paddingType ? _defaults2.default.padding_x : 0;
+	
+		data.params.flip_padding_y = data.deckData.flipPaddingY && typeof data.deckData.flipPaddingY == 'number' ? data.deckData.flipPaddingY : data.deckData.paddingType ? _defaults2.default.flip_padding_y : 0;
+	
+		data.params.flip_padding_x = data.deckData.flipPaddingX && typeof data.deckData.flipPaddingX == 'number' ? data.deckData.flipPaddingX : data.deckData.paddingType ? _defaults2.default.flip_padding_x : 0;
+	};
+	
+	_event2.default.listen('addDeckEl', function (data) {
+	
+		applyChangedParameters(data);
+	
+		var _deckDomElement = (0, _elRender2.default)('<div>');
+	
+		var _params = {
+			"transform": 'rotate(' + (data.params.rotate | 0) + 'deg)',
+			"width": _defaults2.default.card.width + 'px',
+			"height": _defaults2.default.card.height + 'px',
+			"left": data.params.x + 'px',
+			"top": data.params.y + 'px',
+			"display": data.deck.visible ? 'block' : 'none'
+		};
+	
+		(0, _elRender2.default)(_deckDomElement).css(_params).addClass('el').attr({
+			"id": data.deck.id
+		});
+	
+		if (data.deckData.showSlot) {
+			(0, _elRender2.default)(_deckDomElement).addClass('slot');
+		}
+	
+		if (data.deckData.class) {
+			(0, _elRender2.default)(_deckDomElement).addClass(data.deckData.class);
+		}
+	
+		var _fieldDomElement = _share2.default.get('domElement:field');
+	
+		(0, _elRender2.default)(_fieldDomElement).append(_deckDomElement);
+	
+		_share2.default.set('domElement:' + data.deck.id, _deckDomElement);
+	});
+	
+	_event2.default.listen('redrawDeckFlip', function (data) {
+	
+		if (!data || !data.cards) {
+			return;
+		}
+	
+		for (var i in data.cards) {
+	
+			var _params = {};
+	
+			var _cardDomElement = _share2.default.get('domElement:' + data.cards[i].id);
+	
+			if (data.cards[i].flip) {
+	
+				_cardDomElement.addClass('flip');
+			} else {
+	
+				_cardDomElement.removeClass('flip');
+			}
+	
+			_cardDomElement.css(_params);
+		}
+	});
+	
+	_event2.default.listen('redrawDeckIndexes', function (data) {
+	
+		if (!data || !data.cards) {
+			return;
+		}
+	
+		for (var i in data.cards) {
+	
+			var _cardDomElement = _share2.default.get('domElement:' + data.cards[i].id);
+	
+			_cardDomElement.css({
+				"z-index": (_defaults2.default.startZIndex | 0) + (i | 0)
+			});
+		}
+	});
+	
+	_event2.default.listen('redrawDeck', function (data) {
+	
+		if (_share2.default.get('noRedraw')) {
+			return false;
+		};
+	
+		if (data && data.deckData && data.deck && data.params) {
+			applyChangedParameters(data);
+		}
+	
+		// перерисовка стопки
+		var _params = {
+			"transform": 'rotate(' + (data.params.rotate | 0) + 'deg)',
+			"left": data.params.x + 'px',
+			"top": data.params.y + 'px',
+			"display": data.deck.visible ? 'block' : 'none'
+		};
+	
+		var _deckDomElement = _share2.default.get('domElement:' + data.deck.id);
+	
+		(0, _elRender2.default)(_deckDomElement).css(_params);
+	
+		// full deck (add class full to all cards in deck)
+		if (data.deck.full) {
+			var _cards = data.deck.getCards();
+			for (var i in _cards) {
+				var _cardDomElement = _share2.default.get('domElement:' + _cards[i].id);
+				if (_cardDomElement) {
+					(0, _elRender2.default)(_cardDomElement).addClass('full');
+				}
+			}
+		}
+	
+		// перерисовка карт
+		for (var _i in data.cards) {
+	
+			var _card_position = data.deck.padding(_i);
+			var _zIndex = (data.params.startZIndex | 0) + (_i | 0);
+	
+			var _params2 = {
+				"-ms-transform": 'rotate(' + (data.params.rotate | 0) + 'deg)',
+				"-webkit-transform": 'rotate(' + (data.params.rotate | 0) + 'deg)',
+				"-moz-transform": 'rotate(' + (data.params.rotate | 0) + 'deg)',
+				"transform": 'rotate(' + (data.params.rotate | 0) + 'deg)',
+				"left": _card_position.x + 'px',
+				"top": _card_position.y + 'px',
+				"z-index": _zIndex,
+				"display": data.deck.visible && data.cards[_i].visible ? 'block' : 'none'
+			};
+	
+			var _cardDomElement2 = _share2.default.get('domElement:' + data.cards[_i].id);
+	
+			if (data.cards[_i].flip) {
+	
+				(0, _elRender2.default)(_cardDomElement2).addClass('flip');
+			} else {
+	
+				(0, _elRender2.default)(_cardDomElement2).removeClass('flip');
+			}
+	
+			(0, _elRender2.default)(_cardDomElement2).css(_params2);
+		}
+	});
+
+/***/ },
+/* 74 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	var _share = __webpack_require__(1);
+	
+	var _share2 = _interopRequireDefault(_share);
+	
+	var _event = __webpack_require__(2);
+	
+	var _event2 = _interopRequireDefault(_event);
+	
+	var _defaults = __webpack_require__(3);
+	
+	var _defaults2 = _interopRequireDefault(_defaults);
+	
+	var _common = __webpack_require__(5);
+	
+	var _common2 = _interopRequireDefault(_common);
+	
+	var _field = __webpack_require__(12);
+	
+	var _field2 = _interopRequireDefault(_field);
+	
+	var _elRender = __webpack_require__(69);
+	
+	var _elRender2 = _interopRequireDefault(_elRender);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	/*
+	 * addCardEl
+	 * toggleMarkCard
+	 */
+	
+	_event2.default.listen('addCardEl', function (data) {
+	
+		var _params = {
+			"width": _defaults2.default.card.width + 'px',
+			"height": _defaults2.default.card.height + 'px'
+		};
+	
+		var _domElement = (0, _elRender2.default)('<div>');
+	
+		(0, _elRender2.default)(_domElement).addClass('el card draggable ' + data.name).css(_params).attr({
+			"id": data.id
+		});
+	
+		_share2.default.set('domElement:' + data.id, _domElement);
+	
+		var _fieldDomElement = _share2.default.get('domElement:field');
+	
+		(0, _elRender2.default)(_fieldDomElement).append(_domElement);
+	});
+	
+	_event2.default.listen('toggleMarkCard', function (data) {
+	
+		var el = _share2.default.get('domElement:' + data.card.id);
+	
+		if (el && !el.hasClass('flip')) {
+	
+			var cardIsMarked = null;
+	
+			if (el.hasClass('marker')) {
+	
+				cardIsMarked = false;
+	
+				el.removeClass('marker');
+			} else {
+	
+				cardIsMarked = true;
+	
+				el.addClass('marker');
+			}
+	
+			if (typeof data.callback == "function") {
+				data.callback(cardIsMarked);
+			}
+		}
+	});
+	
+	_event2.default.listen('markCard', function (data) {
+	
+		var el = _share2.default.get('domElement:' + data.card.id);
+	
+		if (el) {
+			el.removeClass('marker');
+		}
+	});
+	
+	_event2.default.listen('unmarkCard', function (data) {
+	
+		var el = _share2.default.get('domElement:' + data.card.id);
+	
+		if (el && !el.hasClass('flip')) {
+			el.removeClass('marker');
+		}
+	});
+
+/***/ },
+/* 75 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	var _event = __webpack_require__(2);
+	
+	var _event2 = _interopRequireDefault(_event);
+	
+	var _share = __webpack_require__(1);
+	
+	var _share2 = _interopRequireDefault(_share);
+	
+	var _elRender = __webpack_require__(69);
+	
+	var _elRender2 = _interopRequireDefault(_elRender);
+	
+	var _tips = __webpack_require__(9);
+	
+	var _tips2 = _interopRequireDefault(_tips);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	_event2.default.listen('showTip', function (data) {
+	
+		if (data && data.el && data.type) {
+			// data && data.el && data.el.domElement && data.type
+	
+			var _elDomElement = _share2.default.get('domElement:' + data.el.id);
+	
+			(0, _elRender2.default)(_elDomElement).addClass(data.type);
+		}
+	});
+	
+	_event2.default.listen('hideTips', function (data) {
+	
+		if (data && data.types) {
+	
+			for (var i in data.types) {
+	
+				var typeName = data.types[i];
+	
+				(0, _elRender2.default)('.' + typeName).removeClass(typeName);
+			}
+		} else {
+	
+			for (var _i in _tips2.default.tipTypes) {
+	
+				var _typeName = _tips2.default.tipTypes[_i];
+	
+				(0, _elRender2.default)('.' + _typeName).removeClass(_typeName);
+			}
+		}
+	});
+
+/***/ },
+/* 76 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	var _event = __webpack_require__(2);
+	
+	var _event2 = _interopRequireDefault(_event);
+	
+	var _share = __webpack_require__(1);
+	
+	var _share2 = _interopRequireDefault(_share);
+	
+	var _common = __webpack_require__(5);
+	
+	var _common2 = _interopRequireDefault(_common);
+	
+	var _defaults = __webpack_require__(3);
+	
+	var _defaults2 = _interopRequireDefault(_defaults);
+	
+	var _elRender = __webpack_require__(69);
+	
+	var _elRender2 = _interopRequireDefault(_elRender);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	/*
+	 * moveDragDeck
+	 * moveDragDeckDone
+	 * dragDeck
+	 */
+	
+	var angleValidate = function angleValidate(angle) {
+	
+		if (angle < 0) {
+			angle += 360;
+		}
+	
+		if (angle > 360) {
+			angle -= 360;
+		}
+	
+		return angle;
+	};
+	
+	_event2.default.listen('moveDragDeck', function (data) {
+	
+		_common2.default.curLock();
+	
+		var _lastIndex = data.moveDeck.length - 1;
+	
+		var _loop = function _loop(i) {
+	
+			var _position = data.destination.padding(data.destination.cardsCount() - data.moveDeck.length + (i | 0), true);
+			_position.random = Math.random();
+	
+			var departureAngle = angleValidate(data.departure.rotate),
+			    destinationAngle = angleValidate(data.destination.rotate);
+	
+			var _cardDomElement = _share2.default.get('domElement:' + data.moveDeck[i].card.id);
+	
+			(0, _elRender2.default)(_cardDomElement).css({
+				"transform": 'rotate(' + departureAngle + 'deg)'
+			});
+	
+			if (departureAngle - destinationAngle > 180) {
+	
+				departureAngle = departureAngle - 360;
+				(0, _elRender2.default)(_cardDomElement).css({
+					"transform": 'rotate(' + departureAngle + 'deg)'
+				});
+			};
+	
+			if (departureAngle - destinationAngle < -180) {
+				destinationAngle -= 360;
+			}
+	
+			var _params = {
+				"transform": 'rotate(' + destinationAngle + 'deg)',
+				"left": _position.x + 'px',
+				"top": _position.y + 'px'
+			};
+	
+			var _zIndex = (_defaults2.default.topZIndex | 0) + (i | 0);
+	
+			var _stop = false;
+			var _callback = function (data, _last) {
+	
+				if (_stop) {
+					return;
+				}
+	
+				data.departure.Redraw();
+				data.destination.Redraw();
+	
+				_common2.default.curUnLock();
+	
+				if (_last && typeof data.callback == 'function') {
+					data.callback();
+				}
+	
+				_event2.default.dispatch('moveDragDeckDone', {
+					"deck": data.destination
+				});
+			}.bind(null, data, i == _lastIndex);
+	
+			_event2.default.once('clearCallbacks', function (e) {
+				_stop = true;
+			});
+	
+			(0, _elRender2.default)(_cardDomElement).css({
+				"z-index": _zIndex
+			}).animate(_params, _callback);
+		};
+	
+		for (var i in data.moveDeck) {
+			_loop(i);
+		}
+	});
+	
+	_event2.default.listen('moveDragDeckDone', function (data) {
+	
+		if (!data.deck.full) {
+			return;
+		}
+	
+		var _deck = data.deck.cards;
+	
+		for (var i in _deck) {
+	
+			var _cardDomElement2 = _share2.default.get('domElement:' + _deck[i].id);
+	
+			(0, _elRender2.default)(_cardDomElement2).addClass('full');
+		}
+	});
+	
+	_event2.default.listen('dragDeck', function (data) {
+		// {x, y, _dragDeck, _startCursor, _deck}
+	
+		for (var i in data._dragDeck) {
+	
+			var _zoom = _share2.default.get('zoom');
+	
+			var _position = data._deck.padding(data._dragDeck[i].index);
+	
+			var _params = {
+				"left": _position.x + (data.x - data._startCursor.x) / _zoom + 'px',
+				"top": _position.y + (data.y - data._startCursor.y) / _zoom + 'px',
+				"z-index": _defaults2.default.topZIndex + (i | 0)
+			};
+	
+			// Operations with DOM
+			var _cardDomElement3 = _share2.default.get('domElement:' + data._dragDeck[i].card.id);
+	
+			(0, _elRender2.default)(_cardDomElement3).css(_params);
+		}
+	});
+
+/***/ },
+/* 77 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	var _event = __webpack_require__(2);
+	
+	var _event2 = _interopRequireDefault(_event);
+	
+	var _share = __webpack_require__(1);
+	
+	var _share2 = _interopRequireDefault(_share);
+	
+	var _common = __webpack_require__(5);
+	
+	var _common2 = _interopRequireDefault(_common);
+	
+	var _elRender = __webpack_require__(69);
+	
+	var _elRender2 = _interopRequireDefault(_elRender);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	// Move card to home
+	_event2.default.listen('moveCardToHome', function (data) {
+	
+		if (_share2.default.get('lastCursorMove').distance > 0) {
+			_common2.default.curLock();
+		}
+	
+		for (var i in data.moveDeck) {
+	
+			var _position = data.departure.padding(data.moveDeck[i].index);
+			var _params = {
+				"left": _position.x + 'px',
+				"top": _position.y + 'px'
+			};
+	
+			var _cardDomElement = _share2.default.get('domElement:' + data.moveDeck[i].card.id);
+	
+			(0, _elRender2.default)(_cardDomElement).animate(_params, function (e) {
+	
+				_common2.default.curUnLock();
+	
+				if (data.departure) {
+					data.departure.Redraw();
+				}
+	
+				if (typeof data.callback == 'function') {
+					data.callback();
+				}
+			}, 'moveCardToHomeAnimation');
+		}
+	});
+
+/***/ },
+/* 78 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	var _event = __webpack_require__(2);
+	
+	var _event2 = _interopRequireDefault(_event);
+	
+	var _share = __webpack_require__(1);
+	
+	var _share2 = _interopRequireDefault(_share);
+	
+	var _defaults = __webpack_require__(3);
+	
+	var _defaults2 = _interopRequireDefault(_defaults);
+	
+	var _field = __webpack_require__(12);
+	
+	var _field2 = _interopRequireDefault(_field);
+	
+	var _elRender = __webpack_require__(69);
+	
+	var _elRender2 = _interopRequireDefault(_elRender);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	_event2.default.listen('fieldThemesSet', function (pref) {
+	
+			var _fieldDomElement = _share2.default.get('domElement:field'); //Field.domElement;
+	
+			for (var prefName in _defaults2.default.themes) {
+	
+					// Clear old themes
+					for (var i in _defaults2.default.themes[prefName]) {
+	
+							var themeName = _defaults2.default.themes[prefName][i];
+	
+							(0, _elRender2.default)(_fieldDomElement).removeClass(themeName);
+					}
+	
+					// Add new themes
+					var className = pref[prefName];
+					// let className = defaults.themes[prefName][pref[prefName]];
+	
+					(0, _elRender2.default)(_fieldDomElement).addClass(className);
+			}
+	});
+
+/***/ },
+/* 79 */
+/***/ function(module, exports) {
+
+	// removed by extract-text-webpack-plugin
+
+/***/ },
+/* 80 */
+/***/ function(module, exports) {
+
+	// removed by extract-text-webpack-plugin
+
+/***/ },
+/* 81 */
+/***/ function(module, exports) {
+
+	// removed by extract-text-webpack-plugin
+
+/***/ },
+/* 82 */
+/***/ function(module, exports) {
+
+	// removed by extract-text-webpack-plugin
+
+/***/ },
+/* 83 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
 	Object.defineProperty(exports, "__esModule", {
 		value: true
 	});
@@ -9636,7 +11067,7 @@ var SolitaireEngine =
 	
 	var _common2 = _interopRequireDefault(_common);
 	
-	var _winCheckRules = __webpack_require__(69);
+	var _winCheckRules = __webpack_require__(84);
 	
 	var _winCheckRules2 = _interopRequireDefault(_winCheckRules);
 	
@@ -9727,7 +11158,7 @@ var SolitaireEngine =
 	};
 
 /***/ },
-/* 69 */
+/* 84 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -10113,1426 +11544,6 @@ var SolitaireEngine =
 	exports.default = winCheckRules;
 
 /***/ },
-/* 70 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	var _event = __webpack_require__(2);
-	
-	var _event2 = _interopRequireDefault(_event);
-	
-	var _share = __webpack_require__(1);
-	
-	var _share2 = _interopRequireDefault(_share);
-	
-	var _elRender = __webpack_require__(71);
-	
-	var _elRender2 = _interopRequireDefault(_elRender);
-	
-	var _initField = __webpack_require__(74);
-	
-	var _initField2 = _interopRequireDefault(_initField);
-	
-	var _drawDeck = __webpack_require__(75);
-	
-	var _drawDeck2 = _interopRequireDefault(_drawDeck);
-	
-	var _drawCard = __webpack_require__(76);
-	
-	var _drawCard2 = _interopRequireDefault(_drawCard);
-	
-	var _drawTip = __webpack_require__(77);
-	
-	var _drawTip2 = _interopRequireDefault(_drawTip);
-	
-	var _moveDragDeck = __webpack_require__(78);
-	
-	var _moveDragDeck2 = _interopRequireDefault(_moveDragDeck);
-	
-	var _moveCardToHome = __webpack_require__(79);
-	
-	var _moveCardToHome2 = _interopRequireDefault(_moveCardToHome);
-	
-	var _fieldThemesSet = __webpack_require__(80);
-	
-	var _fieldThemesSet2 = _interopRequireDefault(_fieldThemesSet);
-	
-	__webpack_require__(81);
-	
-	__webpack_require__(82);
-	
-	__webpack_require__(83);
-	
-	__webpack_require__(84);
-	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-	
-	// styles DOM
-	_event2.default.listen('removeEl', function (data) {
-	
-		var _elDomElement = _share2.default.get('domElement:' + data.id);
-	
-		try {
-			_elDomElement.remove();
-	
-			_share2.default.delete('domElement:' + data.id);
-		} catch (e) {
-			console.warn('Dom element for', data.id, 'not found');
-		}
-	});
-	
-	_event2.default.listen('showCard', function (target) {
-		(0, _elRender2.default)(target).show();
-	});
-	
-	_event2.default.listen('hideCard', function (target) {
-		(0, _elRender2.default)(target).hide();
-	});
-
-/***/ },
-/* 71 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	// let jquery = require("script!../../../frontend/js/jquery-2.2.4.min.js");
-	
-	// export default jquery;
-	
-	Object.defineProperty(exports, "__esModule", {
-		value: true
-	});
-	
-	var _defaults = __webpack_require__(3);
-	
-	var _defaults2 = _interopRequireDefault(_defaults);
-	
-	var _share = __webpack_require__(1);
-	
-	var _share2 = _interopRequireDefault(_share);
-	
-	var _event = __webpack_require__(2);
-	
-	var _event2 = _interopRequireDefault(_event);
-	
-	var _elClass = __webpack_require__(72);
-	
-	var _elClass2 = _interopRequireDefault(_elClass);
-	
-	var _allElClass = __webpack_require__(73);
-	
-	var _allElClass2 = _interopRequireDefault(_allElClass);
-	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-	
-	_share2.default.set('animatedElements', 0);
-	_share2.default.set('animatedElementsStack', []);
-	_share2.default.set('animatedCallback', function (e) {
-		return null;
-	});
-	
-	var _allEl = function _allEl(data) {
-	
-		if (!data) {
-			throw new Error('elRender:empty arguments.');
-		}
-	
-		if (typeof data == 'string') {
-	
-			try {
-	
-				if (data[0] == '#') {
-	
-					var _element = document.getElementById(data.slice(1, Infinity));
-	
-					return new _elClass2.default(_element);
-				} else if (data[0] == '.') {
-	
-					var _elements = document.getElementsByClassName(data.slice(1, Infinity));
-	
-					return new _allElClass2.default(_elements);
-				} else if (data[0] == '<') {
-	
-					var _temp = document.createElement('temp');
-					_temp.innerHTML = data;
-					var _element2 = _temp.children[0];
-	
-					return new _elClass2.default(_element2);
-				}
-			} catch (data) {}
-		} else if (data.el || data.elements) {
-			return data;
-		} else {
-			return new _elClass2.default(data);
-		}
-	};
-	
-	// TODO
-	_allEl.stopAnimations = function (e) {
-	
-		// if(!share.get('animation')) {
-		// 	return;
-		// }
-	
-		// return;
-		_event2.default.dispatch('clearCallbacks');
-	
-		_allEl('.animated').stop()
-		// .css({transition: '0s'})
-		.css({
-			"transition": false
-		}).removeClass('animated');
-	};
-	
-	_event2.default.listen('stopAnimations', _allEl.stopAnimations);
-	
-	exports.default = _allEl;
-
-/***/ },
-/* 72 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	Object.defineProperty(exports, "__esModule", {
-		value: true
-	});
-	
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-	
-	var _event = __webpack_require__(2);
-	
-	var _event2 = _interopRequireDefault(_event);
-	
-	var _share = __webpack_require__(1);
-	
-	var _share2 = _interopRequireDefault(_share);
-	
-	var _defaults = __webpack_require__(3);
-	
-	var _defaults2 = _interopRequireDefault(_defaults);
-	
-	var _common = __webpack_require__(5);
-	
-	var _common2 = _interopRequireDefault(_common);
-	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-	
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-	
-	/*
-	 * attr
-	 * hasClass
-	 * toggleClass
-	 * addClass
-	 * removeClass
-	 * css
-	 * hide
-	 * show
-	 * append
-	 * html
-	 * animate
-	 * stop
-	 * remove
-	 * parent
-	 * after
-	 * before
-	 * listen
-	 * trigger
-	 * click
-	 */
-	
-	var elClass = function () {
-		function elClass(data) {
-			_classCallCheck(this, elClass);
-	
-			this.el = data;
-	
-			if (!data) {
-				// if(window._debug) throw new Error("test");
-				this.el = null;
-			}
-	
-			this._animationCallbacks = [];
-			this._animationIndex = 0;
-		}
-	
-		_createClass(elClass, [{
-			key: 'attr',
-			value: function attr(attributes) {
-				try {
-	
-					for (var attrName in attributes) {
-						this.el[attrName] = attributes[attrName];
-					}
-	
-					return this;
-				} catch (e) {}
-			}
-		}, {
-			key: 'hasClass',
-			value: function hasClass(className) {
-				try {
-	
-					var _classes = this.el.className.split(' ');
-	
-					return _classes.indexOf(className) >= 0;
-				} catch (e) {}
-			}
-		}, {
-			key: 'toggleClass',
-			value: function toggleClass(className) {
-				try {
-	
-					if (this.hasClass(className)) {
-						this.removeClass(className);
-					} else {
-						this.addClass(className);
-					}
-				} catch (e) {}
-			}
-		}, {
-			key: 'addClass',
-			value: function addClass(className) {
-	
-				try {
-	
-					var _classes = this.el.className.split(' ');
-	
-					if (!this.hasClass(className)) {
-						_classes.push(className);
-						this.el.className = _classes.join(' ');
-					}
-	
-					return this;
-				} catch (e) {}
-			}
-		}, {
-			key: 'removeClass',
-			value: function removeClass(className) {
-	
-				if (!this.el || !this.el.className) {
-					return this;
-				}
-	
-				try {
-	
-					var _classes = this.el.className.split(' ');
-	
-					// if(this.hasClass(className)) {
-					var _clone = [];
-	
-					for (var i in _classes) {
-						if (_classes[i] != className) {
-							_clone.push(_classes[i]);
-						}
-					}
-	
-					_classes = _clone;
-	
-					this.el.className = _classes.join(' ');
-					// }
-	
-					return this;
-				} catch (e) {}
-			}
-		}, {
-			key: 'css',
-			value: function css(a) {
-	
-				if (!this.el) {
-					return this;
-				}
-	
-				try {
-	
-					for (var attrName in a) {
-						this.el.style[attrName] = a[attrName];
-					}
-	
-					return this;
-				} catch (e) {}
-			}
-		}, {
-			key: 'hide',
-			value: function hide() {
-				try {
-					return this.css({
-						"display": 'none'
-					});
-				} catch (e) {}
-			}
-		}, {
-			key: 'show',
-			value: function show() {
-				try {
-					return this.css({
-						"display": 'block'
-					});
-				} catch (e) {}
-			}
-		}, {
-			key: 'append',
-			value: function append(el) {
-				try {
-	
-					if (el.el) {
-						el = el.el;
-					}
-	
-					this.el.appendChild(el);
-	
-					return this;
-				} catch (e) {}
-			}
-		}, {
-			key: 'html',
-			value: function html(el) {
-				try {
-	
-					if (typeof el == 'undefined') {
-						return this.el.innerHTML;
-					}
-	
-					if (el.el) {
-						el = el.el;
-					}
-	
-					this.el.innerHTML = el;
-	
-					return this;
-				} catch (e) {}
-			}
-		}, {
-			key: 'animate',
-			value: function animate(params, animationTime, callback, animationName) {
-				var _this = this;
-	
-				try {
-					(function () {
-	
-						var _animation = _share2.default.get('animation');
-	
-						typeof animationTime == 'undefined' && (animationTime = _share2.default.get('animationTime'));
-						typeof animationTime == 'function' && (callback = animationTime, animationTime = _share2.default.get('animationTime'));
-						typeof callback == 'string' && (animationName = callback, callback = null);
-	
-						animationName = animationName ? animationName : 'animation_' + _this._animationIndex;
-						_this._animationCallbacks[animationName] = callback;
-						_this._animationIndex += 1;
-	
-						// Thread
-						setTimeout(function (e) {
-	
-							if (_animation) {
-								_this.css({
-									"transition": animationTime / 1000 + 's'
-								});
-							}
-	
-							var counter = 0;
-	
-							var reType = function reType(data) {
-								// crutch
-	
-								var _e = data + '';
-	
-								var _px = _e.split('px');
-								if (_px.length == 2) {
-									return (_px[0] | 0) + 'px';
-								}
-	
-								return data;
-							};
-	
-							for (var attrName in params) {
-	
-								if (reType(_this.el.style[attrName]) != reType(params[attrName])) {
-									counter += 1;
-								}
-	
-								_this.el.style[attrName] = params[attrName];
-							}
-	
-							if (_animation) {
-	
-								_this.addClass('animated');
-	
-								_this.el.addEventListener('transitionend', function (e) {
-	
-									counter -= 1;
-	
-									// event.dispatch('animationEnd', this);
-	
-									if (!counter) {
-	
-										_this.removeClass('animated');
-	
-										_this.css({
-											"transition": null
-										});
-	
-										if (typeof _this._animationCallbacks[animationName] == 'function') {
-											_this._animationCallbacks[animationName]();
-											_this._animationCallbacks[animationName] = null;
-										}
-	
-										_event2.default.dispatch('allAnimationsEnd', animationName);
-									}
-								}, false);
-							} else {
-	
-								// event.dispatch('animationEnd', this);
-	
-								if (typeof _this._animationCallbacks[animationName] == 'function') {
-									_this._animationCallbacks[animationName]();
-									_this._animationCallbacks[animationName] = null;
-								}
-	
-								_event2.default.dispatch('allAnimationsEnd', animationName);
-							}
-						}, 0);
-					})();
-				} catch (e) {}
-			}
-		}, {
-			key: 'stop',
-			value: function stop() {
-				this._animationCallbacks = [];
-			}
-		}, {
-			key: 'remove',
-			value: function remove() {
-				try {
-					// this.el.remove();
-					this.el.parentNode.removeChild(this.el);
-				} catch (e) {}
-			}
-		}, {
-			key: 'parent',
-			value: function parent() {
-				return new elClass(this.el.parentNode);
-			}
-		}, {
-			key: 'after',
-			value: function after(html) {
-	
-				try {
-					this.el.parentNode.insertBefore(html, this.el.nextElementSibling);
-				} catch (e) {}
-	
-				return this;
-			}
-		}, {
-			key: 'before',
-			value: function before(html) {
-	
-				try {
-					this.el.parentNode.insertBefore(html, this.el);
-				} catch (e) {}
-	
-				return this;
-			}
-		}, {
-			key: 'listen',
-			value: function listen(eventName, callback) {
-				this.el.addEventListener(eventName, callback);
-			}
-		}, {
-			key: 'trigger',
-			value: function trigger(eventName) {
-				if (typeof this.el[eventName] == 'function') {
-					this.el[eventName]();
-				}
-			}
-		}, {
-			key: 'click',
-			value: function click(callback) {
-				this.listen('click', callback);
-			}
-		}]);
-	
-		return elClass;
-	}();
-	
-	exports.default = elClass;
-
-/***/ },
-/* 73 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	Object.defineProperty(exports, "__esModule", {
-		value: true
-	});
-	
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-	
-	var _defaults = __webpack_require__(3);
-	
-	var _defaults2 = _interopRequireDefault(_defaults);
-	
-	var _elClass = __webpack_require__(72);
-	
-	var _elClass2 = _interopRequireDefault(_elClass);
-	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-	
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-	
-	/*
-	 * attr
-	 * toggleClass
-	 * addClass
-	 * removeClass
-	 * css
-	 * hide
-	 * show
-	 * animate
-	 * stop
-	 * remove
-	 */
-	
-	var allElClass = function () {
-		function allElClass(elements) {
-			_classCallCheck(this, allElClass);
-	
-			this.elements = [];
-	
-			for (var i in elements) {
-				this.elements.push(new _elClass2.default(elements[i]));
-			}
-		}
-	
-		_createClass(allElClass, [{
-			key: 'attr',
-			value: function attr(attributes) {
-	
-				for (var i in this.elements) {
-					this.elements[i].attr(attributes);
-				}
-	
-				return this;
-			}
-		}, {
-			key: 'toggleClass',
-			value: function toggleClass(className) {
-	
-				for (var i in this.elements) {
-					this.elements[i].toggleClass(className);
-				}
-	
-				return this;
-			}
-		}, {
-			key: 'addClass',
-			value: function addClass(className) {
-	
-				for (var i in this.elements) {
-					this.elements[i].addClass(className);
-				}
-	
-				return this;
-			}
-		}, {
-			key: 'removeClass',
-			value: function removeClass(className) {
-	
-				for (var i in this.elements) {
-					this.elements[i].removeClass(className);
-				}
-	
-				return this;
-			}
-		}, {
-			key: 'css',
-			value: function css(a) {
-	
-				for (var i in this.elements) {
-					this.elements[i].css(a);
-				}
-	
-				return this;
-			}
-		}, {
-			key: 'hide',
-			value: function hide() {
-	
-				for (var i in this.elements) {
-					this.elements[i].hide();
-				}
-	
-				return this;
-			}
-		}, {
-			key: 'show',
-			value: function show() {
-	
-				for (var i in this.elements) {
-					this.elements[i].show();
-				}
-	
-				return this;
-			}
-		}, {
-			key: 'animate',
-			value: function animate(params, animationTime, callback, animationName) {
-	
-				typeof animationTime == 'undefined' && (animationTime = share.get('animationTime'));
-				typeof animationTime == 'function' && (callback = animationTime, animationTime = share.get('animationTime'));
-				typeof callback == 'string' && (animationName = callback, callback = null);
-	
-				var counter = 0;
-	
-				for (var i in this.elements) {
-					counter += 1;
-					this.elements[i].animate(params, animationTime, function () {
-						counter -= 1;
-						if (!counter) callback();
-					});
-				}
-	
-				return this;
-			}
-		}, {
-			key: 'stop',
-			value: function stop() {
-	
-				for (var i in this.elements) {
-					this.elements[i].stop();
-				}
-	
-				return this;
-			}
-		}, {
-			key: 'remove',
-			value: function remove() {
-	
-				for (var i in this.elements) {
-					// this.elements[i].remove();
-					this.elements[i].parentNode.removeChild(this.elements[i]);
-				}
-	
-				return this;
-			}
-		}]);
-	
-		return allElClass;
-	}();
-	
-	exports.default = allElClass;
-
-/***/ },
-/* 74 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	var _share = __webpack_require__(1);
-	
-	var _share2 = _interopRequireDefault(_share);
-	
-	var _event = __webpack_require__(2);
-	
-	var _event2 = _interopRequireDefault(_event);
-	
-	var _defaults = __webpack_require__(3);
-	
-	var _defaults2 = _interopRequireDefault(_defaults);
-	
-	var _field = __webpack_require__(12);
-	
-	var _field2 = _interopRequireDefault(_field);
-	
-	var _elRender = __webpack_require__(71);
-	
-	var _elRender2 = _interopRequireDefault(_elRender);
-	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-	
-	_event2.default.listen('initField', function (data) {
-	
-		var domElement = data.field ? data.field : '#map';
-	
-		if (typeof domElement == 'string') {
-			if (domElement.split('.').length == 2) {
-				domElement = document.getElementsByClassName(domElement.split('.')[1])[0];
-			} else if (domElement.split('#').length == 2) {
-				domElement = document.getElementById(domElement.split('#')[1]);
-			} else {
-				domElement = document.getElementsByTagName(domElement);
-			}
-			if (!domElement) {
-				domElement = document.getElementById('mat');
-			}
-		};
-	
-		var _params = {};
-	
-		if (data.width && typeof data.width == 'number') {
-			_params.width = data.width + 'px';
-		}
-		if (data.height && typeof data.height == 'number') {
-			_params.height = data.height + 'px';
-		}
-		if (data.top && typeof data.top == 'number') {
-			_params.top = data.top + 'px';
-		}
-		if (data.left && typeof data.left == 'number') {
-			_params.left = data.left + 'px';
-		}
-	
-		var _zoom = _share2.default.get('zoom');
-		if (_zoom != _defaults2.default.zoom || _zoom != 1) {
-			_params.transform = 'scale(' + _zoom + ')';
-			_params['transform-origin'] = '0 0';
-		}
-	
-		(0, _elRender2.default)(domElement).css(_params).addClass('solitaireField');
-	
-		_share2.default.set('domElement:field', domElement);
-	});
-
-/***/ },
-/* 75 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	var _event = __webpack_require__(2);
-	
-	var _event2 = _interopRequireDefault(_event);
-	
-	var _share = __webpack_require__(1);
-	
-	var _share2 = _interopRequireDefault(_share);
-	
-	var _defaults = __webpack_require__(3);
-	
-	var _defaults2 = _interopRequireDefault(_defaults);
-	
-	var _field = __webpack_require__(12);
-	
-	var _field2 = _interopRequireDefault(_field);
-	
-	var _elRender = __webpack_require__(71);
-	
-	var _elRender2 = _interopRequireDefault(_elRender);
-	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-	
-	/*
-	 * addDeckEl
-	 * redrawDeckFlip
-	 * redrawDeckIndexes
-	 * redrawDeck
-	 */
-	
-	var applyChangedParameters = function applyChangedParameters(data) {
-	
-		data.params.x = ((data.deckData.position && typeof data.deckData.position.x == 'number' ? data.deckData.position.x : 0) | 0) + ((data.deckData.parentPosition && typeof data.deckData.parentPosition.x == 'number' ? data.deckData.parentPosition.x : 0) | 0);
-	
-		data.params.y = ((data.deckData.position && typeof data.deckData.position.y == 'number' ? data.deckData.position.y : 0) | 0) + ((data.deckData.parentPosition && typeof data.deckData.parentPosition.y == 'number' ? data.deckData.parentPosition.y : 0) | 0);
-	
-		data.deck.rotate = data.params.rotate = data.deckData.rotate && typeof data.deckData.rotate == 'number' ? data.deckData.rotate : 0;
-	
-		data.params.padding_y = data.deckData.paddingY && typeof data.deckData.paddingY == 'number' ? data.deckData.paddingY : data.deckData.paddingType ? _defaults2.default.padding_y : 0;
-	
-		data.params.padding_x = data.deckData.paddingX && typeof data.deckData.paddingX == 'number' ? data.deckData.paddingX : data.deckData.paddingType ? _defaults2.default.padding_x : 0;
-	
-		data.params.flip_padding_y = data.deckData.flipPaddingY && typeof data.deckData.flipPaddingY == 'number' ? data.deckData.flipPaddingY : data.deckData.paddingType ? _defaults2.default.flip_padding_y : 0;
-	
-		data.params.flip_padding_x = data.deckData.flipPaddingX && typeof data.deckData.flipPaddingX == 'number' ? data.deckData.flipPaddingX : data.deckData.paddingType ? _defaults2.default.flip_padding_x : 0;
-	};
-	
-	_event2.default.listen('addDeckEl', function (data) {
-	
-		applyChangedParameters(data);
-	
-		var _deckDomElement = (0, _elRender2.default)('<div>');
-	
-		var _params = {
-			"transform": 'rotate(' + (data.params.rotate | 0) + 'deg)',
-			"width": _defaults2.default.card.width + 'px',
-			"height": _defaults2.default.card.height + 'px',
-			"left": data.params.x + 'px',
-			"top": data.params.y + 'px',
-			"display": data.deck.visible ? 'block' : 'none'
-		};
-	
-		(0, _elRender2.default)(_deckDomElement).css(_params).addClass('el').attr({
-			"id": data.deck.id
-		});
-	
-		if (data.deckData.showSlot) {
-			(0, _elRender2.default)(_deckDomElement).addClass('slot');
-		}
-	
-		if (data.deckData.class) {
-			(0, _elRender2.default)(_deckDomElement).addClass(data.deckData.class);
-		}
-	
-		var _fieldDomElement = _share2.default.get('domElement:field');
-	
-		(0, _elRender2.default)(_fieldDomElement).append(_deckDomElement);
-	
-		_share2.default.set('domElement:' + data.deck.id, _deckDomElement);
-	});
-	
-	_event2.default.listen('redrawDeckFlip', function (data) {
-	
-		if (!data || !data.cards) {
-			return;
-		}
-	
-		for (var i in data.cards) {
-	
-			var _params = {};
-	
-			var _cardDomElement = _share2.default.get('domElement:' + data.cards[i].id);
-	
-			if (data.cards[i].flip) {
-	
-				_cardDomElement.addClass('flip');
-			} else {
-	
-				_cardDomElement.removeClass('flip');
-			}
-	
-			_cardDomElement.css(_params);
-		}
-	});
-	
-	_event2.default.listen('redrawDeckIndexes', function (data) {
-	
-		if (!data || !data.cards) {
-			return;
-		}
-	
-		for (var i in data.cards) {
-	
-			var _cardDomElement = _share2.default.get('domElement:' + data.cards[i].id);
-	
-			_cardDomElement.css({
-				"z-index": (_defaults2.default.startZIndex | 0) + (i | 0)
-			});
-		}
-	});
-	
-	_event2.default.listen('redrawDeck', function (data) {
-	
-		if (_share2.default.get('noRedraw')) {
-			return false;
-		};
-	
-		if (data && data.deckData && data.deck && data.params) {
-			applyChangedParameters(data);
-		}
-	
-		// перерисовка стопки
-		var _params = {
-			"transform": 'rotate(' + (data.params.rotate | 0) + 'deg)',
-			"left": data.params.x + 'px',
-			"top": data.params.y + 'px',
-			"display": data.deck.visible ? 'block' : 'none'
-		};
-	
-		var _deckDomElement = _share2.default.get('domElement:' + data.deck.id);
-	
-		(0, _elRender2.default)(_deckDomElement).css(_params);
-	
-		// full deck (add class full to all cards in deck)
-		if (data.deck.full) {
-			var _cards = data.deck.getCards();
-			for (var i in _cards) {
-				var _cardDomElement = _share2.default.get('domElement:' + _cards[i].id);
-				if (_cardDomElement) {
-					(0, _elRender2.default)(_cardDomElement).addClass('full');
-				}
-			}
-		}
-	
-		// перерисовка карт
-		for (var _i in data.cards) {
-	
-			var _card_position = data.deck.padding(_i);
-			var _zIndex = (data.params.startZIndex | 0) + (_i | 0);
-	
-			var _params2 = {
-				"-ms-transform": 'rotate(' + (data.params.rotate | 0) + 'deg)',
-				"-webkit-transform": 'rotate(' + (data.params.rotate | 0) + 'deg)',
-				"-moz-transform": 'rotate(' + (data.params.rotate | 0) + 'deg)',
-				"transform": 'rotate(' + (data.params.rotate | 0) + 'deg)',
-				"left": _card_position.x + 'px',
-				"top": _card_position.y + 'px',
-				"z-index": _zIndex,
-				"display": data.deck.visible && data.cards[_i].visible ? 'block' : 'none'
-			};
-	
-			var _cardDomElement2 = _share2.default.get('domElement:' + data.cards[_i].id);
-	
-			if (data.cards[_i].flip) {
-	
-				(0, _elRender2.default)(_cardDomElement2).addClass('flip');
-			} else {
-	
-				(0, _elRender2.default)(_cardDomElement2).removeClass('flip');
-			}
-	
-			(0, _elRender2.default)(_cardDomElement2).css(_params2);
-		}
-	});
-
-/***/ },
-/* 76 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	var _share = __webpack_require__(1);
-	
-	var _share2 = _interopRequireDefault(_share);
-	
-	var _event = __webpack_require__(2);
-	
-	var _event2 = _interopRequireDefault(_event);
-	
-	var _defaults = __webpack_require__(3);
-	
-	var _defaults2 = _interopRequireDefault(_defaults);
-	
-	var _common = __webpack_require__(5);
-	
-	var _common2 = _interopRequireDefault(_common);
-	
-	var _field = __webpack_require__(12);
-	
-	var _field2 = _interopRequireDefault(_field);
-	
-	var _elRender = __webpack_require__(71);
-	
-	var _elRender2 = _interopRequireDefault(_elRender);
-	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-	
-	/*
-	 * addCardEl
-	 * toggleMarkCard
-	 */
-	
-	_event2.default.listen('addCardEl', function (data) {
-	
-		var _params = {
-			"width": _defaults2.default.card.width + 'px',
-			"height": _defaults2.default.card.height + 'px'
-		};
-	
-		var _domElement = (0, _elRender2.default)('<div>');
-	
-		(0, _elRender2.default)(_domElement).addClass('el card draggable ' + data.name).css(_params).attr({
-			"id": data.id
-		});
-	
-		_share2.default.set('domElement:' + data.id, _domElement);
-	
-		var _fieldDomElement = _share2.default.get('domElement:field');
-	
-		(0, _elRender2.default)(_fieldDomElement).append(_domElement);
-	});
-	
-	_event2.default.listen('toggleMarkCard', function (data) {
-	
-		var el = _share2.default.get('domElement:' + data.card.id);
-	
-		if (el && !el.hasClass('flip')) {
-	
-			var cardIsMarked = null;
-	
-			if (el.hasClass('marker')) {
-	
-				cardIsMarked = false;
-	
-				el.removeClass('marker');
-			} else {
-	
-				cardIsMarked = true;
-	
-				el.addClass('marker');
-			}
-	
-			if (typeof data.callback == "function") {
-				data.callback(cardIsMarked);
-			}
-		}
-	});
-	
-	_event2.default.listen('markCard', function (data) {
-	
-		var el = _share2.default.get('domElement:' + data.card.id);
-	
-		if (el) {
-			el.removeClass('marker');
-		}
-	});
-	
-	_event2.default.listen('unmarkCard', function (data) {
-	
-		var el = _share2.default.get('domElement:' + data.card.id);
-	
-		if (el && !el.hasClass('flip')) {
-			el.removeClass('marker');
-		}
-	});
-
-/***/ },
-/* 77 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	var _event = __webpack_require__(2);
-	
-	var _event2 = _interopRequireDefault(_event);
-	
-	var _share = __webpack_require__(1);
-	
-	var _share2 = _interopRequireDefault(_share);
-	
-	var _elRender = __webpack_require__(71);
-	
-	var _elRender2 = _interopRequireDefault(_elRender);
-	
-	var _tips = __webpack_require__(9);
-	
-	var _tips2 = _interopRequireDefault(_tips);
-	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-	
-	_event2.default.listen('showTip', function (data) {
-	
-		if (data && data.el && data.type) {
-			// data && data.el && data.el.domElement && data.type
-	
-			var _elDomElement = _share2.default.get('domElement:' + data.el.id);
-	
-			(0, _elRender2.default)(_elDomElement).addClass(data.type);
-		}
-	});
-	
-	_event2.default.listen('hideTips', function (data) {
-	
-		if (data && data.types) {
-	
-			for (var i in data.types) {
-	
-				var typeName = data.types[i];
-	
-				(0, _elRender2.default)('.' + typeName).removeClass(typeName);
-			}
-		} else {
-	
-			for (var _i in _tips2.default.tipTypes) {
-	
-				var _typeName = _tips2.default.tipTypes[_i];
-	
-				(0, _elRender2.default)('.' + _typeName).removeClass(_typeName);
-			}
-		}
-	});
-
-/***/ },
-/* 78 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	var _event = __webpack_require__(2);
-	
-	var _event2 = _interopRequireDefault(_event);
-	
-	var _share = __webpack_require__(1);
-	
-	var _share2 = _interopRequireDefault(_share);
-	
-	var _common = __webpack_require__(5);
-	
-	var _common2 = _interopRequireDefault(_common);
-	
-	var _defaults = __webpack_require__(3);
-	
-	var _defaults2 = _interopRequireDefault(_defaults);
-	
-	var _elRender = __webpack_require__(71);
-	
-	var _elRender2 = _interopRequireDefault(_elRender);
-	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-	
-	/*
-	 * moveDragDeck
-	 * moveDragDeckDone
-	 * dragDeck
-	 */
-	
-	var angleValidate = function angleValidate(angle) {
-	
-		if (angle < 0) {
-			angle += 360;
-		}
-	
-		if (angle > 360) {
-			angle -= 360;
-		}
-	
-		return angle;
-	};
-	
-	_event2.default.listen('moveDragDeck', function (data) {
-	
-		_common2.default.curLock();
-	
-		var _lastIndex = data.moveDeck.length - 1;
-	
-		var _loop = function _loop(i) {
-	
-			var _position = data.destination.padding(data.destination.cardsCount() - data.moveDeck.length + (i | 0), true);
-			_position.random = Math.random();
-	
-			var departureAngle = angleValidate(data.departure.rotate),
-			    destinationAngle = angleValidate(data.destination.rotate);
-	
-			var _cardDomElement = _share2.default.get('domElement:' + data.moveDeck[i].card.id);
-	
-			(0, _elRender2.default)(_cardDomElement).css({
-				"transform": 'rotate(' + departureAngle + 'deg)'
-			});
-	
-			if (departureAngle - destinationAngle > 180) {
-	
-				departureAngle = departureAngle - 360;
-				(0, _elRender2.default)(_cardDomElement).css({
-					"transform": 'rotate(' + departureAngle + 'deg)'
-				});
-			};
-	
-			if (departureAngle - destinationAngle < -180) {
-				destinationAngle -= 360;
-			}
-	
-			var _params = {
-				"transform": 'rotate(' + destinationAngle + 'deg)',
-				"left": _position.x + 'px',
-				"top": _position.y + 'px'
-			};
-	
-			var _zIndex = (_defaults2.default.topZIndex | 0) + (i | 0);
-	
-			var _stop = false;
-			var _callback = function (data, _last) {
-	
-				if (_stop) {
-					return;
-				}
-	
-				data.departure.Redraw();
-				data.destination.Redraw();
-	
-				_common2.default.curUnLock();
-	
-				if (_last && typeof data.callback == 'function') {
-					data.callback();
-				}
-	
-				_event2.default.dispatch('moveDragDeckDone', {
-					"deck": data.destination
-				});
-			}.bind(null, data, i == _lastIndex);
-	
-			_event2.default.once('clearCallbacks', function (e) {
-				_stop = true;
-			});
-	
-			(0, _elRender2.default)(_cardDomElement).css({
-				"z-index": _zIndex
-			}).animate(_params, _callback);
-		};
-	
-		for (var i in data.moveDeck) {
-			_loop(i);
-		}
-	});
-	
-	_event2.default.listen('moveDragDeckDone', function (data) {
-	
-		if (!data.deck.full) {
-			return;
-		}
-	
-		var _deck = data.deck.cards;
-	
-		for (var i in _deck) {
-	
-			var _cardDomElement2 = _share2.default.get('domElement:' + _deck[i].id);
-	
-			(0, _elRender2.default)(_cardDomElement2).addClass('full');
-		}
-	});
-	
-	_event2.default.listen('dragDeck', function (data) {
-		// {x, y, _dragDeck, _startCursor, _deck}
-	
-		for (var i in data._dragDeck) {
-	
-			var _zoom = _share2.default.get('zoom');
-	
-			var _position = data._deck.padding(data._dragDeck[i].index);
-	
-			var _params = {
-				"left": _position.x + (data.x - data._startCursor.x) / _zoom + 'px',
-				"top": _position.y + (data.y - data._startCursor.y) / _zoom + 'px',
-				"z-index": _defaults2.default.topZIndex + (i | 0)
-			};
-	
-			// Operations with DOM
-			var _cardDomElement3 = _share2.default.get('domElement:' + data._dragDeck[i].card.id);
-	
-			(0, _elRender2.default)(_cardDomElement3).css(_params);
-		}
-	});
-
-/***/ },
-/* 79 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	var _event = __webpack_require__(2);
-	
-	var _event2 = _interopRequireDefault(_event);
-	
-	var _share = __webpack_require__(1);
-	
-	var _share2 = _interopRequireDefault(_share);
-	
-	var _common = __webpack_require__(5);
-	
-	var _common2 = _interopRequireDefault(_common);
-	
-	var _elRender = __webpack_require__(71);
-	
-	var _elRender2 = _interopRequireDefault(_elRender);
-	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-	
-	// Move card to home
-	_event2.default.listen('moveCardToHome', function (data) {
-	
-		if (_share2.default.get('lastCursorMove').distance > 0) {
-			_common2.default.curLock();
-		}
-	
-		for (var i in data.moveDeck) {
-	
-			var _position = data.departure.padding(data.moveDeck[i].index);
-			var _params = {
-				"left": _position.x + 'px',
-				"top": _position.y + 'px'
-			};
-	
-			var _cardDomElement = _share2.default.get('domElement:' + data.moveDeck[i].card.id);
-	
-			(0, _elRender2.default)(_cardDomElement).animate(_params, function (e) {
-	
-				_common2.default.curUnLock();
-	
-				if (data.departure) {
-					data.departure.Redraw();
-				}
-	
-				if (typeof data.callback == 'function') {
-					data.callback();
-				}
-			}, 'moveCardToHomeAnimation');
-		}
-	});
-
-/***/ },
-/* 80 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	var _event = __webpack_require__(2);
-	
-	var _event2 = _interopRequireDefault(_event);
-	
-	var _share = __webpack_require__(1);
-	
-	var _share2 = _interopRequireDefault(_share);
-	
-	var _defaults = __webpack_require__(3);
-	
-	var _defaults2 = _interopRequireDefault(_defaults);
-	
-	var _field = __webpack_require__(12);
-	
-	var _field2 = _interopRequireDefault(_field);
-	
-	var _elRender = __webpack_require__(71);
-	
-	var _elRender2 = _interopRequireDefault(_elRender);
-	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-	
-	_event2.default.listen('fieldThemesSet', function (pref) {
-	
-			var _fieldDomElement = _share2.default.get('domElement:field'); //Field.domElement;
-	
-			for (var prefName in _defaults2.default.themes) {
-	
-					// Clear old themes
-					for (var i in _defaults2.default.themes[prefName]) {
-	
-							var themeName = _defaults2.default.themes[prefName][i];
-	
-							(0, _elRender2.default)(_fieldDomElement).removeClass(themeName);
-					}
-	
-					// Add new themes
-					var className = pref[prefName];
-					// let className = defaults.themes[prefName][pref[prefName]];
-	
-					(0, _elRender2.default)(_fieldDomElement).addClass(className);
-			}
-	});
-
-/***/ },
-/* 81 */
-/***/ function(module, exports) {
-
-	// removed by extract-text-webpack-plugin
-
-/***/ },
-/* 82 */
-/***/ function(module, exports) {
-
-	// removed by extract-text-webpack-plugin
-
-/***/ },
-/* 83 */
-/***/ function(module, exports) {
-
-	// removed by extract-text-webpack-plugin
-
-/***/ },
-/* 84 */
-/***/ function(module, exports) {
-
-	// removed by extract-text-webpack-plugin
-
-/***/ },
 /* 85 */
 /***/ function(module, exports, __webpack_require__) {
 
@@ -11732,7 +11743,7 @@ var SolitaireEngine =
 	
 	var _deckGenerator2 = _interopRequireDefault(_deckGenerator);
 	
-	var _elRender = __webpack_require__(71);
+	var _elRender = __webpack_require__(69);
 	
 	var _elRender2 = _interopRequireDefault(_elRender);
 	
