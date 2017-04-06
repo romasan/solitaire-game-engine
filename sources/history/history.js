@@ -105,6 +105,8 @@ event.listen('addStep', data => {
 	history.add(data)
 });
 
+share.set('saveHistory', true);
+
 // save steps to client history
 event.listen('saveSteps', e => {
 
@@ -119,7 +121,12 @@ event.listen('saveSteps', e => {
 
 event.listen('doHistory', e => {
 
+	if(!share.get('saveHistory')) {
+		return;
+	}
+
 	// common.animationOff();
+	share.set('saveHistory', false);
 
 	for(let i in e.data) {
 
@@ -129,6 +136,8 @@ event.listen('doHistory', e => {
 			e.callback(e.data[i]);
 		}
 	}
+
+	share.set('saveHistory', true);
 
 	// common.animationOn();
 });
