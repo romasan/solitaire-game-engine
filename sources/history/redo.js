@@ -10,6 +10,7 @@ import History      from 'history'     ;
 import Tips         from 'tips'        ;
 import atom         from 'atom'        ;
 import stateManager from 'stateManager';
+import redoCombine  from 'redoCombine' ;
 
 /*
  * flip
@@ -30,6 +31,8 @@ let redo = data => {
 		event.dispatch('stopAnimations');
 		stateManager.restore();
 	}
+
+	redoCombine.run();
 
 	// redo flip
 	if(data.flip) {
