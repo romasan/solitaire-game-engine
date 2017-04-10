@@ -1,23 +1,38 @@
 {
 
     "moveDistance" : 10,
+
     "inputParams"  : {
         "doubleClick" : false
     },
+
+    "tipsParams"   : {
+        "excludeHomeGroups" : true
+    },
     
     "winCheck" : {
-    	"query" : [
-			{
-				"filters" : [
-					{"group" : "group_row"},
-					{"deck"  : "rollerDeck"}
-				],
-				"rules"	 : ["allEmpty"]
-			}
-		]
+        "query" : [
+            {
+                "filters" : [
+                    {
+                        "group" : "group_row"
+                    }
+                ],
+                "rules"  : ["empty"]
+            },
+            {
+                "filters" : [
+                    {
+                        "deck"  : "rollerDeck"
+                    }
+                ],
+                "rules"  : ["empty"]
+            }
+        ]
     },
+
     "groups"   : {
-    	"group_home" : {
+        "group_home" : {
             "position" : {
                 "x" : 284,
                 "y" : 15
@@ -27,11 +42,11 @@
             },
             "showSlot" : true,
             "putRules" : [
-                "ascendOne"  , 
-                "oneRank"    , 
-                "firstAce"   , 
-                "ascendDeck" , 
-                "oneRankDeck"
+                "ascendOne" , 
+                "oneSuit"   , 
+                "firstAce"  ,
+                "ascendDeck"
+                // "oneSuitDeck"
             ],
             "decks" : 4
         },
@@ -50,11 +65,14 @@
             "takeRules"   : ["any"]   ,
             "putRules" : [
                 "descentOne",
-                "striped"
+                "striped"   ,
+                "firstKing"
             ],
             "decks": 7
         }
     },
+
+    "homeGroups" : ["group_home"],
 
     "decks" : [
         {
@@ -75,25 +93,19 @@
             },
 
             "paddingType"   : "roller:3,9,18",
-            "flip"          : "all"          ,
-            "takeRules"     : ["onlytop"]    ,
-            "putRules"      : ["not"]        ,
-            "autoUnflipTop" : false          ,
+            "flip"          : "all"                            ,
+            "takeRules"     : ["onlytop"]                      ,
+            "putRules"      : ["not"]                          ,
+            "autoUnflipTop" : false                            ,
             "actions"       : {
                 "roller" : {
-                	"events"    : [
-                        "click:flipCard" ,
-                        "click:emptyDeck"
+                    "events"    : [
+                        "click:flipCard"    ,
+                        "click:emptyDeck"   ,
+                        "moveEnd:beforeSave"
                     ],
-                	"openCount" : 3
+                    "openCount" : 3
                 }
-            }
-    	},
-    	{
-            "name" : "test",
-            "position" : {
-                "x": 250,
-                "y": 300
             }
         }
     ]

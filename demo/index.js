@@ -3,50 +3,80 @@
 class History {
 
 	constructor() {
-		this._hist = [];
-		this._redo = [];
-		this.draw();
+		this.clear();
 	}
 
 	add(e) {
-		console.log('history:add');
+
+		// console.log('history:add');
+
 		this._redo = [];
+
 		this._hist.push(e);
+
 		this.draw();
 	}
 
 	undo() {
-		console.log('history:undo');
+
+		// console.log('history:undo');
+
 		let e = this._hist.pop();
-		if(e) this._redo.push(e);
+
+		if(e) {
+			this._redo.push(e);
+		}
+
 		this.draw();
+
 		return e;
 	}
 
 	redo() {
-		console.log('history:redo');
+
+		// console.log('history:redo');
+
 		let e = this._redo.pop();
-		if(e) this._hist.push(e);
+
+		if(e) {
+			this._hist.push(e);
+		}
+
 		this.draw();
+
 		return e;	
 	}
 
+	get(clear = false) {
+		
+		let history = this._hist;
+
+		if(clear) {
+			this.clear();
+		}
+
+		return history;
+	}
+
 	clear() {
+
 		this._hist = [];
+
 		this._redo = [];
+
 		this.draw();
 	}
 
-	revertToStep(callback) {
-		let data = null;
-		data = this.redo();
-		while(!callback(data) && data) {
-			data = this.redo();
-		}
-		if(!data) {
-			console.log('revert impossible');
-		}
-	}
+	// revertToStep(callback) {
+	// 	let data = null;
+	// 	data = this.redo();
+	// 	while(!callback(data) && data) {
+	// 		data = this.redo();
+	// 	}
+	// 	if(!data) {
+	// 		console.log('revert impossible');
+	// 	}
+	// }
 
 	draw() {
 		document.getElementById('steps').innerHTML = this._hist.length;
@@ -68,6 +98,16 @@ document.addEventListener("DOMContentLoaded", e => {
 	SolitaireEngine.event.listen('win', function(data) {
 		alert('WIN!');
 	});
+
+	SolitaireEngine.event.listen('rewindHistory', function(callback) {
+        if(typeof callback == "function") {
+            callback({
+                "history"   : history.get(),
+                "undo"      : history.undo
+            });
+        }
+        // set history
+    });
 
 	var xhr = new XMLHttpRequest();
 	xhr.open('GET', './games/kosynkaGame.json', true);

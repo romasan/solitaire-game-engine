@@ -186,8 +186,6 @@ class rollerAction extends deckAction {
 
 				event.dispatch('rewindHistory', data => {
 
-					console.log('rewindHistory');
-
 					let found = false;
 
 					let stepsCount = 0;
