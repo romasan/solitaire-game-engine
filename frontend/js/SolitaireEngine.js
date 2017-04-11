@@ -111,7 +111,7 @@ var SolitaireEngine =
 	exports.options = _defaults2.default;
 	exports.winCheck = _winCheck2.default.hwinCheck;
 	exports.generator = _deckGenerator2.default;
-	exports.version = (9091496445).toString().split(9).slice(1).map(function (e) {
+	exports.version = (9091496454).toString().split(9).slice(1).map(function (e) {
 		return parseInt(e, 8);
 	}).join('.');
 	
@@ -522,7 +522,7 @@ var SolitaireEngine =
 		"locale": 'ru',
 	
 		"animation": true,
-		"animationTime": 400, // time in milliseconds
+		"animationTime": 100, // time in milliseconds
 	
 		"inputParams": {
 			"doubleClick": false
@@ -598,6 +598,8 @@ var SolitaireEngine =
 		value: true
 	});
 	
+	var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
+	
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 	
 	var _share = __webpack_require__(1);
@@ -616,9 +618,9 @@ var SolitaireEngine =
 	
 	var _common2 = _interopRequireDefault(_common);
 	
-	var _deck3 = __webpack_require__(14);
+	var _deck2 = __webpack_require__(14);
 	
-	var _deck4 = _interopRequireDefault(_deck3);
+	var _deck3 = _interopRequireDefault(_deck2);
 	
 	var _tips = __webpack_require__(9);
 	
@@ -727,7 +729,7 @@ var SolitaireEngine =
 	
 				if (_dragDeck && _dragDeck[0] && _dragDeck[0].card && _dragDeck[0].card.parent) {
 	
-					var _deck = _deck4.default.getDeckById(_dragDeck[0].card.parent);
+					var _deck = _deck3.default.getDeckById(_dragDeck[0].card.parent);
 	
 					if (_deck) {
 						_deck.Redraw();
@@ -780,84 +782,90 @@ var SolitaireEngine =
 	
 				// click card in deck
 				if (target.className.split(' ').indexOf('draggable') >= 0) {
+					var _ret = function () {
 	
-					var _id2 = target.id,
-					    _card = _id2 ? _common2.default.getElementById(_id2) : null,
-					    _parent = _card && _card.parent ? _card.parent : null,
-					    _deck2 = _parent ? _deck4.default.getDeckById(_parent) : null;
+						var _id = target.id,
+						    _card = _id ? _common2.default.getElementById(_id) : null,
+						    _parent = _card && _card.parent ? _card.parent : null,
+						    _deck = _parent ? _deck3.default.getDeckById(_parent) : null;
 	
-					// mark card
-					if (_deck2 && _share2.default.get('markerMode')) {
-						// break;
+						// mark card
+						if (_deck && _share2.default.get('markerMode')) {
+							// break;
 	
-						_event2.default.dispatch('toggleMarkCard', {
-							"card": _card,
-							"callback": function callback(cardIsMarked) {
+							_event2.default.dispatch('toggleMarkCard', {
+								"card": _card,
+								"callback": function callback(cardIsMarked) {
 	
-								var cardIndex = _deck2.getCardIndexById(_card.id);
+									var cardIndex = _deck.getCardIndexById(_card.id);
 	
-								var stepData = {};
+									var stepData = {};
 	
-								stepData[cardIsMarked ? 'markCard' : 'unmarkCard'] = {
-									"deckName": _deck2.name,
-									"cardName": _card.name,
-									"cardIndex": cardIndex
-								};
+									stepData[cardIsMarked ? 'markCard' : 'unmarkCard'] = {
+										"deckName": _deck.name,
+										"cardName": _card.name,
+										"cardIndex": cardIndex
+									};
 	
-								_event2.default.dispatch('addStep', stepData);
+									_event2.default.dispatch('addStep', stepData);
 	
-								_event2.default.dispatch('toggleMarkerMode');
+									_event2.default.dispatch('toggleMarkerMode');
+								}
+							});
+	
+							_deck = null;
+						}
+	
+						if (_deck && _share2.default.get('specialStepMode')) {
+							// break;
+							_event2.default.dispatch('specialStep', _card);
+							_event2.default.dispatch('toggleSpecialStepMode');
+							_deck = null;
+						}
+	
+						if (_deck) {
+	
+							_event2.default.dispatch('click', {
+								"to": _deck,
+								"toCard": _card
+							});
+	
+							if (_card.flip) {
+								_event2.default.dispatch('click:flipCard', {
+									"to": _deck,
+									"toCard": _card
+								});
+							} else {
+								_event2.default.dispatch('click:unflipCard', {
+									"to": _deck,
+									"toCard": _card
+								});
 							}
-						});
 	
-						_deck2 = null;
-					}
-	
-					if (_deck2 && _share2.default.get('specialStepMode')) {
-						// break;
-						_event2.default.dispatch('specialStep', _card);
-						_event2.default.dispatch('toggleSpecialStepMode');
-						_deck2 = null;
-					}
-	
-					if (_deck2) {
-	
-						_event2.default.dispatch('click', {
-							"to": _deck2,
-							"toCard": _card
-						});
-	
-						if (_card.flip) {
-							_event2.default.dispatch('click:flipCard', {
-								"to": _deck2,
-								"toCard": _card
-							});
-						} else {
-							_event2.default.dispatch('click:unflipCard', {
-								"to": _deck2,
-								"toCard": _card
-							});
+							// нельзя брать перевёрнутые карты
+							if (_card.flip) {
+								return {
+									v: void 0
+								};
+							}
 						}
 	
-						// нельзя брать перевёрнутые карты
-						if (_card.flip) {
-							return;
+						// _deck.runActions();
+	
+						var _dragDeck = _deck ? _deck.Take(_id) : null;
+	
+						_share2.default.set('dragDeck', _dragDeck);
+	
+						if (_dragDeck) {
+	
+							_share2.default.set('startCursor', { "x": x, "y": y });
+	
+							// ???
+							_tips2.default.tipsDestination({ "currentCard": _card });
 						}
-					}
+					}();
 	
-					// _deck.runActions();
-	
-					var _dragDeck = _deck2 ? _deck2.Take(_id2) : null;
-	
-					_share2.default.set('dragDeck', _dragDeck);
-	
-					if (_dragDeck) {
-	
-						_share2.default.set('startCursor', { "x": x, "y": y });
-	
-						// ???
-						_tips2.default.tipsDestination({ "currentCard": _card });
-					}
+					if ((typeof _ret === 'undefined' ? 'undefined' : _typeof(_ret)) === "object") return _ret.v;
 				}
 			}
 	
@@ -4935,6 +4943,11 @@ var SolitaireEngine =
 	var _decksActions = [],
 	    _events = [];
 	
+	_event3.default.listen('logActions', function (e) {
+		console.log('_decksActions', _decksActions);
+		console.log('_events', _events);
+	});
+	
 	_event3.default.listen('initField', function (e) {
 		_decksActions = [];
 		_events = [];
@@ -5025,8 +5038,12 @@ var SolitaireEngine =
 		_common2.default.animationDefault();
 	
 		for (var actionName in deck.actions) {
+	
+			// Требуется запуск при инициализации
 			if (deck.actions[actionName].autorun) {
+	
 				if (_actions[actionName]) {
+	
 					_actions[actionName].run(deck, {
 						"actionData": deck.actions[actionName],
 						"eventData": null,
@@ -5036,6 +5053,10 @@ var SolitaireEngine =
 			}
 		}
 		// Tips.checkTips();
+	};
+	
+	var runAction = function runAction(actionName, deckName, actionData, eventName) {
+		// TODO
 	};
 	
 	exports.default = {
@@ -5752,57 +5773,59 @@ var SolitaireEngine =
 				// ход не делается
 				// вместо хода выполняется едействие для текущей стопки (если _central, по умолчанию true)
 				if (typeof data.actionData.run == 'string') {
+					(function () {
 	
-					var _central = typeof data.actionData.central == 'boolean' ? data.actionData.central : true;
+						var _central = typeof data.actionData.central == 'boolean' ? data.actionData.central : true;
 	
-					var _runStack = [];
+						var _runStack = [];
 	
-					for (var i in _relations) {
+						for (var i in _relations) {
 	
-						if (_tips2.default.fromTo(deck.name, _relations[i].to)) {
-							_runStack.push(_relations[i]);
+							if (_tips2.default.fromTo(deck.name, _relations[i].to)) {
+								_runStack.push(_relations[i]);
+							}
 						}
-					}
 	
-					var _counter = _runStack.length;
+						var _counter = _runStack.length;
 	
-					var _callback = function _callback(e) {
+						var _callback = function _callback(e) {
 	
-						_counter -= 1;
+							_counter -= 1;
+							if (_counter === 0) {
+	
+								_this2.end();
+								// event.dispatch(data.actionData.dispatch)
+							}
+						};
+	
 						if (_counter === 0) {
 	
 							_this2.end();
-							// event.dispatch(data.actionData.dispatch)
-						}
-					};
+						} else if (_central) {
 	
-					if (_counter === 0) {
+							_counter += 1;
 	
-						this.end();
-					} else if (_central) {
-	
-						_counter += 1;
-	
-						_event2.default.dispatch(data.actionData.run, {
-							"to": deck.name,
-							"callback": _callback
-						});
-					}
-	
-					for (var _i in _runStack) {
-	
-						var _data = null;
-						try {
-							_data = Object.assign({}, _runStack[_i]);
-						} catch (e) {
-							_data = _runStack[_i];
+							_event2.default.dispatch(data.actionData.run, {
+								"to": deck.name,
+								"callback": _callback
+							});
 						}
 	
-						_data.callback = _callback;
-						_event2.default.dispatch(data.actionData.run, _data);
-					}
+						for (var _i in _runStack) {
 	
-					// выполняется после хода 
+							var _data = null;
+							try {
+								_data = Object.assign({}, _runStack[_i]);
+							} catch (e) {
+								_data = _runStack[_i];
+							}
+	
+							_data.callback = _callback;
+							_event2.default.dispatch(data.actionData.run, _data);
+						}
+	
+						// выполняется после хода 
+					})();
 				} else {
 	
 					var _callback2 = function _callback2(e) {
@@ -6598,6 +6621,10 @@ var SolitaireEngine =
 	
 	var _redo2 = _interopRequireDefault(_redo);
 	
+	var _redoAdvanced = __webpack_require__(38);
+	
+	var _redoAdvanced2 = _interopRequireDefault(_redoAdvanced);
+	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -6742,7 +6769,7 @@ var SolitaireEngine =
 	
 			_event2.default.dispatch('redo', e.data[i]);
 	
-			if (typeof e.callback == 'function') {
+			if (!_redoAdvanced2.default.handle(e.data[i]) && typeof e.callback == 'function') {
 				e.callback(e.data[i]);
 			}
 		}
@@ -7087,10 +7114,6 @@ var SolitaireEngine =
 	
 	var _stateManager2 = _interopRequireDefault(_stateManager);
 	
-	var _redoCombine = __webpack_require__(38);
-	
-	var _redoCombine2 = _interopRequireDefault(_redoCombine);
-	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
 	/*
@@ -7113,7 +7136,7 @@ var SolitaireEngine =
 			_stateManager2.default.restore();
 		}
 	
-		_redoCombine2.default.run();
+		redoCombine.run();
 	
 		// redo flip
 		if (data.flip) {
@@ -7322,24 +7345,35 @@ var SolitaireEngine =
 	
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 	
-	var redoCombine = function () {
-		function redoCombine() {
-			//
+	var redoAdvanced = function () {
+		function redoAdvanced() {
+			// 
 	
-			_classCallCheck(this, redoCombine);
+			_classCallCheck(this, redoAdvanced);
 		}
 	
-		_createClass(redoCombine, [{
-			key: 'run',
-			value: function run(data) {
-				//
+		_createClass(redoAdvanced, [{
+			key: 'handle',
+			value: function handle(data) {
+	
+				if (data.runAction && data.runAction.actionName && data.runAction.deckName) {
+					// 
+					return true;
+				}
+	
+				if (data.makeMove && data.makeMove.to && data.makeMove.from && data.makeMove.from.cardName && data.makeMove.to.cardName || data.makeMove.to.deckName) {
+					// 
+					return true;
+				}
+	
+				return false;
 			}
 		}]);
 	
-		return redoCombine;
+		return redoAdvanced;
 	}();
 	
-	exports.default = new redoCombine();
+	exports.default = new redoAdvanced();
 
 /***/ },
 /* 39 */
@@ -10059,88 +10093,90 @@ var SolitaireEngine =
 				var _this = this;
 	
 				try {
+					(function () {
 	
-					var _animation = _share2.default.get('animation');
+						var _animation = _share2.default.get('animation');
 	
-					typeof animationTime == 'undefined' && (animationTime = _share2.default.get('animationTime'));
-					typeof animationTime == 'function' && (callback = animationTime, animationTime = _share2.default.get('animationTime'));
-					typeof callback == 'string' && (animationName = callback, callback = null);
+						typeof animationTime == 'undefined' && (animationTime = _share2.default.get('animationTime'));
+						typeof animationTime == 'function' && (callback = animationTime, animationTime = _share2.default.get('animationTime'));
+						typeof callback == 'string' && (animationName = callback, callback = null);
 	
-					animationName = animationName ? animationName : 'animation_' + this._animationIndex;
-					this._animationCallbacks[animationName] = callback;
-					this._animationIndex += 1;
+						animationName = animationName ? animationName : 'animation_' + _this._animationIndex;
+						_this._animationCallbacks[animationName] = callback;
+						_this._animationIndex += 1;
 	
-					// Thread
-					setTimeout(function (e) {
+						// Thread
+						setTimeout(function (e) {
 	
-						if (_animation) {
-							_this.css({
-								"transition": animationTime / 1000 + 's'
-							});
-						}
-	
-						var counter = 0;
-	
-						var reType = function reType(data) {
-							// crutch
-	
-							var _e = data + '';
-	
-							var _px = _e.split('px');
-							if (_px.length == 2) {
-								return (_px[0] | 0) + 'px';
+							if (_animation) {
+								_this.css({
+									"transition": animationTime / 1000 + 's'
+								});
 							}
 	
-							return data;
-						};
+							var counter = 0;
 	
-						for (var attrName in params) {
+							var reType = function reType(data) {
+								// crutch
 	
-							if (reType(_this.el.style[attrName]) != reType(params[attrName])) {
-								counter += 1;
+								var _e = data + '';
+	
+								var _px = _e.split('px');
+								if (_px.length == 2) {
+									return (_px[0] | 0) + 'px';
+								}
+	
+								return data;
+							};
+	
+							for (var attrName in params) {
+	
+								if (reType(_this.el.style[attrName]) != reType(params[attrName])) {
+									counter += 1;
+								}
+	
+								_this.el.style[attrName] = params[attrName];
 							}
 	
-							_this.el.style[attrName] = params[attrName];
-						}
+							if (_animation) {
 	
-						if (_animation) {
+								_this.addClass('animated');
 	
-							_this.addClass('animated');
+								_this.el.addEventListener('transitionend', function (e) {
 	
-							_this.el.addEventListener('transitionend', function (e) {
+									counter -= 1;
 	
-								counter -= 1;
+									// event.dispatch('animationEnd', this);
+	
+									if (!counter) {
+	
+										_this.removeClass('animated');
+	
+										_this.css({
+											"transition": null
+										});
+	
+										if (typeof _this._animationCallbacks[animationName] == 'function') {
+											_this._animationCallbacks[animationName]();
+											_this._animationCallbacks[animationName] = null;
+										}
+	
+										_event2.default.dispatch('allAnimationsEnd', animationName);
+									}
+								}, false);
+							} else {
 	
 								// event.dispatch('animationEnd', this);
 	
-								if (!counter) {
-	
-									_this.removeClass('animated');
-	
-									_this.css({
-										"transition": null
-									});
-	
-									if (typeof _this._animationCallbacks[animationName] == 'function') {
-										_this._animationCallbacks[animationName]();
-										_this._animationCallbacks[animationName] = null;
-									}
-	
-									_event2.default.dispatch('allAnimationsEnd', animationName);
+								if (typeof _this._animationCallbacks[animationName] == 'function') {
+									_this._animationCallbacks[animationName]();
+									_this._animationCallbacks[animationName] = null;
 								}
-							}, false);
-						} else {
 	
-							// event.dispatch('animationEnd', this);
-	
-							if (typeof _this._animationCallbacks[animationName] == 'function') {
-								_this._animationCallbacks[animationName]();
-								_this._animationCallbacks[animationName] = null;
+								_event2.default.dispatch('allAnimationsEnd', animationName);
 							}
-	
-							_event2.default.dispatch('allAnimationsEnd', animationName);
-						}
-					}, 0);
+						}, 0);
+					})();
 				} catch (e) {}
 			}
 		}, {

@@ -10,7 +10,6 @@ import History      from 'history'     ;
 import Tips         from 'tips'        ;
 import atom         from 'atom'        ;
 import stateManager from 'stateManager';
-import redoCombine  from 'redoCombine' ;
 
 /*
  * flip

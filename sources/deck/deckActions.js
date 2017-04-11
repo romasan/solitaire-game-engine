@@ -35,6 +35,11 @@ let _actions = {
 let _decksActions  = [],
     _events        = [];
 
+event.listen('logActions', e => {
+	console.log('_decksActions', _decksActions);
+	console.log('_events'      , _events);
+});
+
 event.listen('initField', e => {
 	_decksActions = [];
 	_events       = [];
@@ -135,8 +140,12 @@ let autoRunActions = deck => {
 	common.animationDefault();
 
 	for(let actionName in deck.actions) {
+
+		// Требуется запуск при инициализации
 		if(deck.actions[actionName].autorun) {
+
 			if(_actions[actionName]) {
+
 				_actions[actionName].run(
 
 					deck, 
@@ -151,6 +160,10 @@ let autoRunActions = deck => {
 		}
 	}
 	// Tips.checkTips();
+}
+
+let runAction = (actionName, deckName, actionData, eventName) => {
+	// TODO
 }
 
 export default {

@@ -1,12 +1,13 @@
 'use strict';
 
-import event    from 'event'   ;
-import share    from 'share'   ;
-import common   from 'common'  ;
-import defaults from 'defaults';
+import event        from 'event'       ;
+import share        from 'share'       ;
+import common       from 'common'      ;
+import defaults     from 'defaults'    ;
 
-import undo     from 'undo'    ;
-import redo     from 'redo'    ;
+import undo         from 'undo'        ;
+import redo         from 'redo'        ;
+import redoAdvanced from 'redoAdvanced';
 
 // TODO пошаговая анимация
 
@@ -132,7 +133,10 @@ event.listen('doHistory', e => {
 
 		event.dispatch('redo', e.data[i]);
 
-		if(typeof e.callback == 'function') {
+		if(
+			!redoAdvanced.handle(e.data[i]) &&
+			typeof e.callback == 'function'
+		) {
 			e.callback(e.data[i]);
 		}
 	}
