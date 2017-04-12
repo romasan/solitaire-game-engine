@@ -355,6 +355,13 @@ class inputs {
 		event.dispatch('showCard', target);
 
 		// if(_dop && _dop.id) {
+
+		log('Log Move:', {
+			"moveDeck"   : _dragDeck                        ,
+			"to"         : _dop && _dop.id ? _dop.id : 'mat',
+			"cursorMove" : cursorMove
+		});
+
 		event.dispatch('Move', {
 			"moveDeck"   : _dragDeck                        ,
 			"to"         : _dop && _dop.id ? _dop.id : 'mat',

@@ -31,8 +31,6 @@ let redo = data => {
 		stateManager.restore();
 	}
 
-	redoCombine.run();
-
 	// redo flip
 	if(data.flip) {
 

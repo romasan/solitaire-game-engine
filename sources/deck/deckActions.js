@@ -162,7 +162,7 @@ let autoRunActions = deck => {
 	// Tips.checkTips();
 }
 
-let runAction = (actionName, deckName, actionData, eventName) => {
+let runAction = data => { // {actionName, deckName, actionData, eventName}
 	// TODO
 }
 

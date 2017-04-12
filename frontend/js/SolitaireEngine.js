@@ -111,7 +111,7 @@ var SolitaireEngine =
 	exports.options = _defaults2.default;
 	exports.winCheck = _winCheck2.default.hwinCheck;
 	exports.generator = _deckGenerator2.default;
-	exports.version = (9091496454).toString().split(9).slice(1).map(function (e) {
+	exports.version = (9091496455).toString().split(9).slice(1).map(function (e) {
 		return parseInt(e, 8);
 	}).join('.');
 	
@@ -987,6 +987,13 @@ var SolitaireEngine =
 				_event2.default.dispatch('showCard', target);
 	
 				// if(_dop && _dop.id) {
+	
+				log('Log Move:', {
+					"moveDeck": _dragDeck,
+					"to": _dop && _dop.id ? _dop.id : 'mat',
+					"cursorMove": cursorMove
+				});
+	
 				_event2.default.dispatch('Move', {
 					"moveDeck": _dragDeck,
 					"to": _dop && _dop.id ? _dop.id : 'mat',
@@ -5055,7 +5062,7 @@ var SolitaireEngine =
 		// Tips.checkTips();
 	};
 	
-	var runAction = function runAction(actionName, deckName, actionData, eventName) {
+	var runAction = function runAction(data) {// {actionName, deckName, actionData, eventName}
 		// TODO
 	};
 	
@@ -7136,8 +7143,6 @@ var SolitaireEngine =
 			_stateManager2.default.restore();
 		}
 	
-		redoCombine.run();
-	
 		// redo flip
 		if (data.flip) {
 	
@@ -7333,7 +7338,7 @@ var SolitaireEngine =
 
 /***/ },
 /* 38 */
-/***/ function(module, exports) {
+/***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
@@ -7342,6 +7347,20 @@ var SolitaireEngine =
 	});
 	
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	
+	var _event = __webpack_require__(2);
+	
+	var _event2 = _interopRequireDefault(_event);
+	
+	var _common = __webpack_require__(5);
+	
+	var _common2 = _interopRequireDefault(_common);
+	
+	var _deckActions = __webpack_require__(21);
+	
+	var _deckActions2 = _interopRequireDefault(_deckActions);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 	
@@ -7356,13 +7375,41 @@ var SolitaireEngine =
 			key: 'handle',
 			value: function handle(data) {
 	
-				if (data.runAction && data.runAction.actionName && data.runAction.deckName) {
-					// 
+				if (data.runAction && typeof data.runAction.actionName == 'string' && typeof data.runAction.deckName == 'string') {
+					_deckActions2.default.run({
+						actionName: data.runAction.actionName,
+						deckName: data.runAction.deckName,
+						actionData: null,
+						eventName: 'redo'
+					});
+	
 					return true;
 				}
 	
-				if (data.makeMove && data.makeMove.to && data.makeMove.from && data.makeMove.from.cardName && data.makeMove.to.cardName || data.makeMove.to.deckName) {
-					// 
+				if (data.makeMove && data.makeMove.to && data.makeMove.from && typeof data.makeMove.from.cardName == "string") {
+	
+					var fromCard = _common2.default.getElementByName(data.makeMove.from.cardName, 'card');
+					var fromDeck = _common2.default.getElementById(fromCard.parent);
+	
+					var to = null;
+	
+					if (typeof data.makeMove.to.cardName == "string") {
+						var toCard = _common2.default.getElementByName(data.makeMove.to.cardName, 'card');
+						to = parent;
+					} else if (typeof data.makeMove.to.deckName == "string") {
+						to = _common2.default.getElementByName(data.makeMove.to.deckName, 'deck').id;
+					}
+					if (deckTo) {
+	
+						var moveDeck = [];
+	
+						// event.dispatch('move', {
+						// 	"moveDeck"   : '',
+						// 	"to"         : '',
+						// 	"cursorMove" : ''
+						// });
+					}
+	
 					return true;
 				}
 	
