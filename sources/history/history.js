@@ -134,7 +134,7 @@ event.listen('doHistory', e => {
 		event.dispatch('redo', e.data[i]);
 
 		if(
-			!redoAdvanced.handle(e.data[i]) &&
+			!redoAdvanced.handle(e.data[i][0]) &&
 			typeof e.callback == 'function'
 		) {
 			e.callback(e.data[i]);

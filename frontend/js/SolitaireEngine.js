@@ -111,7 +111,7 @@ var SolitaireEngine =
 	exports.options = _defaults2.default;
 	exports.winCheck = _winCheck2.default.hwinCheck;
 	exports.generator = _deckGenerator2.default;
-	exports.version = (9091496455).toString().split(9).slice(1).map(function (e) {
+	exports.version = (9091496461).toString().split(9).slice(1).map(function (e) {
 		return parseInt(e, 8);
 	}).join('.');
 	
@@ -988,7 +988,7 @@ var SolitaireEngine =
 	
 				// if(_dop && _dop.id) {
 	
-				log('Log Move:', {
+				console.log('Log Move:', {
 					"moveDeck": _dragDeck,
 					"to": _dop && _dop.id ? _dop.id : 'mat',
 					"cursorMove": cursorMove
@@ -4945,6 +4945,7 @@ var SolitaireEngine =
 	 * addActionEvent
 	 * add
 	 * autoRunActions
+	 * runAction
 	 */
 	
 	var _decksActions = [],
@@ -5067,7 +5068,8 @@ var SolitaireEngine =
 	};
 	
 	exports.default = {
-		"add": add
+		"add": add,
+		"run": runAction
 	};
 
 /***/ },
@@ -6776,7 +6778,7 @@ var SolitaireEngine =
 	
 			_event2.default.dispatch('redo', e.data[i]);
 	
-			if (!_redoAdvanced2.default.handle(e.data[i]) && typeof e.callback == 'function') {
+			if (!_redoAdvanced2.default.handle(e.data[i][0]) && typeof e.callback == 'function') {
 				e.callback(e.data[i]);
 			}
 		}
@@ -7375,6 +7377,8 @@ var SolitaireEngine =
 			key: 'handle',
 			value: function handle(data) {
 	
+				console.log('HANDLE:', data);
+	
 				if (data.runAction && typeof data.runAction.actionName == 'string' && typeof data.runAction.deckName == 'string') {
 					_deckActions2.default.run({
 						actionName: data.runAction.actionName,
@@ -7399,7 +7403,7 @@ var SolitaireEngine =
 					} else if (typeof data.makeMove.to.deckName == "string") {
 						to = _common2.default.getElementByName(data.makeMove.to.deckName, 'deck').id;
 					}
-					if (deckTo) {
+					if (to) {
 	
 						var moveDeck = [];
 	
@@ -9531,6 +9535,8 @@ var SolitaireEngine =
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
 	var Move = function Move(moveDeck, to, cursorMove) {
+	
+		console.log('MOVE:', moveDeck, to, cursorMove);
 	
 		_common2.default.animationDefault();
 	

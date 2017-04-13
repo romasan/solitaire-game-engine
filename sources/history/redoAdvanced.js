@@ -13,6 +13,8 @@ class redoAdvanced {
 
 	handle(data) {
 
+		console.log('HANDLE:', data);
+
 		if(
 			       data.runAction                        &&
 			typeof data.runAction.actionName == 'string' &&
@@ -21,7 +23,7 @@ class redoAdvanced {
 			deckActions.run({
 				actionName : data.runAction.actionName,
 				deckName   : data.runAction.deckName  ,
-				actionData : null,
+				actionData : null                     ,
 				eventName  : 'redo'
 			});
 
@@ -46,7 +48,7 @@ class redoAdvanced {
 			} else if(typeof data.makeMove.to.deckName == "string") {
 				to = common.getElementByName(data.makeMove.to.deckName, 'deck').id;
 			}
-			if(deckTo) {
+			if(to) {
 
 				let moveDeck = [];
 

@@ -356,7 +356,7 @@ class inputs {
 
 		// if(_dop && _dop.id) {
 
-		log('Log Move:', {
+		console.log('Log Move:', {
 			"moveDeck"   : _dragDeck                        ,
 			"to"         : _dop && _dop.id ? _dop.id : 'mat',
 			"cursorMove" : cursorMove

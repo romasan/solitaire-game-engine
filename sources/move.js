@@ -12,6 +12,8 @@ import Field    from 'field'   ;
 
 let Move = (moveDeck, to, cursorMove) => {
 
+	console.log('MOVE:', moveDeck, to, cursorMove);
+
 	common.animationDefault();
 
 	let _deck_departure   = moveDeck[0].card.parent                        &&
@@ -70,7 +72,7 @@ let Move = (moveDeck, to, cursorMove) => {
 	// если положили на карту узнаём из какой она стопки
 	if(_success) {
 		if(_el.type == 'card') {
-			_deck_destination = common.getElementById(_el.parent)
+			_deck_destination = common.getElementById(_el.parent);
 		} else if(_el.type == 'deck') {
 			_deck_destination = _el;
 		}

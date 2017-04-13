@@ -30,6 +30,7 @@ let _actions = {
  * addActionEvent
  * add
  * autoRunActions
+ * runAction
  */
 
 let _decksActions  = [],
@@ -167,5 +168,6 @@ let runAction = data => { // {actionName, deckName, actionData, eventName}
 }
 
 export default {
-	"add" : add
+	"add" : add      ,
+	"run" : runAction
 }
