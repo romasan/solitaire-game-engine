@@ -164,7 +164,21 @@ let autoRunActions = deck => {
 }
 
 let runAction = data => { // {actionName, deckName, actionData, eventName}
-	// TODO
+
+	let deck = common.getElementByName(data.deckName, 'deck');
+
+	if(_actions[data.actionName]) {
+		_actions[data.actionName].run(
+
+			deck,
+
+			{
+				"actionData" : deck.actions[data.actionName],
+				"eventData"  : null                         ,
+				"eventName"  : data.eventName
+			}
+		)
+	}
 }
 
 export default {

@@ -504,6 +504,8 @@ class Deck {
 			visibleCardsCount = this.cardsCount();
 		}
 
+		// deck = deck.map(e => (e.parent = this.id, e));
+		// this.cards.splice(visibleCardsCount, deck.length, ...deck); // if visibleCardsCount < this.cards.count
 		for(let i in deck) {
 
 			deck[i].parent = this.id;

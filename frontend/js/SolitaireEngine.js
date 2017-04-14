@@ -111,7 +111,7 @@ var SolitaireEngine =
 	exports.options = _defaults2.default;
 	exports.winCheck = _winCheck2.default.hwinCheck;
 	exports.generator = _deckGenerator2.default;
-	exports.version = (9091496461).toString().split(9).slice(1).map(function (e) {
+	exports.version = (9091496471).toString().split(9).slice(1).map(function (e) {
 		return parseInt(e, 8);
 	}).join('.');
 	
@@ -3405,6 +3405,8 @@ var SolitaireEngine =
 					visibleCardsCount = this.cardsCount();
 				}
 	
+				// deck = deck.map(e => (e.parent = this.id, e));
+				// this.cards.splice(visibleCardsCount, deck.length, ...deck); // if visibleCardsCount < this.cards.count
 				for (var i in deck) {
 	
 					deck[i].parent = this.id;
@@ -5063,8 +5065,18 @@ var SolitaireEngine =
 		// Tips.checkTips();
 	};
 	
-	var runAction = function runAction(data) {// {actionName, deckName, actionData, eventName}
-		// TODO
+	var runAction = function runAction(data) {
+		// {actionName, deckName, actionData, eventName}
+	
+		var deck = _common2.default.getElementByName(data.deckName, 'deck');
+	
+		if (_actions[data.actionName]) {
+			_actions[data.actionName].run(deck, {
+				"actionData": deck.actions[data.actionName],
+				"eventData": null,
+				"eventName": data.eventName
+			});
+		}
 	};
 	
 	exports.default = {
@@ -6774,16 +6786,42 @@ var SolitaireEngine =
 		// common.animationOff();
 		_share2.default.set('saveHistory', false);
 	
-		for (var i in e.data) {
+		console.log('start doHistory', e.data.length);
+	
+		var i = 0;
+		window._debug = function (z) {
+	
+			console.log(i, 'from', e.data.length);
 	
 			_event2.default.dispatch('redo', e.data[i]);
 	
 			if (!_redoAdvanced2.default.handle(e.data[i][0]) && typeof e.callback == 'function') {
 				e.callback(e.data[i]);
 			}
-		}
 	
-		_share2.default.set('saveHistory', true);
+			i += 1;
+	
+			if (i >= e.data.length - 1) {
+	
+				_share2.default.set('saveHistory', true);
+	
+				window._debug = null;
+			}
+		};
+	
+		// for(let i in e.data) {
+	
+		// 	event.dispatch('redo', e.data[i]);
+	
+		// 	if(
+		// 		!redoAdvanced.handle(e.data[i][0]) &&
+		// 		typeof e.callback == 'function'
+		// 	) {
+		// 		e.callback(e.data[i]);
+		// 	}
+		// }
+	
+		// share.set('saveHistory', true);
 	
 		// common.animationOn();
 	});
@@ -7383,7 +7421,6 @@ var SolitaireEngine =
 					_deckActions2.default.run({
 						actionName: data.runAction.actionName,
 						deckName: data.runAction.deckName,
-						actionData: null,
 						eventName: 'redo'
 					});
 	
@@ -7399,19 +7436,38 @@ var SolitaireEngine =
 	
 					if (typeof data.makeMove.to.cardName == "string") {
 						var toCard = _common2.default.getElementByName(data.makeMove.to.cardName, 'card');
-						to = parent;
+						to = toCard.id;
 					} else if (typeof data.makeMove.to.deckName == "string") {
 						to = _common2.default.getElementByName(data.makeMove.to.deckName, 'deck').id;
 					}
 					if (to) {
 	
 						var moveDeck = [];
+						var fromDeckCards = fromDeck.getCards();
 	
-						// event.dispatch('move', {
-						// 	"moveDeck"   : '',
-						// 	"to"         : '',
-						// 	"cursorMove" : ''
-						// });
+						var found = false;
+						for (var i in fromDeckCards) {
+	
+							if (fromDeckCards[i].name == fromCard.name) {
+								found = true;
+							}
+	
+							if (found) {
+								moveDeck.push({
+									"card": fromDeckCards[i],
+									"index": i
+								});
+							}
+						}
+	
+						SolitaireEngine.event.dispatch('Move', {
+							"moveDeck": moveDeck,
+							"to": to,
+							"cursorMove": {
+								"dblclick": false,
+								"distance": Infinity
+							}
+						});
 					}
 	
 					return true;

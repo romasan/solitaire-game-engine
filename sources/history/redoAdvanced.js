@@ -23,7 +23,6 @@ class redoAdvanced {
 			deckActions.run({
 				actionName : data.runAction.actionName,
 				deckName   : data.runAction.deckName  ,
-				actionData : null                     ,
 				eventName  : 'redo'
 			});
 
@@ -44,19 +43,38 @@ class redoAdvanced {
 
 			if(typeof data.makeMove.to.cardName == "string") {
 				let toCard = common.getElementByName(data.makeMove.to.cardName, 'card');
-				to = parent;
+				to = toCard.id;
 			} else if(typeof data.makeMove.to.deckName == "string") {
 				to = common.getElementByName(data.makeMove.to.deckName, 'deck').id;
 			}
 			if(to) {
 
 				let moveDeck = [];
+				let fromDeckCards = fromDeck.getCards();
 
-				// event.dispatch('move', {
-				// 	"moveDeck"   : '',
-				// 	"to"         : '',
-				// 	"cursorMove" : ''
-				// });
+				let found = false;
+				for(let i in fromDeckCards) {
+
+					if(fromDeckCards[i].name == fromCard.name) {
+						found = true;
+					}
+
+					if(found) {
+						moveDeck.push({
+							"card"  : fromDeckCards[i],
+							"index" : i
+						})
+					}
+				}
+
+				SolitaireEngine.event.dispatch('Move', {
+					"moveDeck"   : moveDeck,
+					"to"         : to      ,
+					"cursorMove" : {
+						"dblclick" : false   ,
+						"distance" : Infinity
+					}
+				});
 			}
 
 			return true;

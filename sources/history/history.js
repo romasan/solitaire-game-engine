@@ -129,7 +129,12 @@ event.listen('doHistory', e => {
 	// common.animationOff();
 	share.set('saveHistory', false);
 
-	for(let i in e.data) {
+	console.log('start doHistory', e.data.length);
+
+	let i = 0;
+	window._debug = z => {
+
+		console.log(i, 'from', e.data.length);
 
 		event.dispatch('redo', e.data[i]);
 
@@ -139,9 +144,31 @@ event.listen('doHistory', e => {
 		) {
 			e.callback(e.data[i]);
 		}
+
+		i += 1;
+
+		if(i >= e.data.length - 1) {
+
+			share.set('saveHistory', true);
+
+			window._debug = null;
+		}
+
 	}
 
-	share.set('saveHistory', true);
+	// for(let i in e.data) {
+
+	// 	event.dispatch('redo', e.data[i]);
+
+	// 	if(
+	// 		!redoAdvanced.handle(e.data[i][0]) &&
+	// 		typeof e.callback == 'function'
+	// 	) {
+	// 		e.callback(e.data[i]);
+	// 	}
+	// }
+
+	// share.set('saveHistory', true);
 
 	// common.animationOn();
 });
