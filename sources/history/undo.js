@@ -88,7 +88,7 @@ let undo = data => {
 	// undo show
 	if(data.show) {
 
-		console.log('UNDO SHOW:', data.show);
+		// console.log('UNDO SHOW:', data.show);
 
 		let deck = common.getElementByName(data.show.deckName, 'deck');
 

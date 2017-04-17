@@ -13,8 +13,6 @@ class redoAdvanced {
 
 	handle(data) {
 
-		console.log('HANDLE:', data);
-
 		if(
 			       data.runAction                        &&
 			typeof data.runAction.actionName == 'string' &&
@@ -23,6 +21,7 @@ class redoAdvanced {
 			deckActions.run({
 				actionName : data.runAction.actionName,
 				deckName   : data.runAction.deckName  ,
+				// eventData  : null
 				eventName  : 'redo'
 			});
 

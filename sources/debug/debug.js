@@ -121,8 +121,10 @@ document.onkeyup = e => {
 
 	if(e.keyCode == keys.d) {
 
-		// let deck = common.getElementByName('rollerDeck');
-		// logCardsInDeck(deck);
+		let deck = common.getElementByName('rollerDeck');
+		logCardsInDeck(deck);
+
+		eachDecksInGroup('group_home', logCardsInDeck);
 
 		eachDecksInGroup('group_row', logCardsInDeck);
 	}

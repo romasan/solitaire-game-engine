@@ -54,7 +54,7 @@ class historyClass {
 
 	add(step) {
 
-		console.log('History:add', step);
+		// console.log('History:add', step);
 
 		this.steps.push(step);
 	}
@@ -68,7 +68,7 @@ class historyClass {
 			this.reset(true);
 		}
 
-		console.log('History:get', _req);
+		// console.log('History:get', _req);
 
 		// for(let line of _req) {
 		// 	for(let name in line) {
@@ -103,10 +103,10 @@ event.listen('addStep', data => {
 		delete data.debug;
 	}
 
-	history.add(data)
+	history.add(data);
 });
 
-share.set('saveHistory', true);
+// share.set('saveHistory', true);
 
 // save steps to client history
 event.listen('saveSteps', e => {
@@ -122,19 +122,18 @@ event.listen('saveSteps', e => {
 
 event.listen('doHistory', e => {
 
-	if(!share.get('saveHistory')) {
-		return;
-	}
+	// if(!share.get('saveHistory')) {
+	// 	return;
+	// }
 
-	// common.animationOff();
-	share.set('saveHistory', false);
+	common.animationOff();
+	// share.set('saveHistory', false);
 
-	console.log('start doHistory', e.data.length);
-
+	// for(let i in e.data) {
 	let i = 0;
-	window._debug = z => {
+	let playHistory = z => {
 
-		console.log(i, 'from', e.data.length);
+		// console.log(i, 'from', e.data.length - 1);
 
 		event.dispatch('redo', e.data[i]);
 
@@ -145,32 +144,26 @@ event.listen('doHistory', e => {
 			e.callback(e.data[i]);
 		}
 
-		i += 1;
-
 		if(i >= e.data.length - 1) {
 
-			share.set('saveHistory', true);
+			// share.set('saveHistory', true);
 
-			window._debug = null;
+			common.animationDefault();
+
+			playHistory = null;
 		}
 
+		i += 1;
+
+		if(typeof playHistory == "function") {
+			// playHistory();
+			setTimeout(playHistory, 100);
+		}
 	}
-
-	// for(let i in e.data) {
-
-	// 	event.dispatch('redo', e.data[i]);
-
-	// 	if(
-	// 		!redoAdvanced.handle(e.data[i][0]) &&
-	// 		typeof e.callback == 'function'
-	// 	) {
-	// 		e.callback(e.data[i]);
-	// 	}
-	// }
+	playHistory();
 
 	// share.set('saveHistory', true);
 
-	// common.animationOn();
 });
 
 event.listen('resetHistory', e => {

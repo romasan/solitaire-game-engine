@@ -111,7 +111,7 @@ var SolitaireEngine =
 	exports.options = _defaults2.default;
 	exports.winCheck = _winCheck2.default.hwinCheck;
 	exports.generator = _deckGenerator2.default;
-	exports.version = (9091496471).toString().split(9).slice(1).map(function (e) {
+	exports.version = (9091496520).toString().split(9).slice(1).map(function (e) {
 		return parseInt(e, 8);
 	}).join('.');
 	
@@ -987,13 +987,6 @@ var SolitaireEngine =
 				_event2.default.dispatch('showCard', target);
 	
 				// if(_dop && _dop.id) {
-	
-				console.log('Log Move:', {
-					"moveDeck": _dragDeck,
-					"to": _dop && _dop.id ? _dop.id : 'mat',
-					"cursorMove": cursorMove
-				});
-	
 				_event2.default.dispatch('Move', {
 					"moveDeck": _dragDeck,
 					"to": _dop && _dop.id ? _dop.id : 'mat',
@@ -4806,7 +4799,7 @@ var SolitaireEngine =
 			}
 	
 			_params.padding_x = 0;
-			_params.padding_y = 10;
+			_params.padding_y = 15;
 			_params.flip_padding_x = 0;
 			_params.flip_padding_y = 5;
 	
@@ -5073,8 +5066,10 @@ var SolitaireEngine =
 		if (_actions[data.actionName]) {
 			_actions[data.actionName].run(deck, {
 				"actionData": deck.actions[data.actionName],
-				"eventData": null,
-				"eventName": data.eventName
+				"eventName": data.eventName,
+				"eventData": {
+					"to": deck
+				}
 			});
 		}
 	};
@@ -6698,7 +6693,7 @@ var SolitaireEngine =
 			key: 'add',
 			value: function add(step) {
 	
-				console.log('History:add', step);
+				// console.log('History:add', step);
 	
 				this.steps.push(step);
 			}
@@ -6717,7 +6712,7 @@ var SolitaireEngine =
 					this.reset(true);
 				}
 	
-				console.log('History:get', _req);
+				// console.log('History:get', _req);
 	
 				// for(let line of _req) {
 				// 	for(let name in line) {
@@ -6763,7 +6758,7 @@ var SolitaireEngine =
 		history.add(data);
 	});
 	
-	_share2.default.set('saveHistory', true);
+	// share.set('saveHistory', true);
 	
 	// save steps to client history
 	_event2.default.listen('saveSteps', function (e) {
@@ -6779,19 +6774,18 @@ var SolitaireEngine =
 	
 	_event2.default.listen('doHistory', function (e) {
 	
-		if (!_share2.default.get('saveHistory')) {
-			return;
-		}
+		// if(!share.get('saveHistory')) {
+		// 	return;
+		// }
 	
-		// common.animationOff();
-		_share2.default.set('saveHistory', false);
+		_common2.default.animationOff();
+		// share.set('saveHistory', false);
 	
-		console.log('start doHistory', e.data.length);
-	
+		// for(let i in e.data) {
 		var i = 0;
-		window._debug = function (z) {
+		var _playHistory = function playHistory(z) {
 	
-			console.log(i, 'from', e.data.length);
+			// console.log(i, 'from', e.data.length - 1);
 	
 			_event2.default.dispatch('redo', e.data[i]);
 	
@@ -6799,31 +6793,25 @@ var SolitaireEngine =
 				e.callback(e.data[i]);
 			}
 	
-			i += 1;
-	
 			if (i >= e.data.length - 1) {
 	
-				_share2.default.set('saveHistory', true);
+				// share.set('saveHistory', true);
 	
-				window._debug = null;
+				_common2.default.animationDefault();
+	
+				_playHistory = null;
+			}
+	
+			i += 1;
+	
+			if (typeof _playHistory == "function") {
+				// playHistory();
+				setTimeout(_playHistory, 100);
 			}
 		};
-	
-		// for(let i in e.data) {
-	
-		// 	event.dispatch('redo', e.data[i]);
-	
-		// 	if(
-		// 		!redoAdvanced.handle(e.data[i][0]) &&
-		// 		typeof e.callback == 'function'
-		// 	) {
-		// 		e.callback(e.data[i]);
-		// 	}
-		// }
+		_playHistory();
 	
 		// share.set('saveHistory', true);
-	
-		// common.animationOn();
 	});
 	
 	_event2.default.listen('resetHistory', function (e) {
@@ -6948,7 +6936,7 @@ var SolitaireEngine =
 		// undo show
 		if (data.show) {
 	
-			console.log('UNDO SHOW:', data.show);
+			// console.log('UNDO SHOW:', data.show);
 	
 			var _deck3 = _common2.default.getElementByName(data.show.deckName, 'deck');
 	
@@ -7415,12 +7403,11 @@ var SolitaireEngine =
 			key: 'handle',
 			value: function handle(data) {
 	
-				console.log('HANDLE:', data);
-	
 				if (data.runAction && typeof data.runAction.actionName == 'string' && typeof data.runAction.deckName == 'string') {
 					_deckActions2.default.run({
 						actionName: data.runAction.actionName,
 						deckName: data.runAction.deckName,
+						// eventData  : null
 						eventName: 'redo'
 					});
 	
@@ -9592,9 +9579,7 @@ var SolitaireEngine =
 	
 	var Move = function Move(moveDeck, to, cursorMove) {
 	
-		console.log('MOVE:', moveDeck, to, cursorMove);
-	
-		_common2.default.animationDefault();
+		// common.animationDefault();
 	
 		var _deck_departure = moveDeck[0].card.parent && _common2.default.getElementById(moveDeck[0].card.parent),
 		    // стопка из которой взяли
@@ -9674,7 +9659,7 @@ var SolitaireEngine =
 					_deck_destination.Push(_pop, false);
 	
 					// режим анимации по умолчанию
-					_common2.default.animationDefault();
+					// common.animationDefault();
 	
 					var _checkMoveEnd = false;
 	
@@ -11914,9 +11899,9 @@ var SolitaireEngine =
 	
 	var _field2 = _interopRequireDefault(_field);
 	
-	var _deck = __webpack_require__(14);
+	var _deck2 = __webpack_require__(14);
 	
-	var _deck2 = _interopRequireDefault(_deck);
+	var _deck3 = _interopRequireDefault(_deck2);
 	
 	var _deckGenerator = __webpack_require__(86);
 	
@@ -12050,8 +12035,10 @@ var SolitaireEngine =
 	
 		if (e.keyCode == keys.d) {
 	
-			// let deck = common.getElementByName('rollerDeck');
-			// logCardsInDeck(deck);
+			var _deck = _common2.default.getElementByName('rollerDeck');
+			logCardsInDeck(_deck);
+	
+			eachDecksInGroup('group_home', logCardsInDeck);
 	
 			eachDecksInGroup('group_row', logCardsInDeck);
 		}

@@ -67,7 +67,7 @@ let paddingTypes = {
 		}
 
 		_params.padding_x      = 0;
-		_params.padding_y      = 10;
+		_params.padding_y      = 15;
 		_params.flip_padding_x = 0;
 		_params.flip_padding_y = 5;
 

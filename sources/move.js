@@ -12,9 +12,7 @@ import Field    from 'field'   ;
 
 let Move = (moveDeck, to, cursorMove) => {
 
-	console.log('MOVE:', moveDeck, to, cursorMove);
-
-	common.animationDefault();
+	// common.animationDefault();
 
 	let _deck_departure   = moveDeck[0].card.parent                        &&
 	                        common.getElementById(moveDeck[0].card.parent)   , // стопка из которой взяли
@@ -104,7 +102,7 @@ let Move = (moveDeck, to, cursorMove) => {
 				_deck_destination.Push(_pop, false);
 
 				// режим анимации по умолчанию
-				common.animationDefault();
+				// common.animationDefault();
 
 				let _checkMoveEnd = false;
 

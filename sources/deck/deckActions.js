@@ -174,8 +174,10 @@ let runAction = data => { // {actionName, deckName, actionData, eventName}
 
 			{
 				"actionData" : deck.actions[data.actionName],
-				"eventData"  : null                         ,
-				"eventName"  : data.eventName
+				"eventName"  : data.eventName               ,
+				"eventData"  : {
+					"to" : deck
+				}
 			}
 		)
 	}
