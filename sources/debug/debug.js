@@ -79,21 +79,21 @@ document.addEventListener("DOMContentLoaded", e => {
 	}
 });
 
-let eachDecksInGroup = (groupName, callback) => {
+let eachDecksInGroup = (groupName, callback, data) => {
 
 	let group = common.getElementByName(groupName, 'group');
 	let decks = group.getDecks();
 
-	for(let deckName in decks) {
+	for(let deckIndex in decks) {
 		if(typeof callback == "function") {
-			callback(decks[deckName]);
+			callback(decks[deckIndex], data ? (decks[deckIndex].name == data.from ? '>' : decks[deckIndex].name == data.to ? '<' : ' ') : null);
 		}
 	}
 }
 
-let logCardsInDeck = deck => {
+let logCardsInDeck = (deck, pref) => {
 
-	let _log = [''];
+	let _log = [pref ? pref + ' ' : ''];
 
 	for(let card of deck.cards) {
 		_log[0] += '%c' + card.name + ' ';
@@ -117,16 +117,25 @@ let keys = {
 	"d" : 68 // debug
 }
 
+let kosynka_log = data => {
+
+	console.log('ROLLER DECK:');
+	let deck = common.getElementByName('rollerDeck');
+	logCardsInDeck(deck);
+
+	console.log('GROUP HOME:');
+	eachDecksInGroup('group_home', logCardsInDeck);
+
+	console.log('GROUP ROW:');
+	eachDecksInGroup('group_row', logCardsInDeck, data);
+}
+
+event.listen('kosynka_log', kosynka_log);
+
 document.onkeyup = e => {
 
 	if(e.keyCode == keys.d) {
-
-		let deck = common.getElementByName('rollerDeck');
-		logCardsInDeck(deck);
-
-		eachDecksInGroup('group_home', logCardsInDeck);
-
-		eachDecksInGroup('group_row', logCardsInDeck);
+		kosynka_log();
 	}
 }
 

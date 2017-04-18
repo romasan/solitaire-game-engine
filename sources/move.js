@@ -54,7 +54,7 @@ let Move = (moveDeck, to, cursorMove) => {
 	}
 
 	event.dispatch('startSession', {
-		"type": 'move'
+		"type" : 'move'
 	});
 
 	_success = _success && to; // to - не пустой
@@ -82,6 +82,23 @@ let Move = (moveDeck, to, cursorMove) => {
 	_success = _success && _deck_departure;
 
 	_success = _success && _deck_destination.id != _deck_departure.id;
+
+	console.log.apply(console, [
+		'#########################################################',
+		'Move:',
+		moveDeck.length,
+		...moveDeck.map(e => {
+			return {
+				"i"    : e.index    ,
+				"card" : e.card.name
+			};
+		}),
+		'from:', _deck_departure   ? _deck_departure  .name : null, '\n',
+		'to:name:', _el.name, '\n',
+		'to:'  , _deck_destination ? _deck_destination.name : null,
+		_success
+	]);
+	event.dispatch('kosynka_log', {"from" : _deck_departure.name, "to" : _deck_destination.name});
 
 	// смотрим не одна и та же ли эта стопка
 	if(_success) {
@@ -222,10 +239,12 @@ let Move = (moveDeck, to, cursorMove) => {
 				let Tip = bestTip(moveDeck, cursorMove);
 
 				if(Tip) {
+
 					Move(moveDeck, Tip.to.deck.id, cursorMove);
 
 					return;
 				} else {
+
 					event.dispatch('moveCardToHome', {
 						"moveDeck"  : moveDeck       ,
 						"departure" : _deck_departure

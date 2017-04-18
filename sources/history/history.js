@@ -106,8 +106,6 @@ event.listen('addStep', data => {
 	history.add(data);
 });
 
-// share.set('saveHistory', true);
-
 // save steps to client history
 event.listen('saveSteps', e => {
 
@@ -122,18 +120,11 @@ event.listen('saveSteps', e => {
 
 event.listen('doHistory', e => {
 
-	// if(!share.get('saveHistory')) {
-	// 	return;
-	// }
-
-	common.animationOff();
-	// share.set('saveHistory', false);
+	// common.animationOff();
 
 	// for(let i in e.data) {
 	let i = 0;
 	let playHistory = z => {
-
-		// console.log(i, 'from', e.data.length - 1);
 
 		event.dispatch('redo', e.data[i]);
 
@@ -146,9 +137,7 @@ event.listen('doHistory', e => {
 
 		if(i >= e.data.length - 1) {
 
-			// share.set('saveHistory', true);
-
-			common.animationDefault();
+			// common.animationDefault();
 
 			playHistory = null;
 		}
@@ -157,13 +146,10 @@ event.listen('doHistory', e => {
 
 		if(typeof playHistory == "function") {
 			// playHistory();
-			setTimeout(playHistory, 100);
+			setTimeout(playHistory, 0);
 		}
 	}
 	playHistory();
-
-	// share.set('saveHistory', true);
-
 });
 
 event.listen('resetHistory', e => {
