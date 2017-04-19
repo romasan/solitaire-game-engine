@@ -83,22 +83,25 @@ let Move = (moveDeck, to, cursorMove) => {
 
 	_success = _success && _deck_destination.id != _deck_departure.id;
 
-	console.log.apply(console, [
-		'#########################################################',
-		'Move:',
-		moveDeck.length,
-		...moveDeck.map(e => {
-			return {
-				"i"    : e.index    ,
-				"card" : e.card.name
-			};
-		}),
-		'from:', _deck_departure   ? _deck_departure  .name : null, '\n',
-		'to:name:', _el.name, '\n',
-		'to:'  , _deck_destination ? _deck_destination.name : null,
-		_success
-	]);
-	event.dispatch('kosynka_log', {"from" : _deck_departure.name, "to" : _deck_destination.name});
+	// console.log.apply(console, [
+	// 	'#########################################################',
+	// 	'Move:',
+	// 	moveDeck.length,
+	// 	...moveDeck.map(e => {
+	// 		return {
+	// 			"i"    : e.index    ,
+	// 			"card" : e.card.name
+	// 		};
+	// 	}),
+	// 	'from:'   , _deck_departure   ? _deck_departure  .name : null, '\n',
+	// 	'to:name:', _el               ? _el              .name : null, '\n',
+	// 	'to:'     , _deck_destination ? _deck_destination.name : null,
+	// 	_success
+	// ]);
+	// event.dispatch('kosynka_log', {
+	// 	"from" : _deck_departure   ? _deck_departure  .name : null,
+	// 	"to"   : _deck_destination ? _deck_destination.name : null
+	// });
 
 	// смотрим не одна и та же ли эта стопка
 	if(_success) {
@@ -107,11 +110,30 @@ let Move = (moveDeck, to, cursorMove) => {
 		let _put = _deck_destination.Put(moveDeck);
 		_success = _success && _put;
 
+		// console.log.apply(console, [
+		// 	'Move:success >> put:',
+		// 	_deck_destination.name,
+		// 	_put, moveDeck.length,
+		// 	...moveDeck.map(e => {
+		// 		return {
+		// 			"i"    : e.index    ,
+		// 			"name" : e.card.name
+		// 		};
+		// 	})
+		// ]);
+
 		if(_put) {// } && _deck_departure) {
 
 			// если можно положить карты берём их из исходной стопки
 			let _pop = _deck_departure.Pop(moveDeck.length);
 			_success = _success && _pop;
+
+			// console.log.apply(console, [
+			// 	'Move:success >> pop:',
+			// 	_pop
+			// 		? _pop.map(e => e.name)
+			// 		: _pop
+			// ]);
 
 			if(_pop) {
 
@@ -236,22 +258,23 @@ let Move = (moveDeck, to, cursorMove) => {
 			cursorMove.dbclick                               ||
 			cursorMove.distance >= share.get('moveDistance')
 		) {
-				let Tip = bestTip(moveDeck, cursorMove);
 
-				if(Tip) {
+			let Tip = bestTip(moveDeck, cursorMove);
 
-					Move(moveDeck, Tip.to.deck.id, cursorMove);
+			if(Tip) {
 
-					return;
-				} else {
+				Move(moveDeck, Tip.to.deck.id, cursorMove);
 
-					event.dispatch('moveCardToHome', {
-						"moveDeck"  : moveDeck       ,
-						"departure" : _deck_departure
-					});
-					// ^ callback
-					event.dispatch('stopSession');
-				}
+				return;
+			} else {
+
+				event.dispatch('moveCardToHome', {
+					"moveDeck"  : moveDeck       ,
+					"departure" : _deck_departure
+				});
+				// ^ callback
+				event.dispatch('stopSession');
+			}
 
 		} else {
 			event.dispatch('moveCardToHome', {

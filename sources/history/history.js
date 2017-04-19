@@ -126,6 +126,8 @@ event.listen('doHistory', e => {
 	let i = 0;
 	let playHistory = z => {
 
+		// console.log('>>> doHistory step:', i, e.data[i]);
+
 		event.dispatch('redo', e.data[i]);
 
 		if(
@@ -145,8 +147,8 @@ event.listen('doHistory', e => {
 		i += 1;
 
 		if(typeof playHistory == "function") {
-			// playHistory();
-			setTimeout(playHistory, 0);
+			playHistory();
+			// setTimeout(playHistory, 0);
 		}
 	}
 	playHistory();

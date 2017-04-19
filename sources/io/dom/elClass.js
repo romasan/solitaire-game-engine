@@ -195,7 +195,6 @@ export default class elClass {
 			this._animationIndex += 1;
 
 			// Thread
-			setTimeout(e => {
 
 				if(_animation) {
 					this.css({
@@ -266,7 +265,6 @@ export default class elClass {
 
 					event.dispatch('allAnimationsEnd', animationName);
 				}
-			}, 0);
 		} catch(e) {}
 	}
 

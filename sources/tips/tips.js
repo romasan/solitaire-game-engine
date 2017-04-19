@@ -47,9 +47,11 @@ let checkTips = e => {
 		"visible" : true
 	});
 
+	// console.groupCollapsed('check tips');
 	_tips = allToAll({
 		"decks" : _decks
 	});
+	// console.groupEnd();
 
 	if(
 		_tips.length == 0                          &&

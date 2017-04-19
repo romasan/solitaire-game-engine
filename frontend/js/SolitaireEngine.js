@@ -111,7 +111,7 @@ var SolitaireEngine =
 	exports.options = _defaults2.default;
 	exports.winCheck = _winCheck2.default.hwinCheck;
 	exports.generator = _deckGenerator2.default;
-	exports.version = (9091496565).toString().split(9).slice(1).map(function (e) {
+	exports.version = (9091496626).toString().split(9).slice(1).map(function (e) {
 		return parseInt(e, 8);
 	}).join('.');
 	
@@ -1654,9 +1654,11 @@ var SolitaireEngine =
 			"visible": true
 		});
 	
+		// console.groupCollapsed('check tips');
 		_tips = (0, _allToAll2.default)({
 			"decks": _decks
 		});
+		// console.groupEnd();
 	
 		if (_tips.length == 0 && _share2.default.get('stepType') == _defaults2.default.stepType) {
 	
@@ -2962,6 +2964,8 @@ var SolitaireEngine =
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
+	function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
+	
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 	
 	/*
@@ -3389,33 +3393,51 @@ var SolitaireEngine =
 		}, {
 			key: 'Push',
 			value: function Push(deck) {
+				var _this2 = this,
+				    _cards2;
+	
 				var afterVisible = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
 	
 	
-				var visibleCardsCount = null;
+				var visibleCardsCount = this.cardsCount();
 	
-				if (afterVisible) {
-					visibleCardsCount = this.cardsCount();
-				}
+				deck = deck.map(function (e) {
+					return e.parent = _this2.id, e;
+				});
+				(_cards2 = this.cards).splice.apply(_cards2, [visibleCardsCount, 0].concat(_toConsumableArray(deck)));
 	
-				// deck = deck.map(e => (e.parent = this.id, e));
-				// this.cards.splice(visibleCardsCount, deck.length, ...deck); // if visibleCardsCount < this.cards.count
-				for (var i in deck) {
+				// for(let i in deck) {
 	
-					deck[i].parent = this.id;
+				// 	deck[i].parent = this.id;
 	
-					if (afterVisible && visibleCardsCount < this.cards.length) {
+				// 	if(
+				// 		afterVisible                          &&
+				// 		visibleCardsCount < this.cards.length
+				// 	) {
 	
-						// TODO
-						// let a=[this.name, 'Push:before'];for(let card of this.cards)a.push(card.name);console.log.apply(console, a);
+				// 		this.cards = [].concat(
+				// 			this.cards.slice(0, visibleCardsCount),
+				// 			deck[i]                               ,
+				// 			this.cards.slice(visibleCardsCount)
+				// 		);
+				// 	} else {
+				// 		this.cards.push(deck[i]);
+				// 	}
+				// }
 	
-						this.cards = [].concat(this.cards.slice(0, visibleCardsCount), deck[i], this.cards.slice(visibleCardsCount));
-	
-						// a=[this.name, 'Push:after'];for(let card of this.cards)a.push(card.name);console.log.apply(console, a);
-					} else {
-						this.cards.push(deck[i]);
-					}
-				}
+				// console.log.apply(console, [
+				// 	'%cPush:', 'color:green;',
+				// 	deck[0].parent,
+				// 	this.name,
+				// 	...deck.map(e => {
+				// 		return {
+				// 			"card"   : e.name  ,
+				// 			"parent" : e.parent
+				// 		}
+				// 	}), '\n',
+				// 	'cards:', this.cards.map(e => e.name), '\n',
+				// 	afterVisible, visibleCardsCount
+				// ]);
 			}
 		}, {
 			key: 'Pop',
@@ -3446,11 +3468,22 @@ var SolitaireEngine =
 						_pop.parent = null;
 					}
 	
-					_deck.push(_pop);
-					_deck[_deck.length - 1].parent = null;
+					// _deck.push(_pop);
+					// _deck[_deck.length - 1].parent = null;
+					_deck.unshift(_pop);
+					_deck[0].parent = null;
 				}
 	
-				_deck.reverse();
+				// console.log.apply(console, [
+				// 	'%cPop:', 'color:orange;',
+				// 	this.name,
+				// 	count,
+				// 	clearParent, '\n',
+				// 	'deck:' , ..._deck .map(e => e.name), '\n',
+				// 	'cards:', ..._cards.map(e => e.name)
+				// ]);
+	
+				// _deck.reverse();
 	
 				// скрыть стопку если вынули все карты
 				if (this.autoHide && this.cards.length == 0) {
@@ -3464,6 +3497,7 @@ var SolitaireEngine =
 		}, {
 			key: 'Take',
 			value: function Take(cardId) {
+				// console.log('Take:', this.name, cardId);
 				return (0, _deckTake2.default)(this, cardId);
 			}
 	
@@ -3473,6 +3507,7 @@ var SolitaireEngine =
 		}, {
 			key: 'Put',
 			value: function Put(putDeck) {
+				// console.log('Put:', this.name, putDeck);
 				return (0, _deckPut2.default)(this, putDeck);
 			}
 	
@@ -6778,6 +6813,8 @@ var SolitaireEngine =
 		var i = 0;
 		var _playHistory = function playHistory(z) {
 	
+			// console.log('>>> doHistory step:', i, e.data[i]);
+	
 			_event2.default.dispatch('redo', e.data[i]);
 	
 			if (!_redoAdvanced2.default.handle(e.data[i][0]) && typeof e.callback == 'function') {
@@ -6794,8 +6831,8 @@ var SolitaireEngine =
 			i += 1;
 	
 			if (typeof _playHistory == "function") {
-				// playHistory();
-				setTimeout(_playHistory, 0);
+				_playHistory();
+				// setTimeout(playHistory, 0);
 			}
 		};
 		_playHistory();
@@ -9564,8 +9601,6 @@ var SolitaireEngine =
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
-	function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
-	
 	var Move = function Move(moveDeck, to, cursorMove) {
 	
 		// common.animationDefault();
@@ -9628,13 +9663,25 @@ var SolitaireEngine =
 	
 		_success = _success && _deck_destination.id != _deck_departure.id;
 	
-		console.log.apply(console, ['#########################################################', 'Move:', moveDeck.length].concat(_toConsumableArray(moveDeck.map(function (e) {
-			return {
-				"i": e.index,
-				"card": e.card.name
-			};
-		})), ['from:', _deck_departure ? _deck_departure.name : null, '\n', 'to:name:', _el.name, '\n', 'to:', _deck_destination ? _deck_destination.name : null, _success]));
-		_event2.default.dispatch('kosynka_log', { "from": _deck_departure.name, "to": _deck_destination.name });
+		// console.log.apply(console, [
+		// 	'#########################################################',
+		// 	'Move:',
+		// 	moveDeck.length,
+		// 	...moveDeck.map(e => {
+		// 		return {
+		// 			"i"    : e.index    ,
+		// 			"card" : e.card.name
+		// 		};
+		// 	}),
+		// 	'from:'   , _deck_departure   ? _deck_departure  .name : null, '\n',
+		// 	'to:name:', _el               ? _el              .name : null, '\n',
+		// 	'to:'     , _deck_destination ? _deck_destination.name : null,
+		// 	_success
+		// ]);
+		// event.dispatch('kosynka_log', {
+		// 	"from" : _deck_departure   ? _deck_departure  .name : null,
+		// 	"to"   : _deck_destination ? _deck_destination.name : null
+		// });
 	
 		// смотрим не одна и та же ли эта стопка
 		if (_success) {
@@ -9643,12 +9690,31 @@ var SolitaireEngine =
 			var _put = _deck_destination.Put(moveDeck);
 			_success = _success && _put;
 	
+			// console.log.apply(console, [
+			// 	'Move:success >> put:',
+			// 	_deck_destination.name,
+			// 	_put, moveDeck.length,
+			// 	...moveDeck.map(e => {
+			// 		return {
+			// 			"i"    : e.index    ,
+			// 			"name" : e.card.name
+			// 		};
+			// 	})
+			// ]);
+	
 			if (_put) {
 				// } && _deck_departure) {
 	
 				// если можно положить карты берём их из исходной стопки
 				var _pop = _deck_departure.Pop(moveDeck.length);
 				_success = _success && _pop;
+	
+				// console.log.apply(console, [
+				// 	'Move:success >> pop:',
+				// 	_pop
+				// 		? _pop.map(e => e.name)
+				// 		: _pop
+				// ]);
 	
 				if (_pop) {
 	
@@ -9757,6 +9823,7 @@ var SolitaireEngine =
 	
 			// достаточно ли перетащили (если клика не достаточно и не двойной клик)
 			if (_field2.default.inputParams.doubleClick && cursorMove.dbclick || cursorMove.distance >= _share2.default.get('moveDistance')) {
+	
 				var Tip = (0, _bestTip2.default)(moveDeck, cursorMove);
 	
 				if (Tip) {
@@ -10199,76 +10266,74 @@ var SolitaireEngine =
 						_this._animationIndex += 1;
 	
 						// Thread
-						setTimeout(function (e) {
 	
-							if (_animation) {
-								_this.css({
-									"transition": animationTime / 1000 + 's'
-								});
+						if (_animation) {
+							_this.css({
+								"transition": animationTime / 1000 + 's'
+							});
+						}
+	
+						var counter = 0;
+	
+						var reType = function reType(data) {
+							// crutch
+	
+							var _e = data + '';
+	
+							var _px = _e.split('px');
+							if (_px.length == 2) {
+								return (_px[0] | 0) + 'px';
 							}
 	
-							var counter = 0;
+							return data;
+						};
 	
-							var reType = function reType(data) {
-								// crutch
+						for (var attrName in params) {
 	
-								var _e = data + '';
-	
-								var _px = _e.split('px');
-								if (_px.length == 2) {
-									return (_px[0] | 0) + 'px';
-								}
-	
-								return data;
-							};
-	
-							for (var attrName in params) {
-	
-								if (reType(_this.el.style[attrName]) != reType(params[attrName])) {
-									counter += 1;
-								}
-	
-								_this.el.style[attrName] = params[attrName];
+							if (reType(_this.el.style[attrName]) != reType(params[attrName])) {
+								counter += 1;
 							}
 	
-							if (_animation) {
+							_this.el.style[attrName] = params[attrName];
+						}
 	
-								_this.addClass('animated');
+						if (_animation) {
 	
-								_this.el.addEventListener('transitionend', function (e) {
+							_this.addClass('animated');
 	
-									counter -= 1;
+							_this.el.addEventListener('transitionend', function (e) {
 	
-									// event.dispatch('animationEnd', this);
-	
-									if (!counter) {
-	
-										_this.removeClass('animated');
-	
-										_this.css({
-											"transition": null
-										});
-	
-										if (typeof _this._animationCallbacks[animationName] == 'function') {
-											_this._animationCallbacks[animationName]();
-											_this._animationCallbacks[animationName] = null;
-										}
-	
-										_event2.default.dispatch('allAnimationsEnd', animationName);
-									}
-								}, false);
-							} else {
+								counter -= 1;
 	
 								// event.dispatch('animationEnd', this);
 	
-								if (typeof _this._animationCallbacks[animationName] == 'function') {
-									_this._animationCallbacks[animationName]();
-									_this._animationCallbacks[animationName] = null;
-								}
+								if (!counter) {
 	
-								_event2.default.dispatch('allAnimationsEnd', animationName);
+									_this.removeClass('animated');
+	
+									_this.css({
+										"transition": null
+									});
+	
+									if (typeof _this._animationCallbacks[animationName] == 'function') {
+										_this._animationCallbacks[animationName]();
+										_this._animationCallbacks[animationName] = null;
+									}
+	
+									_event2.default.dispatch('allAnimationsEnd', animationName);
+								}
+							}, false);
+						} else {
+	
+							// event.dispatch('animationEnd', this);
+	
+							if (typeof _this._animationCallbacks[animationName] == 'function') {
+								_this._animationCallbacks[animationName]();
+								_this._animationCallbacks[animationName] = null;
 							}
-						}, 0);
+	
+							_event2.default.dispatch('allAnimationsEnd', animationName);
+						}
 					})();
 				} catch (e) {}
 			}
