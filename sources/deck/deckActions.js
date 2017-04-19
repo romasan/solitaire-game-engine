@@ -163,21 +163,19 @@ let autoRunActions = deck => {
 	// Tips.checkTips();
 }
 
-let runAction = data => { // {actionName, deckName, actionData, eventName}
+let runAction = data => { // {actionName, deckName, <eventData>, eventName}
 
-	let deck = common.getElementByName(data.deckName, 'deck');
+	console.log('run action for', deck);
 
 	if(_actions[data.actionName]) {
 		_actions[data.actionName].run(
 
-			deck,
+			data.deck,
 
 			{
-				"actionData" : deck.actions[data.actionName],
+				"actionData" : data.deck.actions[data.actionName],
 				"eventName"  : data.eventName               ,
-				"eventData"  : {
-					"to" : deck
-				}
+				"eventData"  : data.eventdata
 			}
 		)
 	}

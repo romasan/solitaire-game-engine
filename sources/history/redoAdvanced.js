@@ -13,21 +13,27 @@ class redoAdvanced {
 
 	handle(data) {
 
+		// Run action
 		if(
 			       data.runAction                        &&
 			typeof data.runAction.actionName == 'string' &&
 			typeof data.runAction.deckName   == 'string'
 		) {
+			let deck = common.getElementByName(data.runAction.deckName, 'deck');
+
 			deckActions.run({
 				actionName : data.runAction.actionName,
-				deckName   : data.runAction.deckName  ,
-				// eventData  : null
-				eventName  : 'redo'
+				deck       : data.runAction.deckName  ,
+				eventName  : 'redo'                   ,
+				eventData  : {
+					"to" : deck
+				}
 			});
 
 			return true;
 		}
 
+		// Make move
 		if(
 			       data.makeMove                           &&
 			       data.makeMove.to                        &&

@@ -56,6 +56,8 @@ class rollerAction extends deckAction {
 			}
 
 			return;
+		} else {
+			console.log('rollerAction:run', deck, data);
 		}
 
 		if(data.eventData.to.name != deck.name) {

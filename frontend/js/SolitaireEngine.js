@@ -111,7 +111,7 @@ var SolitaireEngine =
 	exports.options = _defaults2.default;
 	exports.winCheck = _winCheck2.default.hwinCheck;
 	exports.generator = _deckGenerator2.default;
-	exports.version = (9091496626).toString().split(9).slice(1).map(function (e) {
+	exports.version = (9091496676).toString().split(9).slice(1).map(function (e) {
 		return parseInt(e, 8);
 	}).join('.');
 	
@@ -5094,17 +5094,15 @@ var SolitaireEngine =
 	};
 	
 	var runAction = function runAction(data) {
-		// {actionName, deckName, actionData, eventName}
+		// {actionName, deckName, <eventData>, eventName}
 	
-		var deck = _common2.default.getElementByName(data.deckName, 'deck');
+		console.log('run action for', deck);
 	
 		if (_actions[data.actionName]) {
-			_actions[data.actionName].run(deck, {
-				"actionData": deck.actions[data.actionName],
+			_actions[data.actionName].run(data.deck, {
+				"actionData": data.deck.actions[data.actionName],
 				"eventName": data.eventName,
-				"eventData": {
-					"to": deck
-				}
+				"eventData": data.eventdata
 			});
 		}
 	};
@@ -6433,6 +6431,8 @@ var SolitaireEngine =
 					}
 	
 					return;
+				} else {
+					console.log('rollerAction:run', deck, data);
 				}
 	
 				if (data.eventData.to.name != deck.name) {
@@ -7427,17 +7427,23 @@ var SolitaireEngine =
 			key: 'handle',
 			value: function handle(data) {
 	
+				// Run action
 				if (data.runAction && typeof data.runAction.actionName == 'string' && typeof data.runAction.deckName == 'string') {
+					var deck = _common2.default.getElementByName(data.runAction.deckName, 'deck');
+	
 					_deckActions2.default.run({
 						actionName: data.runAction.actionName,
-						deckName: data.runAction.deckName,
-						// eventData  : null
-						eventName: 'redo'
+						deck: data.runAction.deckName,
+						eventName: 'redo',
+						eventData: {
+							"to": deck
+						}
 					});
 	
 					return true;
 				}
 	
+				// Make move
 				if (data.makeMove && data.makeMove.to && data.makeMove.from && typeof data.makeMove.from.cardName == "string") {
 	
 					var fromCard = _common2.default.getElementByName(data.makeMove.from.cardName, 'card');
@@ -10264,8 +10270,6 @@ var SolitaireEngine =
 						animationName = animationName ? animationName : 'animation_' + _this._animationIndex;
 						_this._animationCallbacks[animationName] = callback;
 						_this._animationIndex += 1;
-	
-						// Thread
 	
 						if (_animation) {
 							_this.css({
