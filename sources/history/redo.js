@@ -21,9 +21,16 @@ import stateManager from 'stateManager';
  * unlock
  * swap
  * move
+ * markCard
+ * unmarkCard
  */
 
 let redo = data => {
+
+	let keys = ['redo:'];
+	for(let key in data) keys.push(key);
+	keys.push(data);
+	console.log.apply(console, keys);
 
 	if(share.get('sessionStarted')) {
 

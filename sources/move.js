@@ -23,7 +23,7 @@ let Move = (moveDeck, to, cursorMove) => {
 
 	if(
 		!cursorMove.dbclick           &&
-		cursorMove.distance === 0     &&
+		cursorMove.distance     === 0 &&
 		share.get('moveDistance') > 0 &&
 		_stepType == defaults.stepType
 	) {
@@ -83,26 +83,6 @@ let Move = (moveDeck, to, cursorMove) => {
 
 	_success = _success && _deck_destination.id != _deck_departure.id;
 
-	// console.log.apply(console, [
-	// 	'#########################################################',
-	// 	'Move:',
-	// 	moveDeck.length,
-	// 	...moveDeck.map(e => {
-	// 		return {
-	// 			"i"    : e.index    ,
-	// 			"card" : e.card.name
-	// 		};
-	// 	}),
-	// 	'from:'   , _deck_departure   ? _deck_departure  .name : null, '\n',
-	// 	'to:name:', _el               ? _el              .name : null, '\n',
-	// 	'to:'     , _deck_destination ? _deck_destination.name : null,
-	// 	_success
-	// ]);
-	// event.dispatch('kosynka_log', {
-	// 	"from" : _deck_departure   ? _deck_departure  .name : null,
-	// 	"to"   : _deck_destination ? _deck_destination.name : null
-	// });
-
 	// смотрим не одна и та же ли эта стопка
 	if(_success) {
 
@@ -110,30 +90,11 @@ let Move = (moveDeck, to, cursorMove) => {
 		let _put = _deck_destination.Put(moveDeck);
 		_success = _success && _put;
 
-		// console.log.apply(console, [
-		// 	'Move:success >> put:',
-		// 	_deck_destination.name,
-		// 	_put, moveDeck.length,
-		// 	...moveDeck.map(e => {
-		// 		return {
-		// 			"i"    : e.index    ,
-		// 			"name" : e.card.name
-		// 		};
-		// 	})
-		// ]);
-
-		if(_put) {// } && _deck_departure) {
+		if(_put) {
 
 			// если можно положить карты берём их из исходной стопки
 			let _pop = _deck_departure.Pop(moveDeck.length);
 			_success = _success && _pop;
-
-			// console.log.apply(console, [
-			// 	'Move:success >> pop:',
-			// 	_pop
-			// 		? _pop.map(e => e.name)
-			// 		: _pop
-			// ]);
 
 			if(_pop) {
 
@@ -159,9 +120,7 @@ let Move = (moveDeck, to, cursorMove) => {
 						"deck"     : Deck.deckCardNames(moveDeck),
 						"stepType" : {
 							"undo" : _stepType,
-							"redo" : _stepType,
-							// "redo" : _checkMoveEnd ? defaults.stepType : _stepType
-							// "redo" : _checkMoveEnd ? 'specialStepType' : _stepType
+							"redo" : _stepType
 						},
 						"context"  : "move"
 					}
@@ -169,12 +128,7 @@ let Move = (moveDeck, to, cursorMove) => {
 
 				let issetMoves = null;
 
-				// let _stop = false;
 				let _callback = e => {
-
-					// if(_stop) {
-					// 	return;
-					// }
 
 					if(
 						// !event.has('moveEnd', {
@@ -277,6 +231,7 @@ let Move = (moveDeck, to, cursorMove) => {
 			}
 
 		} else {
+
 			event.dispatch('moveCardToHome', {
 				"moveDeck"  : moveDeck       ,
 				"departure" : _deck_departure

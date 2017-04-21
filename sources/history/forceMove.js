@@ -55,6 +55,7 @@ let forceMove = data => {// {from, to, deck, <flip>, <callback>}
 				data.deck[_id]                          &&
 				deckFromCards[i].name != data.deck[_id]
 			) {
+				console.log('forceMove:check:false', deckFromCards[i].name, data.deck[_id]);
 				_check = false;
 			}
 		}

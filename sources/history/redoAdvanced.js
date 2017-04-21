@@ -19,11 +19,12 @@ class redoAdvanced {
 			typeof data.runAction.actionName == 'string' &&
 			typeof data.runAction.deckName   == 'string'
 		) {
+
 			let deck = common.getElementByName(data.runAction.deckName, 'deck');
 
 			deckActions.run({
+				deck       : deck                     ,
 				actionName : data.runAction.actionName,
-				deck       : data.runAction.deckName  ,
 				eventName  : 'redo'                   ,
 				eventData  : {
 					"to" : deck

@@ -1,9 +1,9 @@
 'use strict';
 
-import event    from 'event'                     ;
-import share    from 'share'                     ;
-import defaults from 'defaults'                  ;
-import common   from 'common'                    ;
+import event          from 'event'               ;
+import share          from 'share'               ;
+import defaults       from 'defaults'            ;
+import common         from 'common'              ;
 
 // Actions
 import dealerdeck     from 'dealerdeckAction'    ;
@@ -149,7 +149,7 @@ let autoRunActions = deck => {
 
 				_actions[actionName].run(
 
-					deck, 
+					deck,
 
 					{
 						"actionData" : deck.actions[actionName]      ,
@@ -165,8 +165,6 @@ let autoRunActions = deck => {
 
 let runAction = data => { // {actionName, deckName, <eventData>, eventName}
 
-	console.log('run action for', deck);
-
 	if(_actions[data.actionName]) {
 		_actions[data.actionName].run(
 
@@ -174,8 +172,8 @@ let runAction = data => { // {actionName, deckName, <eventData>, eventName}
 
 			{
 				"actionData" : data.deck.actions[data.actionName],
-				"eventName"  : data.eventName               ,
-				"eventData"  : data.eventdata
+				"eventName"  : data.eventName                    ,
+				"eventData"  : data.eventData
 			}
 		)
 	}

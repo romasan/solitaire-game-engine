@@ -16,6 +16,7 @@ $ranks : ("d", "s", "h", "c");
 #{$theme_name}_face {
 
 	.card {
+		box-sizing      : border-box;
 		border          : 1px solid #121212;
 		border-radius   : 3px;
 		background      : url('#{$img_dir}card.png');
@@ -26,7 +27,7 @@ $ranks : ("d", "s", "h", "c");
 		@each $card in $cards {
 			
 			.#{$rank}#{$card} {
-				background-position : $card_width * (index($cards, $card) - 1) $card_height * (index($ranks, $rank) - 1);
+				background-position : $card_width * (index($cards, $card) - 1) - 2 $card_height * (index($ranks, $rank) - 1) - 2;
 			}
 		}
 	}
@@ -35,8 +36,9 @@ $ranks : ("d", "s", "h", "c");
 #{$theme_name}_back {
 
 	.flip {
-		background-image : url('#{$img_dir}rub.png')!important;
-		background-size  : 100% 100%!important;
-		border           : 0px!important;
+		background-image    : url('#{$img_dir}rub.png');
+		background-size     : 100% 100%;
+		border              : 0px;
+		background-position : 0px 0px;
 	}
 }

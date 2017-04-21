@@ -114,7 +114,8 @@ let logCardsInDeck = (deck, pref) => {
 event.listen('logCardsInDeck', logCardsInDeck);
 
 let keys = {
-	"d" : 68 // debug
+	"d" : 68, // debug
+	"n" : 78, // next
 }
 
 let kosynka_log = data => {
@@ -136,6 +137,8 @@ document.onkeyup = e => {
 
 	if(e.keyCode == keys.d) {
 		kosynka_log();
+	} else if(e.keyCode == keys.n) {
+		event.dispatch('next_history_step');
 	}
 }
 

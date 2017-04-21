@@ -17,29 +17,39 @@ class rollerAction extends deckAction {
 
 	run(deck, data) {
 
+		if(!deck || !data) {
+			return;
+		}
+
+		/*
+		 * действие совершаемое после хода из стопки
+		 * если задан такой event
+		 */
+
 		if(data.eventName.indexOf('moveEnd') >= 0) {
 
 			if(data.eventData.from.name != deck.name) {
 				return;
 			}
 
-			// сколько открыто карт
+			// количество открытых видимых карт
 			let unflipCardsCount = deck.cardsCount({
 				"visible" : true ,
 				"flip"    : false
 			});
 
-			let invisibleCardsCount = deck.cardsCount({
+			// количество скрытых карт
+			let hiddenCardsCount = deck.cardsCount({
 				"visible" : false
 			});
 
 			// если нет открытых карт показать предыдущую скрытую
 			if(
 				unflipCardsCount    == 0 &&
-				invisibleCardsCount >  0
+				hiddenCardsCount >  0
 			) {
 
-				let next = deck.cards.length - invisibleCardsCount;
+				let next = deck.cards.length - hiddenCardsCount;
 
 				deck.showCardByIndex(next, true);
 
@@ -48,7 +58,7 @@ class rollerAction extends deckAction {
 					"show" : {
 						"cardIndex" : next                 ,
 						"cardName"  : deck.cards[next].name,
-						"deckName"  : deck.name
+						"deckName"  : deck            .name
 					}
 				});
 
@@ -56,51 +66,61 @@ class rollerAction extends deckAction {
 			}
 
 			return;
-		} else {
-			console.log('rollerAction:run', deck, data);
 		}
+
+		/*
+		 * действие совершаемое по прочим event-ам
+		 * предпочтительно клик
+		 */
 
 		if(data.eventData.to.name != deck.name) {
 			return false;
 		}
 
+		// по сколько карт показывать
 		let openCount = data.actionData.openCount
 			? data.actionData.openCount
 			: defaultOpenCount;
 
+		// количество скрытых карт
 		let hiddenCardsCount = deck.cardsCount({
 			"visible" : false
 		});
 
+		// количество видимых карт
 		let cardsCount = deck.cardsCount({
 			"visible" : true
 		});
 
+		// есть видимые карты
 		if(cardsCount > 0) {
 
+			// количество не перевёрнутых видимых карт
 			let unflipCardsCount = deck.cardsCount({
 				"visible" : true ,
 				"flip"    : false
 			});
 
+			// количество перевёрнутых видимых карт
 			let flipCardsCount = deck.cardsCount({
 				"visible" : true,
 				"flip"    : true
 			});
 
-			// first roll
+			// первая прокрутка
 			if(
-				hiddenCardsCount == 0 &&
-				unflipCardsCount == 0
+				hiddenCardsCount == 0 && // нет скрытых карт
+				unflipCardsCount == 0    // нет открытых видимых карт
 			) {
 				event.dispatch('addStep', {
 					"rollerActionStart" : deck.name
 				});
 			}
 
+			// количество скрываемых дальше открытых карт
 			let _unflippedCount = 0;
 
-			// hide unflipped cards
+			// скрываем открытые видимые карты
 			if(unflipCardsCount > 0) {
 
 				let cards = deck.getCards();
@@ -117,15 +137,19 @@ class rollerAction extends deckAction {
 							"hide" : {
 								"cardIndex" : i                 ,
 								"cardName"  : deck.cards[i].name,
-								"deckName"  : deck.name
+								"deckName"  : deck         .name
 							}
 						});
 					}
 				}
 			}
 
-			// swap unflipped
-			if(openCount > 1) {
+			// далее карты выкладываются в обратном порядке
+			// поэтому возвращаем выложенные на предыдущей итерации карты в исходное положение
+			if(
+				openCount      > 1// &&
+				// flipCardsCount > 0
+			) {
 
 				for(let i = cardsCount - _unflippedCount; i < cardsCount; i += 1) {
 
@@ -137,13 +161,14 @@ class rollerAction extends deckAction {
 				}
 			}
 
-			// unflip next cards
+			// количество открытых дальше карт (карт в стопке могло остаться меньше трёх)
 			_unflippedCount = 0;
 
+			// открываем следующие openCount|3 карт
 			for(
-				let i = flipCardsCount - 1               ;
-				i >= 0 && i >= flipCardsCount - openCount;
-				i -= 1
+				let i  =           flipCardsCount - 1        ;
+				    i >= 0 && i >= flipCardsCount - openCount;
+				    i -= 1
 			) {
 
 				_unflippedCount += 1;
@@ -159,21 +184,21 @@ class rollerAction extends deckAction {
 				});
 			}
 
+			// количество видимых карт
 			cardsCount = deck.cardsCount({
 				"visible" : true
 			});
 
-			// swap unflipped
-			if(openCount > 1) {
+			// карты выкладываются в обратном порядке
+			if(
+				openCount > 1
+			) {
 
 				for(let i = cardsCount - _unflippedCount; i < cardsCount; i += 1) {
 
 					let next = cardsCount * 2 - i - _unflippedCount - 1;
 
 					if(i < next) {
-						// let tmp          = deck.cards[i]   ;
-						// deck.cards[i]    = deck.cards[next];
-						// deck.cards[next] = tmp             ;
 						atom.swap(deck, i, next, true);
 					}
 				}
@@ -182,6 +207,7 @@ class rollerAction extends deckAction {
 			// не осталось видимых карт
 			if(cardsCount == 0) {
 
+				// количество скрытых карт
 				hiddenCardsCount = deck.cardsCount({
 					"visible" : false
 				});
@@ -227,8 +253,6 @@ class rollerAction extends deckAction {
 							} else if(
 								!found    &&
 								atom.move
-								// typeof atom.move.from == "string" &&
-								//        atom.move.from == deck.name
 							) {
 
 								found = true;
@@ -245,8 +269,10 @@ class rollerAction extends deckAction {
 			} else {
 				event.dispatch('saveSteps');
 			}
+		// нет видимых карт
 		} else {
 
+			// количество скрытых карт
 			hiddenCardsCount = deck.cardsCount({
 				"visible" : false
 			});

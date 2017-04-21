@@ -20,9 +20,8 @@ body {
   position: absolute; }
 
 .slot {
-  width: 69px !important;
-  height: 94px !important;
   background: transparent;
+  box-sizing: border-box;
   border: 1px solid #121212;
   border-radius: 5px; }
 
@@ -48,8 +47,9 @@ body {
   background-color: #ffff00;
   opacity: 0.5;
   font-size: 90%;
-  width: 71px;
-  height: 96px;
+  width: 69px;
+  height: 94px;
+  border-radius: 2px;
   display: block;
   margin: 0px; }
 
@@ -119,14 +119,14 @@ body {
   padding-bottom: 3px; }
 
 .red_back .flip {
-  background: url("/solitaire_engine/img/b2fv.png") !important;
-  background-size: 100% 100% !important;
-  border: 0px !important; }
+  background: url("/solitaire_engine/img/b2fv.png");
+  background-size: 100% 100%;
+  border: 0px; }
 
 .blue_back .flip {
-  background: url("/solitaire_engine/img/b1fv.png") !important;
-  background-size: 100% 100% !important;
-  border: 0px !important; }
+  background: url("/solitaire_engine/img/b1fv.png");
+  background-size: 100% 100%;
+  border: 0px; }
 
 .marker:after {
   content: attr(data-content);
@@ -311,171 +311,173 @@ body {
   background-size: 100% 100% !important; }
 
 .alternative_face .card {
+  box-sizing: border-box;
   border: 1px solid #121212;
   border-radius: 3px;
   background: url("/solitaire_engine/img/card.png");
   background-size: 923px 384px; }
 
 .alternative_face .d1 {
-  background-position: 0px 0px; }
+  background-position: -2px -2px; }
 
 .alternative_face .d2 {
-  background-position: 71px 0px; }
+  background-position: 69px -2px; }
 
 .alternative_face .d3 {
-  background-position: 142px 0px; }
+  background-position: 140px -2px; }
 
 .alternative_face .d4 {
-  background-position: 213px 0px; }
+  background-position: 211px -2px; }
 
 .alternative_face .d5 {
-  background-position: 284px 0px; }
+  background-position: 282px -2px; }
 
 .alternative_face .d6 {
-  background-position: 355px 0px; }
+  background-position: 353px -2px; }
 
 .alternative_face .d7 {
-  background-position: 426px 0px; }
+  background-position: 424px -2px; }
 
 .alternative_face .d8 {
-  background-position: 497px 0px; }
+  background-position: 495px -2px; }
 
 .alternative_face .d9 {
-  background-position: 568px 0px; }
+  background-position: 566px -2px; }
 
 .alternative_face .d10 {
-  background-position: 639px 0px; }
+  background-position: 637px -2px; }
 
 .alternative_face .dj {
-  background-position: 710px 0px; }
+  background-position: 708px -2px; }
 
 .alternative_face .dq {
-  background-position: 781px 0px; }
+  background-position: 779px -2px; }
 
 .alternative_face .dk {
-  background-position: 852px 0px; }
+  background-position: 850px -2px; }
 
 .alternative_face .s1 {
-  background-position: 0px 96px; }
+  background-position: -2px 94px; }
 
 .alternative_face .s2 {
-  background-position: 71px 96px; }
+  background-position: 69px 94px; }
 
 .alternative_face .s3 {
-  background-position: 142px 96px; }
+  background-position: 140px 94px; }
 
 .alternative_face .s4 {
-  background-position: 213px 96px; }
+  background-position: 211px 94px; }
 
 .alternative_face .s5 {
-  background-position: 284px 96px; }
+  background-position: 282px 94px; }
 
 .alternative_face .s6 {
-  background-position: 355px 96px; }
+  background-position: 353px 94px; }
 
 .alternative_face .s7 {
-  background-position: 426px 96px; }
+  background-position: 424px 94px; }
 
 .alternative_face .s8 {
-  background-position: 497px 96px; }
+  background-position: 495px 94px; }
 
 .alternative_face .s9 {
-  background-position: 568px 96px; }
+  background-position: 566px 94px; }
 
 .alternative_face .s10 {
-  background-position: 639px 96px; }
+  background-position: 637px 94px; }
 
 .alternative_face .sj {
-  background-position: 710px 96px; }
+  background-position: 708px 94px; }
 
 .alternative_face .sq {
-  background-position: 781px 96px; }
+  background-position: 779px 94px; }
 
 .alternative_face .sk {
-  background-position: 852px 96px; }
+  background-position: 850px 94px; }
 
 .alternative_face .h1 {
-  background-position: 0px 192px; }
+  background-position: -2px 190px; }
 
 .alternative_face .h2 {
-  background-position: 71px 192px; }
+  background-position: 69px 190px; }
 
 .alternative_face .h3 {
-  background-position: 142px 192px; }
+  background-position: 140px 190px; }
 
 .alternative_face .h4 {
-  background-position: 213px 192px; }
+  background-position: 211px 190px; }
 
 .alternative_face .h5 {
-  background-position: 284px 192px; }
+  background-position: 282px 190px; }
 
 .alternative_face .h6 {
-  background-position: 355px 192px; }
+  background-position: 353px 190px; }
 
 .alternative_face .h7 {
-  background-position: 426px 192px; }
+  background-position: 424px 190px; }
 
 .alternative_face .h8 {
-  background-position: 497px 192px; }
+  background-position: 495px 190px; }
 
 .alternative_face .h9 {
-  background-position: 568px 192px; }
+  background-position: 566px 190px; }
 
 .alternative_face .h10 {
-  background-position: 639px 192px; }
+  background-position: 637px 190px; }
 
 .alternative_face .hj {
-  background-position: 710px 192px; }
+  background-position: 708px 190px; }
 
 .alternative_face .hq {
-  background-position: 781px 192px; }
+  background-position: 779px 190px; }
 
 .alternative_face .hk {
-  background-position: 852px 192px; }
+  background-position: 850px 190px; }
 
 .alternative_face .c1 {
-  background-position: 0px 288px; }
+  background-position: -2px 286px; }
 
 .alternative_face .c2 {
-  background-position: 71px 288px; }
+  background-position: 69px 286px; }
 
 .alternative_face .c3 {
-  background-position: 142px 288px; }
+  background-position: 140px 286px; }
 
 .alternative_face .c4 {
-  background-position: 213px 288px; }
+  background-position: 211px 286px; }
 
 .alternative_face .c5 {
-  background-position: 284px 288px; }
+  background-position: 282px 286px; }
 
 .alternative_face .c6 {
-  background-position: 355px 288px; }
+  background-position: 353px 286px; }
 
 .alternative_face .c7 {
-  background-position: 426px 288px; }
+  background-position: 424px 286px; }
 
 .alternative_face .c8 {
-  background-position: 497px 288px; }
+  background-position: 495px 286px; }
 
 .alternative_face .c9 {
-  background-position: 568px 288px; }
+  background-position: 566px 286px; }
 
 .alternative_face .c10 {
-  background-position: 639px 288px; }
+  background-position: 637px 286px; }
 
 .alternative_face .cj {
-  background-position: 710px 288px; }
+  background-position: 708px 286px; }
 
 .alternative_face .cq {
-  background-position: 781px 288px; }
+  background-position: 779px 286px; }
 
 .alternative_face .ck {
-  background-position: 852px 288px; }
+  background-position: 850px 286px; }
 
 .alternative_back .flip {
-  background-image: url("/solitaire_engine/img/rub.png") !important;
-  background-size: 100% 100% !important;
-  border: 0px !important; }
+  background-image: url("/solitaire_engine/img/rub.png");
+  background-size: 100% 100%;
+  border: 0px;
+  background-position: 0px 0px; }
 #gamePreferences span {
   width: 100%; }
 

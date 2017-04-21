@@ -1,5 +1,3 @@
-
-
 'use strict';
 
 import event        from 'event'       ;

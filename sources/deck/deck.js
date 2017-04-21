@@ -501,44 +501,10 @@ class Deck {
 		let visibleCardsCount = this.cardsCount();
 
 		deck = deck.map(e => (e.parent = this.id, e));
-		this.cards.splice(visibleCardsCount, 0, ...deck);
-
-		// for(let i in deck) {
-
-		// 	deck[i].parent = this.id;
-
-		// 	if(
-		// 		afterVisible                          &&
-		// 		visibleCardsCount < this.cards.length
-		// 	) {
-
-		// 		this.cards = [].concat(
-		// 			this.cards.slice(0, visibleCardsCount),
-		// 			deck[i]                               ,
-		// 			this.cards.slice(visibleCardsCount)
-		// 		);
-		// 	} else {
-		// 		this.cards.push(deck[i]);
-		// 	}
-		// }
-
-		// console.log.apply(console, [
-		// 	'%cPush:', 'color:green;',
-		// 	deck[0].parent,
-		// 	this.name,
-		// 	...deck.map(e => {
-		// 		return {
-		// 			"card"   : e.name  ,
-		// 			"parent" : e.parent
-		// 		}
-		// 	}), '\n',
-		// 	'cards:', this.cards.map(e => e.name), '\n',
-		// 	afterVisible, visibleCardsCount
-		// ]);
+		this.cards.splice(visibleCardsCount, 0, ...deck); // TODO maybe concat faster?
 	}
 
 	Pop(count, clearParent) {
-
 
 		let _cards = this.getCards();
 
@@ -574,15 +540,6 @@ class Deck {
 			_deck[0].parent = null;
 		}
 
-		// console.log.apply(console, [
-		// 	'%cPop:', 'color:orange;',
-		// 	this.name,
-		// 	count,
-		// 	clearParent, '\n',
-		// 	'deck:' , ..._deck .map(e => e.name), '\n',
-		// 	'cards:', ..._cards.map(e => e.name)
-		// ]);
-
 		// _deck.reverse();
 
 		// скрыть стопку если вынули все карты
@@ -599,14 +556,12 @@ class Deck {
 	}
 
 	Take(cardId) {
-		// console.log('Take:', this.name, cardId);
 		return Take(this, cardId);
 	}
 
 	// проверяем, можем ли положить стопку/карту
 	// возвращает true, если согласно правилам сюда можно положить карту
 	Put(putDeck) {
-		// console.log('Put:', this.name, putDeck);
 		return Put(this, putDeck);
 	}
 
