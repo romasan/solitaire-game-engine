@@ -96,8 +96,6 @@ class inputs {
 
 	}
 
-// break
-
 	break() {
 
 		let _dragDeck = share.get('dragDeck');
@@ -121,8 +119,6 @@ class inputs {
 
 		common.curUnLock();
 	}
-
-// take
 
 	take(target, x, y) {
 
@@ -207,6 +203,11 @@ class inputs {
 
 			if(_deck) {
 
+				// event.dispatch('dragStart', {
+				// 	"deck" : _deck,
+				// 	"card" : _card
+				// });
+
 				event.dispatch('click', {
 					"to"     : _deck,
 					"toCard" : _card
@@ -238,15 +239,18 @@ class inputs {
 
 			if(_dragDeck) {
 
-				share.set('startCursor', { "x" : x, "y" : y });
+				share.set('startCursor', {
+					"x" : x,
+					"y" : y
+				});
 
 				// ???
-				Tips.tipsDestination({ "currentCard" : _card });
+				Tips.tipsDestination({
+					"currentCard" : _card
+				});
 			}
 		}
 	}
-
-// drag
 
 	drag(x, y) {
 
@@ -301,8 +305,6 @@ class inputs {
 		// 	cursorMove : cursorMove
 		// });
 	}
-
-// put
 
 	put(target, x, y, dbclick) {
 
@@ -361,6 +363,8 @@ class inputs {
 			"cursorMove" : cursorMove
 		});
 		// }
+
+		// _deck.Redraw();
 
 		share.set('dragDeck'   , null);
 		share.set('startCursor', null);

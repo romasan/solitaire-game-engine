@@ -11,22 +11,23 @@ import groupRedraw    from 'groupRedraw'   ;
 import groupGenerator from 'groupGenerator';
 
 const PARAMS = {
-	"flip"         : { "type" : 'any' },
-	"showSlot"     : { "type" : 'any' },
-	"takeRules"    : { "type" : 'any' },
-	"putRules"     : { "type" : 'any' },
-	"fullRules"    : { "type" : 'any' },
-	"autoHide"     : { "type" : 'any' },
-	"paddingType"  : { "type" : 'any' },
-	"padding"      : { "type" : 'any' },
-	"paddingX"     : { "type" : 'any' },
-	"paddingY"     : { "type" : 'any' },
-	"flipPadding"  : { "type" : 'any' },
-	"flipPaddingX" : { "type" : 'any' },
-	"flipPaddingY" : { "type" : 'any' },
-	"actions"      : { "type" : 'any' },
-	"tags"         : { "type" : 'any' },
-	"save"         : {
+	"flip"             : { "type" : 'any' },
+	"showSlot"         : { "type" : 'any' },
+	"takeRules"        : { "type" : 'any' },
+	"putRules"         : { "type" : 'any' },
+	"fullRules"        : { "type" : 'any' },
+	"autoHide"         : { "type" : 'any' },
+	"paddingType"      : { "type" : 'any' },
+	"padding"          : { "type" : 'any' },
+	"paddingX"         : { "type" : 'any' },
+	"paddingY"         : { "type" : 'any' },
+	"flipPadding"      : { "type" : 'any' },
+	"flipPaddingX"     : { "type" : 'any' },
+	"flipPaddingY"     : { "type" : 'any' },
+	"actions"          : { "type" : 'any' },
+	"tags"             : { "type" : 'any' },
+	"showPrefFlipCard" : { "type" :  null },
+	"save" : {
 		"type"    : 'boolean',
 		"default" : true
 	},
@@ -96,6 +97,8 @@ class groupClass {
 					? data[paramName]
 					: PARAMS[paramName].default;
 				// this.parameters[paramName] = typeof data[paramName] == "boolean" ? data[paramName] : defaults[paramName];
+			} else if(typeof data[paramName] != 'undefined') {
+				this.parameters[paramName] = data[paramName];
 			}
 		};
 
@@ -213,6 +216,8 @@ class groupClass {
 				) {
 					data[paramName] = this.parameters[paramName];
 				}			
+			} else if(typeof this.parameters[paramName] != 'undefined') {
+				data[paramName] = this.parameters[paramName];
 			}
 		};
 

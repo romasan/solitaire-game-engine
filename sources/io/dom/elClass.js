@@ -34,7 +34,6 @@ export default class elClass {
 		this.el = data;
 
 		if(!data) {
-			// if(window._debug) throw new Error("test");
 			this.el = null;
 		}
 
@@ -186,8 +185,8 @@ export default class elClass {
 
 			let _animation = share.get('animation');
 
-			typeof animationTime == 'undefined' && (animationTime = share.get('animationTime'));
-			typeof animationTime == 'function'  && (callback = animationTime, animationTime = share.get('animationTime'));
+			typeof animationTime == 'undefined' && (                               animationTime = share.get('animationTime'));
+			typeof animationTime == 'function'  && (callback      = animationTime, animationTime = share.get('animationTime'));
 			typeof callback      == 'string'    && (animationName = callback, callback = null);
 
 			animationName = animationName ? animationName : 'animation_' + this._animationIndex;
@@ -195,9 +194,11 @@ export default class elClass {
 			this._animationIndex += 1;
 
 			if(_animation) {
+
 				this.css({
 					"transition" : (animationTime / 1000) + 's'
 				});
+				console.log('ANIMATE', this.el.style.transition, getEventListeners(this.el));
 			}
 
 			let counter = 0;
@@ -206,7 +207,7 @@ export default class elClass {
 
 				let _e = data + '';
 
-				let _px = _e.split('px')
+				let _px = _e.split('px');
 				if(_px.length == 2) {
 					return (_px[0] | 0) + 'px'
 				}
@@ -221,6 +222,7 @@ export default class elClass {
 				) {
 					counter += 1;
 				}
+				console.log('animate param', attrName, counter, getEventListeners(this.el));
 
 				this.el.style[attrName] = params[attrName];
 			}
@@ -229,7 +231,11 @@ export default class elClass {
 
 				this.addClass('animated');
 
+				// setTimeout(e => {
+				console.log('###1', this.el, this.el.style.transition, getEventListeners(this.el));
 				this.el.addEventListener('transitionend', e => {
+
+					console.log('TRANSITIONEND');
 
 					counter -= 1;
 
@@ -251,7 +257,9 @@ export default class elClass {
 						event.dispatch('allAnimationsEnd', animationName);
 					}
 
-				}, false);
+				}, true);
+				console.log('###2', this.el.style.transition, getEventListeners(this.el));
+				// }, 0);
 			} else {
 
 				// event.dispatch('animationEnd', this);

@@ -6,9 +6,6 @@
   -ms-user-select: none;
   user-select: none; }
 
-body {
-  backface-visibility: hidden; }
-
 .solitaireField {
   width: 100%;
   height: 100%; }
@@ -36,34 +33,34 @@ body {
   margin: 0px; }
 
 .flip.tip:after {
-  width: 0px !important;
-  height: 0px !important; }
+  width: 0px;
+  height: 0px; }
 
 .tipTo {
-  box-shadow: inset 0 0 15px 15px rgba(8, 157, 227, 0.5) !important; }
+  box-shadow: inset 0 0 15px 15px rgba(8, 157, 227, 0.5); }
 
 .tipToHome:after {
   content: attr(data-content);
   background-color: #ffff00;
   opacity: 0.5;
   font-size: 90%;
-  width: 69px;
-  height: 94px;
+  width: 100%;
+  height: 100%;
   border-radius: 2px;
-  display: block;
+  display: inline-block;
   margin: 0px; }
 
 .tipPriority {
-  box-shadow: inset 0 0 15px 15px rgba(255, 153, 0, 0.5) !important; }
+  box-shadow: inset 0 0 15px 15px rgba(255, 153, 0, 0.5); }
 
 .full:after {
   content: attr(data-content);
   background-color: #909090;
   opacity: 0.5;
   font-size: 90%;
-  width: 71px;
-  height: 96px;
-  display: block;
+  width: 100%;
+  height: 100%;
+  display: inline-block;
   margin: 0px; }
 
 .deckLabel {
@@ -79,8 +76,8 @@ body {
   text-align: center;
   padding: 2px 4px;
   border-radius: 5px;
-  background: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAACXBIWXMAAAsTAAALEwEAmpwYAAAAIGNIUk0AAHolAACAgwAA+f8AAIDpAAB1MAAA6mAAADqYAAAXb5JfxUYAAAAeSURBVHjaYmRgYPBgIAIwMRAJRhVSRyEAAAD//wMAg84AXJamdKUAAAAASUVORK5CYII=");
-  z-index: 999 !important;
+  background: #eeeeee;
+  z-index: 999;
   position: absolute;
   top: static;
   left: 0px; }
@@ -133,7 +130,7 @@ body {
   background-image: url("/solitaire_engine/img/marker.png");
   width: 100%;
   height: 100%;
-  display: block;
+  display: inline-block;
   margin: 0px; }
 .default_field {
   background: green; }
@@ -298,17 +295,23 @@ body {
 .default_face .ck {
   background-image: url("/solitaire_engine/img/ck.png"); }
 
-.default_back .flip {
-  background: #4086cc !important;
-  background: -moz-linear-gradient(-45deg, #4086cc 0%, #f0f5fb 100%) !important;
-  background: -webkit-linear-gradient(-45deg, #4086cc 0%, #f0f5fb 100%) !important;
-  background: linear-gradient(135deg, #4086cc 0%, #f0f5fb 100%) !important;
-  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#4086cc', endColorstr='#f0f5fb',GradientType=1 ) !important;
+.default_back .flip:after {
+  content: attr(data-content);
+  width: 100%;
+  height: 100%;
+  margin-top: -1px;
+  margin-left: -1px;
+  display: inline-block;
+  background: #4086cc;
+  background: -moz-linear-gradient(-45deg, #4086cc 0%, #f0f5fb 100%);
+  background: -webkit-linear-gradient(-45deg, #4086cc 0%, #f0f5fb 100%);
+  background: linear-gradient(135deg, #4086cc 0%, #f0f5fb 100%);
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#4086cc', endColorstr='#f0f5fb',GradientType=1 );
   border: 1px solid #000000;
   border-radius: 3px; }
 .alternative_field {
-  background-image: url("/solitaire_engine/img/bg_large1.jpg") !important;
-  background-size: 100% 100% !important; }
+  background-image: url("/solitaire_engine/img/bg_large1.jpg");
+  background-size: 100% 100%; }
 
 .alternative_face .card {
   box-sizing: border-box;
@@ -473,10 +476,15 @@ body {
 .alternative_face .ck {
   background-position: 850px 286px; }
 
-.alternative_back .flip {
+.alternative_back .flip:after {
+  content: attr(data-content);
+  width: 100%;
+  height: 100%;
+  margin-top: -1px;
+  margin-left: -1px;
+  display: inline-block;
   background-image: url("/solitaire_engine/img/rub.png");
   background-size: 100% 100%;
-  border: 0px;
   background-position: 0px 0px; }
 #gamePreferences span {
   width: 100%; }

@@ -44,11 +44,13 @@ export default {
 	"locale"              : 'ru',
 
 	"animation"           : true,
-	"animationTime"       : 100 , // time in milliseconds
+	"animationTime"       : 300 , // time in milliseconds
 
 	"inputParams" : {
 		"doubleClick" : false
 	},
+
+	"showPrefFlipCard" : true,
 
 // Group
 

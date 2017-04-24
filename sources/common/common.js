@@ -193,8 +193,9 @@ let validateCardName = name => {
 			"rank"  : rank
 		}
 	} else {
+
 		console.warn('Warning: validate name:', name, '- incorrect');
-		// throw new Error();
+
 		return false;
 	}
 };
@@ -212,14 +213,17 @@ let genId = e => {
 share.set('animation', defaults.animation);
 
 let animationOn = e => {
+	console.warn('animationOn');
 	share.set('animation', true);
 }
 
 let animationDefault = e => {
+	console.warn('animationDefault');
 	share.set('animation', defaults.animation);
 }
 
 let animationOff = e => {
+	console.warn('animationOff');
 	share.set('animation', false);
 }
 
@@ -230,7 +234,7 @@ event.listen('newGame', e => {
 	// и везде где нужна анимация ставить common.animationDefault();
 	// надо исправить когда из истории можно будет получить
 	// не только историю ходов
-	animationOff();
+	// animationOff();
 });
 
 event.listen('historyReapeater', data => {
@@ -280,6 +284,37 @@ let toggleSpecialStepMode = e => {
 }
 
 event.listen('toggleSpecialStepMode', toggleSpecialStepMode);
+
+event.listen('dragStart', data => {
+
+	if(
+		!data.deck                           ||
+		!data.card                           ||
+		 data.deck.showPrefFlipCard == false
+	) {
+		return;
+	}
+
+	// TODO вкл./выкл. defaults, field, group, deck
+
+	if(
+		typeof data.card.flip == "boolean" &&
+		       data.card.flip == false
+	) {
+
+		let prevCard = null;
+
+		for(let i = data.deck.cards.length - 1; i >= 0 && !prevCard; i -= 1) {
+			if(data.deck.cards[i].id == data.card.id && i > 0) {
+				prevCard = data.deck.cards[i - 1];
+			}
+		}
+
+		if(prevCard) {
+			event.dispatch('unflipCard', prevCard);
+		}
+	}
+});
 
 export default {
 	"isCurLock"         : isCurLock        ,

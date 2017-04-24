@@ -1,4 +1,4 @@
-  'use strict';
+'use strict';
 
 import share        from 'share'       ;
 import event        from 'event'       ;
@@ -57,7 +57,8 @@ class Field {
 			"zoom"                 : 'number' , // масштаб отображения
 			// "movesAnimation"    : 'string' ,
 			"animationTime"        : 'number' , // время анимации
-			"showHistoryAnimation" : 'boolean'
+			"showHistoryAnimation" : 'boolean',
+			"showPrefFlipCard"     : 'boolean'
 		};
 
 		for(let valueName in _values) {

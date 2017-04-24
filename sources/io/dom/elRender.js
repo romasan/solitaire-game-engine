@@ -55,6 +55,8 @@ let _allEl = data => {
 // TODO
 _allEl.stopAnimations = e => {
 
+	console.log('STOP ANIMATIONS');
+
 	// if(!share.get('animation')) {
 	// 	return;
 	// }
@@ -64,7 +66,6 @@ _allEl.stopAnimations = e => {
 
 	_allEl('.animated')
 		.stop()
-		// .css({transition: '0s'})
 		.css({
 			"transition" : false
 		})

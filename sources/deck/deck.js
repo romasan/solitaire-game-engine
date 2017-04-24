@@ -77,12 +77,13 @@ class Deck {
 			? data.name
 			: (_parent_name + '_' + _new_id);
 
-		this.locked    =        data.locked                 ? true           : false            ;
-		this.save      =        data.save                   ? true           : false            ;
-		this.visible   = typeof data.visible   == 'boolean' ? data.visible   : true             ;
-		this.deckIndex = typeof data.deckIndex == 'number'  ? data.deckIndex : null             ;
-		this.parent    = typeof data.parent    == 'string'  ? data.parent    : 'field'          ;
-		this.autoHide  = typeof data.autoHide  == 'boolean' ? data.autoHide  : defaults.autohide;
+		this.locked           =        data.locked                        ? true                  : false                        ;
+		this.save             =        data.save                          ? true                  : false                        ;
+		this.visible          = typeof data.visible          == 'boolean' ? data.visible          : true                         ;
+		this.deckIndex        = typeof data.deckIndex        == 'number'  ? data.deckIndex        : null                         ;
+		this.parent           = typeof data.parent           == 'string'  ? data.parent           : 'field'                      ;
+		this.autoHide         = typeof data.autoHide         == 'boolean' ? data.autoHide         : defaults.autohide            ;
+		this.showPrefFlipCard = typeof data.showPrefFlipCard == 'boolean' ? data.showPrefFlipCard : share.get('showPrefFlipCard');
 
 		this.data = {};
 
@@ -500,7 +501,10 @@ class Deck {
 
 		let visibleCardsCount = this.cardsCount();
 
-		deck = deck.map(e => (e.parent = this.id, e));
+		// change cards parent id
+		deck = deck.map(e => (e.parent = this.id, e)); 
+
+		// insert push deck after visible cards
 		this.cards.splice(visibleCardsCount, 0, ...deck); // TODO maybe concat faster?
 	}
 

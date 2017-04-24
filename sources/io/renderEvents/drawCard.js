@@ -11,6 +11,9 @@ import elRender from 'elRender';
 /*
  * addCardEl
  * toggleMarkCard
+ * markCard
+ * unmarkCard
+ * unflipCard
  */
 
 event.listen('addCardEl', data => {
@@ -86,3 +89,26 @@ event.listen('unmarkCard', data => {
 		el.removeClass('marker');
 	}
 });
+
+event.listen('unflipCard', card => {
+
+	let el = share.get('domElement:' + card.id);
+
+	if(
+		el                   &&
+		el.hasClass('flip')
+	) {
+		el.removeClass('flip');
+	} 
+});
+
+// event.listen('redrawCardFlip', card => {
+
+// 	let el = share.get('domElement:' + card.id);
+
+// 	if(card.flip) {
+// 		el.addClass('flip');
+// 	} else {
+// 		el.removeClass('flip');
+// 	}
+// });

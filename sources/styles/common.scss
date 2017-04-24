@@ -9,10 +9,6 @@ $img_dir :"/solitaire_engine/img/";
 	user-select           : none;
 } 
 
-body {
-	backface-visibility : hidden;
-}
-
 .solitaireField {
 	width  : 100%;
 	height : 100%;
@@ -45,12 +41,12 @@ body {
 }
 
 .flip.tip:after {
-	width  : 0px!important;
-	height : 0px!important;
+	width  : 0px;
+	height : 0px;
 }
 
 .tipTo {
-	box-shadow : inset 0 0 15px 15px rgba(8, 157, 227, 0.5)!important; 
+	box-shadow : inset 0 0 15px 15px rgba(8, 157, 227, 0.5); 
 }
 
 .tipToHome:after {
@@ -58,15 +54,15 @@ body {
 	background-color : #ffff00;
 	opacity          : 0.5;
 	font-size        : 90%;
-	width            : 69px;
-	height           : 94px;
+	width            : 100%;
+	height           : 100%;
 	border-radius    : 2px;
-	display          : block;
+	display          : inline-block;
 	margin           : 0px;
 }
 
 .tipPriority {
-	box-shadow: inset 0 0 15px 15px rgba(255, 153, 0, 0.5)!important; 
+	box-shadow: inset 0 0 15px 15px rgba(255, 153, 0, 0.5); 
 }
 
 .full:after {
@@ -74,9 +70,9 @@ body {
 	background-color : #909090;
 	opacity          : 0.5;
 	font-size        : 90%;
-	width            : 71px;
-	height           : 96px;
-	display          : block;
+	width            : 100%;
+	height           : 100%;
+	display          : inline-block;
 	margin           : 0px;	
 }
 
@@ -93,8 +89,8 @@ body {
 	text-align    : center;
 	padding       : 2px 4px;
 	border-radius : 5px;
-	background    : url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAACXBIWXMAAAsTAAALEwEAmpwYAAAAIGNIUk0AAHolAACAgwAA+f8AAIDpAAB1MAAA6mAAADqYAAAXb5JfxUYAAAAeSURBVHjaYmRgYPBgIAIwMRAJRhVSRyEAAAD//wMAg84AXJamdKUAAAAASUVORK5CYII=');
-	z-index       : 999!important;
+	background    : #eeeeee;
+	z-index       : 999;
 	position      : absolute;
 	top           : static;
 	left          : 0px;
@@ -164,6 +160,6 @@ body {
 	background-image : url('#{$img_dir}marker.png');
 	width            : 100%;
 	height           : 100%;
-	display          : block;
+	display          : inline-block;
 	margin           : 0px;
 }

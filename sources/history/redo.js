@@ -27,11 +27,6 @@ import stateManager from 'stateManager';
 
 let redo = data => {
 
-	let keys = ['redo:'];
-	for(let key in data) keys.push(key);
-	keys.push(data);
-	console.log.apply(console, keys);
-
 	if(share.get('sessionStarted')) {
 
 		event.dispatch('stopAnimations');
