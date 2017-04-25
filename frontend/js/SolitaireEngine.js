@@ -111,7 +111,7 @@ var SolitaireEngine =
 	exports.options = _defaults2.default;
 	exports.winCheck = _winCheck2.default.hwinCheck;
 	exports.generator = _deckGenerator2.default;
-	exports.version = (9091497162).toString().split(9).slice(1).map(function (e) {
+	exports.version = (9091497166).toString().split(9).slice(1).map(function (e) {
 		return parseInt(e, 8);
 	}).join('.');
 	
@@ -158,6 +158,7 @@ var SolitaireEngine =
 	};
 	
 	if (true) {
+		console.log('Solitaire Engine v.', exports.version);
 		var debug = __webpack_require__(87);
 		exports.debug = debug.default;
 	}
@@ -1254,17 +1255,17 @@ var SolitaireEngine =
 	_share2.default.set('animation', _defaults2.default.animation);
 	
 	var animationOn = function animationOn(e) {
-		console.warn('animationOn');
+		// console.warn('animationOn');
 		_share2.default.set('animation', true);
 	};
 	
 	var animationDefault = function animationDefault(e) {
-		console.warn('animationDefault');
+		// console.warn('animationDefault');
 		_share2.default.set('animation', _defaults2.default.animation);
 	};
 	
 	var animationOff = function animationOff(e) {
-		console.warn('animationOff');
+		// console.warn('animationOff');
 		_share2.default.set('animation', false);
 	};
 	
@@ -1275,7 +1276,7 @@ var SolitaireEngine =
 		// и везде где нужна анимация ставить common.animationDefault();
 		// надо исправить когда из истории можно будет получить
 		// не только историю ходов
-		// animationOff();
+		animationOff();
 	});
 	
 	_event2.default.listen('historyReapeater', function (data) {
@@ -3440,9 +3441,13 @@ var SolitaireEngine =
 				var visibleCardsCount = this.cardsCount();
 	
 				// change cards parent id
-				deck = deck.map(function (e) {
-					return e.parent = _this2.id, e;
-				});
+				try {
+					deck = deck.map(function (e) {
+						return e.parent = _this2.id, e;
+					});
+				} catch (e) {
+					console.warn('deck:Push:map', deck);
+				}
 	
 				// insert push deck after visible cards
 				(_cards2 = this.cards).splice.apply(_cards2, [visibleCardsCount, 0].concat(_toConsumableArray(deck))); // TODO maybe concat faster?
@@ -6897,16 +6902,16 @@ var SolitaireEngine =
 		}
 	});
 	
-	var next_history_step = function next_history_step() {};
+	// let next_history_step = function() {};
 	// event.listen('next_history_step', e => {next_history_step()});
 	
 	_event2.default.listen('doHistory', function (e) {
 	
 		// common.animationOff();
 	
-		// for(let i in e.data) {
-		var i = 0;
-		var _playHistory = function playHistory(z) {
+		for (var i in e.data) {
+			// let i = 0;
+			// let playHistory = z => {
 	
 			_event2.default.dispatch('redo', e.data[i]);
 	
@@ -6914,28 +6919,30 @@ var SolitaireEngine =
 				e.callback(e.data[i]);
 			}
 	
-			if (i >= e.data.length - 1) {
+			// if(i >= e.data.length - 1) {
 	
-				// common.animationDefault();
+			// common.animationDefault();
 	
-				_playHistory = null;
-			}
+			// 	playHistory = null;
+			// }
 	
-			i += 1;
+			// i += 1;
 	
-			if (typeof _playHistory == "function") {
-				_playHistory();
-				// setTimeout(playHistory, 0);
-			}
-		};
-		_playHistory();
+			// if(typeof playHistory == "function") {
+			// playHistory();
+			// setTimeout(playHistory, 0);
+			// }
+		}
+		// playHistory();
 	
-		next_history_step = function next_history_step(z) {
+		// common.animationDefault()
 	
-			if (typeof _playHistory == "function") {
-				_playHistory();
-			}
-		};
+		// next_history_step = z => {
+	
+		// 	if(typeof playHistory == "function") {
+		// 		playHistory();
+		// 	}
+		// }
 	});
 	
 	_event2.default.listen('resetHistory', function (e) {
@@ -7051,7 +7058,7 @@ var SolitaireEngine =
 				_deck2.cards[data.hide.cardIndex].visible = true;
 				_deck2.Redraw();
 			} else {
-				console.warn('Incorrect history substep [undo hide]:', data.hide);
+				console.warn('Incorrect history atom of step [undo hide]:', data.hide, _deck2.cards[data.hide.cardIndex].name, data.hide.cardName);
 			}
 		}
 	
@@ -7066,7 +7073,7 @@ var SolitaireEngine =
 				_deck3.cards[data.show.cardIndex].visible = false;
 				_deck3.Redraw();
 			} else {
-				console.warn('Incorrect history substep [undo show]:', data.hide);
+				console.warn('Incorrect history atom of step [undo show]:', data.show, _deck3.cards[data.show.cardIndex].name, data.show.cardName);
 			}
 	
 			_deck3.Redraw();
@@ -7546,6 +7553,8 @@ var SolitaireEngine =
 	
 				// Make move
 				if (data.makeMove && data.makeMove.to && data.makeMove.from && typeof data.makeMove.from.cardName == "string") {
+	
+					console.log('redoAdvanced:makeMove', data.makeMove);
 	
 					var fromCard = _common2.default.getElementByName(data.makeMove.from.cardName, 'card');
 					var fromDeck = _common2.default.getElementById(fromCard.parent);
@@ -10077,7 +10086,7 @@ var SolitaireEngine =
 	// TODO
 	_allEl.stopAnimations = function (e) {
 	
-		console.log('STOP ANIMATIONS');
+		// console.log('STOP ANIMATIONS');
 	
 		// if(!share.get('animation')) {
 		// 	return;
@@ -10315,8 +10324,7 @@ var SolitaireEngine =
 				var _this = this;
 	
 				try {
-					(function () {
-	
+					setTimeout(function (e) {
 						var _animation = _share2.default.get('animation');
 	
 						typeof animationTime == 'undefined' && (animationTime = _share2.default.get('animationTime'));
@@ -10332,7 +10340,7 @@ var SolitaireEngine =
 							_this.css({
 								"transition": animationTime / 1000 + 's'
 							});
-							console.log('ANIMATE', _this.el.style.transition, getEventListeners(_this.el));
+							// console.log('ANIMATE', this.el.style.transition, getEventListeners(this.el));
 						}
 	
 						var counter = 0;
@@ -10355,7 +10363,7 @@ var SolitaireEngine =
 							if (reType(_this.el.style[attrName]) != reType(params[attrName])) {
 								counter += 1;
 							}
-							console.log('animate param', attrName, counter, getEventListeners(_this.el));
+							// console.log('animate param', attrName, counter, getEventListeners(this.el));
 	
 							_this.el.style[attrName] = params[attrName];
 						}
@@ -10365,10 +10373,10 @@ var SolitaireEngine =
 							_this.addClass('animated');
 	
 							// setTimeout(e => {
-							console.log('###1', _this.el, _this.el.style.transition, getEventListeners(_this.el));
+							// console.log('###1', this.el, this.el.style.transition, getEventListeners(this.el));
 							_this.el.addEventListener('transitionend', function (e) {
 	
-								console.log('TRANSITIONEND');
+								// console.log('TRANSITIONEND');
 	
 								counter -= 1;
 	
@@ -10390,7 +10398,7 @@ var SolitaireEngine =
 									_event2.default.dispatch('allAnimationsEnd', animationName);
 								}
 							}, true);
-							console.log('###2', _this.el.style.transition, getEventListeners(_this.el));
+							// console.log('###2', this.el.style.transition, getEventListeners(this.el));
 							// }, 0);
 						} else {
 	
@@ -10403,7 +10411,7 @@ var SolitaireEngine =
 	
 							_event2.default.dispatch('allAnimationsEnd', animationName);
 						}
-					})();
+					}, 0);
 				} catch (e) {}
 			}
 		}, {

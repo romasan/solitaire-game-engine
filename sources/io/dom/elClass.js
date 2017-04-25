@@ -182,7 +182,7 @@ export default class elClass {
 	animate(params, animationTime, callback, animationName) {
 
 		try {
-
+			setTimeout(e => {
 			let _animation = share.get('animation');
 
 			typeof animationTime == 'undefined' && (                               animationTime = share.get('animationTime'));
@@ -198,7 +198,7 @@ export default class elClass {
 				this.css({
 					"transition" : (animationTime / 1000) + 's'
 				});
-				console.log('ANIMATE', this.el.style.transition, getEventListeners(this.el));
+				// console.log('ANIMATE', this.el.style.transition, getEventListeners(this.el));
 			}
 
 			let counter = 0;
@@ -222,7 +222,7 @@ export default class elClass {
 				) {
 					counter += 1;
 				}
-				console.log('animate param', attrName, counter, getEventListeners(this.el));
+				// console.log('animate param', attrName, counter, getEventListeners(this.el));
 
 				this.el.style[attrName] = params[attrName];
 			}
@@ -232,10 +232,10 @@ export default class elClass {
 				this.addClass('animated');
 
 				// setTimeout(e => {
-				console.log('###1', this.el, this.el.style.transition, getEventListeners(this.el));
+				// console.log('###1', this.el, this.el.style.transition, getEventListeners(this.el));
 				this.el.addEventListener('transitionend', e => {
 
-					console.log('TRANSITIONEND');
+					// console.log('TRANSITIONEND');
 
 					counter -= 1;
 
@@ -258,7 +258,7 @@ export default class elClass {
 					}
 
 				}, true);
-				console.log('###2', this.el.style.transition, getEventListeners(this.el));
+				// console.log('###2', this.el.style.transition, getEventListeners(this.el));
 				// }, 0);
 			} else {
 
@@ -271,6 +271,7 @@ export default class elClass {
 
 				event.dispatch('allAnimationsEnd', animationName);
 			}
+			}, 0);
 		} catch(e) {}
 	}
 

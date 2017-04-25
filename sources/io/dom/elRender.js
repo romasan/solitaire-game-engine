@@ -55,7 +55,7 @@ let _allEl = data => {
 // TODO
 _allEl.stopAnimations = e => {
 
-	console.log('STOP ANIMATIONS');
+	// console.log('STOP ANIMATIONS');
 
 	// if(!share.get('animation')) {
 	// 	return;

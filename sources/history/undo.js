@@ -79,7 +79,7 @@ let undo = data => {
 			deck.cards[data.hide.cardIndex].visible = true;
 			deck.Redraw();
 		} else {
-			console.warn('Incorrect history substep [undo hide]:', data.hide);
+			console.warn('Incorrect history atom of step [undo hide]:', data.hide, deck.cards[data.hide.cardIndex].name, data.hide.cardName);
 		}
 	}
 
@@ -97,7 +97,7 @@ let undo = data => {
 			deck.cards[data.show.cardIndex].visible = false;
 			deck.Redraw();
 		} else {
-			console.warn('Incorrect history substep [undo show]:', data.hide);
+			console.warn('Incorrect history atom of step [undo show]:', data.show, deck.cards[data.show.cardIndex].name, data.show.cardName);
 		}
 
 		deck.Redraw();

@@ -213,17 +213,17 @@ let genId = e => {
 share.set('animation', defaults.animation);
 
 let animationOn = e => {
-	console.warn('animationOn');
+	// console.warn('animationOn');
 	share.set('animation', true);
 }
 
 let animationDefault = e => {
-	console.warn('animationDefault');
+	// console.warn('animationDefault');
 	share.set('animation', defaults.animation);
 }
 
 let animationOff = e => {
-	console.warn('animationOff');
+	// console.warn('animationOff');
 	share.set('animation', false);
 }
 
@@ -234,7 +234,7 @@ event.listen('newGame', e => {
 	// и везде где нужна анимация ставить common.animationDefault();
 	// надо исправить когда из истории можно будет получить
 	// не только историю ходов
-	// animationOff();
+	animationOff();
 });
 
 event.listen('historyReapeater', data => {

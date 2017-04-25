@@ -70,6 +70,7 @@ exports.init = gameConfig => {
 };
 
 if(dev) {
+	console.log('Solitaire Engine v.', exports.version);
 	let debug = require('debug');
 	exports.debug = debug.default;
 }

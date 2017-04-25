@@ -502,7 +502,11 @@ class Deck {
 		let visibleCardsCount = this.cardsCount();
 
 		// change cards parent id
-		deck = deck.map(e => (e.parent = this.id, e)); 
+		try {
+			deck = deck.map(e => (e.parent = this.id, e)); 
+		} catch(e) {
+			console.warn('deck:Push:map', deck);
+		}
 
 		// insert push deck after visible cards
 		this.cards.splice(visibleCardsCount, 0, ...deck); // TODO maybe concat faster?

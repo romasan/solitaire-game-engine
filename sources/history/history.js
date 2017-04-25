@@ -118,16 +118,16 @@ event.listen('saveSteps', e => {
 	}
 });
 
-let next_history_step = function() {};
+// let next_history_step = function() {};
 // event.listen('next_history_step', e => {next_history_step()});
 
 event.listen('doHistory', e => {
 
 	// common.animationOff();
 
-	// for(let i in e.data) {
-	let i = 0;
-	let playHistory = z => {
+	for(let i in e.data) {
+	// let i = 0;
+	// let playHistory = z => {
 
 		event.dispatch('redo', e.data[i]);
 
@@ -138,28 +138,30 @@ event.listen('doHistory', e => {
 			e.callback(e.data[i]);
 		}
 
-		if(i >= e.data.length - 1) {
+		// if(i >= e.data.length - 1) {
 
 			// common.animationDefault();
 
-			playHistory = null;
-		}
+		// 	playHistory = null;
+		// }
 
-		i += 1;
+		// i += 1;
 
-		if(typeof playHistory == "function") {
-			playHistory();
+		// if(typeof playHistory == "function") {
+			// playHistory();
 			// setTimeout(playHistory, 0);
-		}
+		// }
 	}
-	playHistory();
+	// playHistory();
 
-	next_history_step = z => {
+	// common.animationDefault()
 
-		if(typeof playHistory == "function") {
-			playHistory();
-		}
-	}
+	// next_history_step = z => {
+
+	// 	if(typeof playHistory == "function") {
+	// 		playHistory();
+	// 	}
+	// }
 });
 
 event.listen('resetHistory', e => {

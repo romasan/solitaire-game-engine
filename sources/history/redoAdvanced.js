@@ -42,6 +42,8 @@ class redoAdvanced {
 			typeof data.makeMove.from.cardName == "string"
 		) {
 
+			console.log('redoAdvanced:makeMove', data.makeMove);
+
 			let fromCard = common.getElementByName(data.makeMove.from.cardName, 'card');
 			let fromDeck = common.getElementById(fromCard.parent);
 
