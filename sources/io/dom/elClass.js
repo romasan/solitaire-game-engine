@@ -182,12 +182,14 @@ export default class elClass {
 	animate(params, animationTime, callback, animationName) {
 
 		try {
-			setTimeout(e => {
+			let _run = f => {f()};
+			// setTimeout(e => {
+			_run(e => {
 			let _animation = share.get('animation');
 
-			typeof animationTime == 'undefined' && (                               animationTime = share.get('animationTime'));
-			typeof animationTime == 'function'  && (callback      = animationTime, animationTime = share.get('animationTime'));
-			typeof callback      == 'string'    && (animationName = callback, callback = null);
+			typeof animationTime == 'undefined' && (                          animationTime = share.get('animationTime'));
+			typeof animationTime == 'function'  && (callback = animationTime, animationTime = share.get('animationTime'));
+			typeof callback      == 'string'    && (                          animationName = callback, callback = null);
 
 			animationName = animationName ? animationName : 'animation_' + this._animationIndex;
 			this._animationCallbacks[animationName] = callback;
@@ -230,9 +232,10 @@ export default class elClass {
 			if(_animation) {
 
 				this.addClass('animated');
+				console.log('FUCKING LOG', _animation, this.el, this.el.style.transition);
 
-				// setTimeout(e => {
 				// console.log('###1', this.el, this.el.style.transition, getEventListeners(this.el));
+				// this.el.addEventListener('webkitTransitionEnd', e => {
 				this.el.addEventListener('transitionend', e => {
 
 					// console.log('TRANSITIONEND');
@@ -259,7 +262,6 @@ export default class elClass {
 
 				}, true);
 				// console.log('###2', this.el.style.transition, getEventListeners(this.el));
-				// }, 0);
 			} else {
 
 				// event.dispatch('animationEnd', this);

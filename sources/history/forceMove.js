@@ -7,7 +7,9 @@ import common from 'common';
 import Deck   from 'deck'  ;
 import Tips   from 'tips'  ;
 
-let forceMove = data => {// {from, to, deck, <flip>, <callback>}
+let forceMove = data => { // {from, to, deck, <flip>, <callback>}
+
+	// console.log('forceMove:', data);
 
 	if(
 		!data.from ||
@@ -49,13 +51,13 @@ let forceMove = data => {// {from, to, deck, <flip>, <callback>}
 
 		if(i >= deckFromCards.length - data.deck.length) {
 
-			let _id = i - (deckFromCards.length | 0) + (data.deck.length | 0);
+			let _index = i - (deckFromCards.length | 0) + (data.deck.length | 0);
 
 			if(
-				data.deck[_id]                          &&
-				deckFromCards[i].name != data.deck[_id]
+				data.deck[_index]                          &&
+				deckFromCards[i].name != data.deck[_index]
 			) {
-				console.log('forceMove:check:false', deckFromCards[i].name, data.deck[_id]);
+				console.log('forceMove:check:false', deckFrom.name, deckTo.name, deckFromCards[i].name, data.deck[_index]);
 				_check = false;
 			}
 		}

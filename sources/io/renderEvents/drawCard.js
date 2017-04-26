@@ -29,7 +29,8 @@ event.listen('addCardEl', data => {
 		.addClass('el card draggable ' + data.name)
 		.css(_params)
 		.attr({
-			"id" : data.id
+			"id" : data.id,
+			"title" : data.id
 		});
 
 	share.set('domElement:' + data.id, _domElement);

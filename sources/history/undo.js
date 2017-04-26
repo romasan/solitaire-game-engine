@@ -191,6 +191,8 @@ event.listen('undo', undoData => {
 		return;
 	}
 
+	// console.log('%cUNDO: ' + JSON.stringify(undoData), 'background:#d6deff');
+
 	inputs.break();
 
 	History.reset();

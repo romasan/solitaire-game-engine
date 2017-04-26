@@ -111,7 +111,7 @@ var SolitaireEngine =
 	exports.options = _defaults2.default;
 	exports.winCheck = _winCheck2.default.hwinCheck;
 	exports.generator = _deckGenerator2.default;
-	exports.version = (9091497166).toString().split(9).slice(1).map(function (e) {
+	exports.version = (9091497217).toString().split(9).slice(1).map(function (e) {
 		return parseInt(e, 8);
 	}).join('.');
 	
@@ -3596,13 +3596,16 @@ var SolitaireEngine =
 			value: function showCards() {
 				var redraw = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : true;
 				var save = arguments[1];
+				var forceAll = arguments[2];
 	
 	
 				for (var i in this.cards) {
 	
+					var changed = forceAll ? true : this.cards[i].visible == false;
+	
 					this.cards[i].visible = true;
 	
-					if (save) {
+					if (changed && save) {
 						_event2.default.dispatch('addStep', {
 							"show": {
 								"cardName": this.cards[i].name,
@@ -5395,6 +5398,8 @@ var SolitaireEngine =
 	var forceMove = function forceMove(data) {
 		// {from, to, deck, <flip>, <callback>}
 	
+		// console.log('forceMove:', data);
+	
 		if (!data.from || !data.to || !data.deck) {
 			return;
 		}
@@ -5422,10 +5427,10 @@ var SolitaireEngine =
 	
 			if (i >= deckFromCards.length - data.deck.length) {
 	
-				var _id = i - (deckFromCards.length | 0) + (data.deck.length | 0);
+				var _index = i - (deckFromCards.length | 0) + (data.deck.length | 0);
 	
-				if (data.deck[_id] && deckFromCards[i].name != data.deck[_id]) {
-					console.log('forceMove:check:false', deckFromCards[i].name, data.deck[_id]);
+				if (data.deck[_index] && deckFromCards[i].name != data.deck[_index]) {
+					console.log('forceMove:check:false', deckFrom.name, deckTo.name, deckFromCards[i].name, data.deck[_index]);
 					_check = false;
 				}
 			}
@@ -6551,7 +6556,7 @@ var SolitaireEngine =
 											// если ход в истории найден раньше начала прокруток остановить rewind
 										} else if (!found && atom.move) {
 	
-											// TODO Swap
+											// Swap
 											for (var _i2 = 0; _i2 < (unflipCardsCount / 2 | 0); _i2 += 1) {
 	
 												var _next = unflipCardsCount - _i2 - 1;
@@ -6559,6 +6564,21 @@ var SolitaireEngine =
 												if (_i2 < _next) {
 													_atom2.default.swap(deck, _i2, _next, true);
 												}
+											}
+	
+											// Hide visible flipped cards
+											for (var _i3 = 0; _i3 < unflipCardsCount; _i3 += 1) {
+	
+												deck.hideCardByIndex(_i3, true);
+	
+												// save step
+												_event2.default.dispatch('addStep', {
+													"hide": {
+														"cardIndex": _i3,
+														"cardName": deck.cards[_i3].name,
+														"deckName": deck.name
+													}
+												});
 											}
 	
 											found = true;
@@ -6611,7 +6631,7 @@ var SolitaireEngine =
 							}
 	
 						// количество скрываемых дальше открытых карт
-						var _unflippedCount = 0;
+						var unflippedCount = 0;
 	
 						// скрываем открытые видимые карты
 						if (unflipCardsCount > 0) {
@@ -6622,7 +6642,7 @@ var SolitaireEngine =
 	
 								if (cards[i].flip == false) {
 	
-									_unflippedCount += 1;
+									unflippedCount += 1;
 	
 									deck.hideCardByIndex(i);
 	
@@ -6641,30 +6661,30 @@ var SolitaireEngine =
 						// поэтому возвращаем выложенные на предыдущей итерации карты в исходное положение
 						if (openCount > 1) {
 	
-							for (var _i3 = cardsCount - _unflippedCount; _i3 < cardsCount; _i3 += 1) {
+							for (var _i4 = cardsCount - unflippedCount; _i4 < cardsCount; _i4 += 1) {
 	
-								var _next2 = cardsCount * 2 - _i3 - _unflippedCount - 1;
+								var _next2 = cardsCount * 2 - _i4 - unflippedCount - 1;
 	
-								if (_i3 < _next2) {
-									_atom2.default.swap(deck, _i3, _next2, true);
+								if (_i4 < _next2) {
+									_atom2.default.swap(deck, _i4, _next2, true);
 								}
 							}
 						}
 	
 						// количество открытых дальше карт (карт в стопке могло остаться меньше трёх)
-						_unflippedCount = 0;
+						unflippedCount = 0;
 	
 						// открываем следующие openCount|3 карт
-						for (var _i4 = flipCardsCount - 1; _i4 >= 0 && _i4 >= flipCardsCount - openCount; _i4 -= 1) {
+						for (var _i5 = flipCardsCount - 1; _i5 >= 0 && _i5 >= flipCardsCount - openCount; _i5 -= 1) {
 	
-							_unflippedCount += 1;
+							unflippedCount += 1;
 	
-							deck.cards[_i4].flip = false;
+							deck.cards[_i5].flip = false;
 	
 							_event2.default.dispatch('addStep', {
 								"unflip": {
-									"cardIndex": _i4,
-									"cardName": deck.cards[_i4].name,
+									"cardIndex": _i5,
+									"cardName": deck.cards[_i5].name,
 									"deckName": deck.name
 								}
 							});
@@ -6677,15 +6697,15 @@ var SolitaireEngine =
 	
 						// карты выкладываются в обратном порядке
 						if (openCount > 1 // &&
-						// _unflippedCount
+						// unflippedCount
 						) {
 	
-								for (var _i5 = cardsCount - _unflippedCount; _i5 < cardsCount; _i5 += 1) {
+								for (var _i6 = cardsCount - unflippedCount; _i6 < cardsCount; _i6 += 1) {
 	
-									var _next3 = cardsCount * 2 - _i5 - _unflippedCount - 1;
+									var _next3 = cardsCount * 2 - _i6 - unflippedCount - 1;
 	
-									if (_i5 < _next3) {
-										_atom2.default.swap(deck, _i5, _next3, true);
+									if (_i6 < _next3) {
+										_atom2.default.swap(deck, _i6, _next3, true);
 									}
 								}
 							}
@@ -6908,10 +6928,16 @@ var SolitaireEngine =
 	_event2.default.listen('doHistory', function (e) {
 	
 		// common.animationOff();
+		if (!e || !e.data) {
+			console.warn('doHistory data:', e);
+		}
 	
 		for (var i in e.data) {
+			// console.log('### DOHISTORY', e.data.length, 'Press key "N"');
 			// let i = 0;
 			// let playHistory = z => {
+	
+			// console.log('DO STEP', i, 'FROM', e.data.length);
 	
 			_event2.default.dispatch('redo', e.data[i]);
 	
@@ -6923,7 +6949,7 @@ var SolitaireEngine =
 	
 			// common.animationDefault();
 	
-			// 	playHistory = null;
+			// playHistory = null;
 			// }
 	
 			// i += 1;
@@ -7152,6 +7178,8 @@ var SolitaireEngine =
 		if (!undoData) {
 			return;
 		}
+	
+		// console.log('%cUNDO: ' + JSON.stringify(undoData), 'background:#d6deff');
 	
 		_inputs2.default.break();
 	
@@ -7464,6 +7492,8 @@ var SolitaireEngine =
 			return;
 		}
 	
+		// console.log('%cREDO: ' + JSON.stringify(redoData), 'background:#fff7d6');
+	
 		_inputs2.default.break();
 	
 		_history2.default.reset();
@@ -7554,7 +7584,7 @@ var SolitaireEngine =
 				// Make move
 				if (data.makeMove && data.makeMove.to && data.makeMove.from && typeof data.makeMove.from.cardName == "string") {
 	
-					console.log('redoAdvanced:makeMove', data.makeMove);
+					// console.log('redoAdvanced:makeMove', JSON.stringify(data.makeMove));
 	
 					var fromCard = _common2.default.getElementByName(data.makeMove.from.cardName, 'card');
 					var fromDeck = _common2.default.getElementById(fromCard.parent);
@@ -10324,7 +10354,11 @@ var SolitaireEngine =
 				var _this = this;
 	
 				try {
-					setTimeout(function (e) {
+					var _run = function _run(f) {
+						f();
+					};
+					// setTimeout(e => {
+					_run(function (e) {
 						var _animation = _share2.default.get('animation');
 	
 						typeof animationTime == 'undefined' && (animationTime = _share2.default.get('animationTime'));
@@ -10371,9 +10405,10 @@ var SolitaireEngine =
 						if (_animation) {
 	
 							_this.addClass('animated');
+							console.log('FUCKING LOG', _animation, _this.el, _this.el.style.transition);
 	
-							// setTimeout(e => {
 							// console.log('###1', this.el, this.el.style.transition, getEventListeners(this.el));
+							// this.el.addEventListener('webkitTransitionEnd', e => {
 							_this.el.addEventListener('transitionend', function (e) {
 	
 								// console.log('TRANSITIONEND');
@@ -10399,7 +10434,6 @@ var SolitaireEngine =
 								}
 							}, true);
 							// console.log('###2', this.el.style.transition, getEventListeners(this.el));
-							// }, 0);
 						} else {
 	
 							// event.dispatch('animationEnd', this);
@@ -10953,7 +10987,8 @@ var SolitaireEngine =
 		var _domElement = (0, _elRender2.default)('<div>');
 	
 		(0, _elRender2.default)(_domElement).addClass('el card draggable ' + data.name).css(_params).attr({
-			"id": data.id
+			"id": data.id,
+			"title": data.id
 		});
 	
 		_share2.default.set('domElement:' + data.id, _domElement);
@@ -12192,6 +12227,7 @@ var SolitaireEngine =
 	_event2.default.listen('logCardsInDeck', logCardsInDeck);
 	
 	var keys = {
+		"c": 67, // clear
 		"d": 68, // debug
 		"n": 78 };
 	
@@ -12216,6 +12252,8 @@ var SolitaireEngine =
 			kosynka_log();
 		} else if (e.keyCode == keys.n) {
 			_event2.default.dispatch('next_history_step');
+		} else if (e.keyCode == keys.c) {
+			console.clear();
 		}
 	};
 	

@@ -226,6 +226,8 @@ event.listen('redo', redoData => {
 		return;
 	}
 
+	// console.log('%cREDO: ' + JSON.stringify(redoData), 'background:#fff7d6');
+
 	inputs.break();
 
 	History.reset();

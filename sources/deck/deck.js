@@ -639,13 +639,15 @@ class Deck {
 		}
 	}
 
-	showCards(redraw = true, save) {
+	showCards(redraw = true, save, forceAll) {
 
 		for(let i in this.cards) {
 
+			let changed = forceAll ? true : this.cards[i].visible == false;
+
 			this.cards[i].visible = true;
 
-			if(save) {
+			if(changed && save) {
 				event.dispatch('addStep', {
 					"show" : {
 						"cardName"  : this.cards[i].name,

@@ -124,10 +124,16 @@ event.listen('saveSteps', e => {
 event.listen('doHistory', e => {
 
 	// common.animationOff();
+	if(!e || !e.data) {
+		console.warn('doHistory data:', e);
+	}
 
 	for(let i in e.data) {
+	// console.log('### DOHISTORY', e.data.length, 'Press key "N"');
 	// let i = 0;
 	// let playHistory = z => {
+
+		// console.log('DO STEP', i, 'FROM', e.data.length);
 
 		event.dispatch('redo', e.data[i]);
 
@@ -142,7 +148,7 @@ event.listen('doHistory', e => {
 
 			// common.animationDefault();
 
-		// 	playHistory = null;
+			// playHistory = null;
 		// }
 
 		// i += 1;
