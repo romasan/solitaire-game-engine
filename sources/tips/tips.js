@@ -19,7 +19,7 @@ import Field    from 'field'   ;
  * tipsDestination
  * checkFrom
  * fromTo
- * autoStepToHome
+ * autoMoveToHome
  */
 
 let _showTips = defaults.showTips;
@@ -210,8 +210,9 @@ let fromTo = (from, to) => {
 };
 
 // Автоход в "дом"
-// TODO rename autoMoveToHome
-let autoStepToHome = data => {
+let autoMoveToHome = data => {
+
+	event.dispatch('startRunHistory');
 
 	let _homeGroups = Field.homeGroups;
 	let homeGroupDecksNames = [];
@@ -261,7 +262,7 @@ let autoStepToHome = data => {
 
 		checkTips();
 
-		autoStepToHome(data);
+		autoMoveToHome(data);
 	} else {
 		event.dispatch('winCheck', {
 			"show" : true
@@ -269,7 +270,7 @@ let autoStepToHome = data => {
 	}
 };
 
-event.listen('autoStepToHome', autoStepToHome);
+event.listen('autoMoveToHome', autoMoveToHome);
 
 export default {
 	"tipTypes"        : tipTypes       ,

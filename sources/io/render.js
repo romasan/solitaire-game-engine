@@ -32,6 +32,19 @@ event.listen('removeEl', data => {
 	}
 });
 
+let triggerMouseEvent = (node, eventType) => {
+    var clickEvent = document.createEvent ('MouseEvents');
+    clickEvent.initEvent (eventType, true, true);
+    node.dispatchEvent (clickEvent);
+}
+
+event.listen('clickCard', card => {
+
+	let _elDomElement = share.get('domElement:' + card.id);
+
+	triggerMouseEvent(_elDomElement.el, 'mousedown');
+})
+
 event.listen('showCard', target => {
 	elRender(target).show();
 });

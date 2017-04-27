@@ -111,7 +111,7 @@ var SolitaireEngine =
 	exports.options = _defaults2.default;
 	exports.winCheck = _winCheck2.default.hwinCheck;
 	exports.generator = _deckGenerator2.default;
-	exports.version = (9091497320).toString().split(9).slice(1).map(function (e) {
+	exports.version = (9091497350).toString().split(9).slice(1).map(function (e) {
 		return parseInt(e, 8);
 	}).join('.');
 	
@@ -1663,7 +1663,7 @@ var SolitaireEngine =
 	 * tipsDestination
 	 * checkFrom
 	 * fromTo
-	 * autoStepToHome
+	 * autoMoveToHome
 	 */
 	
 	var _showTips = _defaults2.default.showTips;
@@ -1831,8 +1831,9 @@ var SolitaireEngine =
 	};
 	
 	// Автоход в "дом"
-	// TODO rename autoMoveToHome
-	var autoStepToHome = function autoStepToHome(data) {
+	var autoMoveToHome = function autoMoveToHome(data) {
+	
+		_event2.default.dispatch('startRunHistory');
 	
 		var _homeGroups = _field2.default.homeGroups;
 		var homeGroupDecksNames = [];
@@ -1879,7 +1880,7 @@ var SolitaireEngine =
 	
 			checkTips();
 	
-			autoStepToHome(data);
+			autoMoveToHome(data);
 		} else {
 			_event2.default.dispatch('winCheck', {
 				"show": true
@@ -1887,7 +1888,7 @@ var SolitaireEngine =
 		}
 	};
 	
-	_event2.default.listen('autoStepToHome', autoStepToHome);
+	_event2.default.listen('autoMoveToHome', autoMoveToHome);
 	
 	exports.default = {
 		"tipTypes": tipTypes,
@@ -10032,6 +10033,19 @@ var SolitaireEngine =
 		} catch (e) {
 			console.warn('Dom element for', data.id, 'not found');
 		}
+	});
+	
+	var triggerMouseEvent = function triggerMouseEvent(node, eventType) {
+		var clickEvent = document.createEvent('MouseEvents');
+		clickEvent.initEvent(eventType, true, true);
+		node.dispatchEvent(clickEvent);
+	};
+	
+	_event2.default.listen('clickCard', function (card) {
+	
+		var _elDomElement = _share2.default.get('domElement:' + card.id);
+	
+		triggerMouseEvent(_elDomElement.el, 'mousedown');
 	});
 	
 	_event2.default.listen('showCard', function (target) {
