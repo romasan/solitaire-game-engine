@@ -121,12 +121,14 @@ event.listen('saveSteps', e => {
 // let next_history_step = function() {};
 // event.listen('next_history_step', e => {next_history_step()});
 
-event.listen('doHistory', e => {
+event.listen('doHistory', e => {	
 
 	// common.animationOff();
 	if(!e || !e.data) {
 		console.warn('doHistory data:', e);
 	}
+
+	common.animationOff();
 
 	for(let i in e.data) {
 	// console.log('### DOHISTORY', e.data.length, 'Press key "N"');
@@ -160,7 +162,9 @@ event.listen('doHistory', e => {
 	}
 	// playHistory();
 
-	// common.animationDefault()
+	common.animationDefault();
+
+	event.dispatch('stopRunHistory');
 
 	// next_history_step = z => {
 

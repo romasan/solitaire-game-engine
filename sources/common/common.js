@@ -227,15 +227,15 @@ let animationOff = e => {
 	share.set('animation', false);
 }
 
-event.listen('newGame', e => {
-	// TODO
-	// из-за отключения анимации 
-	// на время восстановления ходов из истории приходится костылять
-	// и везде где нужна анимация ставить common.animationDefault();
-	// надо исправить когда из истории можно будет получить
-	// не только историю ходов
-	animationOff();
-});
+let stopRunHistory = e => {
+	share.set('stopRunHistory', true);
+}
+event.listen('stopRunHistory', stopRunHistory);
+
+let startRunHistory = e => {
+	share.set('stopRunHistory', false);
+}
+event.listen('startRunHistory', startRunHistory);
 
 event.listen('historyReapeater', data => {
 	if(data) {

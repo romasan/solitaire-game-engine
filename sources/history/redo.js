@@ -222,7 +222,7 @@ let redo = data => {
 
 event.listen('redo', redoData => {
 
-	if(!redoData) {
+	if(!redoData || share.get('stopRunHistory')) {
 		return;
 	}
 

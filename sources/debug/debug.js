@@ -51,6 +51,7 @@ let stamp = e => {
 
 // Firebug
 document.addEventListener("DOMContentLoaded", e => {
+
 	if(document.location.hash == '#debug') {
 		(function(F, i, r, e, b, u, g, L, I, T, E) {
 			if(F.getElementById(b)) { return; }
@@ -77,6 +78,23 @@ document.addEventListener("DOMContentLoaded", e => {
 			'#startOpened'
 		);
 	}
+
+	// document.body.addEventListener('transitionend', e => {
+	// 	console.log('TEST:', e);
+	// });
+
+	// let f = e => {
+	// 	el.style.transition = (500 / 1000) + 's';
+	// 	el.style.left = ((Math.random() * 1000) | 0) + 'px';
+	// 	el.style.top  = ((Math.random() * 1000) | 0) + 'px';
+	// 	let f2 = e => {
+	// 		el.style.transition = null;
+	// 		console.log('done');
+	// 		removeEventListener('transitionend', f2)
+	// 	};
+	// 	el.addEventListener('transitionend', f2, false);
+	// }
+
 });
 
 let eachDecksInGroup = (groupName, callback, data) => {

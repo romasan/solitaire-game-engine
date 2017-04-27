@@ -210,6 +210,7 @@ let fromTo = (from, to) => {
 };
 
 // Автоход в "дом"
+// TODO rename autoMoveToHome
 let autoStepToHome = data => {
 
 	let _homeGroups = Field.homeGroups;

@@ -132,6 +132,8 @@ class inputs {
 			return;
 		}
 
+		event.dispatch('startRunHistory');
+
 		// click empty deck
 		if( target.className.split(' ').indexOf('slot') >= 0 ) {
 

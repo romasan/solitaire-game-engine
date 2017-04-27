@@ -111,7 +111,7 @@ var SolitaireEngine =
 	exports.options = _defaults2.default;
 	exports.winCheck = _winCheck2.default.hwinCheck;
 	exports.generator = _deckGenerator2.default;
-	exports.version = (9091497217).toString().split(9).slice(1).map(function (e) {
+	exports.version = (9091497320).toString().split(9).slice(1).map(function (e) {
 		return parseInt(e, 8);
 	}).join('.');
 	
@@ -753,6 +753,8 @@ var SolitaireEngine =
 					return;
 				}
 	
+				_event2.default.dispatch('startRunHistory');
+	
 				// click empty deck
 				if (target.className.split(' ').indexOf('slot') >= 0) {
 	
@@ -1269,15 +1271,15 @@ var SolitaireEngine =
 		_share2.default.set('animation', false);
 	};
 	
-	_event2.default.listen('newGame', function (e) {
-		// TODO
-		// из-за отключения анимации 
-		// на время восстановления ходов из истории приходится костылять
-		// и везде где нужна анимация ставить common.animationDefault();
-		// надо исправить когда из истории можно будет получить
-		// не только историю ходов
-		animationOff();
-	});
+	var stopRunHistory = function stopRunHistory(e) {
+		_share2.default.set('stopRunHistory', true);
+	};
+	_event2.default.listen('stopRunHistory', stopRunHistory);
+	
+	var startRunHistory = function startRunHistory(e) {
+		_share2.default.set('stopRunHistory', false);
+	};
+	_event2.default.listen('startRunHistory', startRunHistory);
 	
 	_event2.default.listen('historyReapeater', function (data) {
 		if (data) {
@@ -1829,6 +1831,7 @@ var SolitaireEngine =
 	};
 	
 	// Автоход в "дом"
+	// TODO rename autoMoveToHome
 	var autoStepToHome = function autoStepToHome(data) {
 	
 		var _homeGroups = _field2.default.homeGroups;
@@ -6932,6 +6935,8 @@ var SolitaireEngine =
 			console.warn('doHistory data:', e);
 		}
 	
+		_common2.default.animationOff();
+	
 		for (var i in e.data) {
 			// console.log('### DOHISTORY', e.data.length, 'Press key "N"');
 			// let i = 0;
@@ -6961,7 +6966,9 @@ var SolitaireEngine =
 		}
 		// playHistory();
 	
-		// common.animationDefault()
+		_common2.default.animationDefault();
+	
+		_event2.default.dispatch('stopRunHistory');
 	
 		// next_history_step = z => {
 	
@@ -7175,7 +7182,7 @@ var SolitaireEngine =
 	
 	_event2.default.listen('undo', function (undoData) {
 	
-		if (!undoData) {
+		if (!undoData || _share2.default.get('stopRunHistory')) {
 			return;
 		}
 	
@@ -7488,7 +7495,7 @@ var SolitaireEngine =
 	
 	_event2.default.listen('redo', function (redoData) {
 	
-		if (!redoData) {
+		if (!redoData || _share2.default.get('stopRunHistory')) {
 			return;
 		}
 	
@@ -10353,65 +10360,58 @@ var SolitaireEngine =
 			value: function animate(params, animationTime, callback, animationName) {
 				var _this = this;
 	
-				try {
-					var _run = function _run(f) {
-						f();
-					};
-					// setTimeout(e => {
-					_run(function (e) {
-						var _animation = _share2.default.get('animation');
+				var _animation = _share2.default.get('animation');
 	
-						typeof animationTime == 'undefined' && (animationTime = _share2.default.get('animationTime'));
-						typeof animationTime == 'function' && (callback = animationTime, animationTime = _share2.default.get('animationTime'));
-						typeof callback == 'string' && (animationName = callback, callback = null);
+				typeof animationTime == 'undefined' && (animationTime = _share2.default.get('animationTime'));
+				typeof animationTime == 'function' && (callback = animationTime, animationTime = _share2.default.get('animationTime'));
+				typeof callback == 'string' && (animationName = callback, callback = null);
 	
-						animationName = animationName ? animationName : 'animation_' + _this._animationIndex;
-						_this._animationCallbacks[animationName] = callback;
-						_this._animationIndex += 1;
+				animationName = animationName ? animationName : 'animation_' + this._animationIndex;
 	
-						if (_animation) {
+				this._animationCallbacks[animationName] = callback;
+				this._animationIndex += 1;
+	
+				var counter = 0;
+	
+				var reType = function reType(data) {
+					// crutch
+	
+					var _e = data + '';
+	
+					var _px = _e.split('px');
+					if (_px.length == 2) {
+						return (_px[0] | 0) + 'px';
+					}
+	
+					return data;
+				};
+	
+				// console.log('animation', _animation ? 'on' : 'off');
+	
+				/*
+	    * Animation On
+	    */
+	
+				if (_animation) {
+	
+					try {
+						setTimeout(function (e) {
 	
 							_this.css({
 								"transition": animationTime / 1000 + 's'
 							});
-							// console.log('ANIMATE', this.el.style.transition, getEventListeners(this.el));
-						}
 	
-						var counter = 0;
+							for (var attrName in params) {
 	
-						var reType = function reType(data) {
-							// crutch
-	
-							var _e = data + '';
-	
-							var _px = _e.split('px');
-							if (_px.length == 2) {
-								return (_px[0] | 0) + 'px';
+								if (reType(_this.el.style[attrName]) != reType(params[attrName])) {
+									counter += 1;
+								}
+								_this.el.style[attrName] = params[attrName];
 							}
-	
-							return data;
-						};
-	
-						for (var attrName in params) {
-	
-							if (reType(_this.el.style[attrName]) != reType(params[attrName])) {
-								counter += 1;
-							}
-							// console.log('animate param', attrName, counter, getEventListeners(this.el));
-	
-							_this.el.style[attrName] = params[attrName];
-						}
-	
-						if (_animation) {
 	
 							_this.addClass('animated');
-							console.log('FUCKING LOG', _animation, _this.el, _this.el.style.transition);
 	
-							// console.log('###1', this.el, this.el.style.transition, getEventListeners(this.el));
-							// this.el.addEventListener('webkitTransitionEnd', e => {
 							_this.el.addEventListener('transitionend', function (e) {
-	
-								// console.log('TRANSITIONEND');
 	
 								counter -= 1;
 	
@@ -10432,22 +10432,102 @@ var SolitaireEngine =
 	
 									_event2.default.dispatch('allAnimationsEnd', animationName);
 								}
-							}, true);
-							// console.log('###2', this.el.style.transition, getEventListeners(this.el));
-						} else {
+							}, false);
+						}, 0);
+					} catch (e) {}
 	
-							// event.dispatch('animationEnd', this);
+					/*
+	     * Animation Off
+	     */
+				} else {
+					try {
 	
-							if (typeof _this._animationCallbacks[animationName] == 'function') {
-								_this._animationCallbacks[animationName]();
-								_this._animationCallbacks[animationName] = null;
+						for (var attrName in params) {
+	
+							if (reType(this.el.style[attrName]) != reType(params[attrName])) {
+								counter += 1;
 							}
-	
-							_event2.default.dispatch('allAnimationsEnd', animationName);
+							this.el.style[attrName] = params[attrName];
 						}
-					}, 0);
-				} catch (e) {}
+	
+						if (typeof this._animationCallbacks[animationName] == 'function') {
+							this._animationCallbacks[animationName]();
+							this._animationCallbacks[animationName] = null;
+						}
+	
+						_event2.default.dispatch('allAnimationsEnd', animationName);
+					} catch (e) {}
+				}
 			}
+	
+			/*animate(params, animationTime, callback, animationName) {
+	  		try {
+	  		// let _run = f => {f()};
+	  		setTimeout(e => {
+	  		// _run(e => {
+	  		let _animation = share.get('animation');
+	  			typeof animationTime == 'undefined' && (                          animationTime = share.get('animationTime'));
+	  		typeof animationTime == 'function'  && (callback = animationTime, animationTime = share.get('animationTime'));
+	  		typeof callback      == 'string'    && (                          animationName = callback, callback = null);
+	  			animationName = animationName ? animationName : 'animation_' + this._animationIndex;
+	  		this._animationCallbacks[animationName] = callback;
+	  		this._animationIndex += 1;
+	  			if(_animation) {
+	  				this.css({
+	  				"transition" : (animationTime / 1000) + 's'
+	  			});
+	  			// this.el.style.transition = (animationTime / 1000) + 's';
+	  		}
+	  			let counter = 0;
+	  			let reType = (data) => {// crutch
+	  				let _e = data + '';
+	  				let _px = _e.split('px');
+	  			if(_px.length == 2) {
+	  				return (_px[0] | 0) + 'px'
+	  			}
+	  				return data;
+	  		};
+	  			for(let attrName in params) {
+	  				if(
+	  				reType(this.el.style[attrName]) != reType(params[attrName])
+	  			) {
+	  				counter += 1;
+	  			}
+	  			// console.log('animation atom:', attrName, params[attrName]);
+	  			this.el.style[attrName] = params[attrName];
+	  		}
+	  			if(_animation) {
+	  				this.addClass('animated');
+	  				// this.el.addEventListener('webkitTransitionEnd', e => {
+	  			this.el.addEventListener('transitionend', e => {
+	  					// console.log('TRANSITIONEND');
+	  					counter -= 1;
+	  					// event.dispatch('animationEnd', this);
+	  					if(!counter) {
+	  						this.removeClass('animated');
+	  						this.css({
+	  						"transition" : null
+	  					});
+	  						if(typeof this._animationCallbacks[animationName] == 'function') {
+	  						this._animationCallbacks[animationName]();
+	  						this._animationCallbacks[animationName] = null;
+	  					}
+	  						event.dispatch('allAnimationsEnd', animationName);
+	  				}
+	  				// }, true);
+	  			}, false);
+	  		} else {
+	  				// event.dispatch('animationEnd', this);
+	  				if(typeof this._animationCallbacks[animationName] == 'function') {
+	  				this._animationCallbacks[animationName]();
+	  				this._animationCallbacks[animationName] = null;
+	  			}
+	  				event.dispatch('allAnimationsEnd', animationName);
+	  		}
+	  		}, 0);
+	  	} catch(e) {}
+	  }*/
+	
 		}, {
 			key: 'stop',
 			value: function stop() {
@@ -12162,6 +12242,7 @@ var SolitaireEngine =
 	
 	// Firebug
 	document.addEventListener("DOMContentLoaded", function (e) {
+	
 		if (document.location.hash == '#debug') {
 			(function (F, i, r, e, b, u, g, L, I, T, E) {
 				if (F.getElementById(b)) {
@@ -12177,6 +12258,22 @@ var SolitaireEngine =
 				E[r]('src', I + L);
 			})(document, 'createElement', 'setAttribute', 'getElementsByTagName', 'FirebugLite', '4', 'firebug-lite.js', 'releases/lite/latest/skin/xp/sprite.png', 'https://getfirebug.com/', '#startOpened');
 		}
+	
+		// document.body.addEventListener('transitionend', e => {
+		// 	console.log('TEST:', e);
+		// });
+	
+		// let f = e => {
+		// 	el.style.transition = (500 / 1000) + 's';
+		// 	el.style.left = ((Math.random() * 1000) | 0) + 'px';
+		// 	el.style.top  = ((Math.random() * 1000) | 0) + 'px';
+		// 	let f2 = e => {
+		// 		el.style.transition = null;
+		// 		console.log('done');
+		// 		removeEventListener('transitionend', f2)
+		// 	};
+		// 	el.addEventListener('transitionend', f2, false);
+		// }
 	});
 	
 	var eachDecksInGroup = function eachDecksInGroup(groupName, callback, data) {

@@ -181,10 +181,117 @@ export default class elClass {
 
 	animate(params, animationTime, callback, animationName) {
 
+		let _animation = share.get('animation');
+		
+		typeof animationTime == 'undefined' && (                          animationTime = share.get('animationTime'));
+		typeof animationTime == 'function'  && (callback = animationTime, animationTime = share.get('animationTime'));
+		typeof callback      == 'string'    && (                          animationName = callback, callback = null);
+
+		animationName = animationName ? animationName : 'animation_' + this._animationIndex;
+		
+		this._animationCallbacks[animationName] = callback;
+		this._animationIndex += 1;
+
+		let counter = 0;
+
+		let reType = (data) => {// crutch
+
+			let _e = data + '';
+
+			let _px = _e.split('px');
+			if(_px.length == 2) {
+				return (_px[0] | 0) + 'px'
+			}
+
+			return data;
+		};
+
+		// console.log('animation', _animation ? 'on' : 'off');
+
+		/*
+		 * Animation On
+		 */
+
+		if(_animation) {
+
+			try {
+			setTimeout(e => {
+
+				this.css({
+					"transition" : (animationTime / 1000) + 's'
+				});
+
+				for(let attrName in params) {
+
+					if(
+						reType(this.el.style[attrName]) != reType(params[attrName])
+					) {
+						counter += 1;
+					}
+					this.el.style[attrName] = params[attrName];
+				}
+
+				this.addClass('animated');
+
+				this.el.addEventListener('transitionend', e => {
+
+					counter -= 1;
+
+					// event.dispatch('animationEnd', this);
+
+					if(!counter) {
+
+						this.removeClass('animated');
+
+						this.css({
+							"transition" : null
+						});
+
+						if(typeof this._animationCallbacks[animationName] == 'function') {
+							this._animationCallbacks[animationName]();
+							this._animationCallbacks[animationName] = null;
+						}
+
+						event.dispatch('allAnimationsEnd', animationName);
+					}
+
+				}, false);
+			}, 0);
+			} catch(e) {}
+		
+		/*
+		 * Animation Off
+		 */
+
+		} else {
+			try {
+				
+				for(let attrName in params) {
+
+					if(
+						reType(this.el.style[attrName]) != reType(params[attrName])
+					) {
+						counter += 1;
+					}
+					this.el.style[attrName] = params[attrName];
+				}
+
+				if(typeof this._animationCallbacks[animationName] == 'function') {
+					this._animationCallbacks[animationName]();
+					this._animationCallbacks[animationName] = null;
+				}
+
+				event.dispatch('allAnimationsEnd', animationName);
+			} catch(e) {}
+		}
+	}
+
+	/*animate(params, animationTime, callback, animationName) {
+
 		try {
-			let _run = f => {f()};
-			// setTimeout(e => {
-			_run(e => {
+			// let _run = f => {f()};
+			setTimeout(e => {
+			// _run(e => {
 			let _animation = share.get('animation');
 
 			typeof animationTime == 'undefined' && (                          animationTime = share.get('animationTime'));
@@ -200,7 +307,7 @@ export default class elClass {
 				this.css({
 					"transition" : (animationTime / 1000) + 's'
 				});
-				// console.log('ANIMATE', this.el.style.transition, getEventListeners(this.el));
+				// this.el.style.transition = (animationTime / 1000) + 's';
 			}
 
 			let counter = 0;
@@ -224,17 +331,14 @@ export default class elClass {
 				) {
 					counter += 1;
 				}
-				// console.log('animate param', attrName, counter, getEventListeners(this.el));
-
+				// console.log('animation atom:', attrName, params[attrName]);
 				this.el.style[attrName] = params[attrName];
 			}
 
 			if(_animation) {
 
 				this.addClass('animated');
-				console.log('FUCKING LOG', _animation, this.el, this.el.style.transition);
 
-				// console.log('###1', this.el, this.el.style.transition, getEventListeners(this.el));
 				// this.el.addEventListener('webkitTransitionEnd', e => {
 				this.el.addEventListener('transitionend', e => {
 
@@ -260,8 +364,8 @@ export default class elClass {
 						event.dispatch('allAnimationsEnd', animationName);
 					}
 
-				}, true);
-				// console.log('###2', this.el.style.transition, getEventListeners(this.el));
+				// }, true);
+				}, false);
 			} else {
 
 				// event.dispatch('animationEnd', this);
@@ -275,7 +379,7 @@ export default class elClass {
 			}
 			}, 0);
 		} catch(e) {}
-	}
+	}*/
 
 	stop() {
 		this._animationCallbacks = [];

@@ -187,7 +187,7 @@ let undo = data => {
 
 event.listen('undo', undoData => {
 
-	if(!undoData) {
+	if(!undoData || share.get('stopRunHistory')) {
 		return;
 	}
 
