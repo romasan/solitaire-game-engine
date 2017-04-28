@@ -1,4 +1,4 @@
-'use strict';
+// 'use strict';
 
 import event        from 'event'       ;
 import share        from 'share'       ;
@@ -166,6 +166,7 @@ let undo = data => {
 			"from" : data.move.to  , // from ->
 			"to"   : data.move.from, //      <- to
 			"deck" : data.move.deck
+			// "flip" : data.move.flip
 		};
 
 		if(typeof data.move.flip == "boolean") {
@@ -191,11 +192,15 @@ event.listen('undo', undoData => {
 		return;
 	}
 
-	// console.log('%cUNDO: ' + JSON.stringify(undoData), 'background:#d6deff');
+	console.log('%cUNDO: ' + JSON.stringify(undoData), 'background:#d6deff');
 
 	inputs.break();
 
-	History.reset();
+	// History.reset();
+	let history = History.get();
+	for(let i in history) {
+		undo(history[i]);
+	}
 
 	if(share.get('animation')) {
 		event.dispatch('stopAnimations');
@@ -218,3 +223,5 @@ event.listen('undo', undoData => {
 
 	Tips.checkTips();
 });
+
+export default undo;

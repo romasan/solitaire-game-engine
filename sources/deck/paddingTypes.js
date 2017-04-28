@@ -132,9 +132,11 @@ let paddingTypes = {
 
 	"puffed": (params, card, index, length, deck, data) => {
 
+		let group = (data | 0) > 0 ? (data | 0) : 1; 
+
 		return {
-			"x" : params.x + params.flip_padding_x * ((index / data) | 0),
-			"y" : params.y + params.flip_padding_y * ((index / data) | 0)
+			"x" : params.x + params.flip_padding_x * ((index / group) | 0),
+			"y" : params.y + params.flip_padding_y * ((index / group) | 0)
 		}
 	}
 };

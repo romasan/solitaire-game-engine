@@ -147,7 +147,7 @@ let Move = (moveDeck, to, cursorMove) => {
 						_deck_departure.cards.length > 0                             &&
 						_deck_departure.cards[_deck_departure.cards.length - 1].flip
 					) {
-						_deck_departure.unflipTopCard();
+						_deck_departure.unflipTopCard(true);
 					}
 
 					let moveEndData = {

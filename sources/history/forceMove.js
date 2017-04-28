@@ -57,7 +57,7 @@ let forceMove = data => { // {from, to, deck, <flip>, <callback>}
 				data.deck[_index]                          &&
 				deckFromCards[i].name != data.deck[_index]
 			) {
-				console.log('forceMove:check:false', deckFrom.name, deckTo.name, deckFromCards[i].name, data.deck[_index]);
+				console.warn('forceMove:check:false', deckFrom.name, deckTo.name, deckFromCards[i].name, data.deck[_index]);
 				_check = false;
 			}
 		}
@@ -69,6 +69,7 @@ let forceMove = data => { // {from, to, deck, <flip>, <callback>}
 
 		// перевернуть карты во время хода
 		if(typeof data.flip == "boolean") {
+
 			for(let i in cardsPop) {
 				cardsPop[i].flip = data.flip; // !cardsPop[i].flip;
 			}

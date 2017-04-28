@@ -62,12 +62,23 @@ class kickAction extends deckAction {
 
 			let _addStep = historyData => {
 
+				for(let i in _deck) {
+
+					event.dispatch('addStep', {
+						"flip" : {
+							"deckName"  : _from.name,
+							"cardName"  : _deck[i]  ,
+							"cardIndex" : i
+						}
+					});
+				}
+
 				event.dispatch('addStep', {
 					"move" : {
 						"from"     : _from.name        ,
 						"to"       : data.actionData.to,
 						"deck"     : _deck             ,
-						"flip"     : true              ,
+						// "flip"     : true              ,
 						"stepType" : {
 							"undo" : historyData.undo,
 							"redo" : historyData.redo

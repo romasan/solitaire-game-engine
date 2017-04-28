@@ -10,6 +10,7 @@ import History      from 'history'     ;
 import Tips         from 'tips'        ;
 import atom         from 'atom'        ;
 import stateManager from 'stateManager';
+import undo         from 'undo'        ;
 
 /*
  * flip
@@ -51,6 +52,8 @@ let redo = data => {
 
 	// redo unflip
 	if(data.unflip) {
+
+		console.log('Unflip');
 
 		let deck = common.getElementByName(data.unflip.deckName, 'deck');
 
@@ -163,9 +166,9 @@ let redo = data => {
 			"flip" : data.move.flip
 		};
 
-		if(typeof data.move.flip == "boolean") {
-			forceMoveData.flip = data.move.flip;
-		}
+		// if(typeof data.move.flip == "boolean") {
+		// 	forceMoveData.flip = data.move.flip;
+		// }
 
 		if(!share.get('showHistoryAnimation')) {
 
@@ -226,11 +229,15 @@ event.listen('redo', redoData => {
 		return;
 	}
 
-	// console.log('%cREDO: ' + JSON.stringify(redoData), 'background:#fff7d6');
+	console.log('%cREDO: ' + JSON.stringify(redoData), 'background:#fff7d6');
 
 	inputs.break();
 
-	History.reset();
+	// History.reset();
+	let history = History.get();
+	for(let i in history) {
+		undo(history[i]);
+	}
 
 	if(share.get('animation')) {
 		event.dispatch('stopAnimations');
@@ -258,3 +265,5 @@ event.listen('redo', redoData => {
 	// 	Tips.checkTips();
 	// }
 });
+
+export default redo;

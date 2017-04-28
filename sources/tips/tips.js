@@ -20,7 +20,6 @@ import autoMoveToHome from 'autoMoveToHome';
  * tipsDestination
  * checkFrom
  * fromTo
- * autoMoveToHome
  */
 
 let _showTips = defaults.showTips;

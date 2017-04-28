@@ -142,7 +142,7 @@ let getElementsByName = (name, type) => {
 
 let getElementByName = (name, type) => getElementsByName(name, type)[0];
 
-let getElementsByType = type => {
+let getElementsByType = (type, filter) => {
 
 	let response = [];
 
@@ -154,7 +154,26 @@ let getElementsByType = type => {
 				typeof _elements[i].type == 'string' &&
 				       _elements[i].type == type
 			) {
-				response.push(_elements[i]);
+				if(filter) {
+
+					let checkedCount = 0,
+					    linesCount   = 0;
+
+					for(let filterName in filter) {
+
+						linesCount += 1;
+
+						if(filter[filterName] == _elements[i][filterName]) {
+							checkedCount += 1;
+						}
+					}
+
+					if(checkedCount > 0 && checkedCount == linesCount) {
+						response.push(_elements[i]);
+					}
+				} else {
+					response.push(_elements[i]);
+				}
 			}
 		}
 	}

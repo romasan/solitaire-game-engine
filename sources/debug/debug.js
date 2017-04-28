@@ -134,32 +134,47 @@ event.listen('logCardsInDeck', logCardsInDeck);
 let keys = {
 	"c" : 67, // clear
 	"d" : 68, // debug
+	"h" : 72, // history
 	"n" : 78, // next
 }
 
-let kosynka_log = data => {
+let solitaire_log = data => {
 
-	console.log('ROLLER DECK:');
-	let deck = common.getElementByName('rollerDeck');
-	logCardsInDeck(deck);
+	let groups = common.getElementsByType('group');
+	for(let i in groups) {
+		console.log('Group:', groups[i].name);
+		eachDecksInGroup(groups[i].name, logCardsInDeck);
+	}
 
-	console.log('GROUP HOME:');
-	eachDecksInGroup('group_home', logCardsInDeck);
+	// console.log('GROUP HOME:');
+	// eachDecksInGroup('group_home', logCardsInDeck);
 
-	console.log('GROUP ROW:');
-	eachDecksInGroup('group_row', logCardsInDeck, data);
+	let decks = common.getElementsByType('deck', {
+		"parent" : 'field'
+	});
+
+	for(let i in decks) {
+		console.log('Deck:', decks[i].name);
+		logCardsInDeck(decks[i]);
+	}
+
+	// console.log('ROLLER DECK:');
+	// let deck = common.getElementByName('rollerDeck');
+	// logCardsInDeck(deck);
 }
 
-event.listen('kosynka_log', kosynka_log);
+event.listen('solitaire_log', solitaire_log);
 
 document.onkeyup = e => {
 
 	if(e.keyCode == keys.d) {
-		kosynka_log();
+		solitaire_log();
 	} else if(e.keyCode == keys.n) {
 		event.dispatch('next_history_step');
 	} else if(e.keyCode == keys.c) {
 		console.clear();
+	} else if(e.keyCode == keys.h) {
+		console.log('History:', JSON.stringify(history.get(false), true, 2));
 	}
 }
 

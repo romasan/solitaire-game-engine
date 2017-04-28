@@ -158,7 +158,7 @@ class dealerdeckAction extends deckAction {
 					"from"     : dealDeck.name      ,
 					"to"       : _decks[deckId].name,
 					"deck"     : [_cardName]        ,
-					"flip"     : true               ,
+					"flip"     : false              ,
 					"callback" : _callback
 				}, true);
 
@@ -167,12 +167,22 @@ class dealerdeckAction extends deckAction {
 
 				event.dispatch('dealEnd');
 
+				let cardIndex = dealDeck.cards.length - 1;
+
+				event.dispatch('addStep', {
+					"unflip" : {
+						"deckName"  : dealDeck.name,
+						"cardName"  : _cardName    ,
+						"cardIndex" : cardIndex
+					}
+				});
+
 				event.dispatch('addStep', {
 					"move" : {
 						"from"     :       dealDeck.name,
 						"to"       : _decks[deckId].name,
 						"deck"     : [_cardName]        ,
-						"flip"     : true               ,
+						// "flip"     : true               ,
 						"stepType" : {
 							"undo" : share.get('stepType'),
 							"redo" : data.actionData.dispatch

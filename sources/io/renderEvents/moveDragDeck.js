@@ -124,22 +124,22 @@ event.listen('moveDragDeckDone', data => {
 	}
 });
 
-event.listen('dragDeck', data => {// {x, y, _dragDeck, _startCursor, _deck}
+event.listen('dragDeck', data => {// {x, y, dragDeck, startCursor, deck}
 
-	for(let i in data._dragDeck) {
+	for(let i in data.dragDeck) {
 
 		let _zoom = share.get('zoom');
 
-		let _position = data._deck.padding(data._dragDeck[i].index);
+		let _position = data.deck.padding(data.dragDeck[i].index);
 
 		let _params = {
-			"left"    : (_position.x + (data.x - data._startCursor.x) / _zoom) + 'px',
-			"top"     : (_position.y + (data.y - data._startCursor.y) / _zoom) + 'px',
+			"left"    : (_position.x + (data.x - data.startCursor.x) / _zoom) + 'px',
+			"top"     : (_position.y + (data.y - data.startCursor.y) / _zoom) + 'px',
 			"z-index" : defaults.topZIndex + (i | 0)
 		}
 
 		// Operations with DOM
-		let _cardDomElement = share.get('domElement:' + data._dragDeck[i].card.id);
+		let _cardDomElement = share.get('domElement:' + data.dragDeck[i].card.id);
 
 		elRender(_cardDomElement)
 			.css(_params);

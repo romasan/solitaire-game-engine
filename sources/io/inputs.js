@@ -216,11 +216,13 @@ class inputs {
 				});
 
 				if(_card.flip) {
+
 					event.dispatch('click:flipCard', {
 						"to"     : _deck,
 						"toCard" : _card
 					});
 				} else {
+
 					event.dispatch('click:unflipCard', {
 						"to"     : _deck,
 						"toCard" : _card
@@ -267,20 +269,23 @@ class inputs {
 			return;
 		}
 
-		// let _distance = _startCursor 
-		// 	? Math.sqrt(common.sqr(x - _startCursor.x) + common.sqr(y - _startCursor.y)) 
-		// 	: 0;
+
+		let _distance = _startCursor 
+			? Math.sqrt((e => e * e)(x - _startCursor.x) + (e => e * e)(y - _startCursor.y)) 
+			: 0;
 
 		let _deck = common.getElementById(_dragDeck[0].card.parent);
 
 		// let _position = _deck.padding(_dragDeck[_dragDeck.length - 1].index);
 
 		event.dispatch('dragDeck', {
-			"x"            : x           ,
-			"y"            : y           , 
-			"_dragDeck"    : _dragDeck   , 
-			"_startCursor" : _startCursor, 
-			"_deck"        : _deck
+			"x"           : x                ,
+			"y"           : y                ,
+			"dragDeck"    : _dragDeck        ,
+			"startCursor" : _startCursor     ,
+			"deck"        : _deck            ,
+			"card"        : _dragDeck[0].card,
+			"distance"    : _distance
 		});
 
 		// подсказка лучшего хода до отпускания
