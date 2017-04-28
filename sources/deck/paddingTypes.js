@@ -107,6 +107,7 @@ let paddingTypes = {
 			index >= length - open && // delimiter and after
 			card.flip == false        // closed cards
 		) {
+
 			return {
 				"x" : params.x + (defaults.card.width * share.get('zoom')) + padding + ((index - length + open - correct) * params.padding_x),
 				"y" : params.y + (index - length + open) * params.padding_y
@@ -127,6 +128,14 @@ let paddingTypes = {
 			"x" : params.x,
 			"y" : params.y
 		};
+	},
+
+	"puffed": (params, card, index, length, deck, data) => {
+
+		return {
+			"x" : params.x + params.flip_padding_x * ((index / data) | 0),
+			"y" : params.y + params.flip_padding_y * ((index / data) | 0)
+		}
 	}
 };
 

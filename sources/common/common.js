@@ -13,23 +13,23 @@ import drawPreferences    from 'drawPreferences'   ;
 import preferencesEvents  from 'preferencesEvents' ;
 import defaultPreferences from 'defaultPreferences';
 import specialStep        from 'specialStep'       ;
+import showFlipCardOnMove from 'showFlipCardOnMove';
 
 /*
-
-Listeners:
-
+ * Listeners:
+ *
  * gameInit
  * gameInited
  * moveEnd
  * actionBreak
  * startSession
  * stopSession
-
- * newGame
  * historyReapeater
-
-Methods:
-
+ * toggleMarkerMode
+ * toggleSpecialStepMode
+ *
+ * Methods:
+ *
  * isCurLock
  * curLock
  * curUnLock
@@ -43,7 +43,10 @@ Methods:
  * animationOn
  * animationDefault
  * animationOff
-
+ * stopRunHistory
+ * startRunHistory
+ * toggleMarkerMode
+ * toggleSpecialStepMode
  */
 
 event.listen('gameInit', data => {
@@ -284,37 +287,6 @@ let toggleSpecialStepMode = e => {
 }
 
 event.listen('toggleSpecialStepMode', toggleSpecialStepMode);
-
-event.listen('dragStart', data => {
-
-	if(
-		!data.deck                           ||
-		!data.card                           ||
-		 data.deck.showPrefFlipCard == false
-	) {
-		return;
-	}
-
-	// TODO вкл./выкл. defaults, field, group, deck
-
-	if(
-		typeof data.card.flip == "boolean" &&
-		       data.card.flip == false
-	) {
-
-		let prevCard = null;
-
-		for(let i = data.deck.cards.length - 1; i >= 0 && !prevCard; i -= 1) {
-			if(data.deck.cards[i].id == data.card.id && i > 0) {
-				prevCard = data.deck.cards[i - 1];
-			}
-		}
-
-		if(prevCard) {
-			event.dispatch('unflipCard', prevCard);
-		}
-	}
-});
 
 export default {
 	"isCurLock"         : isCurLock        ,

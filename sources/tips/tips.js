@@ -1,14 +1,15 @@
 'use strict';
 
-import event    from 'event'   ;
-import share    from 'share'   ;
-import defaults from 'defaults';
-import common   from 'common'  ;
+import event          from 'event'         ;
+import share          from 'share'         ;
+import defaults       from 'defaults'      ;
+import common         from 'common'        ;
 
-import allToAll from 'allToAll';
-import bestTip  from 'bestTip' ;
-import Deck     from 'deck'    ;
-import Field    from 'field'   ;
+import allToAll       from 'allToAll'      ;
+import bestTip        from 'bestTip'       ;
+import Deck           from 'deck'          ;
+import Field          from 'field'         ;
+import autoMoveToHome from 'autoMoveToHome';
 
 /*
  * getTips
@@ -208,69 +209,6 @@ let fromTo = (from, to) => {
 
 	return false;
 };
-
-// Автоход в "дом"
-let autoMoveToHome = data => {
-
-	event.dispatch('startRunHistory');
-
-	let _homeGroups = Field.homeGroups;
-	let homeGroupDecksNames = [];
-
-	for(let groupNameIndex in _homeGroups) {
-
-		let groupName = _homeGroups[groupNameIndex];
-
-		let group = common.getElementsByName(groupName, 'deck')[0];
-		let decks = group.getDecks();
-
-		for(let deckIndex in decks) {
-
-			let deck = decks[deckIndex];
-
-			homeGroupDecksNames.push(deck.name);
-		}
-	}
-
-	let suitableTips = [];
-
-	for(let tipIndex in _tips) {
-
-		let tip = _tips[tipIndex];
-
-		if(
-			homeGroupDecksNames.indexOf(tip.to  .deck.name) >= 0 &&
-			homeGroupDecksNames.indexOf(tip.from.deck.name) <  0
-		) {
-			suitableTips.push(tip);
-		}
-	}
-
-	if(suitableTips.length > 0) {
-
-		let tip = suitableTips[0];
-
-		let forceMoveData = {
-			"from"    :  tip.from.deck.name ,
-			"to"      :  tip.to  .deck.name ,
-			"deck"    : [tip.from.card.name],
-			"addStep" : true                ,
-			"save"    : true
-		};
-
-		event.dispatch('forceMove', forceMoveData);
-
-		checkTips();
-
-		autoMoveToHome(data);
-	} else {
-		event.dispatch('winCheck', {
-			"show" : true
-		});
-	}
-};
-
-event.listen('autoMoveToHome', autoMoveToHome);
 
 export default {
 	"tipTypes"        : tipTypes       ,
