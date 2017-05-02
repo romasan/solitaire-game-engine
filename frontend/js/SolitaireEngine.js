@@ -111,7 +111,7 @@ var SolitaireEngine =
 	exports.options = _defaults2.default;
 	exports.winCheck = _winCheck2.default.hwinCheck;
 	exports.generator = _deckGenerator2.default;
-	exports.version = (9091497424).toString().split(9).slice(1).map(function (e) {
+	exports.version = (9091497427).toString().split(9).slice(1).map(function (e) {
 		return parseInt(e, 8);
 	}).join('.');
 	
@@ -7272,10 +7272,6 @@ var SolitaireEngine =
 
 	'use strict';
 	
-	Object.defineProperty(exports, "__esModule", {
-		value: true
-	});
-	
 	var _event = __webpack_require__(2);
 	
 	var _event2 = _interopRequireDefault(_event);
@@ -7355,8 +7351,6 @@ var SolitaireEngine =
 	
 		// redo unflip
 		if (data.unflip) {
-	
-			console.log('Unflip');
 	
 			var _deck = _common2.default.getElementByName(data.unflip.deckName, 'deck');
 	
@@ -7447,9 +7441,9 @@ var SolitaireEngine =
 				"flip": data.move.flip
 			};
 	
-			// if(typeof data.move.flip == "boolean") {
-			// 	forceMoveData.flip = data.move.flip;
-			// }
+			if (typeof data.move.flip == "boolean") {
+				forceMoveData.flip = data.move.flip;
+			}
 	
 			if (!_share2.default.get('showHistoryAnimation')) {
 	
@@ -7504,14 +7498,17 @@ var SolitaireEngine =
 			return;
 		}
 	
-		console.log('%cREDO: ' + JSON.stringify(redoData), 'background:#fff7d6');
+		// console.log('%cREDO: ' + JSON.stringify(redoData), 'background:#fff7d6');
 	
 		_inputs2.default.break();
 	
 		// History.reset();
 		var history = _history2.default.get();
-		for (var i in history) {
-			(0, _undo2.default)(history[i]);
+		// for(let i in history) {
+		if (history.length > 0) {
+			for (var i = history.length - 1; i > 0; i += 1) {
+				(0, _undo2.default)(history[i]);
+			}
 		}
 	
 		if (_share2.default.get('animation')) {
@@ -7540,8 +7537,6 @@ var SolitaireEngine =
 		// 	Tips.checkTips();
 		// }
 	});
-	
-	exports.default = redo;
 
 /***/ },
 /* 38 */

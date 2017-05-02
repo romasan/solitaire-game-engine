@@ -53,8 +53,6 @@ let redo = data => {
 	// redo unflip
 	if(data.unflip) {
 
-		console.log('Unflip');
-
 		let deck = common.getElementByName(data.unflip.deckName, 'deck');
 
 		let card = deck.getCardByIndex(data.unflip.cardIndex | 0);
@@ -166,9 +164,9 @@ let redo = data => {
 			"flip" : data.move.flip
 		};
 
-		// if(typeof data.move.flip == "boolean") {
-		// 	forceMoveData.flip = data.move.flip;
-		// }
+		if(typeof data.move.flip == "boolean") {
+			forceMoveData.flip = data.move.flip;
+		}
 
 		if(!share.get('showHistoryAnimation')) {
 
@@ -229,14 +227,17 @@ event.listen('redo', redoData => {
 		return;
 	}
 
-	console.log('%cREDO: ' + JSON.stringify(redoData), 'background:#fff7d6');
+	// console.log('%cREDO: ' + JSON.stringify(redoData), 'background:#fff7d6');
 
 	inputs.break();
 
 	// History.reset();
 	let history = History.get();
-	for(let i in history) {
-		undo(history[i]);
+	// for(let i in history) {
+	if(history.length > 0) {
+		for(let i = history.length - 1; i > 0; i += 1) {
+			undo(history[i]);
+		}
 	}
 
 	if(share.get('animation')) {
@@ -265,5 +266,3 @@ event.listen('redo', redoData => {
 	// 	Tips.checkTips();
 	// }
 });
-
-export default redo;
