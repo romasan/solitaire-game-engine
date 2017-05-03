@@ -65,6 +65,11 @@ class historyClass {
 		let _req = this.steps;
 
 		if(reset) {
+
+			console.groupCollapsed('History:get(reset)', _req.length);
+			console.log('%c' + JSON.stringify(_req, true, 2), 'background: #e0edfa;width: 100%;');
+			console.groupEnd();
+
 			this.reset(true);
 		}
 

@@ -60,7 +60,7 @@ class kickAction extends deckAction {
 			// 	return;
 			// }
 
-			let _addStep = historyData => {
+			let addKickStep = historyData => {
 
 				for(let i in _deck) {
 
@@ -96,7 +96,7 @@ class kickAction extends deckAction {
 				event.dispatch(data.actionData.dispatch, {
 					before: data => {
 
-						_addStep({
+						addKickStep({
 							"undo" : stepType     ,
 							"redo" : data.stepType
 						});
@@ -107,7 +107,7 @@ class kickAction extends deckAction {
 			} else {
 
 				event.dispatch('kick:end');
-				_addStep({
+				addKickStep({
 					"undo" : stepType                                                            ,
 					"redo" : data.actionData.dispatch ? share.get('stepType') : defaults.stepType
 					// "redo" : defaults.stepType

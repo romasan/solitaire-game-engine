@@ -174,7 +174,11 @@ document.onkeyup = e => {
 	} else if(e.keyCode == keys.c) {
 		console.clear();
 	} else if(e.keyCode == keys.h) {
-		console.log('History:', JSON.stringify(history.get(false), true, 2));
+		// console.log('History:', history.get(false));
+		let _history = history.get(false);
+		console.groupCollapsed('debug:history', _history.length);
+		console.log('%c' + JSON.stringify(_history, true, 2), 'background: #faede0;');
+		console.groupEnd();
 	}
 }
 

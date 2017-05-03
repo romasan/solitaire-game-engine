@@ -235,7 +235,7 @@ event.listen('redo', redoData => {
 	let history = History.get();
 	// for(let i in history) {
 	if(history.length > 0) {
-		for(let i = history.length - 1; i > 0; i += 1) {
+		for(let i = history.length - 1; i >= 0; i -= 1) {
 			undo(history[i]);
 		}
 	}

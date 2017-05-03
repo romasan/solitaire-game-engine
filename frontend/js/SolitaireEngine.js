@@ -111,7 +111,7 @@ var SolitaireEngine =
 	exports.options = _defaults2.default;
 	exports.winCheck = _winCheck2.default.hwinCheck;
 	exports.generator = _deckGenerator2.default;
-	exports.version = (9091497427).toString().split(9).slice(1).map(function (e) {
+	exports.version = (9091497447).toString().split(9).slice(1).map(function (e) {
 		return parseInt(e, 8);
 	}).join('.');
 	
@@ -5639,7 +5639,7 @@ var SolitaireEngine =
 					// 	return;
 					// }
 	
-					var _addStep = function _addStep(historyData) {
+					var addKickStep = function addKickStep(historyData) {
 	
 						for (var i in _deck) {
 	
@@ -5675,7 +5675,7 @@ var SolitaireEngine =
 						_event2.default.dispatch(data.actionData.dispatch, {
 							before: function before(data) {
 	
-								_addStep({
+								addKickStep({
 									"undo": stepType,
 									"redo": data.stepType
 								});
@@ -5686,7 +5686,7 @@ var SolitaireEngine =
 					} else {
 	
 						_event2.default.dispatch('kick:end');
-						_addStep({
+						addKickStep({
 							"undo": stepType,
 							"redo": data.actionData.dispatch ? _share2.default.get('stepType') : _defaults2.default.stepType
 							// "redo" : defaults.stepType
@@ -6848,6 +6848,11 @@ var SolitaireEngine =
 				var _req = this.steps;
 	
 				if (reset) {
+	
+					console.groupCollapsed('History:get(reset)', _req.length);
+					console.log('%c' + JSON.stringify(_req, true, 2), 'background: #e0edfa;width: 100%;');
+					console.groupEnd();
+	
 					this.reset(true);
 				}
 	
@@ -7175,14 +7180,19 @@ var SolitaireEngine =
 			return;
 		}
 	
-		console.log('%cUNDO: ' + JSON.stringify(undoData), 'background:#d6deff');
+		console.groupCollapsed('UNDO');
+		console.log('%c' + JSON.stringify(undoData, true, 2), 'background:#d6deff');
+		console.groupEnd();
 	
 		_inputs2.default.break();
 	
 		// History.reset();
 		var history = _history2.default.get();
-		for (var i in history) {
-			undo(history[i]);
+		if (history.length > 0) {
+			for (var i = history.length - 1; i >= 0; i -= 1) {
+				console.log('###', history[i]);
+				undo(history[i]);
+			}
 		}
 	
 		if (_share2.default.get('animation')) {
@@ -7506,7 +7516,7 @@ var SolitaireEngine =
 		var history = _history2.default.get();
 		// for(let i in history) {
 		if (history.length > 0) {
-			for (var i = history.length - 1; i > 0; i += 1) {
+			for (var i = history.length - 1; i >= 0; i -= 1) {
 				(0, _undo2.default)(history[i]);
 			}
 		}
@@ -10057,7 +10067,7 @@ var SolitaireEngine =
 							"stepType": _share2.default.get('stepType')
 						};
 	
-						_event2.default.dispatch('moveEnd:beforeSave', moveEndData);
+						_event2.default.dispatch('moveEnd:beforeSave', moveEndData); // used in autoStep
 	
 						var _tips = _tips3.default.getTips();
 	
@@ -12309,9 +12319,9 @@ var SolitaireEngine =
 	
 	var _stateManager2 = _interopRequireDefault(_stateManager);
 	
-	var _history = __webpack_require__(33);
+	var _history2 = __webpack_require__(33);
 	
-	var _history2 = _interopRequireDefault(_history);
+	var _history3 = _interopRequireDefault(_history2);
 	
 	var _mapCommon = __webpack_require__(52);
 	
@@ -12480,7 +12490,11 @@ var SolitaireEngine =
 		} else if (e.keyCode == keys.c) {
 			console.clear();
 		} else if (e.keyCode == keys.h) {
-			console.log('History:', JSON.stringify(_history2.default.get(false), true, 2));
+			// console.log('History:', history.get(false));
+			var _history = _history3.default.get(false);
+			console.groupCollapsed('debug:history', _history.length);
+			console.log('%c' + JSON.stringify(_history, true, 2), 'background: #faede0;');
+			console.groupEnd();
 		}
 	};
 	
@@ -12492,7 +12506,7 @@ var SolitaireEngine =
 		deckGenerator: _deckGenerator2.default,
 		elRender: _elRender2.default,
 		stateManager: _stateManager2.default,
-		history: _history2.default,
+		history: _history3.default,
 		mapCommon: _mapCommon2.default
 	};
 

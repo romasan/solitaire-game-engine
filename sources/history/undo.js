@@ -192,14 +192,19 @@ event.listen('undo', undoData => {
 		return;
 	}
 
-	console.log('%cUNDO: ' + JSON.stringify(undoData), 'background:#d6deff');
+	console.groupCollapsed('UNDO');
+	console.log('%c' + JSON.stringify(undoData, true, 2), 'background:#d6deff');
+	console.groupEnd();
 
 	inputs.break();
 
 	// History.reset();
 	let history = History.get();
-	for(let i in history) {
-		undo(history[i]);
+	if(history.length > 0) {
+		for(let i = history.length - 1; i >= 0; i -= 1) {
+			console.log('###', history[i]);
+			undo(history[i]);
+		}
 	}
 
 	if(share.get('animation')) {
