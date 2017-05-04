@@ -18,6 +18,8 @@ class dealerdeckAction extends deckAction {
 
 	run(deck, data) {// data.actionData, e
 
+		console.log('dealerdeckAction:run', JSON.stringify(data));
+
 		let save = typeof data.eventData.save == "boolean" ? data.eventData.save : true;
 
 		// default data.actionData.onlyEmpty - false
@@ -167,7 +169,7 @@ class dealerdeckAction extends deckAction {
 
 				event.dispatch('dealEnd');
 
-				let cardIndex = dealDeck.cards.length - 1;
+				let cardIndex = dealDeck.cards.length;
 
 				event.dispatch('addStep', {
 					"unflip" : {

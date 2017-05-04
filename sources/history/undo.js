@@ -54,6 +54,8 @@ let undo = data => {
 
 		let card = deck.getCardByIndex(data.unflip.cardIndex | 0);
 
+		// console.log('undo:unflip -> flip', data.unflip, deck.name, card.name, deck.cards.map(e => e.name));
+
 		event.dispatch('removeMarkCard', {
 			"card" : card
 		});
@@ -151,6 +153,8 @@ let undo = data => {
 		typeof data.move.deck != 'undefined'
 	) {
 
+		// console.log('undo:move', JSON.stringify(data.move));
+
 		if(data.move.stepType) {
 
 			if(typeof data.move.stepType == 'string') {
@@ -192,10 +196,6 @@ event.listen('undo', undoData => {
 		return;
 	}
 
-	console.groupCollapsed('UNDO');
-	console.log('%c' + JSON.stringify(undoData, true, 2), 'background:#d6deff');
-	console.groupEnd();
-
 	inputs.break();
 
 	// History.reset();
@@ -206,6 +206,10 @@ event.listen('undo', undoData => {
 			undo(history[i]);
 		}
 	}
+
+	console.groupCollapsed('UNDO');
+	console.log('%c' + JSON.stringify(undoData, true, 2), 'background:#d6deff');
+	console.groupEnd();
 
 	if(share.get('animation')) {
 		event.dispatch('stopAnimations');

@@ -169,15 +169,15 @@ let Move = (moveDeck, to, cursorMove) => {
 						event.dispatch('saveSteps', 'MOVE');
 					}
 
-					moveEndData.before = data => {
-						if(data && typeof data.stepType == 'string') {
-							event.dispatch('addStep', {
-								"redo": {
-									"stepType": data.stepType
-								}
-							})
-						}
-					};
+					// moveEndData.before = data => {
+					// 	if(data && typeof data.stepType == 'string') {
+					// 		event.dispatch('addStep', {
+					// 			"redo": {
+					// 				"stepType": data.stepType
+					// 			}
+					// 		})
+					// 	}
+					// };
 
 					event.dispatch('moveEnd:' + share.get('stepType'));
 

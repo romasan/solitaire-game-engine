@@ -32,29 +32,33 @@ export default class {
 		}
 	}
 
-	start(e) {
+	start(data) {
 
 		if(!this.autoStep) {
 			event.dispatch('stopSession');
 		}
 
 		share.set('autoStep:stepType', this.stepType);
-
-		if(e && typeof e.before == 'function') {
-			e.before({
-				"stepType" : this.stepType
-			});
-		}
 		
 		share.set('stepType', this.stepType);
+
+		console.log('autoStep', this.autoStep, this._name);
 
 		if(this.autoStep) {
 
 			common.curLock();
+
 			this.auto();
 		} else {
 
-			this.check();
+			if(this.check()) {
+				
+				if(data && typeof data.before == 'function') {
+					data.before({
+						"stepType" : this.stepType
+					});
+				}
+			}
 		}
 	}
 

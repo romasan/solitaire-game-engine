@@ -111,7 +111,7 @@ var SolitaireEngine =
 	exports.options = _defaults2.default;
 	exports.winCheck = _winCheck2.default.hwinCheck;
 	exports.generator = _deckGenerator2.default;
-	exports.version = (9091497447).toString().split(9).slice(1).map(function (e) {
+	exports.version = (9091497504).toString().split(9).slice(1).map(function (e) {
 		return parseInt(e, 8);
 	}).join('.');
 	
@@ -5142,6 +5142,8 @@ var SolitaireEngine =
 			value: function run(deck, data) {
 				// data.actionData, e
 	
+				console.log('dealerdeckAction:run', JSON.stringify(data));
+	
 				var save = typeof data.eventData.save == "boolean" ? data.eventData.save : true;
 	
 				// default data.actionData.onlyEmpty - false
@@ -5283,7 +5285,7 @@ var SolitaireEngine =
 	
 							_event2.default.dispatch('dealEnd');
 	
-							var cardIndex = dealDeck.cards.length - 1;
+							var cardIndex = dealDeck.cards.length;
 	
 							_event2.default.dispatch('addStep', {
 								"unflip": {
@@ -5639,7 +5641,7 @@ var SolitaireEngine =
 					// 	return;
 					// }
 	
-					var addKickStep = function addKickStep(historyData) {
+					var _addStep = function _addStep(historyData) {
 	
 						for (var i in _deck) {
 	
@@ -5675,7 +5677,7 @@ var SolitaireEngine =
 						_event2.default.dispatch(data.actionData.dispatch, {
 							before: function before(data) {
 	
-								addKickStep({
+								_addStep({
 									"undo": stepType,
 									"redo": data.stepType
 								});
@@ -5686,7 +5688,7 @@ var SolitaireEngine =
 					} else {
 	
 						_event2.default.dispatch('kick:end');
-						addKickStep({
+						_addStep({
 							"undo": stepType,
 							"redo": data.actionData.dispatch ? _share2.default.get('stepType') : _defaults2.default.stepType
 							// "redo" : defaults.stepType
@@ -6905,12 +6907,15 @@ var SolitaireEngine =
 	// save steps to client history
 	_event2.default.listen('saveSteps', function (e) {
 	
+		console.log('%c### saveSteps', 'font-weight: bold; color: green;');
+	
 		var data = history.get();
 	
 		if (data.length) {
 			_event2.default.dispatch('makeStep', data);
 		} else {
-			console.warn('Empty history to save.');
+			// console.warn('Empty history to save.');
+			throw new Error('Empty history to save.');
 		}
 	});
 	
@@ -7065,6 +7070,8 @@ var SolitaireEngine =
 	
 			var _card = _deck.getCardByIndex(data.unflip.cardIndex | 0);
 	
+			// console.log('undo:unflip -> flip', data.unflip, deck.name, card.name, deck.cards.map(e => e.name));
+	
 			_event2.default.dispatch('removeMarkCard', {
 				"card": _card
 			});
@@ -7139,6 +7146,8 @@ var SolitaireEngine =
 		// undo move
 		if (typeof data.move != 'undefined' && typeof data.move.from != 'undefined' && typeof data.move.to != 'undefined' && typeof data.move.deck != 'undefined') {
 	
+			// console.log('undo:move', JSON.stringify(data.move));
+	
 			if (data.move.stepType) {
 	
 				if (typeof data.move.stepType == 'string') {
@@ -7180,10 +7189,6 @@ var SolitaireEngine =
 			return;
 		}
 	
-		console.groupCollapsed('UNDO');
-		console.log('%c' + JSON.stringify(undoData, true, 2), 'background:#d6deff');
-		console.groupEnd();
-	
 		_inputs2.default.break();
 	
 		// History.reset();
@@ -7194,6 +7199,10 @@ var SolitaireEngine =
 				undo(history[i]);
 			}
 		}
+	
+		console.groupCollapsed('UNDO');
+		console.log('%c' + JSON.stringify(undoData, true, 2), 'background:#d6deff');
+		console.groupEnd();
 	
 		if (_share2.default.get('animation')) {
 			_event2.default.dispatch('stopAnimations');
@@ -9060,6 +9069,7 @@ var SolitaireEngine =
 	
 			_this._name = 'fall';
 	
+			// со скольки стопок могут <<упасть>> карты в стопку из которой сделан ход
 			_this.manualPossibleMoves = 0;
 	
 			// event.listen('fallAutoStepCheck', this.check);
@@ -9077,11 +9087,16 @@ var SolitaireEngine =
 	
 				var _tips = _tips3.default.getTips();
 	
+				console.log('fallAutoStep:check', _tips.length);
+	
 				if (_tips.length == 0) {
 	
 					this.end();
 					// Tips.checkTips();
+					return false;
 				}
+	
+				return true;
 			}
 	
 			// start() {
@@ -9113,6 +9128,8 @@ var SolitaireEngine =
 			key: 'manual',
 			value: function manual(data) {
 	
+				// console.log('fallAutoStep:manual');
+	
 				// empty
 				// check fall
 				// this.check();
@@ -9136,7 +9153,7 @@ var SolitaireEngine =
 			key: 'end',
 			value: function end() {
 				_get(fallAutoStep.prototype.__proto__ || Object.getPrototypeOf(fallAutoStep.prototype), 'end', this).call(this, {
-					"save": this.manualPossibleMoves > 0 ? true : false
+					"save": true // (this.manualPossibleMoves > 0 ? true : false)
 				});
 			}
 		}]);
@@ -9207,7 +9224,7 @@ var SolitaireEngine =
 	
 		_createClass(_class, [{
 			key: 'start',
-			value: function start(e) {
+			value: function start(data) {
 	
 				if (!this.autoStep) {
 					_event2.default.dispatch('stopSession');
@@ -9215,21 +9232,25 @@ var SolitaireEngine =
 	
 				_share2.default.set('autoStep:stepType', this.stepType);
 	
-				if (e && typeof e.before == 'function') {
-					e.before({
-						"stepType": this.stepType
-					});
-				}
-	
 				_share2.default.set('stepType', this.stepType);
+	
+				console.log('autoStep', this.autoStep, this._name);
 	
 				if (this.autoStep) {
 	
 					_common2.default.curLock();
+	
 					this.auto();
 				} else {
 	
-					this.check();
+					if (this.check()) {
+	
+						if (data && typeof data.before == 'function') {
+							data.before({
+								"stepType": this.stepType
+							});
+						}
+					}
 				}
 			}
 		}, {
@@ -10075,15 +10096,15 @@ var SolitaireEngine =
 							_event2.default.dispatch('saveSteps', 'MOVE');
 						}
 	
-						moveEndData.before = function (data) {
-							if (data && typeof data.stepType == 'string') {
-								_event2.default.dispatch('addStep', {
-									"redo": {
-										"stepType": data.stepType
-									}
-								});
-							}
-						};
+						// moveEndData.before = data => {
+						// 	if(data && typeof data.stepType == 'string') {
+						// 		event.dispatch('addStep', {
+						// 			"redo": {
+						// 				"stepType": data.stepType
+						// 			}
+						// 		})
+						// 	}
+						// };
 	
 						_event2.default.dispatch('moveEnd:' + _share2.default.get('stepType'));
 	

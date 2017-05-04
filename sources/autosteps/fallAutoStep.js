@@ -16,6 +16,7 @@ export default class fallAutoStep extends autoStep {
 
 		this._name = 'fall';
 
+		// со скольки стопок могут <<упасть>> карты в стопку из которой сделан ход
 		this.manualPossibleMoves = 0;
 
 		// event.listen('fallAutoStepCheck', this.check);
@@ -28,11 +29,16 @@ export default class fallAutoStep extends autoStep {
 
 		let _tips = Tips.getTips();
 
+		console.log('fallAutoStep:check', _tips.length);
+
 		if(_tips.length == 0) {
 
 			this.end();
 			// Tips.checkTips();
+			return false;
 		}
+
+		return true;
 	}
 
 	// start() {
@@ -59,6 +65,8 @@ export default class fallAutoStep extends autoStep {
 	// если click = false то отрабатывается move а здесь проверка возможен ли ход
 	manual(data) {
 
+		// console.log('fallAutoStep:manual');
+
 		// empty
 		// check fall
 		// this.check();
@@ -84,7 +92,7 @@ export default class fallAutoStep extends autoStep {
 
 	end() {
 		super.end({
-			"save" : (this.manualPossibleMoves > 0 ? true : false)
+			"save" : true // (this.manualPossibleMoves > 0 ? true : false)
 		});
 	}
 }

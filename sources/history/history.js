@@ -114,12 +114,15 @@ event.listen('addStep', data => {
 // save steps to client history
 event.listen('saveSteps', e => {
 
+	console.log('%c### saveSteps', 'font-weight: bold; color: green;');
+
 	let data = history.get();
 
 	if(data.length) {
 		event.dispatch('makeStep', data);
 	} else {
-		console.warn('Empty history to save.');
+		// console.warn('Empty history to save.');
+		throw new Error('Empty history to save.');
 	}
 });
 
