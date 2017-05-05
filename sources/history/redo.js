@@ -227,7 +227,9 @@ event.listen('redo', redoData => {
 		return;
 	}
 
-	// console.log('%cREDO: ' + JSON.stringify(redoData), 'background:#fff7d6');
+	console.groupCollapsed('REDO');
+	console.log('%c' + JSON.stringify(redoData, true, 2), 'background:#fff7d6');
+	console.groupEnd();
 
 	inputs.break();
 

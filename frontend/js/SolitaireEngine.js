@@ -111,7 +111,7 @@ var SolitaireEngine =
 	exports.options = _defaults2.default;
 	exports.winCheck = _winCheck2.default.hwinCheck;
 	exports.generator = _deckGenerator2.default;
-	exports.version = (9091497504).toString().split(9).slice(1).map(function (e) {
+	exports.version = (9091497522).toString().split(9).slice(1).map(function (e) {
 		return parseInt(e, 8);
 	}).join('.');
 	
@@ -5118,6 +5118,10 @@ var SolitaireEngine =
 	
 	var _deckAction3 = _interopRequireDefault(_deckAction2);
 	
+	var _history = __webpack_require__(33);
+	
+	var _history2 = _interopRequireDefault(_history);
+	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -5142,7 +5146,9 @@ var SolitaireEngine =
 			value: function run(deck, data) {
 				// data.actionData, e
 	
-				console.log('dealerdeckAction:run', JSON.stringify(data));
+				console.groupCollapsed('dealerdeckAction:run');
+				console.log(JSON.stringify(data, true, 2));
+				console.groupEnd();
 	
 				var save = typeof data.eventData.save == "boolean" ? data.eventData.save : true;
 	
@@ -5170,6 +5176,12 @@ var SolitaireEngine =
 					_event2.default.dispatch('actionBreak');
 	
 					this.end();
+	
+					var history = _history2.default.get(false);
+	
+					if (history.length > 0) {
+						_event2.default.dispatch('saveSteps');
+					}
 	
 					return;
 				}
@@ -5312,9 +5324,11 @@ var SolitaireEngine =
 					}
 				}
 	
+				console.log('###', _makeStep, save);
+	
 				if (_makeStep && save) {
 					// сохраняем если паздача удалась
-					_event2.default.dispatch('saveSteps', 'DEALERDECKACTION');
+					_event2.default.dispatch('saveSteps');
 				}
 	
 				if (data.actionData.dispatch) {
@@ -5602,6 +5616,8 @@ var SolitaireEngine =
 			value: function run(deck, data) {
 				var _this2 = this;
 	
+				// Deck, {actionData, eventData, eventName}
+	
 				// если тип хода не стандартный не выполнять кик
 				if (_share2.default.get('stepType') != _defaults2.default.stepType) {
 	
@@ -5671,28 +5687,37 @@ var SolitaireEngine =
 	
 					_share2.default.set('stepType', _defaults2.default.stepType);
 	
+					_event2.default.dispatch('kick:end');
+	
+					_addStep({
+						"undo": data.eventData.stepType,
+						"redo": stepType
+					});
+	
 					if (data.actionData.dispatch) {
 	
-						_event2.default.dispatch('kick:end');
+						// event.dispatch('kick:end');
+	
 						_event2.default.dispatch(data.actionData.dispatch, {
 							before: function before(data) {
 	
-								_addStep({
-									"undo": stepType,
-									"redo": data.stepType
-								});
+								// _addStep({
+								// 	"undo" : stepType     ,
+								// 	"redo" : data.stepType
+								// });
 	
 								_event2.default.dispatch('saveSteps', 'KICKACTION#1');
 							}
 						});
 					} else {
 	
-						_event2.default.dispatch('kick:end');
-						_addStep({
-							"undo": stepType,
-							"redo": data.actionData.dispatch ? _share2.default.get('stepType') : _defaults2.default.stepType
-							// "redo" : defaults.stepType
-						});
+						// event.dispatch('kick:end');
+	
+						// _addStep({
+						// 	"undo" : stepType                                                            ,
+						// 	"redo" : data.actionData.dispatch ? share.get('stepType') : defaults.stepType
+						// 	// "redo" : defaults.stepType
+						// })
 	
 						_event2.default.dispatch('saveSteps', 'KICKACTION#2');
 	
@@ -7517,7 +7542,9 @@ var SolitaireEngine =
 			return;
 		}
 	
-		// console.log('%cREDO: ' + JSON.stringify(redoData), 'background:#fff7d6');
+		console.groupCollapsed('REDO');
+		console.log('%c' + JSON.stringify(redoData, true, 2), 'background:#fff7d6');
+		console.groupEnd();
 	
 		_inputs2.default.break();
 	
@@ -11213,8 +11240,8 @@ var SolitaireEngine =
 		var _domElement = (0, _elRender2.default)('<div>');
 	
 		(0, _elRender2.default)(_domElement).addClass('el card draggable ' + data.name).css(_params).attr({
-			"id": data.id,
-			"title": data.id
+			"id": data.id
+			// "title" : data.id
 		});
 	
 		_share2.default.set('domElement:' + data.id, _domElement);

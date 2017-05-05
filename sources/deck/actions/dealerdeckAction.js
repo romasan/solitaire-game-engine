@@ -7,6 +7,7 @@ import common     from 'common'    ;
 
 import forceMove  from 'forceMove' ;
 import deckAction from 'deckAction';
+import History    from 'history'   ;
 
 const stepType = 'dealerdeckStepType';
 
@@ -18,7 +19,9 @@ class dealerdeckAction extends deckAction {
 
 	run(deck, data) {// data.actionData, e
 
-		console.log('dealerdeckAction:run', JSON.stringify(data));
+		console.groupCollapsed('dealerdeckAction:run');
+		console.log(JSON.stringify(data, true, 2));
+		console.groupEnd();
 
 		let save = typeof data.eventData.save == "boolean" ? data.eventData.save : true;
 
@@ -51,6 +54,12 @@ class dealerdeckAction extends deckAction {
 			event.dispatch('actionBreak');
 
 			this.end();
+
+			let history = History.get(false);
+
+			if(history.length > 0) {
+				event.dispatch('saveSteps');
+			}
 
 			return;
 		}
@@ -197,9 +206,11 @@ class dealerdeckAction extends deckAction {
 			}
 		}
 
+		console.log('###', _makeStep, save);
+
 		if(_makeStep && save) {
 			// сохраняем если паздача удалась
-			event.dispatch('saveSteps', 'DEALERDECKACTION');
+			event.dispatch('saveSteps');
 		}
 
 		if(data.actionData.dispatch) {

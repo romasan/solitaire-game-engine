@@ -18,7 +18,7 @@ class kickAction extends deckAction {
 		this._actionName = 'kickAction';
 	}
 
-	run(deck, data) {
+	run(deck, data) { // Deck, {actionData, eventData, eventName}
 
 		// если тип хода не стандартный не выполнять кик
 		if(share.get('stepType') != defaults.stepType) {
@@ -90,28 +90,37 @@ class kickAction extends deckAction {
 
 			share.set('stepType', defaults.stepType);
 
+			event.dispatch('kick:end');
+
+			_addStep({
+				"undo" : data.eventData.stepType,
+				"redo" :                stepType
+			});
+
 			if(data.actionData.dispatch) {
 
-				event.dispatch('kick:end');
+				// event.dispatch('kick:end');
+
 				event.dispatch(data.actionData.dispatch, {
 					before: data => {
 
-						_addStep({
-							"undo" : stepType     ,
-							"redo" : data.stepType
-						});
+						// _addStep({
+						// 	"undo" : stepType     ,
+						// 	"redo" : data.stepType
+						// });
 
 						event.dispatch('saveSteps', 'KICKACTION#1');
 					}
 				});
 			} else {
 
-				event.dispatch('kick:end');
-				_addStep({
-					"undo" : stepType                                                            ,
-					"redo" : data.actionData.dispatch ? share.get('stepType') : defaults.stepType
-					// "redo" : defaults.stepType
-				})
+				// event.dispatch('kick:end');
+
+				// _addStep({
+				// 	"undo" : stepType                                                            ,
+				// 	"redo" : data.actionData.dispatch ? share.get('stepType') : defaults.stepType
+				// 	// "redo" : defaults.stepType
+				// })
 
 				event.dispatch('saveSteps', 'KICKACTION#2');
 
