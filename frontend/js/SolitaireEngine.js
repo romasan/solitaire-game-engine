@@ -89,7 +89,7 @@ var SolitaireEngine =
 	
 	var _winCheck2 = _interopRequireDefault(_winCheck);
 	
-	var _history = __webpack_require__(33);
+	var _history = __webpack_require__(25);
 	
 	var _history2 = _interopRequireDefault(_history);
 	
@@ -111,7 +111,7 @@ var SolitaireEngine =
 	exports.options = _defaults2.default;
 	exports.winCheck = _winCheck2.default.hwinCheck;
 	exports.generator = _deckGenerator2.default;
-	exports.version = (9091497522).toString().split(9).slice(1).map(function (e) {
+	exports.version = (9091497536).toString().split(9).slice(1).map(function (e) {
 		return parseInt(e, 8);
 	}).join('.');
 	
@@ -1050,7 +1050,7 @@ var SolitaireEngine =
 	
 	var _field2 = _interopRequireDefault(_field);
 	
-	var _history = __webpack_require__(33);
+	var _history = __webpack_require__(25);
 	
 	var _history2 = _interopRequireDefault(_history);
 	
@@ -2950,7 +2950,7 @@ var SolitaireEngine =
 	
 	var _getDeck2 = _interopRequireDefault(_getDeck);
 	
-	var _atom = __webpack_require__(35);
+	var _atom = __webpack_require__(27);
 	
 	var _atom2 = _interopRequireDefault(_atom);
 	
@@ -4899,31 +4899,31 @@ var SolitaireEngine =
 	
 	var _dealerdeckAction2 = _interopRequireDefault(_dealerdeckAction);
 	
-	var _kickAction = __webpack_require__(25);
+	var _kickAction = __webpack_require__(31);
 	
 	var _kickAction2 = _interopRequireDefault(_kickAction);
 	
-	var _stepsAroundAction = __webpack_require__(26);
+	var _stepsAroundAction = __webpack_require__(32);
 	
 	var _stepsAroundAction2 = _interopRequireDefault(_stepsAroundAction);
 	
-	var _changeStepTypeAction = __webpack_require__(27);
+	var _changeStepTypeAction = __webpack_require__(33);
 	
 	var _changeStepTypeAction2 = _interopRequireDefault(_changeStepTypeAction);
 	
-	var _lockAction = __webpack_require__(28);
+	var _lockAction = __webpack_require__(34);
 	
 	var _lockAction2 = _interopRequireDefault(_lockAction);
 	
-	var _unlockAction = __webpack_require__(30);
+	var _unlockAction = __webpack_require__(36);
 	
 	var _unlockAction2 = _interopRequireDefault(_unlockAction);
 	
-	var _checkFullAction = __webpack_require__(31);
+	var _checkFullAction = __webpack_require__(37);
 	
 	var _checkFullAction2 = _interopRequireDefault(_checkFullAction);
 	
-	var _rollerAction = __webpack_require__(32);
+	var _rollerAction = __webpack_require__(38);
 	
 	var _rollerAction2 = _interopRequireDefault(_rollerAction);
 	
@@ -5118,7 +5118,7 @@ var SolitaireEngine =
 	
 	var _deckAction3 = _interopRequireDefault(_deckAction2);
 	
-	var _history = __webpack_require__(33);
+	var _history = __webpack_require__(25);
 	
 	var _history2 = _interopRequireDefault(_history);
 	
@@ -5567,6 +5567,937 @@ var SolitaireEngine =
 	
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 	
+	var _event = __webpack_require__(2);
+	
+	var _event2 = _interopRequireDefault(_event);
+	
+	var _share = __webpack_require__(1);
+	
+	var _share2 = _interopRequireDefault(_share);
+	
+	var _common = __webpack_require__(5);
+	
+	var _common2 = _interopRequireDefault(_common);
+	
+	var _defaults = __webpack_require__(3);
+	
+	var _defaults2 = _interopRequireDefault(_defaults);
+	
+	var _undo = __webpack_require__(26);
+	
+	var _undo2 = _interopRequireDefault(_undo);
+	
+	var _redo = __webpack_require__(29);
+	
+	var _redo2 = _interopRequireDefault(_redo);
+	
+	var _redoAdvanced = __webpack_require__(30);
+	
+	var _redoAdvanced2 = _interopRequireDefault(_redoAdvanced);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	// TODO пошаговая анимация
+	
+	// let _movesCallback = e => {
+	// 	if(_movesStack.length) {
+	// 		_movesStack.shift()();
+	// 	} else {
+	// 		// 
+	// 	}
+	// };
+	// let _movesStack = [];
+	
+	// let _stepsCallback = e => {
+	// 	if(_stepsStack.length) {
+	// 		_stepsStack.shift()();
+	// 	} else {
+	// 		// 
+	// 	}
+	// };
+	// let _stepsStack = [];
+	
+	// let historyStack = [];
+	
+	/*
+	 * reset
+	 * add
+	 * get
+	 * count
+	 */
+	
+	var historyClass = function () {
+		function historyClass() {
+			_classCallCheck(this, historyClass);
+	
+			this.steps = [];
+		}
+	
+		_createClass(historyClass, [{
+			key: 'reset',
+			value: function reset() {
+	
+				// console.log('History:clear');
+	
+				this.steps = [];
+			}
+		}, {
+			key: 'add',
+			value: function add(step) {
+	
+				// console.log('History:add', step);
+	
+				this.steps.push(step);
+			}
+	
+			// get steps and reset
+	
+		}, {
+			key: 'get',
+			value: function get() {
+				var reset = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : true;
+	
+	
+				var _req = this.steps;
+	
+				if (reset) {
+	
+					// console.groupCollapsed('History:get(reset)', _req.length);
+					// console.log('%c' + JSON.stringify(_req, true, 2), 'background: #e0edfa;width: 100%;');
+					// console.groupEnd();
+	
+					this.reset(true);
+				}
+	
+				// console.log('History:get', _req);
+	
+				// for(let line of _req) {
+				// 	for(let name in line) {
+				// 		console.log('History:get', name, line[name]);
+				// 	}
+				// }
+	
+				return _req;
+			}
+		}, {
+			key: 'count',
+			value: function count() {
+				return this.steps.length;
+			}
+	
+			// TODO
+	
+		}, {
+			key: 'zip',
+			value: function zip() {
+				// 
+			}
+		}, {
+			key: 'unzip',
+			value: function unzip(data) {
+				// 
+			}
+		}]);
+	
+		return historyClass;
+	}();
+	
+	var history = new historyClass();
+	
+	// events
+	
+	_event2.default.listen('addStep', function (data) {
+	
+		if (data.debug) {
+			delete data.debug;
+		}
+	
+		history.add(data);
+	});
+	
+	// save steps to client history
+	_event2.default.listen('saveSteps', function (e) {
+	
+		console.log('%c### saveSteps', 'font-weight: bold; color: green;');
+	
+		var data = history.get();
+	
+		if (data.length) {
+			_event2.default.dispatch('makeStep', data);
+		} else {
+			// console.warn('Empty history to save.');
+			throw new Error('Empty history to save.');
+		}
+	});
+	
+	// let next_history_step = function() {};
+	// event.listen('next_history_step', e => {next_history_step()});
+	
+	_event2.default.listen('doHistory', function (e) {
+	
+		// common.animationOff();
+		if (!e || !e.data) {
+			console.warn('doHistory data:', e);
+		}
+	
+		_common2.default.animationOff();
+	
+		for (var i in e.data) {
+			// console.log('### DOHISTORY', e.data.length, 'Press key "N"');
+			// let i = 0;
+			// let playHistory = z => {
+	
+			// console.log('DO STEP', i, 'FROM', e.data.length);
+	
+			_event2.default.dispatch('redo', e.data[i]);
+	
+			if (!_redoAdvanced2.default.handle(e.data[i][0]) && typeof e.callback == 'function') {
+				e.callback(e.data[i]);
+			}
+	
+			// if(i >= e.data.length - 1) {
+	
+			// common.animationDefault();
+	
+			// playHistory = null;
+			// }
+	
+			// i += 1;
+	
+			// if(typeof playHistory == "function") {
+			// playHistory();
+			// setTimeout(playHistory, 0);
+			// }
+		}
+		// playHistory();
+	
+		_common2.default.animationDefault();
+	
+		_event2.default.dispatch('stopRunHistory');
+	
+		// next_history_step = z => {
+	
+		// 	if(typeof playHistory == "function") {
+		// 		playHistory();
+		// 	}
+		// }
+	});
+	
+	_event2.default.listen('resetHistory', function (e) {
+		history.reset();
+	});
+	
+	_event2.default.listen('newGame', function (e) {
+		history.reset();
+	});
+	
+	exports.default = history;
+
+/***/ },
+/* 26 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+		value: true
+	});
+	
+	var _event = __webpack_require__(2);
+	
+	var _event2 = _interopRequireDefault(_event);
+	
+	var _share = __webpack_require__(1);
+	
+	var _share2 = _interopRequireDefault(_share);
+	
+	var _common = __webpack_require__(5);
+	
+	var _common2 = _interopRequireDefault(_common);
+	
+	var _defaults = __webpack_require__(3);
+	
+	var _defaults2 = _interopRequireDefault(_defaults);
+	
+	var _inputs = __webpack_require__(4);
+	
+	var _inputs2 = _interopRequireDefault(_inputs);
+	
+	var _history = __webpack_require__(25);
+	
+	var _history2 = _interopRequireDefault(_history);
+	
+	var _tips = __webpack_require__(9);
+	
+	var _tips2 = _interopRequireDefault(_tips);
+	
+	var _atom = __webpack_require__(27);
+	
+	var _atom2 = _interopRequireDefault(_atom);
+	
+	var _stateManager = __webpack_require__(6);
+	
+	var _stateManager2 = _interopRequireDefault(_stateManager);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	/*
+	 * flip
+	 * unflip
+	 * hide
+	 * show
+	 * full
+	 * lock
+	 * unlock
+	 * swap
+	 * move
+	 */
+	
+	var undo = function undo(data) {
+	
+		if (_share2.default.get('sessionStarted')) {
+	
+			_event2.default.dispatch('stopAnimations');
+			_stateManager2.default.restore();
+		}
+	
+		// undo flip
+		if (data.flip) {
+	
+			var deck = _common2.default.getElementByName(data.flip.deckName);
+	
+			var card = deck.getCardByIndex(data.flip.cardIndex | 0);
+	
+			if (card && card.name == data.flip.cardName) {
+				card.flip = false;
+				deck.Redraw();
+			}
+		}
+	
+		// undo unflip
+		if (data.unflip) {
+	
+			var _deck = _common2.default.getElementByName(data.unflip.deckName, 'deck');
+	
+			var _card = _deck.getCardByIndex(data.unflip.cardIndex | 0);
+	
+			// console.log('undo:unflip -> flip', data.unflip, deck.name, card.name, deck.cards.map(e => e.name));
+	
+			_event2.default.dispatch('removeMarkCard', {
+				"card": _card
+			});
+	
+			if (_card && _card.name == data.unflip.cardName) {
+				_card.flip = true;
+				_deck.Redraw();
+			}
+		}
+	
+		// undo hide
+		if (data.hide) {
+	
+			var _deck2 = _common2.default.getElementByName(data.hide.deckName, 'deck');
+	
+			if (_deck2 && _deck2.cards[data.hide.cardIndex].name == data.hide.cardName) {
+				_deck2.cards[data.hide.cardIndex].visible = true;
+				_deck2.Redraw();
+			} else {
+				console.warn('Incorrect history atom of step [undo hide]:', data.hide, _deck2.cards[data.hide.cardIndex].name, data.hide.cardName);
+			}
+		}
+	
+		// undo show
+		if (data.show) {
+	
+			// console.log('UNDO SHOW:', data.show);
+	
+			var _deck3 = _common2.default.getElementByName(data.show.deckName, 'deck');
+	
+			if (_deck3 && _deck3.cards[data.show.cardIndex].name == data.show.cardName) {
+				_deck3.cards[data.show.cardIndex].visible = false;
+				_deck3.Redraw();
+			} else {
+				console.warn('Incorrect history atom of step [undo show]:', data.show, _deck3.cards[data.show.cardIndex].name, data.show.cardName);
+			}
+	
+			_deck3.Redraw();
+		}
+	
+		// undo full
+		if (data.full) {}
+		// 
+	
+	
+		// undo lock
+		if (typeof data.lock != 'undefined') {
+			for (var i in data.lock) {
+				var _element = _common2.default.getElementsByName(data.lock[i])[0];
+				_element.unlock();
+			}
+		}
+	
+		// undo unlock
+		if (typeof data.unlock != 'undefined') {
+			for (var _i2 in data.unlock) {
+				var _element2 = _common2.default.getElementsByName(data.unlock[_i2])[0];
+				_element2.lock();
+			}
+		}
+	
+		// redo swap
+		if (typeof data.swap != 'undefined' && typeof data.swap.deckName != 'undefined' && typeof data.swap.fromIndex != 'undefined' && typeof data.swap.toIndex != 'undefined') {
+	
+			var _deck4 = _common2.default.getElementByName(data.swap.deckName, 'deck');
+	
+			_atom2.default.swap(_deck4, data.swap.fromIndex, data.swap.toIndex, false);
+	
+			_deck4.Redraw();
+		}
+	
+		// undo move
+		if (typeof data.move != 'undefined' && typeof data.move.from != 'undefined' && typeof data.move.to != 'undefined' && typeof data.move.deck != 'undefined') {
+	
+			// console.log('undo:move', JSON.stringify(data.move));
+	
+			if (data.move.stepType) {
+	
+				if (typeof data.move.stepType == 'string') {
+					_share2.default.set('stepType', data.move.stepType);
+				}
+	
+				if (typeof data.move.stepType.undo == 'string') {
+					_share2.default.set('stepType', data.move.stepType.undo);
+				}
+			}
+	
+			var forceMoveData = {
+				"from": data.move.to, // from ->
+				"to": data.move.from, //      <- to
+				"deck": data.move.deck
+				// "flip" : data.move.flip
+			};
+	
+			if (typeof data.move.flip == "boolean") {
+				forceMoveData.flip = !data.move.flip;
+			}
+	
+			if (!_share2.default.get('showHistoryAnimation')) {
+	
+				_common2.default.animationOff();
+	
+				forceMoveData.callback = function (e) {
+					_common2.default.animationOn();
+				};
+			}
+	
+			_event2.default.dispatch('forceMove', forceMoveData);
+		}
+	}; // 'use strict';
+	
+	_event2.default.listen('undo', function (undoData) {
+	
+		if (!undoData || _share2.default.get('stopRunHistory')) {
+			return;
+		}
+	
+		_inputs2.default.break();
+	
+		if (_share2.default.get('animation')) {
+			_event2.default.dispatch('stopAnimations');
+		}
+	
+		// History.reset();
+		var history = _history2.default.get();
+		if (history.length > 0) {
+			for (var i = history.length - 1; i >= 0; i -= 1) {
+				console.log('+++++++', JSON.stringify(history[i]));
+				undo(history[i]);
+			}
+		}
+	
+		console.groupCollapsed('UNDO');
+		console.log('%c' + JSON.stringify(undoData, true, 2), 'background:#d6deff');
+		console.groupEnd();
+	
+		// Обратная совместимость
+		if (undoData instanceof Array) {
+	
+			undoData.reverse();
+	
+			for (var _i in undoData) {
+				var data = undoData[_i];
+				undo(data);
+			}
+	
+			undoData.reverse();
+		} else {
+			undo(undoData);
+		}
+	
+		_tips2.default.checkTips();
+	});
+	
+	exports.default = undo;
+
+/***/ },
+/* 27 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+		value: true
+	});
+	
+	var _atomSwap = __webpack_require__(28);
+	
+	var _atomSwap2 = _interopRequireDefault(_atomSwap);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	exports.default = {
+		"swap": _atomSwap2.default
+	};
+
+/***/ },
+/* 28 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+		value: true
+	});
+	
+	var _event = __webpack_require__(2);
+	
+	var _event2 = _interopRequireDefault(_event);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	exports.default = function (deck, fromIndex, toIndex) {
+		var save = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : true;
+	
+	
+		// console.log('SWAP:', deck.name, fromIndex, toIndex);
+	
+		var tmp = deck.cards[fromIndex];
+		deck.cards[fromIndex] = deck.cards[toIndex];
+		deck.cards[toIndex] = tmp;
+	
+		if (save) {
+			_event2.default.dispatch('addStep', {
+				"swap": {
+					"deckName": deck.name,
+					"fromIndex": fromIndex,
+					"toIndex": toIndex
+				}
+			});
+		}
+	};
+
+/***/ },
+/* 29 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	var _event = __webpack_require__(2);
+	
+	var _event2 = _interopRequireDefault(_event);
+	
+	var _share = __webpack_require__(1);
+	
+	var _share2 = _interopRequireDefault(_share);
+	
+	var _common = __webpack_require__(5);
+	
+	var _common2 = _interopRequireDefault(_common);
+	
+	var _defaults = __webpack_require__(3);
+	
+	var _defaults2 = _interopRequireDefault(_defaults);
+	
+	var _inputs = __webpack_require__(4);
+	
+	var _inputs2 = _interopRequireDefault(_inputs);
+	
+	var _history = __webpack_require__(25);
+	
+	var _history2 = _interopRequireDefault(_history);
+	
+	var _tips = __webpack_require__(9);
+	
+	var _tips2 = _interopRequireDefault(_tips);
+	
+	var _atom = __webpack_require__(27);
+	
+	var _atom2 = _interopRequireDefault(_atom);
+	
+	var _stateManager = __webpack_require__(6);
+	
+	var _stateManager2 = _interopRequireDefault(_stateManager);
+	
+	var _undo = __webpack_require__(26);
+	
+	var _undo2 = _interopRequireDefault(_undo);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	/*
+	 * flip
+	 * unflip
+	 * hide
+	 * show
+	 * full
+	 * lock
+	 * unlock
+	 * swap
+	 * move
+	 * markCard
+	 * unmarkCard
+	 */
+	
+	var redo = function redo(data) {
+	
+		if (_share2.default.get('sessionStarted')) {
+	
+			_event2.default.dispatch('stopAnimations');
+			_stateManager2.default.restore();
+		}
+	
+		// redo flip
+		if (data.flip) {
+	
+			var deck = _common2.default.getElementByName(data.flip.deckName);
+	
+			var card = deck.getCardByIndex(data.flip.cardIndex | 0);
+	
+			if (card && card.name == data.flip.cardName) {
+				card.flip = true;
+				deck.Redraw();
+			}
+		}
+	
+		// redo unflip
+		if (data.unflip) {
+	
+			var _deck = _common2.default.getElementByName(data.unflip.deckName, 'deck');
+	
+			var _card = _deck.getCardByIndex(data.unflip.cardIndex | 0);
+	
+			if (_card && _card.name == data.unflip.cardName) {
+				_card.flip = false;
+				_deck.Redraw();
+			}
+		}
+	
+		// redo hide
+		if (data.hide) {
+	
+			var _deck2 = _common2.default.getElementByName(data.hide.deckName, 'deck');
+	
+			if (_deck2 && _deck2.cards[data.hide.cardIndex].name == data.hide.cardName // TODO check
+			) {
+					_deck2.cards[data.hide.cardIndex].visible = false;
+					_deck2.Redraw();
+				} else {
+				console.warn('Incorrect history substep [redo hide]:', data.hide);
+			}
+		}
+	
+		// redo show
+		if (data.show) {
+	
+			var _deck3 = _common2.default.getElementByName(data.show.deckName, 'deck');
+	
+			if (_deck3 && _deck3.cards[data.show.cardIndex].name == data.show.cardName) {
+				_deck3.cards[data.show.cardIndex].visible = true;
+				_deck3.Redraw();
+			} else {
+				console.warn('Incorrect history substep [redo show]:', data.hide);
+			}
+		}
+	
+		// redo full
+		if (data.full) {}
+		// 
+	
+	
+		// redo lock
+		if (typeof data.lock != 'undefined') {
+			for (var i in data.lock) {
+				var _element = _common2.default.getElementsByName(data.lock[i])[0];
+				_element.lock();
+			}
+		}
+	
+		// redo unlock
+		if (typeof data.unlock != 'undefined') {
+			for (var _i2 in data.unlock) {
+				var _element2 = _common2.default.getElementsByName(data.unlock[_i2])[0];
+				_element2.unlock();
+			}
+		}
+	
+		// redo swap
+		if (typeof data.swap != 'undefined' && typeof data.swap.deckName != 'undefined' && typeof data.swap.fromIndex != 'undefined' && typeof data.swap.toIndex != 'undefined') {
+	
+			var _deck4 = _common2.default.getElementByName(data.swap.deckName, 'deck');
+	
+			_atom2.default.swap(_deck4, data.swap.fromIndex, data.swap.toIndex, false);
+	
+			_deck4.Redraw();
+		}
+	
+		// redo move
+		if (typeof data.move != 'undefined' && typeof data.move.from != 'undefined' && typeof data.move.to != 'undefined' && typeof data.move.deck != 'undefined') {
+	
+			if (data.move.stepType) {
+	
+				if (typeof data.move.stepType == 'string') {
+					_share2.default.set('stepType', data.move.stepType);
+				}
+	
+				if (typeof data.move.stepType.redo == 'string') {
+					_share2.default.set('stepType', data.move.stepType.redo);
+				}
+			}
+	
+			var forceMoveData = {
+				"from": data.move.from,
+				"to": data.move.to,
+				"deck": data.move.deck,
+				"flip": data.move.flip
+			};
+	
+			if (typeof data.move.flip == "boolean") {
+				forceMoveData.flip = data.move.flip;
+			}
+	
+			if (!_share2.default.get('showHistoryAnimation')) {
+	
+				_common2.default.animationOff();
+	
+				forceMoveData.callback = function (e) {
+					_common2.default.animationOn();
+				};
+			}
+	
+			_event2.default.dispatch('forceMove', forceMoveData);
+		}
+	
+		if (data.markCard) {
+	
+			var _deck5 = _common2.default.getElementByName(data.markCard.deckName, 'deck');
+	
+			var _card2 = _deck5.getCardByIndex(data.markCard.cardIndex | 0);
+	
+			if (_card2 && data.markCard.cardName == _card2.name) {
+				_event2.default.dispatch('markCard', {
+					"card": _card2
+				});
+			}
+		}
+	
+		if (data.unmarkCard) {
+	
+			var _deck6 = _common2.default.getElementByName(data.unmarkCard.deckName, 'deck');
+	
+			var _card3 = _deck6.getCardByIndex(data.unmarkCard.cardIndex | 0);
+	
+			if (_card3 && data.unmarkCard.cardName == _card3.name) {
+				_event2.default.dispatch('unmarkCard', {
+					"card": _card3
+				});
+			}
+		}
+	
+		// TODO актуально ли ещё?
+		// if(
+		// 	data.redo                            &&
+		// 	typeof data.redo.stepType == 'string'
+		// ) {
+		// 	share.set('stepType', data.redo.stepType);
+		// }
+	};
+	
+	_event2.default.listen('redo', function (redoData) {
+	
+		if (!redoData || _share2.default.get('stopRunHistory')) {
+			return;
+		}
+	
+		console.groupCollapsed('REDO');
+		console.log('%c' + JSON.stringify(redoData, true, 2), 'background:#fff7d6');
+		console.groupEnd();
+	
+		_inputs2.default.break();
+	
+		// History.reset();
+		var history = _history2.default.get();
+		// for(let i in history) {
+		if (history.length > 0) {
+			for (var i = history.length - 1; i >= 0; i -= 1) {
+				(0, _undo2.default)(history[i]);
+			}
+		}
+	
+		if (_share2.default.get('animation')) {
+			_event2.default.dispatch('stopAnimations');
+		}
+	
+		// Обратная совместимость
+		if (redoData instanceof Array) {
+	
+			for (var _i in redoData) {
+				var data = redoData[_i];
+				redo(data);
+			}
+		} else {
+			redo(redoData);
+		}
+	
+		_tips2.default.checkTips();
+	
+		// TODO актуально ли ещё?
+		// if(
+		// 	share.get('stepType') != defaults.stepType &&
+		// 	Tips.getTips().length == 0
+		// ) {
+		// 	share.set('stepType', defaults.stepType);
+		// 	Tips.checkTips();
+		// }
+	});
+
+/***/ },
+/* 30 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+		value: true
+	});
+	
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	
+	var _event = __webpack_require__(2);
+	
+	var _event2 = _interopRequireDefault(_event);
+	
+	var _common = __webpack_require__(5);
+	
+	var _common2 = _interopRequireDefault(_common);
+	
+	var _deckActions = __webpack_require__(21);
+	
+	var _deckActions2 = _interopRequireDefault(_deckActions);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	var redoAdvanced = function () {
+		function redoAdvanced() {
+			// 
+	
+			_classCallCheck(this, redoAdvanced);
+		}
+	
+		_createClass(redoAdvanced, [{
+			key: 'handle',
+			value: function handle(data) {
+	
+				// Run action
+				if (data.runAction && typeof data.runAction.actionName == 'string' && typeof data.runAction.deckName == 'string') {
+	
+					var deck = _common2.default.getElementByName(data.runAction.deckName, 'deck');
+	
+					_deckActions2.default.run({
+						deck: deck,
+						actionName: data.runAction.actionName,
+						eventName: 'redo',
+						eventData: {
+							"to": deck
+						}
+					});
+	
+					return true;
+				}
+	
+				// Make move
+				if (data.makeMove && data.makeMove.to && data.makeMove.from && typeof data.makeMove.from.cardName == "string") {
+	
+					// console.log('redoAdvanced:makeMove', JSON.stringify(data.makeMove));
+	
+					var fromCard = _common2.default.getElementByName(data.makeMove.from.cardName, 'card');
+					var fromDeck = _common2.default.getElementById(fromCard.parent);
+	
+					var to = null;
+	
+					if (typeof data.makeMove.to.cardName == "string") {
+						var toCard = _common2.default.getElementByName(data.makeMove.to.cardName, 'card');
+						to = toCard.id;
+					} else if (typeof data.makeMove.to.deckName == "string") {
+						to = _common2.default.getElementByName(data.makeMove.to.deckName, 'deck').id;
+					}
+					if (to) {
+	
+						var moveDeck = [];
+						var fromDeckCards = fromDeck.getCards();
+	
+						var found = false;
+						for (var i in fromDeckCards) {
+	
+							if (fromDeckCards[i].name == fromCard.name) {
+								found = true;
+							}
+	
+							if (found) {
+								moveDeck.push({
+									"card": fromDeckCards[i],
+									"index": i
+								});
+							}
+						}
+	
+						SolitaireEngine.event.dispatch('Move', {
+							"moveDeck": moveDeck,
+							"to": to,
+							"cursorMove": {
+								"dblclick": false,
+								"distance": Infinity
+							}
+						});
+					}
+	
+					return true;
+				}
+	
+				return false;
+			}
+		}]);
+	
+		return redoAdvanced;
+	}();
+	
+	exports.default = new redoAdvanced();
+
+/***/ },
+/* 31 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+		value: true
+	});
+	
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	
 	var _get = function get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
 	
 	var _event = __webpack_require__(2);
@@ -5691,7 +6622,7 @@ var SolitaireEngine =
 	
 					_addStep({
 						"undo": data.eventData.stepType,
-						"redo": stepType
+						"redo": data.eventData.stepType // stepType
 					});
 	
 					if (data.actionData.dispatch) {
@@ -5755,7 +6686,7 @@ var SolitaireEngine =
 	exports.default = new kickAction();
 
 /***/ },
-/* 26 */
+/* 32 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -5930,7 +6861,7 @@ var SolitaireEngine =
 	exports.default = new stepsAroundAction();
 
 /***/ },
-/* 27 */
+/* 33 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -6010,7 +6941,7 @@ var SolitaireEngine =
 	exports.default = new changeStepTypeAction();
 
 /***/ },
-/* 28 */
+/* 34 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -6043,7 +6974,7 @@ var SolitaireEngine =
 	
 	var _deckAction3 = _interopRequireDefault(_deckAction2);
 	
-	var _lockActionCommon = __webpack_require__(29);
+	var _lockActionCommon = __webpack_require__(35);
 	
 	var _lockActionCommon2 = _interopRequireDefault(_lockActionCommon);
 	
@@ -6085,7 +7016,7 @@ var SolitaireEngine =
 	exports.default = new lockAction();
 
 /***/ },
-/* 29 */
+/* 35 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -6153,7 +7084,7 @@ var SolitaireEngine =
 	};
 
 /***/ },
-/* 30 */
+/* 36 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -6186,7 +7117,7 @@ var SolitaireEngine =
 	
 	var _deckAction3 = _interopRequireDefault(_deckAction2);
 	
-	var _lockActionCommon = __webpack_require__(29);
+	var _lockActionCommon = __webpack_require__(35);
 	
 	var _lockActionCommon2 = _interopRequireDefault(_lockActionCommon);
 	
@@ -6228,7 +7159,7 @@ var SolitaireEngine =
 	exports.default = new unlockAction();
 
 /***/ },
-/* 31 */
+/* 37 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -6359,7 +7290,7 @@ var SolitaireEngine =
 	exports.default = new checkFullAction();
 
 /***/ },
-/* 32 */
+/* 38 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -6386,11 +7317,11 @@ var SolitaireEngine =
 	
 	var _deck2 = _interopRequireDefault(_deck);
 	
-	var _history = __webpack_require__(33);
+	var _history = __webpack_require__(25);
 	
 	var _history2 = _interopRequireDefault(_history);
 	
-	var _atom = __webpack_require__(35);
+	var _atom = __webpack_require__(27);
 	
 	var _atom2 = _interopRequireDefault(_atom);
 	
@@ -6766,937 +7697,6 @@ var SolitaireEngine =
 	}(_deckAction3.default);
 	
 	exports.default = new rollerAction();
-
-/***/ },
-/* 33 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	Object.defineProperty(exports, "__esModule", {
-		value: true
-	});
-	
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-	
-	var _event = __webpack_require__(2);
-	
-	var _event2 = _interopRequireDefault(_event);
-	
-	var _share = __webpack_require__(1);
-	
-	var _share2 = _interopRequireDefault(_share);
-	
-	var _common = __webpack_require__(5);
-	
-	var _common2 = _interopRequireDefault(_common);
-	
-	var _defaults = __webpack_require__(3);
-	
-	var _defaults2 = _interopRequireDefault(_defaults);
-	
-	var _undo = __webpack_require__(34);
-	
-	var _undo2 = _interopRequireDefault(_undo);
-	
-	var _redo = __webpack_require__(37);
-	
-	var _redo2 = _interopRequireDefault(_redo);
-	
-	var _redoAdvanced = __webpack_require__(38);
-	
-	var _redoAdvanced2 = _interopRequireDefault(_redoAdvanced);
-	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-	
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-	
-	// TODO пошаговая анимация
-	
-	// let _movesCallback = e => {
-	// 	if(_movesStack.length) {
-	// 		_movesStack.shift()();
-	// 	} else {
-	// 		// 
-	// 	}
-	// };
-	// let _movesStack = [];
-	
-	// let _stepsCallback = e => {
-	// 	if(_stepsStack.length) {
-	// 		_stepsStack.shift()();
-	// 	} else {
-	// 		// 
-	// 	}
-	// };
-	// let _stepsStack = [];
-	
-	// let historyStack = [];
-	
-	/*
-	 * reset
-	 * add
-	 * get
-	 * count
-	 */
-	
-	var historyClass = function () {
-		function historyClass() {
-			_classCallCheck(this, historyClass);
-	
-			this.steps = [];
-		}
-	
-		_createClass(historyClass, [{
-			key: 'reset',
-			value: function reset() {
-	
-				// console.log('History:clear');
-	
-				this.steps = [];
-			}
-		}, {
-			key: 'add',
-			value: function add(step) {
-	
-				// console.log('History:add', step);
-	
-				this.steps.push(step);
-			}
-	
-			// get steps and reset
-	
-		}, {
-			key: 'get',
-			value: function get() {
-				var reset = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : true;
-	
-	
-				var _req = this.steps;
-	
-				if (reset) {
-	
-					console.groupCollapsed('History:get(reset)', _req.length);
-					console.log('%c' + JSON.stringify(_req, true, 2), 'background: #e0edfa;width: 100%;');
-					console.groupEnd();
-	
-					this.reset(true);
-				}
-	
-				// console.log('History:get', _req);
-	
-				// for(let line of _req) {
-				// 	for(let name in line) {
-				// 		console.log('History:get', name, line[name]);
-				// 	}
-				// }
-	
-				return _req;
-			}
-		}, {
-			key: 'count',
-			value: function count() {
-				return this.steps.length;
-			}
-	
-			// TODO
-	
-		}, {
-			key: 'zip',
-			value: function zip() {
-				// 
-			}
-		}, {
-			key: 'unzip',
-			value: function unzip(data) {
-				// 
-			}
-		}]);
-	
-		return historyClass;
-	}();
-	
-	var history = new historyClass();
-	
-	// events
-	
-	_event2.default.listen('addStep', function (data) {
-	
-		if (data.debug) {
-			delete data.debug;
-		}
-	
-		history.add(data);
-	});
-	
-	// save steps to client history
-	_event2.default.listen('saveSteps', function (e) {
-	
-		console.log('%c### saveSteps', 'font-weight: bold; color: green;');
-	
-		var data = history.get();
-	
-		if (data.length) {
-			_event2.default.dispatch('makeStep', data);
-		} else {
-			// console.warn('Empty history to save.');
-			throw new Error('Empty history to save.');
-		}
-	});
-	
-	// let next_history_step = function() {};
-	// event.listen('next_history_step', e => {next_history_step()});
-	
-	_event2.default.listen('doHistory', function (e) {
-	
-		// common.animationOff();
-		if (!e || !e.data) {
-			console.warn('doHistory data:', e);
-		}
-	
-		_common2.default.animationOff();
-	
-		for (var i in e.data) {
-			// console.log('### DOHISTORY', e.data.length, 'Press key "N"');
-			// let i = 0;
-			// let playHistory = z => {
-	
-			// console.log('DO STEP', i, 'FROM', e.data.length);
-	
-			_event2.default.dispatch('redo', e.data[i]);
-	
-			if (!_redoAdvanced2.default.handle(e.data[i][0]) && typeof e.callback == 'function') {
-				e.callback(e.data[i]);
-			}
-	
-			// if(i >= e.data.length - 1) {
-	
-			// common.animationDefault();
-	
-			// playHistory = null;
-			// }
-	
-			// i += 1;
-	
-			// if(typeof playHistory == "function") {
-			// playHistory();
-			// setTimeout(playHistory, 0);
-			// }
-		}
-		// playHistory();
-	
-		_common2.default.animationDefault();
-	
-		_event2.default.dispatch('stopRunHistory');
-	
-		// next_history_step = z => {
-	
-		// 	if(typeof playHistory == "function") {
-		// 		playHistory();
-		// 	}
-		// }
-	});
-	
-	_event2.default.listen('resetHistory', function (e) {
-		history.reset();
-	});
-	
-	_event2.default.listen('newGame', function (e) {
-		history.reset();
-	});
-	
-	exports.default = history;
-
-/***/ },
-/* 34 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	Object.defineProperty(exports, "__esModule", {
-		value: true
-	});
-	
-	var _event = __webpack_require__(2);
-	
-	var _event2 = _interopRequireDefault(_event);
-	
-	var _share = __webpack_require__(1);
-	
-	var _share2 = _interopRequireDefault(_share);
-	
-	var _common = __webpack_require__(5);
-	
-	var _common2 = _interopRequireDefault(_common);
-	
-	var _defaults = __webpack_require__(3);
-	
-	var _defaults2 = _interopRequireDefault(_defaults);
-	
-	var _inputs = __webpack_require__(4);
-	
-	var _inputs2 = _interopRequireDefault(_inputs);
-	
-	var _history = __webpack_require__(33);
-	
-	var _history2 = _interopRequireDefault(_history);
-	
-	var _tips = __webpack_require__(9);
-	
-	var _tips2 = _interopRequireDefault(_tips);
-	
-	var _atom = __webpack_require__(35);
-	
-	var _atom2 = _interopRequireDefault(_atom);
-	
-	var _stateManager = __webpack_require__(6);
-	
-	var _stateManager2 = _interopRequireDefault(_stateManager);
-	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-	
-	/*
-	 * flip
-	 * unflip
-	 * hide
-	 * show
-	 * full
-	 * lock
-	 * unlock
-	 * swap
-	 * move
-	 */
-	
-	var undo = function undo(data) {
-	
-		if (_share2.default.get('sessionStarted')) {
-	
-			_event2.default.dispatch('stopAnimations');
-			_stateManager2.default.restore();
-		}
-	
-		// undo flip
-		if (data.flip) {
-	
-			var deck = _common2.default.getElementByName(data.flip.deckName);
-	
-			var card = deck.getCardByIndex(data.flip.cardIndex | 0);
-	
-			if (card && card.name == data.flip.cardName) {
-				card.flip = false;
-				deck.Redraw();
-			}
-		}
-	
-		// undo unflip
-		if (data.unflip) {
-	
-			var _deck = _common2.default.getElementByName(data.unflip.deckName, 'deck');
-	
-			var _card = _deck.getCardByIndex(data.unflip.cardIndex | 0);
-	
-			// console.log('undo:unflip -> flip', data.unflip, deck.name, card.name, deck.cards.map(e => e.name));
-	
-			_event2.default.dispatch('removeMarkCard', {
-				"card": _card
-			});
-	
-			if (_card && _card.name == data.unflip.cardName) {
-				_card.flip = true;
-				_deck.Redraw();
-			}
-		}
-	
-		// undo hide
-		if (data.hide) {
-	
-			var _deck2 = _common2.default.getElementByName(data.hide.deckName, 'deck');
-	
-			if (_deck2 && _deck2.cards[data.hide.cardIndex].name == data.hide.cardName) {
-				_deck2.cards[data.hide.cardIndex].visible = true;
-				_deck2.Redraw();
-			} else {
-				console.warn('Incorrect history atom of step [undo hide]:', data.hide, _deck2.cards[data.hide.cardIndex].name, data.hide.cardName);
-			}
-		}
-	
-		// undo show
-		if (data.show) {
-	
-			// console.log('UNDO SHOW:', data.show);
-	
-			var _deck3 = _common2.default.getElementByName(data.show.deckName, 'deck');
-	
-			if (_deck3 && _deck3.cards[data.show.cardIndex].name == data.show.cardName) {
-				_deck3.cards[data.show.cardIndex].visible = false;
-				_deck3.Redraw();
-			} else {
-				console.warn('Incorrect history atom of step [undo show]:', data.show, _deck3.cards[data.show.cardIndex].name, data.show.cardName);
-			}
-	
-			_deck3.Redraw();
-		}
-	
-		// undo full
-		if (data.full) {}
-		// 
-	
-	
-		// undo lock
-		if (typeof data.lock != 'undefined') {
-			for (var i in data.lock) {
-				var _element = _common2.default.getElementsByName(data.lock[i])[0];
-				_element.unlock();
-			}
-		}
-	
-		// undo unlock
-		if (typeof data.unlock != 'undefined') {
-			for (var _i2 in data.unlock) {
-				var _element2 = _common2.default.getElementsByName(data.unlock[_i2])[0];
-				_element2.lock();
-			}
-		}
-	
-		// redo swap
-		if (typeof data.swap != 'undefined' && typeof data.swap.deckName != 'undefined' && typeof data.swap.fromIndex != 'undefined' && typeof data.swap.toIndex != 'undefined') {
-	
-			var _deck4 = _common2.default.getElementByName(data.swap.deckName, 'deck');
-	
-			_atom2.default.swap(_deck4, data.swap.fromIndex, data.swap.toIndex, false);
-	
-			_deck4.Redraw();
-		}
-	
-		// undo move
-		if (typeof data.move != 'undefined' && typeof data.move.from != 'undefined' && typeof data.move.to != 'undefined' && typeof data.move.deck != 'undefined') {
-	
-			// console.log('undo:move', JSON.stringify(data.move));
-	
-			if (data.move.stepType) {
-	
-				if (typeof data.move.stepType == 'string') {
-					_share2.default.set('stepType', data.move.stepType);
-				}
-	
-				if (typeof data.move.stepType.undo == 'string') {
-					_share2.default.set('stepType', data.move.stepType.undo);
-				}
-			}
-	
-			var forceMoveData = {
-				"from": data.move.to, // from ->
-				"to": data.move.from, //      <- to
-				"deck": data.move.deck
-				// "flip" : data.move.flip
-			};
-	
-			if (typeof data.move.flip == "boolean") {
-				forceMoveData.flip = !data.move.flip;
-			}
-	
-			if (!_share2.default.get('showHistoryAnimation')) {
-	
-				_common2.default.animationOff();
-	
-				forceMoveData.callback = function (e) {
-					_common2.default.animationOn();
-				};
-			}
-	
-			_event2.default.dispatch('forceMove', forceMoveData);
-		}
-	}; // 'use strict';
-	
-	_event2.default.listen('undo', function (undoData) {
-	
-		if (!undoData || _share2.default.get('stopRunHistory')) {
-			return;
-		}
-	
-		_inputs2.default.break();
-	
-		// History.reset();
-		var history = _history2.default.get();
-		if (history.length > 0) {
-			for (var i = history.length - 1; i >= 0; i -= 1) {
-				console.log('###', history[i]);
-				undo(history[i]);
-			}
-		}
-	
-		console.groupCollapsed('UNDO');
-		console.log('%c' + JSON.stringify(undoData, true, 2), 'background:#d6deff');
-		console.groupEnd();
-	
-		if (_share2.default.get('animation')) {
-			_event2.default.dispatch('stopAnimations');
-		}
-	
-		// Обратная совместимость
-		if (undoData instanceof Array) {
-	
-			undoData.reverse();
-	
-			for (var _i in undoData) {
-				var data = undoData[_i];
-				undo(data);
-			}
-	
-			undoData.reverse();
-		} else {
-			undo(undoData);
-		}
-	
-		_tips2.default.checkTips();
-	});
-	
-	exports.default = undo;
-
-/***/ },
-/* 35 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	Object.defineProperty(exports, "__esModule", {
-		value: true
-	});
-	
-	var _atomSwap = __webpack_require__(36);
-	
-	var _atomSwap2 = _interopRequireDefault(_atomSwap);
-	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-	
-	exports.default = {
-		"swap": _atomSwap2.default
-	};
-
-/***/ },
-/* 36 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	Object.defineProperty(exports, "__esModule", {
-		value: true
-	});
-	
-	var _event = __webpack_require__(2);
-	
-	var _event2 = _interopRequireDefault(_event);
-	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-	
-	exports.default = function (deck, fromIndex, toIndex) {
-		var save = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : true;
-	
-	
-		// console.log('SWAP:', deck.name, fromIndex, toIndex);
-	
-		var tmp = deck.cards[fromIndex];
-		deck.cards[fromIndex] = deck.cards[toIndex];
-		deck.cards[toIndex] = tmp;
-	
-		if (save) {
-			_event2.default.dispatch('addStep', {
-				"swap": {
-					"deckName": deck.name,
-					"fromIndex": fromIndex,
-					"toIndex": toIndex
-				}
-			});
-		}
-	};
-
-/***/ },
-/* 37 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	var _event = __webpack_require__(2);
-	
-	var _event2 = _interopRequireDefault(_event);
-	
-	var _share = __webpack_require__(1);
-	
-	var _share2 = _interopRequireDefault(_share);
-	
-	var _common = __webpack_require__(5);
-	
-	var _common2 = _interopRequireDefault(_common);
-	
-	var _defaults = __webpack_require__(3);
-	
-	var _defaults2 = _interopRequireDefault(_defaults);
-	
-	var _inputs = __webpack_require__(4);
-	
-	var _inputs2 = _interopRequireDefault(_inputs);
-	
-	var _history = __webpack_require__(33);
-	
-	var _history2 = _interopRequireDefault(_history);
-	
-	var _tips = __webpack_require__(9);
-	
-	var _tips2 = _interopRequireDefault(_tips);
-	
-	var _atom = __webpack_require__(35);
-	
-	var _atom2 = _interopRequireDefault(_atom);
-	
-	var _stateManager = __webpack_require__(6);
-	
-	var _stateManager2 = _interopRequireDefault(_stateManager);
-	
-	var _undo = __webpack_require__(34);
-	
-	var _undo2 = _interopRequireDefault(_undo);
-	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-	
-	/*
-	 * flip
-	 * unflip
-	 * hide
-	 * show
-	 * full
-	 * lock
-	 * unlock
-	 * swap
-	 * move
-	 * markCard
-	 * unmarkCard
-	 */
-	
-	var redo = function redo(data) {
-	
-		if (_share2.default.get('sessionStarted')) {
-	
-			_event2.default.dispatch('stopAnimations');
-			_stateManager2.default.restore();
-		}
-	
-		// redo flip
-		if (data.flip) {
-	
-			var deck = _common2.default.getElementByName(data.flip.deckName);
-	
-			var card = deck.getCardByIndex(data.flip.cardIndex | 0);
-	
-			if (card && card.name == data.flip.cardName) {
-				card.flip = true;
-				deck.Redraw();
-			}
-		}
-	
-		// redo unflip
-		if (data.unflip) {
-	
-			var _deck = _common2.default.getElementByName(data.unflip.deckName, 'deck');
-	
-			var _card = _deck.getCardByIndex(data.unflip.cardIndex | 0);
-	
-			if (_card && _card.name == data.unflip.cardName) {
-				_card.flip = false;
-				_deck.Redraw();
-			}
-		}
-	
-		// redo hide
-		if (data.hide) {
-	
-			var _deck2 = _common2.default.getElementByName(data.hide.deckName, 'deck');
-	
-			if (_deck2 && _deck2.cards[data.hide.cardIndex].name == data.hide.cardName // TODO check
-			) {
-					_deck2.cards[data.hide.cardIndex].visible = false;
-					_deck2.Redraw();
-				} else {
-				console.warn('Incorrect history substep [redo hide]:', data.hide);
-			}
-		}
-	
-		// redo show
-		if (data.show) {
-	
-			var _deck3 = _common2.default.getElementByName(data.show.deckName, 'deck');
-	
-			if (_deck3 && _deck3.cards[data.show.cardIndex].name == data.show.cardName) {
-				_deck3.cards[data.show.cardIndex].visible = true;
-				_deck3.Redraw();
-			} else {
-				console.warn('Incorrect history substep [redo show]:', data.hide);
-			}
-		}
-	
-		// redo full
-		if (data.full) {}
-		// 
-	
-	
-		// redo lock
-		if (typeof data.lock != 'undefined') {
-			for (var i in data.lock) {
-				var _element = _common2.default.getElementsByName(data.lock[i])[0];
-				_element.lock();
-			}
-		}
-	
-		// redo unlock
-		if (typeof data.unlock != 'undefined') {
-			for (var _i2 in data.unlock) {
-				var _element2 = _common2.default.getElementsByName(data.unlock[_i2])[0];
-				_element2.unlock();
-			}
-		}
-	
-		// redo swap
-		if (typeof data.swap != 'undefined' && typeof data.swap.deckName != 'undefined' && typeof data.swap.fromIndex != 'undefined' && typeof data.swap.toIndex != 'undefined') {
-	
-			var _deck4 = _common2.default.getElementByName(data.swap.deckName, 'deck');
-	
-			_atom2.default.swap(_deck4, data.swap.fromIndex, data.swap.toIndex, false);
-	
-			_deck4.Redraw();
-		}
-	
-		// redo move
-		if (typeof data.move != 'undefined' && typeof data.move.from != 'undefined' && typeof data.move.to != 'undefined' && typeof data.move.deck != 'undefined') {
-	
-			if (data.move.stepType) {
-	
-				if (typeof data.move.stepType == 'string') {
-					_share2.default.set('stepType', data.move.stepType);
-				}
-	
-				if (typeof data.move.stepType.redo == 'string') {
-					_share2.default.set('stepType', data.move.stepType.redo);
-				}
-			}
-	
-			var forceMoveData = {
-				"from": data.move.from,
-				"to": data.move.to,
-				"deck": data.move.deck,
-				"flip": data.move.flip
-			};
-	
-			if (typeof data.move.flip == "boolean") {
-				forceMoveData.flip = data.move.flip;
-			}
-	
-			if (!_share2.default.get('showHistoryAnimation')) {
-	
-				_common2.default.animationOff();
-	
-				forceMoveData.callback = function (e) {
-					_common2.default.animationOn();
-				};
-			}
-	
-			_event2.default.dispatch('forceMove', forceMoveData);
-		}
-	
-		if (data.markCard) {
-	
-			var _deck5 = _common2.default.getElementByName(data.markCard.deckName, 'deck');
-	
-			var _card2 = _deck5.getCardByIndex(data.markCard.cardIndex | 0);
-	
-			if (_card2 && data.markCard.cardName == _card2.name) {
-				_event2.default.dispatch('markCard', {
-					"card": _card2
-				});
-			}
-		}
-	
-		if (data.unmarkCard) {
-	
-			var _deck6 = _common2.default.getElementByName(data.unmarkCard.deckName, 'deck');
-	
-			var _card3 = _deck6.getCardByIndex(data.unmarkCard.cardIndex | 0);
-	
-			if (_card3 && data.unmarkCard.cardName == _card3.name) {
-				_event2.default.dispatch('unmarkCard', {
-					"card": _card3
-				});
-			}
-		}
-	
-		// TODO актуально ли ещё?
-		// if(
-		// 	data.redo                            &&
-		// 	typeof data.redo.stepType == 'string'
-		// ) {
-		// 	share.set('stepType', data.redo.stepType);
-		// }
-	};
-	
-	_event2.default.listen('redo', function (redoData) {
-	
-		if (!redoData || _share2.default.get('stopRunHistory')) {
-			return;
-		}
-	
-		console.groupCollapsed('REDO');
-		console.log('%c' + JSON.stringify(redoData, true, 2), 'background:#fff7d6');
-		console.groupEnd();
-	
-		_inputs2.default.break();
-	
-		// History.reset();
-		var history = _history2.default.get();
-		// for(let i in history) {
-		if (history.length > 0) {
-			for (var i = history.length - 1; i >= 0; i -= 1) {
-				(0, _undo2.default)(history[i]);
-			}
-		}
-	
-		if (_share2.default.get('animation')) {
-			_event2.default.dispatch('stopAnimations');
-		}
-	
-		// Обратная совместимость
-		if (redoData instanceof Array) {
-	
-			for (var _i in redoData) {
-				var data = redoData[_i];
-				redo(data);
-			}
-		} else {
-			redo(redoData);
-		}
-	
-		_tips2.default.checkTips();
-	
-		// TODO актуально ли ещё?
-		// if(
-		// 	share.get('stepType') != defaults.stepType &&
-		// 	Tips.getTips().length == 0
-		// ) {
-		// 	share.set('stepType', defaults.stepType);
-		// 	Tips.checkTips();
-		// }
-	});
-
-/***/ },
-/* 38 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	Object.defineProperty(exports, "__esModule", {
-		value: true
-	});
-	
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-	
-	var _event = __webpack_require__(2);
-	
-	var _event2 = _interopRequireDefault(_event);
-	
-	var _common = __webpack_require__(5);
-	
-	var _common2 = _interopRequireDefault(_common);
-	
-	var _deckActions = __webpack_require__(21);
-	
-	var _deckActions2 = _interopRequireDefault(_deckActions);
-	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-	
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-	
-	var redoAdvanced = function () {
-		function redoAdvanced() {
-			// 
-	
-			_classCallCheck(this, redoAdvanced);
-		}
-	
-		_createClass(redoAdvanced, [{
-			key: 'handle',
-			value: function handle(data) {
-	
-				// Run action
-				if (data.runAction && typeof data.runAction.actionName == 'string' && typeof data.runAction.deckName == 'string') {
-	
-					var deck = _common2.default.getElementByName(data.runAction.deckName, 'deck');
-	
-					_deckActions2.default.run({
-						deck: deck,
-						actionName: data.runAction.actionName,
-						eventName: 'redo',
-						eventData: {
-							"to": deck
-						}
-					});
-	
-					return true;
-				}
-	
-				// Make move
-				if (data.makeMove && data.makeMove.to && data.makeMove.from && typeof data.makeMove.from.cardName == "string") {
-	
-					// console.log('redoAdvanced:makeMove', JSON.stringify(data.makeMove));
-	
-					var fromCard = _common2.default.getElementByName(data.makeMove.from.cardName, 'card');
-					var fromDeck = _common2.default.getElementById(fromCard.parent);
-	
-					var to = null;
-	
-					if (typeof data.makeMove.to.cardName == "string") {
-						var toCard = _common2.default.getElementByName(data.makeMove.to.cardName, 'card');
-						to = toCard.id;
-					} else if (typeof data.makeMove.to.deckName == "string") {
-						to = _common2.default.getElementByName(data.makeMove.to.deckName, 'deck').id;
-					}
-					if (to) {
-	
-						var moveDeck = [];
-						var fromDeckCards = fromDeck.getCards();
-	
-						var found = false;
-						for (var i in fromDeckCards) {
-	
-							if (fromDeckCards[i].name == fromCard.name) {
-								found = true;
-							}
-	
-							if (found) {
-								moveDeck.push({
-									"card": fromDeckCards[i],
-									"index": i
-								});
-							}
-						}
-	
-						SolitaireEngine.event.dispatch('Move', {
-							"moveDeck": moveDeck,
-							"to": to,
-							"cursorMove": {
-								"dblclick": false,
-								"distance": Infinity
-							}
-						});
-					}
-	
-					return true;
-				}
-	
-				return false;
-			}
-		}]);
-	
-		return redoAdvanced;
-	}();
-	
-	exports.default = new redoAdvanced();
 
 /***/ },
 /* 39 */
@@ -12367,7 +12367,7 @@ var SolitaireEngine =
 	
 	var _stateManager2 = _interopRequireDefault(_stateManager);
 	
-	var _history2 = __webpack_require__(33);
+	var _history2 = __webpack_require__(25);
 	
 	var _history3 = _interopRequireDefault(_history2);
 	

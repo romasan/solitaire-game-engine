@@ -198,11 +198,15 @@ event.listen('undo', undoData => {
 
 	inputs.break();
 
+	if(share.get('animation')) {
+		event.dispatch('stopAnimations');
+	}
+
 	// History.reset();
 	let history = History.get();
 	if(history.length > 0) {
 		for(let i = history.length - 1; i >= 0; i -= 1) {
-			console.log('###', history[i]);
+			console.log('+++++++', JSON.stringify(history[i]));
 			undo(history[i]);
 		}
 	}
@@ -211,9 +215,6 @@ event.listen('undo', undoData => {
 	console.log('%c' + JSON.stringify(undoData, true, 2), 'background:#d6deff');
 	console.groupEnd();
 
-	if(share.get('animation')) {
-		event.dispatch('stopAnimations');
-	}
 
 	// Обратная совместимость
 	if(undoData instanceof Array) {

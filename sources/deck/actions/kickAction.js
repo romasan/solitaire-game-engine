@@ -94,7 +94,7 @@ class kickAction extends deckAction {
 
 			_addStep({
 				"undo" : data.eventData.stepType,
-				"redo" :                stepType
+				"redo" : data.eventData.stepType // stepType
 			});
 
 			if(data.actionData.dispatch) {

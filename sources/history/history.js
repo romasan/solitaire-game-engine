@@ -66,9 +66,9 @@ class historyClass {
 
 		if(reset) {
 
-			console.groupCollapsed('History:get(reset)', _req.length);
-			console.log('%c' + JSON.stringify(_req, true, 2), 'background: #e0edfa;width: 100%;');
-			console.groupEnd();
+			// console.groupCollapsed('History:get(reset)', _req.length);
+			// console.log('%c' + JSON.stringify(_req, true, 2), 'background: #e0edfa;width: 100%;');
+			// console.groupEnd();
 
 			this.reset(true);
 		}
