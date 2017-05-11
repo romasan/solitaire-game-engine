@@ -107,7 +107,7 @@ let undo = data => {
 
 	// undo full
 	if(data.full) {
-		// 
+		// TODO
 	}
 
 	// undo lock
@@ -202,19 +202,24 @@ event.listen('undo', undoData => {
 		event.dispatch('stopAnimations');
 	}
 
-	// History.reset();
-	let history = History.get();
-	if(history.length > 0) {
-		for(let i = history.length - 1; i >= 0; i -= 1) {
-			console.log('+++++++', JSON.stringify(history[i]));
-			undo(history[i]);
-		}
-	}
-
 	console.groupCollapsed('UNDO');
 	console.log('%c' + JSON.stringify(undoData, true, 2), 'background:#d6deff');
 	console.groupEnd();
 
+	// throw new Error();
+
+	// History.reset();
+	let history = History.get();
+	if(history.length > 0) {
+		for(let i = history.length - 1; i >= 0; i -= 1) {
+			
+			console.groupCollapsed('<<<');
+			console.log(JSON.stringify(history[i], true, 2));
+			console.groupEnd();
+
+			undo(history[i]);
+		}
+	}
 
 	// Обратная совместимость
 	if(undoData instanceof Array) {

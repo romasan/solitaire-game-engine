@@ -56,6 +56,8 @@ class kickAction extends deckAction {
 		// let _stop = false;
 		let _callback = e => {
 
+			console.log('### kickAction:_callback');
+
 			// if(_stop) {
 			// 	return;
 			// }

@@ -95,6 +95,12 @@ document.addEventListener("DOMContentLoaded", e => {
 	// 	el.addEventListener('transitionend', f2, false);
 	// }
 
+	// document.body.onmousedown = e => {
+	// 	if(e.button == 2) {
+	// 		document.getElementById('tbUndo').click();
+	// 	}
+	// }
+
 });
 
 let eachDecksInGroup = (groupName, callback, data) => {
@@ -126,6 +132,8 @@ let logCardsInDeck = (deck, pref) => {
 		)
 	}
 
+	_log.push(deck.cards);
+
 	console.log.apply(console, _log);
 }
 
@@ -139,6 +147,8 @@ let keys = {
 }
 
 let solitaire_log = data => {
+
+	console.groupCollapsed('debug log');
 
 	let groups = common.getElementsByType('group');
 	for(let i in groups) {
@@ -157,6 +167,8 @@ let solitaire_log = data => {
 		console.log('Deck:', decks[i].name);
 		logCardsInDeck(decks[i]);
 	}
+
+	console.groupEnd();
 
 	// console.log('ROLLER DECK:');
 	// let deck = common.getElementByName('rollerDeck');

@@ -104,9 +104,9 @@ let history = new historyClass();
 
 event.listen('addStep', data => {
 
-	if(data.debug) {
-		delete data.debug;
-	}
+	// if(data.debug) {
+	// 	delete data.debug;
+	// }
 
 	history.add(data);
 });

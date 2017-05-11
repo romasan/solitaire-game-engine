@@ -100,10 +100,16 @@ export default class allElClass {
 		let counter = 0;
 
 		for(let i in this.elements) {
+
 			counter += 1;
+
 			this.elements[i].animate(params, animationTime, ()=>{
+
 				counter -= 1;
-				if(!counter) callback();
+
+				if(counter == 0) {
+					callback();
+				}
 			});
 		}
 

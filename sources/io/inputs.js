@@ -75,21 +75,25 @@ class inputs {
 			};
 
 			document.addEventListener('touchstart', data => {
-				// data.preventDefault()
+
+				data.preventDefault();
+
 				this.take(data.target, data.touches[0].clientX, data.touches[0].clientY)
 			}, false);
 
 			document.addEventListener('touchmove', data => {
 
-				if(share.get('startCursor')) {
-					data.preventDefault();
-				}
+				// if(share.get('startCursor')) {
+				data.preventDefault();
+				// }
 
 				this.drag(data.touches[0].clientX, data.touches[0].clientY)
 			}, false);
 
 			document.addEventListener('touchend', data => {
-				// data.preventDefault()
+
+				data.preventDefault();
+
 				this.put(data.changedTouches[0].target, data.changedTouches[0].clientX, data.changedTouches[0].clientY);
 			}, false);
 		} catch(e) {}

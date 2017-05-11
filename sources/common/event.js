@@ -2,12 +2,15 @@
 
 /*
  * listen
+ * once
+ * remove
  * dispatch
  * clear
  * setTag
  * clearByTag
  * get
  * has
+ * _getAll
  */
 
 class Event {
@@ -22,6 +25,8 @@ class Event {
 		this._tag = this.tags.preInit;
 		
 		this._events = {};
+
+		this._id = 0;
 	}
 
 	listen(eventName, callback, context, once) {
@@ -33,25 +38,40 @@ class Event {
 			return;
 		}
 
+		this._id += 1;
+
 		if(this._events[eventName]) {
+
 			this._events[eventName].push({
+				"id"       : this._id ,
 				"tag"      : this._tag,
 				"context"  : context  ,
 				"callback" : callback ,
 				"once"     : once
 			});
 		} else {
+
 			this._events[eventName] = [{
+				"id"       : this._id ,
 				"tag"      : this._tag,
 				"callback" : callback ,
 				"context"  : context  ,
 				"once"     : once
 			}];
 		}
+
+		return this._id | 0;
 	}
 
 	once(eventName, callback, context) {
-		this.listen(eventName, callback, context, true);
+		return this.listen(eventName, callback, context, true);
+	}
+
+	remove(id, eventName) {
+		console.log('### event:remove', id);
+		for(let eventName in this._events) {
+			this._events[eventName] = this._events[eventName].filter(e => e.id != id);
+		}
 	}
 
 	dispatch(eventName, data) {
@@ -80,6 +100,8 @@ class Event {
 					}
 				}
 			}
+
+			this._events[eventName] = this._events[eventName].filter(e => e);
 		}
 	}
 
@@ -94,20 +116,7 @@ class Event {
 	clearByTag(tag) {
 
 		for(let eventName in this._events) {
-			for(let i in this._events[eventName]) {
-				if(
-					this._events[eventName][i]            &&
-					this._events[eventName][i].tag == tag
-				) {
-					// this._events[eventName][i] = null;
-					this._events[eventName] = this._events[eventName]
-						.slice(0, i)
-						.concat(
-							this._events[eventName]
-								.slice((i | 0) + 1)
-						);
-				}
-			}
+			this._events[eventName] = this._events[eventName].filter(e => e.tag != tag);
 		}
 	}
 
@@ -170,6 +179,14 @@ class Event {
 	// }
 
 	// log() {}
+
+	_debug() {
+		let data = {};
+		for(let eventName in this._events) {
+			data[eventName] = this._events[eventName].length;
+		}
+		return data;
+	}
 };
 
 export default new Event();

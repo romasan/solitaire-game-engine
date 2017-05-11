@@ -66,20 +66,44 @@ let forceMove = data => { // {from, to, deck, <flip>, <callback>}
 	if(_check) {
 
 		let cardsPop = deckFrom.Pop(data.deck.length);
+		// let cardsPop = deckFrom.getTopCards(data.deck.length);
+
+		console.log(
+			'### forceMove:pop',
+			cardsPop ? cardsPop.map(e => e.name).join(',') : cardsPop,
+			deckFrom.name,
+			deckFrom.cards.map(e => e.name).join(','),
+			data.deck.length
+		);
 
 		// перевернуть карты во время хода
-		if(typeof data.flip == "boolean") {
+		// if(typeof data.flip == "boolean") {
 
-			for(let i in cardsPop) {
-				cardsPop[i].flip = data.flip; // !cardsPop[i].flip;
-			}
-		}
+		// 	for(let i in cardsPop) {
+		// 		cardsPop[i].flip = data.flip; // !cardsPop[i].flip;
+		// 	}
+		// }
 
 		let deckToInvisibleCardsCount = deckTo.cardsCount({
 			"visible" : false
 		});
 
 		deckTo.Push(cardsPop, deckToInvisibleCardsCount > 0);
+
+		// let rand = Math.random();
+
+		let _break = e => {
+			// console.log('forceMove:BREAK' + rand + ' ' + deckFrom.name + ' ' + deckTo.name);
+			let _cards = deckTo.Pop(data.deck.length);
+			deckFrom.Push(_cards);
+			// if(typeof data.flip == "boolean") {
+			// 	for(let i in cardsPop) {
+			// 		cardsPop[i].flip = !data.flip; // !cardsPop[i].flip;
+			// 	}
+			// }
+			deckFrom.Redraw();
+			deckTo.Redraw();
+		}
 
 		let cardsMove = [];
 
@@ -95,21 +119,42 @@ let forceMove = data => { // {from, to, deck, <flip>, <callback>}
 			"destination" : deckTo
 		};
 
+		let eventId = event.once('clearCallbacks', e => {
+			if(typeof _break == "function") {
+				_break();
+			}
+		}, 'forceMove:' + deckFrom.name + ':' + deckTo.name + ':' + cardsMove[0].card.name + ':' + cardsMove[0].card.id);
+
 		if(typeof data.callback == 'function') {
 
 			moveDragDeckParams.callback = e => {
+
+				event.remove(eventId);
+
+				_break = null;
+
 				event.dispatch('forceMoveEnd');
+
 				data.callback();
+
+				// _next();
 			}
 
-			moveDragDeckParams.debug = 'from:forceMove';
+			// moveDragDeckParams.debug = 'from:forceMove';
 		} else {
 			moveDragDeckParams.callback = e => {
+
+				event.remove(eventId);
+
+				_break = null;
+
 				event.dispatch('forceMoveEnd');
+
+				// _next();
 			}
 		}
 
-		event.dispatch('moveDragDeck', moveDragDeckParams);
+		// let _next = e => {
 
 		if(data.addStep) {
 
@@ -127,12 +172,16 @@ let forceMove = data => { // {from, to, deck, <flip>, <callback>}
 			deckFrom.cards.length > 0                      &&
 			deckFrom.cards[deckFrom.cards.length - 1].flip
 		) {
+			console.log('unflip TopCard');
 			deckFrom.unflipTopCard(data.addStep);
 		}
 
 		if(data.save) {
 			event.dispatch('saveSteps');
 		}
+		// };
+
+		event.dispatch('moveDragDeck', moveDragDeckParams);
 	} else {
 		console.warn('forceMove:Ход невозможен', data);
 	}

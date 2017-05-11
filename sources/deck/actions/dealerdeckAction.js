@@ -151,19 +151,13 @@ class dealerdeckAction extends deckAction {
 
 				let _cardName = _card.name;
 
-				let _stop = false;
 				let _callback = e => {
-
-					if(_stop) {
-						return;
-					}
-
 					event.dispatch('checkTips');
 				};
 
-				event.once('clearCallbacks', e => {
-					_stop = true;
-				});
+				// event.once('clearCallbacks', e => {
+				// 	_callback = e => {};
+				// });
 
 				forceMove({
 					"from"     : dealDeck.name      ,
@@ -188,6 +182,8 @@ class dealerdeckAction extends deckAction {
 					}
 				});
 
+				dealDeck.Redraw();
+
 				event.dispatch('addStep', {
 					"move" : {
 						"from"     :       dealDeck.name,
@@ -206,10 +202,10 @@ class dealerdeckAction extends deckAction {
 			}
 		}
 
-		console.log('###', _makeStep, save);
+		// console.log('###', _makeStep, save);
 
 		if(_makeStep && save) {
-			// сохраняем если паздача удалась
+			// сохраняем если раздача удалась
 			event.dispatch('saveSteps');
 		}
 

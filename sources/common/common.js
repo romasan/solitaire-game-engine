@@ -307,6 +307,12 @@ let toggleSpecialStepMode = e => {
 
 event.listen('toggleSpecialStepMode', toggleSpecialStepMode);
 
+// document.onkeydown = e => {
+// 	if([32, 37, 39].indexOf(e.keyCode) >= 0) {
+// 		e.preventDefault();
+// 	}
+// }
+
 export default {
 	"isCurLock"         : isCurLock        ,
 	"curLock"           : curLock          ,

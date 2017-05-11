@@ -28,6 +28,9 @@ let angleValidate = angle => {
 
 event.listen('moveDragDeck', data => {
 
+	// console.log('moveDragDeck', data);
+	// let _debugMoveDeck = data.moveDeck.map(e => e.card.name).join(',');
+
 	common.curLock();
 
 	let _lastIndex = data.moveDeck.length - 1;
@@ -68,15 +71,14 @@ event.listen('moveDragDeck', data => {
 
 		let _zIndex = (defaults.topZIndex | 0) + (i | 0);
 
-		let _stop = false;
-		let _callback = function(data, _last) {
+		let _last = i == _lastIndex;
+		// let _callback = function(data, _last) {
+		let _callback = e => {
 
-			if(_stop) {
-				return;
-			}
+			// console.log('### moveDragDeck:_callback', i);
 
-			data.departure	.Redraw();
-			data.destination.Redraw();
+			// data.departure  .Redraw();
+			// data.destination.Redraw();
 
 			common.curUnLock();
 
@@ -90,11 +92,12 @@ event.listen('moveDragDeck', data => {
 			event.dispatch('moveDragDeckDone', {
 				"deck" : data.destination
 			});
-		}.bind(null, data, i == _lastIndex);
+		// }.bind(null, data, i == _lastIndex);
+		};
 
-		event.once('clearCallbacks', e => {
-			_stop = true;
-		});
+		// event.once('clearCallbacks', e => {
+		// 	_callback = e => {};
+		// });
 
 		elRender(_cardDomElement)
 			.css({

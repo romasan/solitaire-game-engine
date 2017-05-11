@@ -206,6 +206,8 @@ export default class elClass {
 			return data;
 		};
 
+		console.log('Animation, mode:', _animation ? 'ON' : 'OFF', this.el.id);
+
 		/*
 		 * Animation On
 		 */
@@ -215,6 +217,8 @@ export default class elClass {
 			try {
 			setTimeout(e => {
 
+				// this.el.style.top - params.top
+				// this.el.style.top - params.left
 				this.css({
 					"transition" : (animationTime / 1000) + 's'
 				});
@@ -229,9 +233,13 @@ export default class elClass {
 					this.el.style[attrName] = params[attrName];
 				}
 
+				console.log('### animation changes', this.el.id, counter);
+
 				this.addClass('animated');
 
 				this.el.addEventListener('transitionend', e => {
+
+					console.log('### transitionend:', this.el.id, counter);
 
 					counter -= 1;
 

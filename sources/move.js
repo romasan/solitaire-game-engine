@@ -130,6 +130,8 @@ let Move = (moveDeck, to, cursorMove) => {
 
 				let _callback = e => {
 
+					// _deck_destination.Push(_pop, false);
+
 					if(
 						// !event.has('moveEnd', {
 						!event.has('actionEvent:moveEnd:' + _deck_destination.name, {
@@ -187,10 +189,6 @@ let Move = (moveDeck, to, cursorMove) => {
 						"show" : true
 					});
 				};
-
-				// event.once('clearCallbacks', e => {
-				// 	_stop = true;
-				// });
 
 				event.dispatch('moveDragDeck', {
 					"departure"   : _deck_departure  ,

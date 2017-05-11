@@ -20,7 +20,6 @@ import getDecks      from 'getDecks'     ;
 import getDeckById   from 'getDeckById'  ;
 import deckCardNames from 'deckCardNames';
 import getDeck       from 'getDeck'      ;
-import atom          from 'atom'         ;
 
 /*
  * Redraw
@@ -46,6 +45,7 @@ import atom          from 'atom'         ;
  * showCards
  * getCardsNames
  * getCards
+ * getTopCards
  * cardsCount
  * getCardByIndex
  * getCardIndexById
@@ -291,6 +291,8 @@ class Deck {
 	// перерисовка стопки
 	Redraw(data) {
 
+		console.log('deck:Redraw', this.name);
+
 		event.dispatch('redrawDeck', {
 			"deck"     : this        ,
 			"deckData" : data        ,
@@ -499,20 +501,27 @@ class Deck {
 
 	Push(deck, afterVisible = false) {
 
+		// console.log('deck:Push', this.name, deck ? deck.map(e => e.name).join(',') : deck);
+
 		let visibleCardsCount = this.cardsCount();
 
 		// change cards parent id
-		try {
+		if(deck && typeof deck.length == "number") {
 			deck = deck.map(e => (e.parent = this.id, e)); 
-		} catch(e) {
-			console.warn('deck:Push:map', deck);
+		} else {
+			console.warn('deck:Push:map', deck, this.name);
 		}
 
 		// insert push deck after visible cards
-		this.cards.splice(visibleCardsCount, 0, ...deck); // TODO maybe concat faster?
+		this.cards.splice(visibleCardsCount, 0, ...deck); // TODO maybe concat faster than "..."?
 	}
 
 	Pop(count, clearParent) {
+
+		// console.log('%cdeck:Pop', 'color:orange;font-weight:bold;', this.name, count, this.cards.length);
+		if(this.cards.length < count) {
+			console.warn('Pop', count, ' cards from', this.name, 'is failed');
+		}
 
 		let _cards = this.getCards();
 
@@ -530,10 +539,13 @@ class Deck {
 			// remove this card from cards list
 			for(let i = 0; i < this.cards.length;i += 1) {
 				if(this.cards[i].id == _pop.id) {
-					this.cards = [].concat(
-						this.cards.slice(0, i)       ,
-						this.cards.slice((i | 0) + 1)
-					)
+
+					this.cards.splice(i, 1);
+
+					// this.cards = [].concat(
+					// 	this.cards.slice(0, i)       ,
+					// 	this.cards.slice((i | 0) + 1)
+					// )
 				}
 			}
 
@@ -558,7 +570,7 @@ class Deck {
 			this.hide();
 		}
 
-		this.Redraw();
+		// this.Redraw();
 
 		return _deck;
 	}
@@ -708,6 +720,10 @@ class Deck {
 		}
 
 		return _cards;
+	}
+
+	getTopCards(count, filters) {
+		return this.getCards(filters).slice(-(count | 0));
 	}
 
 	cardsCount(filters) {
