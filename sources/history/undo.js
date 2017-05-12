@@ -206,8 +206,6 @@ event.listen('undo', undoData => {
 	console.log('%c' + JSON.stringify(undoData, true, 2), 'background:#d6deff');
 	console.groupEnd();
 
-	// throw new Error();
-
 	// History.reset();
 	let history = History.get();
 	if(history.length > 0) {

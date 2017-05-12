@@ -77,8 +77,8 @@ event.listen('moveDragDeck', data => {
 
 			// console.log('### moveDragDeck:_callback', i);
 
-			// data.departure  .Redraw();
-			// data.destination.Redraw();
+			data.departure  .Redraw();
+			data.destination.Redraw();
 
 			common.curUnLock();
 

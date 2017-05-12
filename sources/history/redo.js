@@ -227,23 +227,27 @@ event.listen('redo', redoData => {
 		return;
 	}
 
+	inputs.break();
+
+	if(share.get('animation')) {
+		event.dispatch('stopAnimations');
+	}
+
 	console.groupCollapsed('REDO');
 	console.log('%c' + JSON.stringify(redoData, true, 2), 'background:#fff7d6');
 	console.groupEnd();
 
-	inputs.break();
-
 	// History.reset();
 	let history = History.get();
-	// for(let i in history) {
 	if(history.length > 0) {
 		for(let i = history.length - 1; i >= 0; i -= 1) {
+			
+			console.groupCollapsed('redo:<<<');
+			console.log(JSON.stringify(history[i], true, 2));
+			console.groupEnd();
+
 			undo(history[i]);
 		}
-	}
-
-	if(share.get('animation')) {
-		event.dispatch('stopAnimations');
 	}
 
 	// Обратная совместимость
@@ -258,13 +262,6 @@ event.listen('redo', redoData => {
 	}
 
 	Tips.checkTips();
-
-	// TODO актуально ли ещё?
-	// if(
-	// 	share.get('stepType') != defaults.stepType &&
-	// 	Tips.getTips().length == 0
-	// ) {
-	// 	share.set('stepType', defaults.stepType);
-	// 	Tips.checkTips();
-	// }
 });
+
+export default redo;

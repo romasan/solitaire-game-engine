@@ -68,21 +68,21 @@ let forceMove = data => { // {from, to, deck, <flip>, <callback>}
 		let cardsPop = deckFrom.Pop(data.deck.length);
 		// let cardsPop = deckFrom.getTopCards(data.deck.length);
 
-		console.log(
-			'### forceMove:pop',
-			cardsPop ? cardsPop.map(e => e.name).join(',') : cardsPop,
-			deckFrom.name,
-			deckFrom.cards.map(e => e.name).join(','),
-			data.deck.length
-		);
+		// console.log(
+		// 	'### forceMove:pop',
+		// 	cardsPop ? cardsPop.map(e => e.name).join(',') : cardsPop,
+		// 	deckFrom.name,
+		// 	deckFrom.cards.map(e => e.name).join(','),
+		// 	data.deck.length
+		// );
 
 		// перевернуть карты во время хода
-		// if(typeof data.flip == "boolean") {
+		if(typeof data.flip == "boolean") {
 
-		// 	for(let i in cardsPop) {
-		// 		cardsPop[i].flip = data.flip; // !cardsPop[i].flip;
-		// 	}
-		// }
+			for(let i in cardsPop) {
+				cardsPop[i].flip = data.flip; // !cardsPop[i].flip;
+			}
+		}
 
 		let deckToInvisibleCardsCount = deckTo.cardsCount({
 			"visible" : false
@@ -90,17 +90,22 @@ let forceMove = data => { // {from, to, deck, <flip>, <callback>}
 
 		deckTo.Push(cardsPop, deckToInvisibleCardsCount > 0);
 
-		// let rand = Math.random();
+		let rand = Math.random();
 
 		let _break = e => {
-			// console.log('forceMove:BREAK' + rand + ' ' + deckFrom.name + ' ' + deckTo.name);
+
+			console.log('forceMove:BREAK' + rand + ' ' + deckFrom.name + ' ' + deckTo.name);
+
 			let _cards = deckTo.Pop(data.deck.length);
+
 			deckFrom.Push(_cards);
+
 			// if(typeof data.flip == "boolean") {
 			// 	for(let i in cardsPop) {
 			// 		cardsPop[i].flip = !data.flip; // !cardsPop[i].flip;
 			// 	}
 			// }
+
 			deckFrom.Redraw();
 			deckTo.Redraw();
 		}
@@ -172,7 +177,9 @@ let forceMove = data => { // {from, to, deck, <flip>, <callback>}
 			deckFrom.cards.length > 0                      &&
 			deckFrom.cards[deckFrom.cards.length - 1].flip
 		) {
-			console.log('unflip TopCard');
+
+			// console.log('unflip TopCard');
+
 			deckFrom.unflipTopCard(data.addStep);
 		}
 

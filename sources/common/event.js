@@ -68,7 +68,9 @@ class Event {
 	}
 
 	remove(id, eventName) {
-		console.log('### event:remove', id);
+
+		// console.log('### event:remove', id);
+
 		for(let eventName in this._events) {
 			this._events[eventName] = this._events[eventName].filter(e => e.id != id);
 		}

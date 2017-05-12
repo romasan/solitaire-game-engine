@@ -206,7 +206,7 @@ export default class elClass {
 			return data;
 		};
 
-		console.log('Animation, mode:', _animation ? 'ON' : 'OFF', this.el.id);
+		// console.log('Animation, mode:', _animation ? 'ON' : 'OFF', this.el.id);
 
 		/*
 		 * Animation On
@@ -233,13 +233,13 @@ export default class elClass {
 					this.el.style[attrName] = params[attrName];
 				}
 
-				console.log('### animation changes', this.el.id, counter);
+				// console.log('### animation changes', this.el.id, counter);
 
 				this.addClass('animated');
 
 				this.el.addEventListener('transitionend', e => {
 
-					console.log('### transitionend:', this.el.id, counter);
+					// console.log('### transitionend:', this.el.id, counter);
 
 					counter -= 1;
 

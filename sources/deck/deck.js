@@ -24,9 +24,11 @@ import getDeck       from 'getDeck'      ;
 /*
  * Redraw
  * getTopCard
+ * getSomeCards
  * lock
  * unlock
  * flipCheck
+ * unflipCardByIndex
  * unflipTopCard
  * flipAllCards
  * unflipAllCards
@@ -43,6 +45,7 @@ import getDeck       from 'getDeck'      ;
  * hideCards
  * hideCardByIndex
  * showCards
+ * showCardByIndex
  * getCardsNames
  * getCards
  * getTopCards
@@ -291,7 +294,7 @@ class Deck {
 	// перерисовка стопки
 	Redraw(data) {
 
-		console.log('deck:Redraw', this.name);
+		// console.log('deck:Redraw', this.name);
 
 		event.dispatch('redrawDeck', {
 			"deck"     : this        ,
@@ -303,7 +306,6 @@ class Deck {
 		event.dispatch('redrawDeckFlip', {
 			"cards" : this.cards
 		});
-
 	}
 
 	getTopCard() {
@@ -356,7 +358,9 @@ class Deck {
 		event.dispatch('redrawDeckFlip', this);
 	}
 
-	unflipCardByIndex(index) {
+	unflipCardByIndex(index, save) {
+
+		// console.log('deck:unflipCardByIndex:', this.name, index);
 
 		if(this.cards[index]) {
 
@@ -365,31 +369,36 @@ class Deck {
 			// event.dispatch('redrawDeckFlip', this);
 			this.Redraw();
 
-			event.dispatch('addStep', {
-				"unflip" : {
-					"deckName"  : this.name             ,
-					"cardIndex" : index                 ,
-					"cardName"  : this.cards[index].name
-				}
-			});
+			if(save) {
+				
+				event.dispatch('addStep', {
+					"unflip" : {
+						"deckName"  : this.name             ,
+						"cardIndex" : index                 ,
+						"cardName"  : this.cards[index].name
+					}
+				});
+			}
 		}
 	}
 
 	unflipTopCard(save) {
 
+		// console.log('deck:unflipTopCard:', save);
+
 		if(this.cards.length > 0) {
 
-			this.unflipCardByIndex(this.cards.length - 1);
+			this.unflipCardByIndex(this.cards.length - 1, save);
 
-			if(save) {
-				event.dispatch('addStep', {
-					"unflip" : {
-						"cardName"  : this.cards[this.cards.length - 1].name,
-						"cardIndex" : this.cards.length - 1                 ,
-						"deckName"  : this.name
-					}
-				});
-			}
+			// if(save) {
+			// 	event.dispatch('addStep', {
+			// 		"unflip" : {
+			// 			"cardName"  : this.cards[this.cards.length - 1].name,
+			// 			"cardIndex" : this.cards.length - 1                 ,
+			// 			"deckName"  : this.name
+			// 		}
+			// 	});
+			// }
 		}
 	}
 
@@ -416,6 +425,8 @@ class Deck {
 	}
 
 	unflipAllCards(redraw = true, save) {
+
+		console.log('deck:unflipAllCards', save);
 
 		for(let i in this.cards) {
 

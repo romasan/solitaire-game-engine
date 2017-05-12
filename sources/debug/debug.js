@@ -132,9 +132,10 @@ let logCardsInDeck = (deck, pref) => {
 		)
 	}
 
-	_log.push(deck.cards);
 
-	console.log.apply(console, _log);
+	console.groupCollapsed.apply(console, _log);
+	console.log(deck.cards);
+	console.groupEnd();
 }
 
 event.listen('logCardsInDeck', logCardsInDeck);

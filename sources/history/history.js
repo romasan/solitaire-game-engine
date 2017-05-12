@@ -54,7 +54,7 @@ class historyClass {
 
 	add(step) {
 
-		// console.log('History:add', step);
+		console.log('History:add', step);
 
 		this.steps.push(step);
 	}
@@ -114,9 +114,11 @@ event.listen('addStep', data => {
 // save steps to client history
 event.listen('saveSteps', e => {
 
-	console.log('%c### saveSteps', 'font-weight: bold; color: green;');
-
 	let data = history.get();
+
+	console.groupCollapsed('%c### saveSteps', 'font-weight: bold; color: green;');
+	console.log('%c' + JSON.stringify(data, true, 2), 'background: #cceacc;');
+	console.groupEnd();
 
 	if(data.length) {
 		event.dispatch('makeStep', data);
@@ -129,7 +131,9 @@ event.listen('saveSteps', e => {
 // let next_history_step = function() {};
 // event.listen('next_history_step', e => {next_history_step()});
 
-event.listen('doHistory', e => {	
+event.listen('doHistory', e => {
+
+	console.groupCollapsed('DO HISTORY');
 
 	// common.animationOff();
 	if(!e || !e.data) {
@@ -180,6 +184,8 @@ event.listen('doHistory', e => {
 	// 		playHistory();
 	// 	}
 	// }
+
+	console.groupEnd();
 });
 
 event.listen('resetHistory', e => {
