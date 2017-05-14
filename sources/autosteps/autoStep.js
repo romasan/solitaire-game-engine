@@ -40,36 +40,48 @@ export default class {
 
 		share.set('autoStep:stepType', this.stepType);
 		
-		share.set('stepType', this.stepType);
+		share.set('stepType'         , this.stepType);
 
-		console.log('autoStep', this.autoStep, this._name);
+		console.log('#1 autoStep', this.autoStep, this._name, data);
 
 		if(this.autoStep) {
 
 			common.curLock();
+			// TODO run data.before();
 
 			this.auto();
 		} else {
 
-			if(this.check()) {
+			// if(this.check()) {
 				
-				if(data && typeof data.before == 'function') {
-					data.before({
-						"stepType" : this.stepType
-					});
-				}
+			if(data && typeof data.before == 'function') {
+				console.log('#2 >>>', data.before);
+				data.before({
+					"stepType" : this.stepType
+				});
+			}
+
+			let _check = this.check();
+			
+			if(!_check) {
+				// this.end();
+			} else {
+				event.dispatch('saveSteps');
 			}
 		}
 	}
 
 	end(data) {
 
+		console.log('autoStep:end, dispatch:', this.disptch)
+
+		// let _stepType = share.get('stepType');
 		share.set('stepType', defaults.stepType);
 
 		if(this.dispatch) {
 
 			let _data = {
-				"stepType" : share.get('stepType')
+				"stepType" : share.get('stepType') // TODO defaults.stepType | _stepType
 				// "callback" : e => {
 				// 	share.set('stepType', defaults.stepType);
 				// }

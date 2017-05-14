@@ -9,7 +9,7 @@ import Tips   from 'tips'  ;
 
 let forceMove = data => { // {from, to, deck, <flip>, <callback>}
 
-	// console.log('forceMove:', data);
+	console.log('forceMove:', data);
 
 	if(
 		!data.from ||
@@ -78,8 +78,8 @@ let forceMove = data => { // {from, to, deck, <flip>, <callback>}
 
 		// перевернуть карты во время хода
 		if(typeof data.flip == "boolean") {
-
 			for(let i in cardsPop) {
+				console.log('forceMove:flip:', i, cardsPop.length, cardsPop[i].flip, data.flip);
 				cardsPop[i].flip = data.flip; // !cardsPop[i].flip;
 			}
 		}
@@ -94,17 +94,22 @@ let forceMove = data => { // {from, to, deck, <flip>, <callback>}
 
 		let _break = e => {
 
-			console.log('forceMove:BREAK' + rand + ' ' + deckFrom.name + ' ' + deckTo.name);
+			// return; // debug
+			if(share.get('inHistoryMove')) {
+				return; 
+			}
+
+			console.log('%cforceMove:BREAK' + rand + ' ' + deckFrom.name + ' ' + deckTo.name, 'color:red;font-weight:bold;');
 
 			let _cards = deckTo.Pop(data.deck.length);
 
 			deckFrom.Push(_cards);
 
-			// if(typeof data.flip == "boolean") {
-			// 	for(let i in cardsPop) {
-			// 		cardsPop[i].flip = !data.flip; // !cardsPop[i].flip;
-			// 	}
-			// }
+			if(typeof data.flip == "boolean") {
+				for(let i in cardsPop) {
+					cardsPop[i].flip = !data.flip;
+				}
+			}
 
 			deckFrom.Redraw();
 			deckTo.Redraw();
@@ -124,11 +129,15 @@ let forceMove = data => { // {from, to, deck, <flip>, <callback>}
 			"destination" : deckTo
 		};
 
-		let eventId = event.once('clearCallbacks', e => {
-			if(typeof _break == "function") {
-				_break();
+		let eventId = event.once(
+			'clearCallbacks',
+			e => {
+				if(typeof _break == "function") {
+					_break();
+				}
 			}
-		}, 'forceMove:' + deckFrom.name + ':' + deckTo.name + ':' + cardsMove[0].card.name + ':' + cardsMove[0].card.id);
+			// 'forceMove: from:' + deckFrom.name + ' to:' + deckTo.name + ' card:' + cardsMove[0].card.name + ' cardId:' + cardsMove[0].card.id
+		);
 
 		if(typeof data.callback == 'function') {
 

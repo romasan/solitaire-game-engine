@@ -182,9 +182,21 @@ let undo = data => {
 			common.animationOff();
 
 			forceMoveData.callback = e => {
+
+				// undo move end
+				share.set('inHistoryMove', false);
+
 				common.animationOn();
 			};
+		} else {
+			forceMoveData.callback = e => {
+
+				// undo move end
+				share.set('inHistoryMove', false);
+			}
 		}
+
+		share.set('inHistoryMove', true);
 
 		event.dispatch('forceMove', forceMoveData);
 	}
@@ -235,6 +247,8 @@ event.listen('undo', undoData => {
 	}
 
 	Tips.checkTips();
+
+	console.log('undo:stepType:', share.get('stepType'));
 });
 
 export default undo;

@@ -77,7 +77,9 @@ event.listen('moveDragDeck', data => {
 
 			// console.log('### moveDragDeck:_callback', i);
 
-			data.departure  .Redraw();
+			// если при раздаче (dealAction) первой стопкой для раздачи
+			// оказывается спопка из которой сделан ход, перерисовка ломает анимацию
+			// data.departure  .Redraw();
 			data.destination.Redraw();
 
 			common.curUnLock();

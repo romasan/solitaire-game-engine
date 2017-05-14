@@ -46,6 +46,8 @@ class kickAction extends deckAction {
 			return false;
 		}
 
+		console.log('kickAction:run');
+
 		share.set('stepType', stepType);
 
 		common.animationDefault();
@@ -53,14 +55,9 @@ class kickAction extends deckAction {
 		let _from = data.eventData.to    , //Deck.Deck(_name),
 		    _deck = _from.getCardsNames();
 
-		// let _stop = false;
 		let _callback = e => {
 
 			console.log('### kickAction:_callback');
-
-			// if(_stop) {
-			// 	return;
-			// }
 
 			let _addStep = historyData => {
 
@@ -94,10 +91,12 @@ class kickAction extends deckAction {
 
 			event.dispatch('kick:end');
 
-			_addStep({
-				"undo" : data.eventData.stepType,
-				"redo" : data.eventData.stepType // stepType
-			});
+			// _addStep({
+			// 	"undo" : data.eventData.stepType,
+			// 	"redo" : data.eventData.stepType // stepType
+			// });
+
+			let eventStepType = data.eventData.stepType;
 
 			if(data.actionData.dispatch) {
 
@@ -106,33 +105,30 @@ class kickAction extends deckAction {
 				event.dispatch(data.actionData.dispatch, {
 					before: data => {
 
-						// _addStep({
-						// 	"undo" : stepType     ,
-						// 	"redo" : data.stepType
-						// });
+						console.log('#3 BEFORE BODY', _addStep, eventStepType, data.stepType);
 
-						event.dispatch('saveSteps', 'KICKACTION#1');
+						_addStep({
+							"undo" : eventStepType,
+							"redo" : data.stepType
+						});
+
+						// event.dispatch('saveSteps', 'KICKACTION#1');
 					}
 				});
 			} else {
 
 				// event.dispatch('kick:end');
 
-				// _addStep({
-				// 	"undo" : stepType                                                            ,
-				// 	"redo" : data.actionData.dispatch ? share.get('stepType') : defaults.stepType
-				// 	// "redo" : defaults.stepType
-				// })
+				_addStep({
+					"undo" : eventStepType,
+					"redo" : eventStepType
+				});
 
 				event.dispatch('saveSteps', 'KICKACTION#2');
 
 				super.end();
 			}
 		}
-
-		// event.once('clearCallbacks', e => {
-		// 	_stop = true;
-		// });
 
 		// TODO interval
 		let forceMoveParams = {

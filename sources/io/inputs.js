@@ -15,6 +15,44 @@ import Tips     from 'tips'    ;
  * put
  */
 
+// class inputLog() {
+// 
+// 	constructor() {
+// 
+// 		this._log = [];
+// 		this._maxLength = 3;
+// 	}
+// 
+// 	push(eventName, date = new Date().getTime()) {
+// 
+// 		if(!eventName) {
+// 			return;
+// 		}
+// 
+// 		this.log.push({
+// 			"date"  : date,
+// 			"event" : eventName
+// 		});
+// 
+// 		if(this._log.length > this._maxLength) {
+// 			this._log.unshift();
+// 		}
+// 	}
+// }
+
+// let Log = new inputLog();
+
+// let keys = {
+// 	"37" : "left" ,
+// 	"39" : "right"
+// }
+
+// document.addEventListener('keydown', e => {
+// 	if(e.keyCode in keys) {
+// 		Log(keys[e.keyCode]);
+// 	}
+// });
+
 class inputs {
 
 	constructor() {

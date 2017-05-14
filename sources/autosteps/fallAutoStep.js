@@ -36,6 +36,8 @@ export default class fallAutoStep extends autoStep {
 			this.end();
 			// Tips.checkTips();
 			return false;
+		} else {
+			// event.dispatch('saveSteps');
 		}
 
 		return true;
@@ -90,9 +92,9 @@ export default class fallAutoStep extends autoStep {
 		return false;
 	}
 
-	end() {
-		super.end({
-			"save" : true // (this.manualPossibleMoves > 0 ? true : false)
-		});
-	}
+	// end() {
+	// 	super.end({
+	// 		"save" : true // (this.manualPossibleMoves > 0 ? true : false)
+	// 	});
+	// }
 }

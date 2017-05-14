@@ -173,9 +173,21 @@ let redo = data => {
 			common.animationOff();
 
 			forceMoveData.callback = e => {
+				
+				// undo move end
+				share.set('inHistoryMove', false);
+
 				common.animationOn();
 			};
+		} else {
+			forceMoveData.callback = e => {
+				
+				// undo move end
+				share.set('inHistoryMove', false);
+			};
 		}
+
+		share.set('inHistoryMove', true);
 
 		event.dispatch('forceMove', forceMoveData);
 	}
@@ -211,14 +223,6 @@ let redo = data => {
 			});
 		}
 	}
-
-	// TODO актуально ли ещё?
-	// if(
-	// 	data.redo                            &&
-	// 	typeof data.redo.stepType == 'string'
-	// ) {
-	// 	share.set('stepType', data.redo.stepType);
-	// }
 };
 
 event.listen('redo', redoData => {
@@ -262,6 +266,8 @@ event.listen('redo', redoData => {
 	}
 
 	Tips.checkTips();
+
+	console.log('redo:stepType:', share.get('stepType'));
 });
 
 export default redo;
