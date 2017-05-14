@@ -42,7 +42,7 @@ export default class {
 		
 		share.set('stepType'         , this.stepType);
 
-		console.log('#1 autoStep', this.autoStep, this._name, data);
+		// console.log('autoStep', this.autoStep, this._name, data);
 
 		if(this.autoStep) {
 
@@ -55,7 +55,7 @@ export default class {
 			// if(this.check()) {
 				
 			if(data && typeof data.before == 'function') {
-				console.log('#2 >>>', data.before);
+
 				data.before({
 					"stepType" : this.stepType
 				});
@@ -73,7 +73,7 @@ export default class {
 
 	end(data) {
 
-		console.log('autoStep:end, dispatch:', this.disptch)
+		// console.log('autoStep:end, dispatch:', this.disptch)
 
 		// let _stepType = share.get('stepType');
 		share.set('stepType', defaults.stepType);

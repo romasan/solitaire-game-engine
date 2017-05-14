@@ -19,9 +19,9 @@ class dealerdeckAction extends deckAction {
 
 	run(deck, data) {// data.actionData, e
 
-		console.groupCollapsed('dealerdeckAction:run');
-		console.log(JSON.stringify(data, true, 2));
-		console.groupEnd();
+		// console.groupCollapsed('dealerdeckAction:run');
+		// console.log(JSON.stringify(data, true, 2));
+		// console.groupEnd();
 
 		let save = typeof data.eventData.save == "boolean" ? data.eventData.save : true;
 

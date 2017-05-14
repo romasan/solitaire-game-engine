@@ -111,7 +111,7 @@ var SolitaireEngine =
 	exports.options = _defaults2.default;
 	exports.winCheck = _winCheck2.default.hwinCheck;
 	exports.generator = _deckGenerator2.default;
-	exports.version = (90914910123).toString().split(9).slice(1).map(function (e) {
+	exports.version = (90914910153).toString().split(9).slice(1).map(function (e) {
 		return parseInt(e, 8);
 	}).join('.');
 	
@@ -5258,9 +5258,9 @@ var SolitaireEngine =
 			value: function run(deck, data) {
 				// data.actionData, e
 	
-				console.groupCollapsed('dealerdeckAction:run');
-				console.log(JSON.stringify(data, true, 2));
-				console.groupEnd();
+				// console.groupCollapsed('dealerdeckAction:run');
+				// console.log(JSON.stringify(data, true, 2));
+				// console.groupEnd();
 	
 				var save = typeof data.eventData.save == "boolean" ? data.eventData.save : true;
 	
@@ -5495,7 +5495,7 @@ var SolitaireEngine =
 	var forceMove = function forceMove(data) {
 		// {from, to, deck, <flip>, <callback>}
 	
-		console.log('forceMove:', data);
+		// console.log('forceMove:', data);
 	
 		if (!data.from || !data.to || !data.deck) {
 			return;
@@ -5550,7 +5550,7 @@ var SolitaireEngine =
 				// перевернуть карты во время хода
 				if (typeof data.flip == "boolean") {
 					for (var _i in cardsPop) {
-						console.log('forceMove:flip:', _i, cardsPop.length, cardsPop[_i].flip, data.flip);
+						// console.log('forceMove:flip:', i, cardsPop.length, cardsPop[i].flip, data.flip);
 						cardsPop[_i].flip = data.flip; // !cardsPop[i].flip;
 					}
 				}
@@ -5570,7 +5570,7 @@ var SolitaireEngine =
 						return;
 					}
 	
-					console.log('%cforceMove:BREAK' + rand + ' ' + deckFrom.name + ' ' + deckTo.name, 'color:red;font-weight:bold;');
+					// console.log('%cforceMove:BREAK' + rand + ' ' + deckFrom.name + ' ' + deckTo.name, 'color:red;font-weight:bold;');
 	
 					var _cards = deckTo.Pop(data.deck.length);
 	
@@ -5799,7 +5799,7 @@ var SolitaireEngine =
 			key: 'add',
 			value: function add(step) {
 	
-				console.log('History:add', step);
+				// console.log('History:add', step);
 	
 				this.steps.push(step);
 			}
@@ -6090,18 +6090,18 @@ var SolitaireEngine =
 			_event2.default.dispatch('stopAnimations');
 		}
 	
-		console.groupCollapsed('UNDO');
-		console.log('%c' + JSON.stringify(undoData, true, 2), 'background:#d6deff');
-		console.groupEnd();
+		// console.groupCollapsed('UNDO');
+		// console.log('%c' + JSON.stringify(undoData, true, 2), 'background:#d6deff');
+		// console.groupEnd();
 	
 		// History.reset();
 		var history = _history2.default.get();
 		if (history.length > 0) {
 			for (var i = history.length - 1; i >= 0; i -= 1) {
 	
-				console.groupCollapsed('<<<');
-				console.log(JSON.stringify(history[i], true, 2));
-				console.groupEnd();
+				// console.groupCollapsed('<<<');
+				// console.log(JSON.stringify(history[i], true, 2));
+				// console.groupEnd();
 	
 				undo(history[i]);
 			}
@@ -6124,7 +6124,7 @@ var SolitaireEngine =
 	
 		_tips2.default.checkTips();
 	
-		console.log('undo:stepType:', _share2.default.get('stepType'));
+		// console.log('undo:stepType:', share.get('stepType'));
 	});
 	
 	exports.default = undo;
@@ -6432,18 +6432,18 @@ var SolitaireEngine =
 			_event2.default.dispatch('stopAnimations');
 		}
 	
-		console.groupCollapsed('REDO');
-		console.log('%c' + JSON.stringify(redoData, true, 2), 'background:#fff7d6');
-		console.groupEnd();
+		// console.groupCollapsed('REDO');
+		// console.log('%c' + JSON.stringify(redoData, true, 2), 'background:#fff7d6');
+		// console.groupEnd();
 	
 		// History.reset();
 		var history = _history2.default.get();
 		if (history.length > 0) {
 			for (var i = history.length - 1; i >= 0; i -= 1) {
 	
-				console.groupCollapsed('redo:<<<');
-				console.log(JSON.stringify(history[i], true, 2));
-				console.groupEnd();
+				// console.groupCollapsed('redo:<<<');
+				// console.log(JSON.stringify(history[i], true, 2));
+				// console.groupEnd();
 	
 				(0, _undo2.default)(history[i]);
 			}
@@ -6462,7 +6462,7 @@ var SolitaireEngine =
 	
 		_tips2.default.checkTips();
 	
-		console.log('redo:stepType:', _share2.default.get('stepType'));
+		// console.log('redo:stepType:', share.get('stepType'));
 	});
 	
 	exports.default = redo;
@@ -6523,14 +6523,7 @@ var SolitaireEngine =
 	
 	// let historyStack = [];
 	
-	// events
-	
 	_event2.default.listen('addStep', function (data) {
-	
-		// if(data.debug) {
-		// 	delete data.debug;
-		// }
-	
 		_history2.default.add(data);
 	});
 	
@@ -6539,24 +6532,20 @@ var SolitaireEngine =
 	
 		var data = _history2.default.get();
 	
-		console.groupCollapsed('%c### saveSteps', 'font-weight: bold; color: green;');
-		console.log('%c' + JSON.stringify(data, true, 2), 'background: #cceacc;');
-		console.groupEnd();
+		// console.groupCollapsed('%c### saveSteps', 'font-weight: bold; color: green;');
+		// console.log('%c' + JSON.stringify(data, true, 2), 'background: #cceacc;');
+		// console.groupEnd();
 	
 		if (data.length) {
 			_event2.default.dispatch('makeStep', data);
 		} else {
-			// console.warn('Empty history to save.');
-			throw new Error('Empty history to save.');
+			console.warn('Empty history to save.');
 		}
 	});
 	
-	// let next_history_step = function() {};
-	// event.listen('next_history_step', e => {next_history_step()});
-	
 	_event2.default.listen('doHistory', function (e) {
 	
-		console.groupCollapsed('DO HISTORY');
+		// console.groupCollapsed('DO HISTORY');
 	
 		// common.animationOff();
 		if (!e || !e.data) {
@@ -6566,46 +6555,19 @@ var SolitaireEngine =
 		_common2.default.animationOff();
 	
 		for (var i in e.data) {
-			// console.log('### DOHISTORY', e.data.length, 'Press key "N"');
-			// let i = 0;
-			// let playHistory = z => {
-	
-			// console.log('DO STEP', i, 'FROM', e.data.length);
 	
 			_event2.default.dispatch('redo', e.data[i]);
 	
 			if (!_redoAdvanced2.default.handle(e.data[i][0]) && typeof e.callback == 'function') {
 				e.callback(e.data[i]);
 			}
-	
-			// if(i >= e.data.length - 1) {
-	
-			// common.animationDefault();
-	
-			// playHistory = null;
-			// }
-	
-			// i += 1;
-	
-			// if(typeof playHistory == "function") {
-			// playHistory();
-			// setTimeout(playHistory, 0);
-			// }
 		}
-		// playHistory();
 	
 		_common2.default.animationDefault();
 	
 		_event2.default.dispatch('stopRunHistory');
 	
-		// next_history_step = z => {
-	
-		// 	if(typeof playHistory == "function") {
-		// 		playHistory();
-		// 	}
-		// }
-	
-		console.groupEnd();
+		// console.groupEnd();
 	});
 	
 	_event2.default.listen('resetHistory', function (e) {
@@ -6817,7 +6779,7 @@ var SolitaireEngine =
 					return false;
 				}
 	
-				console.log('kickAction:run');
+				// console.log('kickAction:run');
 	
 				_share2.default.set('stepType', stepType);
 	
@@ -6829,7 +6791,7 @@ var SolitaireEngine =
 	
 				var _callback = function _callback(e) {
 	
-					console.log('### kickAction:_callback');
+					// console.log('### kickAction:_callback');
 	
 					var _addStep = function _addStep(historyData) {
 	
@@ -6876,8 +6838,6 @@ var SolitaireEngine =
 	
 						_event2.default.dispatch(data.actionData.dispatch, {
 							before: function before(data) {
-	
-								console.log('#3 BEFORE BODY', _addStep, eventStepType, data.stepType);
 	
 								_addStep({
 									"undo": eventStepType,
@@ -9354,7 +9314,7 @@ var SolitaireEngine =
 	
 				var _tips = _tips3.default.getTips();
 	
-				console.log('fallAutoStep:check', _tips.length);
+				// console.log('fallAutoStep:check', _tips.length);
 	
 				if (_tips.length == 0) {
 	
@@ -9503,7 +9463,7 @@ var SolitaireEngine =
 	
 				_share2.default.set('stepType', this.stepType);
 	
-				console.log('#1 autoStep', this.autoStep, this._name, data);
+				// console.log('autoStep', this.autoStep, this._name, data);
 	
 				if (this.autoStep) {
 	
@@ -9516,7 +9476,7 @@ var SolitaireEngine =
 					// if(this.check()) {
 	
 					if (data && typeof data.before == 'function') {
-						console.log('#2 >>>', data.before);
+	
 						data.before({
 							"stepType": this.stepType
 						});
@@ -9535,7 +9495,7 @@ var SolitaireEngine =
 			key: 'end',
 			value: function end(data) {
 	
-				console.log('autoStep:end, dispatch:', this.disptch);
+				// console.log('autoStep:end, dispatch:', this.disptch)
 	
 				// let _stepType = share.get('stepType');
 				_share2.default.set('stepType', _defaults2.default.stepType);

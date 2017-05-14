@@ -9,7 +9,7 @@ import Tips   from 'tips'  ;
 
 let forceMove = data => { // {from, to, deck, <flip>, <callback>}
 
-	console.log('forceMove:', data);
+	// console.log('forceMove:', data);
 
 	if(
 		!data.from ||
@@ -79,7 +79,7 @@ let forceMove = data => { // {from, to, deck, <flip>, <callback>}
 		// перевернуть карты во время хода
 		if(typeof data.flip == "boolean") {
 			for(let i in cardsPop) {
-				console.log('forceMove:flip:', i, cardsPop.length, cardsPop[i].flip, data.flip);
+				// console.log('forceMove:flip:', i, cardsPop.length, cardsPop[i].flip, data.flip);
 				cardsPop[i].flip = data.flip; // !cardsPop[i].flip;
 			}
 		}
@@ -99,7 +99,7 @@ let forceMove = data => { // {from, to, deck, <flip>, <callback>}
 				return; 
 			}
 
-			console.log('%cforceMove:BREAK' + rand + ' ' + deckFrom.name + ' ' + deckTo.name, 'color:red;font-weight:bold;');
+			// console.log('%cforceMove:BREAK' + rand + ' ' + deckFrom.name + ' ' + deckTo.name, 'color:red;font-weight:bold;');
 
 			let _cards = deckTo.Pop(data.deck.length);
 

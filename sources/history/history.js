@@ -35,7 +35,7 @@ class historyClass {
 
 	add(step) {
 
-		console.log('History:add', step);
+		// console.log('History:add', step);
 
 		this.steps.push(step);
 	}

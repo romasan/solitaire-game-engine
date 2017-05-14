@@ -46,7 +46,7 @@ class kickAction extends deckAction {
 			return false;
 		}
 
-		console.log('kickAction:run');
+		// console.log('kickAction:run');
 
 		share.set('stepType', stepType);
 
@@ -57,7 +57,7 @@ class kickAction extends deckAction {
 
 		let _callback = e => {
 
-			console.log('### kickAction:_callback');
+			// console.log('### kickAction:_callback');
 
 			let _addStep = historyData => {
 
@@ -104,8 +104,6 @@ class kickAction extends deckAction {
 
 				event.dispatch(data.actionData.dispatch, {
 					before: data => {
-
-						console.log('#3 BEFORE BODY', _addStep, eventStepType, data.stepType);
 
 						_addStep({
 							"undo" : eventStepType,

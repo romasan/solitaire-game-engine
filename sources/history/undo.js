@@ -214,18 +214,18 @@ event.listen('undo', undoData => {
 		event.dispatch('stopAnimations');
 	}
 
-	console.groupCollapsed('UNDO');
-	console.log('%c' + JSON.stringify(undoData, true, 2), 'background:#d6deff');
-	console.groupEnd();
+	// console.groupCollapsed('UNDO');
+	// console.log('%c' + JSON.stringify(undoData, true, 2), 'background:#d6deff');
+	// console.groupEnd();
 
 	// History.reset();
 	let history = History.get();
 	if(history.length > 0) {
 		for(let i = history.length - 1; i >= 0; i -= 1) {
 			
-			console.groupCollapsed('<<<');
-			console.log(JSON.stringify(history[i], true, 2));
-			console.groupEnd();
+			// console.groupCollapsed('<<<');
+			// console.log(JSON.stringify(history[i], true, 2));
+			// console.groupEnd();
 
 			undo(history[i]);
 		}
@@ -248,7 +248,7 @@ event.listen('undo', undoData => {
 
 	Tips.checkTips();
 
-	console.log('undo:stepType:', share.get('stepType'));
+	// console.log('undo:stepType:', share.get('stepType'));
 });
 
 export default undo;

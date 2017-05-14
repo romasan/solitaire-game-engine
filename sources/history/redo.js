@@ -237,18 +237,18 @@ event.listen('redo', redoData => {
 		event.dispatch('stopAnimations');
 	}
 
-	console.groupCollapsed('REDO');
-	console.log('%c' + JSON.stringify(redoData, true, 2), 'background:#fff7d6');
-	console.groupEnd();
+	// console.groupCollapsed('REDO');
+	// console.log('%c' + JSON.stringify(redoData, true, 2), 'background:#fff7d6');
+	// console.groupEnd();
 
 	// History.reset();
 	let history = History.get();
 	if(history.length > 0) {
 		for(let i = history.length - 1; i >= 0; i -= 1) {
 			
-			console.groupCollapsed('redo:<<<');
-			console.log(JSON.stringify(history[i], true, 2));
-			console.groupEnd();
+			// console.groupCollapsed('redo:<<<');
+			// console.log(JSON.stringify(history[i], true, 2));
+			// console.groupEnd();
 
 			undo(history[i]);
 		}
@@ -267,7 +267,7 @@ event.listen('redo', redoData => {
 
 	Tips.checkTips();
 
-	console.log('redo:stepType:', share.get('stepType'));
+	// console.log('redo:stepType:', share.get('stepType'));
 });
 
 export default redo;

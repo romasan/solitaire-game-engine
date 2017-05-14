@@ -29,7 +29,7 @@ export default class fallAutoStep extends autoStep {
 
 		let _tips = Tips.getTips();
 
-		console.log('fallAutoStep:check', _tips.length);
+		// console.log('fallAutoStep:check', _tips.length);
 
 		if(_tips.length == 0) {
 
