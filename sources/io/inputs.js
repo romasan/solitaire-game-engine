@@ -313,7 +313,7 @@ class inputs {
 
 
 		let _distance = _startCursor 
-			? Math.sqrt((e => e * e)(x - _startCursor.x) + (e => e * e)(y - _startCursor.y)) 
+			? Math.sqrt((e => e * e)(x - _startCursor.x) + (e => e * e)(y - _startCursor.y))
 			: 0;
 
 		let _deck = common.getElementById(_dragDeck[0].card.parent);

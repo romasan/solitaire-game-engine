@@ -237,9 +237,9 @@ event.listen('redo', redoData => {
 		event.dispatch('stopAnimations');
 	}
 
-	// console.groupCollapsed('REDO');
-	// console.log('%c' + JSON.stringify(redoData, true, 2), 'background:#fff7d6');
-	// console.groupEnd();
+	console.groupCollapsed('REDO');
+	console.log('%c' + JSON.stringify(redoData, true, 2), 'background:#fff7d6');
+	console.groupEnd();
 
 	// History.reset();
 	let history = History.get();

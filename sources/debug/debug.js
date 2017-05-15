@@ -115,12 +115,12 @@ let eachDecksInGroup = (groupName, callback, data) => {
 	}
 }
 
-let logCardsInDeck = (deck, pref) => {
+let logCardsInDeck = deck => {
 
-	let _log = [pref ? pref + ' ' : ''];
+	let _log = [deck.name + ': '];
 
 	for(let card of deck.cards) {
-		_log[0] += '%c' + card.name + ' ';
+		_log[0] += '%c' + card.name + '%c ';
 		_log.push(
 			card.visible
 				? card.flip
@@ -129,7 +129,8 @@ let logCardsInDeck = (deck, pref) => {
 				: card.flip
 					? 'color:grey;text-decoration:underline;'
 					: 'color:grey;'
-		)
+		);
+		_log.push('text-decoration: none;');
 	}
 
 
@@ -153,8 +154,9 @@ let solitaire_log = data => {
 
 	let groups = common.getElementsByType('group');
 	for(let i in groups) {
-		console.log('Group:', groups[i].name);
+		console.groupCollapsed('Group:', groups[i].name);
 		eachDecksInGroup(groups[i].name, logCardsInDeck);
+		console.groupEnd();
 	}
 
 	// console.log('GROUP HOME:');
@@ -165,7 +167,7 @@ let solitaire_log = data => {
 	});
 
 	for(let i in decks) {
-		console.log('Deck:', decks[i].name);
+		// console.log('Deck:', decks[i].name);
 		logCardsInDeck(decks[i]);
 	}
 

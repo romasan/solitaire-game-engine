@@ -194,7 +194,7 @@ export default class elClass {
 
 		let counter = 0;
 
-		let reType = (data) => {// crutch
+		let reType = data => { // )===
 
 			let _e = data + '';
 
@@ -205,6 +205,17 @@ export default class elClass {
 
 			return data;
 		};
+
+		let noPX = data => {
+
+			let _int = parseInt(data);
+
+			if(_int.toString() != "NaN") {
+				return _int | 0;
+			}
+
+			return false;
+		}
 
 		// console.log('Animation, mode:', _animation ? 'ON' : 'OFF', this.el.id);
 
@@ -217,8 +228,17 @@ export default class elClass {
 			try {
 			setTimeout(e => {
 
-				// this.el.style.top - params.top
-				// this.el.style.top - params.left
+				// TODO
+				let top  = params.top  ? Math.abs(noPX(params.top ) - noPX(this.el.style.top )) : 0;
+				let left = params.left ? Math.abs(noPX(params.left) - noPX(this.el.style.left)) : 0;
+
+				let distance = Math.sqrt((e => e * e)(left) + (e => e * e)(top)) | 0;
+
+				if(distance > 100) {
+					animationTime = animationTime + (animationTime * (distance / 100)) / 5;
+					// console.log('New animationTime: from', defaults.animationTime, 'to', animationTime, 'for', distance + 'px');
+				}
+
 				this.css({
 					"transition" : (animationTime / 1000) + 's'
 				});

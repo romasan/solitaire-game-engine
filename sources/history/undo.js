@@ -214,9 +214,9 @@ event.listen('undo', undoData => {
 		event.dispatch('stopAnimations');
 	}
 
-	// console.groupCollapsed('UNDO');
-	// console.log('%c' + JSON.stringify(undoData, true, 2), 'background:#d6deff');
-	// console.groupEnd();
+	console.groupCollapsed('UNDO');
+	console.log('%c' + JSON.stringify(undoData, true, 2), 'background:#d6deff');
+	console.groupEnd();
 
 	// History.reset();
 	let history = History.get();

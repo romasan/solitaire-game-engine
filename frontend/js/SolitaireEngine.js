@@ -111,7 +111,7 @@ var SolitaireEngine =
 	exports.options = _defaults2.default;
 	exports.winCheck = _winCheck2.default.hwinCheck;
 	exports.generator = _deckGenerator2.default;
-	exports.version = (90914910153).toString().split(9).slice(1).map(function (e) {
+	exports.version = (90914910165).toString().split(9).slice(1).map(function (e) {
 		return parseInt(e, 8);
 	}).join('.');
 	
@@ -558,7 +558,7 @@ var SolitaireEngine =
 		"locale": 'ru',
 	
 		"animation": true,
-		"animationTime": 300, // time in milliseconds
+		"animationTime": 200, // time in milliseconds for 100px
 	
 		"inputParams": {
 			"doubleClick": false
@@ -6090,9 +6090,9 @@ var SolitaireEngine =
 			_event2.default.dispatch('stopAnimations');
 		}
 	
-		// console.groupCollapsed('UNDO');
-		// console.log('%c' + JSON.stringify(undoData, true, 2), 'background:#d6deff');
-		// console.groupEnd();
+		console.groupCollapsed('UNDO');
+		console.log('%c' + JSON.stringify(undoData, true, 2), 'background:#d6deff');
+		console.groupEnd();
 	
 		// History.reset();
 		var history = _history2.default.get();
@@ -6432,9 +6432,9 @@ var SolitaireEngine =
 			_event2.default.dispatch('stopAnimations');
 		}
 	
-		// console.groupCollapsed('REDO');
-		// console.log('%c' + JSON.stringify(redoData, true, 2), 'background:#fff7d6');
-		// console.groupEnd();
+		console.groupCollapsed('REDO');
+		console.log('%c' + JSON.stringify(redoData, true, 2), 'background:#fff7d6');
+		console.groupEnd();
 	
 		// History.reset();
 		var history = _history2.default.get();
@@ -10830,7 +10830,7 @@ var SolitaireEngine =
 				var counter = 0;
 	
 				var reType = function reType(data) {
-					// crutch
+					// )===
 	
 					var _e = data + '';
 	
@@ -10840,6 +10840,17 @@ var SolitaireEngine =
 					}
 	
 					return data;
+				};
+	
+				var noPX = function noPX(data) {
+	
+					var _int = parseInt(data);
+	
+					if (_int.toString() != "NaN") {
+						return _int | 0;
+					}
+	
+					return false;
 				};
 	
 				// console.log('Animation, mode:', _animation ? 'ON' : 'OFF', this.el.id);
@@ -10853,8 +10864,21 @@ var SolitaireEngine =
 					try {
 						setTimeout(function (e) {
 	
-							// this.el.style.top - params.top
-							// this.el.style.top - params.left
+							// TODO
+							var top = params.top ? Math.abs(noPX(params.top) - noPX(_this.el.style.top)) : 0;
+							var left = params.left ? Math.abs(noPX(params.left) - noPX(_this.el.style.left)) : 0;
+	
+							var distance = Math.sqrt(function (e) {
+								return e * e;
+							}(left) + function (e) {
+								return e * e;
+							}(top)) | 0;
+	
+							if (distance > 100) {
+								animationTime = animationTime + animationTime * (distance / 100) / 5;
+								// console.log('New animationTime: from', defaults.animationTime, 'to', animationTime, 'for', distance + 'px');
+							}
+	
 							_this.css({
 								"transition": animationTime / 1000 + 's'
 							});
@@ -12698,9 +12722,9 @@ var SolitaireEngine =
 		}
 	};
 	
-	var logCardsInDeck = function logCardsInDeck(deck, pref) {
+	var logCardsInDeck = function logCardsInDeck(deck) {
 	
-		var _log = [pref ? pref + ' ' : ''];
+		var _log = [deck.name + ': '];
 	
 		var _iteratorNormalCompletion = true;
 		var _didIteratorError = false;
@@ -12710,8 +12734,9 @@ var SolitaireEngine =
 			for (var _iterator = deck.cards[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
 				var card = _step.value;
 	
-				_log[0] += '%c' + card.name + ' ';
+				_log[0] += '%c' + card.name + '%c ';
 				_log.push(card.visible ? card.flip ? 'color:blue;text-decoration:underline;' : 'color:blue;' : card.flip ? 'color:grey;text-decoration:underline;' : 'color:grey;');
+				_log.push('text-decoration: none;');
 			}
 		} catch (err) {
 			_didIteratorError = true;
@@ -12747,8 +12772,9 @@ var SolitaireEngine =
 	
 		var groups = _common2.default.getElementsByType('group');
 		for (var i in groups) {
-			console.log('Group:', groups[i].name);
+			console.groupCollapsed('Group:', groups[i].name);
 			eachDecksInGroup(groups[i].name, logCardsInDeck);
+			console.groupEnd();
 		}
 	
 		// console.log('GROUP HOME:');
@@ -12759,7 +12785,7 @@ var SolitaireEngine =
 		});
 	
 		for (var _i in decks) {
-			console.log('Deck:', decks[_i].name);
+			// console.log('Deck:', decks[i].name);
 			logCardsInDeck(decks[_i]);
 		}
 	

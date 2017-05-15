@@ -44,7 +44,7 @@ export default {
 	"locale"              : 'ru',
 
 	"animation"           : true,
-	"animationTime"       : 300 , // time in milliseconds
+	"animationTime"       : 200 , // time in milliseconds for 100px
 
 	"inputParams" : {
 		"doubleClick" : false
