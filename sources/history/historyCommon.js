@@ -39,7 +39,17 @@ import redoAdvanced from 'redoAdvanced';
 // let historyStack = [];
 
 event.listen('addStep', data => {
-	history.add(data);
+
+	if(data.step) {
+
+		let stepId = history.add(data.step);
+
+		if(typeof data.callback == "function") {
+			data.callback(stepId);
+		}
+	} else {
+		history.add(data);
+	}
 });
 
 // save steps to client history
@@ -90,6 +100,10 @@ event.listen('doHistory', e => {
 
 event.listen('resetHistory', e => {
 	history.reset();
+});
+
+event.listen('deleteHistory', steps => {
+	history.delete(steps);
 });
 
 event.listen('newGame', e => {

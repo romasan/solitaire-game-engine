@@ -140,7 +140,10 @@ let getElementsByName = (name, type) => {
 	return response;
 };
 
-let getElementByName = (name, type) => getElementsByName(name, type)[0];
+let getElementByName = (name, type) => {
+	let element = getElementsByName(name, type)[0];
+	return element;
+};
 
 let getElementsByType = (type, filter) => {
 

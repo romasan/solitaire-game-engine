@@ -7,7 +7,7 @@ import common from 'common';
 import Deck   from 'deck'  ;
 import Tips   from 'tips'  ;
 
-let forceMove = data => { // {from, to, deck, <flip>, <callback>}
+let forceMove = data => { // {from, to, deck, <flip>, <callback>, <steps>}
 
 	// console.log('forceMove:', data);
 
@@ -57,7 +57,9 @@ let forceMove = data => { // {from, to, deck, <flip>, <callback>}
 				data.deck[_index]                          &&
 				deckFromCards[i].name != data.deck[_index]
 			) {
-				console.warn('forceMove:check:false', deckFrom.name, deckTo.name, deckFromCards[i].name, data.deck[_index]);
+
+				// console.warn('forceMove:check:false', deckFrom.name, deckTo.name, deckFromCards[i].name, data.deck[_index]);
+
 				_check = false;
 			}
 		}
@@ -90,29 +92,44 @@ let forceMove = data => { // {from, to, deck, <flip>, <callback>}
 
 		deckTo.Push(cardsPop, deckToInvisibleCardsCount > 0);
 
-		let rand = Math.random();
+		let rand = (1048576 + ((Math.random() * 15728639) | 0) ).toString(16).toUpperCase();
+
+		// console.log('%c ', 'background:#' + rand, 'forceMove', rand + ':' + data.from + '>' + data.to);
 
 		let _break = e => {
 
 			// return; // debug
 			if(share.get('inHistoryMove')) {
-				return; 
+				return;
 			}
 
-			// console.log('%cforceMove:BREAK' + rand + ' ' + deckFrom.name + ' ' + deckTo.name, 'color:red;font-weight:bold;');
+			// console.log('%c %cforceMove:BREAK ' + rand + ' ' + deckFrom.name + ' ' + deckTo.name, 'background:#' + rand, 'background:none;color:red;font-weight:bold;');
 
 			let _cards = deckTo.Pop(data.deck.length);
 
-			deckFrom.Push(_cards);
+			if(cardsPop) {
 
-			if(typeof data.flip == "boolean") {
-				for(let i in cardsPop) {
-					cardsPop[i].flip = !data.flip;
+				deckFrom.Push(_cards);
+
+				if(typeof data.flip == "boolean") {
+					for(let i in cardsPop) {
+						cardsPop[i].flip = !data.flip;
+					}
+				}
+
+				deckFrom.Redraw();
+				deckTo  .Redraw();
+
+			// } else
+
+				if(data.steps && data.steps.length) {
+
+					// TODO History.clearByContext('deal');
+					// console.log('forceMove:_break:deleteHistory', data.steps);
+
+					event.dispatch('deleteHistory', data.steps);
 				}
 			}
-
-			deckFrom.Redraw();
-			deckTo.Redraw();
 		}
 
 		let cardsMove = [];
@@ -143,6 +160,20 @@ let forceMove = data => { // {from, to, deck, <flip>, <callback>}
 
 			moveDragDeckParams.callback = e => {
 
+				// TODO move here addStep?
+				if(data.addStep) {
+
+					event.dispatch('addStep', {
+						"move" : {
+							"from" : data.from,
+							"to"   : data.to  ,
+							"deck" : data.deck
+						}
+					});
+				}
+
+				// console.log('%c ', 'background:#' + rand, 'forceMove:END ' + rand);
+
 				event.remove(eventId);
 
 				_break = null;
@@ -158,8 +189,26 @@ let forceMove = data => { // {from, to, deck, <flip>, <callback>}
 		} else {
 			moveDragDeckParams.callback = e => {
 
+				// TODO move here addStep?
+				if(data.addStep) {
+
+					event.dispatch('addStep', {
+						// "step" : {
+						"move" : {
+							"from" : data.from,
+							"to"   : data.to  ,
+							"deck" : data.deck
+						}
+						// },
+						// "callback" : stepId => {
+							// steps.push(stepId)
+						// }
+					});
+				}
+
 				event.remove(eventId);
 
+				console.log('%c ', 'background:#' + rand, 'forceMove:END ' + rand);
 				_break = null;
 
 				event.dispatch('forceMoveEnd');
@@ -170,16 +219,7 @@ let forceMove = data => { // {from, to, deck, <flip>, <callback>}
 
 		// let _next = e => {
 
-		if(data.addStep) {
-
-			event.dispatch('addStep', {
-				"move" : {
-					"from" : data.from,
-					"to"   : data.to  ,
-					"deck" : data.deck
-				}
-			});
-		}
+		// 
 
 		if(
 			deckFrom.autoUnflipTop                         &&

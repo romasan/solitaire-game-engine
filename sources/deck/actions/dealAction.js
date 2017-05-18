@@ -9,17 +9,22 @@ import forceMove  from 'forceMove' ;
 import deckAction from 'deckAction';
 import History    from 'history'   ;
 
-const stepType = 'dealerdeckStepType';
+const stepType = 'dealStepType';
 
-class dealerdeckAction extends deckAction {
+/*
+ * run
+ * end
+ */ 
+
+class dealAction extends deckAction {
 
 	constructor() {
 		super();
 	}
 
-	run(deck, data) {// data.actionData, e
+	run(deck, data) { // Deck, {actionData, eventData, eventName}
 
-		// console.groupCollapsed('dealerdeckAction:run');
+		// console.groupCollapsed('dealAction:run');
 		// console.log(JSON.stringify(data, true, 2));
 		// console.groupEnd();
 
@@ -44,12 +49,21 @@ class dealerdeckAction extends deckAction {
 
 		let dealDeck = typeof data.actionData.from == 'string'
 			? Deck.getDeck(data.actionData.from)
-			: deck
+			: deck;
 
 		// смотрим остались ли карты
 		if(dealDeck.cards.length == 0) {
 
-			share.set('stepType', defaults.stepType);
+			let _stepType = share.get('stepType');
+
+			if(_stepType != defaults.stepType) {
+
+				share.set('stepType', defaults.stepType);
+
+				event.dispatch('addStep', {
+					"setStepType" : defaults.stepType
+				});
+			}
 
 			event.dispatch('actionBreak');
 
@@ -57,15 +71,16 @@ class dealerdeckAction extends deckAction {
 
 			let history = History.get(false);
 
+			// есть ли что либо на запись в историю
 			if(history.length > 0) {
+
+				// console.log('dealAction:nomoves:save');
+
 				event.dispatch('saveSteps');
 			}
 
 			return;
 		}
-
-		// карты для раздачи
-		let _decks = [];
 
 		// to == toGroup ???
 		if(data.actionData.toGroup && !data.actionData.to) {
@@ -74,10 +89,15 @@ class dealerdeckAction extends deckAction {
 			
 		};
 
-		// есть куда раздать
+		// стопки для раздачи
+		let _decks = [];
+
+		// есть куда раздавать
 		if(data.actionData.to) {
 
-			// передали имя
+			// выбираем стопки для раздачи
+
+			// передали имя стопки/группы
 			if(typeof data.actionData.to == 'string') {
 
 				// ищем элементы с таким именем
@@ -103,7 +123,7 @@ class dealerdeckAction extends deckAction {
 
 				}
 
-			// передали массив
+			// передали массив имён стопок/групп
 			} else {
 
 				for(let i in data.actionData.to) {
@@ -135,23 +155,103 @@ class dealerdeckAction extends deckAction {
 		let _makeStep = false;
 
 		// пробегаем колоды из списка
-		for(let deckId in _decks) {
 
-			// берём верхнюю карту
-			let _card = dealDeck.getTopCard();
+		let moveDecks = _decks.filter(e => e.cards.length == 0);
+		let _iterations = moveDecks.length;
+
+		// for(let deckId in _decks) {
+		for(let deckId in moveDecks) {
 
 			// флаг что такой ход возможен
 			let _canStep = data.actionData.onlyEmpty
-				? _decks[deckId].cards.length == 0
+				? moveDecks[deckId].cards.length == 0
 				: true;
 
-			if(_canStep && _card) {
+			if(
+				_canStep &&
+				dealDeck.cards.length > 0
+			) {
+
+				let _steps = [];
+
+				// берём верхнюю карту
+				let _card = dealDeck.getTopCard();
 
 				_makeStep = true;
 
 				let _cardName = _card.name;
 
+				let cardIndex = dealDeck.cards.length;
+
+				// #1
+
+				event.dispatch('addStep', {
+					"step" : {
+						"unflip" : {
+							"deckName"  : dealDeck.name,
+							"cardName"  : _cardName    ,
+							"cardIndex" : cardIndex - 1
+						}
+					},
+					"callback" : stepId => {
+						_steps.push(stepId)
+					}
+				});
+
+				dealDeck.Redraw();
+
+				event.dispatch('addStep', {
+					"step" : {	
+						"move" : {
+							"from"     : dealDeck         .name,
+							"to"       : moveDecks[deckId].name,
+							"deck"     : [_cardName]           ,
+							// "flip"     : true               ,
+							"stepType" : {
+								"undo" : share.get('stepType'),
+								"redo" : data.actionData.dispatch
+									? share.get('stepType')
+									: defaults.stepType
+							},
+							"context"  : 'dealAction'
+						}
+					},
+					"callback" : stepId => {
+						_steps.push(stepId)
+					}
+				});
+
 				let _callback = e => {
+
+					_iterations -= 1;
+
+					// console.log('dealAction:run:_callback', _iterations);
+
+					if(_iterations == 0) {
+						// _after();
+						// let _after = e => {
+							
+						// #2
+
+						if(_makeStep && save) { // && hasNextSteps
+							// сохраняем если раздача удалась
+							event.dispatch('saveSteps');
+						}
+
+						if(data.actionData.dispatch) {
+
+							event.dispatch(data.actionData.dispatch, !_makeStep);
+						} else {
+
+							this.end();
+							// сохраняем если ничего не вызываем
+							share.set('stepType', defaults.stepType);
+						}
+
+						event.dispatch('dealEnd');
+						// };
+					}
+
 					event.dispatch('checkTips');
 				};
 
@@ -161,69 +261,29 @@ class dealerdeckAction extends deckAction {
 
 				forceMove({
 					"from"     : dealDeck.name      ,
-					"to"       : _decks[deckId].name,
+					"to"       : moveDecks[deckId].name,
 					"deck"     : [_cardName]        ,
 					"flip"     : false              ,
-					"callback" : _callback
+					"callback" : _callback          ,
+					"steps"    : _steps
 				}, true);
 
-				_decks[deckId].flipCheck();
+				moveDecks[deckId].flipCheck();
 				// _decks[deckId].Redraw();
 
-				event.dispatch('dealEnd');
-
-				let cardIndex = dealDeck.cards.length;
-
-				event.dispatch('addStep', {
-					"unflip" : {
-						"deckName"  : dealDeck.name,
-						"cardName"  : _cardName    ,
-						"cardIndex" : cardIndex
-					}
-				});
-
-				dealDeck.Redraw();
-
-				event.dispatch('addStep', {
-					"move" : {
-						"from"     :       dealDeck.name,
-						"to"       : _decks[deckId].name,
-						"deck"     : [_cardName]        ,
-						// "flip"     : true               ,
-						"stepType" : {
-							"undo" : share.get('stepType'),
-							"redo" : data.actionData.dispatch
-								? share.get('stepType')
-								: defaults.stepType
-						},
-						"context"  : 'dealerdeckAction'
-					}
-				});
+				// #1
 			}
 		}
 
-		// console.log('###', _makeStep, save);
-
-		if(_makeStep && save) {
-			// сохраняем если раздача удалась
-			event.dispatch('saveSteps');
-		}
-
-		if(data.actionData.dispatch) {
-
-			event.dispatch(data.actionData.dispatch, !_makeStep);
-		} else {
-
-			this.end();
-			// сохраняем если ничего не вызываем
-			share.set('stepType', defaults.stepType);
-		}
+		// #2
 	}
 
 	end() {
+
 		event.dispatch('dealEnd');
+
 		super.end();
 	}
 }
 
-export default new dealerdeckAction();
+export default new dealAction();

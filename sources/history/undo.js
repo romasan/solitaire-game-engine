@@ -21,6 +21,7 @@ import stateManager from 'stateManager';
  * unlock
  * swap
  * move
+ * setStepType
  */
 
 let undo = data => {
@@ -56,9 +57,9 @@ let undo = data => {
 
 		// console.log('undo:unflip -> flip', data.unflip, deck.name, card.name, deck.cards.map(e => e.name));
 
-		event.dispatch('removeMarkCard', {
-			"card" : card
-		});
+		// event.dispatch('removeMarkCard', {
+		// 	"card" : card
+		// });
 
 		if(
 			card                              &&
@@ -200,6 +201,13 @@ let undo = data => {
 
 		event.dispatch('forceMove', forceMoveData);
 	}
+
+	if(
+		data.setStepType &&
+		typeof data.setStepType.undo == "string"
+	) {
+		share.set('stepType', data.stepType.undo);
+	}
 };
 
 event.listen('undo', undoData => {
@@ -210,13 +218,13 @@ event.listen('undo', undoData => {
 
 	inputs.break();
 
+	// console.groupCollapsed('UNDO');
+	// console.log('%c' + JSON.stringify(undoData, true, 2), 'background:#d6deff');
+	// console.groupEnd();
+
 	if(share.get('animation')) {
 		event.dispatch('stopAnimations');
 	}
-
-	console.groupCollapsed('UNDO');
-	console.log('%c' + JSON.stringify(undoData, true, 2), 'background:#d6deff');
-	console.groupEnd();
 
 	// History.reset();
 	let history = History.get();

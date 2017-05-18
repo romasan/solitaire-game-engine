@@ -6,7 +6,7 @@ import defaults       from 'defaults'            ;
 import common         from 'common'              ;
 
 // Actions
-import dealerdeck     from 'dealerdeckAction'    ;
+import deal           from 'dealAction'          ;
 import kickAction     from 'kickAction'          ;
 import stepsAround    from 'stepsAroundAction'   ;
 import changeStepType from 'changeStepTypeAction';
@@ -16,7 +16,7 @@ import checkFull      from 'checkFullAction'     ;
 import roller         from 'rollerAction'        ;
 
 let _actions = {
-	"dealerdeck"     : dealerdeck    ,
+	"deal"           : deal          ,
 	"kick"           : kickAction    ,
 	"stepsAround"    : stepsAround   ,
 	"changeStepType" : changeStepType,

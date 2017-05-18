@@ -6,51 +6,15 @@ import defaults      from 'defaults'     ;
 import common        from 'common'       ;
 
 import field         from 'field'        ;
-import deck          from 'deck'         ;
 import deckGenerator from 'deckGenerator';
 import elRender      from 'elRender'     ;
 import stateManager  from 'stateManager' ;
 import history       from 'history'      ;
 import mapCommon     from 'mapCommon'    ;
 
-/*
-let stamp = e => {
-	let summaryAnimationsCallbacksCouns = 0;
-	return {
-		"stepType" : share.get('stepType'),
-		"decks"    : (e => {
-
-			e = deck.getDecks();
-			let decks = [];
-
-			for(let i in e) {
-				decks.push({
-					"name"  : e[i].name,
-					"cards" : e[i].cards.map(c => {
-						return {
-							"name" : c.name,
-							"el"   : (z => {
-								let el = share.get('domElement:' + c.id);
-								summaryAnimationsCallbacksCouns += el._animationCallbacks.length;
-								return {
-									_animationCallbacksLength : el._animationCallbacks.length
-								}
-							})()
-						}
-					})
-				});
-			}
-
-			return decks;
-		})(),
-		summaryAnimationsCallbacksCouns : summaryAnimationsCallbacksCouns,
-		history : history.get().length
-	}
-}
-*/
-
-// Firebug
 document.addEventListener("DOMContentLoaded", e => {
+
+	// Firebug
 
 	if(document.location.hash == '#debug') {
 		(function(F, i, r, e, b, u, g, L, I, T, E) {
@@ -83,34 +47,16 @@ document.addEventListener("DOMContentLoaded", e => {
 	// 	console.log('TEST:', e);
 	// });
 
-	// let f = e => {
-	// 	el.style.transition = (500 / 1000) + 's';
-	// 	el.style.left = ((Math.random() * 1000) | 0) + 'px';
-	// 	el.style.top  = ((Math.random() * 1000) | 0) + 'px';
-	// 	let f2 = e => {
-	// 		el.style.transition = null;
-	// 		console.log('done');
-	// 		removeEventListener('transitionend', f2)
-	// 	};
-	// 	el.addEventListener('transitionend', f2, false);
-	// }
-
-	// document.body.onmousedown = e => {
-	// 	if(e.button == 2) {
-	// 		document.getElementById('tbUndo').click();
-	// 	}
-	// }
-
 });
 
-let eachDecksInGroup = (groupName, callback, data) => {
+let eachDecksInGroup = (groupName, callback) => {
 
 	let group = common.getElementByName(groupName, 'group');
 	let decks = group.getDecks();
 
 	for(let deckIndex in decks) {
 		if(typeof callback == "function") {
-			callback(decks[deckIndex], data ? (decks[deckIndex].name == data.from ? '>' : decks[deckIndex].name == data.to ? '<' : ' ') : null);
+			callback(decks[deckIndex]); // , data ? (decks[deckIndex].name == data.from ? '>' : decks[deckIndex].name == data.to ? '<' : ' ') : null);
 		}
 	}
 }
@@ -139,15 +85,6 @@ let logCardsInDeck = deck => {
 	console.groupEnd();
 }
 
-event.listen('logCardsInDeck', logCardsInDeck);
-
-let keys = {
-	"c" : 67, // clear
-	"d" : 68, // debug
-	"h" : 72, // history
-	"n" : 78, // next
-}
-
 let solitaire_log = data => {
 
 	console.groupCollapsed('debug log');
@@ -159,9 +96,6 @@ let solitaire_log = data => {
 		console.groupEnd();
 	}
 
-	// console.log('GROUP HOME:');
-	// eachDecksInGroup('group_home', logCardsInDeck);
-
 	let decks = common.getElementsByType('deck', {
 		"parent" : 'field'
 	});
@@ -172,28 +106,37 @@ let solitaire_log = data => {
 	}
 
 	console.groupEnd();
-
-	// console.log('ROLLER DECK:');
-	// let deck = common.getElementByName('rollerDeck');
-	// logCardsInDeck(deck);
 }
 
-event.listen('solitaire_log', solitaire_log);
+let keys = {
+	"c" : 67, // clear
+	"d" : 68, // debug
+	"h" : 72, // history
+	"n" : 78, // next
+	"s" : 83  // stepType
+}
 
 document.onkeyup = e => {
 
 	if(e.keyCode == keys.d) {
+
 		solitaire_log();
 	} else if(e.keyCode == keys.n) {
+
 		event.dispatch('next_history_step');
 	} else if(e.keyCode == keys.c) {
+
 		console.clear();
 	} else if(e.keyCode == keys.h) {
+
 		// console.log('History:', history.get(false));
 		let _history = history.get(false);
 		console.groupCollapsed('debug:history', _history.length);
 		console.log('%c' + JSON.stringify(_history, true, 2), 'background: #faede0;');
 		console.groupEnd();
+	} else if(e.keyCode == keys.s) {
+
+		console.log('stepType:', share.get('stepType'));
 	}
 }
 

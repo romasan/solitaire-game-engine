@@ -105,6 +105,8 @@ class kickAction extends deckAction {
 				event.dispatch(data.actionData.dispatch, {
 					before: data => {
 
+						// console.log('kickAction:before -> autoStep:start');
+
 						_addStep({
 							"undo" : eventStepType,
 							"redo" : data.stepType

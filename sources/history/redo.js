@@ -24,6 +24,7 @@ import undo         from 'undo'        ;
  * move
  * markCard
  * unmarkCard
+ * setStepType
  */
 
 let redo = data => {
@@ -223,6 +224,16 @@ let redo = data => {
 			});
 		}
 	}
+
+	if(data.setStepType) {
+		if(typeof data.setStepType == "string") {
+			share.set('stepType', data.setStepType);
+		} else {
+			if(typeof data.setStepType.redo == "string") {
+				share.set('stepType', data.stepType.redo);
+			}
+		}
+	}
 };
 
 event.listen('redo', redoData => {
@@ -233,13 +244,13 @@ event.listen('redo', redoData => {
 
 	inputs.break();
 
+	// console.groupCollapsed('REDO');
+	// console.log('%c' + JSON.stringify(redoData, true, 2), 'background:#fff7d6');
+	// console.groupEnd();
+
 	if(share.get('animation')) {
 		event.dispatch('stopAnimations');
 	}
-
-	console.groupCollapsed('REDO');
-	console.log('%c' + JSON.stringify(redoData, true, 2), 'background:#fff7d6');
-	console.groupEnd();
 
 	// History.reset();
 	let history = History.get();

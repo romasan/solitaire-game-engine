@@ -112,23 +112,25 @@ let Move = (moveDeck, to, cursorMove) => {
 					}
 				}
 
-				// TODO add card index ?
-				event.dispatch('addStep', {
-					"move" : {
-						"from"     : _deck_departure  .name      ,
-						"to"       : _deck_destination.name      ,
-						"deck"     : Deck.deckCardNames(moveDeck),
-						"stepType" : {
-							"undo" : _stepType,
-							"redo" : _stepType
-						},
-						"context"  : "move"
-					}
-				});
+				// 
 
 				let issetMoves = null;
 
 				let _callback = e => {
+					
+					// TODO add card index ?
+					event.dispatch('addStep', {
+						"move" : {
+							"from"     : _deck_departure  .name      ,
+							"to"       : _deck_destination.name      ,
+							"deck"     : Deck.deckCardNames(moveDeck),
+							"stepType" : {
+								"undo" : _stepType,
+								"redo" : _stepType
+							},
+							"context"  : "move"
+						}
+					});
 
 					// _deck_destination.Push(_pop, false);
 

@@ -82,12 +82,13 @@ event.listen('moveDragDeck', data => {
 			// data.departure  .Redraw();
 			data.destination.Redraw();
 
-			common.curUnLock();
-
 			if(
 				_last                              &&
 				typeof data.callback == 'function'
 			) {
+
+				common.curUnLock();
+
 				data.callback();
 			}
 

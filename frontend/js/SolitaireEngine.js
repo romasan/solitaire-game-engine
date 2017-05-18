@@ -111,7 +111,7 @@ var SolitaireEngine =
 	exports.options = _defaults2.default;
 	exports.winCheck = _winCheck2.default.hwinCheck;
 	exports.generator = _deckGenerator2.default;
-	exports.version = (90914910165).toString().split(9).slice(1).map(function (e) {
+	exports.version = (90914910232).toString().split(9).slice(1).map(function (e) {
 		return parseInt(e, 8);
 	}).join('.');
 	
@@ -221,6 +221,12 @@ var SolitaireEngine =
 			value: function set(name, data) {
 				var forceClone = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : false;
 	
+	
+				// let _debugValueName = 'curLockState';
+	
+				// if(name == _debugValueName) {
+				// 	console.log('%cgebug: change ' + _debugValueName + ' from ' + this._data[_debugValueName] + ' to ' + data, 'color:' + (data == true ? 'orange' : 'blue'));
+				// }
 	
 				// "foo", "bar", false
 				if (typeof name == 'string') {
@@ -1275,7 +1281,8 @@ var SolitaireEngine =
 	};
 	
 	var getElementByName = function getElementByName(name, type) {
-		return getElementsByName(name, type)[0];
+		var element = getElementsByName(name, type)[0];
+		return element;
 	};
 	
 	var getElementsByType = function getElementsByType(type, filter) {
@@ -5007,9 +5014,9 @@ var SolitaireEngine =
 	
 	var _common2 = _interopRequireDefault(_common);
 	
-	var _dealerdeckAction = __webpack_require__(22);
+	var _dealAction = __webpack_require__(22);
 	
-	var _dealerdeckAction2 = _interopRequireDefault(_dealerdeckAction);
+	var _dealAction2 = _interopRequireDefault(_dealAction);
 	
 	var _kickAction = __webpack_require__(32);
 	
@@ -5043,7 +5050,7 @@ var SolitaireEngine =
 	
 	// Actions
 	var _actions = {
-		"dealerdeck": _dealerdeckAction2.default,
+		"deal": _dealAction2.default,
 		"kick": _kickAction2.default,
 		"stepsAround": _stepsAroundAction2.default,
 		"changeStepType": _changeStepTypeAction2.default,
@@ -5242,23 +5249,30 @@ var SolitaireEngine =
 	
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 	
-	var stepType = 'dealerdeckStepType';
+	var stepType = 'dealStepType';
 	
-	var dealerdeckAction = function (_deckAction) {
-		_inherits(dealerdeckAction, _deckAction);
+	/*
+	 * run
+	 * end
+	 */
 	
-		function dealerdeckAction() {
-			_classCallCheck(this, dealerdeckAction);
+	var dealAction = function (_deckAction) {
+		_inherits(dealAction, _deckAction);
 	
-			return _possibleConstructorReturn(this, (dealerdeckAction.__proto__ || Object.getPrototypeOf(dealerdeckAction)).call(this));
+		function dealAction() {
+			_classCallCheck(this, dealAction);
+	
+			return _possibleConstructorReturn(this, (dealAction.__proto__ || Object.getPrototypeOf(dealAction)).call(this));
 		}
 	
-		_createClass(dealerdeckAction, [{
+		_createClass(dealAction, [{
 			key: 'run',
 			value: function run(deck, data) {
-				// data.actionData, e
+				var _this2 = this;
 	
-				// console.groupCollapsed('dealerdeckAction:run');
+				// Deck, {actionData, eventData, eventName}
+	
+				// console.groupCollapsed('dealAction:run');
 				// console.log(JSON.stringify(data, true, 2));
 				// console.groupEnd();
 	
@@ -5270,7 +5284,7 @@ var SolitaireEngine =
 	
 				if (typeof data.actionData.stepType == 'string' && data.actionData.stepType != _share2.default.get('stepType')) {
 	
-					_get(dealerdeckAction.prototype.__proto__ || Object.getPrototypeOf(dealerdeckAction.prototype), 'break', this).call(this);
+					_get(dealAction.prototype.__proto__ || Object.getPrototypeOf(dealAction.prototype), 'break', this).call(this);
 	
 					return;
 				}
@@ -5283,7 +5297,16 @@ var SolitaireEngine =
 				// смотрим остались ли карты
 				if (dealDeck.cards.length == 0) {
 	
-					_share2.default.set('stepType', _defaults2.default.stepType);
+					var _stepType = _share2.default.get('stepType');
+	
+					if (_stepType != _defaults2.default.stepType) {
+	
+						_share2.default.set('stepType', _defaults2.default.stepType);
+	
+						_event2.default.dispatch('addStep', {
+							"setStepType": _defaults2.default.stepType
+						});
+					}
 	
 					_event2.default.dispatch('actionBreak');
 	
@@ -5291,15 +5314,16 @@ var SolitaireEngine =
 	
 					var history = _history2.default.get(false);
 	
+					// есть ли что либо на запись в историю
 					if (history.length > 0) {
+	
+						// console.log('dealAction:nomoves:save');
+	
 						_event2.default.dispatch('saveSteps');
 					}
 	
 					return;
 				}
-	
-				// карты для раздачи
-				var _decks = [];
 	
 				// to == toGroup ???
 				if (data.actionData.toGroup && !data.actionData.to) {
@@ -5307,10 +5331,15 @@ var SolitaireEngine =
 					data.actionData.to = data.actionData.toGroup;
 				};
 	
-				// есть куда раздать
+				// стопки для раздачи
+				var _decks = [];
+	
+				// есть куда раздавать
 				if (data.actionData.to) {
 	
-					// передали имя
+					// выбираем стопки для раздачи
+	
+					// передали имя стопки/группы
 					if (typeof data.actionData.to == 'string') {
 	
 						// ищем элементы с таким именем
@@ -5335,7 +5364,7 @@ var SolitaireEngine =
 							};
 						}
 	
-						// передали массив
+						// передали массив имён стопок/групп
 					} else {
 	
 						for (var _i in data.actionData.to) {
@@ -5367,98 +5396,140 @@ var SolitaireEngine =
 				var _makeStep = false;
 	
 				// пробегаем колоды из списка
-				for (var deckId in _decks) {
 	
-					// берём верхнюю карту
-					var _card = dealDeck.getTopCard();
+				var moveDecks = _decks.filter(function (e) {
+					return e.cards.length == 0;
+				});
+				var _iterations = moveDecks.length;
+	
+				// for(let deckId in _decks) {
+				for (var deckId in moveDecks) {
 	
 					// флаг что такой ход возможен
-					var _canStep = data.actionData.onlyEmpty ? _decks[deckId].cards.length == 0 : true;
+					var _canStep = data.actionData.onlyEmpty ? moveDecks[deckId].cards.length == 0 : true;
 	
-					if (_canStep && _card) {
+					if (_canStep && dealDeck.cards.length > 0) {
+						(function () {
 	
-						_makeStep = true;
+							var _steps = [];
 	
-						var _cardName = _card.name;
+							// берём верхнюю карту
+							var _card = dealDeck.getTopCard();
 	
-						var _callback = function _callback(e) {
-							_event2.default.dispatch('checkTips');
-						};
+							_makeStep = true;
 	
-						// event.once('clearCallbacks', e => {
-						// 	_callback = e => {};
-						// });
+							var _cardName = _card.name;
 	
-						(0, _forceMove2.default)({
-							"from": dealDeck.name,
-							"to": _decks[deckId].name,
-							"deck": [_cardName],
-							"flip": false,
-							"callback": _callback
-						}, true);
+							var cardIndex = dealDeck.cards.length;
 	
-						_decks[deckId].flipCheck();
-						// _decks[deckId].Redraw();
+							// #1
 	
-						_event2.default.dispatch('dealEnd');
-	
-						var cardIndex = dealDeck.cards.length;
-	
-						_event2.default.dispatch('addStep', {
-							"unflip": {
-								"deckName": dealDeck.name,
-								"cardName": _cardName,
-								"cardIndex": cardIndex
-							}
-						});
-	
-						dealDeck.Redraw();
-	
-						_event2.default.dispatch('addStep', {
-							"move": {
-								"from": dealDeck.name,
-								"to": _decks[deckId].name,
-								"deck": [_cardName],
-								// "flip"     : true               ,
-								"stepType": {
-									"undo": _share2.default.get('stepType'),
-									"redo": data.actionData.dispatch ? _share2.default.get('stepType') : _defaults2.default.stepType
+							_event2.default.dispatch('addStep', {
+								"step": {
+									"unflip": {
+										"deckName": dealDeck.name,
+										"cardName": _cardName,
+										"cardIndex": cardIndex - 1
+									}
 								},
-								"context": 'dealerdeckAction'
-							}
-						});
+								"callback": function callback(stepId) {
+									_steps.push(stepId);
+								}
+							});
+	
+							dealDeck.Redraw();
+	
+							_event2.default.dispatch('addStep', {
+								"step": {
+									"move": {
+										"from": dealDeck.name,
+										"to": moveDecks[deckId].name,
+										"deck": [_cardName],
+										// "flip"     : true               ,
+										"stepType": {
+											"undo": _share2.default.get('stepType'),
+											"redo": data.actionData.dispatch ? _share2.default.get('stepType') : _defaults2.default.stepType
+										},
+										"context": 'dealAction'
+									}
+								},
+								"callback": function callback(stepId) {
+									_steps.push(stepId);
+								}
+							});
+	
+							var _callback = function _callback(e) {
+	
+								_iterations -= 1;
+	
+								// console.log('dealAction:run:_callback', _iterations);
+	
+								if (_iterations == 0) {
+									// _after();
+									// let _after = e => {
+	
+									// #2
+	
+									if (_makeStep && save) {
+										// && hasNextSteps
+										// сохраняем если раздача удалась
+										_event2.default.dispatch('saveSteps');
+									}
+	
+									if (data.actionData.dispatch) {
+	
+										_event2.default.dispatch(data.actionData.dispatch, !_makeStep);
+									} else {
+	
+										_this2.end();
+										// сохраняем если ничего не вызываем
+										_share2.default.set('stepType', _defaults2.default.stepType);
+									}
+	
+									_event2.default.dispatch('dealEnd');
+									// };
+								}
+	
+								_event2.default.dispatch('checkTips');
+							};
+	
+							// event.once('clearCallbacks', e => {
+							// 	_callback = e => {};
+							// });
+	
+							(0, _forceMove2.default)({
+								"from": dealDeck.name,
+								"to": moveDecks[deckId].name,
+								"deck": [_cardName],
+								"flip": false,
+								"callback": _callback,
+								"steps": _steps
+							}, true);
+	
+							moveDecks[deckId].flipCheck();
+							// _decks[deckId].Redraw();
+	
+							// #1
+						})();
 					}
 				}
 	
-				// console.log('###', _makeStep, save);
-	
-				if (_makeStep && save) {
-					// сохраняем если раздача удалась
-					_event2.default.dispatch('saveSteps');
-				}
-	
-				if (data.actionData.dispatch) {
-	
-					_event2.default.dispatch(data.actionData.dispatch, !_makeStep);
-				} else {
-	
-					this.end();
-					// сохраняем если ничего не вызываем
-					_share2.default.set('stepType', _defaults2.default.stepType);
-				}
+				// #2
 			}
 		}, {
 			key: 'end',
 			value: function end() {
+	
 				_event2.default.dispatch('dealEnd');
-				_get(dealerdeckAction.prototype.__proto__ || Object.getPrototypeOf(dealerdeckAction.prototype), 'end', this).call(this);
+	
+				_get(dealAction.prototype.__proto__ || Object.getPrototypeOf(dealAction.prototype), 'end', this).call(this);
 			}
 		}]);
 	
-		return dealerdeckAction;
+		return dealAction;
 	}(_deckAction3.default);
 	
-	exports.default = new dealerdeckAction();
+	exports.default = new dealAction();
 
 /***/ },
 /* 23 */
@@ -5493,7 +5564,7 @@ var SolitaireEngine =
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
 	var forceMove = function forceMove(data) {
-		// {from, to, deck, <flip>, <callback>}
+		// {from, to, deck, <flip>, <callback>, <steps>}
 	
 		// console.log('forceMove:', data);
 	
@@ -5527,7 +5598,9 @@ var SolitaireEngine =
 				var _index = i - (deckFromCards.length | 0) + (data.deck.length | 0);
 	
 				if (data.deck[_index] && deckFromCards[i].name != data.deck[_index]) {
-					console.warn('forceMove:check:false', deckFrom.name, deckTo.name, deckFromCards[i].name, data.deck[_index]);
+	
+					// console.warn('forceMove:check:false', deckFrom.name, deckTo.name, deckFromCards[i].name, data.deck[_index]);
+	
 					_check = false;
 				}
 			}
@@ -5561,7 +5634,9 @@ var SolitaireEngine =
 	
 				deckTo.Push(cardsPop, deckToInvisibleCardsCount > 0);
 	
-				var rand = Math.random();
+				var rand = (1048576 + (Math.random() * 15728639 | 0)).toString(16).toUpperCase();
+	
+				// console.log('%c ', 'background:#' + rand, 'forceMove', rand + ':' + data.from + '>' + data.to);
 	
 				var _break = function _break(e) {
 	
@@ -5570,20 +5645,33 @@ var SolitaireEngine =
 						return;
 					}
 	
-					// console.log('%cforceMove:BREAK' + rand + ' ' + deckFrom.name + ' ' + deckTo.name, 'color:red;font-weight:bold;');
+					// console.log('%c %cforceMove:BREAK ' + rand + ' ' + deckFrom.name + ' ' + deckTo.name, 'background:#' + rand, 'background:none;color:red;font-weight:bold;');
 	
 					var _cards = deckTo.Pop(data.deck.length);
 	
-					deckFrom.Push(_cards);
+					if (cardsPop) {
 	
-					if (typeof data.flip == "boolean") {
-						for (var _i2 in cardsPop) {
-							cardsPop[_i2].flip = !data.flip;
+						deckFrom.Push(_cards);
+	
+						if (typeof data.flip == "boolean") {
+							for (var _i2 in cardsPop) {
+								cardsPop[_i2].flip = !data.flip;
+							}
+						}
+	
+						deckFrom.Redraw();
+						deckTo.Redraw();
+	
+						// } else
+	
+						if (data.steps && data.steps.length) {
+	
+							// TODO History.clearByContext('deal');
+							// console.log('forceMove:_break:deleteHistory', data.steps);
+	
+							_event2.default.dispatch('deleteHistory', data.steps);
 						}
 					}
-	
-					deckFrom.Redraw();
-					deckTo.Redraw();
 				};
 	
 				var cardsMove = [];
@@ -5612,6 +5700,20 @@ var SolitaireEngine =
 	
 					moveDragDeckParams.callback = function (e) {
 	
+						// TODO move here addStep?
+						if (data.addStep) {
+	
+							_event2.default.dispatch('addStep', {
+								"move": {
+									"from": data.from,
+									"to": data.to,
+									"deck": data.deck
+								}
+							});
+						}
+	
+						// console.log('%c ', 'background:#' + rand, 'forceMove:END ' + rand);
+	
 						_event2.default.remove(eventId);
 	
 						_break = null;
@@ -5627,8 +5729,26 @@ var SolitaireEngine =
 				} else {
 					moveDragDeckParams.callback = function (e) {
 	
+						// TODO move here addStep?
+						if (data.addStep) {
+	
+							_event2.default.dispatch('addStep', {
+								// "step" : {
+								"move": {
+									"from": data.from,
+									"to": data.to,
+									"deck": data.deck
+								}
+								// },
+								// "callback" : stepId => {
+								// steps.push(stepId)
+								// }
+							});
+						}
+	
 						_event2.default.remove(eventId);
 	
+						console.log('%c ', 'background:#' + rand, 'forceMove:END ' + rand);
 						_break = null;
 	
 						_event2.default.dispatch('forceMoveEnd');
@@ -5639,16 +5759,7 @@ var SolitaireEngine =
 	
 				// let _next = e => {
 	
-				if (data.addStep) {
-	
-					_event2.default.dispatch('addStep', {
-						"move": {
-							"from": data.from,
-							"to": data.to,
-							"deck": data.deck
-						}
-					});
-				}
+				// 
 	
 				if (deckFrom.autoUnflipTop && deckFrom.cards.length > 0 && deckFrom.cards[deckFrom.cards.length - 1].flip) {
 	
@@ -5783,7 +5894,8 @@ var SolitaireEngine =
 	
 			this.steps = [];
 	
-			this._debugData = [];
+			// this._debugData = [];
+			this._nextId = 0;
 		}
 	
 		_createClass(historyClass, [{
@@ -5791,17 +5903,49 @@ var SolitaireEngine =
 			value: function reset() {
 	
 				// console.log('History:clear');
-				this._debugData.push(this.steps);
+				// this._debugData.push(this.steps);
 	
 				this.steps = [];
 			}
 		}, {
 			key: 'add',
 			value: function add(step) {
+				// {move || flip ... }
 	
-				// console.log('History:add', step);
+				this._nextId += 1;
+				var stepId = this._nextId | 0;
 	
-				this.steps.push(step);
+				this.steps.push({
+					"id": stepId,
+					"step": step
+				});
+	
+				// console.groupCollapsed('History:add', stepId);
+				// console.log(JSON.stringify(step, true, 2));
+				// console.groupEnd();
+	
+				return stepId;
+			}
+		}, {
+			key: 'delete',
+			value: function _delete(steps) {
+				// stepId || [stepId]
+	
+				// console.log('History:delete:', steps);
+	
+				if (typeof steps == "number") {
+					steps = [steps];
+				}
+	
+				// for(let i in steps) {
+				// 	if(this.steps[steps[i]]) {
+				// 		delete this.steps[steps[i]];
+				// 	}
+				// }
+	
+				this.steps = this.steps.filter(function (e) {
+					return steps.indexOf(e.id) < 0;
+				});
 			}
 	
 			// get steps and reset
@@ -5812,13 +5956,16 @@ var SolitaireEngine =
 				var reset = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : true;
 	
 	
-				var _req = this.steps;
+				var _req = [];
+				for (var i in this.steps) {
+					_req.push(this.steps[i].step);
+				}
+	
+				// console.groupCollapsed('History:get (reset: ' + reset + ')', _req.length);
+				// console.log('%c' + JSON.stringify(_req, true, 2), 'background: #e0edfa;width: 100%;');
+				// console.groupEnd();
 	
 				if (reset) {
-	
-					// console.groupCollapsed('History:get(reset)', _req.length);
-					// console.log('%c' + JSON.stringify(_req, true, 2), 'background: #e0edfa;width: 100%;');
-					// console.groupEnd();
 	
 					this.reset(true);
 				}
@@ -5848,14 +5995,14 @@ var SolitaireEngine =
 			}
 		}, {
 			key: 'unzip',
-			value: function unzip(data) {
-				// 
-			}
-		}, {
-			key: '_debugLod',
-			value: function _debugLod() {
-				return this._debugData;
-			}
+			value: function unzip(data) {}
+			// 
+	
+	
+			// _debugLod() {
+			// 	return this._debugData;
+			// }
+	
 		}]);
 	
 		return historyClass;
@@ -5923,6 +6070,7 @@ var SolitaireEngine =
 	 * unlock
 	 * swap
 	 * move
+	 * setStepType
 	 */
 	
 	var undo = function undo(data) {
@@ -5955,9 +6103,9 @@ var SolitaireEngine =
 	
 			// console.log('undo:unflip -> flip', data.unflip, deck.name, card.name, deck.cards.map(e => e.name));
 	
-			_event2.default.dispatch('removeMarkCard', {
-				"card": _card
-			});
+			// event.dispatch('removeMarkCard', {
+			// 	"card" : card
+			// });
 	
 			if (_card && _card.name == data.unflip.cardName) {
 				_card.flip = true;
@@ -6076,6 +6224,10 @@ var SolitaireEngine =
 	
 			_event2.default.dispatch('forceMove', forceMoveData);
 		}
+	
+		if (data.setStepType && typeof data.setStepType.undo == "string") {
+			_share2.default.set('stepType', data.stepType.undo);
+		}
 	}; // 'use strict';
 	
 	_event2.default.listen('undo', function (undoData) {
@@ -6086,13 +6238,13 @@ var SolitaireEngine =
 	
 		_inputs2.default.break();
 	
+		// console.groupCollapsed('UNDO');
+		// console.log('%c' + JSON.stringify(undoData, true, 2), 'background:#d6deff');
+		// console.groupEnd();
+	
 		if (_share2.default.get('animation')) {
 			_event2.default.dispatch('stopAnimations');
 		}
-	
-		console.groupCollapsed('UNDO');
-		console.log('%c' + JSON.stringify(undoData, true, 2), 'background:#d6deff');
-		console.groupEnd();
 	
 		// History.reset();
 		var history = _history2.default.get();
@@ -6250,6 +6402,7 @@ var SolitaireEngine =
 	 * move
 	 * markCard
 	 * unmarkCard
+	 * setStepType
 	 */
 	
 	var redo = function redo(data) {
@@ -6418,6 +6571,16 @@ var SolitaireEngine =
 				});
 			}
 		}
+	
+		if (data.setStepType) {
+			if (typeof data.setStepType == "string") {
+				_share2.default.set('stepType', data.setStepType);
+			} else {
+				if (typeof data.setStepType.redo == "string") {
+					_share2.default.set('stepType', data.stepType.redo);
+				}
+			}
+		}
 	};
 	
 	_event2.default.listen('redo', function (redoData) {
@@ -6428,13 +6591,13 @@ var SolitaireEngine =
 	
 		_inputs2.default.break();
 	
+		// console.groupCollapsed('REDO');
+		// console.log('%c' + JSON.stringify(redoData, true, 2), 'background:#fff7d6');
+		// console.groupEnd();
+	
 		if (_share2.default.get('animation')) {
 			_event2.default.dispatch('stopAnimations');
 		}
-	
-		console.groupCollapsed('REDO');
-		console.log('%c' + JSON.stringify(redoData, true, 2), 'background:#fff7d6');
-		console.groupEnd();
 	
 		// History.reset();
 		var history = _history2.default.get();
@@ -6524,7 +6687,17 @@ var SolitaireEngine =
 	// let historyStack = [];
 	
 	_event2.default.listen('addStep', function (data) {
-		_history2.default.add(data);
+	
+		if (data.step) {
+	
+			var stepId = _history2.default.add(data.step);
+	
+			if (typeof data.callback == "function") {
+				data.callback(stepId);
+			}
+		} else {
+			_history2.default.add(data);
+		}
 	});
 	
 	// save steps to client history
@@ -6572,6 +6745,10 @@ var SolitaireEngine =
 	
 	_event2.default.listen('resetHistory', function (e) {
 		_history2.default.reset();
+	});
+	
+	_event2.default.listen('deleteHistory', function (steps) {
+		_history2.default.delete(steps);
 	});
 	
 	_event2.default.listen('newGame', function (e) {
@@ -6838,6 +7015,8 @@ var SolitaireEngine =
 	
 						_event2.default.dispatch(data.actionData.dispatch, {
 							before: function before(data) {
+	
+								// console.log('kickAction:before -> autoStep:start');
 	
 								_addStep({
 									"undo": eventStepType,
@@ -10290,23 +10469,25 @@ var SolitaireEngine =
 						}
 					}
 	
-					// TODO add card index ?
-					_event2.default.dispatch('addStep', {
-						"move": {
-							"from": _deck_departure.name,
-							"to": _deck_destination.name,
-							"deck": _deck2.default.deckCardNames(moveDeck),
-							"stepType": {
-								"undo": _stepType,
-								"redo": _stepType
-							},
-							"context": "move"
-						}
-					});
+					// 
 	
 					var issetMoves = null;
 	
 					var _callback = function _callback(e) {
+	
+						// TODO add card index ?
+						_event2.default.dispatch('addStep', {
+							"move": {
+								"from": _deck_departure.name,
+								"to": _deck_destination.name,
+								"deck": _deck2.default.deckCardNames(moveDeck),
+								"stepType": {
+									"undo": _stepType,
+									"redo": _stepType
+								},
+								"context": "move"
+							}
+						});
 	
 						// _deck_destination.Push(_pop, false);
 	
@@ -11722,9 +11903,10 @@ var SolitaireEngine =
 				// data.departure  .Redraw();
 				data.destination.Redraw();
 	
-				_common2.default.curUnLock();
-	
 				if (_last && typeof data.callback == 'function') {
+	
+					_common2.default.curUnLock();
+	
 					data.callback();
 				}
 	
@@ -12606,10 +12788,6 @@ var SolitaireEngine =
 	
 	var _field2 = _interopRequireDefault(_field);
 	
-	var _deck = __webpack_require__(14);
-	
-	var _deck2 = _interopRequireDefault(_deck);
-	
 	var _deckGenerator = __webpack_require__(89);
 	
 	var _deckGenerator2 = _interopRequireDefault(_deckGenerator);
@@ -12632,44 +12810,9 @@ var SolitaireEngine =
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
-	/*
-	let stamp = e => {
-		let summaryAnimationsCallbacksCouns = 0;
-		return {
-			"stepType" : share.get('stepType'),
-			"decks"    : (e => {
-	
-				e = deck.getDecks();
-				let decks = [];
-	
-				for(let i in e) {
-					decks.push({
-						"name"  : e[i].name,
-						"cards" : e[i].cards.map(c => {
-							return {
-								"name" : c.name,
-								"el"   : (z => {
-									let el = share.get('domElement:' + c.id);
-									summaryAnimationsCallbacksCouns += el._animationCallbacks.length;
-									return {
-										_animationCallbacksLength : el._animationCallbacks.length
-									}
-								})()
-							}
-						})
-					});
-				}
-	
-				return decks;
-			})(),
-			summaryAnimationsCallbacksCouns : summaryAnimationsCallbacksCouns,
-			history : history.get().length
-		}
-	}
-	*/
-	
-	// Firebug
 	document.addEventListener("DOMContentLoaded", function (e) {
+	
+		// Firebug
 	
 		if (document.location.hash == '#debug') {
 			(function (F, i, r, e, b, u, g, L, I, T, E) {
@@ -12690,34 +12833,16 @@ var SolitaireEngine =
 		// document.body.addEventListener('transitionend', e => {
 		// 	console.log('TEST:', e);
 		// });
-	
-		// let f = e => {
-		// 	el.style.transition = (500 / 1000) + 's';
-		// 	el.style.left = ((Math.random() * 1000) | 0) + 'px';
-		// 	el.style.top  = ((Math.random() * 1000) | 0) + 'px';
-		// 	let f2 = e => {
-		// 		el.style.transition = null;
-		// 		console.log('done');
-		// 		removeEventListener('transitionend', f2)
-		// 	};
-		// 	el.addEventListener('transitionend', f2, false);
-		// }
-	
-		// document.body.onmousedown = e => {
-		// 	if(e.button == 2) {
-		// 		document.getElementById('tbUndo').click();
-		// 	}
-		// }
 	});
 	
-	var eachDecksInGroup = function eachDecksInGroup(groupName, callback, data) {
+	var eachDecksInGroup = function eachDecksInGroup(groupName, callback) {
 	
 		var group = _common2.default.getElementByName(groupName, 'group');
 		var decks = group.getDecks();
 	
 		for (var deckIndex in decks) {
 			if (typeof callback == "function") {
-				callback(decks[deckIndex], data ? decks[deckIndex].name == data.from ? '>' : decks[deckIndex].name == data.to ? '<' : ' ' : null);
+				callback(decks[deckIndex]); // , data ? (decks[deckIndex].name == data.from ? '>' : decks[deckIndex].name == data.to ? '<' : ' ') : null);
 			}
 		}
 	};
@@ -12758,14 +12883,6 @@ var SolitaireEngine =
 		console.groupEnd();
 	};
 	
-	_event2.default.listen('logCardsInDeck', logCardsInDeck);
-	
-	var keys = {
-		"c": 67, // clear
-		"d": 68, // debug
-		"h": 72, // history
-		"n": 78 };
-	
 	var solitaire_log = function solitaire_log(data) {
 	
 		console.groupCollapsed('debug log');
@@ -12777,9 +12894,6 @@ var SolitaireEngine =
 			console.groupEnd();
 		}
 	
-		// console.log('GROUP HOME:');
-		// eachDecksInGroup('group_home', logCardsInDeck);
-	
 		var decks = _common2.default.getElementsByType('deck', {
 			"parent": 'field'
 		});
@@ -12790,28 +12904,37 @@ var SolitaireEngine =
 		}
 	
 		console.groupEnd();
-	
-		// console.log('ROLLER DECK:');
-		// let deck = common.getElementByName('rollerDeck');
-		// logCardsInDeck(deck);
 	};
 	
-	_event2.default.listen('solitaire_log', solitaire_log);
+	var keys = {
+		"c": 67, // clear
+		"d": 68, // debug
+		"h": 72, // history
+		"n": 78, // next
+		"s": 83 // stepType
+	};
 	
 	document.onkeyup = function (e) {
 	
 		if (e.keyCode == keys.d) {
+	
 			solitaire_log();
 		} else if (e.keyCode == keys.n) {
+	
 			_event2.default.dispatch('next_history_step');
 		} else if (e.keyCode == keys.c) {
+	
 			console.clear();
 		} else if (e.keyCode == keys.h) {
+	
 			// console.log('History:', history.get(false));
 			var _history = _history3.default.get(false);
 			console.groupCollapsed('debug:history', _history.length);
 			console.log('%c' + JSON.stringify(_history, true, 2), 'background: #faede0;');
 			console.groupEnd();
+		} else if (e.keyCode == keys.s) {
+	
+			console.log('stepType:', _share2.default.get('stepType'));
 		}
 	};
 	
