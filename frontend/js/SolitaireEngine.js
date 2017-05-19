@@ -111,7 +111,7 @@ var SolitaireEngine =
 	exports.options = _defaults2.default;
 	exports.winCheck = _winCheck2.default.hwinCheck;
 	exports.generator = _deckGenerator2.default;
-	exports.version = (90914910232).toString().split(9).slice(1).map(function (e) {
+	exports.version = (90914910400).toString().split(9).slice(1).map(function (e) {
 		return parseInt(e, 8);
 	}).join('.');
 	
@@ -733,22 +733,26 @@ var SolitaireEngine =
 	
 			try {
 	
-				document.onmousedown = function (data) {
+				document.addEventListener('mousedown', function (data) {
 	
 					if (data.button !== 0) {
 						return;
 					}
 	
 					_this.take(data.target, data.clientX, data.clientY);
-				};
+				});
 	
-				document.onmousemove = function (data) {
+				document.addEventListener('mousemove', function (data) {
 					_this.drag(data.clientX, data.clientY);
-				};
+				});
 	
-				document.onmouseup = function (data) {
+				document.addEventListener('mouseup', function (data) {
 					_this.put(data.target, data.clientX, data.clientY);
-				};
+				});
+	
+				document.addEventListener('mouseleave', function (data) {
+					_this.put(data.target, data.clientX, data.clientY);
+				});
 	
 				// TODO
 				// Решение: (if distance > 0)
@@ -832,7 +836,8 @@ var SolitaireEngine =
 				_share2.default.set('dragDeck', null);
 				_share2.default.set('startCursor', null);
 	
-				if (_common2.default.isCurLock() || _share2.default.get('sessionStarted')) {
+				if (_common2.default.isCurLock() || document.getElementsByClassName('animated').length || // TODO )==
+				_share2.default.get('sessionStarted')) {
 					return;
 				}
 	

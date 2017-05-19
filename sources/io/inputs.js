@@ -65,22 +65,26 @@ class inputs {
 
 		try {
 
-			document.onmousedown = data => {
+			document.addEventListener('mousedown', data => {
 
 				if(data.button !== 0) {
 					return;
 				}
 
 				this.take(data.target, data.clientX, data.clientY);
-			};
+			});
 
-			document.onmousemove = data => {
+			document.addEventListener('mousemove', data => {
 				this.drag(data.clientX, data.clientY);
-			};
+			});
 
-			document.onmouseup = data => {
+			document.addEventListener('mouseup', data => {
 				this.put(data.target, data.clientX, data.clientY);
-			};
+			});
+
+			document.addEventListener('mouseleave', data => {
+				this.put(data.target, data.clientX, data.clientY);
+			});
 
 			// TODO
 			// Решение: (if distance > 0)
@@ -168,7 +172,8 @@ class inputs {
 		share.set('startCursor', null);
 
 		if(
-			common.isCurLock()          ||
+			common.isCurLock()                                 ||
+			document.getElementsByClassName('animated').length || // TODO )==
 			share.get('sessionStarted')
 		) {
 			return;
