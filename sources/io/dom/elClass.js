@@ -257,7 +257,11 @@ export default class elClass {
 
 				this.addClass('animated');
 
-				this.el.addEventListener('transitionend', e => {
+				let animationKey = Math.random();
+
+				// console.log('animation START ' + animationKey, counter);
+
+				let transitionEndCallback = e => {
 
 					// console.log('### transitionend:', this.el.id, counter);
 
@@ -265,7 +269,9 @@ export default class elClass {
 
 					// event.dispatch('animationEnd', this);
 
-					if(!counter) {
+					if(counter == 0) {
+
+						// console.log('animation END ' + animationKey, counter);
 
 						this.removeClass('animated');
 
@@ -281,7 +287,15 @@ export default class elClass {
 						event.dispatch('allAnimationsEnd', animationName);
 					}
 
-				}, false);
+				};
+
+				if(counter > 0) {
+					this.el.addEventListener('transitionend', transitionEndCallback, false);
+				} else {
+					counter = 1;
+					transitionEndCallback();
+				}
+
 			}, 0);
 			} catch(e) {}
 		

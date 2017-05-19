@@ -111,7 +111,7 @@ var SolitaireEngine =
 	exports.options = _defaults2.default;
 	exports.winCheck = _winCheck2.default.hwinCheck;
 	exports.generator = _deckGenerator2.default;
-	exports.version = (90914910400).toString().split(9).slice(1).map(function (e) {
+	exports.version = (90914910404).toString().split(9).slice(1).map(function (e) {
 		return parseInt(e, 8);
 	}).join('.');
 	
@@ -774,7 +774,7 @@ var SolitaireEngine =
 				// 	common.curUnLock();
 				// };
 	
-				document.ondblclick = function (data) {
+				document.addEventListener('dblclick', function (data) {
 	
 					// event.dispatch('stopAnimations');
 	
@@ -782,7 +782,7 @@ var SolitaireEngine =
 					_this.put(data.target, data.clientX, data.clientY, true);
 	
 					_common2.default.curUnLock();
-				};
+				});
 	
 				document.addEventListener('touchstart', function (data) {
 	
@@ -11081,7 +11081,11 @@ var SolitaireEngine =
 	
 							_this.addClass('animated');
 	
-							_this.el.addEventListener('transitionend', function (e) {
+							var animationKey = Math.random();
+	
+							// console.log('animation START ' + animationKey, counter);
+	
+							var transitionEndCallback = function transitionEndCallback(e) {
 	
 								// console.log('### transitionend:', this.el.id, counter);
 	
@@ -11089,7 +11093,9 @@ var SolitaireEngine =
 	
 								// event.dispatch('animationEnd', this);
 	
-								if (!counter) {
+								if (counter == 0) {
+	
+									// console.log('animation END ' + animationKey, counter);
 	
 									_this.removeClass('animated');
 	
@@ -11104,7 +11110,14 @@ var SolitaireEngine =
 	
 									_event2.default.dispatch('allAnimationsEnd', animationName);
 								}
-							}, false);
+							};
+	
+							if (counter > 0) {
+								_this.el.addEventListener('transitionend', transitionEndCallback, false);
+							} else {
+								counter = 1;
+								transitionEndCallback();
+							}
 						}, 0);
 					} catch (e) {}
 	

@@ -106,7 +106,7 @@ class inputs {
 			// 	common.curUnLock();
 			// };
 
-			document.ondblclick = data => {
+			document.addEventListener('dblclick', data => {
 
 				// event.dispatch('stopAnimations');
 
@@ -114,7 +114,7 @@ class inputs {
 				this.put (data.target, data.clientX, data.clientY, true);
 
 				common.curUnLock();
-			};
+			});
 
 			document.addEventListener('touchstart', data => {
 
