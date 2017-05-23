@@ -26,7 +26,8 @@ export default (group, data) => {
 		let _deckName = group.name + '_deck' + (deckIndex + 1);
 
 		let _deck = {
-			"name" : _deckName
+			"name" : _deckName,
+			"tags" : []
 		};
 
 		_decks.push(_deck);

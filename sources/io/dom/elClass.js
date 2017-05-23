@@ -257,7 +257,7 @@ export default class elClass {
 
 				this.addClass('animated');
 
-				let animationKey = Math.random();
+				// let animationKey = Math.random();
 
 				// console.log('animation START ' + animationKey, counter);
 

@@ -56,7 +56,7 @@ import getDeck       from 'getDeck'      ;
  * hasTag
  */
 
-class Deck {
+class deckClass {
 
 	constructor(data, id) {
 
@@ -806,7 +806,7 @@ let addDeck = data => {
 
 	let id = 'deck_' + common.genId();
 
-	let _deck = new Deck(data, id);
+	let _deck = new deckClass(data, id);
 
 	// fill deck
 	if(data.fill) {

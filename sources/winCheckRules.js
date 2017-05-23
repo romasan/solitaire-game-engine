@@ -85,7 +85,11 @@ let winCheckRules = {
 		let decks = {};
 
 		for(let deckName in data.decks) {
+
+			let deck = data.decks[deckName];
+
 			if(data.decks[deckName].tags.indexOf(data.filterArgs) >= 0) {
+
 				decksLength += 1;
 				decks[deckName] = deck;
 			}

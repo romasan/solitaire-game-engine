@@ -107,11 +107,26 @@ var SolitaireEngine =
 	var preloadCallback = null,
 	    firstInit = true;
 	
+	/*
+	 * Exports:
+	 *
+	 * event
+	 * options
+	 * winCheck
+	 * generator
+	 * version
+	 * onload
+	 * onChangePreferences
+	 * init
+	 * Redraw
+	 * debug
+	 */
+	
 	exports.event = _event2.default;
 	exports.options = _defaults2.default;
 	exports.winCheck = _winCheck2.default.hwinCheck;
 	exports.generator = _deckGenerator2.default;
-	exports.version = (90914910404).toString().split(9).slice(1).map(function (e) {
+	exports.version = (90914910417).toString().split(9).slice(1).map(function (e) {
 		return parseInt(e, 8);
 	}).join('.');
 	
@@ -3086,11 +3101,11 @@ var SolitaireEngine =
 	 * hasTag
 	 */
 	
-	var Deck = function () {
-		function Deck(data, id) {
+	var deckClass = function () {
+		function deckClass(data, id) {
 			var _this = this;
 	
-			_classCallCheck(this, Deck);
+			_classCallCheck(this, deckClass);
 	
 			if (!data) {
 				return false;
@@ -3272,7 +3287,7 @@ var SolitaireEngine =
 		// перерисовка стопки
 	
 	
-		_createClass(Deck, [{
+		_createClass(deckClass, [{
 			key: 'Redraw',
 			value: function Redraw(data) {
 	
@@ -3816,7 +3831,7 @@ var SolitaireEngine =
 			}
 		}]);
 	
-		return Deck;
+		return deckClass;
 	}();
 	
 	// add deck
@@ -3830,7 +3845,7 @@ var SolitaireEngine =
 	
 		var id = 'deck_' + _common2.default.genId();
 	
-		var _deck = new Deck(data, id);
+		var _deck = new deckClass(data, id);
 	
 		// fill deck
 		if (data.fill) {
@@ -9309,7 +9324,8 @@ var SolitaireEngine =
 			var _deckName = group.name + '_deck' + (deckIndex + 1);
 	
 			var _deck = {
-				"name": _deckName
+				"name": _deckName,
+				"tags": []
 			};
 	
 			_decks.push(_deck);
@@ -11081,7 +11097,7 @@ var SolitaireEngine =
 	
 							_this.addClass('animated');
 	
-							var animationKey = Math.random();
+							// let animationKey = Math.random();
 	
 							// console.log('animation START ' + animationKey, counter);
 	
@@ -12325,7 +12341,11 @@ var SolitaireEngine =
 			var decks = {};
 	
 			for (var _deckName2 in data.decks) {
+	
+				var deck = data.decks[_deckName2];
+	
 				if (data.decks[_deckName2].tags.indexOf(data.filterArgs) >= 0) {
+	
 					decksLength += 1;
 					decks[_deckName2] = deck;
 				}
@@ -12490,9 +12510,9 @@ var SolitaireEngine =
 	
 			for (var _deckName8 in data.decks) {
 	
-				var _deck = data.decks[_deckName8];
+				var deck = data.decks[_deckName8];
 	
-				var topCard = _deck.getTopCard();
+				var topCard = deck.getTopCard();
 	
 				var topCardRank = _common2.default.validateCardName(topCard.name).rank;
 	
@@ -12508,9 +12528,9 @@ var SolitaireEngine =
 	
 			for (var _deckName9 in data.decks) {
 	
-				var _deck2 = data.decks[_deckName9];
+				var deck = data.decks[_deckName9];
 	
-				var topCard = _deck2.getTopCard();
+				var topCard = deck.getTopCard();
 	
 				var topCardRank = _common2.default.validateCardName(topCard.name).rank;
 	

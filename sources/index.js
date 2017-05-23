@@ -20,6 +20,21 @@ import deckGenerator from 'deckGenerator';
 let preloadCallback = null,
     firstInit       = true;
 
+/*
+ * Exports:
+ *
+ * event
+ * options
+ * winCheck
+ * generator
+ * version
+ * onload
+ * onChangePreferences
+ * init
+ * Redraw
+ * debug
+ */
+
 exports.event     = event;
 exports.options   = defaults;
 exports.winCheck  = winCheck.hwinCheck;
