@@ -69,6 +69,8 @@ let checkTips = e => {
 
 		for(let i in _tips) {
 
+			let draw = false;
+
 			// TODO инициализировать "hideTipsInDom" в Field.js 
 			if(
 				// (
@@ -83,21 +85,49 @@ let checkTips = e => {
 			) {
 				// не выделять подсказки с ходом из "дома"
 				if(_homeGroups.indexOf(_tips[i].from.deck.parent) < 0) {
-					event.dispatch('showTip', {
-						"el"   : _tips[i].from.card, 
-						"type" : 'tipToHome'
-					});
+					draw = true;
 				}
 			} else {
+				draw = true;
+			}
+
+			if(draw) {
+
+				let fromDeck = _tips[i].from.deck.getCards();
+				let toDeck   = _tips[i].to  .deck.getCards();
+
+				if(fromDeck.length > 1) {
+
+					let fromCardindex = 1; // fromDeck.getCardIndexById(_tips[i].from.card.id);
+
+					let fromPrevCard = fromDeck[fromDeck.length - 1 - fromCardindex];
+					let toTopCard    = toDeck  [toDeck  .length - 1];
+
+					console.log('>>>', fromPrevCard.name, toTopCard.name);
+
+					if(
+						fromPrevCard.flip == false          &&
+						fromPrevCard.name == toTopCard.name
+					) {
+						draw = false;
+					}
+				} else if(toDeck.length == 0) {
+					draw = false;
+				}
+
+				console.log('drawTip:', i, draw, _tips[i].from.card.name, _tips[i]);
+				console.log('###', fromDeck, toDeck);
+			}
+
+			if(draw) {
 				event.dispatch('showTip', {
-					"el"   : _tips[i].from.card, 
+					"el"   : _tips[i].from.card,
 					"type" : 'tipToHome'
 				});
 			}
 		}
 	}
 };
-
 event.listen('makeStep' , checkTips);
 event.listen('checkTips', checkTips);
 
@@ -114,7 +144,7 @@ let showTips = data => {
 	checkTips();
 };
 event.listen('tips:on', showTips);
-event.listen('tipsON' , showTips);
+// event.listen('tipsON' , showTips);
 
 let hideTips = data => {
 
@@ -127,7 +157,7 @@ let hideTips = data => {
 	checkTips();
 };
 event.listen('tips:off', hideTips);
-event.listen('tipsOFF' , hideTips);
+// event.listen('tipsOFF' , hideTips);
 
 // лучший ход на в текущем положении перетаскиваемой стопки
 let tipsMove = data => {
@@ -136,7 +166,9 @@ let tipsMove = data => {
 		return;
 	}
 
-	event.dispatch('hideTips', { "types" : ['tipPriority'] });
+	event.dispatch('hideTips', {
+		"types" : ['tipPriority']
+	});
 
 	if(
 		share.showTipPriority                          &&
@@ -152,7 +184,7 @@ let tipsMove = data => {
 		if(Tip) {
 
 			event.dispatch('showTip', {
-				"el"   : Tip.to.deck,
+				"el"   : Tip.to.deck  ,
 				"type" : 'tipPriority'
 			});
 		}

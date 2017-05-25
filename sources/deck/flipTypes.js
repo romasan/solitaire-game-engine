@@ -29,9 +29,9 @@ let flipTypes = {
 
 	"beeFlip"         : (i, length) => (i == length - 1) ? true  : (i % 2 == 0) ? false : true ,
 
-	"_direction_type" : (direction, type, i, length, data) => data && (data | 0) > 0
+	"_direction_type" : (direction, type, i, length, data, arg) => data && (data | 0) > 0
 		? direction == "top"
-			? i > length - data - 1 // top
+			? i > length - data - (arg ? (arg | 0) : 1) // top
 				? type == "flip"
 					? true
 					: false
@@ -47,13 +47,15 @@ let flipTypes = {
 					: true
 		: false,
 
-	"bottomFlip"      : (i, length, data) => flipTypes._direction_type("bootom", "flip"  , i, length, data),
+	"bottomFlip"      : (i, length, data, arg) => flipTypes._direction_type("bootom", "flip"  , i, length, data, arg),
 
-	"bottomUnflip"    : (i, length, data) => flipTypes._direction_type("bootom", "unflip", i, length, data),
+	"bottomUnflip"    : (i, length, data, arg) => flipTypes._direction_type("bootom", "unflip", i, length, data, arg),
 
-	"topFlip"         : (i, length, data) => flipTypes._direction_type("top"   , "flip"  , i, length, data),
+	"topFlip"         : (i, length, data, arg) => flipTypes._direction_type("top"   , "flip"  , i, length, data, arg),
 
-	"topUnflip"       : (i, length, data) => flipTypes._direction_type("top"   , "unflip", i, length, data)
+	"topUnflip"       : (i, length, data, arg) => flipTypes._direction_type("top"   , "unflip", i, length, data, arg)
+
+	// TODO topFlip:counter, topUnflip:counter, bottomFlip:counter, bottomUnflip:counter
 };
 
 export default flipTypes;

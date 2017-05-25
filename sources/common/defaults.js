@@ -46,11 +46,11 @@ export default {
 	"animation"           : true,
 	"animationTime"       : 200 , // time in milliseconds for 100px
 
+	"showPrefFlipCard"    : true,
+
 	"inputParams" : {
 		"doubleClick" : false
 	},
-
-	"showPrefFlipCard" : true,
 
 // Group
 

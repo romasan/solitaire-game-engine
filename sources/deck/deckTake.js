@@ -50,15 +50,15 @@ export default (deck, cardId) => {
 			}
 
 			rulesCorrect = rulesCorrect && (
-				!cards[i].flip                        &&
-				cards[i].flip == defaults.canMoveFlip
+				!cards[i].flip                         &&
+				 cards[i].flip == defaults.canMoveFlip
 			);
 		}
 
 		if(cardIndex >= 0) {
 
 			takeDeck.push({
-				"index" : i            ,
+				"index" : i       ,
 				"card"  : cards[i]
 			});
 		}

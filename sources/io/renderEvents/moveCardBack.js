@@ -7,7 +7,7 @@ import common   from 'common'  ;
 import elRender from 'elRender';
 
 // Move card to home
-event.listen('moveCardToHome', data => {
+event.listen('moveCardBack', data => {
 
 	if(share.get('lastCursorMove').distance > 0) {
 		common.curLock();
@@ -16,6 +16,7 @@ event.listen('moveCardToHome', data => {
 	for(let i in data.moveDeck) {
 
 		let _position = data.departure.padding(data.moveDeck[i].index);
+
 		let _params = {
 			"left" : _position.x + 'px',
 			"top"  : _position.y + 'px'
@@ -41,7 +42,7 @@ event.listen('moveCardToHome', data => {
 					}
 				},
 
-				'moveCardToHomeAnimation'
+				'moveCardBackAnimation'
 			);
 	}
 });

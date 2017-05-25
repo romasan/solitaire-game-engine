@@ -162,6 +162,7 @@ class deckClass {
 			: defaults.flip_type;
 
 		this.cardFlipCheck = (card, i, length) => {
+			// TODO flip with params
 			card.flip = flipTypes[flipType](i, length, flipData);
 		};
 

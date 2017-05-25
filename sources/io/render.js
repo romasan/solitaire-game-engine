@@ -10,7 +10,7 @@ import drawDeck       from 'drawDeck'      ;
 import drawCard       from 'drawCard'      ;
 import drawTip        from 'drawTip'       ;
 import moveDragDeck   from 'moveDragDeck'  ;
-import moveCardToHome from 'moveCardToHome';
+import moveCardBack   from 'moveCardBack'  ;
 import fieldThemesSet from 'fieldThemesSet';
 
 // styles DOM
@@ -33,10 +33,13 @@ event.listen('removeEl', data => {
 });
 
 let triggerMouseEvent = (node, eventType) => {
-    var clickEvent = document.createEvent ('MouseEvents');
-    clickEvent.initEvent (eventType, true, true);
-    node.dispatchEvent (clickEvent);
-}
+
+    var clickEvent = document.createEvent('MouseEvents');
+
+    clickEvent.initEvent(eventType, true, true);
+
+    node.dispatchEvent(clickEvent);
+};
 
 event.listen('clickCard', card => {
 

@@ -42,7 +42,7 @@ let Move = ({moveDeck, to, cursorMove}) => {
 
 		let _deck_departure = moveDeck[0].card.parent && common.getElementById(moveDeck[0].card.parent);
 
-		event.dispatch('moveCardToHome', {
+		event.dispatch('moveCardBack', {
 			"moveDeck"  : moveDeck             ,
 			"departure" : _deck_departure      ,
 			"stepType"  : share.get('stepType')
@@ -210,7 +210,7 @@ let Move = ({moveDeck, to, cursorMove}) => {
 				return;
 			} else {
 
-				event.dispatch('moveCardToHome', {
+				event.dispatch('moveCardBack', {
 					"moveDeck"  : moveDeck       ,
 					"departure" : _deck_departure
 				});
@@ -220,7 +220,7 @@ let Move = ({moveDeck, to, cursorMove}) => {
 
 		} else {
 
-			event.dispatch('moveCardToHome', {
+			event.dispatch('moveCardBack', {
 				"moveDeck"  : moveDeck       ,
 				"departure" : _deck_departure
 			});
