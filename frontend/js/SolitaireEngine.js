@@ -126,7 +126,7 @@ var SolitaireEngine =
 	exports.options = _defaults2.default;
 	exports.winCheck = _winCheck2.default.hwinCheck;
 	exports.generator = _deckGenerator2.default;
-	exports.version = (90914910417).toString().split(9).slice(1).map(function (e) {
+	exports.version = (90914910457).toString().split(9).slice(1).map(function (e) {
 		return parseInt(e, 8);
 	}).join('.');
 	
@@ -944,6 +944,14 @@ var SolitaireEngine =
 									"to": _deck,
 									"toCard": _card
 								});
+	
+								// this.put(target, x, y, false);
+	
+								if (!_defaults2.default.canMoveFlip) {
+									return {
+										v: void 0
+									};
+								}
 							} else {
 	
 								_event2.default.dispatch('click:unflipCard', {
@@ -1089,6 +1097,10 @@ var SolitaireEngine =
 					}
 				};
 	
+				if (_distance == 0 && _deck.autoUnflipTop) {
+					_deck.Redraw();
+				}
+	
 				_share2.default.set('lastCursorMove', cursorMove, _defaults2.default.forceClone);
 				_share2.default.set('lastDragDeck', {
 					"dragDeckParentId": _dragDeck[0].card.parent,
@@ -1100,7 +1112,7 @@ var SolitaireEngine =
 				_event2.default.dispatch('showCard', target);
 	
 				// if(_dop && _dop.id) {
-				_event2.default.dispatch('Move', {
+				_event2.default.dispatch('move', {
 					"moveDeck": _dragDeck,
 					"to": _dop && _dop.id ? _dop.id : 'mat',
 					"cursorMove": cursorMove
@@ -5583,68 +5595,66 @@ var SolitaireEngine =
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
-	var forceMove = function forceMove(data) {
-		// {from, to, deck, <flip>, <callback>, <steps>}
+	var forceMove = function forceMove(_ref) {
+		var from = _ref.from,
+		    to = _ref.to,
+		    deck = _ref.deck,
+		    flip = _ref.flip,
+		    callback = _ref.callback,
+		    steps = _ref.steps,
+		    save = _ref.save,
+		    addStep = _ref.addStep;
+		// {from, to, deck, <flip>, <callback>, <steps>, <save>, <addStep>}
 	
-		// console.log('forceMove:', data);
+		// console.log('forceMove');
 	
-		if (!data.from || !data.to || !data.deck) {
+		if (!from || !to || !deck) {
 			return;
 		}
 	
-		if (!data.deck.length) {
+		if (!deck.length) {
 			return;
 		}
 	
-		// departure
-		var deckFrom = typeof data.from == 'string' ? _deck2.default.getDeck(data.from) : data.from;
+		// departure (from)
+		var deckFrom = typeof from == 'string' ? _deck2.default.getDeck(from) : from;
 	
-		// destination
-		var deckTo = typeof data.to == 'string' ? _deck2.default.getDeck(data.to) : data.to;
+		// destination (to)
+		var deckTo = typeof to == 'string' ? _deck2.default.getDeck(to) : to;
 	
 		if (!deckFrom || deckFrom.type != 'deck' || !deckTo || deckTo.type != 'deck') {
 			return;
 		}
 	
-		var _check = true;
+		var check = true;
 	
 		// let deckFromCards = deckFrom.cards;
 		var deckFromCards = deckFrom.getCards();
 	
 		for (var i in deckFromCards) {
 	
-			if (i >= deckFromCards.length - data.deck.length) {
+			if (i >= deckFromCards.length - deck.length) {
 	
-				var _index = i - (deckFromCards.length | 0) + (data.deck.length | 0);
+				var _index = i - (deckFromCards.length | 0) + (deck.length | 0);
 	
-				if (data.deck[_index] && deckFromCards[i].name != data.deck[_index]) {
+				if (deck[_index] && deckFromCards[i].name != deck[_index]) {
 	
-					// console.warn('forceMove:check:false', deckFrom.name, deckTo.name, deckFromCards[i].name, data.deck[_index]);
+					// console.warn('forceMove:check:false', deckFrom.name, deckTo.name, deckFromCards[i].name, deck[_index]);
 	
-					_check = false;
+					check = false;
 				}
 			}
 		}
 	
-		if (_check) {
+		if (check) {
 			(function () {
 	
-				var cardsPop = deckFrom.Pop(data.deck.length);
-				// let cardsPop = deckFrom.getTopCards(data.deck.length);
-	
-				// console.log(
-				// 	'### forceMove:pop',
-				// 	cardsPop ? cardsPop.map(e => e.name).join(',') : cardsPop,
-				// 	deckFrom.name,
-				// 	deckFrom.cards.map(e => e.name).join(','),
-				// 	data.deck.length
-				// );
+				var cardsPop = deckFrom.Pop(deck.length);
 	
 				// перевернуть карты во время хода
-				if (typeof data.flip == "boolean") {
+				if (typeof flip == "boolean") {
 					for (var _i in cardsPop) {
-						// console.log('forceMove:flip:', i, cardsPop.length, cardsPop[i].flip, data.flip);
-						cardsPop[_i].flip = data.flip; // !cardsPop[i].flip;
+						cardsPop[_i].flip = flip; // !cardsPop[i].flip;
 					}
 				}
 	
@@ -5654,42 +5664,31 @@ var SolitaireEngine =
 	
 				deckTo.Push(cardsPop, deckToInvisibleCardsCount > 0);
 	
-				var rand = (1048576 + (Math.random() * 15728639 | 0)).toString(16).toUpperCase();
+				var breakForceMove = function breakForceMove(e) {
 	
-				// console.log('%c ', 'background:#' + rand, 'forceMove', rand + ':' + data.from + '>' + data.to);
-	
-				var _break = function _break(e) {
-	
-					// return; // debug
 					if (_share2.default.get('inHistoryMove')) {
 						return;
 					}
 	
-					// console.log('%c %cforceMove:BREAK ' + rand + ' ' + deckFrom.name + ' ' + deckTo.name, 'background:#' + rand, 'background:none;color:red;font-weight:bold;');
-	
-					var _cards = deckTo.Pop(data.deck.length);
+					var _cards = deckTo.Pop(deck.length);
 	
 					if (cardsPop) {
 	
 						deckFrom.Push(_cards);
 	
-						if (typeof data.flip == "boolean") {
+						if (typeof flip == "boolean") {
 							for (var _i2 in cardsPop) {
-								cardsPop[_i2].flip = !data.flip;
+								cardsPop[_i2].flip = !flip;
 							}
 						}
 	
 						deckFrom.Redraw();
 						deckTo.Redraw();
 	
-						// } else
+						if (steps && steps.length) {
 	
-						if (data.steps && data.steps.length) {
-	
-							// TODO History.clearByContext('deal');
-							// console.log('forceMove:_break:deleteHistory', data.steps);
-	
-							_event2.default.dispatch('deleteHistory', data.steps);
+							// TODO History.clearByContext('deal'); ?
+							_event2.default.dispatch('deleteHistory', steps);
 						}
 					}
 				};
@@ -5709,89 +5708,47 @@ var SolitaireEngine =
 				};
 	
 				var eventId = _event2.default.once('clearCallbacks', function (e) {
-					if (typeof _break == "function") {
-						_break();
+					if (typeof breakForceMove == "function") {
+						breakForceMove();
 					}
-				}
-				// 'forceMove: from:' + deckFrom.name + ' to:' + deckTo.name + ' card:' + cardsMove[0].card.name + ' cardId:' + cardsMove[0].card.id
-				);
+				});
 	
-				if (typeof data.callback == 'function') {
+				var forceMoveCallback = function forceMoveCallback(e) {
 	
-					moveDragDeckParams.callback = function (e) {
+					if (addStep) {
 	
-						// TODO move here addStep?
-						if (data.addStep) {
+						_event2.default.dispatch('addStep', {
+							"move": {
+								"from": from,
+								"to": to,
+								"deck": deck
+							}
+						});
+					}
 	
-							_event2.default.dispatch('addStep', {
-								"move": {
-									"from": data.from,
-									"to": data.to,
-									"deck": data.deck
-								}
-							});
-						}
+					_event2.default.remove(eventId);
 	
-						// console.log('%c ', 'background:#' + rand, 'forceMove:END ' + rand);
+					breakForceMove = null;
 	
-						_event2.default.remove(eventId);
+					if (deckFrom.autoUnflipTop && deckFrom.cards.length > 0 && deckFrom.cards[deckFrom.cards.length - 1].flip) {
 	
-						_break = null;
+						// console.log('unflip TopCard');
 	
-						_event2.default.dispatch('forceMoveEnd');
+						deckFrom.unflipTopCard(addStep);
+					}
 	
-						data.callback();
+					if (save) {
+						_event2.default.dispatch('saveSteps');
+					}
 	
-						// _next();
-					};
+					_event2.default.dispatch('forceMoveEnd');
 	
-					// moveDragDeckParams.debug = 'from:forceMove';
-				} else {
-					moveDragDeckParams.callback = function (e) {
+					if (typeof callback == 'function') {
+						callback();
+					}
+				};
 	
-						// TODO move here addStep?
-						if (data.addStep) {
-	
-							_event2.default.dispatch('addStep', {
-								// "step" : {
-								"move": {
-									"from": data.from,
-									"to": data.to,
-									"deck": data.deck
-								}
-								// },
-								// "callback" : stepId => {
-								// steps.push(stepId)
-								// }
-							});
-						}
-	
-						_event2.default.remove(eventId);
-	
-						console.log('%c ', 'background:#' + rand, 'forceMove:END ' + rand);
-						_break = null;
-	
-						_event2.default.dispatch('forceMoveEnd');
-	
-						// _next();
-					};
-				}
-	
-				// let _next = e => {
-	
-				// 
-	
-				if (deckFrom.autoUnflipTop && deckFrom.cards.length > 0 && deckFrom.cards[deckFrom.cards.length - 1].flip) {
-	
-					// console.log('unflip TopCard');
-	
-					deckFrom.unflipTopCard(data.addStep);
-				}
-	
-				if (data.save) {
-					_event2.default.dispatch('saveSteps');
-				}
-				// };
+				moveDragDeckParams.callback = forceMoveCallback;
 	
 				_event2.default.dispatch('moveDragDeck', moveDragDeckParams);
 			})();
@@ -5800,9 +5757,7 @@ var SolitaireEngine =
 		}
 	};
 	
-	_event2.default.listen('forceMove', function (data) {
-		forceMove(data);
-	});
+	_event2.default.listen('forceMove', forceMove);
 	
 	exports.default = forceMove;
 
@@ -6258,9 +6213,9 @@ var SolitaireEngine =
 	
 		_inputs2.default.break();
 	
-		// console.groupCollapsed('UNDO');
-		// console.log('%c' + JSON.stringify(undoData, true, 2), 'background:#d6deff');
-		// console.groupEnd();
+		console.groupCollapsed('UNDO');
+		console.log('%c' + JSON.stringify(undoData, true, 2), 'background:#d6deff');
+		console.groupEnd();
 	
 		if (_share2.default.get('animation')) {
 			_event2.default.dispatch('stopAnimations');
@@ -6867,7 +6822,7 @@ var SolitaireEngine =
 							}
 						}
 	
-						SolitaireEngine.event.dispatch('Move', {
+						SolitaireEngine.event.dispatch('move', {
 							"moveDeck": moveDeck,
 							"to": to,
 							"cursorMove": {
@@ -9862,11 +9817,11 @@ var SolitaireEngine =
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
 	// Автоход в "дом"
-	var autoMoveToHome = function autoMoveToHome(data) {
+	var autoMoveToHome = function autoMoveToHome(e) {
+	
+		// console.log('autoMoveToHome');
 	
 		var _tips = _tips3.default.getTips();
-	
-		// TODO check all deck for top flipped card
 	
 		_event2.default.dispatch('startRunHistory');
 	
@@ -9903,11 +9858,11 @@ var SolitaireEngine =
 	
 			var _tip = suitableTips[0];
 	
-			var _callback = function _callback(e) {
+			var autoMoveToHomeCallback = function autoMoveToHomeCallback(e) {
 	
 				_tips3.default.checkTips();
 	
-				autoMoveToHome(data);
+				autoMoveToHome();
 			};
 	
 			var forceMoveData = {
@@ -9916,7 +9871,7 @@ var SolitaireEngine =
 				"deck": [_tip.from.card.name],
 				"addStep": true,
 				"save": true,
-				"callback": _callback
+				"callback": autoMoveToHomeCallback
 			};
 	
 			_event2.default.dispatch('forceMove', forceMoveData);
@@ -10260,10 +10215,14 @@ var SolitaireEngine =
 	
 	_event2.default.listen('specialStep', function (card) {
 	
+		console.log('specialStep:', card);
+	
 		var cardName = card.name;
 		var deckName = _deck2.default.getDeckById(card.parent).name;
 	
 		_event2.default.dispatch('rewindHistory', function (data) {
+	
+			console.log('specialStep:rewindHistory', data);
 	
 			var index = -1;
 	
@@ -10299,6 +10258,10 @@ var SolitaireEngine =
 	
 	var _event2 = _interopRequireDefault(_event);
 	
+	var _common = __webpack_require__(5);
+	
+	var _common2 = _interopRequireDefault(_common);
+	
 	var _tips = __webpack_require__(9);
 	
 	var _tips2 = _interopRequireDefault(_tips);
@@ -10308,25 +10271,46 @@ var SolitaireEngine =
 	var usedCardId = null;
 	
 	var showFlipCardOnMove = function showFlipCardOnMove(data) {
+		// to, toCard
 	
-		return; // TODO
-	
-		if (!data.deck || !data.card || data.deck.showPrefFlipCard == false) {
+		if (!data.toCard || !data.toCard.parent) {
 			return;
 		}
 	
-		var moveDistance = share.get('moveDistance');
+		// console.log('showFlipCardOnMove:', data);
 	
-		if (moveDistance > 0 && data.distance < moveDistance || usedCardId == data.card.id) {
+		var deck = _common2.default.getElementById(data.toCard.parent);
+	
+		if (!deck || !deck.autoUnflipTop) {
 			return;
 		}
+	
+		// if(
+		// 	!data.deck                           ||
+		// 	!data.card                           ||
+		// 	 data.deck.showPrefFlipCard == false
+		// ) {
+		// 	return;
+		// }
+	
+		// let moveDistance = share.get('moveDistance');
+	
+		// if(
+		// 	moveDistance  > 0            &&
+		// 	data.distance < moveDistance ||
+		// 	usedCardId == data.card.id
+		// ) {
+		// 	return;
+		// }
 	
 		var tips = _tips2.default.getTips();
 	
 		var inTips = false;
 	
 		for (var i in tips) {
-			if (tips[i].from == deck.name) {
+			// if(tips[i].from == deck.name) {
+			var fromDeck = _common2.default.getElementById(tips[i].from.card.parent);
+			if (fromDeck && fromDeck.name == deck.name) {
 				inTips = true;
 			}
 		}
@@ -10335,29 +10319,35 @@ var SolitaireEngine =
 			return;
 		}
 	
-		usedCardId = data.card.id;
+		// usedCardId = data.card.id;
 	
-		console.log('showFlipCardOnMove:', data);
-		// TODO вкл./выкл. defaults, field, group, deck
-		return;
+		// if(
+		// 	typeof data.card.flip == "boolean" &&
+		// 	       data.card.flip == false
+		// ) {
 	
-		if (typeof data.card.flip == "boolean" && data.card.flip == false) {
+		// let prevCard = null;
 	
-			var prevCard = null;
+		var cardIndex = deck.getCardIndexById(data.toCard.id);
+		var moveDeckCount = deck.cards.length - cardIndex;
 	
-			for (var _i = data.deck.cards.length - 1; _i >= 0 && !prevCard; _i -= 1) {
-				if (data.deck.cards[_i].id == data.card.id && _i > 0) {
-					prevCard = data.deck.cards[_i - 1];
-				}
-			}
+		var prevCard = deck.cards.length > moveDeckCount ? deck.cards[deck.cards.length - moveDeckCount - 1] : null;
 	
-			if (prevCard) {
-				_event2.default.dispatch('unflipCard', prevCard);
-			}
+		// for(let i = data.deck.cards.length - 1; i >= 0 && !prevCard; i -= 1) {
+		// 	if(data.deck.cards[i].id == data.card.id && i > 0) {
+		// 		prevCard = data.deck.cards[i - 1];
+		// 	}
+		// }
+	
+		// if(prevCard) {
+		if (prevCard) {
+			// event.dispatch('unflipCard', prevCard);
+			_event2.default.dispatch('unflipCard', prevCard);
 		}
+		// }
 	};
 	
-	_event2.default.listen('dragDeck', showFlipCardOnMove);
+	_event2.default.listen('click:unflipCard', showFlipCardOnMove);
 
 /***/ },
 /* 71 */
@@ -10399,9 +10389,11 @@ var SolitaireEngine =
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
-	var Move = function Move(moveDeck, to, cursorMove) {
+	var Move = function Move(_ref) {
+		var moveDeck = _ref.moveDeck,
+		    to = _ref.to,
+		    cursorMove = _ref.cursorMove;
 	
-		// common.animationDefault();
 	
 		var _deck_departure = moveDeck[0].card.parent && _common2.default.getElementById(moveDeck[0].card.parent),
 		    // стопка из которой взяли
@@ -10490,8 +10482,6 @@ var SolitaireEngine =
 						}
 					}
 	
-					// 
-	
 					var issetMoves = null;
 	
 					var _callback = function _callback(e) {
@@ -10509,8 +10499,6 @@ var SolitaireEngine =
 								"context": "move"
 							}
 						});
-	
-						// _deck_destination.Push(_pop, false);
 	
 						if (
 						// !event.has('moveEnd', {
@@ -10541,16 +10529,6 @@ var SolitaireEngine =
 							_event2.default.dispatch('saveSteps', 'MOVE');
 						}
 	
-						// moveEndData.before = data => {
-						// 	if(data && typeof data.stepType == 'string') {
-						// 		event.dispatch('addStep', {
-						// 			"redo": {
-						// 				"stepType": data.stepType
-						// 			}
-						// 		})
-						// 	}
-						// };
-	
 						_event2.default.dispatch('moveEnd:' + _share2.default.get('stepType'));
 	
 						_event2.default.dispatch('moveEnd', moveEndData);
@@ -10570,7 +10548,7 @@ var SolitaireEngine =
 			}
 		}
 	
-		// если не кдалось положить карты, вернуть обратно
+		// если не удалось положить карты, вернуть обратно
 		// или положить на лучшее возможное место
 		if (!_success && _deck_departure) {
 	
@@ -10581,7 +10559,11 @@ var SolitaireEngine =
 	
 				if (Tip) {
 	
-					Move(moveDeck, Tip.to.deck.id, cursorMove);
+					Move({
+						"moveDeck": moveDeck,
+						"to": Tip.to.deck.id,
+						"cursorMove": cursorMove
+					});
 	
 					return;
 				} else {
@@ -10599,15 +10581,13 @@ var SolitaireEngine =
 					"moveDeck": moveDeck,
 					"departure": _deck_departure
 				});
-				// ^ callback
+	
 				_event2.default.dispatch('stopSession');
 			}
 		}
 	};
 	
-	_event2.default.listen('Move', function (data) {
-		Move(data.moveDeck, data.to, data.cursorMove);
-	});
+	_event2.default.listen('move', Move);
 
 /***/ },
 /* 72 */
@@ -12088,7 +12068,8 @@ var SolitaireEngine =
 	
 	_event2.default.listen('fieldThemesSet', function (pref) {
 	
-			var _fieldDomElement = _share2.default.get('domElement:field'); //Field.domElement;
+			var _fieldDomElement = _share2.default.get('domElement:field');
+			_fieldDomElement = _fieldDomElement.parentNode.parentNode; // TODO может быть не корректно в отличном от текущего окружении
 	
 			for (var prefName in _defaults2.default.themes) {
 	

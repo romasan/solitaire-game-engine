@@ -218,9 +218,9 @@ event.listen('undo', undoData => {
 
 	inputs.break();
 
-	// console.groupCollapsed('UNDO');
-	// console.log('%c' + JSON.stringify(undoData, true, 2), 'background:#d6deff');
-	// console.groupEnd();
+	console.groupCollapsed('UNDO');
+	console.log('%c' + JSON.stringify(undoData, true, 2), 'background:#d6deff');
+	console.groupEnd();
 
 	if(share.get('animation')) {
 		event.dispatch('stopAnimations');

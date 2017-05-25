@@ -139,7 +139,6 @@ class inputs {
 				this.put(data.changedTouches[0].target, data.changedTouches[0].clientX, data.changedTouches[0].clientY);
 			}, false);
 		} catch(e) {}
-
 	}
 
 	break() {
@@ -268,6 +267,13 @@ class inputs {
 						"to"     : _deck,
 						"toCard" : _card
 					});
+
+					// this.put(target, x, y, false);
+
+					if(!defaults.canMoveFlip) {
+						return;
+					}
+
 				} else {
 
 					event.dispatch('click:unflipCard', {
@@ -400,6 +406,13 @@ class inputs {
 			}
 		};
 
+		if(
+			_distance == 0      &&
+			_deck.autoUnflipTop
+		) {
+			_deck.Redraw();
+		}
+
 		share.set('lastCursorMove', cursorMove  , defaults.forceClone);
 		share.set('lastDragDeck', {
 			"dragDeckParentId" : _dragDeck[0].card.parent,
@@ -411,7 +424,7 @@ class inputs {
 		event.dispatch('showCard', target);
 
 		// if(_dop && _dop.id) {
-		event.dispatch('Move', {
+		event.dispatch('move', {
 			"moveDeck"   : _dragDeck                        ,
 			"to"         : _dop && _dop.id ? _dop.id : 'mat',
 			"cursorMove" : cursorMove

@@ -10,9 +10,7 @@ import Tips     from 'tips'    ;
 import bestTip  from 'bestTip' ;
 import Field    from 'field'   ;
 
-let Move = (moveDeck, to, cursorMove) => {
-
-	// common.animationDefault();
+let Move = ({moveDeck, to, cursorMove}) => {
 
 	let _deck_departure   = moveDeck[0].card.parent                        &&
 	                        common.getElementById(moveDeck[0].card.parent)   , // стопка из которой взяли
@@ -23,7 +21,7 @@ let Move = (moveDeck, to, cursorMove) => {
 
 	if(
 		!cursorMove.dbclick           &&
-		cursorMove.distance     === 0 &&
+		 cursorMove.distance    === 0 &&
 		share.get('moveDistance') > 0 &&
 		_stepType == defaults.stepType
 	) {
@@ -36,7 +34,7 @@ let Move = (moveDeck, to, cursorMove) => {
 	if(
 		_stepType != defaults.stepType  &&
 		(
-			Field.autoSteps             &&
+			 Field.autoSteps            &&
 			!Field.autoSteps[_stepType] ||
 			!Field.autoSteps
 		)
@@ -112,8 +110,6 @@ let Move = (moveDeck, to, cursorMove) => {
 					}
 				}
 
-				// 
-
 				let issetMoves = null;
 
 				let _callback = e => {
@@ -131,8 +127,6 @@ let Move = (moveDeck, to, cursorMove) => {
 							"context"  : "move"
 						}
 					});
-
-					// _deck_destination.Push(_pop, false);
 
 					if(
 						// !event.has('moveEnd', {
@@ -173,16 +167,6 @@ let Move = (moveDeck, to, cursorMove) => {
 						event.dispatch('saveSteps', 'MOVE');
 					}
 
-					// moveEndData.before = data => {
-					// 	if(data && typeof data.stepType == 'string') {
-					// 		event.dispatch('addStep', {
-					// 			"redo": {
-					// 				"stepType": data.stepType
-					// 			}
-					// 		})
-					// 	}
-					// };
-
 					event.dispatch('moveEnd:' + share.get('stepType'));
 
 					event.dispatch('moveEnd', moveEndData);
@@ -202,7 +186,7 @@ let Move = (moveDeck, to, cursorMove) => {
 		}
 	}
 
-	// если не кдалось положить карты, вернуть обратно
+	// если не удалось положить карты, вернуть обратно
 	// или положить на лучшее возможное место
 	if(!_success && _deck_departure) {
 
@@ -217,7 +201,11 @@ let Move = (moveDeck, to, cursorMove) => {
 
 			if(Tip) {
 
-				Move(moveDeck, Tip.to.deck.id, cursorMove);
+				Move({
+					"moveDeck"   : moveDeck      ,
+					"to"         : Tip.to.deck.id, 
+					"cursorMove" : cursorMove
+				});
 
 				return;
 			} else {
@@ -236,12 +224,10 @@ let Move = (moveDeck, to, cursorMove) => {
 				"moveDeck"  : moveDeck       ,
 				"departure" : _deck_departure
 			});
-			// ^ callback
+
 			event.dispatch('stopSession');
 		}
 	}
 };
 
-event.listen('Move', data => {
-	Move(data.moveDeck, data.to, data.cursorMove);
-});
+event.listen('move', Move);

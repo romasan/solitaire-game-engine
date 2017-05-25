@@ -1,39 +1,58 @@
 'use strict';
 
-import event from 'event';
+import event  from 'event' ;
+import common from 'common';
 
-import Tips from 'tips';
+import Tips   from 'tips'  ;
 
 let usedCardId = null;
 
-let showFlipCardOnMove = data => {
+let showFlipCardOnMove = data => { // to, toCard
 
-	return; // TODO
+	if(!data.toCard || !data.toCard.parent) {
+		return;
+	}
+
+	// console.log('showFlipCardOnMove:', data);
+
+	let deck = common.getElementById(data.toCard.parent);
 
 	if(
-		!data.deck                           ||
-		!data.card                           ||
-		 data.deck.showPrefFlipCard == false
+		!deck               ||
+		!deck.autoUnflipTop
 	) {
 		return;
 	}
 
-	let moveDistance = share.get('moveDistance');
+	// if(
+	// 	!data.deck                           ||
+	// 	!data.card                           ||
+	// 	 data.deck.showPrefFlipCard == false
+	// ) {
+	// 	return;
+	// }
 
-	if(
-		moveDistance  > 0            &&
-		data.distance < moveDistance ||
-		usedCardId == data.card.id
-	) {
-		return;
-	}
+	// let moveDistance = share.get('moveDistance');
+
+	// if(
+	// 	moveDistance  > 0            &&
+	// 	data.distance < moveDistance ||
+	// 	usedCardId == data.card.id
+	// ) {
+	// 	return;
+	// }
 
 	let tips = Tips.getTips();
 
 	let inTips = false;
 
 	for(let i in tips) {
-		if(tips[i].from == deck.name) {
+		// if(tips[i].from == deck.name) {
+		let fromDeck = common.getElementById(tips[i].from.card.parent);
+		if(
+			fromDeck                   && 
+			fromDeck.name == deck.name
+		) {
 			inTips = true;
 		}
 	}
@@ -42,29 +61,32 @@ let showFlipCardOnMove = data => {
 		return;
 	}
 
-	usedCardId = data.card.id;
+	// usedCardId = data.card.id;
 
-	console.log('showFlipCardOnMove:', data);
-	// TODO вкл./выкл. defaults, field, group, deck
-	return;
+	// if(
+	// 	typeof data.card.flip == "boolean" &&
+	// 	       data.card.flip == false
+	// ) {
 
-	if(
-		typeof data.card.flip == "boolean" &&
-		       data.card.flip == false
-	) {
+		// let prevCard = null;
 
-		let prevCard = null;
+	let cardIndex = deck.getCardIndexById(data.toCard.id);
+	let moveDeckCount = deck.cards.length - cardIndex;
 
-		for(let i = data.deck.cards.length - 1; i >= 0 && !prevCard; i -= 1) {
-			if(data.deck.cards[i].id == data.card.id && i > 0) {
-				prevCard = data.deck.cards[i - 1];
-			}
-		}
+	let prevCard = deck.cards.length > moveDeckCount ? deck.cards[deck.cards.length - moveDeckCount - 1] : null;
 
-		if(prevCard) {
-			event.dispatch('unflipCard', prevCard);
-		}
+		// for(let i = data.deck.cards.length - 1; i >= 0 && !prevCard; i -= 1) {
+		// 	if(data.deck.cards[i].id == data.card.id && i > 0) {
+		// 		prevCard = data.deck.cards[i - 1];
+		// 	}
+		// }
+
+		// if(prevCard) {
+	if(prevCard) {
+		// event.dispatch('unflipCard', prevCard);
+		event.dispatch('unflipCard', prevCard);
 	}
+	// }
 };
 
-event.listen('dragDeck', showFlipCardOnMove);
+event.listen('click:unflipCard', showFlipCardOnMove);

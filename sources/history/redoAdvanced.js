@@ -75,7 +75,7 @@ class redoAdvanced {
 					}
 				}
 
-				SolitaireEngine.event.dispatch('Move', {
+				SolitaireEngine.event.dispatch('move', {
 					"moveDeck"   : moveDeck,
 					"to"         : to      ,
 					"cursorMove" : {

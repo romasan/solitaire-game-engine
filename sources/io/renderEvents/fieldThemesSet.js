@@ -9,7 +9,8 @@ import elRender from 'elRender';
 
 event.listen('fieldThemesSet', pref => {
 
-	let _fieldDomElement = share.get('domElement:field');//Field.domElement;
+	let _fieldDomElement = share.get('domElement:field');
+	    _fieldDomElement = _fieldDomElement.parentNode.parentNode; // TODO может быть не корректно в отличном от текущего окружении
 
 	for(let prefName in defaults.themes) {
 

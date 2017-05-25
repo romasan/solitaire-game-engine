@@ -7,31 +7,31 @@ import common from 'common';
 import Deck   from 'deck'  ;
 import Tips   from 'tips'  ;
 
-let forceMove = data => { // {from, to, deck, <flip>, <callback>, <steps>}
+let forceMove = ({from, to, deck, flip, callback, steps, save, addStep}) => { // {from, to, deck, <flip>, <callback>, <steps>, <save>, <addStep>}
 
-	// console.log('forceMove:', data);
+	// console.log('forceMove');
 
 	if(
-		!data.from ||
-		!data.to   ||
-		!data.deck
+		!from ||
+		!to   ||
+		!deck
 	) {
 		return;
 	}
 
-	if(!data.deck.length) {
+	if(!deck.length) {
 		return;
 	}
 
-	// departure
-	let deckFrom = typeof data.from == 'string'
-		? Deck.getDeck(data.from)
-		: data.from;
+	// departure (from)
+	let deckFrom = typeof from == 'string'
+		? Deck.getDeck(from)
+		: from;
 
-	// destination
-	let deckTo   = typeof data.to   == 'string'
-		? Deck.getDeck(data.to)
-		: data.to;
+	// destination (to)
+	let deckTo   = typeof to   == 'string'
+		? Deck.getDeck(to)
+		: to;
 
 	if(
 		!deckFrom                ||
@@ -42,47 +42,37 @@ let forceMove = data => { // {from, to, deck, <flip>, <callback>, <steps>}
 		return;
 	}
 
-	let _check = true;
+	let check = true;
 
 	// let deckFromCards = deckFrom.cards;
 	let deckFromCards = deckFrom.getCards();
 
 	for(let i in deckFromCards) {
 
-		if(i >= deckFromCards.length - data.deck.length) {
+		if(i >= deckFromCards.length - deck.length) {
 
-			let _index = i - (deckFromCards.length | 0) + (data.deck.length | 0);
+			let _index = i - (deckFromCards.length | 0) + (deck.length | 0);
 
 			if(
-				data.deck[_index]                          &&
-				deckFromCards[i].name != data.deck[_index]
+				deck[_index]                          &&
+				deckFromCards[i].name != deck[_index]
 			) {
 
-				// console.warn('forceMove:check:false', deckFrom.name, deckTo.name, deckFromCards[i].name, data.deck[_index]);
+				// console.warn('forceMove:check:false', deckFrom.name, deckTo.name, deckFromCards[i].name, deck[_index]);
 
-				_check = false;
+				check = false;
 			}
 		}
 	}
 
-	if(_check) {
+	if(check) {
 
-		let cardsPop = deckFrom.Pop(data.deck.length);
-		// let cardsPop = deckFrom.getTopCards(data.deck.length);
-
-		// console.log(
-		// 	'### forceMove:pop',
-		// 	cardsPop ? cardsPop.map(e => e.name).join(',') : cardsPop,
-		// 	deckFrom.name,
-		// 	deckFrom.cards.map(e => e.name).join(','),
-		// 	data.deck.length
-		// );
+		let cardsPop = deckFrom.Pop(deck.length);
 
 		// перевернуть карты во время хода
-		if(typeof data.flip == "boolean") {
+		if(typeof flip == "boolean") {
 			for(let i in cardsPop) {
-				// console.log('forceMove:flip:', i, cardsPop.length, cardsPop[i].flip, data.flip);
-				cardsPop[i].flip = data.flip; // !cardsPop[i].flip;
+				cardsPop[i].flip = flip; // !cardsPop[i].flip;
 			}
 		}
 
@@ -92,42 +82,31 @@ let forceMove = data => { // {from, to, deck, <flip>, <callback>, <steps>}
 
 		deckTo.Push(cardsPop, deckToInvisibleCardsCount > 0);
 
-		let rand = (1048576 + ((Math.random() * 15728639) | 0) ).toString(16).toUpperCase();
+		let breakForceMove = e => {
 
-		// console.log('%c ', 'background:#' + rand, 'forceMove', rand + ':' + data.from + '>' + data.to);
-
-		let _break = e => {
-
-			// return; // debug
 			if(share.get('inHistoryMove')) {
 				return;
 			}
 
-			// console.log('%c %cforceMove:BREAK ' + rand + ' ' + deckFrom.name + ' ' + deckTo.name, 'background:#' + rand, 'background:none;color:red;font-weight:bold;');
-
-			let _cards = deckTo.Pop(data.deck.length);
+			let _cards = deckTo.Pop(deck.length);
 
 			if(cardsPop) {
 
 				deckFrom.Push(_cards);
 
-				if(typeof data.flip == "boolean") {
+				if(typeof flip == "boolean") {
 					for(let i in cardsPop) {
-						cardsPop[i].flip = !data.flip;
+						cardsPop[i].flip = !flip;
 					}
 				}
 
 				deckFrom.Redraw();
 				deckTo  .Redraw();
 
-			// } else
+				if(steps && steps.length) {
 
-				if(data.steps && data.steps.length) {
-
-					// TODO History.clearByContext('deal');
-					// console.log('forceMove:_break:deleteHistory', data.steps);
-
-					event.dispatch('deleteHistory', data.steps);
+					// TODO History.clearByContext('deal'); ?
+					event.dispatch('deleteHistory', steps);
 				}
 			}
 		}
@@ -146,96 +125,53 @@ let forceMove = data => { // {from, to, deck, <flip>, <callback>, <steps>}
 			"destination" : deckTo
 		};
 
-		let eventId = event.once(
-			'clearCallbacks',
-			e => {
-				if(typeof _break == "function") {
-					_break();
-				}
+		let eventId = event.once('clearCallbacks', e => {
+			if(typeof breakForceMove == "function") {
+				breakForceMove();
 			}
-			// 'forceMove: from:' + deckFrom.name + ' to:' + deckTo.name + ' card:' + cardsMove[0].card.name + ' cardId:' + cardsMove[0].card.id
-		);
+		});
 
-		if(typeof data.callback == 'function') {
+		let forceMoveCallback = e => {
 
-			moveDragDeckParams.callback = e => {
+			if(addStep) {
 
-				// TODO move here addStep?
-				if(data.addStep) {
-
-					event.dispatch('addStep', {
-						"move" : {
-							"from" : data.from,
-							"to"   : data.to  ,
-							"deck" : data.deck
-						}
-					});
-				}
-
-				// console.log('%c ', 'background:#' + rand, 'forceMove:END ' + rand);
-
-				event.remove(eventId);
-
-				_break = null;
-
-				event.dispatch('forceMoveEnd');
-
-				data.callback();
-
-				// _next();
+				event.dispatch('addStep', {
+					"move" : {
+						"from" : from,
+						"to"   : to  ,
+						"deck" : deck
+					}
+				});
 			}
 
-			// moveDragDeckParams.debug = 'from:forceMove';
-		} else {
-			moveDragDeckParams.callback = e => {
+			event.remove(eventId);
 
-				// TODO move here addStep?
-				if(data.addStep) {
+			breakForceMove = null;
 
-					event.dispatch('addStep', {
-						// "step" : {
-						"move" : {
-							"from" : data.from,
-							"to"   : data.to  ,
-							"deck" : data.deck
-						}
-						// },
-						// "callback" : stepId => {
-							// steps.push(stepId)
-						// }
-					});
-				}
+			if(
+				deckFrom.autoUnflipTop                         &&
+				deckFrom.cards.length > 0                      &&
+				deckFrom.cards[deckFrom.cards.length - 1].flip
+			) {
 
-				event.remove(eventId);
+				// console.log('unflip TopCard');
 
-				console.log('%c ', 'background:#' + rand, 'forceMove:END ' + rand);
-				_break = null;
-
-				event.dispatch('forceMoveEnd');
-
-				// _next();
+				deckFrom.unflipTopCard(addStep);
 			}
-		}
 
-		// let _next = e => {
+			if(save) {
+				event.dispatch('saveSteps');
+			}
 
-		// 
+			event.dispatch('forceMoveEnd');
 
-		if(
-			deckFrom.autoUnflipTop                         &&
-			deckFrom.cards.length > 0                      &&
-			deckFrom.cards[deckFrom.cards.length - 1].flip
-		) {
+			if(typeof callback == 'function') {
+				callback();
+			}
 
-			// console.log('unflip TopCard');
+		};
 
-			deckFrom.unflipTopCard(data.addStep);
-		}
-
-		if(data.save) {
-			event.dispatch('saveSteps');
-		}
-		// };
+		moveDragDeckParams.callback = forceMoveCallback;
 
 		event.dispatch('moveDragDeck', moveDragDeckParams);
 	} else {
@@ -243,8 +179,6 @@ let forceMove = data => { // {from, to, deck, <flip>, <callback>, <steps>}
 	}
 };
 
-event.listen('forceMove', data => {
-	forceMove(data);
-});
+event.listen('forceMove', forceMove);
 
 export default forceMove;

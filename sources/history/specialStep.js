@@ -6,10 +6,14 @@ import Deck  from 'deck';
 
 event.listen('specialStep', card => {
 
+	console.log('specialStep:', card);
+
 	let cardName = card.name;
 	let deckName = Deck.getDeckById(card.parent).name;
 
 	event.dispatch('rewindHistory', data => {
+
+		console.log('specialStep:rewindHistory', data);
 
 		let index = -1;
 

@@ -7,11 +7,11 @@ import Field  from 'field' ;
 import Tips   from 'tips'  ;
 
 // Автоход в "дом"
-let autoMoveToHome = data => {
+let autoMoveToHome = e => {
+
+	// console.log('autoMoveToHome');
 
 	let _tips = Tips.getTips();
-
-	// TODO check all deck for top flipped card
 
 	event.dispatch('startRunHistory');
 
@@ -51,11 +51,11 @@ let autoMoveToHome = data => {
 
 		let tip = suitableTips[0];
 
-		let _callback = e => {
+		let autoMoveToHomeCallback = e => {
 
 			Tips.checkTips();
 
-			autoMoveToHome(data);
+			autoMoveToHome();
 		};
 
 		let forceMoveData = {
@@ -64,7 +64,7 @@ let autoMoveToHome = data => {
 			"deck"     : [tip.from.card.name],
 			"addStep"  : true                ,
 			"save"     : true                ,
-			"callback" : _callback
+			"callback" : autoMoveToHomeCallback
 		};
 
 		event.dispatch('forceMove', forceMoveData);
