@@ -126,7 +126,7 @@ var SolitaireEngine =
 	exports.options = _defaults2.default;
 	exports.winCheck = _winCheck2.default.hwinCheck;
 	exports.generator = _deckGenerator2.default;
-	exports.version = (90914910563).toString().split(9).slice(1).map(function (e) {
+	exports.version = (90914910620).toString().split(9).slice(1).map(function (e) {
 		return parseInt(e, 8);
 	}).join('.');
 	
@@ -1869,8 +1869,8 @@ var SolitaireEngine =
 					var takeCardIndex = _tips[i].from.deck.getCardIndexById(_tips[i].from.card.id);
 					var takeCardsLength = fromCards.length - takeCardIndex;
 	
-					var fromParentCard = takeCardIndex > 0 ? fromCards[takeCardIndex - 1] : EMPTY;
-					var toParentCard = toCards.length > 0 ? toCards[toCards.length - 1] : EMPTY;
+					var fromParentCard = takeCardIndex > 0 ? _common2.default.validateCardName(fromCards[takeCardIndex - 1].name) : EMPTY;
+					var toParentCard = toCards.length > 0 ? _common2.default.validateCardName(toCards[toCards.length - 1].name) : EMPTY;
 	
 					// кейсы:
 					// перетаскиваем одну карту
@@ -1884,7 +1884,7 @@ var SolitaireEngine =
 					// с пустой на пустую в пределах одной группы
 					// с одинаковой предыдущей картой в пределах одной группы, если предыдущая не перевёрнута
 	
-					if (fromDeck.parent == toDeck.parent && fromParentCard == EMPTY && toParentCard == EMPTY || fromParentCard != EMPTY && toParentCard != EMPTY && fromParentCard.flip == false && _common2.default.validateCardName(fromParentCard.name).color == _common2.default.validateCardName(toParentCard.name).color) {
+					if (fromDeck.parent == toDeck.parent && fromParentCard == EMPTY && toParentCard == EMPTY || fromParentCard != EMPTY && toParentCard != EMPTY && fromParentCard.flip == false && fromParentCard.color == toParentCard.color && fromParentCard.value == toParentCard.value) {
 						draw = false;
 					}
 				}

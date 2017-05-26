@@ -105,8 +105,8 @@ let checkTips = e => {
 				let takeCardsLength = fromCards.length - takeCardIndex;
 
 
-				let fromParentCard = takeCardIndex  > 0 ? fromCards[takeCardIndex  - 1] : EMPTY;
-				let   toParentCard = toCards.length > 0 ?   toCards[toCards.length - 1] : EMPTY;
+				let fromParentCard = takeCardIndex  > 0 ? common.validateCardName(fromCards[takeCardIndex  - 1].name) : EMPTY;
+				let   toParentCard = toCards.length > 0 ? common.validateCardName(  toCards[toCards.length - 1].name) : EMPTY;
 
 				// кейсы:
 				// перетаскиваем одну карту
@@ -127,10 +127,11 @@ let checkTips = e => {
 						  toParentCard == EMPTY
 					) ||
 					(
-						fromParentCard != EMPTY      &&
-						  toParentCard != EMPTY      &&
-						fromParentCard.flip == false &&
-						common.validateCardName(fromParentCard.name).color == common.validateCardName(toParentCard.name).color
+						fromParentCard       != EMPTY              &&
+						  toParentCard       != EMPTY              &&
+						fromParentCard.flip  == false              &&
+						fromParentCard.color == toParentCard.color &&
+						fromParentCard.value == toParentCard.value
 					)
 				) {
 					draw = false;
