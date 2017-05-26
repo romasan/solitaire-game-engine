@@ -126,7 +126,7 @@ var SolitaireEngine =
 	exports.options = _defaults2.default;
 	exports.winCheck = _winCheck2.default.hwinCheck;
 	exports.generator = _deckGenerator2.default;
-	exports.version = (90914910552).toString().split(9).slice(1).map(function (e) {
+	exports.version = (90914910563).toString().split(9).slice(1).map(function (e) {
 		return parseInt(e, 8);
 	}).join('.');
 	
@@ -1787,6 +1787,8 @@ var SolitaireEngine =
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
+	var EMPTY = "EMPTY";
+	
 	/*
 	 * getTips
 	 * checkTips
@@ -1858,27 +1860,33 @@ var SolitaireEngine =
 	
 				if (draw) {
 	
-					var fromDeck = _tips[i].from.deck.getCards();
-					var toDeck = _tips[i].to.deck.getCards();
+					var fromDeck = _tips[i].from.deck;
+					var toDeck = _tips[i].to.deck;
 	
-					if (fromDeck.length > 1) {
+					var fromCards = fromDeck.getCards();
+					var toCards = toDeck.getCards();
 	
-						var fromCardindex = 1; // fromDeck.getCardIndexById(_tips[i].from.card.id);
+					var takeCardIndex = _tips[i].from.deck.getCardIndexById(_tips[i].from.card.id);
+					var takeCardsLength = fromCards.length - takeCardIndex;
 	
-						var fromPrevCard = fromDeck[fromDeck.length - 1 - fromCardindex];
-						var toTopCard = toDeck[toDeck.length - 1];
+					var fromParentCard = takeCardIndex > 0 ? fromCards[takeCardIndex - 1] : EMPTY;
+					var toParentCard = toCards.length > 0 ? toCards[toCards.length - 1] : EMPTY;
 	
-						console.log('>>>', fromPrevCard.name, toTopCard.name);
+					// кейсы:
+					// перетаскиваем одну карту
+					// перетаскиваем несколько
+					// со стопки
+					// с пустой стопки
+					// в стопку
+					// на пустой слот
 	
-						if (fromPrevCard.flip == false && fromPrevCard.name == toTopCard.name) {
-							draw = false;
-						}
-					} else if (toDeck.length == 0) {
+					// без подсветки:
+					// с пустой на пустую в пределах одной группы
+					// с одинаковой предыдущей картой в пределах одной группы, если предыдущая не перевёрнута
+	
+					if (fromDeck.parent == toDeck.parent && fromParentCard == EMPTY && toParentCard == EMPTY || fromParentCard != EMPTY && toParentCard != EMPTY && fromParentCard.flip == false && _common2.default.validateCardName(fromParentCard.name).color == _common2.default.validateCardName(toParentCard.name).color) {
 						draw = false;
 					}
-	
-					console.log('drawTip:', i, draw, _tips[i].from.card.name, _tips[i]);
-					console.log('###', fromDeck, toDeck);
 				}
 	
 				if (draw) {
@@ -5785,7 +5793,7 @@ var SolitaireEngine =
 				_event2.default.dispatch('moveDragDeck', moveDragDeckParams);
 			})();
 		} else {
-			console.warn('forceMove:Ход невозможен', data);
+			console.warn('forceMove:Ход невозможен', from, to);
 		}
 	};
 	

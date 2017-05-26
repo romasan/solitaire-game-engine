@@ -11,6 +11,8 @@ import Deck           from 'deck'          ;
 import Field          from 'field'         ;
 import autoMoveToHome from 'autoMoveToHome';
 
+const EMPTY = "EMPTY";
+
 /*
  * getTips
  * checkTips
@@ -93,30 +95,46 @@ let checkTips = e => {
 
 			if(draw) {
 
-				let fromDeck = _tips[i].from.deck.getCards();
-				let toDeck   = _tips[i].to  .deck.getCards();
+				let fromDeck = _tips[i].from.deck;
+				let   toDeck = _tips[i].to  .deck;
 
-				if(fromDeck.length > 1) {
+				let fromCards = fromDeck.getCards();
+				let   toCards = toDeck  .getCards();
 
-					let fromCardindex = 1; // fromDeck.getCardIndexById(_tips[i].from.card.id);
+				let takeCardIndex   = _tips[i].from.deck.getCardIndexById(_tips[i].from.card.id);
+				let takeCardsLength = fromCards.length - takeCardIndex;
 
-					let fromPrevCard = fromDeck[fromDeck.length - 1 - fromCardindex];
-					let toTopCard    = toDeck  [toDeck  .length - 1];
 
-					console.log('>>>', fromPrevCard.name, toTopCard.name);
+				let fromParentCard = takeCardIndex  > 0 ? fromCards[takeCardIndex  - 1] : EMPTY;
+				let   toParentCard = toCards.length > 0 ?   toCards[toCards.length - 1] : EMPTY;
 
-					if(
-						fromPrevCard.flip == false          &&
-						fromPrevCard.name == toTopCard.name
-					) {
-						draw = false;
-					}
-				} else if(toDeck.length == 0) {
+				// кейсы:
+				// перетаскиваем одну карту
+				// перетаскиваем несколько
+				// со стопки
+				// с пустой стопки
+				// в стопку
+				// на пустой слот
+
+				// без подсветки:
+				// с пустой на пустую в пределах одной группы
+				// с одинаковой предыдущей картой в пределах одной группы, если предыдущая не перевёрнута
+
+				if(
+					fromDeck.parent == toDeck.parent &&
+					(
+						fromParentCard == EMPTY &&
+						  toParentCard == EMPTY
+					) ||
+					(
+						fromParentCard != EMPTY      &&
+						  toParentCard != EMPTY      &&
+						fromParentCard.flip == false &&
+						common.validateCardName(fromParentCard.name).color == common.validateCardName(toParentCard.name).color
+					)
+				) {
 					draw = false;
 				}
-
-				console.log('drawTip:', i, draw, _tips[i].from.card.name, _tips[i]);
-				console.log('###', fromDeck, toDeck);
 			}
 
 			if(draw) {

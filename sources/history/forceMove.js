@@ -175,7 +175,7 @@ let forceMove = ({from, to, deck, flip, callback, steps, save, addStep}) => { //
 
 		event.dispatch('moveDragDeck', moveDragDeckParams);
 	} else {
-		console.warn('forceMove:Ход невозможен', data);
+		console.warn('forceMove:Ход невозможен', from, to);
 	}
 };
 
