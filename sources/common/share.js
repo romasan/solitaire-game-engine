@@ -18,10 +18,12 @@ class shareClass {
 
 	get(name) {
 		if(typeof this._data[name] != 'undefined') {
+
 			// TODO решить наконец проблему, 
 			// почему Object.assign не работает после babel-я
 			
 			event.dispatch('shareGet:' + name, this._data[name]);
+
 			return this._data[name];
 		} else {
 			return null;
@@ -30,11 +32,11 @@ class shareClass {
 
 	set(name, data, forceClone = false) {
 
-		let _debugValueName = 'stopRunHistory';
+		// let _debugValueName = 'stopRunHistory';
 
-		if(name == _debugValueName) {
-			console.log('%cgebug: change ' + _debugValueName + ' from ' + this._data[_debugValueName] + ' to ' + data, 'color:' + (data == true ? 'orange' : 'blue'));
-		}
+		// if(name == _debugValueName) {
+		// 	console.log('%cgebug: change ' + _debugValueName + ' from ' + this._data[_debugValueName] + ' to ' + data, 'color:' + (data == true ? 'orange' : 'blue'));
+		// }
 
 		// "foo", "bar", false
 		if(typeof name == 'string') {

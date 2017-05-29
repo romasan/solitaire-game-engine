@@ -126,7 +126,7 @@ var SolitaireEngine =
 	exports.options = _defaults2.default;
 	exports.winCheck = _winCheck2.default.hwinCheck;
 	exports.generator = _deckGenerator2.default;
-	exports.version = (90914910705).toString().split(9).slice(1).map(function (e) {
+	exports.version = (90914910730).toString().split(9).slice(1).map(function (e) {
 		return parseInt(e, 8);
 	}).join('.');
 	
@@ -222,10 +222,12 @@ var SolitaireEngine =
 			key: 'get',
 			value: function get(name) {
 				if (typeof this._data[name] != 'undefined') {
+	
 					// TODO решить наконец проблему, 
 					// почему Object.assign не работает после babel-я
 	
 					_event2.default.dispatch('shareGet:' + name, this._data[name]);
+	
 					return this._data[name];
 				} else {
 					return null;
@@ -237,11 +239,11 @@ var SolitaireEngine =
 				var forceClone = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : false;
 	
 	
-				var _debugValueName = 'stopRunHistory';
+				// let _debugValueName = 'stopRunHistory';
 	
-				if (name == _debugValueName) {
-					console.log('%cgebug: change ' + _debugValueName + ' from ' + this._data[_debugValueName] + ' to ' + data, 'color:' + (data == true ? 'orange' : 'blue'));
-				}
+				// if(name == _debugValueName) {
+				// 	console.log('%cgebug: change ' + _debugValueName + ' from ' + this._data[_debugValueName] + ' to ' + data, 'color:' + (data == true ? 'orange' : 'blue'));
+				// }
 	
 				// "foo", "bar", false
 				if (typeof name == 'string') {
