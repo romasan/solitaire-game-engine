@@ -216,7 +216,8 @@ event.listen('undo', undoData => {
 		return;
 	}
 
-	inputs.break();
+	// inputs.break();
+	event.dispatch('inputsBreak');
 
 	console.groupCollapsed('UNDO');
 	console.log('%c' + JSON.stringify(undoData, true, 2), 'background:#d6deff');

@@ -126,7 +126,7 @@ var SolitaireEngine =
 	exports.options = _defaults2.default;
 	exports.winCheck = _winCheck2.default.hwinCheck;
 	exports.generator = _deckGenerator2.default;
-	exports.version = (90914910620).toString().split(9).slice(1).map(function (e) {
+	exports.version = (90914910705).toString().split(9).slice(1).map(function (e) {
 		return parseInt(e, 8);
 	}).join('.');
 	
@@ -237,11 +237,11 @@ var SolitaireEngine =
 				var forceClone = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : false;
 	
 	
-				// let _debugValueName = 'curLockState';
+				var _debugValueName = 'stopRunHistory';
 	
-				// if(name == _debugValueName) {
-				// 	console.log('%cgebug: change ' + _debugValueName + ' from ' + this._data[_debugValueName] + ' to ' + data, 'color:' + (data == true ? 'orange' : 'blue'));
-				// }
+				if (name == _debugValueName) {
+					console.log('%cgebug: change ' + _debugValueName + ' from ' + this._data[_debugValueName] + ' to ' + data, 'color:' + (data == true ? 'orange' : 'blue'));
+				}
 	
 				// "foo", "bar", false
 				if (typeof name == 'string') {
@@ -653,10 +653,6 @@ var SolitaireEngine =
 
 	'use strict';
 	
-	Object.defineProperty(exports, "__esModule", {
-		value: true
-	});
-	
 	var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 	
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -734,11 +730,11 @@ var SolitaireEngine =
 	// 	}
 	// });
 	
-	var inputs = function () {
-		function inputs() {
+	var inputsClass = function () {
+		function inputsClass() {
 			var _this = this;
 	
-			_classCallCheck(this, inputs);
+			_classCallCheck(this, inputsClass);
 	
 			_share2.default.set('dragDeck', null);
 			_share2.default.set('startCursor', null);
@@ -748,7 +744,9 @@ var SolitaireEngine =
 	
 			try {
 	
-				document.addEventListener('mousedown', function (data) {
+				var field = _share2.default.get('domElement:field');
+	
+				field.addEventListener('mousedown', function (data) {
 	
 					if (data.button !== 0) {
 						return;
@@ -757,15 +755,15 @@ var SolitaireEngine =
 					_this.take(data.target, data.clientX, data.clientY);
 				});
 	
-				document.addEventListener('mousemove', function (data) {
+				field.addEventListener('mousemove', function (data) {
 					_this.drag(data.clientX, data.clientY);
 				});
 	
-				document.addEventListener('mouseup', function (data) {
+				field.addEventListener('mouseup', function (data) {
 					_this.put(data.target, data.clientX, data.clientY);
 				});
 	
-				document.addEventListener('mouseleave', function (data) {
+				field.addEventListener('mouseleave', function (data) {
 					_this.put(data.target, data.clientX, data.clientY);
 				});
 	
@@ -789,7 +787,7 @@ var SolitaireEngine =
 				// 	common.curUnLock();
 				// };
 	
-				document.addEventListener('dblclick', function (data) {
+				field.addEventListener('dblclick', function (data) {
 	
 					// event.dispatch('stopAnimations');
 	
@@ -799,14 +797,14 @@ var SolitaireEngine =
 					_common2.default.curUnLock();
 				});
 	
-				document.addEventListener('touchstart', function (data) {
+				field.addEventListener('touchstart', function (data) {
 	
 					data.preventDefault();
 	
 					_this.take(data.target, data.touches[0].clientX, data.touches[0].clientY);
 				}, false);
 	
-				document.addEventListener('touchmove', function (data) {
+				field.addEventListener('touchmove', function (data) {
 	
 					// if(share.get('startCursor')) {
 					data.preventDefault();
@@ -815,7 +813,7 @@ var SolitaireEngine =
 					_this.drag(data.touches[0].clientX, data.touches[0].clientY);
 				}, false);
 	
-				document.addEventListener('touchend', function (data) {
+				field.addEventListener('touchend', function (data) {
 	
 					data.preventDefault();
 	
@@ -824,8 +822,8 @@ var SolitaireEngine =
 			} catch (e) {}
 		}
 	
-		_createClass(inputs, [{
-			key: 'break',
+		_createClass(inputsClass, [{
+			key: '_break',
 			value: function _break() {
 	
 				var _dragDeck = _share2.default.get('dragDeck');
@@ -852,7 +850,7 @@ var SolitaireEngine =
 				_share2.default.set('startCursor', null);
 	
 				if (_common2.default.isCurLock() || document.getElementsByClassName('animated').length || // TODO )==
-				_share2.default.get('sessionStarted')) {
+				_share2.default.get('gameIsWon') || _share2.default.get('sessionStarted')) {
 					return;
 				}
 	
@@ -1126,10 +1124,22 @@ var SolitaireEngine =
 			}
 		}]);
 	
-		return inputs;
+		return inputsClass;
 	}();
 	
-	exports.default = new inputs();
+	var _inputs = null;
+	
+	_event2.default.listen('newGame', function (e) {
+		if (!_inputs) {
+			_inputs = new inputsClass();
+		}
+	});
+	
+	_event2.default.listen('inputsBreak', function (e) {
+		if (_inputs) {
+			_inputs._break();
+		}
+	});
 
 /***/ },
 /* 5 */
@@ -1228,11 +1238,14 @@ var SolitaireEngine =
 	_event2.default.listen('gameInit', function (data) {
 	
 		_share2.default.set('stepType', _defaults2.default.stepType);
+	
 		_share2.default.delete('sessionStarted');
 	
 		_share2.default.set('markerMode', false);
 	
 		curUnLock();
+	
+		_share2.default.set('gameIsWon', false);
 	
 		if (!data.firstInit) {
 			return;
@@ -1271,10 +1284,12 @@ var SolitaireEngine =
 	var curLock = function curLock(e) {
 		_share2.default.set('curLockState', true);
 	};
+	_event2.default.listen('curLock', curLock);
 	
 	var curUnLock = function curUnLock(e) {
 		_share2.default.set('curLockState', false);
 	};
+	_event2.default.listen('curUnLock', curUnLock);
 	
 	// getters
 	
@@ -6251,7 +6266,8 @@ var SolitaireEngine =
 			return;
 		}
 	
-		_inputs2.default.break();
+		// inputs.break();
+		_event2.default.dispatch('inputsBreak');
 	
 		console.groupCollapsed('UNDO');
 		console.log('%c' + JSON.stringify(undoData, true, 2), 'background:#d6deff');
@@ -6515,6 +6531,8 @@ var SolitaireEngine =
 		// redo move
 		if (typeof data.move != 'undefined' && typeof data.move.from != 'undefined' && typeof data.move.to != 'undefined' && typeof data.move.deck != 'undefined') {
 	
+			// console.log('redo:move');
+	
 			if (data.move.stepType) {
 	
 				if (typeof data.move.stepType == 'string') {
@@ -6604,11 +6622,12 @@ var SolitaireEngine =
 			return;
 		}
 	
-		_inputs2.default.break();
+		// inputs.break();
+		_event2.default.dispatch('inputsBreak');
 	
-		// console.groupCollapsed('REDO');
-		// console.log('%c' + JSON.stringify(redoData, true, 2), 'background:#fff7d6');
-		// console.groupEnd();
+		console.groupCollapsed('REDO');
+		console.log('%c' + JSON.stringify(redoData, true, 2), 'background:#fff7d6');
+		console.groupEnd();
 	
 		if (_share2.default.get('animation')) {
 			_event2.default.dispatch('stopAnimations');
@@ -6666,6 +6685,10 @@ var SolitaireEngine =
 	var _redoAdvanced = __webpack_require__(31);
 	
 	var _redoAdvanced2 = _interopRequireDefault(_redoAdvanced);
+	
+	var _share = __webpack_require__(1);
+	
+	var _share2 = _interopRequireDefault(_share);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
@@ -6733,12 +6756,15 @@ var SolitaireEngine =
 	
 	_event2.default.listen('doHistory', function (e) {
 	
-		// console.groupCollapsed('DO HISTORY');
+		console.groupCollapsed('DO HISTORY');
+		// console.log('DO HISTORY', e);
 	
 		// common.animationOff();
 		if (!e || !e.data) {
 			console.warn('doHistory data:', e);
 		}
+	
+		_event2.default.dispatch('startRunHistory');
 	
 		_common2.default.animationOff();
 	
@@ -6755,7 +6781,11 @@ var SolitaireEngine =
 	
 		_event2.default.dispatch('stopRunHistory');
 	
-		// console.groupEnd();
+		setTimeout(function (e) {
+			_event2.default.dispatch('startRunHistory');
+		}, 0);
+	
+		console.groupEnd();
 	});
 	
 	_event2.default.listen('resetHistory', function (e) {
@@ -12239,6 +12269,8 @@ var SolitaireEngine =
 	
 			// show you win message
 			_event2.default.dispatch('win', params);
+	
+			_share2.default.set('gameIsWon', true);
 	
 			console.log('WIN');
 	

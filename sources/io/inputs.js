@@ -53,7 +53,7 @@ import Tips     from 'tips'    ;
 // 	}
 // });
 
-class inputs {
+class inputsClass {
 
 	constructor() {
 
@@ -65,7 +65,9 @@ class inputs {
 
 		try {
 
-			document.addEventListener('mousedown', data => {
+			let field = share.get('domElement:field');
+
+			field.addEventListener('mousedown', data => {
 
 				if(data.button !== 0) {
 					return;
@@ -74,15 +76,15 @@ class inputs {
 				this.take(data.target, data.clientX, data.clientY);
 			});
 
-			document.addEventListener('mousemove', data => {
+			field.addEventListener('mousemove', data => {
 				this.drag(data.clientX, data.clientY);
 			});
 
-			document.addEventListener('mouseup', data => {
+			field.addEventListener('mouseup', data => {
 				this.put(data.target, data.clientX, data.clientY);
 			});
 
-			document.addEventListener('mouseleave', data => {
+			field.addEventListener('mouseleave', data => {
 				this.put(data.target, data.clientX, data.clientY);
 			});
 
@@ -106,7 +108,7 @@ class inputs {
 			// 	common.curUnLock();
 			// };
 
-			document.addEventListener('dblclick', data => {
+			field.addEventListener('dblclick', data => {
 
 				// event.dispatch('stopAnimations');
 
@@ -116,14 +118,14 @@ class inputs {
 				common.curUnLock();
 			});
 
-			document.addEventListener('touchstart', data => {
+			field.addEventListener('touchstart', data => {
 
 				data.preventDefault();
 
 				this.take(data.target, data.touches[0].clientX, data.touches[0].clientY)
 			}, false);
 
-			document.addEventListener('touchmove', data => {
+			field.addEventListener('touchmove', data => {
 
 				// if(share.get('startCursor')) {
 				data.preventDefault();
@@ -132,7 +134,7 @@ class inputs {
 				this.drag(data.touches[0].clientX, data.touches[0].clientY)
 			}, false);
 
-			document.addEventListener('touchend', data => {
+			field.addEventListener('touchend', data => {
 
 				data.preventDefault();
 
@@ -141,7 +143,7 @@ class inputs {
 		} catch(e) {}
 	}
 
-	break() {
+	_break() {
 
 		let _dragDeck = share.get('dragDeck');
 
@@ -173,6 +175,7 @@ class inputs {
 		if(
 			common.isCurLock()                                 ||
 			document.getElementsByClassName('animated').length || // TODO )==
+			share.get('gameIsWon')                             ||
 			share.get('sessionStarted')
 		) {
 			return;
@@ -438,4 +441,16 @@ class inputs {
 	}
 }
 
-export default new inputs();
+let _inputs = null;
+
+event.listen('newGame', e => {
+	if(!_inputs) {
+		_inputs = new inputsClass();
+	}
+})
+
+event.listen('inputsBreak', e => {
+	if(_inputs) {
+		_inputs._break();
+	}
+});

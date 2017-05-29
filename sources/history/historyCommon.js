@@ -6,6 +6,7 @@ import common       from 'common'      ;
 import history      from 'history'     ;
 import redoAdvanced from 'redoAdvanced';
 
+import share        from 'share'       ;
 /*
  * Events:
  *
@@ -70,17 +71,20 @@ event.listen('saveSteps', e => {
 
 event.listen('doHistory', e => {
 
-	// console.groupCollapsed('DO HISTORY');
+	console.groupCollapsed('DO HISTORY');
+	// console.log('DO HISTORY', e);
 
 	// common.animationOff();
 	if(!e || !e.data) {
 		console.warn('doHistory data:', e);
 	}
 
+	event.dispatch('startRunHistory');
+
 	common.animationOff();
 
 	for(let i in e.data) {
-	
+
 		event.dispatch('redo', e.data[i]);
 
 		if(
@@ -95,7 +99,11 @@ event.listen('doHistory', e => {
 
 	event.dispatch('stopRunHistory');
 
-	// console.groupEnd();
+	setTimeout(e => {
+		event.dispatch('startRunHistory');
+	}, 0);
+
+	console.groupEnd();
 });
 
 event.listen('resetHistory', e => {

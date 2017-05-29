@@ -66,6 +66,8 @@ let winCheck = params => {
 		// show you win message
 		event.dispatch('win', params);
 
+		share.set('gameIsWon', true);
+
 		console.log('WIN');
 
 		return true;

@@ -147,6 +147,8 @@ let redo = data => {
 		typeof data.move.deck != 'undefined'
 	) {
 
+		// console.log('redo:move');
+
 		if(data.move.stepType) {
 
 			if(typeof data.move.stepType == 'string') {
@@ -242,11 +244,12 @@ event.listen('redo', redoData => {
 		return;
 	}
 
-	inputs.break();
+	// inputs.break();
+	event.dispatch('inputsBreak');
 
-	// console.groupCollapsed('REDO');
-	// console.log('%c' + JSON.stringify(redoData, true, 2), 'background:#fff7d6');
-	// console.groupEnd();
+	console.groupCollapsed('REDO');
+	console.log('%c' + JSON.stringify(redoData, true, 2), 'background:#fff7d6');
+	console.groupEnd();
 
 	if(share.get('animation')) {
 		event.dispatch('stopAnimations');

@@ -30,11 +30,11 @@ class shareClass {
 
 	set(name, data, forceClone = false) {
 
-		// let _debugValueName = 'curLockState';
+		let _debugValueName = 'stopRunHistory';
 
-		// if(name == _debugValueName) {
-		// 	console.log('%cgebug: change ' + _debugValueName + ' from ' + this._data[_debugValueName] + ' to ' + data, 'color:' + (data == true ? 'orange' : 'blue'));
-		// }
+		if(name == _debugValueName) {
+			console.log('%cgebug: change ' + _debugValueName + ' from ' + this._data[_debugValueName] + ' to ' + data, 'color:' + (data == true ? 'orange' : 'blue'));
+		}
 
 		// "foo", "bar", false
 		if(typeof name == 'string') {

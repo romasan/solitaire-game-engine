@@ -52,11 +52,14 @@ import showFlipCardOnMove from 'showFlipCardOnMove';
 event.listen('gameInit', data => {
 
 	share.set('stepType', defaults.stepType);
+
 	share.delete('sessionStarted');
 
 	share.set('markerMode', false);
 
 	curUnLock();
+
+	share.set('gameIsWon', false);
 
 	if(!data.firstInit) {
 		return;
@@ -95,10 +98,12 @@ let isCurLock = e => {
 let curLock = e => {
 	share.set('curLockState', true);
 };
+event.listen('curLock', curLock);
 
 let curUnLock = e => {
 	share.set('curLockState', false);
-}
+};
+event.listen('curUnLock', curUnLock);
 
 // getters
 
