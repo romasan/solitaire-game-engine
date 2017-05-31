@@ -494,6 +494,10 @@
 .alternative_face .ck {
   background-position: 850px 286px; }
 
+.alternative_face .marker:after {
+  margin-left: -2px;
+  margin-top: -1px; }
+
 .alternative_face.alternative_back .flip:after {
   margin-top: -1px; }
 #gamePreferences span {

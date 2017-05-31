@@ -6,18 +6,18 @@ import Deck  from 'deck';
 
 event.listen('specialStep', card => {
 
-	console.log('specialStep:', card);
+	// console.log('specialStep:', card);
 
 	let cardName = card.name;
-	let deckName = Deck.getDeckById(card.parent).name;
+	// let deckName = Deck.getDeckById(card.parent).name;
 
 	event.dispatch('rewindHistory', data => {
 
-		console.log('specialStep:rewindHistory', data);
+		// console.log('specialStep:rewindHistory', data);
 
 		let index = -1;
 
-		for(let i = data.history.length - 1; i > 0 && index < 0; i -= 1) {
+		for(let i = data.history.length - 1; i >= 0 && index <= 0; i -= 1) {
 
 			let step = data.history[i];
 
@@ -27,18 +27,25 @@ event.listen('specialStep', card => {
 
 				if(
 					atom.move                     &&
-					atom.move.to      == deckName &&
+					// atom.move.to      == deckName &&
 					atom.move.deck[0] == cardName
 				) {
 					index = i;
 				}
 			}
+
+			console.log('>>>', i, data.history.length, index);
 		}
 
 		let undoCount = index >= 0 ? data.history.length - index : 0;
 
-		for(let i = 0; i < undoCount; i += 1) {
-			data.undo();
+		if(undoCount > 0) {
+
+			for(let i = 0; i < undoCount; i += 1) {
+				data.undo();
+			}
+
+			event.dispatch('specialStep:done');
 		}
 	});
 });

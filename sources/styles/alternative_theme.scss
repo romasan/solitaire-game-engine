@@ -25,7 +25,6 @@ $ranks : ("d", "s", "h", "c");
 		background-size     : 100% 100%;
 		background-position : 0px 0px;
 	}
-
 }
 
 .#{$theme_name}_face {
@@ -45,6 +44,11 @@ $ranks : ("d", "s", "h", "c");
 				background-position : $card_width * (index($cards, $card) - 1) - 2 $card_height * (index($ranks, $rank) - 1) - 2;
 			}
 		}
+	}
+
+	.marker:after {
+	    margin-left : -2px;
+	    margin-top  : -1px;
 	}
 
 }

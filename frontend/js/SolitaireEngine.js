@@ -126,7 +126,7 @@ var SolitaireEngine =
 	exports.options = _defaults2.default;
 	exports.winCheck = _winCheck2.default.hwinCheck;
 	exports.generator = _deckGenerator2.default;
-	exports.version = (90914910730).toString().split(9).slice(1).map(function (e) {
+	exports.version = (90914911040).toString().split(9).slice(1).map(function (e) {
 		return parseInt(e, 8);
 	}).join('.');
 	
@@ -1459,20 +1459,19 @@ var SolitaireEngine =
 	
 	_share2.default.set('stepType', _defaults2.default.stepType);
 	
+	// Markers
+	
 	var toggleMarkerMode = function toggleMarkerMode(e) {
 	
 		var mode = _share2.default.get('markerMode');
 	
 		_share2.default.set('markerMode', !mode);
 	
-		if (mode) {
-			document.getElementById('markCard').className = '';
-		} else {
-			document.getElementById('markCard').className = 'markCardButtonActive';
-		}
+		_event2.default.dispatch('markerMode:toggled', mode);
 	};
-	
 	_event2.default.listen('toggleMarkerMode', toggleMarkerMode);
+	
+	// Special step (rewind to step with card)
 	
 	var toggleSpecialStepMode = function toggleSpecialStepMode(e) {
 	
@@ -1480,19 +1479,8 @@ var SolitaireEngine =
 	
 		_share2.default.set('specialStepMode', !mode);
 	
-		var classList = document.getElementById('specialMoveBtn').className.split(' ');
-	
-		if (mode) {
-			classList = classList.filter(function (className) {
-				return className != 'specialStepButtonActive';
-			});
-		} else {
-			classList.push('specialStepButtonActive');
-		}
-	
-		document.getElementById('specialMoveBtn').className = classList.join(' ');
+		_event2.default.dispatch('specialStepMode:toggled', mode);
 	};
-	
 	_event2.default.listen('toggleSpecialStepMode', toggleSpecialStepMode);
 	
 	// document.onkeydown = e => {
@@ -10287,18 +10275,18 @@ var SolitaireEngine =
 	
 	_event2.default.listen('specialStep', function (card) {
 	
-		console.log('specialStep:', card);
+		// console.log('specialStep:', card);
 	
 		var cardName = card.name;
-		var deckName = _deck2.default.getDeckById(card.parent).name;
+		// let deckName = Deck.getDeckById(card.parent).name;
 	
 		_event2.default.dispatch('rewindHistory', function (data) {
 	
-			console.log('specialStep:rewindHistory', data);
+			// console.log('specialStep:rewindHistory', data);
 	
 			var index = -1;
 	
-			for (var i = data.history.length - 1; i > 0 && index < 0; i -= 1) {
+			for (var i = data.history.length - 1; i >= 0 && index <= 0; i -= 1) {
 	
 				var step = data.history[i];
 	
@@ -10306,16 +10294,25 @@ var SolitaireEngine =
 	
 					var atom = step[atomIndex];
 	
-					if (atom.move && atom.move.to == deckName && atom.move.deck[0] == cardName) {
+					if (atom.move &&
+					// atom.move.to      == deckName &&
+					atom.move.deck[0] == cardName) {
 						index = i;
 					}
 				}
+	
+				console.log('>>>', i, data.history.length, index);
 			}
 	
 			var undoCount = index >= 0 ? data.history.length - index : 0;
 	
-			for (var _i = 0; _i < undoCount; _i += 1) {
-				data.undo();
+			if (undoCount > 0) {
+	
+				for (var _i = 0; _i < undoCount; _i += 1) {
+					data.undo();
+				}
+	
+				_event2.default.dispatch('specialStep:done');
 			}
 		});
 	});

@@ -281,20 +281,19 @@ event.listen('historyReapeater', data => {
 
 share.set('stepType', defaults.stepType);
 
+// Markers
+
 let toggleMarkerMode = e => {
 
 	let mode = share.get('markerMode');
 
 	share.set('markerMode', !mode);
 
-	if(mode) {
-		document.getElementById('markCard').className = '';
-	} else {
-		document.getElementById('markCard').className = 'markCardButtonActive';
-	}
+	event.dispatch('markerMode:toggled', mode);
 }
-
 event.listen('toggleMarkerMode', toggleMarkerMode);
+
+// Special step (rewind to step with card)
 
 let toggleSpecialStepMode = e => {
 
@@ -302,17 +301,8 @@ let toggleSpecialStepMode = e => {
 
 	share.set('specialStepMode', !mode);
 
-	let classList = document.getElementById('specialMoveBtn').className.split(' ');
-
-	if(mode) {
-		classList = classList.filter(className => className != 'specialStepButtonActive');
-	} else {
-		classList.push('specialStepButtonActive');
-	}
-
-	document.getElementById('specialMoveBtn').className = classList.join(' ');
+	event.dispatch('specialStepMode:toggled', mode);
 }
-
 event.listen('toggleSpecialStepMode', toggleSpecialStepMode);
 
 // document.onkeydown = e => {
