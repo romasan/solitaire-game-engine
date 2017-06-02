@@ -71,7 +71,8 @@ let checkTips = e => {
 
 		for(let i in _tips) {
 
-			let draw = false;
+			let draw   = false;
+			let toHome = false;
 
 			// TODO инициализировать "hideTipsInDom" в Field.js 
 			if(
@@ -85,9 +86,14 @@ let checkTips = e => {
 					_homeGroups.length
 				)
 			) {
+
 				// не выделять подсказки с ходом из "дома"
 				if(_homeGroups.indexOf(_tips[i].from.deck.parent) < 0) {
 					draw = true;
+				}
+
+				if(_homeGroups.indexOf(_tips[i].to.deck.parent) >= 0) {
+					toHome = true;
 				}
 			} else {
 				draw = true;
@@ -140,8 +146,8 @@ let checkTips = e => {
 
 			if(draw) {
 				event.dispatch('showTip', {
-					"el"   : _tips[i].from.card,
-					"type" : 'tipToHome'
+					"type" : toHome ? 'tipToHome' : 'tip',
+					"el"   : _tips[i].from.card
 				});
 			}
 		}

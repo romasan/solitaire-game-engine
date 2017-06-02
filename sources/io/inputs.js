@@ -78,6 +78,7 @@ class inputsClass {
 
 			field.addEventListener('mousemove', data => {
 				this.drag(data.clientX, data.clientY);
+				// this.onmove(data.clientX, data.clientY);
 			});
 
 			field.addEventListener('mouseup', data => {
@@ -247,8 +248,12 @@ class inputsClass {
 			}
 
 			if(_deck && share.get('specialStepMode')) { // break;
-				event.dispatch('specialStep', _card);
-				event.dispatch('toggleSpecialStepMode');
+				event.dispatch('specialStep', {
+					"card" : _card,
+					"callback" : done => {
+						event.dispatch('toggleSpecialStepMode', done);
+					}
+				});
 				_deck = null;
 			}
 
@@ -439,6 +444,22 @@ class inputsClass {
 		share.set('dragDeck'   , null);
 		share.set('startCursor', null);
 	}
+
+	// onmove(x, y) {
+
+	// 	let _dop = document.elementFromPoint(x, y);
+
+	// 	if(_dop.className.split(' ').indexOf('card') >= 0) {
+
+	// 		event.dispatch('moveOnCard', _dop.className.split(' ').indexOf('card') >= 0
+	// 			? {
+	// 				"flip" : _dop.className.split(' ').indexOf('flip') >= 0,
+	// 				"id"   : _dop.id
+	// 			}
+	// 			: null
+	// 		);
+	// 	}
+	// }
 }
 
 let _inputs = null;

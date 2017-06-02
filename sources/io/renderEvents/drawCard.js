@@ -103,6 +103,32 @@ event.listen('unflipCard', card => {
 	} 
 });
 
+// let specialStepMark = null;
+
+// event.listen('moveOnCard', card => {
+
+// 	if(card) {
+
+// 		if(
+// 			share.get('specialStepMode') &&
+// 			!data.flip
+// 		) {
+
+// 			let el = share.get('domElement:' + data.id);
+
+// 			if(specialStepMark == data.id)
+
+// 			el.addClass('specialStepMark');
+// 		}
+// 	} else {
+// 		if(specialStepMark) {
+// 			// unmarkCard
+// 			specialStepMark = null;
+// 		}
+// 	}
+
+// });
+
 // event.listen('redrawCardFlip', card => {
 
 // 	let el = share.get('domElement:' + card.id);

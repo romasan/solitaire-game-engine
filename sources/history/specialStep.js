@@ -4,7 +4,7 @@ import event from 'event';
 
 import Deck  from 'deck';
 
-event.listen('specialStep', card => {
+event.listen('specialStep', ({card, callback}) => {
 
 	// console.log('specialStep:', card);
 
@@ -33,8 +33,6 @@ event.listen('specialStep', card => {
 					index = i;
 				}
 			}
-
-			console.log('>>>', i, data.history.length, index);
 		}
 
 		let undoCount = index >= 0 ? data.history.length - index : 0;
@@ -46,6 +44,10 @@ event.listen('specialStep', card => {
 			}
 
 			event.dispatch('specialStep:done');
+		}
+
+		if(typeof callback == "function") {
+			callback(undoCount > 0);
 		}
 	});
 });

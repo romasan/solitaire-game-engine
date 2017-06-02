@@ -214,13 +214,13 @@ let winCheckRules = {
 
 		let emptyDecksCount = 0,
 			decksLength     = 0,
-			fillIndex       = 0;
+			fillDeckName    = 0;
 
 		for(let deckName in data.decks) {
 			if(data.decks[deckName].cards.length == 0) {
 				emptyDecksCount += 1;
 			} else {
-				fillIndex = deckName;
+				fillDeckName = deckName;
 			}
 			decksLength += 1;
 		}
@@ -229,7 +229,7 @@ let winCheckRules = {
 
 		if(data.filter && correct) {
 			let decks = {};
-			decks[deckName] = data.decks[deckName];
+			decks[fillDeckName] = data.decks[fillDeckName];
 			data.decks = decks;
 		}
 

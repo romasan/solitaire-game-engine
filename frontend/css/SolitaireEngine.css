@@ -25,9 +25,9 @@
 .card {
   border-radius: 3px; }
 
-.tip:after {
+.tip:before {
   content: attr(data-content);
-  background-color: #ffff00;
+  background-color: #FFFF00;
   opacity: 0.3;
   font-size: 90%;
   width: 100%;
@@ -36,16 +36,16 @@
   margin: 0px;
   border-radius: 3px; }
 
-.flip.tip:after {
+.flip.tip:before {
   width: 0px;
   height: 0px; }
 
 .tipTo {
   box-shadow: inset 0 0 15px 15px rgba(8, 157, 227, 0.5); }
 
-.tipToHome:after {
+.tipToHome:before {
   content: attr(data-content);
-  background-color: #ffff00;
+  background-color: #FFFF00;
   opacity: 0.5;
   font-size: 90%;
   width: 100%;
@@ -73,14 +73,14 @@
   font-size: 8pt;
   margin-top: -18px;
   font-weight: bold;
-  text-shadow: #000 -1px -1px 0, #000 -1px 1px 0, #000 1px -1px 0, #000 1px 1px 0;
+  text-shadow: #000000 -1px -1px 0, #000000 -1px 1px 0, #000000 1px -1px 0, #000000 1px 1px 0;
   color: #fff;
   min-width: 62px;
   z-index: 99;
   text-align: center;
   padding: 2px 4px;
   border-radius: 5px;
-  background: #eeeeee;
+  background: #EEEEEE;
   z-index: 999;
   position: absolute;
   top: static;
@@ -135,6 +135,20 @@
   width: 100%;
   height: 100%;
   display: inline-block;
+  margin: 0px;
+  position: absolute;
+  top: 0px;
+  left: 0px; }
+
+.specialStepMark .card:not(.flip):hover:before {
+  content: attr(data-content);
+  background-color: #FF00FF;
+  opacity: 0.2;
+  font-size: 90%;
+  width: 100%;
+  height: 100%;
+  border-radius: 3px;
+  display: inline-block;
   margin: 0px; }
 .default_field {
   background: green; }
@@ -146,10 +160,10 @@
   margin-top: -1px;
   margin-left: -1px;
   display: inline-block;
-  background: #4086cc;
-  background: -moz-linear-gradient(-45deg, #4086cc 0%, #f0f5fb 100%);
-  background: -webkit-linear-gradient(-45deg, #4086cc 0%, #f0f5fb 100%);
-  background: linear-gradient(135deg, #4086cc 0%, #f0f5fb 100%);
+  background: #4086CC;
+  background: -moz-linear-gradient(-45deg, #4086CC 0%, #F0F5FB 100%);
+  background: -webkit-linear-gradient(-45deg, #4086CC 0%, #F0F5FB 100%);
+  background: linear-gradient(135deg, #4086CC 0%, #F0F5FB 100%);
   filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#4086cc', endColorstr='#f0f5fb', GradientType=1);
   border: 1px solid #000000;
   border-radius: 3px; }

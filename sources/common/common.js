@@ -14,6 +14,7 @@ import preferencesEvents  from 'preferencesEvents' ;
 import defaultPreferences from 'defaultPreferences';
 import specialStep        from 'specialStep'       ;
 import showFlipCardOnMove from 'showFlipCardOnMove';
+import elRender           from 'elRender'          ;
 
 /*
  * Listeners:
@@ -290,19 +291,30 @@ let toggleMarkerMode = e => {
 	share.set('markerMode', !mode);
 
 	event.dispatch('markerMode:toggled', mode);
-}
+};
 event.listen('toggleMarkerMode', toggleMarkerMode);
 
 // Special step (rewind to step with card)
 
-let toggleSpecialStepMode = e => {
+let toggleSpecialStepMode = done => {
 
 	let mode = share.get('specialStepMode');
 
 	share.set('specialStepMode', !mode);
 
-	event.dispatch('specialStepMode:toggled', mode);
-}
+	let el = elRender(share.get('domElement:field'));
+	
+	if(!mode) {
+		el.addClass('specialStepMark');
+	} else {
+		el.removeClass('specialStepMark');
+	}
+
+	event.dispatch('specialStepMode:toggled', {
+		"mode" : mode,
+		"done" : done
+	});
+};
 event.listen('toggleSpecialStepMode', toggleSpecialStepMode);
 
 // document.onkeydown = e => {

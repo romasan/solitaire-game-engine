@@ -1,9 +1,12 @@
 $img_dir : "/solitaire_engine/img/";
 
-$cards : ("1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "j", "q", "k");
-$ranks : ("d", "s", "h", "c");
+$card_width  : 71px;
+$card_height : 96px;
 
 $theme_name  : "default";
+
+$cards : ("1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "j", "q", "k");
+$ranks : ("d", "s", "h", "c");
 
 .#{$theme_name}_field {
 	background : green;
@@ -18,10 +21,10 @@ $theme_name  : "default";
 		margin-top    : -1px;
 		margin-left   : -1px;
 		display       : inline-block;
-		background    : #4086cc;
-		background    :    -moz-linear-gradient(-45deg, #4086cc 0%, #f0f5fb 100%);
-		background    : -webkit-linear-gradient(-45deg, #4086cc 0%, #f0f5fb 100%);
-		background    :         linear-gradient(135deg, #4086cc 0%, #f0f5fb 100%);
+		background    : #4086CC;
+		background    :    -moz-linear-gradient(-45deg, #4086CC 0%, #F0F5FB 100%);
+		background    : -webkit-linear-gradient(-45deg, #4086CC 0%, #F0F5FB 100%);
+		background    :         linear-gradient(135deg, #4086CC 0%, #F0F5FB 100%);
 		filter        : progid:DXImageTransform.Microsoft.gradient(startColorstr='#4086cc', endColorstr='#f0f5fb', GradientType=1);
 		border        : 1px solid #000000;
 		border-radius : 3px;
