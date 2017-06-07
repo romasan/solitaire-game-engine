@@ -9,7 +9,7 @@ import Deck     from 'deck'    ;
 import Tips     from 'tips'    ;
 
 /*
- * break
+ * _break
  * take
  * drag
  * put

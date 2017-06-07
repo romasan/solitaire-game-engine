@@ -126,7 +126,7 @@ var SolitaireEngine =
 	exports.options = _defaults2.default;
 	exports.winCheck = _winCheck2.default.hwinCheck;
 	exports.generator = _deckGenerator2.default;
-	exports.version = (90914911112).toString().split(9).slice(1).map(function (e) {
+	exports.version = (90914911114).toString().split(9).slice(1).map(function (e) {
 		return parseInt(e, 8);
 	}).join('.');
 	
@@ -688,7 +688,7 @@ var SolitaireEngine =
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 	
 	/*
-	 * break
+	 * _break
 	 * take
 	 * drag
 	 * put
@@ -8406,9 +8406,9 @@ var SolitaireEngine =
 	
 	exports.default = function (deck, name) {
 	
-			var _name = _common2.default.validateCardName(name); // {color, rank}
+			var validatedCard = _common2.default.validateCardName(name); // {color, rank}
 	
-			if (_name) {
+			if (validatedCard) {
 	
 					var _id = 'card_' + _common2.default.genId();
 	
@@ -8418,7 +8418,11 @@ var SolitaireEngine =
 							"type": 'card',
 							"visible": true,
 							"flip": false,
-							"parent": deck.id
+							"parent": deck.id,
+							"color": validatedCard.color,
+							"value": validatedCard.value,
+							"suit": validatedCard.suit,
+							"rank": validatedCard.rank
 					};
 	
 					_event2.default.dispatch('addCardEl', _card);
@@ -10332,7 +10336,8 @@ var SolitaireEngine =
 	
 			var index = -1;
 	
-			for (var i = data.history.length - 1; i >= 0 && index <= 0; i -= 1) {
+			for (var i = data.history.length - 1; i >= 0; // && index <= 0        ;
+			i -= 1) {
 	
 				var step = data.history[i];
 	

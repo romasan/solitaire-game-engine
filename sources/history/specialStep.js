@@ -17,7 +17,11 @@ event.listen('specialStep', ({card, callback}) => {
 
 		let index = -1;
 
-		for(let i = data.history.length - 1; i >= 0 && index <= 0; i -= 1) {
+		for(
+			let i  = data.history.length - 1;
+			    i >= 0                      ; // && index <= 0        ;
+			    i -= 1
+		) {
 
 			let step = data.history[i];
 

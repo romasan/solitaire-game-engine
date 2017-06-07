@@ -25,19 +25,23 @@ import common from 'common';
 
 export default (deck, name) => {
 
-	let _name = common.validateCardName(name);// {color, rank}
+	let validatedCard = common.validateCardName(name);// {color, rank}
 
-	if(_name) {
+	if(validatedCard) {
 
 		let _id = 'card_' + common.genId();
 
 		let _card = {
-			"id"      : _id    ,
-			"name"    : name   ,
-			"type"    : 'card' ,
-			"visible" : true   ,
-			"flip"    : false  ,
-			"parent"  : deck.id
+			"id"      : _id                ,
+			"name"    : name               ,
+			"type"    : 'card'             ,
+			"visible" : true               ,
+			"flip"    : false              ,
+			"parent"  : deck.id            ,
+			"color"   : validatedCard.color,
+			"value"   : validatedCard.value,
+			"suit"    : validatedCard.suit ,
+			"rank"    : validatedCard.rank
 		};
 
 		event.dispatch('addCardEl', _card);
