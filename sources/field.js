@@ -42,9 +42,13 @@ class Field {
 
 		// вкл./выкл. подсказок
 		if(typeof data.showTips == 'boolean' && data.showTips) {
-			Tips.showTips({ "init" : true });
+			Tips.showTips({
+				"init" : true
+			});
 		} else {
-			Tips.hideTips({ "init" : true });
+			Tips.hideTips({
+				"init" : true
+			});
 		}
 
 		// устанвливаем тип хода по умолчанию
@@ -73,7 +77,12 @@ class Field {
 		// условие выигрыша
 		share.set('winCheck', data.winCheck);
 
-		// Настройки игры
+		// Настройки оформления (если нет сохранений)
+		if(data.theme) {
+			share.set('theme', data.theme);
+		}
+
+		// Дополнительные настройки игры
 		if(data.preferences) {
 
 			let _pref = storage.get('pref'),

@@ -126,7 +126,7 @@ var SolitaireEngine =
 	exports.options = _defaults2.default;
 	exports.winCheck = _winCheck2.default.hwinCheck;
 	exports.generator = _deckGenerator2.default;
-	exports.version = (90914911114).toString().split(9).slice(1).map(function (e) {
+	exports.version = (90914911123).toString().split(9).slice(1).map(function (e) {
 		return parseInt(e, 8);
 	}).join('.');
 	
@@ -2440,9 +2440,13 @@ var SolitaireEngine =
 	
 				// вкл./выкл. подсказок
 				if (typeof data.showTips == 'boolean' && data.showTips) {
-					_tips2.default.showTips({ "init": true });
+					_tips2.default.showTips({
+						"init": true
+					});
 				} else {
-					_tips2.default.hideTips({ "init": true });
+					_tips2.default.hideTips({
+						"init": true
+					});
 				}
 	
 				// устанвливаем тип хода по умолчанию
@@ -2466,7 +2470,12 @@ var SolitaireEngine =
 				// условие выигрыша
 				_share2.default.set('winCheck', data.winCheck);
 	
-				// Настройки игры
+				// Настройки оформления (если нет сохранений)
+				if (data.theme) {
+					_share2.default.set('theme', data.theme);
+				}
+	
+				// Дополнительные настройки игры
 				if (data.preferences) {
 	
 					var _pref = _storage2.default.get('pref'),
@@ -10270,6 +10279,10 @@ var SolitaireEngine =
 		value: true
 	});
 	
+	var _share = __webpack_require__(1);
+	
+	var _share2 = _interopRequireDefault(_share);
+	
 	var _event = __webpack_require__(2);
 	
 	var _event2 = _interopRequireDefault(_event);
@@ -10286,17 +10299,41 @@ var SolitaireEngine =
 	
 	exports.default = function (e) {
 	
+		// Сохранённые настройки
 		var pref = _storage2.default.get('pref');
 	
-		!pref && (pref = _defaults2.default.pref);
+		// console.log('defaultPreferences:', pref);
 	
-		for (var prefName in pref) {
+		if (!pref) {
 	
-			if (_defaults2.default.themes[prefName]) {
+			// Настройки по умолчанию из конфигурации
+			var theme = _share2.default.get('theme');
 	
-				if (_defaults2.default.themes[prefName].indexOf(pref[prefName]) < 0) {
+			if (theme) {
 	
-					pref[prefName] = _defaults2.default.pref[prefName];
+				// console.log('use config theme:', theme);
+	
+				pref = {};
+	
+				for (var prefName in _defaults2.default.pref) {
+					pref[prefName] = typeof theme[prefName] == 'undefined' ? _defaults2.default.pref[prefName] : _defaults2.default.themes[prefName].indexOf(theme[prefName]) >= 0 ? theme[prefName] : _defaults2.default.pref[prefName];
+				}
+	
+				_storage2.default.set('pref', pref);
+			} else {
+	
+				// Если нет ни сохранённых, ни общих настроек, берём настройки по умолчанию
+				pref = _defaults2.default.pref;
+			}
+		}
+	
+		for (var _prefName in pref) {
+	
+			if (_defaults2.default.themes[_prefName]) {
+	
+				if (_defaults2.default.themes[_prefName].indexOf(pref[_prefName]) < 0) {
+	
+					pref[_prefName] = _defaults2.default.pref[_prefName];
 				}
 			}
 		}
@@ -12969,6 +13006,10 @@ var SolitaireEngine =
 	
 	var _elRender2 = _interopRequireDefault(_elRender);
 	
+	var _storage = __webpack_require__(62);
+	
+	var _storage2 = _interopRequireDefault(_storage);
+	
 	var _stateManager = __webpack_require__(6);
 	
 	var _stateManager2 = _interopRequireDefault(_stateManager);
@@ -13118,6 +13159,7 @@ var SolitaireEngine =
 		field: _field2.default,
 		deckGenerator: _deckGenerator2.default,
 		elRender: _elRender2.default,
+		storage: _storage2.default,
 		stateManager: _stateManager2.default,
 		history: _history3.default,
 		mapCommon: _mapCommon2.default

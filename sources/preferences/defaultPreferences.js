@@ -1,5 +1,6 @@
 'use strict';
 
+import share    from 'share'   ;
 import event    from 'event'   ;
 import defaults from 'defaults';
 
@@ -7,9 +8,37 @@ import storage  from 'storage' ;
 
 export default e => {
 
+	// Сохранённые настройки
 	let pref = storage.get('pref');
 
-	!pref && (pref = defaults.pref);
+	// console.log('defaultPreferences:', pref);
+
+	if(!pref) {
+
+		// Настройки по умолчанию из конфигурации
+		let theme = share.get('theme');
+
+		if(theme) {
+
+			// console.log('use config theme:', theme);
+
+			pref = {};
+
+			for(let prefName in defaults.pref) {
+				pref[prefName] = typeof theme[prefName] == 'undefined'
+					? defaults.pref[prefName]
+					: defaults.themes[prefName].indexOf(theme[prefName]) >= 0
+						? theme[prefName]
+						: defaults.pref[prefName];
+			}
+
+			storage.set('pref', pref);
+		} else {
+
+			// Если нет ни сохранённых, ни общих настроек, берём настройки по умолчанию
+			pref = defaults.pref;
+		}
+	}
 
 	for(let prefName in pref) {
 

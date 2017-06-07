@@ -8,6 +8,7 @@ import common        from 'common'       ;
 import field         from 'field'        ;
 import deckGenerator from 'deckGenerator';
 import elRender      from 'elRender'     ;
+import storage       from 'storage'      ;
 import stateManager  from 'stateManager' ;
 import history       from 'history'      ;
 import mapCommon     from 'mapCommon'    ;
@@ -147,6 +148,7 @@ export default {
 	field        ,
 	deckGenerator,
 	elRender     ,
+	storage      ,
 	stateManager ,
 	history      ,
 	mapCommon
