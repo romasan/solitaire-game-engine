@@ -71,7 +71,7 @@ event.listen('saveSteps', e => {
 
 event.listen('doHistory', e => {
 
-	console.groupCollapsed('DO HISTORY');
+	// console.groupCollapsed('DO HISTORY');
 	// console.log('DO HISTORY', e);
 
 	// common.animationOff();
@@ -103,7 +103,7 @@ event.listen('doHistory', e => {
 		event.dispatch('startRunHistory');
 	}, 0);
 
-	console.groupEnd();
+	// console.groupEnd();
 });
 
 event.listen('resetHistory', e => {

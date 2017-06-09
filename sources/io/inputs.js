@@ -65,27 +65,62 @@ class inputsClass {
 
 		try {
 
-			let field = share.get('domElement:field');
+			// let field = share.get('domElement:field');
+			let lastCoord = null;
+			let lastTime = null;
+			let breakUp = false;
 
-			field.addEventListener('mousedown', data => {
+			document.body.addEventListener('mousedown', data => {
 
 				if(data.button !== 0) {
 					return;
 				}
 
+				let newTime = new Date().getTime();
+
+				if(
+					lastCoord                   &&
+					lastCoord.x == data.clientX &&
+					lastCoord.y == data.clientY &&
+					newTime - lastTime < 500
+				) {
+
+					breakUp = true;
+
+					return;
+				}
+
 				this.take(data.target, data.clientX, data.clientY);
+
+				lastCoord = {
+					"x" : data.clientX,
+					"y" : data.clientY
+				};
+
+				lastTime = newTime;
 			});
 
-			field.addEventListener('mousemove', data => {
+			document.body.addEventListener('mousemove', data => {
 				this.drag(data.clientX, data.clientY);
 				// this.onmove(data.clientX, data.clientY);
 			});
 
-			field.addEventListener('mouseup', data => {
+			document.body.addEventListener('mouseup', data => {
+
+				if(breakUp) {
+
+					breakUp = false;
+
+					return;
+				}
+
 				this.put(data.target, data.clientX, data.clientY);
 			});
 
-			field.addEventListener('mouseleave', data => {
+			document.body.addEventListener('mouseleave', data => {
+
+				breakUp = false;
+
 				this.put(data.target, data.clientX, data.clientY);
 			});
 
@@ -109,7 +144,7 @@ class inputsClass {
 			// 	common.curUnLock();
 			// };
 
-			field.addEventListener('dblclick', data => {
+			document.body.addEventListener('dblclick', data => {
 
 				// event.dispatch('stopAnimations');
 
@@ -119,14 +154,14 @@ class inputsClass {
 				common.curUnLock();
 			});
 
-			field.addEventListener('touchstart', data => {
+			document.body.addEventListener('touchstart', data => {
 
 				data.preventDefault();
 
 				this.take(data.target, data.touches[0].clientX, data.touches[0].clientY)
 			}, false);
 
-			field.addEventListener('touchmove', data => {
+			document.body.addEventListener('touchmove', data => {
 
 				// if(share.get('startCursor')) {
 				data.preventDefault();
@@ -135,7 +170,7 @@ class inputsClass {
 				this.drag(data.touches[0].clientX, data.touches[0].clientY)
 			}, false);
 
-			field.addEventListener('touchend', data => {
+			document.body.addEventListener('touchend', data => {
 
 				data.preventDefault();
 

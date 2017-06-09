@@ -247,9 +247,9 @@ event.listen('redo', redoData => {
 	// inputs.break();
 	event.dispatch('inputsBreak');
 
-	console.groupCollapsed('REDO');
-	console.log('%c' + JSON.stringify(redoData, true, 2), 'background:#fff7d6');
-	console.groupEnd();
+	// console.groupCollapsed('REDO');
+	// console.log('%c' + JSON.stringify(redoData, true, 2), 'background:#fff7d6');
+	// console.groupEnd();
 
 	if(share.get('animation')) {
 		event.dispatch('stopAnimations');

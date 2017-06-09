@@ -24,7 +24,7 @@ const EMPTY = "EMPTY";
  * fromTo
  */
 
-let _showTips = defaults.showTips;
+let _showTips = null; // defaults.showTips;
 
 let tipTypes = [
 	'tip'        ,
@@ -61,10 +61,14 @@ let checkTips = e => {
 	) {
 
 		event.dispatch('noTips');
+
 		console.log('No possible moves.');
 	}
 
-	// let _showTips = share.get('showTips')
+	_showTips = typeof share.get('showTips') == "undefined"
+		? defaults.showTips
+		: share.get('showTips');
+
 	if(_showTips) {
 
 		let _homeGroups = Field.homeGroups;
@@ -99,7 +103,11 @@ let checkTips = e => {
 				draw = true;
 			}
 
-			if(draw) {
+			// Filter
+			if(
+				draw                                       &&
+				share.get('stepType') == defaults.stepType
+			) {
 
 				let fromDeck = _tips[i].from.deck;
 				let   toDeck = _tips[i].to  .deck;
@@ -160,7 +168,8 @@ event.listen('checkTips', checkTips);
 
 let showTips = data => {
 
-	_showTips = true;
+	// _showTips = true;
+	share.set('showTips', true);
 
 	if(data && data.init) {
 		return;
@@ -173,7 +182,8 @@ event.listen('tips:on', showTips);
 
 let hideTips = data => {
 
-	_showTips = false;
+	// _showTips = false;
+	share.set('showTips', false);
 
 	if(data && data.init) {
 		return;

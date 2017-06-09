@@ -319,7 +319,6 @@ let winCheckRules = {
 
 			let _decksClone = {};
 
-			// TODO 
 			for(let deckName in data.decks) {
 				_decksClone[deckName] = data.decks[deckName];
 			}

@@ -52,6 +52,17 @@ export default class elClass {
 		} catch(e) {}
 	}
 
+	setAttribute(name, value) {
+		try {
+			if(
+				typeof name  == "string" &&
+				typeof value == "string"
+			) {
+				this.el.setAttribute(name, value);
+			}
+		} catch(e) {}
+	}
+
 	hasClass(className) {
 		try {
 

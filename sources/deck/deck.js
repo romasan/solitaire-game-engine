@@ -194,7 +194,7 @@ class deckClass {
 					: defaults.takeRules
 				: data.takeRules.constructor == Array
 					? data.takeRules.filter(
-						ruleName => typeof ruleName == 'string' && takeRules[ruleName] // TODO Exception (putRule "***" not found)
+						ruleName => typeof ruleName == 'string' && takeRules[ruleName] // TODO Exception (takeRule "***" not found)
 					)
 					: defaults.takeRules
 			: defaults.takeRules;

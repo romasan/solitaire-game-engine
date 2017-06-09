@@ -6,20 +6,15 @@ import Deck  from 'deck';
 
 event.listen('specialStep', ({card, callback}) => {
 
-	// console.log('specialStep:', card);
-
 	let cardName = card.name;
-	// let deckName = Deck.getDeckById(card.parent).name;
 
 	event.dispatch('rewindHistory', data => {
-
-		// console.log('specialStep:rewindHistory', data);
 
 		let index = -1;
 
 		for(
 			let i  = data.history.length - 1;
-			    i >= 0                      ; // && index <= 0        ;
+			    i >= 0                      ; // && index <= 0;
 			    i -= 1
 		) {
 
@@ -31,7 +26,7 @@ event.listen('specialStep', ({card, callback}) => {
 
 				if(
 					atom.move                     &&
-					// atom.move.to      == deckName &&
+					// atom.move.to   == deckName &&
 					atom.move.deck[0] == cardName
 				) {
 					index = i;

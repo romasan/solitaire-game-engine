@@ -126,7 +126,7 @@ var SolitaireEngine =
 	exports.options = _defaults2.default;
 	exports.winCheck = _winCheck2.default.hwinCheck;
 	exports.generator = _deckGenerator2.default;
-	exports.version = (90914911123).toString().split(9).slice(1).map(function (e) {
+	exports.version = (90914911125).toString().split(9).slice(1).map(function (e) {
 		return parseInt(e, 8);
 	}).join('.');
 	
@@ -745,83 +745,115 @@ var SolitaireEngine =
 			// event.listen('redo', this._inputUndoRedo());
 	
 			try {
+				(function () {
 	
-				var field = _share2.default.get('domElement:field');
+					// let field = share.get('domElement:field');
+					var lastCoord = null;
+					var lastTime = null;
+					var breakUp = false;
 	
-				field.addEventListener('mousedown', function (data) {
+					document.body.addEventListener('mousedown', function (data) {
 	
-					if (data.button !== 0) {
-						return;
-					}
+						if (data.button !== 0) {
+							return;
+						}
 	
-					_this.take(data.target, data.clientX, data.clientY);
-				});
+						var newTime = new Date().getTime();
 	
-				field.addEventListener('mousemove', function (data) {
-					_this.drag(data.clientX, data.clientY);
-					// this.onmove(data.clientX, data.clientY);
-				});
+						if (lastCoord && lastCoord.x == data.clientX && lastCoord.y == data.clientY && newTime - lastTime < 500) {
 	
-				field.addEventListener('mouseup', function (data) {
-					_this.put(data.target, data.clientX, data.clientY);
-				});
+							breakUp = true;
 	
-				field.addEventListener('mouseleave', function (data) {
-					_this.put(data.target, data.clientX, data.clientY);
-				});
+							return;
+						}
 	
-				// TODO
-				// Решение: (if distance > 0)
-				// Click
-				// Click
-				// Dblclick
+						_this.take(data.target, data.clientX, data.clientY);
 	
-				// let timeoutId = null;
-				// document.onmouseup = (e) {
-				// 	timeoutId && timeoutId = setTimeout(() => {
-				// 		this.put(e.target, e.clientX, e.clientY);
-				// 		timeoutId = null;
-				// 	}, 500);
-				// };
-				// document.ondblclick =function(){
-				// 	clearTimeout(timeoutId);
-				// 	this.take(e.target, e.clientX, e.clientY);
-				// 	this.put(e.target, e.clientX, e.clientY, true);
-				// 	common.curUnLock();
-				// };
+						lastCoord = {
+							"x": data.clientX,
+							"y": data.clientY
+						};
 	
-				field.addEventListener('dblclick', function (data) {
+						lastTime = newTime;
+					});
 	
-					// event.dispatch('stopAnimations');
+					document.body.addEventListener('mousemove', function (data) {
+						_this.drag(data.clientX, data.clientY);
+						// this.onmove(data.clientX, data.clientY);
+					});
 	
-					_this.take(data.target, data.clientX, data.clientY);
-					_this.put(data.target, data.clientX, data.clientY, true);
+					document.body.addEventListener('mouseup', function (data) {
 	
-					_common2.default.curUnLock();
-				});
+						if (breakUp) {
 	
-				field.addEventListener('touchstart', function (data) {
+							breakUp = false;
 	
-					data.preventDefault();
+							return;
+						}
 	
-					_this.take(data.target, data.touches[0].clientX, data.touches[0].clientY);
-				}, false);
+						_this.put(data.target, data.clientX, data.clientY);
+					});
 	
-				field.addEventListener('touchmove', function (data) {
+					document.body.addEventListener('mouseleave', function (data) {
 	
-					// if(share.get('startCursor')) {
-					data.preventDefault();
-					// }
+						breakUp = false;
 	
-					_this.drag(data.touches[0].clientX, data.touches[0].clientY);
-				}, false);
+						_this.put(data.target, data.clientX, data.clientY);
+					});
 	
-				field.addEventListener('touchend', function (data) {
+					// TODO
+					// Решение: (if distance > 0)
+					// Click
+					// Click
+					// Dblclick
 	
-					data.preventDefault();
+					// let timeoutId = null;
+					// document.onmouseup = (e) {
+					// 	timeoutId && timeoutId = setTimeout(() => {
+					// 		this.put(e.target, e.clientX, e.clientY);
+					// 		timeoutId = null;
+					// 	}, 500);
+					// };
+					// document.ondblclick =function(){
+					// 	clearTimeout(timeoutId);
+					// 	this.take(e.target, e.clientX, e.clientY);
+					// 	this.put(e.target, e.clientX, e.clientY, true);
+					// 	common.curUnLock();
+					// };
 	
-					_this.put(data.changedTouches[0].target, data.changedTouches[0].clientX, data.changedTouches[0].clientY);
-				}, false);
+					document.body.addEventListener('dblclick', function (data) {
+	
+						// event.dispatch('stopAnimations');
+	
+						_this.take(data.target, data.clientX, data.clientY);
+						_this.put(data.target, data.clientX, data.clientY, true);
+	
+						_common2.default.curUnLock();
+					});
+	
+					document.body.addEventListener('touchstart', function (data) {
+	
+						data.preventDefault();
+	
+						_this.take(data.target, data.touches[0].clientX, data.touches[0].clientY);
+					}, false);
+	
+					document.body.addEventListener('touchmove', function (data) {
+	
+						// if(share.get('startCursor')) {
+						data.preventDefault();
+						// }
+	
+						_this.drag(data.touches[0].clientX, data.touches[0].clientY);
+					}, false);
+	
+					document.body.addEventListener('touchend', function (data) {
+	
+						data.preventDefault();
+	
+						_this.put(data.changedTouches[0].target, data.changedTouches[0].clientX, data.changedTouches[0].clientY);
+					}, false);
+				})();
 			} catch (e) {}
 		}
 	
@@ -886,7 +918,7 @@ var SolitaireEngine =
 	
 				// click card in deck
 				if (target.className.split(' ').indexOf('draggable') >= 0) {
-					var _ret = function () {
+					var _ret2 = function () {
 	
 						var _id = target.id,
 						    _card = _id ? _common2.default.getElementById(_id) : null,
@@ -993,7 +1025,7 @@ var SolitaireEngine =
 						}
 					}();
 	
-					if ((typeof _ret === 'undefined' ? 'undefined' : _typeof(_ret)) === "object") return _ret.v;
+					if ((typeof _ret2 === 'undefined' ? 'undefined' : _typeof(_ret2)) === "object") return _ret2.v;
 				}
 			}
 		}, {
@@ -1842,7 +1874,7 @@ var SolitaireEngine =
 	 * fromTo
 	 */
 	
-	var _showTips = _defaults2.default.showTips;
+	var _showTips = null; // defaults.showTips;
 	
 	var tipTypes = ['tip', 'tipTo', 'tipPriority', 'tipToHome'];
 	
@@ -1873,10 +1905,12 @@ var SolitaireEngine =
 		if (_tips.length == 0 && _share2.default.get('stepType') == _defaults2.default.stepType) {
 	
 			_event2.default.dispatch('noTips');
+	
 			console.log('No possible moves.');
 		}
 	
-		// let _showTips = share.get('showTips')
+		_showTips = typeof _share2.default.get('showTips') == "undefined" ? _defaults2.default.showTips : _share2.default.get('showTips');
+	
 		if (_showTips) {
 	
 			var _homeGroups = _field2.default.homeGroups;
@@ -1906,7 +1940,8 @@ var SolitaireEngine =
 					draw = true;
 				}
 	
-				if (draw) {
+				// Filter
+				if (draw && _share2.default.get('stepType') == _defaults2.default.stepType) {
 	
 					var fromDeck = _tips[i].from.deck;
 					var toDeck = _tips[i].to.deck;
@@ -1953,7 +1988,8 @@ var SolitaireEngine =
 	
 	var showTips = function showTips(data) {
 	
-		_showTips = true;
+		// _showTips = true;
+		_share2.default.set('showTips', true);
 	
 		if (data && data.init) {
 			return;
@@ -1966,7 +2002,8 @@ var SolitaireEngine =
 	
 	var hideTips = function hideTips(data) {
 	
-		_showTips = false;
+		// _showTips = false;
+		_share2.default.set('showTips', false);
 	
 		if (data && data.init) {
 			return;
@@ -3311,7 +3348,7 @@ var SolitaireEngine =
 			// можно ли взять карту/стопку
 			this.takeRules = data.takeRules ? typeof data.takeRules == 'string' ? _takeRules2.default[data.takeRules] ? [data.takeRules] : _defaults2.default.takeRules : data.takeRules.constructor == Array ? data.takeRules.filter(function (ruleName) {
 				return typeof ruleName == 'string' && _takeRules2.default[ruleName];
-			} // TODO Exception (putRule "***" not found)
+			} // TODO Exception (takeRule "***" not found)
 			) : _defaults2.default.takeRules : _defaults2.default.takeRules;
 	
 			// Full
@@ -6311,9 +6348,9 @@ var SolitaireEngine =
 		// inputs.break();
 		_event2.default.dispatch('inputsBreak');
 	
-		console.groupCollapsed('UNDO');
-		console.log('%c' + JSON.stringify(undoData, true, 2), 'background:#d6deff');
-		console.groupEnd();
+		// console.groupCollapsed('UNDO');
+		// console.log('%c' + JSON.stringify(undoData, true, 2), 'background:#d6deff');
+		// console.groupEnd();
 	
 		if (_share2.default.get('animation')) {
 			_event2.default.dispatch('stopAnimations');
@@ -6667,9 +6704,9 @@ var SolitaireEngine =
 		// inputs.break();
 		_event2.default.dispatch('inputsBreak');
 	
-		console.groupCollapsed('REDO');
-		console.log('%c' + JSON.stringify(redoData, true, 2), 'background:#fff7d6');
-		console.groupEnd();
+		// console.groupCollapsed('REDO');
+		// console.log('%c' + JSON.stringify(redoData, true, 2), 'background:#fff7d6');
+		// console.groupEnd();
 	
 		if (_share2.default.get('animation')) {
 			_event2.default.dispatch('stopAnimations');
@@ -6798,7 +6835,7 @@ var SolitaireEngine =
 	
 	_event2.default.listen('doHistory', function (e) {
 	
-		console.groupCollapsed('DO HISTORY');
+		// console.groupCollapsed('DO HISTORY');
 		// console.log('DO HISTORY', e);
 	
 		// common.animationOff();
@@ -6827,7 +6864,7 @@ var SolitaireEngine =
 			_event2.default.dispatch('startRunHistory');
 		}, 0);
 	
-		console.groupEnd();
+		// console.groupEnd();
 	});
 	
 	_event2.default.listen('resetHistory', function (e) {
@@ -8731,18 +8768,18 @@ var SolitaireEngine =
 	
 	var _lineGenerator2 = _interopRequireDefault(_lineGenerator);
 	
-	var _rhombusGenerator = __webpack_require__(58);
-	
-	var _rhombusGenerator2 = _interopRequireDefault(_rhombusGenerator);
-	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	// import rhombusGenerator from 'rhombusGenerator';
+	// import   roundGenerator from 'roundGenerator'  ;
 	
 	exports.default = {
 		"count": _countGenerator2.default,
 		"fan": _fanGenerator2.default,
 		"map": _mapGenerator2.default,
-		"line": _lineGenerator2.default,
-		"rhombus": _rhombusGenerator2.default
+		"line": _lineGenerator2.default
+		// "rhombus" : rhombusGenerator,
+		// "round"   :   roundGenerator
 	};
 
 /***/ },
@@ -9462,18 +9499,7 @@ var SolitaireEngine =
 	};
 
 /***/ },
-/* 58 */
-/***/ function(module, exports) {
-
-	'use strict';
-	
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-	
-	exports.default = function (group, data) {};
-
-/***/ },
+/* 58 */,
 /* 59 */
 /***/ function(module, exports, __webpack_require__) {
 
@@ -10302,16 +10328,12 @@ var SolitaireEngine =
 		// Сохранённые настройки
 		var pref = _storage2.default.get('pref');
 	
-		// console.log('defaultPreferences:', pref);
-	
 		if (!pref) {
 	
 			// Настройки по умолчанию из конфигурации
 			var theme = _share2.default.get('theme');
 	
 			if (theme) {
-	
-				// console.log('use config theme:', theme);
 	
 				pref = {};
 	
@@ -10362,18 +10384,13 @@ var SolitaireEngine =
 		    callback = _ref.callback;
 	
 	
-		// console.log('specialStep:', card);
-	
 		var cardName = card.name;
-		// let deckName = Deck.getDeckById(card.parent).name;
 	
 		_event2.default.dispatch('rewindHistory', function (data) {
 	
-			// console.log('specialStep:rewindHistory', data);
-	
 			var index = -1;
 	
-			for (var i = data.history.length - 1; i >= 0; // && index <= 0        ;
+			for (var i = data.history.length - 1; i >= 0; // && index <= 0;
 			i -= 1) {
 	
 				var step = data.history[i];
@@ -10383,7 +10400,7 @@ var SolitaireEngine =
 					var atom = step[atomIndex];
 	
 					if (atom.move &&
-					// atom.move.to      == deckName &&
+					// atom.move.to   == deckName &&
 					atom.move.deck[0] == cardName) {
 						index = i;
 					}
@@ -10685,6 +10702,15 @@ var SolitaireEngine =
 					}
 	
 					return this;
+				} catch (e) {}
+			}
+		}, {
+			key: 'setAttribute',
+			value: function setAttribute(name, value) {
+				try {
+					if (typeof name == "string" && typeof value == "string") {
+						this.el.setAttribute(name, value);
+					}
 				} catch (e) {}
 			}
 		}, {
@@ -11650,13 +11676,47 @@ var SolitaireEngine =
 	
 		data.deck.rotate = data.params.rotate = data.deckData.rotate && typeof data.deckData.rotate == 'number' ? data.deckData.rotate : 0;
 	
-		data.params.padding_y = data.deckData.paddingY && typeof data.deckData.paddingY == 'number' ? data.deckData.paddingY : data.deckData.paddingType ? _defaults2.default.padding_y : 0;
+		var paddingValues = {
+			'paddingY': 'padding_y',
+			'paddingX': 'padding_x',
+			'flipPaddingY': 'flip_padding_y',
+			'flipPaddingX': 'flip_padding_x'
+		};
 	
-		data.params.padding_x = data.deckData.paddingX && typeof data.deckData.paddingX == 'number' ? data.deckData.paddingX : data.deckData.paddingType ? _defaults2.default.padding_x : 0;
+		for (var key in paddingValues) {
 	
-		data.params.flip_padding_y = data.deckData.flipPaddingY && typeof data.deckData.flipPaddingY == 'number' ? data.deckData.flipPaddingY : data.deckData.paddingType ? _defaults2.default.flip_padding_y : 0;
+			var value = paddingValues[key];
 	
-		data.params.flip_padding_x = data.deckData.flipPaddingX && typeof data.deckData.flipPaddingX == 'number' ? data.deckData.flipPaddingX : data.deckData.paddingType ? _defaults2.default.flip_padding_x : 0;
+			data.params[value] = data.deckData[key] && typeof data.deckData[key] == 'number' ? data.deckData[key] : data.deckData.paddingType ? _defaults2.default[value] : 0;
+		}
+	
+		// data.params.padding_y = data.deckData.paddingY                    &&
+		// 	typeof data.deckData.paddingY == 'number' 
+		// 		? data.deckData.paddingY 
+		// 		: data.deckData.paddingType
+		// 			? defaults.padding_y      
+		// 			: 0;
+	
+		// data.params.padding_x = data.deckData.paddingX                    &&
+		// 	typeof data.deckData.paddingX == 'number' 
+		// 		? data.deckData.paddingX 
+		// 		: data.deckData.paddingType
+		// 			? defaults.padding_x      
+		// 			: 0;
+	
+		// data.params.flip_padding_y = data.deckData.flipPaddingY                    &&
+		// 	typeof data.deckData.flipPaddingY == 'number' 
+		// 		? data.deckData.flipPaddingY 
+		// 		: data.deckData.paddingType
+		// 			? defaults.flip_padding_y 
+		// 			: 0;
+	
+		// data.params.flip_padding_x = data.deckData.flipPaddingX                    &&
+		// 	typeof data.deckData.flipPaddingX == 'number' 
+		// 		? data.deckData.flipPaddingX 
+		// 		: data.deckData.paddingType
+		// 			? defaults.flip_padding_x 
+		// 			: 0;
 	};
 	
 	_event2.default.listen('addDeckEl', function (data) {
@@ -11676,7 +11736,7 @@ var SolitaireEngine =
 	
 		(0, _elRender2.default)(_deckDomElement).css(_params).addClass('el').attr({
 			"id": data.deck.id
-		});
+		}).setAttribute('data-content', data.deckData.label);
 	
 		if (data.deckData.showSlot) {
 			(0, _elRender2.default)(_deckDomElement).addClass('slot');
@@ -12734,7 +12794,6 @@ var SolitaireEngine =
 	
 				var _decksClone = {};
 	
-				// TODO 
 				for (var deckName in data.decks) {
 					_decksClone[deckName] = data.decks[deckName];
 				}

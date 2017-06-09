@@ -11,16 +11,12 @@ export default e => {
 	// Сохранённые настройки
 	let pref = storage.get('pref');
 
-	// console.log('defaultPreferences:', pref);
-
 	if(!pref) {
 
 		// Настройки по умолчанию из конфигурации
 		let theme = share.get('theme');
 
 		if(theme) {
-
-			// console.log('use config theme:', theme);
 
 			pref = {};
 
@@ -48,7 +44,6 @@ export default e => {
 
 				pref[prefName] = defaults.pref[prefName];
 			}
-
 		}
 	}
 

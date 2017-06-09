@@ -81,26 +81,6 @@ $img_dir :"/solitaire_engine/img/";
 	margin           : 0px;	
 }
 
-.deckLabel {
-	font-family   : Verdana;
-	display       : inline-block;
-	font-size     : 8pt;
-	margin-top    : -18px;
-	font-weight   : bold;
-	text-shadow   : #000000 -1px -1px 0, #000000 -1px 1px 0, #000000 1px -1px 0, #000000 1px 1px 0;
-	color         : #fff;
-	min-width     : 62px;
-	z-index       : 99;
-	text-align    : center;
-	padding       : 2px 4px;
-	border-radius : 5px;
-	background    : #EEEEEE;
-	z-index       : 999;
-	position      : absolute;
-	top           : static;
-	left          : 0px;
-}
-
 .hintUp {
 	background : url('#{$img_dir}up.png');
 }
@@ -115,12 +95,14 @@ $img_dir :"/solitaire_engine/img/";
 	background-repeat   : no-repeat; 
 }
 
-.hintUp>.deckLabel, .hintDown>.deckLabel {
-	background  : transparent;
-	font-size   : 14pt;
-	text-shadow : none;
-	bottom      : 0px;
-	opacity     : 0.9;
+.hintUp:after, .hintDown:after {
+    content: attr(data-content);
+    font-size: 14pt;
+    font-weight: bold;
+    color: #FFFFFF;
+    opacity: 0.9;
+    position: relative;
+    top: 70px;
 }
 
 #solitaire-engine-style-preferences {

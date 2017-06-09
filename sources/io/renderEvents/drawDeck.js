@@ -17,68 +17,92 @@ import elRender from 'elRender';
 let applyChangedParameters = data => {
 
 	data.params.x = (
-			(data.deckData.position                     &&
+			(
+				   data.deckData.position               &&
 			typeof data.deckData.position.x == 'number'
-				? data.deckData.position.x
-				: 0) | 0
+				?  data.deckData.position.x
+				: 0
+			) | 0
 		) +
 		(
-			(data.deckData.parentPosition                     &&
+			(
+				   data.deckData.parentPosition               &&
 			typeof data.deckData.parentPosition.x == 'number'
-				? data.deckData.parentPosition.x
-				: 0) | 0
+				?  data.deckData.parentPosition.x
+				: 0
+			) | 0
 		);
 
 	data.params.y = (
-			(data.deckData.position                     &&
+			(
+				   data.deckData.position               &&
 			typeof data.deckData.position.y == 'number'
-				? data.deckData.position.y
-				: 0) | 0
+				?  data.deckData.position.y
+				: 0
+			) | 0
 		) +
 		(
-			(data.deckData.parentPosition                     &&
+			(
+				   data.deckData.parentPosition               &&
 			typeof data.deckData.parentPosition.y == 'number'
-				? data.deckData.parentPosition.y
-				: 0) | 0
+				?  data.deckData.parentPosition.y
+				: 0
+			) | 0
 		);
 
-	data.deck.rotate = data.params.rotate = 
-		data.deckData.rotate                    &&
+	data.deck.rotate = data.params.rotate = data.deckData.rotate                    &&
 		typeof data.deckData.rotate == 'number'
 			? data.deckData.rotate
 			: 0;
 
-	data.params.padding_y = 
-		data.deckData.paddingY                    &&
-		typeof data.deckData.paddingY == 'number' 
-			? data.deckData.paddingY 
-			: data.deckData.paddingType
-				? defaults.padding_y      
-				: 0;
+	let paddingValues = {
+		'paddingY'     : 'padding_y'     ,
+		'paddingX'     : 'padding_x'     ,
+		'flipPaddingY' : 'flip_padding_y',
+		'flipPaddingX' : 'flip_padding_x'
+	};
 
-	data.params.padding_x = 
-		data.deckData.paddingX                    &&
-		typeof data.deckData.paddingX == 'number' 
-			? data.deckData.paddingX 
-			: data.deckData.paddingType
-				? defaults.padding_x      
-				: 0;
+	for(let key in paddingValues) {
 
-	data.params.flip_padding_y = 
-		data.deckData.flipPaddingY                    &&
-		typeof data.deckData.flipPaddingY == 'number' 
-			? data.deckData.flipPaddingY 
-			: data.deckData.paddingType
-				? defaults.flip_padding_y 
-				: 0;
+		let value = paddingValues[key];
 
-	data.params.flip_padding_x = 
-		data.deckData.flipPaddingX                    &&
-		typeof data.deckData.flipPaddingX == 'number' 
-			? data.deckData.flipPaddingX 
+		data.params[value] = (
+			       data.deckData[key]             &&
+			typeof data.deckData[key] == 'number'
+		)
+			? data.deckData[key] 
 			: data.deckData.paddingType
-				? defaults.flip_padding_x 
+				? defaults[value]      
 				: 0;
+	}
+
+	// data.params.padding_y = data.deckData.paddingY                    &&
+	// 	typeof data.deckData.paddingY == 'number' 
+	// 		? data.deckData.paddingY 
+	// 		: data.deckData.paddingType
+	// 			? defaults.padding_y      
+	// 			: 0;
+
+	// data.params.padding_x = data.deckData.paddingX                    &&
+	// 	typeof data.deckData.paddingX == 'number' 
+	// 		? data.deckData.paddingX 
+	// 		: data.deckData.paddingType
+	// 			? defaults.padding_x      
+	// 			: 0;
+
+	// data.params.flip_padding_y = data.deckData.flipPaddingY                    &&
+	// 	typeof data.deckData.flipPaddingY == 'number' 
+	// 		? data.deckData.flipPaddingY 
+	// 		: data.deckData.paddingType
+	// 			? defaults.flip_padding_y 
+	// 			: 0;
+
+	// data.params.flip_padding_x = data.deckData.flipPaddingX                    &&
+	// 	typeof data.deckData.flipPaddingX == 'number' 
+	// 		? data.deckData.flipPaddingX 
+	// 		: data.deckData.paddingType
+	// 			? defaults.flip_padding_x 
+	// 			: 0;
 };
 
 event.listen('addDeckEl', data => {
@@ -89,12 +113,12 @@ event.listen('addDeckEl', data => {
 		elRender('<div>');
 
 	let _params = {
-		"transform" : 'rotate(' + (data.params.rotate | 0) + 'deg)',
-		"width"     : defaults.card.width  + 'px'                  ,
-		"height"    : defaults.card.height + 'px'                  ,
-		"left"      : data.params.x        + 'px'                  ,
-		"top"       : data.params.y        + 'px'                  ,
-		"display"   : data.deck.visible ? 'block' : 'none'
+		"transform" : 'rotate(' + (data.params.rotate | 0) + 'deg)'    ,
+		"width"     :              defaults.card.width     + 'px'      ,
+		"height"    :              defaults.card.height    + 'px'      ,
+		"left"      :              data.params.x           + 'px'      ,
+		"top"       :              data.params.y           + 'px'      ,
+		"display"   :              data.deck.visible ? 'block' : 'none'
 	};
 
 	elRender(_deckDomElement)
@@ -102,7 +126,8 @@ event.listen('addDeckEl', data => {
 		.addClass('el')
 		.attr({
 			"id" : data.deck.id
-		});
+		})
+		.setAttribute('data-content', data.deckData.label);
 
 	if(data.deckData.showSlot) {
 		elRender(_deckDomElement)
@@ -214,9 +239,9 @@ event.listen('redrawDeck', data => {
 			"-webkit-transform" : 'rotate(' + (data.params.rotate | 0) + 'deg)',
 			"-moz-transform"    : 'rotate(' + (data.params.rotate | 0) + 'deg)',
 			"transform"         : 'rotate(' + (data.params.rotate | 0) + 'deg)',
-			"left"              : _card_position.x + 'px'                      ,
-			"top"               : _card_position.y + 'px'                      ,
-			"z-index"           : _zIndex                                      ,
+			"left"              :              _card_position.x        + 'px'  ,
+			"top"               :              _card_position.y        + 'px'  ,
+			"z-index"           :              _zIndex                         ,
 			"display"           : data.deck.visible && data.cards[i].visible
 			                    	? 'block'
 			                    	: 'none'
