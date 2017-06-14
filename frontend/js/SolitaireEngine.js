@@ -126,7 +126,7 @@ var SolitaireEngine =
 	exports.options = _defaults2.default;
 	exports.winCheck = _winCheck2.default.hwinCheck;
 	exports.generator = _deckGenerator2.default;
-	exports.version = (90914911125).toString().split(9).slice(1).map(function (e) {
+	exports.version = (90914911173).toString().split(9).slice(1).map(function (e) {
 		return parseInt(e, 8);
 	}).join('.');
 	
@@ -683,6 +683,10 @@ var SolitaireEngine =
 	
 	var _tips2 = _interopRequireDefault(_tips);
 	
+	var _geometry = __webpack_require__(73);
+	
+	var _geometry2 = _interopRequireDefault(_geometry);
+	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -1144,9 +1148,24 @@ var SolitaireEngine =
 					"dragDeck": _dragDeck
 				}, _defaults2.default.forceClone);
 	
-				_event2.default.dispatch('hideCard', target);
-				var _dop = document.elementFromPoint(x, y);
-				_event2.default.dispatch('showCard', target);
+				// let _top  = target.style.top;
+				// let _left = target.style.left;
+				// event.dispatch('hideCard', target);
+				if (!dbclick) {}
+				// target.style.display = 'none';
+	
+				// target.style.top  = y + 'px';
+				// target.style.left = x + 'px';
+	
+				// let _dop = document.elementFromPoint(x, y);
+				var _dop = 'field';
+				// event.dispatch('showCard', target);
+				if (!dbclick) {}
+				// target.style.display = 'block';
+	
+				// target.style.top  = _top;
+				// target.style.left = _left;
+	
 	
 				// if(_dop && _dop.id) {
 				_event2.default.dispatch('move', {
@@ -1235,27 +1254,27 @@ var SolitaireEngine =
 	
 	var _history2 = _interopRequireDefault(_history);
 	
-	var _drawPreferences = __webpack_require__(64);
+	var _drawPreferences = __webpack_require__(63);
 	
 	var _drawPreferences2 = _interopRequireDefault(_drawPreferences);
 	
-	var _preferencesEvents = __webpack_require__(66);
+	var _preferencesEvents = __webpack_require__(65);
 	
 	var _preferencesEvents2 = _interopRequireDefault(_preferencesEvents);
 	
-	var _defaultPreferences = __webpack_require__(68);
+	var _defaultPreferences = __webpack_require__(67);
 	
 	var _defaultPreferences2 = _interopRequireDefault(_defaultPreferences);
 	
-	var _specialStep = __webpack_require__(69);
+	var _specialStep = __webpack_require__(68);
 	
 	var _specialStep2 = _interopRequireDefault(_specialStep);
 	
-	var _showFlipCardOnMove = __webpack_require__(70);
+	var _showFlipCardOnMove = __webpack_require__(69);
 	
 	var _showFlipCardOnMove2 = _interopRequireDefault(_showFlipCardOnMove);
 	
-	var _elRender = __webpack_require__(71);
+	var _elRender = __webpack_require__(70);
 	
 	var _elRender2 = _interopRequireDefault(_elRender);
 	
@@ -1855,7 +1874,7 @@ var SolitaireEngine =
 	
 	var _field2 = _interopRequireDefault(_field);
 	
-	var _autoMoveToHome = __webpack_require__(63);
+	var _autoMoveToHome = __webpack_require__(62);
 	
 	var _autoMoveToHome2 = _interopRequireDefault(_autoMoveToHome);
 	
@@ -2276,6 +2295,8 @@ var SolitaireEngine =
 		    _in_direction_count = 0,
 		    _min_distance = -1;
 	
+		var inDistance = (_defaults2.default.card.height - (_defaults2.default.card.height - _defaults2.default.card.width) / 2) * _share2.default.get('zoom');
+	
 		// Приоритет для homeGroups
 		var _homeGroups = _field2.default.homeGroups;
 	
@@ -2298,24 +2319,21 @@ var SolitaireEngine =
 			}
 		}
 	
+		console.log(_autoTips);
 		// вариантов несколько
 		if (_autoTips.length > 1) {
 	
-			// у пустых стопок назначения приоритет меньше
-			for (var _i2 = 0; _i2 < _autoTips.length; _i2 += 1) {
+			var _decks = _autoTips.map(function (e) {
+				return _common2.default.getElementByName;
+			});
+			// взять все стопки в которые можно положить
+			// взять с каждой видимую верхнюю карту
+			// определить её координаты её центра (координаты + половина размера) (если стопка пустая координаты стопки)
+			// найти расстояние от курсора до каждой карты
+			// найти минимальное
 	
-				var _tips3 = [];
 	
-				if (_autoTips[_i2].to.deck.cardsCount()) {
-					_tips3.push(_autoTips[_i2]);
-				}
-	
-				if (_tips3.length) {
-					_autoTips = _tips3;
-				}
-			}
-	
-			for (var _i3 in _autoTips) {
+			for (var _i2 in _autoTips) {
 	
 				// координаты центра перетаскиваемой карты/стопки
 				var center_from = {
@@ -2324,7 +2342,7 @@ var SolitaireEngine =
 				};
 	
 				// координаты последней карты стопки назначения
-				var _destination_deck_last_card_position = _autoTips[_i3].to.deck.padding(_autoTips[_i3].to.deck.cardsCount());
+				var _destination_deck_last_card_position = _autoTips[_i2].to.deck.padding(_autoTips[_i2].to.deck.cardsCount());
 	
 				// координаты центра стопки назначения
 				var center_to = {
@@ -2333,46 +2351,51 @@ var SolitaireEngine =
 				};
 	
 				// расстояние между стопкой и перетаскиваемой картой/стопкой
-				_autoTips[_i3].distance = Math.sqrt(function (i) {
+				_autoTips[_i2].distance = Math.sqrt(function (i) {
 					return i * i;
 				}(center_from.x - center_to.x) + function (i) {
 					return i * i;
 				}(center_from.y - center_to.y));
 	
 				// смотрим находится ли стопка назначения в направлении движения
-				_autoTips[_i3].inDirection = false;
+				_autoTips[_i2].inDirection = false;
 				if (cursorMove.direction.x > 0 && center_to.x > center_from.x || cursorMove.direction.x < 0 && center_to.x < center_from.x) {
-					_autoTips[_i3].inDirection = true;
+					_autoTips[_i2].inDirection = true;
 					_in_direction_count += 1;
 				}
 			}
 	
-			// ищем ближайшую стопку среди из подсказок
-			for (var _i4 in _autoTips) {
+			_autoTips.sort(function (a, b) {
+				return a.distance > b.distance;
+			});
 	
-				// первая итерация
-				if (_min_distance == '-1') {
+			if (_autoTips[0].distance < inDistance) {
+				_tip_index = 0;
+			} else {
 	
-					// нет подсказок в направлении движения
-					if (_in_direction_count == 0) {
-						_min_distance = _autoTips[_i4].distance;
+				// у пустых стопок назначения приоритет меньше
+				for (var _i3 = 0; _i3 < _autoTips.length; _i3 += 1) {
 	
-						// есть подсказки в направлении движения
-					} else {
-						if (_autoTips[_i4].inDirection) {
-							_min_distance = _autoTips[_i4].distance;
-							_tip_index = _i4;
-						}
+					var _tips3 = [];
+	
+					if (_autoTips[_i3].to.deck.cardsCount()) {
+						_tips3.push(_autoTips[_i3]);
 					}
-				} else {
 	
-					// нашли меньше
-					if (_autoTips[_i4].distance < _min_distance) {
+					if (_tips3.length) {
+						_autoTips = _tips3;
+					}
+				}
+	
+				// ищем ближайшую стопку из подсказок
+				for (var _i4 in _autoTips) {
+	
+					// первая итерация
+					if (_min_distance == '-1') {
 	
 						// нет подсказок в направлении движения
 						if (_in_direction_count == 0) {
 							_min_distance = _autoTips[_i4].distance;
-							_tip_index = _i4;
 	
 							// есть подсказки в направлении движения
 						} else {
@@ -2381,10 +2404,28 @@ var SolitaireEngine =
 								_tip_index = _i4;
 							}
 						}
+					} else {
+	
+						// нашли меньше
+						if (_autoTips[_i4].distance < _min_distance) {
+	
+							// нет подсказок в направлении движения
+							if (_in_direction_count == 0) {
+								_min_distance = _autoTips[_i4].distance;
+								_tip_index = _i4;
+	
+								// есть подсказки в направлении движения
+							} else {
+								if (_autoTips[_i4].inDirection) {
+									_min_distance = _autoTips[_i4].distance;
+									_tip_index = _i4;
+								}
+							}
+						}
 					}
 				}
+				// _tip_index - номер ближайшей стопки в направлении движения
 			}
-			// _tip_index - номер ближайшей стопки в направлении движения
 		}
 	
 		return _autoTips[_tip_index];
@@ -2432,11 +2473,11 @@ var SolitaireEngine =
 	
 	var _tips2 = _interopRequireDefault(_tips);
 	
-	var _addAutoSteps = __webpack_require__(59);
+	var _addAutoSteps = __webpack_require__(58);
 	
 	var _addAutoSteps2 = _interopRequireDefault(_addAutoSteps);
 	
-	var _storage = __webpack_require__(62);
+	var _storage = __webpack_require__(61);
 	
 	var _storage2 = _interopRequireDefault(_storage);
 	
@@ -9499,8 +9540,7 @@ var SolitaireEngine =
 	};
 
 /***/ },
-/* 58 */,
-/* 59 */
+/* 58 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -9509,7 +9549,7 @@ var SolitaireEngine =
 		value: true
 	});
 	
-	var _fallAutoStep = __webpack_require__(60);
+	var _fallAutoStep = __webpack_require__(59);
 	
 	var _fallAutoStep2 = _interopRequireDefault(_fallAutoStep);
 	
@@ -9540,7 +9580,7 @@ var SolitaireEngine =
 	};
 
 /***/ },
-/* 60 */
+/* 59 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -9563,7 +9603,7 @@ var SolitaireEngine =
 	
 	var _event2 = _interopRequireDefault(_event);
 	
-	var _autoStep2 = __webpack_require__(61);
+	var _autoStep2 = __webpack_require__(60);
 	
 	var _autoStep3 = _interopRequireDefault(_autoStep2);
 	
@@ -9690,7 +9730,7 @@ var SolitaireEngine =
 	exports.default = fallAutoStep;
 
 /***/ },
-/* 61 */
+/* 60 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -9856,7 +9896,7 @@ var SolitaireEngine =
 	exports.default = _class;
 
 /***/ },
-/* 62 */
+/* 61 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -9935,7 +9975,7 @@ var SolitaireEngine =
 	exports.default = new storage();
 
 /***/ },
-/* 63 */
+/* 62 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -10028,7 +10068,7 @@ var SolitaireEngine =
 	_event2.default.listen('autoMoveToHome', autoMoveToHome);
 
 /***/ },
-/* 64 */
+/* 63 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -10045,7 +10085,7 @@ var SolitaireEngine =
 	
 	exports.default = function (e) {
 	
-		var _html = __webpack_require__(65);
+		var _html = __webpack_require__(64);
 	
 		// $("#gpCommit")
 		// 	.parent()
@@ -10063,13 +10103,13 @@ var SolitaireEngine =
 	};
 
 /***/ },
-/* 65 */
+/* 64 */
 /***/ function(module, exports) {
 
 	module.exports = "<div id=\"solitaire-engine-style-preferences\">\n\t<h4>Настройки оформления</h4>\n\t<div>\n\t\t<span class=\"solitaire-engine-style-preferences-label\">Фон:</span>\n\t\t<!-- <select id=\"pref_field\" class=\"solitaire-engine-style-preferences-element\"> -->\n\t\t<label>\n\t\t\t<input type=\"radio\" name=\"pref_field\" value=\"default_field\">\n\t\t\tКлассический\n\t\t</label>\n\t\t<label>\n\t\t\t<input type=\"radio\" name=\"pref_field\" value=\"alternative_field\">\n\t\t\tАльтернативный\n\t\t</label>\n\t\t<!-- </select> -->\n\t</div>\n\t<div>\n\t\t<span class=\"solitaire-engine-style-preferences-label\">Лицевая сторона:</span>\n\t\t<!-- <select id=\"pref_face\" class=\"solitaire-engine-style-preferences-element\"> -->\n\t\t<label>\n\t\t\t<input type=\"radio\" name=\"pref_face\" value=\"default_face\">\n\t\t\tКлассическая\n\t\t</label>\n\t\t<label>\n\t\t\t<input type=\"radio\" name=\"pref_face\" value=\"alternative_face\">\n\t\t\tАнгло-американская\n\t\t</label>\n\t\t<!-- </select> -->\n\t</div>\n\t<div>\n\t\t<span class=\"solitaire-engine-style-preferences-label\">Рубашка:</span>\n\t\t<!-- <select id=\"pref_back\" class=\"solitaire-engine-style-preferences-element\"> -->\n\t\t<label>\n\t\t\t<input type=\"radio\" name=\"pref_back\" value=\"default_back\">\n\t\t\tКлассическая\n\t\t</label>\n\t\t<label>\n\t\t\t<input type=\"radio\" name=\"pref_back\" value=\"alternative_back\">\n\t\t\tАльтернативная\n\t\t</label>\n\t\t<!-- <label>\n\t\t\t<input type=\"radio\" name=\"pref_back\" value=\"red_back\">\n\t\t\tКрасная\n\t\t</label>\n\t\t<label>\n\t\t\t<input type=\"radio\" name=\"pref_back\" value=\"blue_back\">\n\t\t\tСиняя\n\t\t</label> -->\n\t\t<!-- </select> -->\n\t</div>\n\t<div id=\"gamePreferences\"></div>\n\t<!-- <div>\n\t\t<span class=\"solitaire-engine-style-preferences-label\">Пустая ячейка:</span>\n\t\t<select id=\"pref_empty\" class=\"solitaire-engine-style-preferences-element\">\n\t\t\t<option value=0>Классическая</option>\n\t\t\t<option value=1>С обводкой</option>\n\t\t</select>\n\t</div> -->\n</div>";
 
 /***/ },
-/* 66 */
+/* 65 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -10090,11 +10130,11 @@ var SolitaireEngine =
 	
 	var _defaults2 = _interopRequireDefault(_defaults);
 	
-	var _storage = __webpack_require__(62);
+	var _storage = __webpack_require__(61);
 	
 	var _storage2 = _interopRequireDefault(_storage);
 	
-	var _gamePreferences = __webpack_require__(67);
+	var _gamePreferences = __webpack_require__(66);
 	
 	var _gamePreferences2 = _interopRequireDefault(_gamePreferences);
 	
@@ -10189,7 +10229,7 @@ var SolitaireEngine =
 	};
 
 /***/ },
-/* 67 */
+/* 66 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -10296,7 +10336,7 @@ var SolitaireEngine =
 	exports.default = new gamePreferences();
 
 /***/ },
-/* 68 */
+/* 67 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -10317,7 +10357,7 @@ var SolitaireEngine =
 	
 	var _defaults2 = _interopRequireDefault(_defaults);
 	
-	var _storage = __webpack_require__(62);
+	var _storage = __webpack_require__(61);
 	
 	var _storage2 = _interopRequireDefault(_storage);
 	
@@ -10364,7 +10404,7 @@ var SolitaireEngine =
 	};
 
 /***/ },
-/* 69 */
+/* 68 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -10425,7 +10465,7 @@ var SolitaireEngine =
 	});
 
 /***/ },
-/* 70 */
+/* 69 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -10526,7 +10566,7 @@ var SolitaireEngine =
 	_event2.default.listen('click:unflipCard', showFlipCardOnMove);
 
 /***/ },
-/* 71 */
+/* 70 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -10551,11 +10591,11 @@ var SolitaireEngine =
 	
 	var _event2 = _interopRequireDefault(_event);
 	
-	var _elClass = __webpack_require__(72);
+	var _elClass = __webpack_require__(71);
 	
 	var _elClass2 = _interopRequireDefault(_elClass);
 	
-	var _allElClass = __webpack_require__(73);
+	var _allElClass = __webpack_require__(72);
 	
 	var _allElClass2 = _interopRequireDefault(_allElClass);
 	
@@ -10625,7 +10665,7 @@ var SolitaireEngine =
 	exports.default = _allEl;
 
 /***/ },
-/* 72 */
+/* 71 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -10898,77 +10938,75 @@ var SolitaireEngine =
 				if (_animation) {
 	
 					try {
-						setTimeout(function (e) {
 	
-							// TODO
-							var top = params.top ? Math.abs(noPX(params.top) - noPX(_this.el.style.top)) : 0;
-							var left = params.left ? Math.abs(noPX(params.left) - noPX(_this.el.style.left)) : 0;
+						// TODO
+						var top = params.top ? Math.abs(noPX(params.top) - noPX(this.el.style.top)) : 0;
+						var left = params.left ? Math.abs(noPX(params.left) - noPX(this.el.style.left)) : 0;
 	
-							var distance = Math.sqrt(function (e) {
-								return e * e;
-							}(left) + function (e) {
-								return e * e;
-							}(top)) | 0;
+						var distance = Math.sqrt(function (e) {
+							return e * e;
+						}(left) + function (e) {
+							return e * e;
+						}(top)) | 0;
 	
-							if (distance > 100) {
-								animationTime = animationTime + animationTime * (distance / 100) / 5;
-								// console.log('New animationTime: from', defaults.animationTime, 'to', animationTime, 'for', distance + 'px');
+						if (distance > 100) {
+							animationTime = animationTime + animationTime * (distance / 100) / 5;
+							// console.log('New animationTime: from', defaults.animationTime, 'to', animationTime, 'for', distance + 'px');
+						}
+	
+						this.css({
+							"transition": animationTime / 1000 + 's'
+						});
+	
+						for (var attrName in params) {
+	
+							if (reType(this.el.style[attrName]) != reType(params[attrName])) {
+								counter += 1;
 							}
+							this.el.style[attrName] = params[attrName];
+						}
 	
-							_this.css({
-								"transition": animationTime / 1000 + 's'
-							});
+						// console.log('### animation changes', this.el.id, counter);
 	
-							for (var attrName in params) {
+						this.addClass('animated');
 	
-								if (reType(_this.el.style[attrName]) != reType(params[attrName])) {
-									counter += 1;
+						// let animationKey = Math.random();
+	
+						// console.log('animation START ' + animationKey, counter);
+	
+						var transitionEndCallback = function transitionEndCallback(e) {
+	
+							// console.log('### transitionend:', this.el.id, counter);
+	
+							counter -= 1;
+	
+							// event.dispatch('animationEnd', this);
+	
+							if (counter == 0) {
+	
+								// console.log('animation END ' + animationKey, counter);
+	
+								_this.removeClass('animated');
+	
+								_this.css({
+									"transition": null
+								});
+	
+								if (typeof _this._animationCallbacks[animationName] == 'function') {
+									_this._animationCallbacks[animationName]();
+									_this._animationCallbacks[animationName] = null;
 								}
-								_this.el.style[attrName] = params[attrName];
+	
+								_event2.default.dispatch('allAnimationsEnd', animationName);
 							}
+						};
 	
-							// console.log('### animation changes', this.el.id, counter);
-	
-							_this.addClass('animated');
-	
-							// let animationKey = Math.random();
-	
-							// console.log('animation START ' + animationKey, counter);
-	
-							var transitionEndCallback = function transitionEndCallback(e) {
-	
-								// console.log('### transitionend:', this.el.id, counter);
-	
-								counter -= 1;
-	
-								// event.dispatch('animationEnd', this);
-	
-								if (counter == 0) {
-	
-									// console.log('animation END ' + animationKey, counter);
-	
-									_this.removeClass('animated');
-	
-									_this.css({
-										"transition": null
-									});
-	
-									if (typeof _this._animationCallbacks[animationName] == 'function') {
-										_this._animationCallbacks[animationName]();
-										_this._animationCallbacks[animationName] = null;
-									}
-	
-									_event2.default.dispatch('allAnimationsEnd', animationName);
-								}
-							};
-	
-							if (counter > 0) {
-								_this.el.addEventListener('transitionend', transitionEndCallback, false);
-							} else {
-								counter = 1;
-								transitionEndCallback();
-							}
-						}, 0);
+						if (counter > 0) {
+							this.el.addEventListener('transitionend', transitionEndCallback, false);
+						} else {
+							counter = 1;
+							transitionEndCallback();
+						}
 					} catch (e) {}
 	
 					/*
@@ -10977,12 +11015,12 @@ var SolitaireEngine =
 				} else {
 					try {
 	
-						for (var attrName in params) {
+						for (var _attrName in params) {
 	
-							if (reType(this.el.style[attrName]) != reType(params[attrName])) {
+							if (reType(this.el.style[_attrName]) != reType(params[_attrName])) {
 								counter += 1;
 							}
-							this.el.style[attrName] = params[attrName];
+							this.el.style[_attrName] = params[_attrName];
 						}
 	
 						if (typeof this._animationCallbacks[animationName] == 'function') {
@@ -11057,7 +11095,7 @@ var SolitaireEngine =
 	exports.default = elClass;
 
 /***/ },
-/* 73 */
+/* 72 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -11072,7 +11110,7 @@ var SolitaireEngine =
 	
 	var _defaults2 = _interopRequireDefault(_defaults);
 	
-	var _elClass = __webpack_require__(72);
+	var _elClass = __webpack_require__(71);
 	
 	var _elClass2 = _interopRequireDefault(_elClass);
 	
@@ -11227,6 +11265,56 @@ var SolitaireEngine =
 	}();
 	
 	exports.default = allElClass;
+
+/***/ },
+/* 73 */
+/***/ function(module, exports) {
+
+	'use strict';
+	
+	// window.innerWidth
+	
+	// Находит точку пересечения линий
+	
+	Object.defineProperty(exports, "__esModule", {
+		value: true
+	});
+	var _intersect2d = function _intersect2d(p1a, p1b, p2a, p2b) {
+		// A_start5[1, 1], A_end[1, 1], B_start[1, 1], B_end[1, 1]
+	
+		var epsilon = 1e-12;
+		var subtract = function subtract(a, b) {
+			return [a[0] - b[0], a[1] - b[1]];
+		};
+		var add = function add(a, b) {
+			return [a[0] + b[0], a[1] + b[1]];
+		};
+		var multiply = function multiply(a, b) {
+			return [a[0] * b, a[1] * b];
+		};
+	
+		var o1 = p1a; // copy A_start
+		var o2 = p2a; // copy B_start
+		var d1 = subtract(o1, p1b);
+		var d2 = subtract(o2, p2b);
+		var det = d1[0] * d2[1] - d2[0] * d1[1];
+	
+		if (Math.abs(det) < epsilon) {
+			return null;
+		}
+	
+		var t = (d2[0] * o1[1] - d2[1] * o1[0] - d2[0] * o2[1] + d2[1] * o2[0]) / det;
+	
+		return add(multiply(d1, t), o1);
+	};
+	
+	var intersect = function intersect(a1, a2, b1, b2) {
+		return _intersect2d([a1.x, a1.y], [b1.x, b1.y], [a2.x, a2.y], [b2.x, b2.y]);
+	};
+	
+	exports.default = {
+		"intersect": intersect
+	};
 
 /***/ },
 /* 74 */
@@ -11482,7 +11570,7 @@ var SolitaireEngine =
 	
 	var _share2 = _interopRequireDefault(_share);
 	
-	var _elRender = __webpack_require__(71);
+	var _elRender = __webpack_require__(70);
 	
 	var _elRender2 = _interopRequireDefault(_elRender);
 	
@@ -11584,7 +11672,7 @@ var SolitaireEngine =
 	
 	var _field2 = _interopRequireDefault(_field);
 	
-	var _elRender = __webpack_require__(71);
+	var _elRender = __webpack_require__(70);
 	
 	var _elRender2 = _interopRequireDefault(_elRender);
 	
@@ -11655,7 +11743,7 @@ var SolitaireEngine =
 	
 	var _field2 = _interopRequireDefault(_field);
 	
-	var _elRender = __webpack_require__(71);
+	var _elRender = __webpack_require__(70);
 	
 	var _elRender2 = _interopRequireDefault(_elRender);
 	
@@ -11883,7 +11971,7 @@ var SolitaireEngine =
 	
 	var _field2 = _interopRequireDefault(_field);
 	
-	var _elRender = __webpack_require__(71);
+	var _elRender = __webpack_require__(70);
 	
 	var _elRender2 = _interopRequireDefault(_elRender);
 	
@@ -12022,7 +12110,7 @@ var SolitaireEngine =
 	
 	var _share2 = _interopRequireDefault(_share);
 	
-	var _elRender = __webpack_require__(71);
+	var _elRender = __webpack_require__(70);
 	
 	var _elRender2 = _interopRequireDefault(_elRender);
 	
@@ -12086,7 +12174,7 @@ var SolitaireEngine =
 	
 	var _defaults2 = _interopRequireDefault(_defaults);
 	
-	var _elRender = __webpack_require__(71);
+	var _elRender = __webpack_require__(70);
 	
 	var _elRender2 = _interopRequireDefault(_elRender);
 	
@@ -12248,7 +12336,7 @@ var SolitaireEngine =
 	
 	var _common2 = _interopRequireDefault(_common);
 	
-	var _elRender = __webpack_require__(71);
+	var _elRender = __webpack_require__(70);
 	
 	var _elRender2 = _interopRequireDefault(_elRender);
 	
@@ -12309,7 +12397,7 @@ var SolitaireEngine =
 	
 	var _field2 = _interopRequireDefault(_field);
 	
-	var _elRender = __webpack_require__(71);
+	var _elRender = __webpack_require__(70);
 	
 	var _elRender2 = _interopRequireDefault(_elRender);
 	
@@ -13061,11 +13149,11 @@ var SolitaireEngine =
 	
 	var _deckGenerator2 = _interopRequireDefault(_deckGenerator);
 	
-	var _elRender = __webpack_require__(71);
+	var _elRender = __webpack_require__(70);
 	
 	var _elRender2 = _interopRequireDefault(_elRender);
 	
-	var _storage = __webpack_require__(62);
+	var _storage = __webpack_require__(61);
 	
 	var _storage2 = _interopRequireDefault(_storage);
 	

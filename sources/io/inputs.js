@@ -7,6 +7,7 @@ import common   from 'common'  ;
 
 import Deck     from 'deck'    ;
 import Tips     from 'tips'    ;
+import geometry from 'geometry';
 
 /*
  * _break
@@ -462,9 +463,24 @@ class inputsClass {
 			"dragDeck"         : _dragDeck
 		}, defaults.forceClone);
 
-		event.dispatch('hideCard', target);
-		let _dop = document.elementFromPoint(x, y);
-		event.dispatch('showCard', target);
+		// let _top  = target.style.top;
+		// let _left = target.style.left;
+		// event.dispatch('hideCard', target);
+		if(!dbclick) {
+			// target.style.display = 'none';
+
+			// target.style.top  = y + 'px';
+			// target.style.left = x + 'px';
+		}
+		// let _dop = document.elementFromPoint(x, y);
+		let _dop = 'field';
+		// event.dispatch('showCard', target);
+		if(!dbclick) {
+			// target.style.display = 'block';
+
+			// target.style.top  = _top;
+			// target.style.left = _left;
+		}
 
 		// if(_dop && _dop.id) {
 		event.dispatch('move', {

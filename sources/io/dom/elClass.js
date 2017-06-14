@@ -237,7 +237,6 @@ export default class elClass {
 		if(_animation) {
 
 			try {
-			setTimeout(e => {
 
 				// TODO
 				let top  = params.top  ? Math.abs(noPX(params.top ) - noPX(this.el.style.top )) : 0;
@@ -307,7 +306,6 @@ export default class elClass {
 					transitionEndCallback();
 				}
 
-			}, 0);
 			} catch(e) {}
 		
 		/*
