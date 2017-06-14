@@ -126,7 +126,7 @@ var SolitaireEngine =
 	exports.options = _defaults2.default;
 	exports.winCheck = _winCheck2.default.hwinCheck;
 	exports.generator = _deckGenerator2.default;
-	exports.version = (90914911173).toString().split(9).slice(1).map(function (e) {
+	exports.version = (90914911201).toString().split(9).slice(1).map(function (e) {
 		return parseInt(e, 8);
 	}).join('.');
 	
@@ -8922,6 +8922,10 @@ var SolitaireEngine =
 				_angle -= 360;
 			}
 	
+			if (_angle > 180) {
+				_angle = _angle - 360;
+			}
+	
 			_decks.push({
 				"name": group.name + '_deck' + deckIndex,
 				"rotate": _angle,
@@ -12188,13 +12192,13 @@ var SolitaireEngine =
 	
 	var angleValidate = function angleValidate(angle) {
 	
-		if (angle < 0) {
-			angle += 360;
-		}
+		// if(angle < 0  ) {
+		// 	angle += 360;
+		// }
 	
-		if (angle > 360) {
-			angle -= 360;
-		}
+		// if(angle > 360) {
+		// 	angle -= 360;
+		// }
 	
 		return angle;
 	};

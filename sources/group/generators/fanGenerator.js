@@ -54,6 +54,10 @@ export default (group, data) => {
 			_angle -= 360;
 		}
 
+		if(_angle > 180) {
+			_angle = _angle - 360;
+		}
+
 		_decks.push({
 			"name"     : group.name + '_deck' + deckIndex,
 			"rotate"   : _angle,

@@ -97,6 +97,7 @@ $img_dir :"/solitaire_engine/img/";
 
 .hintUp:after, .hintDown:after {
     content: attr(data-content);
+    font-family: Verdana, sans-serif;
     font-size: 14pt;
     font-weight: bold;
     color: #FFFFFF;
