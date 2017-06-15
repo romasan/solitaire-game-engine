@@ -33,37 +33,12 @@ export default (moveDeck, cursorMove) => {
 	// Приоритет для homeGroups
 	let _homeGroups = Field.homeGroups;
 
-	if(_homeGroups) {
-
-		let _tips = [];
-
-		for(let homeGroupIndex in _homeGroups) {
-
-			for(let i in _autoTips) {
-				if(_autoTips[i].to.deck.parent == _homeGroups[homeGroupIndex]) {
-					_tips.push(_autoTips[i]);
-				}
-			}
-		}
-
-		// есть подсказки ведущие в homeGroups
-		if(_tips.length) {
-			_autoTips = _tips;
-		}
-	}
-
-	console.log(_autoTips);
+	// console.log(_autoTips.map(e => e.distance), _autoTips.length);
 	// вариантов несколько
 	if(_autoTips.length > 1) {
 
-		let _decks = _autoTips.map(e => common.getElementByName);
-		// взять все стопки в которые можно положить
-		// взять с каждой видимую верхнюю карту
-		// определить её координаты её центра (координаты + половина размера) (если стопка пустая координаты стопки)
-		// найти расстояние от курсора до каждой карты
-		// найти минимальное
-
-
+		// ищем расстояние до карт/стопок назначения от перетаскиваемой карты
+		// и направление перетаскивания
 		for(let i in _autoTips) {
 
 			// координаты центра перетаскиваемой карты/стопки
@@ -72,35 +47,64 @@ export default (moveDeck, cursorMove) => {
 				"y" : cursorMove.deckPosition.y + ((defaults.card.height / 2) | 0)
 			}
 
-			// координаты последней карты стопки назначения
-			let _destination_deck_last_card_position = _autoTips[i].to.deck.padding(_autoTips[i].to.deck.cardsCount());
+			let _cardsCount = _autoTips[i].to.deck.cardsCount();
+			let _destination_deck_position = null;
+
+			if(_cardsCount) {
+				// координаты последней карты стопки назначения
+				_destination_deck_position = _autoTips[i].to.deck.padding(_cardsCount);
+			} else {
+				// координаты стопки назначения
+				_destination_deck_position = _autoTips[i].to.deck.getPosition();
+			}
 
 			// координаты центра стопки назначения
 			let center_to = {
-				"x" : _destination_deck_last_card_position.x + ((defaults.card.width  / 2) | 0),
-				"y" : _destination_deck_last_card_position.y + ((defaults.card.height / 2) | 0)
+				"x" : _destination_deck_position.x + ((defaults.card.width  / 2) | 0),
+				"y" : _destination_deck_position.y + ((defaults.card.height / 2) | 0)
 			}
 
 			// расстояние между стопкой и перетаскиваемой картой/стопкой
 			_autoTips[i].distance = Math.sqrt((i => i * i)(center_from.x - center_to.x) + (i => i * i)(center_from.y - center_to.y));
 
 			// смотрим находится ли стопка назначения в направлении движения
-			_autoTips[i].inDirection = false;
-			if(
-				(cursorMove.direction.x > 0 && center_to.x > center_from.x)
-			 || (cursorMove.direction.x < 0 && center_to.x < center_from.x)
-			) {
-				_autoTips[i].inDirection = true;
-				_in_direction_count += 1;
-			}
+			_autoTips[i].inHorisontalDirection = false;
 
+			if(
+				(cursorMove.direction.x > 0 && center_to.x > center_from.x) ||
+				(cursorMove.direction.x < 0 && center_to.x < center_from.x)
+			) {
+				_autoTips[i].inHorisontalDirection  = true;
+				_in_direction_count      += 1;
+			}
 		}
 
-		_autoTips.sort((a, b) => a.distance > b.distance);
+		// ищем ближайшую
+		_autoTips.sort((a, b) => parseFloat(a.distance) > parseFloat(b.distance) ? 1 : -1);
 
-		if(_autoTips[0].distance < inDistance) {
-			_tip_index = 0;
-		} else {
+		// если карта над ближайшей, то этот ход с самым высоким приоритетом
+		// карта над другой стопкой или над полем
+		if(_autoTips[0].distance > inDistance) {
+			
+			// есть домашние группы
+			if(_homeGroups.length) {
+
+				let _tips = [];
+
+				for(let homeGroupIndex in _homeGroups) {
+
+					for(let i in _autoTips) {
+						if(_autoTips[i].to.deck.parent == _homeGroups[homeGroupIndex]) {
+							_tips.push(_autoTips[i]);
+						}
+					}
+				}
+
+				// есть подсказки ведущие в homeGroups
+				if(_tips.length) {
+					_autoTips = _tips;
+				}
+			}
 
 			// у пустых стопок назначения приоритет меньше
 			for(let i = 0; i < _autoTips.length; i += 1) {
@@ -117,45 +121,16 @@ export default (moveDeck, cursorMove) => {
 			}
 
 			// ищем ближайшую стопку из подсказок
-			for(let i in _autoTips) {
+			if(_in_direction_count == 0) {
 
-				// первая итерация
-				if(_min_distance == '-1') {
+				let _tips = _autoTips.filter(e => e.inHorisontalDirection);
 
-					// нет подсказок в направлении движения
-					if(_in_direction_count == 0) {
-						_min_distance = _autoTips[i].distance;
-
-					// есть подсказки в направлении движения
-					} else {
-						if(_autoTips[i].inDirection) {
-							_min_distance = _autoTips[i].distance;
-							_tip_index = i;
-						}
-					}
-				} else {
-
-					// нашли меньше
-					if(_autoTips[i].distance < _min_distance) {
-
-						// нет подсказок в направлении движения
-						if(_in_direction_count == 0) {
-							_min_distance = _autoTips[i].distance;
-							_tip_index = i;
-
-						// есть подсказки в направлении движения
-						} else {
-							if(_autoTips[i].inDirection) {
-								_min_distance = _autoTips[i].distance;
-								_tip_index = i;
-							}
-						}
-					}
+				if(_tips.length) {
+					_autoTips = _tips;
 				}
 			}
-			// _tip_index - номер ближайшей стопки в направлении движения
 		}
 	}
 
-	return _autoTips[_tip_index]
+	return _autoTips[0];
 };

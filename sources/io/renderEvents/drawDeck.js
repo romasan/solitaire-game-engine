@@ -1,11 +1,12 @@
 'use strict';
 
-import event    from 'event'   ;
-import share    from 'share'   ;
-import defaults from 'defaults';
+import event                  from 'event'                 ;
+import share                  from 'share'                 ;
+import defaults               from 'defaults'              ;
 
-import Field    from 'field'   ;
-import elRender from 'elRender';
+import Field                  from 'field'                 ;
+import elRender               from 'elRender'              ;
+import applyChangedParameters from 'applyChangedParameters';
 
 /*
  * addDeckEl
@@ -13,97 +14,6 @@ import elRender from 'elRender';
  * redrawDeckIndexes
  * redrawDeck
  */
-
-let applyChangedParameters = data => {
-
-	data.params.x = (
-			(
-				   data.deckData.position               &&
-			typeof data.deckData.position.x == 'number'
-				?  data.deckData.position.x
-				: 0
-			) | 0
-		) +
-		(
-			(
-				   data.deckData.parentPosition               &&
-			typeof data.deckData.parentPosition.x == 'number'
-				?  data.deckData.parentPosition.x
-				: 0
-			) | 0
-		);
-
-	data.params.y = (
-			(
-				   data.deckData.position               &&
-			typeof data.deckData.position.y == 'number'
-				?  data.deckData.position.y
-				: 0
-			) | 0
-		) +
-		(
-			(
-				   data.deckData.parentPosition               &&
-			typeof data.deckData.parentPosition.y == 'number'
-				?  data.deckData.parentPosition.y
-				: 0
-			) | 0
-		);
-
-	data.deck.rotate = data.params.rotate = data.deckData.rotate                    &&
-		typeof data.deckData.rotate == 'number'
-			? data.deckData.rotate
-			: 0;
-
-	let paddingValues = {
-		'paddingY'     : 'padding_y'     ,
-		'paddingX'     : 'padding_x'     ,
-		'flipPaddingY' : 'flip_padding_y',
-		'flipPaddingX' : 'flip_padding_x'
-	};
-
-	for(let key in paddingValues) {
-
-		let value = paddingValues[key];
-
-		data.params[value] = (
-			       data.deckData[key]             &&
-			typeof data.deckData[key] == 'number'
-		)
-			? data.deckData[key] 
-			: data.deckData.paddingType
-				? defaults[value]      
-				: 0;
-	}
-
-	// data.params.padding_y = data.deckData.paddingY                    &&
-	// 	typeof data.deckData.paddingY == 'number' 
-	// 		? data.deckData.paddingY 
-	// 		: data.deckData.paddingType
-	// 			? defaults.padding_y      
-	// 			: 0;
-
-	// data.params.padding_x = data.deckData.paddingX                    &&
-	// 	typeof data.deckData.paddingX == 'number' 
-	// 		? data.deckData.paddingX 
-	// 		: data.deckData.paddingType
-	// 			? defaults.padding_x      
-	// 			: 0;
-
-	// data.params.flip_padding_y = data.deckData.flipPaddingY                    &&
-	// 	typeof data.deckData.flipPaddingY == 'number' 
-	// 		? data.deckData.flipPaddingY 
-	// 		: data.deckData.paddingType
-	// 			? defaults.flip_padding_y 
-	// 			: 0;
-
-	// data.params.flip_padding_x = data.deckData.flipPaddingX                    &&
-	// 	typeof data.deckData.flipPaddingX == 'number' 
-	// 		? data.deckData.flipPaddingX 
-	// 		: data.deckData.paddingType
-	// 			? defaults.flip_padding_x 
-	// 			: 0;
-};
 
 event.listen('addDeckEl', data => {
 
@@ -114,10 +24,10 @@ event.listen('addDeckEl', data => {
 
 	let _params = {
 		"transform" : 'rotate(' + (data.params.rotate | 0) + 'deg)'    ,
-		"width"     :              defaults.card.width     + 'px'      ,
-		"height"    :              defaults.card.height    + 'px'      ,
 		"left"      :              data.params.x           + 'px'      ,
 		"top"       :              data.params.y           + 'px'      ,
+		"width"     :              defaults.card.width     + 'px'      ,
+		"height"    :              defaults.card.height    + 'px'      ,
 		"display"   :              data.deck.visible ? 'block' : 'none'
 	};
 
@@ -160,10 +70,8 @@ event.listen('redrawDeckFlip', data => {
 		let _cardDomElement = share.get('domElement:' + data.cards[i].id);
 
 		if(data.cards[i].flip) {
-
 			_cardDomElement.addClass('flip');
 		} else {
-
 			_cardDomElement.removeClass('flip');
 		}
 
@@ -174,7 +82,10 @@ event.listen('redrawDeckFlip', data => {
 
 event.listen('redrawDeckIndexes', data => {
 
-	if(!data || !data.cards) {
+	if(
+		!data       ||
+		!data.cards
+	) {
 		return;
 	}
 
@@ -192,7 +103,7 @@ event.listen('redrawDeck', data => {
 
 	if(share.get('noRedraw')) {
 		return false;
-	};
+	}
 
 	if(
 		data          &&

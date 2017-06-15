@@ -20,6 +20,7 @@ import getDecks      from 'getDecks'     ;
 import getDeckById   from 'getDeckById'  ;
 import deckCardNames from 'deckCardNames';
 import getDeck       from 'getDeck'      ;
+import applyChangedParameters from 'applyChangedParameters';
 
 /*
  * Redraw
@@ -136,6 +137,19 @@ class deckClass {
 			"y"              : 0
 		};
 
+		let __data = applyChangedParameters({
+			"deckData" : data        ,
+			"deck"     : this        ,
+			"params"   : this._params
+		}, false);
+
+		this.getPosition = e => {
+			return {
+				"x" : __data.params.x,
+				"y" : __data.params.y
+			};
+		}
+
 		this.rotate = this._params.rotate;
 
 		this.autoUnflipTop = typeof data.autoUnflipTop == 'boolean' ? data.autoUnflipTop : defaults.autoUnflipTop;
@@ -238,7 +252,7 @@ class deckClass {
 				: paddingTypes[defaults.paddingType]                   // use default
 			: paddingTypes[defaults.paddingType];                      // use default
 
-		this.padding = (index) => {
+		this.padding = index => {
 
 			let _cards = this.getCards();
 			let _index = index < _cards.length ? index : _cards.length - 1;
@@ -323,11 +337,11 @@ class deckClass {
 		let _cards = [];
 
 		if(
-			typeof count != 'number'  ||
-			count > this.cards.length ||
-			count < 1
+			typeof count != 'number'         ||
+			       count > this.cards.length ||
+			       count < 1
 		) {
-			count = this.cards.length
+			count = this.cards.length;
 		}
 
 		for(let i = 0; i < count; i += 1) {
