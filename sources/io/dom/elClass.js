@@ -273,8 +273,6 @@ export default class elClass {
 
 				let transitionEndCallback = e => {
 
-					// console.log('### transitionend:', this.el.id, counter);
-
 					counter -= 1;
 
 					// event.dispatch('animationEnd', this);

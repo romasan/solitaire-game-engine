@@ -117,3 +117,15 @@ event.listen('deleteHistory', steps => {
 event.listen('newGame', e => {
 	history.reset();
 });
+
+event.listen('quickHistoryMove', callback => {
+
+	if(typeof callback) {
+
+		common.animationOff();
+
+		callback();
+
+		common.animationOn();
+	}
+})

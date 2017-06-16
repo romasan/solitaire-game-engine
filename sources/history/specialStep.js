@@ -1,8 +1,9 @@
 'use strict';
 
-import event from 'event';
+import event  from 'event' ;
+import common from 'common';
 
-import Deck  from 'deck';
+import Deck   from 'deck'  ;
 
 event.listen('specialStep', ({card, callback}) => {
 
@@ -38,9 +39,13 @@ event.listen('specialStep', ({card, callback}) => {
 
 		if(undoCount > 0) {
 
+			common.animationOff();
+
 			for(let i = 0; i < undoCount; i += 1) {
 				data.undo();
 			}
+
+			common.animationOn();
 
 			event.dispatch('specialStep:done');
 		}
@@ -49,4 +54,16 @@ event.listen('specialStep', ({card, callback}) => {
 			callback(undoCount > 0);
 		}
 	});
+});
+
+event.listen('revokeSpecialStep', callback => {
+
+	if(typeof callback == "function") {
+
+		common.animationOff();
+
+		callback();
+
+		common.animationOn();
+	}
 });

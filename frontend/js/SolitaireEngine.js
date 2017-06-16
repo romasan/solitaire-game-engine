@@ -126,7 +126,7 @@ var SolitaireEngine =
 	exports.options = _defaults2.default;
 	exports.winCheck = _winCheck2.default.hwinCheck;
 	exports.generator = _deckGenerator2.default;
-	exports.version = (90914911230).toString().split(9).slice(1).map(function (e) {
+	exports.version = (90914911256).toString().split(9).slice(1).map(function (e) {
 		return parseInt(e, 8);
 	}).join('.');
 	
@@ -2295,7 +2295,7 @@ var SolitaireEngine =
 		    _in_direction_count = 0,
 		    _min_distance = -1;
 	
-		var inDistance = (_defaults2.default.card.height - (_defaults2.default.card.height - _defaults2.default.card.width) / 2) * _share2.default.get('zoom');
+		var inDistance = (_defaults2.default.card.height - (_defaults2.default.card.height - _defaults2.default.card.width) / 2) * _share2.default.get('zoom') / 2;
 	
 		// Приоритет для homeGroups
 		var _homeGroups = _field2.default.homeGroups;
@@ -2514,7 +2514,8 @@ var SolitaireEngine =
 					// "movesAnimation"    : 'string' ,
 					"animationTime": 'number', // время анимации
 					"showHistoryAnimation": 'boolean',
-					"showPrefFlipCard": 'boolean'
+					"showPrefFlipCard": 'boolean',
+					"gameIsWon": 'boolean'
 				};
 	
 				for (var valueName in _values) {
@@ -5297,7 +5298,7 @@ var SolitaireEngine =
 	
 					var _canRun = eventName.indexOf('click') == 0 ? data.to.name == _decksActions[i].deck.name : true;
 	
-					if (_canRun) {
+					if (_canRun && !_share2.default.get('gameIsWon')) {
 	
 						_actions[_actionName].run(_decksActions[i].deck, {
 							"actionData": _decksActions[i].deck.actions[_actionName],
@@ -5774,7 +5775,7 @@ var SolitaireEngine =
 		    addStep = _ref.addStep;
 		// {from, to, deck, <flip>, <callback>, <steps>, <save>, <addStep>}
 	
-		// console.log('forceMove');
+		// console.log('forceMove', from, to);
 	
 		if (!from || !to || !deck) {
 			return;
@@ -6783,6 +6784,8 @@ var SolitaireEngine =
 
 	'use strict';
 	
+	var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
+	
 	var _event = __webpack_require__(2);
 	
 	var _event2 = _interopRequireDefault(_event);
@@ -6911,6 +6914,18 @@ var SolitaireEngine =
 	
 	_event2.default.listen('newGame', function (e) {
 		_history2.default.reset();
+	});
+	
+	_event2.default.listen('quickHistoryMove', function (callback) {
+	
+		if (typeof callback === 'undefined' ? 'undefined' : _typeof(callback)) {
+	
+			_common2.default.animationOff();
+	
+			callback();
+	
+			_common2.default.animationOn();
+		}
 	});
 
 /***/ },
@@ -9913,7 +9928,9 @@ var SolitaireEngine =
 	
 				if (this.event) {
 					_event2.default.listen(this.event, function (data) {
-						_this.start(data);
+						if (!_share2.default.get('gameIsWon')) {
+							_this.start(data);
+						}
 					});
 				}
 	
@@ -10457,6 +10474,10 @@ var SolitaireEngine =
 	
 	var _event2 = _interopRequireDefault(_event);
 	
+	var _common = __webpack_require__(5);
+	
+	var _common2 = _interopRequireDefault(_common);
+	
 	var _deck = __webpack_require__(14);
 	
 	var _deck2 = _interopRequireDefault(_deck);
@@ -10495,9 +10516,13 @@ var SolitaireEngine =
 	
 			if (undoCount > 0) {
 	
+				_common2.default.animationOff();
+	
 				for (var _i = 0; _i < undoCount; _i += 1) {
 					data.undo();
 				}
+	
+				_common2.default.animationOn();
 	
 				_event2.default.dispatch('specialStep:done');
 			}
@@ -10506,6 +10531,18 @@ var SolitaireEngine =
 				callback(undoCount > 0);
 			}
 		});
+	});
+	
+	_event2.default.listen('revokeSpecialStep', function (callback) {
+	
+		if (typeof callback == "function") {
+	
+			_common2.default.animationOff();
+	
+			callback();
+	
+			_common2.default.animationOn();
+		}
 	});
 
 /***/ },
@@ -11019,8 +11056,6 @@ var SolitaireEngine =
 						// console.log('animation START ' + animationKey, counter);
 	
 						var transitionEndCallback = function transitionEndCallback(e) {
-	
-							// console.log('### transitionend:', this.el.id, counter);
 	
 							counter -= 1;
 	
@@ -12241,8 +12276,6 @@ var SolitaireEngine =
 			// let _callback = function(data, _last) {
 			var _callback = function _callback(e) {
 	
-				// console.log('### moveDragDeck:_callback', i);
-	
 				// если при раздаче (dealAction) первой стопкой для раздачи
 				// оказывается спопка из которой сделан ход, перерисовка ломает анимацию
 				// data.departure  .Redraw();
@@ -12519,7 +12552,7 @@ var SolitaireEngine =
 			rulesCorrect = rulesCorrect && _winCheckRules2.default.newerWin();
 		}
 	
-		if (rulesCorrect) {
+		if (rulesCorrect || _share2.default.get('gameIsWon')) {
 	
 			if (params && params.noCallback) {
 				return true;
@@ -13281,6 +13314,8 @@ var SolitaireEngine =
 		} else if (e.keyCode == keys.c) {
 	
 			console.clear();
+			window._debug = window._debug ? false : true;
+			console.log('_debug', window._debug ? 'ON' : 'OFF');
 		} else if (e.keyCode == keys.h) {
 	
 			// console.log('History:', history.get(false));

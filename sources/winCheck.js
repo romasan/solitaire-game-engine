@@ -57,7 +57,10 @@ let winCheck = params => {
 		rulesCorrect = rulesCorrect && winCheckRules.newerWin();
 	}
 
-	if(rulesCorrect) {
+	if(
+		rulesCorrect           ||
+		share.get('gameIsWon')
+	) {
 
 		if(params && params.noCallback) {
 			return true;

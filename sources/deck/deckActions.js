@@ -65,7 +65,7 @@ let addActionEvent = eventName => {
 					    ? data.to.name == _decksActions[i].deck.name
 					    : true;
 
-					if(_canRun) {
+					if(_canRun && !share.get('gameIsWon')) {
 
 						_actions[_actionName].run(
 

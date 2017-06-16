@@ -24,11 +24,11 @@ export default (moveDeck, cursorMove) => {
 	}
 
 	// move card to closest deck of a possible move
-	let _tip_index          = 0 ,
-	    _in_direction_count = 0 ,
+	let _tip_index          =  0,
+	    _in_direction_count =  0,
 	    _min_distance       = -1;
 
-	let inDistance = (defaults.card.height - (defaults.card.height - defaults.card.width) / 2) * share.get('zoom');
+	let inDistance = ((defaults.card.height - (defaults.card.height - defaults.card.width) / 2) * share.get('zoom')) / 2;
 
 	// Приоритет для homeGroups
 	let _homeGroups = Field.homeGroups;
@@ -45,7 +45,7 @@ export default (moveDeck, cursorMove) => {
 			let center_from = {
 				"x" : cursorMove.deckPosition.x + ((defaults.card.width  / 2) | 0),
 				"y" : cursorMove.deckPosition.y + ((defaults.card.height / 2) | 0)
-			}
+			};
 
 			let _cardsCount = _autoTips[i].to.deck.cardsCount();
 			let _destination_deck_position = null;
@@ -62,7 +62,7 @@ export default (moveDeck, cursorMove) => {
 			let center_to = {
 				"x" : _destination_deck_position.x + ((defaults.card.width  / 2) | 0),
 				"y" : _destination_deck_position.y + ((defaults.card.height / 2) | 0)
-			}
+			};
 
 			// расстояние между стопкой и перетаскиваемой картой/стопкой
 			_autoTips[i].distance = Math.sqrt((i => i * i)(center_from.x - center_to.x) + (i => i * i)(center_from.y - center_to.y));
@@ -75,7 +75,7 @@ export default (moveDeck, cursorMove) => {
 				(cursorMove.direction.x < 0 && center_to.x < center_from.x)
 			) {
 				_autoTips[i].inHorisontalDirection  = true;
-				_in_direction_count      += 1;
+				_in_direction_count                += 1   ;
 			}
 		}
 

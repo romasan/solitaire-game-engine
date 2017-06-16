@@ -128,6 +128,8 @@ document.onkeyup = e => {
 	} else if(e.keyCode == keys.c) {
 
 		console.clear();
+		window._debug = window._debug ? false : true;
+		console.log('_debug', window._debug ? 'ON' : 'OFF');
 	} else if(e.keyCode == keys.h) {
 
 		// console.log('History:', history.get(false));

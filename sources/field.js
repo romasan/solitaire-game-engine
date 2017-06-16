@@ -62,7 +62,8 @@ class Field {
 			// "movesAnimation"    : 'string' ,
 			"animationTime"        : 'number' , // время анимации
 			"showHistoryAnimation" : 'boolean',
-			"showPrefFlipCard"     : 'boolean'
+			"showPrefFlipCard"     : 'boolean',
+			"gameIsWon"            : 'boolean'
 		};
 
 		for(let valueName in _values) {

@@ -75,8 +75,6 @@ event.listen('moveDragDeck', data => {
 		// let _callback = function(data, _last) {
 		let _callback = e => {
 
-			// console.log('### moveDragDeck:_callback', i);
-
 			// если при раздаче (dealAction) первой стопкой для раздачи
 			// оказывается спопка из которой сделан ход, перерисовка ломает анимацию
 			// data.departure  .Redraw();

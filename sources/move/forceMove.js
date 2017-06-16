@@ -9,7 +9,7 @@ import Tips   from 'tips'  ;
 
 let forceMove = ({from, to, deck, flip, callback, steps, save, addStep}) => { // {from, to, deck, <flip>, <callback>, <steps>, <save>, <addStep>}
 
-	// console.log('forceMove');
+	// console.log('forceMove', from, to);
 
 	if(
 		!from ||
@@ -168,7 +168,6 @@ let forceMove = ({from, to, deck, flip, callback, steps, save, addStep}) => { //
 			if(typeof callback == 'function') {
 				callback();
 			}
-
 		};
 
 		moveDragDeckParams.callback = forceMoveCallback;
