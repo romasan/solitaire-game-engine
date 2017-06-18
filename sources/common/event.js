@@ -1,5 +1,7 @@
 'use strict';
 
+import share from 'share';
+
 /*
  * listen
  * once
@@ -93,8 +95,15 @@ class Event {
 								"eventName" : eventName                     ,
 								"index"     : i                             ,
 								"count"     : this._events[eventName].length
+							},
+
+							"gameInfo" : {
+								"gameIsWon" : share.get('gameIsWon')
+								// "isCurLock" : null
 							}
-						}
+						},
+
+
 					);
 
 					if(this._events[eventName][i].once) {

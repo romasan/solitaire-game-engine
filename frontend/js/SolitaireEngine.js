@@ -43,7 +43,7 @@ var SolitaireEngine =
 /************************************************************************/
 /******/ ([
 /* 0 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
@@ -126,7 +126,7 @@ var SolitaireEngine =
 	exports.options = _defaults2.default;
 	exports.winCheck = _winCheck2.default.hwinCheck;
 	exports.generator = _deckGenerator2.default;
-	exports.version = (90914911256).toString().split(9).slice(1).map(function (e) {
+	exports.version = (90914911326).toString().split(9).slice(1).map(function (e) {
 		return parseInt(e, 8);
 	}).join('.');
 	
@@ -178,9 +178,9 @@ var SolitaireEngine =
 		exports.debug = debug.default;
 	}
 
-/***/ },
+/***/ }),
 /* 1 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
@@ -314,11 +314,25 @@ var SolitaireEngine =
 	
 	exports.default = new shareClass();
 
-/***/ },
+/***/ }),
 /* 2 */
-/***/ function(module, exports) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+		value: true
+	});
+	
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	
+	var _share = __webpack_require__(1);
+	
+	var _share2 = _interopRequireDefault(_share);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 	
 	/*
 	 * listen
@@ -332,14 +346,6 @@ var SolitaireEngine =
 	 * has
 	 * _getAll
 	 */
-	
-	Object.defineProperty(exports, "__esModule", {
-		value: true
-	});
-	
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-	
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 	
 	var Event = function () {
 		function Event() {
@@ -421,7 +427,12 @@ var SolitaireEngine =
 									"eventName": eventName,
 									"index": i,
 									"count": this._events[eventName].length
-								}
+								},
+	
+								"gameInfo": {
+									"gameIsWon": _share2.default.get('gameIsWon'
+									// "isCurLock" : null
+									) }
 							});
 	
 							if (this._events[eventName][i].once) {
@@ -537,9 +548,9 @@ var SolitaireEngine =
 	
 	exports.default = new Event();
 
-/***/ },
+/***/ }),
 /* 3 */
-/***/ function(module, exports) {
+/***/ (function(module, exports) {
 
 	'use strict';
 	
@@ -649,13 +660,11 @@ var SolitaireEngine =
 		"showHistoryAnimation": true
 	};
 
-/***/ },
+/***/ }),
 /* 4 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
-	
-	var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 	
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 	
@@ -675,9 +684,9 @@ var SolitaireEngine =
 	
 	var _common2 = _interopRequireDefault(_common);
 	
-	var _deck2 = __webpack_require__(14);
+	var _deck3 = __webpack_require__(14);
 	
-	var _deck3 = _interopRequireDefault(_deck2);
+	var _deck4 = _interopRequireDefault(_deck3);
 	
 	var _tips = __webpack_require__(9);
 	
@@ -749,115 +758,113 @@ var SolitaireEngine =
 			// event.listen('redo', this._inputUndoRedo());
 	
 			try {
-				(function () {
 	
-					// let field = share.get('domElement:field');
-					var lastCoord = null;
-					var lastTime = null;
-					var breakUp = false;
+				// let field = share.get('domElement:field');
+				var lastCoord = null;
+				var lastTime = null;
+				var breakUp = false;
 	
-					document.body.addEventListener('mousedown', function (data) {
+				document.body.addEventListener('mousedown', function (data) {
 	
-						if (data.button !== 0) {
-							return;
-						}
+					if (data.button !== 0) {
+						return;
+					}
 	
-						var newTime = new Date().getTime();
+					var newTime = new Date().getTime();
 	
-						if (lastCoord && lastCoord.x == data.clientX && lastCoord.y == data.clientY && newTime - lastTime < 500) {
+					if (lastCoord && lastCoord.x == data.clientX && lastCoord.y == data.clientY && newTime - lastTime < 500) {
 	
-							breakUp = true;
+						breakUp = true;
 	
-							return;
-						}
+						return;
+					}
 	
-						_this.take(data.target, data.clientX, data.clientY);
+					_this.take(data.target, data.clientX, data.clientY);
 	
-						lastCoord = {
-							"x": data.clientX,
-							"y": data.clientY
-						};
+					lastCoord = {
+						"x": data.clientX,
+						"y": data.clientY
+					};
 	
-						lastTime = newTime;
-					});
+					lastTime = newTime;
+				});
 	
-					document.body.addEventListener('mousemove', function (data) {
-						_this.drag(data.clientX, data.clientY);
-						// this.onmove(data.clientX, data.clientY);
-					});
+				document.body.addEventListener('mousemove', function (data) {
+					_this.drag(data.clientX, data.clientY);
+					// this.onmove(data.clientX, data.clientY);
+				});
 	
-					document.body.addEventListener('mouseup', function (data) {
+				document.body.addEventListener('mouseup', function (data) {
 	
-						if (breakUp) {
-	
-							breakUp = false;
-	
-							return;
-						}
-	
-						_this.put(data.target, data.clientX, data.clientY);
-					});
-	
-					document.body.addEventListener('mouseleave', function (data) {
+					if (breakUp) {
 	
 						breakUp = false;
 	
-						_this.put(data.target, data.clientX, data.clientY);
-					});
+						return;
+					}
 	
-					// TODO
-					// Решение: (if distance > 0)
-					// Click
-					// Click
-					// Dblclick
+					_this.put(data.target, data.clientX, data.clientY);
+				});
 	
-					// let timeoutId = null;
-					// document.onmouseup = (e) {
-					// 	timeoutId && timeoutId = setTimeout(() => {
-					// 		this.put(e.target, e.clientX, e.clientY);
-					// 		timeoutId = null;
-					// 	}, 500);
-					// };
-					// document.ondblclick =function(){
-					// 	clearTimeout(timeoutId);
-					// 	this.take(e.target, e.clientX, e.clientY);
-					// 	this.put(e.target, e.clientX, e.clientY, true);
-					// 	common.curUnLock();
-					// };
+				document.body.addEventListener('mouseleave', function (data) {
 	
-					document.body.addEventListener('dblclick', function (data) {
+					breakUp = false;
 	
-						// event.dispatch('stopAnimations');
+					_this.put(data.target, data.clientX, data.clientY);
+				});
 	
-						_this.take(data.target, data.clientX, data.clientY);
-						_this.put(data.target, data.clientX, data.clientY, true);
+				// TODO
+				// Решение: (if distance > 0)
+				// Click
+				// Click
+				// Dblclick
 	
-						_common2.default.curUnLock();
-					});
+				// let timeoutId = null;
+				// document.onmouseup = (e) {
+				// 	timeoutId && timeoutId = setTimeout(() => {
+				// 		this.put(e.target, e.clientX, e.clientY);
+				// 		timeoutId = null;
+				// 	}, 500);
+				// };
+				// document.ondblclick =function(){
+				// 	clearTimeout(timeoutId);
+				// 	this.take(e.target, e.clientX, e.clientY);
+				// 	this.put(e.target, e.clientX, e.clientY, true);
+				// 	common.curUnLock();
+				// };
 	
-					document.body.addEventListener('touchstart', function (data) {
+				document.body.addEventListener('dblclick', function (data) {
 	
-						data.preventDefault();
+					// event.dispatch('stopAnimations');
 	
-						_this.take(data.target, data.touches[0].clientX, data.touches[0].clientY);
-					}, false);
+					_this.take(data.target, data.clientX, data.clientY);
+					_this.put(data.target, data.clientX, data.clientY, true);
 	
-					document.body.addEventListener('touchmove', function (data) {
+					_common2.default.curUnLock();
+				});
 	
-						// if(share.get('startCursor')) {
-						data.preventDefault();
-						// }
+				document.body.addEventListener('touchstart', function (data) {
 	
-						_this.drag(data.touches[0].clientX, data.touches[0].clientY);
-					}, false);
+					data.preventDefault();
 	
-					document.body.addEventListener('touchend', function (data) {
+					_this.take(data.target, data.touches[0].clientX, data.touches[0].clientY);
+				}, false);
 	
-						data.preventDefault();
+				document.body.addEventListener('touchmove', function (data) {
 	
-						_this.put(data.changedTouches[0].target, data.changedTouches[0].clientX, data.changedTouches[0].clientY);
-					}, false);
-				})();
+					// if(share.get('startCursor')) {
+					data.preventDefault();
+					// }
+	
+					_this.drag(data.touches[0].clientX, data.touches[0].clientY);
+				}, false);
+	
+				document.body.addEventListener('touchend', function (data) {
+	
+					data.preventDefault();
+	
+					_this.put(data.changedTouches[0].target, data.changedTouches[0].clientX, data.changedTouches[0].clientY);
+				}, false);
 			} catch (e) {}
 		}
 	
@@ -869,7 +876,7 @@ var SolitaireEngine =
 	
 				if (_dragDeck && _dragDeck[0] && _dragDeck[0].card && _dragDeck[0].card.parent) {
 	
-					var _deck = _deck3.default.getDeckById(_dragDeck[0].card.parent);
+					var _deck = _deck4.default.getDeckById(_dragDeck[0].card.parent);
 	
 					if (_deck) {
 						_deck.Redraw();
@@ -922,114 +929,106 @@ var SolitaireEngine =
 	
 				// click card in deck
 				if (target.className.split(' ').indexOf('draggable') >= 0) {
-					var _ret2 = function () {
 	
-						var _id = target.id,
-						    _card = _id ? _common2.default.getElementById(_id) : null,
-						    _parent = _card && _card.parent ? _card.parent : null,
-						    _deck = _parent ? _deck3.default.getDeckById(_parent) : null;
+					var _id2 = target.id,
+					    _card = _id2 ? _common2.default.getElementById(_id2) : null,
+					    _parent = _card && _card.parent ? _card.parent : null,
+					    _deck2 = _parent ? _deck4.default.getDeckById(_parent) : null;
 	
-						// mark card
-						if (_deck && _share2.default.get('markerMode')) {
-							// break;
+					// mark card
+					if (_deck2 && _share2.default.get('markerMode')) {
+						// break;
 	
-							_event2.default.dispatch('toggleMarkCard', {
-								"card": _card,
-								"callback": function callback(cardIsMarked) {
+						_event2.default.dispatch('toggleMarkCard', {
+							"card": _card,
+							"callback": function callback(cardIsMarked) {
 	
-									var cardIndex = _deck.getCardIndexById(_card.id);
+								var cardIndex = _deck2.getCardIndexById(_card.id);
 	
-									var stepData = {};
+								var stepData = {};
 	
-									stepData[cardIsMarked ? 'markCard' : 'unmarkCard'] = {
-										"deckName": _deck.name,
-										"cardName": _card.name,
-										"cardIndex": cardIndex
-									};
+								stepData[cardIsMarked ? 'markCard' : 'unmarkCard'] = {
+									"deckName": _deck2.name,
+									"cardName": _card.name,
+									"cardIndex": cardIndex
+								};
 	
-									_event2.default.dispatch('addStep', stepData);
+								_event2.default.dispatch('addStep', stepData);
 	
-									_event2.default.dispatch('toggleMarkerMode');
-								}
-							});
+								_event2.default.dispatch('toggleMarkerMode');
+							}
+						});
 	
-							_deck = null;
-						}
+						_deck2 = null;
+					}
 	
-						if (_deck && _share2.default.get('specialStepMode')) {
-							// break;
-							_event2.default.dispatch('specialStep', {
-								"card": _card,
-								"callback": function callback(done) {
-									_event2.default.dispatch('toggleSpecialStepMode', done);
-								}
-							});
-							_deck = null;
-						}
+					if (_deck2 && _share2.default.get('specialStepMode')) {
+						// break;
+						_event2.default.dispatch('specialStep', {
+							"card": _card,
+							"callback": function callback(done) {
+								_event2.default.dispatch('toggleSpecialStepMode', done);
+							}
+						});
+						_deck2 = null;
+					}
 	
-						if (_deck) {
+					if (_deck2) {
 	
-							// event.dispatch('dragStart', {
-							// 	"deck" : _deck,
-							// 	"card" : _card
-							// });
+						// event.dispatch('dragStart', {
+						// 	"deck" : _deck,
+						// 	"card" : _card
+						// });
 	
-							_event2.default.dispatch('click', {
-								"to": _deck,
+						_event2.default.dispatch('click', {
+							"to": _deck2,
+							"toCard": _card
+						});
+	
+						if (_card.flip) {
+	
+							_event2.default.dispatch('click:flipCard', {
+								"to": _deck2,
 								"toCard": _card
 							});
 	
-							if (_card.flip) {
+							// this.put(target, x, y, false);
 	
-								_event2.default.dispatch('click:flipCard', {
-									"to": _deck,
-									"toCard": _card
-								});
-	
-								// this.put(target, x, y, false);
-	
-								if (!_defaults2.default.canMoveFlip) {
-									return {
-										v: void 0
-									};
-								}
-							} else {
-	
-								_event2.default.dispatch('click:unflipCard', {
-									"to": _deck,
-									"toCard": _card
-								});
+							if (!_defaults2.default.canMoveFlip) {
+								return;
 							}
+						} else {
 	
-							// нельзя брать перевёрнутые карты
-							if (_card.flip) {
-								return {
-									v: void 0
-								};
-							}
-						}
-	
-						// _deck.runActions();
-	
-						var _dragDeck = _deck ? _deck.Take(_id) : null;
-	
-						_share2.default.set('dragDeck', _dragDeck);
-	
-						if (_dragDeck) {
-	
-							_share2.default.set('startCursor', {
-								"x": x,
-								"y": y
-							});
-	
-							// ???
-							_tips2.default.tipsDestination({
-								"currentCard": _card
+							_event2.default.dispatch('click:unflipCard', {
+								"to": _deck2,
+								"toCard": _card
 							});
 						}
-					}();
 	
-					if ((typeof _ret2 === 'undefined' ? 'undefined' : _typeof(_ret2)) === "object") return _ret2.v;
+						// нельзя брать перевёрнутые карты
+						if (_card.flip) {
+							return;
+						}
+					}
+	
+					// _deck.runActions();
+	
+					var _dragDeck = _deck2 ? _deck2.Take(_id2) : null;
+	
+					_share2.default.set('dragDeck', _dragDeck);
+	
+					if (_dragDeck) {
+	
+						_share2.default.set('startCursor', {
+							"x": x,
+							"y": y
+						});
+	
+						// ???
+						_tips2.default.tipsDestination({
+							"currentCard": _card
+						});
+					}
 				}
 			}
 		}, {
@@ -1216,9 +1215,9 @@ var SolitaireEngine =
 		}
 	});
 
-/***/ },
+/***/ }),
 /* 5 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
@@ -1593,9 +1592,9 @@ var SolitaireEngine =
 		"animationDefault": animationDefault
 	};
 
-/***/ },
+/***/ }),
 /* 6 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
@@ -1766,9 +1765,9 @@ var SolitaireEngine =
 	
 	exports.default = new stateManager();
 
-/***/ },
+/***/ }),
 /* 7 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
@@ -1809,9 +1808,9 @@ var SolitaireEngine =
 		return _decks;
 	};
 
-/***/ },
+/***/ }),
 /* 8 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
@@ -1832,9 +1831,9 @@ var SolitaireEngine =
 		return _elements[id] && _elements[id].type == 'deck' ? _elements[id] : false;
 	};
 
-/***/ },
+/***/ }),
 /* 9 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
@@ -2115,9 +2114,9 @@ var SolitaireEngine =
 		"tipsDestination": tipsDestination
 	};
 
-/***/ },
+/***/ }),
 /* 10 */
-/***/ function(module, exports) {
+/***/ (function(module, exports) {
 
 	'use strict';
 	
@@ -2242,9 +2241,9 @@ var SolitaireEngine =
 		return _allToAll.get(data);
 	};
 
-/***/ },
+/***/ }),
 /* 11 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
@@ -2407,9 +2406,9 @@ var SolitaireEngine =
 		return _autoTips[0];
 	};
 
-/***/ },
+/***/ }),
 /* 12 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
@@ -2680,9 +2679,9 @@ var SolitaireEngine =
 	
 	exports.default = new Field();
 
-/***/ },
+/***/ }),
 /* 13 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
@@ -3137,9 +3136,9 @@ var SolitaireEngine =
 		"add": add
 	};
 
-/***/ },
+/***/ }),
 /* 14 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
@@ -4052,9 +4051,9 @@ var SolitaireEngine =
 		"getDeckById": _getDeckById2.default
 	};
 
-/***/ },
+/***/ }),
 /* 15 */
-/***/ function(module, exports) {
+/***/ (function(module, exports) {
 
 	'use strict';
 	
@@ -4119,17 +4118,17 @@ var SolitaireEngine =
 		},
 	
 		"topUnflip": function topUnflip(i, length, data, arg) {
-			return flipTypes._direction_type("top", "unflip", i, length, data, arg);
-		}
+			return flipTypes._direction_type("top", "unflip", i, length, data, arg
 	
-		// TODO topFlip:counter, topUnflip:counter, bottomFlip:counter, bottomUnflip:counter
-	};
+			// TODO topFlip:counter, topUnflip:counter, bottomFlip:counter, bottomUnflip:counter
+			);
+		} };
 	
 	exports.default = flipTypes;
 
-/***/ },
+/***/ }),
 /* 16 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
@@ -4519,9 +4518,9 @@ var SolitaireEngine =
 	
 	exports.default = readyPutRules;
 
-/***/ },
+/***/ }),
 /* 17 */
-/***/ function(module, exports) {
+/***/ (function(module, exports) {
 
 	'use strict';
 	
@@ -4545,9 +4544,9 @@ var SolitaireEngine =
 		return { prev: prev, next: next };
 	};
 
-/***/ },
+/***/ }),
 /* 18 */
-/***/ function(module, exports) {
+/***/ (function(module, exports) {
 
 	'use strict';
 	
@@ -4595,9 +4594,9 @@ var SolitaireEngine =
 		// }
 	};
 
-/***/ },
+/***/ }),
 /* 19 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
@@ -5026,9 +5025,9 @@ var SolitaireEngine =
 	
 	exports.default = fullRules;
 
-/***/ },
+/***/ }),
 /* 20 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
@@ -5189,9 +5188,9 @@ var SolitaireEngine =
 	
 	exports.default = paddingTypes;
 
-/***/ },
+/***/ }),
 /* 21 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
@@ -5298,14 +5297,15 @@ var SolitaireEngine =
 	
 					var _canRun = eventName.indexOf('click') == 0 ? data.to.name == _decksActions[i].deck.name : true;
 	
-					if (_canRun && !_share2.default.get('gameIsWon')) {
-	
-						_actions[_actionName].run(_decksActions[i].deck, {
-							"actionData": _decksActions[i].deck.actions[_actionName],
-							"eventData": data,
-							"eventName": eventName
-						});
-					};
+					if (_canRun //                &&
+					// !share.get('gameIsWon')
+					) {
+							_actions[_actionName].run(_decksActions[i].deck, {
+								"actionData": _decksActions[i].deck.actions[_actionName],
+								"eventData": data,
+								"eventName": eventName
+							});
+						};
 				}
 			}
 		},
@@ -5400,9 +5400,9 @@ var SolitaireEngine =
 		"run": runAction
 	};
 
-/***/ },
+/***/ }),
 /* 22 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
@@ -5732,9 +5732,9 @@ var SolitaireEngine =
 	
 	exports.default = new dealAction();
 
-/***/ },
+/***/ }),
 /* 23 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
@@ -5816,111 +5816,109 @@ var SolitaireEngine =
 		}
 	
 		if (check) {
-			(function () {
 	
-				var cardsPop = deckFrom.Pop(deck.length);
+			var cardsPop = deckFrom.Pop(deck.length);
 	
-				// перевернуть карты во время хода
-				if (typeof flip == "boolean") {
-					for (var _i in cardsPop) {
-						cardsPop[_i].flip = flip; // !cardsPop[i].flip;
-					}
+			// перевернуть карты во время хода
+			if (typeof flip == "boolean") {
+				for (var _i in cardsPop) {
+					cardsPop[_i].flip = flip; // !cardsPop[i].flip;
+				}
+			}
+	
+			var deckToInvisibleCardsCount = deckTo.cardsCount({
+				"visible": false
+			});
+	
+			deckTo.Push(cardsPop, deckToInvisibleCardsCount > 0);
+	
+			var breakForceMove = function breakForceMove(e) {
+	
+				if (_share2.default.get('inHistoryMove')) {
+					return;
 				}
 	
-				var deckToInvisibleCardsCount = deckTo.cardsCount({
-					"visible": false
+				var _cards = deckTo.Pop(deck.length);
+	
+				if (cardsPop) {
+	
+					deckFrom.Push(_cards);
+	
+					if (typeof flip == "boolean") {
+						for (var _i2 in cardsPop) {
+							cardsPop[_i2].flip = !flip;
+						}
+					}
+	
+					deckFrom.Redraw();
+					deckTo.Redraw();
+	
+					if (steps && steps.length) {
+	
+						// TODO History.clearByContext('deal'); ?
+						_event2.default.dispatch('deleteHistory', steps);
+					}
+				}
+			};
+	
+			var cardsMove = [];
+	
+			for (var _i3 in cardsPop) {
+				cardsMove.push({
+					"card": cardsPop[_i3]
 				});
+			}
 	
-				deckTo.Push(cardsPop, deckToInvisibleCardsCount > 0);
+			var moveDragDeckParams = {
+				"moveDeck": cardsMove,
+				"departure": deckFrom,
+				"destination": deckTo
+			};
 	
-				var breakForceMove = function breakForceMove(e) {
+			var eventId = _event2.default.once('clearCallbacks', function (e) {
+				if (typeof breakForceMove == "function") {
+					breakForceMove();
+				}
+			});
 	
-					if (_share2.default.get('inHistoryMove')) {
-						return;
-					}
+			var forceMoveCallback = function forceMoveCallback(e) {
 	
-					var _cards = deckTo.Pop(deck.length);
+				if (addStep) {
 	
-					if (cardsPop) {
-	
-						deckFrom.Push(_cards);
-	
-						if (typeof flip == "boolean") {
-							for (var _i2 in cardsPop) {
-								cardsPop[_i2].flip = !flip;
-							}
+					_event2.default.dispatch('addStep', {
+						"move": {
+							"from": from,
+							"to": to,
+							"deck": deck
 						}
-	
-						deckFrom.Redraw();
-						deckTo.Redraw();
-	
-						if (steps && steps.length) {
-	
-							// TODO History.clearByContext('deal'); ?
-							_event2.default.dispatch('deleteHistory', steps);
-						}
-					}
-				};
-	
-				var cardsMove = [];
-	
-				for (var _i3 in cardsPop) {
-					cardsMove.push({
-						"card": cardsPop[_i3]
 					});
 				}
 	
-				var moveDragDeckParams = {
-					"moveDeck": cardsMove,
-					"departure": deckFrom,
-					"destination": deckTo
-				};
+				_event2.default.remove(eventId);
 	
-				var eventId = _event2.default.once('clearCallbacks', function (e) {
-					if (typeof breakForceMove == "function") {
-						breakForceMove();
-					}
-				});
+				breakForceMove = null;
 	
-				var forceMoveCallback = function forceMoveCallback(e) {
+				if (deckFrom.autoUnflipTop && deckFrom.cards.length > 0 && deckFrom.cards[deckFrom.cards.length - 1].flip) {
 	
-					if (addStep) {
+					// console.log('unflip TopCard');
 	
-						_event2.default.dispatch('addStep', {
-							"move": {
-								"from": from,
-								"to": to,
-								"deck": deck
-							}
-						});
-					}
+					deckFrom.unflipTopCard(addStep);
+				}
 	
-					_event2.default.remove(eventId);
+				if (save) {
+					_event2.default.dispatch('saveSteps');
+				}
 	
-					breakForceMove = null;
+				_event2.default.dispatch('forceMoveEnd');
 	
-					if (deckFrom.autoUnflipTop && deckFrom.cards.length > 0 && deckFrom.cards[deckFrom.cards.length - 1].flip) {
+				if (typeof callback == 'function') {
+					callback();
+				}
+			};
 	
-						// console.log('unflip TopCard');
+			moveDragDeckParams.callback = forceMoveCallback;
 	
-						deckFrom.unflipTopCard(addStep);
-					}
-	
-					if (save) {
-						_event2.default.dispatch('saveSteps');
-					}
-	
-					_event2.default.dispatch('forceMoveEnd');
-	
-					if (typeof callback == 'function') {
-						callback();
-					}
-				};
-	
-				moveDragDeckParams.callback = forceMoveCallback;
-	
-				_event2.default.dispatch('moveDragDeck', moveDragDeckParams);
-			})();
+			_event2.default.dispatch('moveDragDeck', moveDragDeckParams);
 		} else {
 			console.warn('forceMove:Ход невозможен', from, to);
 		}
@@ -5930,9 +5928,9 @@ var SolitaireEngine =
 	
 	exports.default = forceMove;
 
-/***/ },
+/***/ }),
 /* 24 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
@@ -5981,9 +5979,9 @@ var SolitaireEngine =
 	
 	exports.default = deckAction;
 
-/***/ },
+/***/ }),
 /* 25 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
@@ -6156,9 +6154,9 @@ var SolitaireEngine =
 	
 	exports.default = history;
 
-/***/ },
+/***/ }),
 /* 26 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
@@ -6426,9 +6424,9 @@ var SolitaireEngine =
 	
 	exports.default = undo;
 
-/***/ },
+/***/ }),
 /* 27 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
@@ -6446,9 +6444,9 @@ var SolitaireEngine =
 		"swap": _atomSwap2.default
 	};
 
-/***/ },
+/***/ }),
 /* 28 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
@@ -6483,9 +6481,9 @@ var SolitaireEngine =
 		}
 	};
 
-/***/ },
+/***/ }),
 /* 29 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
@@ -6778,9 +6776,9 @@ var SolitaireEngine =
 	
 	exports.default = redo;
 
-/***/ },
+/***/ }),
 /* 30 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
@@ -6928,9 +6926,9 @@ var SolitaireEngine =
 		}
 	});
 
-/***/ },
+/***/ }),
 /* 31 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
@@ -7042,9 +7040,9 @@ var SolitaireEngine =
 	
 	exports.default = new redoAdvanced();
 
-/***/ },
+/***/ }),
 /* 32 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
@@ -7239,9 +7237,9 @@ var SolitaireEngine =
 	
 	exports.default = new kickAction();
 
-/***/ },
+/***/ }),
 /* 33 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
@@ -7327,59 +7325,57 @@ var SolitaireEngine =
 				// ход не делается
 				// вместо хода выполняется едействие для текущей стопки (если _central, по умолчанию true)
 				if (typeof data.actionData.run == 'string') {
-					(function () {
 	
-						var _central = typeof data.actionData.central == 'boolean' ? data.actionData.central : true;
+					var _central = typeof data.actionData.central == 'boolean' ? data.actionData.central : true;
 	
-						var _runStack = [];
+					var _runStack = [];
 	
-						for (var i in _relations) {
+					for (var i in _relations) {
 	
-							if (_tips2.default.fromTo(deck.name, _relations[i].to)) {
-								_runStack.push(_relations[i]);
-							}
+						if (_tips2.default.fromTo(deck.name, _relations[i].to)) {
+							_runStack.push(_relations[i]);
 						}
+					}
 	
-						var _counter = _runStack.length;
+					var _counter = _runStack.length;
 	
-						var _callback = function _callback(e) {
+					var _callback = function _callback(e) {
 	
-							_counter -= 1;
-							if (_counter === 0) {
-	
-								_this2.end();
-								// event.dispatch(data.actionData.dispatch)
-							}
-						};
-	
+						_counter -= 1;
 						if (_counter === 0) {
 	
 							_this2.end();
-						} else if (_central) {
+							// event.dispatch(data.actionData.dispatch)
+						}
+					};
 	
-							_counter += 1;
+					if (_counter === 0) {
 	
-							_event2.default.dispatch(data.actionData.run, {
-								"to": deck.name,
-								"callback": _callback
-							});
+						this.end();
+					} else if (_central) {
+	
+						_counter += 1;
+	
+						_event2.default.dispatch(data.actionData.run, {
+							"to": deck.name,
+							"callback": _callback
+						});
+					}
+	
+					for (var _i in _runStack) {
+	
+						var _data = null;
+						try {
+							_data = Object.assign({}, _runStack[_i]);
+						} catch (e) {
+							_data = _runStack[_i];
 						}
 	
-						for (var _i in _runStack) {
+						_data.callback = _callback;
+						_event2.default.dispatch(data.actionData.run, _data);
+					}
 	
-							var _data = null;
-							try {
-								_data = Object.assign({}, _runStack[_i]);
-							} catch (e) {
-								_data = _runStack[_i];
-							}
-	
-							_data.callback = _callback;
-							_event2.default.dispatch(data.actionData.run, _data);
-						}
-	
-						// выполняется после хода 
-					})();
+					// выполняется после хода 
 				} else {
 	
 					var _callback2 = function _callback2(e) {
@@ -7389,8 +7385,9 @@ var SolitaireEngine =
 						}
 					};
 	
-					_event2.default.listen('makeStep', _callback2);
+					_event2.default.listen('makeStep', _callback2
 					// event.dispatch(data.actionData.dispatch)
+					);
 				}
 			}
 		}, {
@@ -7414,9 +7411,9 @@ var SolitaireEngine =
 	
 	exports.default = new stepsAroundAction();
 
-/***/ },
+/***/ }),
 /* 34 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
@@ -7494,9 +7491,9 @@ var SolitaireEngine =
 	
 	exports.default = new changeStepTypeAction();
 
-/***/ },
+/***/ }),
 /* 35 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
@@ -7569,9 +7566,9 @@ var SolitaireEngine =
 	
 	exports.default = new lockAction();
 
-/***/ },
+/***/ }),
 /* 36 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
@@ -7637,9 +7634,9 @@ var SolitaireEngine =
 		}
 	};
 
-/***/ },
+/***/ }),
 /* 37 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
@@ -7712,9 +7709,9 @@ var SolitaireEngine =
 	
 	exports.default = new unlockAction();
 
-/***/ },
+/***/ }),
 /* 38 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
@@ -7843,17 +7840,15 @@ var SolitaireEngine =
 	
 	exports.default = new checkFullAction();
 
-/***/ },
+/***/ }),
 /* 39 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
 	Object.defineProperty(exports, "__esModule", {
 		value: true
 	});
-	
-	var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 	
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 	
@@ -7901,7 +7896,6 @@ var SolitaireEngine =
 		_createClass(rollerAction, [{
 			key: 'run',
 			value: function run(deck, data) {
-				var _this2 = this;
 	
 				if (!deck || !data || !deck.cards || deck.cards.length == 0) {
 					return;
@@ -7979,242 +7973,236 @@ var SolitaireEngine =
 	
 				// есть видимые карты
 				if (cardsCount > 0) {
-					var _ret = function () {
 	
-						// количество открытых видимых карт
-						var unflipCardsCount = deck.cardsCount({
-							"visible": true,
-							"flip": false
+					// количество открытых видимых карт
+					var _unflipCardsCount = deck.cardsCount({
+						"visible": true,
+						"flip": false
+					});
+	
+					// количество закрытых видимых карт
+					var flipCardsCount = deck.cardsCount({
+						"visible": true,
+						"flip": true
+					});
+	
+					// не осталось видимых закрытых карт
+					if (flipCardsCount == 0) {
+	
+						// количество скрытых карт
+						hiddenCardsCount = deck.cardsCount({
+							"visible": false
 						});
 	
-						// количество закрытых видимых карт
-						var flipCardsCount = deck.cardsCount({
-							"visible": true,
-							"flip": true
-						});
+						// let rewindStatus = null;
 	
-						// не осталось видимых закрытых карт
-						if (flipCardsCount == 0) {
+						_event2.default.dispatch('rewindHistory', function (data) {
 	
-							// количество скрытых карт
-							hiddenCardsCount = deck.cardsCount({
-								"visible": false
-							});
+							var found = false;
 	
-							// let rewindStatus = null;
+							var stepsCount = 0;
 	
-							_event2.default.dispatch('rewindHistory', function (data) {
+							for (var i = data.history.length - 1; i >= 0 && !found; i -= 1) {
 	
-								var found = false;
+								stepsCount += 1;
 	
-								var stepsCount = 0;
+								var step = data.history[i];
 	
-								for (var i = data.history.length - 1; i >= 0 && !found; i -= 1) {
+								// find action end
+								// for(let atomIndex in step) {
 	
-									stepsCount += 1;
+								// 	let atom = step[atomIndex];
 	
-									var step = data.history[i];
+								// 	if(
+								// 		!found                                   &&
+								// 		typeof atom.rollerActionEnd == "string"  &&
+								// 		       atom.rollerActionEnd == deck.name
+								// 	) {
+								// 		// break rewind
+								// 		return;
+								// 	}
+								// }
 	
-									// find action end
-									// for(let atomIndex in step) {
+								for (var atomIndex in step) {
 	
-									// 	let atom = step[atomIndex];
+									var atom = step[atomIndex];
 	
-									// 	if(
-									// 		!found                                   &&
-									// 		typeof atom.rollerActionEnd == "string"  &&
-									// 		       atom.rollerActionEnd == deck.name
-									// 	) {
-									// 		// break rewind
-									// 		return;
-									// 	}
-									// }
+									// rewind
+									if (!found && typeof atom.rollerActionStart == "string" && atom.rollerActionStart == deck.name) {
 	
-									for (var atomIndex in step) {
+										found = true;
 	
-										var atom = step[atomIndex];
+										_event2.default.dispatch('resetHistory');
 	
-										// rewind
-										if (!found && typeof atom.rollerActionStart == "string" && atom.rollerActionStart == deck.name) {
-	
-											found = true;
-	
-											_event2.default.dispatch('resetHistory');
-	
-											for (var _i = 0; _i < stepsCount; _i += 1) {
-												data.undo();
-											}
-	
-											// reset deck
-											deck.showCards(false); // no redraw, add in history
-											deck.flipAllCards(false); // no redraw, add in history
-	
-											// rewindStatus = 'done';
-	
-											// reset
-											// если ход в истории найден раньше начала прокруток остановить rewind
-										} else if (!found && atom.move) {
-	
-											// Swap
-											for (var _i2 = 0; _i2 < (unflipCardsCount / 2 | 0); _i2 += 1) {
-	
-												var _next = unflipCardsCount - _i2 - 1;
-	
-												if (_i2 < _next) {
-													_atom2.default.swap(deck, _i2, _next, true);
-												}
-											}
-	
-											// Hide visible flipped cards
-											for (var _i3 = 0; _i3 < unflipCardsCount; _i3 += 1) {
-	
-												deck.hideCardByIndex(_i3, true);
-	
-												// save step
-												_event2.default.dispatch('addStep', {
-													"hide": {
-														"cardIndex": _i3,
-														"cardName": deck.cards[_i3].name,
-														"deckName": deck.name
-													}
-												});
-											}
-	
-											found = true;
-	
-											// reset deck
-											deck.showCards(false, true); // no redraw, add in history
-											deck.flipAllCards(false, true); // no redraw, add in history
-	
-											deck.Redraw();
-	
-											_event2.default.dispatch('saveSteps');
-	
-											// rewindStatus = 'break';
+										for (var _i = 0; _i < stepsCount; _i += 1) {
+											data.undo();
 										}
+	
+										// reset deck
+										deck.showCards(false); // no redraw, add in history
+										deck.flipAllCards(false); // no redraw, add in history
+	
+										// rewindStatus = 'done';
+	
+										// reset
+										// если ход в истории найден раньше начала прокруток остановить rewind
+									} else if (!found && atom.move) {
+	
+										// Swap
+										for (var _i2 = 0; _i2 < (_unflipCardsCount / 2 | 0); _i2 += 1) {
+	
+											var _next = _unflipCardsCount - _i2 - 1;
+	
+											if (_i2 < _next) {
+												_atom2.default.swap(deck, _i2, _next, true);
+											}
+										}
+	
+										// Hide visible flipped cards
+										for (var _i3 = 0; _i3 < _unflipCardsCount; _i3 += 1) {
+	
+											deck.hideCardByIndex(_i3, true);
+	
+											// save step
+											_event2.default.dispatch('addStep', {
+												"hide": {
+													"cardIndex": _i3,
+													"cardName": deck.cards[_i3].name,
+													"deckName": deck.name
+												}
+											});
+										}
+	
+										found = true;
+	
+										// reset deck
+										deck.showCards(false, true); // no redraw, add in history
+										deck.flipAllCards(false, true); // no redraw, add in history
+	
+										deck.Redraw();
+	
+										_event2.default.dispatch('saveSteps');
+	
+										// rewindStatus = 'break';
 									}
 								}
-							});
-	
-							// Restore deck
-	
-							// количество скрытых карт
-							hiddenCardsCount = deck.cardsCount({
-								"visible": false
-							});
-	
-							// ещё есть скрытые карты
-							if (hiddenCardsCount > 0) {
-	
-								deck.showCards(false, true); // no redraw
-								deck.flipAllCards(false, true); // no redraw
-	
-								// event.dispatch('saveSteps');
-								_this2.run(deck, data);
-	
-								deck.Redraw();
 							}
+						});
 	
-							return {
-								v: void 0
-							};
+						// Restore deck
+	
+						// количество скрытых карт
+						hiddenCardsCount = deck.cardsCount({
+							"visible": false
+						});
+	
+						// ещё есть скрытые карты
+						if (hiddenCardsCount > 0) {
+	
+							deck.showCards(false, true); // no redraw
+							deck.flipAllCards(false, true); // no redraw
+	
+							// event.dispatch('saveSteps');
+							this.run(deck, data);
+	
+							deck.Redraw();
 						}
 	
-						// первая прокрутка
-						if (hiddenCardsCount == 0 && // нет скрытых карт
-						unflipCardsCount == 0 // нет открытых видимых карт
-						) {
+						return;
+					}
+	
+					// первая прокрутка
+					if (hiddenCardsCount == 0 && // нет скрытых карт
+					_unflipCardsCount == 0 // нет открытых видимых карт
+					) {
+							_event2.default.dispatch('addStep', {
+								"rollerActionStart": deck.name
+							});
+						}
+	
+					// количество скрываемых дальше открытых карт
+					var unflippedCount = 0;
+	
+					// скрываем открытые видимые карты
+					if (_unflipCardsCount > 0) {
+	
+						var cards = deck.getCards();
+	
+						for (var i in cards) {
+	
+							if (cards[i].flip == false) {
+	
+								unflippedCount += 1;
+	
+								deck.hideCardByIndex(i);
+	
 								_event2.default.dispatch('addStep', {
-									"rollerActionStart": deck.name
+									"hide": {
+										"cardIndex": i,
+										"cardName": deck.cards[i].name,
+										"deckName": deck.name
+									}
 								});
 							}
+						}
+					}
 	
-						// количество скрываемых дальше открытых карт
-						var unflippedCount = 0;
+					// далее карты выкладываются в обратном порядке
+					// поэтому возвращаем выложенные на предыдущей итерации карты в исходное положение
+					if (openCount > 1) {
 	
-						// скрываем открытые видимые карты
-						if (unflipCardsCount > 0) {
+						for (var _i4 = cardsCount - unflippedCount; _i4 < cardsCount; _i4 += 1) {
 	
-							var cards = deck.getCards();
+							var _next2 = cardsCount * 2 - _i4 - unflippedCount - 1;
 	
-							for (var i in cards) {
-	
-								if (cards[i].flip == false) {
-	
-									unflippedCount += 1;
-	
-									deck.hideCardByIndex(i);
-	
-									_event2.default.dispatch('addStep', {
-										"hide": {
-											"cardIndex": i,
-											"cardName": deck.cards[i].name,
-											"deckName": deck.name
-										}
-									});
-								}
+							if (_i4 < _next2) {
+								_atom2.default.swap(deck, _i4, _next2, true);
 							}
 						}
+					}
 	
-						// далее карты выкладываются в обратном порядке
-						// поэтому возвращаем выложенные на предыдущей итерации карты в исходное положение
-						if (openCount > 1) {
+					// количество открытых дальше карт (карт в стопке могло остаться меньше трёх)
+					unflippedCount = 0;
 	
-							for (var _i4 = cardsCount - unflippedCount; _i4 < cardsCount; _i4 += 1) {
+					// открываем следующие openCount|3 карт
+					for (var _i5 = flipCardsCount - 1; _i5 >= 0 && _i5 >= flipCardsCount - openCount; _i5 -= 1) {
 	
-								var _next2 = cardsCount * 2 - _i4 - unflippedCount - 1;
+						unflippedCount += 1;
 	
-								if (_i4 < _next2) {
-									_atom2.default.swap(deck, _i4, _next2, true);
-								}
+						deck.cards[_i5].flip = false;
+	
+						_event2.default.dispatch('addStep', {
+							"unflip": {
+								"cardIndex": _i5,
+								"cardName": deck.cards[_i5].name,
+								"deckName": deck.name
 							}
-						}
-	
-						// количество открытых дальше карт (карт в стопке могло остаться меньше трёх)
-						unflippedCount = 0;
-	
-						// открываем следующие openCount|3 карт
-						for (var _i5 = flipCardsCount - 1; _i5 >= 0 && _i5 >= flipCardsCount - openCount; _i5 -= 1) {
-	
-							unflippedCount += 1;
-	
-							deck.cards[_i5].flip = false;
-	
-							_event2.default.dispatch('addStep', {
-								"unflip": {
-									"cardIndex": _i5,
-									"cardName": deck.cards[_i5].name,
-									"deckName": deck.name
-								}
-							});
-						}
-	
-						// количество видимых карт
-						cardsCount = deck.cardsCount({
-							"visible": true
 						});
+					}
 	
-						// карты выкладываются в обратном порядке
-						if (openCount > 1 // &&
-						// unflippedCount
-						) {
+					// количество видимых карт
+					cardsCount = deck.cardsCount({
+						"visible": true
+					});
 	
-								for (var _i6 = cardsCount - unflippedCount; _i6 < cardsCount; _i6 += 1) {
+					// карты выкладываются в обратном порядке
+					if (openCount > 1 // &&
+					// unflippedCount
+					) {
 	
-									var _next3 = cardsCount * 2 - _i6 - unflippedCount - 1;
+							for (var _i6 = cardsCount - unflippedCount; _i6 < cardsCount; _i6 += 1) {
 	
-									if (_i6 < _next3) {
-										_atom2.default.swap(deck, _i6, _next3, true);
-									}
+								var _next3 = cardsCount * 2 - _i6 - unflippedCount - 1;
+	
+								if (_i6 < _next3) {
+									_atom2.default.swap(deck, _i6, _next3, true);
 								}
 							}
+						}
 	
-						_event2.default.dispatch('saveSteps');
+					_event2.default.dispatch('saveSteps');
 	
-						// нет видимых карт
-					}();
-	
-					if ((typeof _ret === 'undefined' ? 'undefined' : _typeof(_ret)) === "object") return _ret.v;
+					// нет видимых карт
 				} else {
 	
 					// Restore deck
@@ -8252,9 +8240,9 @@ var SolitaireEngine =
 	
 	exports.default = new rollerAction();
 
-/***/ },
+/***/ }),
 /* 40 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
@@ -8366,9 +8354,9 @@ var SolitaireEngine =
 		return rulesCorrect;
 	};
 
-/***/ },
+/***/ }),
 /* 41 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
@@ -8456,9 +8444,9 @@ var SolitaireEngine =
 		return rulesCorrect;
 	};
 
-/***/ },
+/***/ }),
 /* 42 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
@@ -8536,9 +8524,9 @@ var SolitaireEngine =
 			return false;
 	};
 
-/***/ },
+/***/ }),
 /* 43 */
-/***/ function(module, exports) {
+/***/ (function(module, exports) {
 
 	'use strict';
 	
@@ -8562,9 +8550,9 @@ var SolitaireEngine =
 		return _deck;
 	};
 
-/***/ },
+/***/ }),
 /* 44 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
@@ -8596,9 +8584,9 @@ var SolitaireEngine =
 		}
 	};
 
-/***/ },
+/***/ }),
 /* 45 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
@@ -8643,9 +8631,9 @@ var SolitaireEngine =
 	
 	exports.default = applyChangedParameters;
 
-/***/ },
+/***/ }),
 /* 46 */
-/***/ function(module, exports) {
+/***/ (function(module, exports) {
 
 	'use strict';
 	
@@ -8726,9 +8714,9 @@ var SolitaireEngine =
 		};
 	};
 
-/***/ },
+/***/ }),
 /* 47 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
@@ -8834,9 +8822,9 @@ var SolitaireEngine =
 		};
 	};
 
-/***/ },
+/***/ }),
 /* 48 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	/*
 	 * генерация стопок в группах
@@ -8878,9 +8866,9 @@ var SolitaireEngine =
 		// "round"   :   roundGenerator
 	};
 
-/***/ },
+/***/ }),
 /* 49 */
-/***/ function(module, exports) {
+/***/ (function(module, exports) {
 
 	/*
 	 * сгенерировать ряд из N карт
@@ -8914,9 +8902,9 @@ var SolitaireEngine =
 		return _decks;
 	};
 
-/***/ },
+/***/ }),
 /* 50 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	/*
 	 * сгенерировать группу для полумесяца
@@ -8996,9 +8984,9 @@ var SolitaireEngine =
 		return _decks;
 	};
 
-/***/ },
+/***/ }),
 /* 51 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	/*
 	 * сгенерировать группу из матрицы
@@ -9136,9 +9124,9 @@ var SolitaireEngine =
 		return _decks;
 	};
 
-/***/ },
+/***/ }),
 /* 52 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
@@ -9171,9 +9159,9 @@ var SolitaireEngine =
 		"lineBesideRelations": _lineBesideRelations2.default
 	};
 
-/***/ },
+/***/ }),
 /* 53 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
@@ -9285,9 +9273,9 @@ var SolitaireEngine =
 		return _relations;
 	};
 
-/***/ },
+/***/ }),
 /* 54 */
-/***/ function(module, exports) {
+/***/ (function(module, exports) {
 
 	'use strict';
 	
@@ -9343,9 +9331,9 @@ var SolitaireEngine =
 		exist: exist
 	};
 
-/***/ },
+/***/ }),
 /* 55 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
@@ -9379,9 +9367,9 @@ var SolitaireEngine =
 		return _relations;
 	};
 
-/***/ },
+/***/ }),
 /* 56 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
@@ -9448,9 +9436,9 @@ var SolitaireEngine =
 		return _relations;
 	};
 
-/***/ },
+/***/ }),
 /* 57 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
@@ -9492,9 +9480,9 @@ var SolitaireEngine =
 		return _relations;
 	};
 
-/***/ },
+/***/ }),
 /* 58 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	/*
 	 * сгенерировать ряд из N карт
@@ -9598,9 +9586,9 @@ var SolitaireEngine =
 		return _decks;
 	};
 
-/***/ },
+/***/ }),
 /* 59 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
@@ -9638,9 +9626,9 @@ var SolitaireEngine =
 		return _autosteps;
 	};
 
-/***/ },
+/***/ }),
 /* 60 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
@@ -9788,9 +9776,9 @@ var SolitaireEngine =
 	
 	exports.default = fallAutoStep;
 
-/***/ },
+/***/ }),
 /* 61 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
@@ -9899,11 +9887,11 @@ var SolitaireEngine =
 				if (this.dispatch) {
 	
 					var _data = {
-						"stepType": _share2.default.get('stepType') // TODO defaults.stepType | _stepType
+						"stepType": _share2.default.get('stepType' // TODO defaults.stepType | _stepType
 						// "callback" : e => {
 						// 	share.set('stepType', defaults.stepType);
 						// }
-					};
+						) };
 	
 					if (data) {
 						for (var valueName in data) {
@@ -9928,9 +9916,9 @@ var SolitaireEngine =
 	
 				if (this.event) {
 					_event2.default.listen(this.event, function (data) {
-						if (!_share2.default.get('gameIsWon')) {
-							_this.start(data);
-						}
+						// if(!share.get('gameIsWon')) {
+						_this.start(data);
+						// }
 					});
 				}
 	
@@ -9956,9 +9944,9 @@ var SolitaireEngine =
 
 	exports.default = _class;
 
-/***/ },
+/***/ }),
 /* 62 */
-/***/ function(module, exports) {
+/***/ (function(module, exports) {
 
 	'use strict';
 	
@@ -10035,9 +10023,9 @@ var SolitaireEngine =
 	
 	exports.default = new storage();
 
-/***/ },
+/***/ }),
 /* 63 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
@@ -10128,9 +10116,9 @@ var SolitaireEngine =
 	
 	_event2.default.listen('autoMoveToHome', autoMoveToHome);
 
-/***/ },
+/***/ }),
 /* 64 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
@@ -10163,15 +10151,15 @@ var SolitaireEngine =
 		} catch (e) {}
 	};
 
-/***/ },
+/***/ }),
 /* 65 */
-/***/ function(module, exports) {
+/***/ (function(module, exports) {
 
 	module.exports = "<div id=\"solitaire-engine-style-preferences\">\n\t<h4>Настройки оформления</h4>\n\t<div>\n\t\t<span class=\"solitaire-engine-style-preferences-label\">Фон:</span>\n\t\t<!-- <select id=\"pref_field\" class=\"solitaire-engine-style-preferences-element\"> -->\n\t\t<label>\n\t\t\t<input type=\"radio\" name=\"pref_field\" value=\"default_field\">\n\t\t\tКлассический\n\t\t</label>\n\t\t<label>\n\t\t\t<input type=\"radio\" name=\"pref_field\" value=\"alternative_field\">\n\t\t\tАльтернативный\n\t\t</label>\n\t\t<!-- </select> -->\n\t</div>\n\t<div>\n\t\t<span class=\"solitaire-engine-style-preferences-label\">Лицевая сторона:</span>\n\t\t<!-- <select id=\"pref_face\" class=\"solitaire-engine-style-preferences-element\"> -->\n\t\t<label>\n\t\t\t<input type=\"radio\" name=\"pref_face\" value=\"default_face\">\n\t\t\tКлассическая\n\t\t</label>\n\t\t<label>\n\t\t\t<input type=\"radio\" name=\"pref_face\" value=\"alternative_face\">\n\t\t\tАнгло-американская\n\t\t</label>\n\t\t<!-- </select> -->\n\t</div>\n\t<div>\n\t\t<span class=\"solitaire-engine-style-preferences-label\">Рубашка:</span>\n\t\t<!-- <select id=\"pref_back\" class=\"solitaire-engine-style-preferences-element\"> -->\n\t\t<label>\n\t\t\t<input type=\"radio\" name=\"pref_back\" value=\"default_back\">\n\t\t\tКлассическая\n\t\t</label>\n\t\t<label>\n\t\t\t<input type=\"radio\" name=\"pref_back\" value=\"alternative_back\">\n\t\t\tАльтернативная\n\t\t</label>\n\t\t<!-- <label>\n\t\t\t<input type=\"radio\" name=\"pref_back\" value=\"red_back\">\n\t\t\tКрасная\n\t\t</label>\n\t\t<label>\n\t\t\t<input type=\"radio\" name=\"pref_back\" value=\"blue_back\">\n\t\t\tСиняя\n\t\t</label> -->\n\t\t<!-- </select> -->\n\t</div>\n\t<div id=\"gamePreferences\"></div>\n\t<!-- <div>\n\t\t<span class=\"solitaire-engine-style-preferences-label\">Пустая ячейка:</span>\n\t\t<select id=\"pref_empty\" class=\"solitaire-engine-style-preferences-element\">\n\t\t\t<option value=0>Классическая</option>\n\t\t\t<option value=1>С обводкой</option>\n\t\t</select>\n\t</div> -->\n</div>";
 
-/***/ },
+/***/ }),
 /* 66 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
@@ -10289,9 +10277,9 @@ var SolitaireEngine =
 		} catch (e) {}
 	};
 
-/***/ },
+/***/ }),
 /* 67 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
@@ -10396,9 +10384,9 @@ var SolitaireEngine =
 	
 	exports.default = new gamePreferences();
 
-/***/ },
+/***/ }),
 /* 68 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
@@ -10464,9 +10452,9 @@ var SolitaireEngine =
 		_event2.default.dispatch('fieldThemesSet', pref);
 	};
 
-/***/ },
+/***/ }),
 /* 69 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
@@ -10545,9 +10533,9 @@ var SolitaireEngine =
 		}
 	});
 
-/***/ },
+/***/ }),
 /* 70 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
@@ -10646,9 +10634,9 @@ var SolitaireEngine =
 	
 	_event2.default.listen('click:unflipCard', showFlipCardOnMove);
 
-/***/ },
+/***/ }),
 /* 71 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
@@ -10745,9 +10733,9 @@ var SolitaireEngine =
 	
 	exports.default = _allEl;
 
-/***/ },
+/***/ }),
 /* 72 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
@@ -11173,9 +11161,9 @@ var SolitaireEngine =
 	
 	exports.default = elClass;
 
-/***/ },
+/***/ }),
 /* 73 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
@@ -11345,9 +11333,9 @@ var SolitaireEngine =
 	
 	exports.default = allElClass;
 
-/***/ },
+/***/ }),
 /* 74 */
-/***/ function(module, exports) {
+/***/ (function(module, exports) {
 
 	'use strict';
 	
@@ -11395,9 +11383,9 @@ var SolitaireEngine =
 		"intersect": intersect
 	};
 
-/***/ },
+/***/ }),
 /* 75 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
@@ -11635,9 +11623,9 @@ var SolitaireEngine =
 	
 	_event2.default.listen('move', Move);
 
-/***/ },
+/***/ }),
 /* 76 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
@@ -11729,9 +11717,9 @@ var SolitaireEngine =
 		(0, _elRender2.default)(target).hide();
 	});
 
-/***/ },
+/***/ }),
 /* 77 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
@@ -11800,9 +11788,9 @@ var SolitaireEngine =
 		_share2.default.set('domElement:field', domElement);
 	});
 
-/***/ },
+/***/ }),
 /* 78 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
@@ -11975,9 +11963,9 @@ var SolitaireEngine =
 		}
 	});
 
-/***/ },
+/***/ }),
 /* 79 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
@@ -12126,9 +12114,9 @@ var SolitaireEngine =
 	// 	}
 	// });
 
-/***/ },
+/***/ }),
 /* 80 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
@@ -12182,9 +12170,9 @@ var SolitaireEngine =
 		}
 	});
 
-/***/ },
+/***/ }),
 /* 81 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
@@ -12337,18 +12325,17 @@ var SolitaireEngine =
 				"left": _position.x + (data.x - data.startCursor.x) / _zoom + 'px',
 				"top": _position.y + (data.y - data.startCursor.y) / _zoom + 'px',
 				"z-index": _defaults2.default.topZIndex + (i | 0)
-			};
 	
-			// Operations with DOM
-			var _cardDomElement3 = _share2.default.get('domElement:' + data.dragDeck[i].card.id);
+				// Operations with DOM
+			};var _cardDomElement3 = _share2.default.get('domElement:' + data.dragDeck[i].card.id);
 	
 			(0, _elRender2.default)(_cardDomElement3).css(_params);
 		}
 	});
 
-/***/ },
+/***/ }),
 /* 82 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
@@ -12403,9 +12390,9 @@ var SolitaireEngine =
 		}
 	});
 
-/***/ },
+/***/ }),
 /* 83 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
@@ -12454,33 +12441,33 @@ var SolitaireEngine =
 			}
 	});
 
-/***/ },
+/***/ }),
 /* 84 */
-/***/ function(module, exports) {
+/***/ (function(module, exports) {
 
 	// removed by extract-text-webpack-plugin
 
-/***/ },
+/***/ }),
 /* 85 */
-/***/ function(module, exports) {
+/***/ (function(module, exports) {
 
 	// removed by extract-text-webpack-plugin
 
-/***/ },
+/***/ }),
 /* 86 */
-/***/ function(module, exports) {
+/***/ (function(module, exports) {
 
 	// removed by extract-text-webpack-plugin
 
-/***/ },
+/***/ }),
 /* 87 */
-/***/ function(module, exports) {
+/***/ (function(module, exports) {
 
 	// removed by extract-text-webpack-plugin
 
-/***/ },
+/***/ }),
 /* 88 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
@@ -12552,21 +12539,23 @@ var SolitaireEngine =
 			rulesCorrect = rulesCorrect && _winCheckRules2.default.newerWin();
 		}
 	
-		if (rulesCorrect || _share2.default.get('gameIsWon')) {
+		if (rulesCorrect //          ||
+		// share.get('gameIsWon')
+		) {
 	
-			if (params && params.noCallback) {
+				if (params && params.noCallback) {
+					return true;
+				}
+	
+				// show you win message
+				_event2.default.dispatch('win', params);
+	
+				_share2.default.set('gameIsWon', true);
+	
+				console.log('WIN');
+	
 				return true;
 			}
-	
-			// show you win message
-			_event2.default.dispatch('win', params);
-	
-			_share2.default.set('gameIsWon', true);
-	
-			console.log('WIN');
-	
-			return true;
-		}
 	
 		return false;
 	};
@@ -12592,9 +12581,9 @@ var SolitaireEngine =
 		"hwinCheck": hwinCheck
 	};
 
-/***/ },
+/***/ }),
 /* 89 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
@@ -12981,9 +12970,9 @@ var SolitaireEngine =
 	
 	exports.default = winCheckRules;
 
-/***/ },
+/***/ }),
 /* 90 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
@@ -13143,9 +13132,9 @@ var SolitaireEngine =
 		return _deck;
 	};
 
-/***/ },
+/***/ }),
 /* 91 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
@@ -13238,7 +13227,7 @@ var SolitaireEngine =
 	
 	var logCardsInDeck = function logCardsInDeck(deck) {
 	
-		var _log = [deck.name + ': '];
+		var _log = [deck.name + ' (' + deck.cards.length + '): '];
 	
 		var _iteratorNormalCompletion = true;
 		var _didIteratorError = false;
@@ -13327,6 +13316,8 @@ var SolitaireEngine =
 	
 			console.log('stepType:', _share2.default.get('stepType'));
 		}
+	
+		// console.log('keyUp:', e);
 	};
 	
 	exports.default = {
@@ -13342,6 +13333,6 @@ var SolitaireEngine =
 		mapCommon: _mapCommon2.default
 	};
 
-/***/ }
+/***/ })
 /******/ ]);
 //# sourceMappingURL=SolitaireEngine.js.map

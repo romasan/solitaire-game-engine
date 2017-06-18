@@ -64,7 +64,7 @@ let eachDecksInGroup = (groupName, callback) => {
 
 let logCardsInDeck = deck => {
 
-	let _log = [deck.name + ': '];
+	let _log = [deck.name + ' (' + deck.cards.length + '): '];
 
 	for(let card of deck.cards) {
 		_log[0] += '%c' + card.name + '%c ';
@@ -141,6 +141,8 @@ document.onkeyup = e => {
 
 		console.log('stepType:', share.get('stepType'));
 	}
+
+	// console.log('keyUp:', e);
 }
 
 export default {

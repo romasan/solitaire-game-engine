@@ -58,8 +58,8 @@ let winCheck = params => {
 	}
 
 	if(
-		rulesCorrect           ||
-		share.get('gameIsWon')
+		rulesCorrect //          ||
+		// share.get('gameIsWon')
 	) {
 
 		if(params && params.noCallback) {

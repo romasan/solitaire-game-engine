@@ -108,9 +108,9 @@ export default class {
 
 		if(this.event) {
 			event.listen(this.event, data => {
-				if(!share.get('gameIsWon')) {
-					this.start(data);
-				}
+				// if(!share.get('gameIsWon')) {
+				this.start(data);
+				// }
 			});
 		}
 		
