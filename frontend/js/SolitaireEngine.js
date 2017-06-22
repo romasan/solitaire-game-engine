@@ -126,7 +126,7 @@ var SolitaireEngine =
 	exports.options = _defaults2.default;
 	exports.winCheck = _winCheck2.default.hwinCheck;
 	exports.generator = _deckGenerator2.default;
-	exports.version = (90914911326).toString().split(9).slice(1).map(function (e) {
+	exports.version = (90914911402).toString().split(9).slice(1).map(function (e) {
 		return parseInt(e, 8);
 	}).join('.');
 	
@@ -430,9 +430,9 @@ var SolitaireEngine =
 								},
 	
 								"gameInfo": {
-									"gameIsWon": _share2.default.get('gameIsWon'
+									"gameIsWon": _share2.default.get('gameIsWon')
 									// "isCurLock" : null
-									) }
+								}
 							});
 	
 							if (this._events[eventName][i].once) {
@@ -632,7 +632,7 @@ var SolitaireEngine =
 		"move_distance": 10,
 		"debugLabels": false,
 	
-		"startZIndex": 100,
+		"startZIndex": 10,
 		"topZIndex": 900,
 	
 		// Card
@@ -764,6 +764,8 @@ var SolitaireEngine =
 				var lastTime = null;
 				var breakUp = false;
 	
+				// Mouse events
+	
 				document.body.addEventListener('mousedown', function (data) {
 	
 					if (data.button !== 0) {
@@ -813,26 +815,6 @@ var SolitaireEngine =
 					_this.put(data.target, data.clientX, data.clientY);
 				});
 	
-				// TODO
-				// Решение: (if distance > 0)
-				// Click
-				// Click
-				// Dblclick
-	
-				// let timeoutId = null;
-				// document.onmouseup = (e) {
-				// 	timeoutId && timeoutId = setTimeout(() => {
-				// 		this.put(e.target, e.clientX, e.clientY);
-				// 		timeoutId = null;
-				// 	}, 500);
-				// };
-				// document.ondblclick =function(){
-				// 	clearTimeout(timeoutId);
-				// 	this.take(e.target, e.clientX, e.clientY);
-				// 	this.put(e.target, e.clientX, e.clientY, true);
-				// 	common.curUnLock();
-				// };
-	
 				document.body.addEventListener('dblclick', function (data) {
 	
 					// event.dispatch('stopAnimations');
@@ -843,28 +825,39 @@ var SolitaireEngine =
 					_common2.default.curUnLock();
 				});
 	
-				document.body.addEventListener('touchstart', function (data) {
+				// Touch events
 	
-					data.preventDefault();
+				window.addEventListener('touchstart', function (data) {
 	
 					_this.take(data.target, data.touches[0].clientX, data.touches[0].clientY);
-				}, false);
 	
-				document.body.addEventListener('touchmove', function (data) {
+					if (data.target.className.split(' ').indexOf('card') >= 0) {
+						data.preventDefault();
+						return false;
+					}
+				}, { "passive": false });
 	
-					// if(share.get('startCursor')) {
-					data.preventDefault();
-					// }
+				window.addEventListener('touchmove', function (data) {
 	
 					_this.drag(data.touches[0].clientX, data.touches[0].clientY);
-				}, false);
 	
-				document.body.addEventListener('touchend', function (data) {
+					// if(share.get('startCursor')) {
+					if (data.target.className.split(' ').indexOf('card') >= 0) {
+						data.preventDefault();
+						// data.stopPropagation();
+						return false;
+					}
+				}, { "passive": false });
 	
-					data.preventDefault();
+				window.addEventListener('touchend', function (data) {
 	
 					_this.put(data.changedTouches[0].target, data.changedTouches[0].clientX, data.changedTouches[0].clientY);
-				}, false);
+	
+					if (data.target.className.split(' ').indexOf('card') >= 0) {
+						data.preventDefault();
+						return false;
+					}
+				}, { "passive": false });
 			} catch (e) {}
 		}
 	
@@ -4118,11 +4111,11 @@ var SolitaireEngine =
 		},
 	
 		"topUnflip": function topUnflip(i, length, data, arg) {
-			return flipTypes._direction_type("top", "unflip", i, length, data, arg
+			return flipTypes._direction_type("top", "unflip", i, length, data, arg);
+		}
 	
-			// TODO topFlip:counter, topUnflip:counter, bottomFlip:counter, bottomUnflip:counter
-			);
-		} };
+		// TODO topFlip:counter, topUnflip:counter, bottomFlip:counter, bottomUnflip:counter
+	};
 	
 	exports.default = flipTypes;
 
@@ -7385,9 +7378,8 @@ var SolitaireEngine =
 						}
 					};
 	
-					_event2.default.listen('makeStep', _callback2
+					_event2.default.listen('makeStep', _callback2);
 					// event.dispatch(data.actionData.dispatch)
-					);
 				}
 			}
 		}, {
@@ -9887,11 +9879,11 @@ var SolitaireEngine =
 				if (this.dispatch) {
 	
 					var _data = {
-						"stepType": _share2.default.get('stepType' // TODO defaults.stepType | _stepType
+						"stepType": _share2.default.get('stepType') // TODO defaults.stepType | _stepType
 						// "callback" : e => {
 						// 	share.set('stepType', defaults.stepType);
 						// }
-						) };
+					};
 	
 					if (data) {
 						for (var valueName in data) {
@@ -12539,23 +12531,21 @@ var SolitaireEngine =
 			rulesCorrect = rulesCorrect && _winCheckRules2.default.newerWin();
 		}
 	
-		if (rulesCorrect //          ||
-		// share.get('gameIsWon')
-		) {
+		if (rulesCorrect || _share2.default.get('gameIsWon')) {
 	
-				if (params && params.noCallback) {
-					return true;
-				}
-	
-				// show you win message
-				_event2.default.dispatch('win', params);
-	
-				_share2.default.set('gameIsWon', true);
-	
-				console.log('WIN');
-	
+			if (params && params.noCallback) {
 				return true;
 			}
+	
+			// show you win message
+			_event2.default.dispatch('win', params);
+	
+			_share2.default.set('gameIsWon', true);
+	
+			console.log('WIN');
+	
+			return true;
+		}
 	
 		return false;
 	};

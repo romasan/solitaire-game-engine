@@ -71,6 +71,8 @@ class inputsClass {
 			let lastTime = null;
 			let breakUp = false;
 
+			// Mouse events
+
 			document.body.addEventListener('mousedown', data => {
 
 				if(data.button !== 0) {
@@ -125,26 +127,6 @@ class inputsClass {
 				this.put(data.target, data.clientX, data.clientY);
 			});
 
-			// TODO
-			// Решение: (if distance > 0)
-			// Click
-			// Click
-			// Dblclick
-
-			// let timeoutId = null;
-			// document.onmouseup = (e) {
-			// 	timeoutId && timeoutId = setTimeout(() => {
-			// 		this.put(e.target, e.clientX, e.clientY);
-			// 		timeoutId = null;
-			// 	}, 500);
-			// };
-			// document.ondblclick =function(){
-			// 	clearTimeout(timeoutId);
-			// 	this.take(e.target, e.clientX, e.clientY);
-			// 	this.put(e.target, e.clientX, e.clientY, true);
-			// 	common.curUnLock();
-			// };
-
 			document.body.addEventListener('dblclick', data => {
 
 				// event.dispatch('stopAnimations');
@@ -155,28 +137,39 @@ class inputsClass {
 				common.curUnLock();
 			});
 
-			document.body.addEventListener('touchstart', data => {
+			// Touch events
 
-				data.preventDefault();
+			window.addEventListener('touchstart', data => {
 
-				this.take(data.target, data.touches[0].clientX, data.touches[0].clientY)
-			}, false);
+				this.take(data.target, data.touches[0].clientX, data.touches[0].clientY);
 
-			document.body.addEventListener('touchmove', data => {
+				if(data.target.className.split(' ').indexOf('card') >= 0) {
+					data.preventDefault();
+					return false;
+				}
+			}, {"passive" : false});
+
+			window.addEventListener('touchmove', data => {
+
+				this.drag(data.touches[0].clientX, data.touches[0].clientY);
 
 				// if(share.get('startCursor')) {
-				data.preventDefault();
-				// }
+				if(data.target.className.split(' ').indexOf('card') >= 0) {
+					data.preventDefault();
+					// data.stopPropagation();
+					return false;
+				}
+			}, {"passive" : false});
 
-				this.drag(data.touches[0].clientX, data.touches[0].clientY)
-			}, false);
-
-			document.body.addEventListener('touchend', data => {
-
-				data.preventDefault();
+			window.addEventListener('touchend', data => {
 
 				this.put(data.changedTouches[0].target, data.changedTouches[0].clientX, data.changedTouches[0].clientY);
-			}, false);
+
+				if(data.target.className.split(' ').indexOf('card') >= 0) {
+					data.preventDefault();
+					return false;
+				}
+			}, {"passive" : false});
 		} catch(e) {}
 	}
 

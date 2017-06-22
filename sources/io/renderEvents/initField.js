@@ -20,7 +20,7 @@ event.listen('initField', data => {
 			domElement = document.getElementsByTagName(domElement);
 		}
 		if(!domElement) {
-			domElement = document.getElementById('mat')
+			domElement = document.getElementById('mat');
 		}
 	};
 

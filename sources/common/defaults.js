@@ -84,7 +84,7 @@ export default {
 	"move_distance"       : 10        ,
 	"debugLabels"         : false     ,
 
-	"startZIndex"         : 100       ,
+	"startZIndex"         : 10        ,
 	"topZIndex"           : 900       ,
 
 // Card

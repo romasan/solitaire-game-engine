@@ -134,6 +134,10 @@
   border-radius: 3px;
   display: inline-block;
   margin: 0px; }
+
+.card.flip {
+  background: none;
+  background-image: none; }
 .default_field {
   background: green; }
 
