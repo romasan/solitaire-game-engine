@@ -282,21 +282,40 @@ event.listen('historyReapeater', data => {
 
 share.set('stepType', defaults.stepType);
 
+// Input modes
+
 // Markers
 
-let toggleMarkerMode = e => {
+let toggleMarkerMode = data => {
+
+	// if(data && data.exit) {
+	// 	return
+	// }
 
 	let mode = share.get('markerMode');
 
 	share.set('markerMode', !mode);
 
 	event.dispatch('markerMode:toggled', mode);
+
+	// выключить остальные режимы
+	if(share.get('specialStepMode')) {
+		toggleSpecialStepMode({
+			"exit" : exit
+		});
+	}
 };
 event.listen('toggleMarkerMode', toggleMarkerMode);
 
 // Special step (rewind to step with card)
 
-let toggleSpecialStepMode = done => {
+let toggleSpecialStepMode = data => {
+
+	// if(data && data.exit) {
+	// 	return;
+	// }
+
+	console.log('toggleSpecialStepMode:', data);
 
 	let mode = share.get('specialStepMode');
 
@@ -306,22 +325,23 @@ let toggleSpecialStepMode = done => {
 	
 	if(!mode) {
 		el.addClass('specialStepMark');
+
+		// выключить остальные режимы
+		if(share.get('markerMode')) {
+			toggleMarkerMode({
+				"exit" : true
+			});
+		}
 	} else {
 		el.removeClass('specialStepMark');
 	}
 
 	event.dispatch('specialStepMode:toggled', {
 		"mode" : mode,
-		"done" : done
+		"done" : data && data.done ? true : false
 	});
 };
 event.listen('toggleSpecialStepMode', toggleSpecialStepMode);
-
-// document.onkeydown = e => {
-// 	if([32, 37, 39].indexOf(e.keyCode) >= 0) {
-// 		e.preventDefault();
-// 	}
-// }
 
 export default {
 	"isCurLock"         : isCurLock        ,

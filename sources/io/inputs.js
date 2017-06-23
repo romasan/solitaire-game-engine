@@ -16,53 +16,12 @@ import geometry from 'geometry';
  * put
  */
 
-// class inputLog() {
-// 
-// 	constructor() {
-// 
-// 		this._log = [];
-// 		this._maxLength = 3;
-// 	}
-// 
-// 	push(eventName, date = new Date().getTime()) {
-// 
-// 		if(!eventName) {
-// 			return;
-// 		}
-// 
-// 		this.log.push({
-// 			"date"  : date,
-// 			"event" : eventName
-// 		});
-// 
-// 		if(this._log.length > this._maxLength) {
-// 			this._log.unshift();
-// 		}
-// 	}
-// }
-
-// let Log = new inputLog();
-
-// let keys = {
-// 	"37" : "left" ,
-// 	"39" : "right"
-// }
-
-// document.addEventListener('keydown', e => {
-// 	if(e.keyCode in keys) {
-// 		Log(keys[e.keyCode]);
-// 	}
-// });
-
 class inputsClass {
 
 	constructor() {
 
 		share.set('dragDeck'   , null);
 		share.set('startCursor', null);
-
-		// event.listen('undo', this._inputUndoRedo());
-		// event.listen('redo', this._inputUndoRedo());
 
 		try {
 
@@ -81,17 +40,17 @@ class inputsClass {
 
 				let newTime = new Date().getTime();
 
-				if(
-					lastCoord                   &&
-					lastCoord.x == data.clientX &&
-					lastCoord.y == data.clientY &&
-					newTime - lastTime < 500
-				) {
+				// if(
+				// 	lastCoord                   &&
+				// 	lastCoord.x == data.clientX &&
+				// 	lastCoord.y == data.clientY &&
+				// 	newTime - lastTime < 500
+				// ) {
 
-					breakUp = true;
+				// 	breakUp = true;
 
-					return;
-				}
+				// 	return;
+				// }
 
 				this.take(data.target, data.clientX, data.clientY);
 
@@ -280,7 +239,9 @@ class inputsClass {
 				event.dispatch('specialStep', {
 					"card" : _card,
 					"callback" : done => {
-						event.dispatch('toggleSpecialStepMode', done);
+						event.dispatch('toggleSpecialStepMode', {
+							"done" : done
+						});
 					}
 				});
 				_deck = null;
@@ -450,7 +411,7 @@ class inputsClass {
 			_deck.Redraw();
 		}
 
-		share.set('lastCursorMove', cursorMove  , defaults.forceClone);
+		share.set('lastCursorMove', cursorMove, defaults.forceClone);
 		share.set('lastDragDeck', {
 			"dragDeckParentId" : _dragDeck[0].card.parent,
 			"dragDeck"         : _dragDeck

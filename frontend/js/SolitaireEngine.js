@@ -126,7 +126,7 @@ var SolitaireEngine =
 	exports.options = _defaults2.default;
 	exports.winCheck = _winCheck2.default.hwinCheck;
 	exports.generator = _deckGenerator2.default;
-	exports.version = (90914911402).toString().split(9).slice(1).map(function (e) {
+	exports.version = (90914911403).toString().split(9).slice(1).map(function (e) {
 		return parseInt(e, 8);
 	}).join('.');
 	
@@ -707,44 +707,6 @@ var SolitaireEngine =
 	 * put
 	 */
 	
-	// class inputLog() {
-	// 
-	// 	constructor() {
-	// 
-	// 		this._log = [];
-	// 		this._maxLength = 3;
-	// 	}
-	// 
-	// 	push(eventName, date = new Date().getTime()) {
-	// 
-	// 		if(!eventName) {
-	// 			return;
-	// 		}
-	// 
-	// 		this.log.push({
-	// 			"date"  : date,
-	// 			"event" : eventName
-	// 		});
-	// 
-	// 		if(this._log.length > this._maxLength) {
-	// 			this._log.unshift();
-	// 		}
-	// 	}
-	// }
-	
-	// let Log = new inputLog();
-	
-	// let keys = {
-	// 	"37" : "left" ,
-	// 	"39" : "right"
-	// }
-	
-	// document.addEventListener('keydown', e => {
-	// 	if(e.keyCode in keys) {
-	// 		Log(keys[e.keyCode]);
-	// 	}
-	// });
-	
 	var inputsClass = function () {
 		function inputsClass() {
 			var _this = this;
@@ -753,9 +715,6 @@ var SolitaireEngine =
 	
 			_share2.default.set('dragDeck', null);
 			_share2.default.set('startCursor', null);
-	
-			// event.listen('undo', this._inputUndoRedo());
-			// event.listen('redo', this._inputUndoRedo());
 	
 			try {
 	
@@ -774,12 +733,17 @@ var SolitaireEngine =
 	
 					var newTime = new Date().getTime();
 	
-					if (lastCoord && lastCoord.x == data.clientX && lastCoord.y == data.clientY && newTime - lastTime < 500) {
+					// if(
+					// 	lastCoord                   &&
+					// 	lastCoord.x == data.clientX &&
+					// 	lastCoord.y == data.clientY &&
+					// 	newTime - lastTime < 500
+					// ) {
 	
-						breakUp = true;
+					// 	breakUp = true;
 	
-						return;
-					}
+					// 	return;
+					// }
 	
 					_this.take(data.target, data.clientX, data.clientY);
 	
@@ -960,7 +924,9 @@ var SolitaireEngine =
 						_event2.default.dispatch('specialStep', {
 							"card": _card,
 							"callback": function callback(done) {
-								_event2.default.dispatch('toggleSpecialStepMode', done);
+								_event2.default.dispatch('toggleSpecialStepMode', {
+									"done": done
+								});
 							}
 						});
 						_deck2 = null;
@@ -1528,21 +1494,40 @@ var SolitaireEngine =
 	
 	_share2.default.set('stepType', _defaults2.default.stepType);
 	
+	// Input modes
+	
 	// Markers
 	
-	var toggleMarkerMode = function toggleMarkerMode(e) {
+	var toggleMarkerMode = function toggleMarkerMode(data) {
+	
+		// if(data && data.exit) {
+		// 	return
+		// }
 	
 		var mode = _share2.default.get('markerMode');
 	
 		_share2.default.set('markerMode', !mode);
 	
 		_event2.default.dispatch('markerMode:toggled', mode);
+	
+		// выключить остальные режимы
+		if (_share2.default.get('specialStepMode')) {
+			toggleSpecialStepMode({
+				"exit": exit
+			});
+		}
 	};
 	_event2.default.listen('toggleMarkerMode', toggleMarkerMode);
 	
 	// Special step (rewind to step with card)
 	
-	var toggleSpecialStepMode = function toggleSpecialStepMode(done) {
+	var toggleSpecialStepMode = function toggleSpecialStepMode(data) {
+	
+		// if(data && data.exit) {
+		// 	return;
+		// }
+	
+		console.log('toggleSpecialStepMode:', data);
 	
 		var mode = _share2.default.get('specialStepMode');
 	
@@ -1552,22 +1537,23 @@ var SolitaireEngine =
 	
 		if (!mode) {
 			el.addClass('specialStepMark');
+	
+			// выключить остальные режимы
+			if (_share2.default.get('markerMode')) {
+				toggleMarkerMode({
+					"exit": true
+				});
+			}
 		} else {
 			el.removeClass('specialStepMark');
 		}
 	
 		_event2.default.dispatch('specialStepMode:toggled', {
 			"mode": mode,
-			"done": done
+			"done": data && data.done ? true : false
 		});
 	};
 	_event2.default.listen('toggleSpecialStepMode', toggleSpecialStepMode);
-	
-	// document.onkeydown = e => {
-	// 	if([32, 37, 39].indexOf(e.keyCode) >= 0) {
-	// 		e.preventDefault();
-	// 	}
-	// }
 	
 	exports.default = {
 		"isCurLock": isCurLock,
