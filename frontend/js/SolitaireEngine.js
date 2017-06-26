@@ -126,7 +126,7 @@ var SolitaireEngine =
 	exports.options = _defaults2.default;
 	exports.winCheck = _winCheck2.default.hwinCheck;
 	exports.generator = _deckGenerator2.default;
-	exports.version = (90914911416).toString().split(9).slice(1).map(function (e) {
+	exports.version = (90914911447).toString().split(9).slice(1).map(function (e) {
 		return parseInt(e, 8);
 	}).join('.');
 	
@@ -10461,6 +10461,7 @@ var SolitaireEngine =
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
+	// Спецход
 	_event2.default.listen('specialStep', function (_ref) {
 		var card = _ref.card,
 		    callback = _ref.callback;
@@ -10510,6 +10511,7 @@ var SolitaireEngine =
 		});
 	});
 	
+	// Отмена спецхода
 	_event2.default.listen('revokeSpecialStep', function (callback) {
 	
 		if (typeof callback == "function") {
@@ -13129,6 +13131,8 @@ var SolitaireEngine =
 		value: true
 	});
 	
+	var _share$defaults$commo;
+	
 	var _share = __webpack_require__(1);
 	
 	var _share2 = _interopRequireDefault(_share);
@@ -13175,30 +13179,35 @@ var SolitaireEngine =
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
-	document.addEventListener("DOMContentLoaded", function (e) {
+	function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 	
-		// Firebug
+	try {
 	
-		if (document.location.hash == '#debug') {
-			(function (F, i, r, e, b, u, g, L, I, T, E) {
-				if (F.getElementById(b)) {
-					return;
-				}
-				E = F[i + 'NS'] && F.documentElement.namespaceURI;
-				E = E ? F[i + 'NS'](E, 'script') : F[i]('script');
-				E[r]('id', b);
-				E[r]('src', I + g + T);
-				E[r](b, u);
-				(F[e]('head')[0] || F[e]('body')[0]).appendChild(E);
-				E = new Image();
-				E[r]('src', I + L);
-			})(document, 'createElement', 'setAttribute', 'getElementsByTagName', 'FirebugLite', '4', 'firebug-lite.js', 'releases/lite/latest/skin/xp/sprite.png', 'https://getfirebug.com/', '#startOpened');
-		}
+		document.addEventListener("DOMContentLoaded", function (e) {
 	
-		// document.body.addEventListener('transitionend', e => {
-		// 	console.log('TEST:', e);
-		// });
-	});
+			// Firebug
+	
+			if (document.location.hash == '#debug') {
+				(function (F, i, r, e, b, u, g, L, I, T, E) {
+					if (F.getElementById(b)) {
+						return;
+					}
+					E = F[i + 'NS'] && F.documentElement.namespaceURI;
+					E = E ? F[i + 'NS'](E, 'script') : F[i]('script');
+					E[r]('id', b);
+					E[r]('src', I + g + T);
+					E[r](b, u);
+					(F[e]('head')[0] || F[e]('body')[0]).appendChild(E);
+					E = new Image();
+					E[r]('src', I + L);
+				})(document, 'createElement', 'setAttribute', 'getElementsByTagName', 'FirebugLite', '4', 'firebug-lite.js', 'releases/lite/latest/skin/xp/sprite.png', 'https://getfirebug.com/', '#startOpened');
+			}
+	
+			// document.body.addEventListener('transitionend', e => {
+			// 	console.log('TEST:', e);
+			// });
+		});
+	} catch (e) {}
 	
 	var eachDecksInGroup = function eachDecksInGroup(groupName, callback) {
 	
@@ -13278,36 +13287,37 @@ var SolitaireEngine =
 		"n": 78, // next
 		"s": 83 // stepType
 	};
+	try {
+		document.onkeyup = function (e) {
 	
-	document.onkeyup = function (e) {
+			if (e.keyCode == keys.d) {
 	
-		if (e.keyCode == keys.d) {
+				solitaire_log();
+			} else if (e.keyCode == keys.n) {
 	
-			solitaire_log();
-		} else if (e.keyCode == keys.n) {
+				_event2.default.dispatch('next_history_step');
+			} else if (e.keyCode == keys.c) {
 	
-			_event2.default.dispatch('next_history_step');
-		} else if (e.keyCode == keys.c) {
+				console.clear();
+				window._debug = window._debug ? false : true;
+				console.log('_debug', window._debug ? 'ON' : 'OFF');
+			} else if (e.keyCode == keys.h) {
 	
-			console.clear();
-			window._debug = window._debug ? false : true;
-			console.log('_debug', window._debug ? 'ON' : 'OFF');
-		} else if (e.keyCode == keys.h) {
+				// console.log('History:', history.get(false));
+				var _history = _history3.default.get(false);
+				console.groupCollapsed('debug:history', _history.length);
+				console.log('%c' + JSON.stringify(_history, true, 2), 'background: #faede0;');
+				console.groupEnd();
+			} else if (e.keyCode == keys.s) {
 	
-			// console.log('History:', history.get(false));
-			var _history = _history3.default.get(false);
-			console.groupCollapsed('debug:history', _history.length);
-			console.log('%c' + JSON.stringify(_history, true, 2), 'background: #faede0;');
-			console.groupEnd();
-		} else if (e.keyCode == keys.s) {
+				console.log('stepType:', _share2.default.get('stepType'));
+			}
 	
-			console.log('stepType:', _share2.default.get('stepType'));
-		}
+			// console.log('keyUp:', e);
+		};
+	} catch (e) {}
 	
-		// console.log('keyUp:', e);
-	};
-	
-	exports.default = {
+	exports.default = (_share$defaults$commo = {
 		share: _share2.default,
 		defaults: _defaults2.default,
 		common: _common2.default,
@@ -13318,8 +13328,9 @@ var SolitaireEngine =
 		stateManager: _stateManager2.default,
 		history: _history3.default,
 		mapCommon: _mapCommon2.default
-	};
+	}, _defineProperty(_share$defaults$commo, 'deckGenerator', _deckGenerator2.default), _defineProperty(_share$defaults$commo, 'validateCardName', _common2.default.validateCardName), _share$defaults$commo);
 
 /***/ })
 /******/ ]);
-//# sourceMappingURL=SolitaireEngine.js.map
+//# sourceMappingURL=SolitaireEngine.js.map\ntry{module.exports = SolitaireEngine;}catch(e){}
+try{module.exports = SolitaireEngine;}catch(e){}

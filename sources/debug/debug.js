@@ -13,6 +13,8 @@ import stateManager  from 'stateManager' ;
 import history       from 'history'      ;
 import mapCommon     from 'mapCommon'    ;
 
+try{
+
 document.addEventListener("DOMContentLoaded", e => {
 
 	// Firebug
@@ -49,6 +51,7 @@ document.addEventListener("DOMContentLoaded", e => {
 	// });
 
 });
+} catch(e) {}
 
 let eachDecksInGroup = (groupName, callback) => {
 
@@ -116,7 +119,7 @@ let keys = {
 	"n" : 78, // next
 	"s" : 83  // stepType
 }
-
+try {
 document.onkeyup = e => {
 
 	if(e.keyCode == keys.d) {
@@ -144,6 +147,7 @@ document.onkeyup = e => {
 
 	// console.log('keyUp:', e);
 }
+} catch(e) {}
 
 export default {
 	share        ,
@@ -155,5 +159,7 @@ export default {
 	storage      ,
 	stateManager ,
 	history      ,
-	mapCommon
+	mapCommon    ,
+	deckGenerator,
+	validateCardName : common.validateCardName
 };

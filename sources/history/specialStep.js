@@ -5,6 +5,7 @@ import common from 'common';
 
 import Deck   from 'deck'  ;
 
+// Спецход
 event.listen('specialStep', ({card, callback}) => {
 
 	let cardName = card.name;
@@ -56,6 +57,7 @@ event.listen('specialStep', ({card, callback}) => {
 	});
 });
 
+// Отмена спецхода
 event.listen('revokeSpecialStep', callback => {
 
 	if(typeof callback == "function") {

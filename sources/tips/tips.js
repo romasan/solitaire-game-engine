@@ -146,11 +146,11 @@ let checkTips = e => {
 						// 	fromCards[takeCardIndex  - 1] == false,
 						// 	fromParentCard.color          == toParentCard.color
 						// ) &&
-						fromParentCard                      != EMPTY              &&
-						  toParentCard                      != EMPTY              &&
-						fromCards[takeCardIndex  - 1].flip  == false              &&
-						fromParentCard.color                == toParentCard.color &&
-						fromParentCard.value                == toParentCard.value
+						fromParentCard                    != EMPTY              &&
+						  toParentCard                    != EMPTY              &&
+						fromCards[takeCardIndex - 1].flip == false              &&
+						fromParentCard.color              == toParentCard.color &&
+						fromParentCard.value              == toParentCard.value
 						// TODO в идеале надо узнать не появится ли ход если убрать карту
 					)
 				) {
