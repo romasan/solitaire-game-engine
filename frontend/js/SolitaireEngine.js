@@ -126,7 +126,7 @@ var SolitaireEngine =
 	exports.options = _defaults2.default;
 	exports.winCheck = _winCheck2.default.hwinCheck;
 	exports.generator = _deckGenerator2.default;
-	exports.version = (90914911403).toString().split(9).slice(1).map(function (e) {
+	exports.version = (90914911416).toString().split(9).slice(1).map(function (e) {
 		return parseInt(e, 8);
 	}).join('.');
 	
@@ -1500,10 +1500,6 @@ var SolitaireEngine =
 	
 	var toggleMarkerMode = function toggleMarkerMode(data) {
 	
-		// if(data && data.exit) {
-		// 	return
-		// }
-	
 		var mode = _share2.default.get('markerMode');
 	
 		_share2.default.set('markerMode', !mode);
@@ -1511,9 +1507,14 @@ var SolitaireEngine =
 		_event2.default.dispatch('markerMode:toggled', mode);
 	
 		// выключить остальные режимы
+	
+		if (data && data.exit) {
+			return;
+		}
+	
 		if (_share2.default.get('specialStepMode')) {
 			toggleSpecialStepMode({
-				"exit": exit
+				"exit": true
 			});
 		}
 	};
@@ -1522,10 +1523,6 @@ var SolitaireEngine =
 	// Special step (rewind to step with card)
 	
 	var toggleSpecialStepMode = function toggleSpecialStepMode(data) {
-	
-		// if(data && data.exit) {
-		// 	return;
-		// }
 	
 		console.log('toggleSpecialStepMode:', data);
 	
@@ -1539,6 +1536,11 @@ var SolitaireEngine =
 			el.addClass('specialStepMark');
 	
 			// выключить остальные режимы
+	
+			if (data && data.exit) {
+				return;
+			}
+	
 			if (_share2.default.get('markerMode')) {
 				toggleMarkerMode({
 					"exit": true
@@ -1964,7 +1966,16 @@ var SolitaireEngine =
 					// с пустой на пустую в пределах одной группы
 					// с одинаковой предыдущей картой в пределах одной группы, если предыдущая не перевёрнута
 	
-					if (fromDeck.parent == toDeck.parent && fromParentCard == EMPTY && toParentCard == EMPTY || fromParentCard != EMPTY && toParentCard != EMPTY && fromParentCard.flip == false && fromParentCard.color == toParentCard.color && fromParentCard.value == toParentCard.value) {
+					if (fromDeck.parent == toDeck.parent && fromParentCard == EMPTY && toParentCard == EMPTY ||
+					// true == ((a,b,c,d) => {console.log('>>>', a, b, c, d);return true;})(
+					// 	fromParentCard                != EMPTY,
+					// 	toParentCard                  != EMPTY,
+					// 	fromCards[takeCardIndex  - 1] == false,
+					// 	fromParentCard.color          == toParentCard.color
+					// ) &&
+					fromParentCard != EMPTY && toParentCard != EMPTY && fromCards[takeCardIndex - 1].flip == false && fromParentCard.color == toParentCard.color && fromParentCard.value == toParentCard.value
+					// TODO в идеале надо узнать не появится ли ход если убрать карту
+					) {
 						draw = false;
 					}
 				}

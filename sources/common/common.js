@@ -288,10 +288,6 @@ share.set('stepType', defaults.stepType);
 
 let toggleMarkerMode = data => {
 
-	// if(data && data.exit) {
-	// 	return
-	// }
-
 	let mode = share.get('markerMode');
 
 	share.set('markerMode', !mode);
@@ -299,9 +295,14 @@ let toggleMarkerMode = data => {
 	event.dispatch('markerMode:toggled', mode);
 
 	// выключить остальные режимы
+
+	if(data && data.exit) {
+		return
+	}
+
 	if(share.get('specialStepMode')) {
 		toggleSpecialStepMode({
-			"exit" : exit
+			"exit" : true
 		});
 	}
 };
@@ -311,9 +312,6 @@ event.listen('toggleMarkerMode', toggleMarkerMode);
 
 let toggleSpecialStepMode = data => {
 
-	// if(data && data.exit) {
-	// 	return;
-	// }
 
 	console.log('toggleSpecialStepMode:', data);
 
@@ -327,6 +325,11 @@ let toggleSpecialStepMode = data => {
 		el.addClass('specialStepMark');
 
 		// выключить остальные режимы
+
+		if(data && data.exit) {
+			return;
+		}
+
 		if(share.get('markerMode')) {
 			toggleMarkerMode({
 				"exit" : true

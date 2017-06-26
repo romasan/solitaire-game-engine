@@ -118,7 +118,6 @@ let checkTips = e => {
 				let takeCardIndex   = _tips[i].from.deck.getCardIndexById(_tips[i].from.card.id);
 				let takeCardsLength = fromCards.length - takeCardIndex;
 
-
 				let fromParentCard = takeCardIndex  > 0 ? common.validateCardName(fromCards[takeCardIndex  - 1].name) : EMPTY;
 				let   toParentCard = toCards.length > 0 ? common.validateCardName(  toCards[toCards.length - 1].name) : EMPTY;
 
@@ -141,11 +140,18 @@ let checkTips = e => {
 						  toParentCard == EMPTY
 					) ||
 					(
-						fromParentCard       != EMPTY              &&
-						  toParentCard       != EMPTY              &&
-						fromParentCard.flip  == false              &&
-						fromParentCard.color == toParentCard.color &&
-						fromParentCard.value == toParentCard.value
+						// true == ((a,b,c,d) => {console.log('>>>', a, b, c, d);return true;})(
+						// 	fromParentCard                != EMPTY,
+						// 	toParentCard                  != EMPTY,
+						// 	fromCards[takeCardIndex  - 1] == false,
+						// 	fromParentCard.color          == toParentCard.color
+						// ) &&
+						fromParentCard                      != EMPTY              &&
+						  toParentCard                      != EMPTY              &&
+						fromCards[takeCardIndex  - 1].flip  == false              &&
+						fromParentCard.color                == toParentCard.color &&
+						fromParentCard.value                == toParentCard.value
+						// TODO в идеале надо узнать не появится ли ход если убрать карту
 					)
 				) {
 					draw = false;
