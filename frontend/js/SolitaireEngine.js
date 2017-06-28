@@ -126,7 +126,7 @@ var SolitaireEngine =
 	exports.options = _defaults2.default;
 	exports.winCheck = _winCheck2.default.hwinCheck;
 	exports.generator = _deckGenerator2.default;
-	exports.version = (90914911447).toString().split(9).slice(1).map(function (e) {
+	exports.version = (90914911453).toString().split(9).slice(1).map(function (e) {
 		return parseInt(e, 8);
 	}).join('.');
 	
@@ -238,12 +238,6 @@ var SolitaireEngine =
 			value: function set(name, data) {
 				var forceClone = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : false;
 	
-	
-				// let _debugValueName = 'stopRunHistory';
-	
-				// if(name == _debugValueName) {
-				// 	console.log('%cgebug: change ' + _debugValueName + ' from ' + this._data[_debugValueName] + ' to ' + data, 'color:' + (data == true ? 'orange' : 'blue'));
-				// }
 	
 				// "foo", "bar", false
 				if (typeof name == 'string') {
@@ -404,8 +398,6 @@ var SolitaireEngine =
 			key: 'remove',
 			value: function remove(id, eventName) {
 	
-				// console.log('### event:remove', id);
-	
 				for (var _eventName in this._events) {
 					this._events[_eventName] = this._events[_eventName].filter(function (e) {
 						return e.id != id;
@@ -431,6 +423,7 @@ var SolitaireEngine =
 	
 								"gameInfo": {
 									"gameIsWon": _share2.default.get('gameIsWon')
+									// "stepType"  : share.get('stepType')
 									// "isCurLock" : null
 								}
 							});
@@ -6804,29 +6797,8 @@ var SolitaireEngine =
 	 * doHistory
 	 * resetHistory
 	 * newGame
+	 * quickHistoryMove
 	 */
-	
-	// TODO пошаговая анимация
-	
-	// let _movesCallback = e => {
-	// 	if(_movesStack.length) {
-	// 		_movesStack.shift()();
-	// 	} else {
-	// 		// 
-	// 	}
-	// };
-	// let _movesStack = [];
-	
-	// let _stepsCallback = e => {
-	// 	if(_stepsStack.length) {
-	// 		_stepsStack.shift()();
-	// 	} else {
-	// 		// 
-	// 	}
-	// };
-	// let _stepsStack = [];
-	
-	// let historyStack = [];
 	
 	_event2.default.listen('addStep', function (data) {
 	
@@ -9278,10 +9250,22 @@ var SolitaireEngine =
 		value: true
 	});
 	var beSide = {
-		"left": { "x": -1, "y": 0 },
-		"right": { "x": 1, "y": 0 },
-		"up": { "x": 0, "y": -1 },
-		"down": { "x": 0, "y": 1 }
+		"left": {
+			"x": -1,
+			"y": 0
+		},
+		"right": {
+			"x": 1,
+			"y": 0
+		},
+		"up": {
+			"x": 0,
+			"y": -1
+		},
+		"down": {
+			"x": 0,
+			"y": 1
+		}
 	};
 	
 	var inMap = function inMap(x, y, mapSize) {
@@ -9310,14 +9294,54 @@ var SolitaireEngine =
 	// CLT TOP CRT ... CORN SIDE CORN
 	// LFT     RGT ... SIDE      SIDE
 	// CLB BTM CRB ... CORN SIDE CORN
-	var aroundRelations = [{ "x": -1, "y": -1, "type": 'corn', "id": 'clt' }, { "x": 0, "y": -1, "type": 'side', "id": 'top' }, { "x": 1, "y": -1, "type": 'corn', "id": 'crt' }, { "x": -1, "y": 0, "type": 'side', "id": 'lft' }, { "x": 1, "y": 0, "type": 'side', "id": 'rgt' }, { "x": -1, "y": 1, "type": 'corn', "id": 'clb' }, { "x": 0, "y": 1, "type": 'side', "id": 'btm' }, { "x": 1, "y": 1, "type": 'corn', "id": 'crb' }];
+	var aroundRelations = [{
+		"x": -1,
+		"y": -1,
+		"type": 'corn',
+		"id": 'clt'
+	}, {
+		"x": 0,
+		"y": -1,
+		"type": 'side',
+		"id": 'top'
+	}, {
+		"x": 1,
+		"y": -1,
+		"type": 'corn',
+		"id": 'crt'
+	}, {
+		"x": -1,
+		"y": 0,
+		"type": 'side',
+		"id": 'lft'
+	}, {
+		"x": 1,
+		"y": 0,
+		"type": 'side',
+		"id": 'rgt'
+	}, {
+		"x": -1,
+		"y": 1,
+		"type": 'corn',
+		"id": 'clb'
+	}, {
+		"x": 0,
+		"y": 1,
+		"type": 'side',
+		"id": 'btm'
+	}, {
+		"x": 1,
+		"y": 1,
+		"type": 'corn',
+		"id": 'crb'
+	}];
 	
 	exports.default = {
-		beSide: beSide,
-		mapSize: mapSize,
-		inMap: inMap,
-		aroundRelations: aroundRelations,
-		exist: exist
+		"beSide": beSide,
+		"mapSize": mapSize,
+		"inMap": inMap,
+		"aroundRelations": aroundRelations,
+		"exist": exist
 	};
 
 /***/ }),
@@ -13332,5 +13356,4 @@ var SolitaireEngine =
 
 /***/ })
 /******/ ]);
-//# sourceMappingURL=SolitaireEngine.js.map\ntry{module.exports = SolitaireEngine;}catch(e){}
-try{module.exports = SolitaireEngine;}catch(e){}
+//# sourceMappingURL=SolitaireEngine.js.map

@@ -26,9 +26,9 @@ class inputsClass {
 		try {
 
 			// let field = share.get('domElement:field');
-			let lastCoord = null;
-			let lastTime = null;
-			let breakUp = false;
+			let lastCoord = null ;
+			let lastTime  = null ;
+			let breakUp   = false;
 
 			// Mouse events
 

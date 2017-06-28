@@ -7,10 +7,22 @@
  */
 
 const beSide = {
-	"left"  : { "x" : -1, "y" :  0 }, 
-	"right" : { "x" :  1, "y" :  0 }, 
-	"up"    : { "x" :  0, "y" : -1 }, 
-	"down"  : { "x" :  0, "y" :  1 } 
+	"left"  : {
+		"x" : -1,
+		"y" :  0
+	},
+	"right" : {
+		"x" :  1,
+		"y" :  0
+	},
+	"up"    : {
+		"x" :  0,
+		"y" : -1
+	},
+	"down"  : {
+		"x" :  0,
+		"y" :  1
+	} 
 };
 
 let inMap = (x, y, mapSize) => 
@@ -42,22 +54,62 @@ let mapSize = map => {
 // LFT     RGT ... SIDE      SIDE
 // CLB BTM CRB ... CORN SIDE CORN
 const aroundRelations = [
-	{ "x" : -1, "y" : -1, "type" : 'corn', "id" : 'clt' },
-	{ "x" :  0, "y" : -1, "type" : 'side', "id" : 'top' },
-	{ "x" :  1, "y" : -1, "type" : 'corn', "id" : 'crt' },
+	{
+		"x"    : -1    ,
+		"y"    : -1    ,
+		"type" : 'corn',
+		"id"   : 'clt'
+	},
+	{
+		"x"    :  0    ,
+		"y"    : -1    ,
+		"type" : 'side',
+		"id"   : 'top'
+	},
+	{
+		"x"    :  1    ,
+		"y"    : -1    ,
+		"type" : 'corn',
+		"id"   : 'crt'
+	},
 	
-	{ "x" : -1, "y" :  0, "type" : 'side', "id" : 'lft' },
-	{ "x" :  1, "y" :  0, "type" : 'side', "id" : 'rgt' },
+	{
+		"x"    : -1    ,
+		"y"    :  0    ,
+		"type" : 'side',
+		"id"   : 'lft'
+	},
+	{
+		"x"    :  1    ,
+		"y"    :  0    ,
+		"type" : 'side',
+		"id"   : 'rgt'
+	},
 
-	{ "x" : -1, "y" :  1, "type" : 'corn', "id" : 'clb' },
-	{ "x" :  0, "y" :  1, "type" : 'side', "id" : 'btm' },
-	{ "x" :  1, "y" :  1, "type" : 'corn', "id" : 'crb' }
+	{
+		"x"    : -1    ,
+		"y"    :  1    ,
+		"type" : 'corn',
+		"id"   : 'clb'
+	},
+	{
+		"x"    :  0    ,
+		"y"    :  1    ,
+		"type" : 'side',
+		"id"   : 'btm'
+	},
+	{
+		"x"    :  1    ,
+		"y"    :  1    ,
+		"type" : 'corn',
+		"id"   : 'crb'
+	}
 ];
 
 export default {
-	beSide         ,
-	mapSize        ,
-	inMap          ,
-	aroundRelations,
-	exist
+	"beSide"          : beSide         ,
+	"mapSize"         : mapSize        ,
+	"inMap"           : inMap          ,
+	"aroundRelations" : aroundRelations,
+	"exist"           : exist
 };

@@ -66,10 +66,10 @@ let paddingTypes = {
 			_params[name] = params[name];
 		}
 
-		_params.padding_x      = 0;
+		_params.padding_x      = 0 ;
 		_params.padding_y      = 15;
-		_params.flip_padding_x = 0;
-		_params.flip_padding_y = 5;
+		_params.flip_padding_x = 0 ;
+		_params.flip_padding_y = 5 ;
 
 		return paddingTypes._default(_params, card, index, length, deck);
 	},
@@ -83,9 +83,9 @@ let paddingTypes = {
 		}
 
 		_params.padding_x      = 10;
-		_params.padding_y      = 0;
-		_params.flip_padding_x = 5;
-		_params.flip_padding_y = 0;
+		_params.padding_y      = 0 ;
+		_params.flip_padding_x = 5 ;
+		_params.flip_padding_y = 0 ;
 
 		return paddingTypes._default(_params, card, index, length, deck);
 	},
@@ -94,8 +94,8 @@ let paddingTypes = {
 		// data: "open,group,padding"
 		// flipRule: "topUnflip:open"
 
-		let _data   = data.split(',')   ,
-		    open    = _data[0] | 0      , // open cards count
+		let _data   =   data.split(',') ,
+		    open    =  _data[0] | 0     , // open cards count
 		    group   = (_data[1] | 0) > 0  // closed cards group count
 		    	? _data[1] | 0
 		    	: 1,

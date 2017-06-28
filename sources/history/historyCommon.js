@@ -7,6 +7,7 @@ import history      from 'history'     ;
 import redoAdvanced from 'redoAdvanced';
 
 import share        from 'share'       ;
+
 /*
  * Events:
  *
@@ -15,29 +16,8 @@ import share        from 'share'       ;
  * doHistory
  * resetHistory
  * newGame
+ * quickHistoryMove
  */
-
-// TODO пошаговая анимация
-
-// let _movesCallback = e => {
-// 	if(_movesStack.length) {
-// 		_movesStack.shift()();
-// 	} else {
-// 		// 
-// 	}
-// };
-// let _movesStack = [];
-
-// let _stepsCallback = e => {
-// 	if(_stepsStack.length) {
-// 		_stepsStack.shift()();
-// 	} else {
-// 		// 
-// 	}
-// };
-// let _stepsStack = [];
-
-// let historyStack = [];
 
 event.listen('addStep', data => {
 

@@ -71,8 +71,6 @@ class Event {
 
 	remove(id, eventName) {
 
-		// console.log('### event:remove', id);
-
 		for(let eventName in this._events) {
 			this._events[eventName] = this._events[eventName].filter(e => e.id != id);
 		}
@@ -99,6 +97,7 @@ class Event {
 
 							"gameInfo" : {
 								"gameIsWon" : share.get('gameIsWon')
+								// "stepType"  : share.get('stepType')
 								// "isCurLock" : null
 							}
 						},
