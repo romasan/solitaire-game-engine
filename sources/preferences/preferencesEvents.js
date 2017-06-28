@@ -68,7 +68,9 @@ let applyParameters = e => {
 
 		let _data = pref;
 
-		changePreferencesCallback(_data);
+		changePreferencesCallback(_data, {
+			"stepType" : share.get('stepType')
+		});
 	}
 };
 

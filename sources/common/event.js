@@ -69,10 +69,25 @@ class Event {
 		return this.listen(eventName, callback, context, true);
 	}
 
-	remove(id, eventName) {
+	remove(data) {
 
-		for(let eventName in this._events) {
-			this._events[eventName] = this._events[eventName].filter(e => e.id != id);
+		if(typeof data == 'number') {
+
+			for(let eventName in this._events) {
+				this._events[eventName] = this._events[eventName].filter(e => e.id != data);
+			}
+		} else if(typeof data == 'string' && this._events[eventName]) {
+
+			delete this._events[data]
+		} else if(data) { // } && typeof data.context == 'string') {
+
+			for(let key in data) {
+				for(let eventName in this._events) {
+					this._events[eventName] = this._events[eventName].filter(e => e[key] != data[key]);
+				}
+			}
+		} else {
+			console.warn('Event delete is impossible for', data, 'query');
 		}
 	}
 

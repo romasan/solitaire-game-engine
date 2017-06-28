@@ -74,7 +74,9 @@ exports.init = gameConfig => {
 
 	if(typeof changePreferencesCallback == 'function') {
 		let _data = share.get('gamePreferencesData');
-		changePreferencesCallback(_data);
+		changePreferencesCallback(_data, {
+			"stepType" : share.get('stepType')
+		});
 	}
 
 	event.dispatch('gameInited');

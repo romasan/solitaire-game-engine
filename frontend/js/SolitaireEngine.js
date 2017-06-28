@@ -126,7 +126,7 @@ var SolitaireEngine =
 	exports.options = _defaults2.default;
 	exports.winCheck = _winCheck2.default.hwinCheck;
 	exports.generator = _deckGenerator2.default;
-	exports.version = (90914911453).toString().split(9).slice(1).map(function (e) {
+	exports.version = (90914911454).toString().split(9).slice(1).map(function (e) {
 		return parseInt(e, 8);
 	}).join('.');
 	
@@ -162,7 +162,9 @@ var SolitaireEngine =
 	
 		if (typeof changePreferencesCallback == 'function') {
 			var _data2 = _share2.default.get('gamePreferencesData');
-			changePreferencesCallback(_data2);
+			changePreferencesCallback(_data2, {
+				"stepType": _share2.default.get('stepType')
+			});
 		}
 	
 		_event2.default.dispatch('gameInited');
@@ -396,12 +398,35 @@ var SolitaireEngine =
 			}
 		}, {
 			key: 'remove',
-			value: function remove(id, eventName) {
+			value: function remove(data) {
+				var _this = this;
 	
-				for (var _eventName in this._events) {
-					this._events[_eventName] = this._events[_eventName].filter(function (e) {
-						return e.id != id;
-					});
+				if (typeof data == 'number') {
+	
+					for (var _eventName in this._events) {
+						this._events[_eventName] = this._events[_eventName].filter(function (e) {
+							return e.id != data;
+						});
+					}
+				} else if (typeof data == 'string' && this._events[eventName]) {
+	
+					delete this._events[data];
+				} else if (data) {
+					var _loop = function _loop(key) {
+						for (var _eventName2 in _this._events) {
+							_this._events[_eventName2] = _this._events[_eventName2].filter(function (e) {
+								return e[key] != data[key];
+							});
+						}
+					};
+	
+					// } && typeof data.context == 'string') {
+	
+					for (var key in data) {
+						_loop(key);
+					}
+				} else {
+					console.warn('Event delete is impossible for', data, 'query');
 				}
 			}
 		}, {
@@ -453,8 +478,8 @@ var SolitaireEngine =
 			key: 'clearByTag',
 			value: function clearByTag(tag) {
 	
-				for (var eventName in this._events) {
-					this._events[eventName] = this._events[eventName].filter(function (e) {
+				for (var _eventName3 in this._events) {
+					this._events[_eventName3] = this._events[_eventName3].filter(function (e) {
 						return e.tag != tag;
 					});
 				}
@@ -527,8 +552,8 @@ var SolitaireEngine =
 			key: '_debug',
 			value: function _debug() {
 				var data = {};
-				for (var eventName in this._events) {
-					data[eventName] = this._events[eventName].length;
+				for (var _eventName4 in this._events) {
+					data[_eventName4] = this._events[_eventName4].length;
 				}
 				return data;
 			}
@@ -10256,7 +10281,9 @@ var SolitaireEngine =
 	
 			var _data = pref;
 	
-			changePreferencesCallback(_data);
+			changePreferencesCallback(_data, {
+				"stepType": _share2.default.get('stepType')
+			});
 		}
 	};
 	
