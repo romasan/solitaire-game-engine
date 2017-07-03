@@ -64,6 +64,7 @@ export default {
 
 	"autohide"            : false     ,
 	"autoUnflipTop"       : true      ,
+	"autoCheckFlip"       : false     ,
 
 	"paddingType"         : '_default',
 	"flip_type"           : 'none'    ,

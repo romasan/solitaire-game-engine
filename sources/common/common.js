@@ -110,14 +110,14 @@ event.listen('curUnLock', curUnLock);
 
 let getElements = e => {
 	return share.get('elements');
-}
+};
 
 let getElementById = id => {
 
 	let _elements = share.get('elements');
 
 	return _elements[id];
-}
+};
 
 let getElementsByName = (name, type) => {
 
@@ -246,26 +246,26 @@ share.set('animation', defaults.animation);
 let animationOn = e => {
 	// console.warn('animationOn');
 	share.set('animation', true);
-}
+};
 
 let animationDefault = e => {
 	// console.warn('animationDefault');
 	share.set('animation', defaults.animation);
-}
+};
 
 let animationOff = e => {
 	// console.warn('animationOff');
 	share.set('animation', false);
-}
+};
 
 let stopRunHistory = e => {
 	share.set('stopRunHistory', true);
-}
+};
 event.listen('stopRunHistory', stopRunHistory);
 
 let startRunHistory = e => {
 	share.set('stopRunHistory', false);
-}
+};
 event.listen('startRunHistory', startRunHistory);
 
 event.listen('historyReapeater', data => {

@@ -51,7 +51,7 @@ export default (deck, name) => {
 		share.set('elements', _elements);
 
 		deck.Push([_card]);
-		deck.flipCheck();
+		deck.checkFlip();
 		deck.Redraw();
 
 		return _card;

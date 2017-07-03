@@ -19,6 +19,8 @@ let paddingTypes = {
 
 	"_default" : (params, card, index, length, deck) => {
 
+		// console.log('_default', {params, card, index, length, deck});
+
 		let _y = params.y,
 		    _x = params.x;
 
@@ -31,6 +33,39 @@ let paddingTypes = {
 			"x" : _x,
 			"y" : _y
 		};
+	},
+
+	"afterFlip" : (params, card, index, length, deck, data) => {
+
+		let _padding = paddingTypes._default(params, card, index, length, deck);
+
+		let _plus = {
+			"x" : 0,
+			"y" : 0
+		};
+
+		let _data = data ? data.split(':') : [];
+
+		if(_data.length > 1) {
+
+			if(_data[0] == "x") {
+				_plus.x = _data[1] | 0;	
+			} else if(_data[0] == "y") {
+				_plus.y = _data[1] | 0;	
+			} else if(_data[0] == "xy") {
+				_plus.x = _data[1] | 0;
+				_plus.y = _data[2] | 0;
+			}
+		} else {
+			_plus.x = _data[0] | 0;
+		}
+
+		if(card.flip == false) {
+			_padding.x += _plus.x;
+			_padding.y += _plus.y;
+		}
+
+		return _padding;
 	},
 
 	// "none" : (params, card, index, length, deck) => {
@@ -104,15 +139,15 @@ let paddingTypes = {
 		let correct = 0;
 
 		if(
-			index >= length - open && // delimiter and after
-			card.flip == false        // closed cards
+			index     >= length - open && // delimiter and after
+			card.flip == false            // closed cards
 		) {
 
 			return {
 				"x" : params.x + (defaults.card.width * share.get('zoom')) + padding + ((index - length + open - correct) * params.padding_x),
 				"y" : params.y + (index - length + open) * params.padding_y
 			}
-		} else {                      // before delimiter
+		} else {                          // before delimiter
 
 			if(index >= length - open) {
 				correct += 1;

@@ -198,7 +198,7 @@ class dealAction extends deckAction {
 					}
 				});
 
-				dealDeck.Redraw();
+				// dealDeck.Redraw();
 
 				event.dispatch('addStep', {
 					"step" : {	
@@ -248,6 +248,12 @@ class dealAction extends deckAction {
 							share.set('stepType', defaults.stepType);
 						}
 
+						// TODO if "autoCheckFlip" param for deck
+						if(dealDeck.autoCheckFlip) {
+							dealDeck.checkFlip();
+							dealDeck.Redraw();
+						}
+
 						event.dispatch('dealEnd');
 						// };
 					}
@@ -268,7 +274,7 @@ class dealAction extends deckAction {
 					"steps"    : _steps
 				}, true);
 
-				moveDecks[deckId].flipCheck();
+				moveDecks[deckId].checkFlip();
 				// _decks[deckId].Redraw();
 
 				// #1

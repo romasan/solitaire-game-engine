@@ -17,6 +17,7 @@ const PARAMS = {
 	"putRules"         : { "type" : 'any' },
 	"fullRules"        : { "type" : 'any' },
 	"autoHide"         : { "type" : 'any' },
+	"autoCheckFlip"    : { "type" : 'any' },
 	"paddingType"      : { "type" : 'any' },
 	"padding"          : { "type" : 'any' },
 	"paddingX"         : { "type" : 'any' },

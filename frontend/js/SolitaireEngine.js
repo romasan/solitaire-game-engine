@@ -126,7 +126,7 @@ var SolitaireEngine =
 	exports.options = _defaults2.default;
 	exports.winCheck = _winCheck2.default.hwinCheck;
 	exports.generator = _deckGenerator2.default;
-	exports.version = (90914911454).toString().split(9).slice(1).map(function (e) {
+	exports.version = (90914911606).toString().split(9).slice(1).map(function (e) {
 		return parseInt(e, 8);
 	}).join('.');
 	
@@ -630,6 +630,7 @@ var SolitaireEngine =
 	
 		"autohide": false,
 		"autoUnflipTop": true,
+		"autoCheckFlip": false,
 	
 		"paddingType": '_default',
 		"flip_type": 'none',
@@ -2742,6 +2743,7 @@ var SolitaireEngine =
 		"putRules": { "type": 'any' },
 		"fullRules": { "type": 'any' },
 		"autoHide": { "type": 'any' },
+		"autoCheckFlip": { "type": 'any' },
 		"paddingType": { "type": 'any' },
 		"padding": { "type": 'any' },
 		"paddingX": { "type": 'any' },
@@ -3244,7 +3246,7 @@ var SolitaireEngine =
 	 * getSomeCards
 	 * lock
 	 * unlock
-	 * flipCheck
+	 * checkFlip
 	 * unflipCardByIndex
 	 * unflipTopCard
 	 * flipAllCards
@@ -3303,6 +3305,7 @@ var SolitaireEngine =
 			this.deckIndex = typeof data.deckIndex == 'number' ? data.deckIndex : null;
 			this.parent = typeof data.parent == 'string' ? data.parent : 'field';
 			this.autoHide = typeof data.autoHide == 'boolean' ? data.autoHide : _defaults2.default.autohide;
+			this.autoCheckFlip = typeof data.autoCheckFlip == 'boolean' ? data.autoCheckFlip : _defaults2.default.autoCheckFlip;
 			this.showPrefFlipCard = typeof data.showPrefFlipCard == 'boolean' ? data.showPrefFlipCard : _share2.default.get('showPrefFlipCard');
 	
 			this.data = {};
@@ -3360,7 +3363,8 @@ var SolitaireEngine =
 	
 			// Flip
 			var flipData = null;
-			var flipType = data.flip && typeof data.flip == 'string' ? data.flip.indexOf(':') >= 0 ? function (e) {
+	
+			var flipType = data.flip && typeof data.flip == 'string' ? data.flip.indexOf(':') > 0 ? function (e) {
 	
 				var name = e[0];
 	
@@ -3373,7 +3377,9 @@ var SolitaireEngine =
 	
 			this.cardFlipCheck = function (card, i, length) {
 				// TODO flip with params
-				card.flip = _flipTypes2.default[flipType](i, length, flipData);
+				var _flip = _flipTypes2.default[flipType](i, length, flipData);
+				// console.log(_flip, card.flip, card.name, card.parent, /*common.getElementById(card.parent).name,*/ i, length);
+				card.flip = _flip;
 			};
 	
 			// Put
@@ -3414,7 +3420,8 @@ var SolitaireEngine =
 				var name = e[0]; // method name
 	
 				if (_paddingTypes2.default[name]) {
-					paddingData = e[1]; // save method data
+					paddingData = e.length > 1 // save method data
+					? e.slice(1).join(':') : '';
 					return _paddingTypes2.default[name]; // use method(data.paddingType:)(:data.paddingType)
 				}
 	
@@ -3433,6 +3440,7 @@ var SolitaireEngine =
 			};
 	
 			this.actions = [];
+	
 			if (data.actions) {
 				this.actions = data.actions;
 				_deckActions2.default.add(this);
@@ -3486,6 +3494,8 @@ var SolitaireEngine =
 					"cards": this.cards
 				});
 	
+				this.checkFlip();
+	
 				_event2.default.dispatch('redrawDeckFlip', {
 					"cards": this.cards
 				});
@@ -3527,8 +3537,8 @@ var SolitaireEngine =
 				this.locked = false;
 			}
 		}, {
-			key: 'flipCheck',
-			value: function flipCheck() {
+			key: 'checkFlip',
+			value: function checkFlip() {
 	
 				for (var cardIndex in this.cards) {
 					this.cardFlipCheck(this.cards[cardIndex], cardIndex | 0, this.cards.length, this.cards[this.cards.length - 1].name);
@@ -4107,26 +4117,44 @@ var SolitaireEngine =
 			return i == length - 1 ? true : i % 2 == 0 ? false : true;
 		},
 	
-		"_direction_type": function _direction_type(direction, type, i, length, data, arg) {
-			return data && (data | 0) > 0 ? direction == "top" ? i > length - data - (arg ? arg | 0 : 1) // top
-			? type == "flip" ? true : false : type == "flip" ? false : true : i < data // bottom
-			? type == "flip" ? true : false : type == "flip" ? false : true : false;
+		// "_direction_type" : (direction, type, i, length, data, arg) => data && (data | 0) > 0
+		// ? i > length - data - (arg ? (arg | 0) : 1) // top
+	
+		"_direction_type": function _direction_type(direction, type, i, length, data) {
+			return direction == "top" ? i >= length - (data ? data | 0 : 1) // top
+			? type == "flip" // top param
+			? true // top param flip
+			: false // top param unflip
+			: type == "flip" // top no param
+			? false // top no param flip
+			: true // top no param unflip
+			: i < (data ? data | 0 : 1) // bottom
+			? type == "flip" // bottom param 
+			? true // bottom param flip
+			: false // bottom param unflip
+			: type == "flip" // bottom no param
+			? false // bottom no param flip
+			: true;
+		}, // bottom no param unflip
+	
+		// "bottomFlip"      : (i, length, data, arg) => flipTypes._direction_type("bootom", "flip"  , i, length, data, arg),
+		"bottomFlip": function bottomFlip(i, length, data) {
+			return flipTypes._direction_type("bootom", "flip", i, length, data);
 		},
 	
-		"bottomFlip": function bottomFlip(i, length, data, arg) {
-			return flipTypes._direction_type("bootom", "flip", i, length, data, arg);
+		// "bottomUnflip"    : (i, length, data, arg) => flipTypes._direction_type("bootom", "unflip", i, length, data, arg),
+		"bottomUnflip": function bottomUnflip(i, length, data) {
+			return flipTypes._direction_type("bootom", "unflip", i, length, data);
 		},
 	
-		"bottomUnflip": function bottomUnflip(i, length, data, arg) {
-			return flipTypes._direction_type("bootom", "unflip", i, length, data, arg);
+		// "topFlip"         : (i, length, data, arg) => flipTypes._direction_type("top"   , "flip"  , i, length, data, arg),
+		"topFlip": function topFlip(i, length, data) {
+			return flipTypes._direction_type("top", "flip", i, length, data);
 		},
 	
-		"topFlip": function topFlip(i, length, data, arg) {
-			return flipTypes._direction_type("top", "flip", i, length, data, arg);
-		},
-	
-		"topUnflip": function topUnflip(i, length, data, arg) {
-			return flipTypes._direction_type("top", "unflip", i, length, data, arg);
+		// "topUnflip"       : (i, length, data, arg) => flipTypes._direction_type("top"   , "unflip", i, length, data, arg)
+		"topUnflip": function topUnflip(i, length, data) {
+			return flipTypes._direction_type("top", "unflip", i, length, data);
 		}
 	
 		// TODO topFlip:counter, topUnflip:counter, bottomFlip:counter, bottomUnflip:counter
@@ -5072,6 +5100,8 @@ var SolitaireEngine =
 	
 		"_default": function _default(params, card, index, length, deck) {
 	
+			// console.log('_default', {params, card, index, length, deck});
+	
 			var _y = params.y,
 			    _x = params.x;
 	
@@ -5084,6 +5114,39 @@ var SolitaireEngine =
 				"x": _x,
 				"y": _y
 			};
+		},
+	
+		"afterFlip": function afterFlip(params, card, index, length, deck, data) {
+	
+			var _padding = paddingTypes._default(params, card, index, length, deck);
+	
+			var _plus = {
+				"x": 0,
+				"y": 0
+			};
+	
+			var _data = data ? data.split(':') : [];
+	
+			if (_data.length > 1) {
+	
+				if (_data[0] == "x") {
+					_plus.x = _data[1] | 0;
+				} else if (_data[0] == "y") {
+					_plus.y = _data[1] | 0;
+				} else if (_data[0] == "xy") {
+					_plus.x = _data[1] | 0;
+					_plus.y = _data[2] | 0;
+				}
+			} else {
+				_plus.x = _data[0] | 0;
+			}
+	
+			if (card.flip == false) {
+				_padding.x += _plus.x;
+				_padding.y += _plus.y;
+			}
+	
+			return _padding;
 		},
 	
 		// "none" : (params, card, index, length, deck) => {
@@ -5646,7 +5709,7 @@ var SolitaireEngine =
 								}
 							});
 	
-							dealDeck.Redraw();
+							// dealDeck.Redraw();
 	
 							_event2.default.dispatch('addStep', {
 								"step": {
@@ -5695,6 +5758,12 @@ var SolitaireEngine =
 										_share2.default.set('stepType', _defaults2.default.stepType);
 									}
 	
+									// TODO if "autoCheckFlip" param for deck
+									if (dealDeck.autoCheckFlip) {
+										dealDeck.checkFlip();
+										dealDeck.Redraw();
+									}
+	
 									_event2.default.dispatch('dealEnd');
 									// };
 								}
@@ -5715,7 +5784,7 @@ var SolitaireEngine =
 								"steps": _steps
 							}, true);
 	
-							moveDecks[deckId].flipCheck();
+							moveDecks[deckId].checkFlip();
 							// _decks[deckId].Redraw();
 	
 							// #1
@@ -6865,8 +6934,7 @@ var SolitaireEngine =
 			console.warn('doHistory data:', e);
 		}
 	
-		_event2.default.dispatch('startRunHistory');
-	
+		// event.dispatch('stopRunHistory');
 		_common2.default.animationOff();
 	
 		for (var i in e.data) {
@@ -6879,12 +6947,21 @@ var SolitaireEngine =
 		}
 	
 		_common2.default.animationDefault();
+		// event.dispatch('startRunHistory');
 	
-		_event2.default.dispatch('stopRunHistory');
+		_event2.default.dispatch('doHistory:end');
 	
-		setTimeout(function (e) {
-			_event2.default.dispatch('startRunHistory');
-		}, 0);
+		var _decks = _common2.default.getElementsByType('deck');
+	
+		for (var deckIndex in _decks) {
+	
+			var _deck = _decks[deckIndex];
+	
+			if (_deck.autoCheckFlip) {
+				dealDeck.checkFlip();
+				dealDeck.Redraw();
+			}
+		}
 	
 		// console.groupEnd();
 	});
@@ -8501,7 +8578,7 @@ var SolitaireEngine =
 					_share2.default.set('elements', _elements);
 	
 					deck.Push([_card]);
-					deck.flipCheck();
+					deck.checkFlip();
 					deck.Redraw();
 	
 					return _card;

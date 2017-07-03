@@ -59,8 +59,7 @@ event.listen('doHistory', e => {
 		console.warn('doHistory data:', e);
 	}
 
-	event.dispatch('startRunHistory');
-
+	// event.dispatch('stopRunHistory');
 	common.animationOff();
 
 	for(let i in e.data) {
@@ -76,12 +75,21 @@ event.listen('doHistory', e => {
 	}
 
 	common.animationDefault();
+	// event.dispatch('startRunHistory');
 
-	event.dispatch('stopRunHistory');
+	event.dispatch('doHistory:end');
 
-	setTimeout(e => {
-		event.dispatch('startRunHistory');
-	}, 0);
+	let _decks = common.getElementsByType('deck');
+
+	for(let deckIndex in _decks) {
+
+		let _deck = _decks[deckIndex];
+
+		if(_deck.autoCheckFlip) {
+			dealDeck.checkFlip();
+			dealDeck.Redraw();
+		}
+	}
 
 	// console.groupEnd();
 });

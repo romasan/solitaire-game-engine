@@ -1,25 +1,25 @@
 'use strict';
 
-import event         from 'event'        ;
-import share         from 'share'        ;
-import defaults      from 'defaults'     ;
-import common        from 'common'       ;
+import event                  from 'event'                 ;
+import share                  from 'share'                 ;
+import defaults               from 'defaults'              ;
+import common                 from 'common'                ;
 
-import flipTypes     from 'flipTypes'    ;
-import putRules      from 'putRules'     ;
-import takeRules     from 'takeRules'    ;
-import fullRules     from 'fullRules'    ;
-import paddingTypes  from 'paddingTypes' ;
-import deckActions   from 'deckActions'  ;
-import Take          from 'deckTake'     ;
-import Put           from 'deckPut'      ;
-import genCardByName from 'genCardByName';
-import Group         from 'group'        ;
+import flipTypes              from 'flipTypes'             ;
+import putRules               from 'putRules'              ;
+import takeRules              from 'takeRules'             ;
+import fullRules              from 'fullRules'             ;
+import paddingTypes           from 'paddingTypes'          ;
+import deckActions            from 'deckActions'           ;
+import Take                   from 'deckTake'              ;
+import Put                    from 'deckPut'               ;
+import genCardByName          from 'genCardByName'         ;
+import Group                  from 'group'                 ;
 
-import getDecks      from 'getDecks'     ;
-import getDeckById   from 'getDeckById'  ;
-import deckCardNames from 'deckCardNames';
-import getDeck       from 'getDeck'      ;
+import getDecks               from 'getDecks'              ;
+import getDeckById            from 'getDeckById'           ;
+import deckCardNames          from 'deckCardNames'         ;
+import getDeck                from 'getDeck'               ;
 import applyChangedParameters from 'applyChangedParameters';
 
 /*
@@ -28,7 +28,7 @@ import applyChangedParameters from 'applyChangedParameters';
  * getSomeCards
  * lock
  * unlock
- * flipCheck
+ * checkFlip
  * unflipCardByIndex
  * unflipTopCard
  * flipAllCards
@@ -87,6 +87,7 @@ class deckClass {
 		this.deckIndex        = typeof data.deckIndex        == 'number'  ? data.deckIndex        : null                         ;
 		this.parent           = typeof data.parent           == 'string'  ? data.parent           : 'field'                      ;
 		this.autoHide         = typeof data.autoHide         == 'boolean' ? data.autoHide         : defaults.autohide            ;
+		this.autoCheckFlip    = typeof data.autoCheckFlip    == 'boolean' ? data.autoCheckFlip    : defaults.autoCheckFlip       ;
 		this.showPrefFlipCard = typeof data.showPrefFlipCard == 'boolean' ? data.showPrefFlipCard : share.get('showPrefFlipCard');
 
 		this.data = {};
@@ -156,8 +157,9 @@ class deckClass {
 
 		// Flip
 		let flipData = null;
+
 		let flipType = data.flip && typeof data.flip == 'string' 
-			? data.flip.indexOf(':') >= 0
+			? data.flip.indexOf(':') > 0
 				? (e => {
 
 					let name = e[0];
@@ -177,7 +179,9 @@ class deckClass {
 
 		this.cardFlipCheck = (card, i, length) => {
 			// TODO flip with params
-			card.flip = flipTypes[flipType](i, length, flipData);
+			let _flip = flipTypes[flipType](i, length, flipData);
+			// console.log(_flip, card.flip, card.name, card.parent, /*common.getElementById(card.parent).name,*/ i, length);
+			card.flip = _flip;
 		};
 
 		// Put
@@ -242,7 +246,9 @@ class deckClass {
 							let name = e[0];                           // method name
 
 							if(paddingTypes[name]) {
-								paddingData = e[1];                    // save method data
+								paddingData = e.length > 1             // save method data
+									? e.slice(1).join(':')
+									: '';
 								return paddingTypes[name];             // use method(data.paddingType:)(:data.paddingType)
 							}
 
@@ -269,6 +275,7 @@ class deckClass {
 		}
 
 		this.actions = [];
+
 		if(data.actions) {
 			this.actions = data.actions;
 			deckActions.add(this);
@@ -318,6 +325,8 @@ class deckClass {
 			"cards"    : this.cards
 		});
 
+		this.checkFlip();
+
 		event.dispatch('redrawDeckFlip', {
 			"cards" : this.cards
 		});
@@ -359,7 +368,7 @@ class deckClass {
 		this.locked = false;
 	}
 
-	flipCheck() {
+	checkFlip() {
 
 		for(let cardIndex in this.cards) {
 			this.cardFlipCheck(
