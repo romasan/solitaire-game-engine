@@ -178,10 +178,7 @@ class deckClass {
 			: defaults.flip_type;
 
 		this.cardFlipCheck = (card, i, length) => {
-			// TODO flip with params
-			let _flip = flipTypes[flipType](i, length, flipData);
-			// console.log(_flip, card.flip, card.name, card.parent, /*common.getElementById(card.parent).name,*/ i, length);
-			card.flip = _flip;
+			card.flip = flipTypes[flipType](i, length, flipData, this);
 		};
 
 		// Put
@@ -325,7 +322,7 @@ class deckClass {
 			"cards"    : this.cards
 		});
 
-		this.checkFlip();
+		// this.checkFlip();
 
 		event.dispatch('redrawDeckFlip', {
 			"cards" : this.cards
@@ -518,7 +515,7 @@ class deckClass {
 	Fill(cardNames) {
 
 		for(let i in cardNames) {
-			this.genCardByName(cardNames[i]);
+			this.genCardByName(cardNames[i], i == cardNames.length - 1);
 		}
 	}
 
@@ -621,8 +618,8 @@ class deckClass {
 	}
 
 	// создать карту
-	genCardByName(name) {
-		return genCardByName(this, name);
+	genCardByName(name, last) {
+		return genCardByName(this, name, last);
 	}
 
 	hide() {
@@ -836,7 +833,7 @@ let addDeck = data => {
 	if(data.fill) {
 		for(let i in data.fill) {
 			if(typeof data.fill[i] == 'string') {
-				_deck.genCardByName(data.fill[i]);
+				_deck.genCardByName(data.fill[i], i == data.fill.length - 1);
 			}
 		}
 	}

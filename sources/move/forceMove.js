@@ -168,6 +168,16 @@ let forceMove = ({from, to, deck, flip, callback, steps, save, addStep}) => { //
 			if(typeof callback == 'function') {
 				callback();
 			}
+
+			if(deckFrom.autoCheckFlip) {
+				deckFrom.checkFlip();
+				deckFrom.Redraw();
+			}
+
+			if(deckTo.autoCheckFlip) {
+				deckTo.checkFlip();
+				deckTo.Redraw();
+			}
 		};
 
 		moveDragDeckParams.callback = forceMoveCallback;

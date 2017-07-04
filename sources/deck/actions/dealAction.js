@@ -185,18 +185,20 @@ class dealAction extends deckAction {
 
 				// #1
 
-				event.dispatch('addStep', {
-					"step" : {
-						"unflip" : {
-							"deckName"  : dealDeck.name,
-							"cardName"  : _cardName    ,
-							"cardIndex" : cardIndex - 1
+				if(!dealDeck.autoCheckFlip) {
+					event.dispatch('addStep', {
+						"step" : {
+							"unflip" : {
+								"deckName"  : dealDeck.name,
+								"cardName"  : _cardName    ,
+								"cardIndex" : cardIndex - 1
+							}
+						},
+						"callback" : stepId => {
+							_steps.push(stepId)
 						}
-					},
-					"callback" : stepId => {
-						_steps.push(stepId)
-					}
-				});
+					});
+				}
 
 				// dealDeck.Redraw();
 
@@ -249,10 +251,10 @@ class dealAction extends deckAction {
 						}
 
 						// TODO if "autoCheckFlip" param for deck
-						if(dealDeck.autoCheckFlip) {
-							dealDeck.checkFlip();
-							dealDeck.Redraw();
-						}
+						// if(dealDeck.autoCheckFlip) {
+						// 	dealDeck.checkFlip();
+						// 	dealDeck.Redraw();
+						// }
 
 						event.dispatch('dealEnd');
 						// };
@@ -265,16 +267,22 @@ class dealAction extends deckAction {
 				// 	_callback = e => {};
 				// });
 
-				forceMove({
+				let forceMoveData = {
 					"from"     : dealDeck.name      ,
 					"to"       : moveDecks[deckId].name,
 					"deck"     : [_cardName]        ,
-					"flip"     : false              ,
+					// "flip"     : false              ,
 					"callback" : _callback          ,
-					"steps"    : _steps
-				}, true);
+					"steps"    : _steps               // массив с Id ходов приготовленных на запись в историю
+				};
 
-				moveDecks[deckId].checkFlip();
+				if(!dealDeck.autoCheckFlip) {
+					forceMoveData.flip = false;
+				}
+
+				forceMove(forceMoveData, true);
+
+				// moveDecks[deckId].checkFlip();
 				// _decks[deckId].Redraw();
 
 				// #1

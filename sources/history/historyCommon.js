@@ -62,6 +62,7 @@ event.listen('doHistory', e => {
 	// event.dispatch('stopRunHistory');
 	common.animationOff();
 
+	// console.log('doHistory:start');
 	for(let i in e.data) {
 
 		event.dispatch('redo', e.data[i]);
@@ -73,23 +74,26 @@ event.listen('doHistory', e => {
 			e.callback(e.data[i]);	
 		}
 	}
+	// console.log('doHistory:end');
 
 	common.animationDefault();
 	// event.dispatch('startRunHistory');
 
+	// After doing history
+
 	event.dispatch('doHistory:end');
 
-	let _decks = common.getElementsByType('deck');
+	// let _decks = common.getElementsByType('deck');
 
-	for(let deckIndex in _decks) {
+	// for(let deckIndex in _decks) {
 
-		let _deck = _decks[deckIndex];
+	// 	let _deck = _decks[deckIndex];
 
-		if(_deck.autoCheckFlip) {
-			dealDeck.checkFlip();
-			dealDeck.Redraw();
-		}
-	}
+	// 	if(_deck.autoCheckFlip) {
+	// 		_deck.checkFlip();
+	// 		_deck.Redraw();
+	// 	}
+	// }
 
 	// console.groupEnd();
 });

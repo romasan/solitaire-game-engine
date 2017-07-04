@@ -23,7 +23,7 @@ import common from 'common';
 // 	}
 // };
 
-export default (deck, name) => {
+let genCardByName = (deck, name, last = true) => {
 
 	let validatedCard = common.validateCardName(name);// {color, rank}
 
@@ -51,11 +51,16 @@ export default (deck, name) => {
 		share.set('elements', _elements);
 
 		deck.Push([_card]);
-		deck.checkFlip();
-		deck.Redraw();
+		
+		if(last) {
+			deck.checkFlip();
+			deck.Redraw();
+		}
 
 		return _card;
 	}
 
 	return false;
 };
+
+export default genCardByName;

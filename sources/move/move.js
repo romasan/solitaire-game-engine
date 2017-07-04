@@ -174,6 +174,16 @@ let Move = ({moveDeck, to, cursorMove}) => {
 					event.dispatch('winCheck', {
 						"show" : true
 					});
+
+					if(_deck_departure.autoCheckFlip) {
+						_deck_departure.checkFlip();
+						_deck_departure.Redraw();
+					}
+
+					if(_deck_destination.autoCheckFlip) {
+						_deck_destination.checkFlip();
+						_deck_destination.Redraw();
+					}
 				};
 
 				event.dispatch('moveDragDeck', {

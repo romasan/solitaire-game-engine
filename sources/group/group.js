@@ -17,7 +17,6 @@ const PARAMS = {
 	"putRules"         : { "type" : 'any' },
 	"fullRules"        : { "type" : 'any' },
 	"autoHide"         : { "type" : 'any' },
-	"autoCheckFlip"    : { "type" : 'any' },
 	"paddingType"      : { "type" : 'any' },
 	"padding"          : { "type" : 'any' },
 	"paddingX"         : { "type" : 'any' },
@@ -35,7 +34,11 @@ const PARAMS = {
 	"autoUnflipTop" : {
 		"type"    : 'boolean'             ,
 		"default" : defaults.autoUnflipTop
-	}
+	},
+	"autoCheckFlip"    : {
+		"type"    : 'boolean'             ,
+		"default" : defaults.autoCheckFlip
+	},
 };
 
 /*

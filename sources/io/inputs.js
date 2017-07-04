@@ -415,7 +415,7 @@ class inputsClass {
 		share.set('lastDragDeck', {
 			"dragDeckParentId" : _dragDeck[0].card.parent,
 			"dragDeck"         : _dragDeck
-		}, defaults.forceClone);
+		}, true); // defaults.forceClone);
 
 		// let _top  = target.style.top;
 		// let _left = target.style.left;

@@ -27,6 +27,8 @@ export default {
 
 // Tips
 
+	// "tips" : {
+
 	"showTips"            : true ,
 	"showTipsDestination" : false,
 	"showTipPriority"     : false,
@@ -38,6 +40,8 @@ export default {
 	},
 
 // Field
+
+	// "field" : {
 
 	"zoom"                : 1.0 ,
 
@@ -59,31 +63,32 @@ export default {
 
 // Deck
 
-	"can_move_flip"       : false     ,
-	"showSlot"            : true      ,
+	// "deck" : {
 
-	"autohide"            : false     ,
-	"autoUnflipTop"       : true      ,
-	"autoCheckFlip"       : false     ,
+	// "can_move_flip"       : false     ,
+	"showSlot"            : true      , // показывать место для карты в пустой стопке
+
+	"autohide"            : false     , // скрывать стопку если вынули все карты
+	"autoUnflipTop"       : true      , // открывать верхнюю карту при ходе из стопки
+	"autoCheckFlip"       : false     , // применять правило переворачивания после каждого хода из/в стопку
 
 	"paddingType"         : '_default',
 	"flip_type"           : 'none'    ,
 
 	"rotate"              : 0         ,
 
-	"takeRules"           : ['any']   ,
-	"putRules"            : ['any']   ,
+	"takeRules"           : ['any']   , // правило применяемое чтобы взять карту/карты из стопки
+	"putRules"            : ['any']   , // правило применяемое чтобы взять карту/карты в стопку
 
-	"fullRules"           : ['not']   ,
+	"fullRules"           : ['not']   , // правило проверки сложенности стопки
 
-	"moveDistance"        : 0         ,
+	"moveDistance"        : 0         , // на сколько единиц (пикселей) нужно сдвинуть карту чтобы начать ход  
 
 	"padding_y"           : 0         ,
 	"padding_x"           : 0         ,
 	"flip_padding_y"      : 0         ,
 	"flip_padding_x"      : 0         ,
-	"move_distance"       : 10        ,
-	"debugLabels"         : false     ,
+	// "debugLabels"         : false     ,
 
 	"startZIndex"         : 10        ,
 	"topZIndex"           : 900       ,
@@ -108,7 +113,7 @@ export default {
 // Other
 
 	"stepType"             : 'default',
-	"forceClone"           : true     ,
+	// "forceClone"           : true     ,
 	// "movesAnimation"    : "simple" // simple|byStep|not
 	"showHistoryAnimation" : true
 };

@@ -29,9 +29,6 @@ let flipTypes = {
 
 	"beeFlip"         : (i, length) => (i == length - 1) ? true  : (i % 2 == 0) ? false : true ,
 
-	// "_direction_type" : (direction, type, i, length, data, arg) => data && (data | 0) > 0
-			// ? i > length - data - (arg ? (arg | 0) : 1) // top
-
 	"_direction_type" : (direction, type, i, length, data) => direction == "top"
 		? i >= length - (data ? (data | 0) : 1) // top
 			? type == "flip"                    // top param
@@ -48,19 +45,20 @@ let flipTypes = {
 				? false                         // bottom no param flip
 				: true,                         // bottom no param unflip
 
-	// "bottomFlip"      : (i, length, data, arg) => flipTypes._direction_type("bootom", "flip"  , i, length, data, arg),
 	"bottomFlip"      : (i, length, data) => flipTypes._direction_type("bootom", "flip"  , i, length, data),
 
-	// "bottomUnflip"    : (i, length, data, arg) => flipTypes._direction_type("bootom", "unflip", i, length, data, arg),
 	"bottomUnflip"    : (i, length, data) => flipTypes._direction_type("bootom", "unflip", i, length, data),
 
-	// "topFlip"         : (i, length, data, arg) => flipTypes._direction_type("top"   , "flip"  , i, length, data, arg),
 	"topFlip"         : (i, length, data) => flipTypes._direction_type("top"   , "flip"  , i, length, data),
 
-	// "topUnflip"       : (i, length, data, arg) => flipTypes._direction_type("top"   , "unflip", i, length, data, arg)
-	"topUnflip"       : (i, length, data) => flipTypes._direction_type("top"   , "unflip", i, length, data)
+	"topUnflip"       : (i, length, data, deck) => {
 
-	// TODO topFlip:counter, topUnflip:counter, bottomFlip:counter, bottomUnflip:counter
+		let _result = flipTypes._direction_type("top"   , "unflip", i, length, data);
+
+		// console.log('topUnflip', i, length, data, deck.name, deck.cards[i].name, _result);
+
+		return _result;
+	}
 };
 
 export default flipTypes;

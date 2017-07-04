@@ -63,7 +63,7 @@ export default (group, cardNames) => {
 
 		for(let i in cardNames) {
 			let _index = deckIndex[i % deckIndex.length];
-			group.decks[_index].genCardByName(cardNames[i]);
+			group.decks[_index].genCardByName(cardNames[i]); // , i == cardNames.length - 1);
 		}
 	// если нужно добавить несколько групп карт
 	} else {
