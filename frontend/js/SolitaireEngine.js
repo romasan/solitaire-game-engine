@@ -126,7 +126,7 @@ var SolitaireEngine =
 	exports.options = _defaults2.default;
 	exports.winCheck = _winCheck2.default.hwinCheck;
 	exports.generator = _deckGenerator2.default;
-	exports.version = (90914911707).toString().split(9).slice(1).map(function (e) {
+	exports.version = (90914911710).toString().split(9).slice(1).map(function (e) {
 		return parseInt(e, 8);
 	}).join('.');
 	
@@ -2504,6 +2504,8 @@ var SolitaireEngine =
 			value: function create(data) {
 	
 				this.homeGroups = data.homeGroups ? data.homeGroups : [];
+	
+				_share2.default.set('autoMoveToHomeOpenDecks', data.autoMoveToHomeOpenDecks ? data.autoMoveToHomeOpenDecks : []);
 	
 				// вкл./выкл. подсказок
 				if (typeof data.showTips == 'boolean' && data.showTips) {
@@ -6346,7 +6348,6 @@ var SolitaireEngine =
 			// });
 	
 			if (_card && _card.name == data.unflip.cardName) {
-				console.log('undo > flip', _card.name);
 				_card.flip = true;
 				_deck.Redraw();
 			}
@@ -10171,6 +10172,10 @@ var SolitaireEngine =
 	
 	var _event2 = _interopRequireDefault(_event);
 	
+	var _share = __webpack_require__(1);
+	
+	var _share2 = _interopRequireDefault(_share);
+	
 	var _common = __webpack_require__(5);
 	
 	var _common2 = _interopRequireDefault(_common);
@@ -10185,12 +10190,41 @@ var SolitaireEngine =
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
+	var checkAutoMoveToHomeOpenDecks = function checkAutoMoveToHomeOpenDecks(e) {
+		var autoMoveToHomeOpenDecks = _share2.default.get('autoMoveToHomeOpenDecks');
+		if (!autoMoveToHomeOpenDecks.checked) {
+			var _data = {
+				"checked": true,
+				"decks": []
+			};
+			for (var i in autoMoveToHomeOpenDecks) {
+				var el = _common2.default.getElementByName(autoMoveToHomeOpenDecks[i]);
+				if (el) {
+					if (el.type == 'group') {
+						var _decks = el.getDecks();
+						for (var deckIndex in _decks) {
+							_data.decks.push(_decks[deckIndex]);
+						}
+					} else if (el.type == 'deck') {
+						_data.decks.push(el);
+					}
+				}
+			}
+		}
+	};
+	
 	// Автоход в "дом"
 	var autoMoveToHome = function autoMoveToHome(e) {
 	
 		// console.log('autoMoveToHome');
 	
+		// checkAutoMoveToHomeOpenDecks();
+	
 		var _tips = _tips3.default.getTips();
+	
+		if (_tips.length) {
+			_event2.default.dispatch('autoMoveToHome:start');
+		}
 	
 		// event.dispatch('startRunHistory');
 	

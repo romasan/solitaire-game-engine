@@ -65,7 +65,6 @@ let undo = data => {
 			card                              &&
 			card.name == data.unflip.cardName
 		) {
-			console.log('undo > flip', card.name);
 			card.flip = true;
 			deck.Redraw();
 		}

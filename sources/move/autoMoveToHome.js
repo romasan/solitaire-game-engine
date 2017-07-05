@@ -1,17 +1,47 @@
 'use strict';
 
 import event  from 'event' ;
+import share  from 'share' ;
 import common from 'common';
 
 import Field  from 'field' ;
 import Tips   from 'tips'  ;
+
+let checkAutoMoveToHomeOpenDecks = e => {
+	let autoMoveToHomeOpenDecks = share.get('autoMoveToHomeOpenDecks');
+	if(!autoMoveToHomeOpenDecks.checked) {
+		let _data = {
+			"checked" : true,
+			"decks" : []
+		};
+		for(let i in autoMoveToHomeOpenDecks) {
+			let el = common.getElementByName(autoMoveToHomeOpenDecks[i]);
+			if(el) {
+				if(el.type == 'group') {
+					let _decks = el.getDecks();
+					for(let deckIndex in _decks) {
+						_data.decks.push(_decks[deckIndex]);
+					}
+				} else if(el.type == 'deck') {
+					_data.decks.push(el);
+				}
+			}
+		}
+	}
+}
 
 // Автоход в "дом"
 let autoMoveToHome = e => {
 
 	// console.log('autoMoveToHome');
 
+	// checkAutoMoveToHomeOpenDecks();
+
 	let _tips = Tips.getTips();
+
+	if(_tips.length) {
+		event.dispatch('autoMoveToHome:start');
+	}
 
 	// event.dispatch('startRunHistory');
 

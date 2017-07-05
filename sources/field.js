@@ -40,6 +40,8 @@ class Field {
 
 		this.homeGroups = data.homeGroups ? data.homeGroups : [];
 
+		share.set('autoMoveToHomeOpenDecks', data.autoMoveToHomeOpenDecks ? data.autoMoveToHomeOpenDecks : []);
+
 		// вкл./выкл. подсказок
 		if(typeof data.showTips == 'boolean' && data.showTips) {
 			Tips.showTips({
