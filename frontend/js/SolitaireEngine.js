@@ -126,7 +126,7 @@ var SolitaireEngine =
 	exports.options = _defaults2.default;
 	exports.winCheck = _winCheck2.default.hwinCheck;
 	exports.generator = _deckGenerator2.default;
-	exports.version = (90914911677).toString().split(9).slice(1).map(function (e) {
+	exports.version = (90914911707).toString().split(9).slice(1).map(function (e) {
 		return parseInt(e, 8);
 	}).join('.');
 	
@@ -6977,15 +6977,7 @@ var SolitaireEngine =
 	
 		// let _decks = common.getElementsByType('deck');
 	
-		// for(let deckIndex in _decks) {
-	
-		// 	let _deck = _decks[deckIndex];
-	
-		// 	if(_deck.autoCheckFlip) {
-		// 		_deck.checkFlip();
-		// 		_deck.Redraw();
-		// 	}
-		// }
+		// for(let deckIndex in _decks) {}
 	
 		// console.groupEnd();
 	});
@@ -10200,7 +10192,7 @@ var SolitaireEngine =
 	
 		var _tips = _tips3.default.getTips();
 	
-		_event2.default.dispatch('startRunHistory');
+		// event.dispatch('startRunHistory');
 	
 		var _homeGroups = _field2.default.homeGroups;
 		var homeGroupDecksNames = [];
@@ -10257,6 +10249,8 @@ var SolitaireEngine =
 			_event2.default.dispatch('winCheck', {
 				"show": true
 			});
+	
+			_event2.default.dispatch('autoMoveToHome:done');
 		}
 	};
 	

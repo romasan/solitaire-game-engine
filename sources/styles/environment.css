@@ -9,3 +9,7 @@
 #specialMoveBtn.specialStepButtonActive {
 	background: #EFCEEF;
 }
+
+.disabledButton {
+	color: #c0c0c0;
+}

@@ -13,7 +13,7 @@ let autoMoveToHome = e => {
 
 	let _tips = Tips.getTips();
 
-	event.dispatch('startRunHistory');
+	// event.dispatch('startRunHistory');
 
 	let _homeGroups = Field.homeGroups;
 	let homeGroupDecksNames = [];
@@ -73,6 +73,8 @@ let autoMoveToHome = e => {
 		event.dispatch('winCheck', {
 			"show" : true
 		});
+
+		event.dispatch('autoMoveToHome:done');
 	}
 };
 

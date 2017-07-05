@@ -85,15 +85,7 @@ event.listen('doHistory', e => {
 
 	// let _decks = common.getElementsByType('deck');
 
-	// for(let deckIndex in _decks) {
-
-	// 	let _deck = _decks[deckIndex];
-
-	// 	if(_deck.autoCheckFlip) {
-	// 		_deck.checkFlip();
-	// 		_deck.Redraw();
-	// 	}
-	// }
+	// for(let deckIndex in _decks) {}
 
 	// console.groupEnd();
 });
