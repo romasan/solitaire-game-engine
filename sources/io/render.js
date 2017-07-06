@@ -32,13 +32,13 @@ event.listen('removeEl', data => {
 	}
 });
 
-let triggerMouseEvent = (node, eventType) => {
+let triggerMouseEvent = (node, eventName) => {
 
-    var clickEvent = document.createEvent('MouseEvents');
+    let mouseEvent = document.createEvent('MouseEvents');
 
-    clickEvent.initEvent(eventType, true, true);
+    mouseEvent.initEvent(eventName, true, true);
 
-    node.dispatchEvent(clickEvent);
+    node.dispatchEvent(mouseEvent);
 };
 
 event.listen('clickCard', card => {

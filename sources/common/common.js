@@ -312,7 +312,7 @@ event.listen('toggleMarkerMode', toggleMarkerMode);
 
 let toggleSpecialStepMode = data => {
 
-	console.log('toggleSpecialStepMode:', data);
+	// console.log('toggleSpecialStepMode:', data);
 
 	let mode = share.get('specialStepMode');
 

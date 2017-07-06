@@ -5,6 +5,8 @@ import common from 'common';
 
 import Deck   from 'deck'  ;
 
+let revokeLength = null;
+
 // Спецход
 event.listen('specialStep', ({card, callback}) => {
 
@@ -40,6 +42,8 @@ event.listen('specialStep', ({card, callback}) => {
 
 		if(undoCount > 0) {
 
+			revokeLength = data.redoSteps.length;
+
 			common.animationOff();
 
 			for(let i = 0; i < undoCount; i += 1) {
@@ -58,7 +62,7 @@ event.listen('specialStep', ({card, callback}) => {
 });
 
 // Отмена спецхода
-event.listen('revokeSpecialStep', callback => {
+event.listen('revokeSpecialStep', ({callback}) => {
 
 	if(typeof callback == "function") {
 
@@ -67,5 +71,26 @@ event.listen('revokeSpecialStep', callback => {
 		callback();
 
 		common.animationOn();
+	} else {
+
+		console.log('revokeSpecialStep TYPE 2');
+
+		event.dispatch('rewindHistory', data => {
+
+			console.log('rewindHistory', data.redoSteps.length - revokeLength, data.redoSteps.length, revokeLength);
+
+			for(let i = data.redoSteps.length - revokeLength; i > 0; i -= 1) {
+				console.log('>>> redo');
+				data.redo();
+			}
+		});
+
+		revokeLength = 0;
+	}
+});
+
+event.listen('checkToCancelRevokeSpecialStep', callback => {
+	if(typeof callback == "function") {
+		callback(revokeLength);
 	}
 });

@@ -24,7 +24,6 @@ import applyChangedParameters from 'applyChangedParameters';
 
 /*
  * Redraw
- * getTopCard
  * getSomeCards
  * lock
  * unlock
@@ -50,6 +49,7 @@ import applyChangedParameters from 'applyChangedParameters';
  * getCardsNames
  * getCards
  * getTopCards
+ * getTopCard
  * cardsCount
  * getCardByIndex
  * getCardIndexById
@@ -329,14 +329,14 @@ class deckClass {
 		});
 	}
 
-	getTopCard() {
+	// getTopCard() {
 
-		if(this.cards.length == 0) {
-			return false;
-		}
+	// 	if(this.cards.length == 0) {
+	// 		return false;
+	// 	}
 
-		return this.cards[this.cards.length - 1];
-	}
+	// 	return this.cards[this.cards.length - 1];
+	// }
 
 	getSomeCards(count) {
 
@@ -623,14 +623,24 @@ class deckClass {
 	}
 
 	hide() {
+
 		this.visible = false;
-		event.dispatch('addStep', { "hideDeck" : this.name });
+
+		event.dispatch('addStep', {
+			"hideDeck" : this.name
+		});
+
 		this.Redraw();
 	}
 
 	show() {
+
 		this.visible = false;
-		event.dispatch('addStep', { "showDeck" : this.name });
+
+		event.dispatch('addStep', {
+			"showDeck" : this.name
+		});
+
 		this.Redraw();
 	}
 
@@ -730,7 +740,9 @@ class deckClass {
 		return _cardsNames;
 	}
 
-	getCards(filters = {"visible" : true}) {
+	getCards(filters = {
+		"visible" : true
+	}) {
 
 		let _cards = [];
 
@@ -756,6 +768,10 @@ class deckClass {
 
 	getTopCards(count, filters) {
 		return this.getCards(filters).slice(-(count | 0));
+	}
+
+	getTopCard(filters) {
+		return this.getTopCards(1, filters)[0];
 	}
 
 	cardsCount(filters) {

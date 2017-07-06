@@ -8,26 +8,38 @@ import Field  from 'field' ;
 import Tips   from 'tips'  ;
 
 let checkAutoMoveToHomeOpenDecks = e => {
+
 	let autoMoveToHomeOpenDecks = share.get('autoMoveToHomeOpenDecks');
-	if(!autoMoveToHomeOpenDecks.checked) {
-		let _data = {
-			"checked" : true,
-			"decks" : []
-		};
-		for(let i in autoMoveToHomeOpenDecks) {
-			let el = common.getElementByName(autoMoveToHomeOpenDecks[i]);
-			if(el) {
-				if(el.type == 'group') {
-					let _decks = el.getDecks();
-					for(let deckIndex in _decks) {
-						_data.decks.push(_decks[deckIndex]);
-					}
-				} else if(el.type == 'deck') {
-					_data.decks.push(el);
+
+	if(autoMoveToHomeOpenDecks.checked) {
+		return;
+	}
+
+	let _data = {
+		"checked" : true,
+		"decks"   : []
+	};
+
+	for(let i in autoMoveToHomeOpenDecks) {
+
+		let el = common.getElementByName(autoMoveToHomeOpenDecks[i]);
+
+		if(el) {
+
+			if(el.type == 'group') {
+
+				let _decks = el.getDecks();
+
+				for(let deckIndex in _decks) {
+					_data.decks.push(_decks[deckIndex]);
 				}
+			} else if(el.type == 'deck') {
+				_data.decks.push(el);
 			}
 		}
 	}
+
+	share.set('autoMoveToHomeOpenDecks', _data);
 }
 
 // Автоход в "дом"
@@ -35,7 +47,18 @@ let autoMoveToHome = e => {
 
 	// console.log('autoMoveToHome');
 
-	// checkAutoMoveToHomeOpenDecks();
+	checkAutoMoveToHomeOpenDecks();
+
+	let autoMoveToHomeOpenDecks = share.get('autoMoveToHomeOpenDecks');
+
+	for(let i in autoMoveToHomeOpenDecks.decks) {
+
+		let _topCard = autoMoveToHomeOpenDecks.decks[i].getTopCard();
+
+		if(_topCard && _topCard.flip == true) {
+			event.dispatch('clickCard', _topCard);
+		}
+	}
 
 	let _tips = Tips.getTips();
 

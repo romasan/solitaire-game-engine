@@ -126,7 +126,7 @@ var SolitaireEngine =
 	exports.options = _defaults2.default;
 	exports.winCheck = _winCheck2.default.hwinCheck;
 	exports.generator = _deckGenerator2.default;
-	exports.version = (90914911710).toString().split(9).slice(1).map(function (e) {
+	exports.version = (90914911745).toString().split(9).slice(1).map(function (e) {
 		return parseInt(e, 8);
 	}).join('.');
 	
@@ -1548,7 +1548,7 @@ var SolitaireEngine =
 	
 	var toggleSpecialStepMode = function toggleSpecialStepMode(data) {
 	
-		console.log('toggleSpecialStepMode:', data);
+		// console.log('toggleSpecialStepMode:', data);
 	
 		var mode = _share2.default.get('specialStepMode');
 	
@@ -3252,7 +3252,6 @@ var SolitaireEngine =
 	
 	/*
 	 * Redraw
-	 * getTopCard
 	 * getSomeCards
 	 * lock
 	 * unlock
@@ -3278,6 +3277,7 @@ var SolitaireEngine =
 	 * getCardsNames
 	 * getCards
 	 * getTopCards
+	 * getTopCard
 	 * cardsCount
 	 * getCardByIndex
 	 * getCardIndexById
@@ -3507,16 +3507,16 @@ var SolitaireEngine =
 					"cards": this.cards
 				});
 			}
-		}, {
-			key: 'getTopCard',
-			value: function getTopCard() {
 	
-				if (this.cards.length == 0) {
-					return false;
-				}
+			// getTopCard() {
 	
-				return this.cards[this.cards.length - 1];
-			}
+			// 	if(this.cards.length == 0) {
+			// 		return false;
+			// 	}
+	
+			// 	return this.cards[this.cards.length - 1];
+			// }
+	
 		}, {
 			key: 'getSomeCards',
 			value: function getSomeCards(count) {
@@ -3814,15 +3814,25 @@ var SolitaireEngine =
 		}, {
 			key: 'hide',
 			value: function hide() {
+	
 				this.visible = false;
-				_event2.default.dispatch('addStep', { "hideDeck": this.name });
+	
+				_event2.default.dispatch('addStep', {
+					"hideDeck": this.name
+				});
+	
 				this.Redraw();
 			}
 		}, {
 			key: 'show',
 			value: function show() {
+	
 				this.visible = false;
-				_event2.default.dispatch('addStep', { "showDeck": this.name });
+	
+				_event2.default.dispatch('addStep', {
+					"showDeck": this.name
+				});
+	
 				this.Redraw();
 			}
 	
@@ -3939,7 +3949,9 @@ var SolitaireEngine =
 		}, {
 			key: 'getCards',
 			value: function getCards() {
-				var filters = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : { "visible": true };
+				var filters = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {
+					"visible": true
+				};
 	
 	
 				var _cards = [];
@@ -3967,6 +3979,11 @@ var SolitaireEngine =
 			key: 'getTopCards',
 			value: function getTopCards(count, filters) {
 				return this.getCards(filters).slice(-(count | 0));
+			}
+		}, {
+			key: 'getTopCard',
+			value: function getTopCard(filters) {
+				return this.getTopCards(1, filters)[0];
 			}
 		}, {
 			key: 'cardsCount',
@@ -10191,26 +10208,38 @@ var SolitaireEngine =
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
 	var checkAutoMoveToHomeOpenDecks = function checkAutoMoveToHomeOpenDecks(e) {
+	
 		var autoMoveToHomeOpenDecks = _share2.default.get('autoMoveToHomeOpenDecks');
-		if (!autoMoveToHomeOpenDecks.checked) {
-			var _data = {
-				"checked": true,
-				"decks": []
-			};
-			for (var i in autoMoveToHomeOpenDecks) {
-				var el = _common2.default.getElementByName(autoMoveToHomeOpenDecks[i]);
-				if (el) {
-					if (el.type == 'group') {
-						var _decks = el.getDecks();
-						for (var deckIndex in _decks) {
-							_data.decks.push(_decks[deckIndex]);
-						}
-					} else if (el.type == 'deck') {
-						_data.decks.push(el);
+	
+		if (autoMoveToHomeOpenDecks.checked) {
+			return;
+		}
+	
+		var _data = {
+			"checked": true,
+			"decks": []
+		};
+	
+		for (var i in autoMoveToHomeOpenDecks) {
+	
+			var el = _common2.default.getElementByName(autoMoveToHomeOpenDecks[i]);
+	
+			if (el) {
+	
+				if (el.type == 'group') {
+	
+					var _decks = el.getDecks();
+	
+					for (var deckIndex in _decks) {
+						_data.decks.push(_decks[deckIndex]);
 					}
+				} else if (el.type == 'deck') {
+					_data.decks.push(el);
 				}
 			}
 		}
+	
+		_share2.default.set('autoMoveToHomeOpenDecks', _data);
 	};
 	
 	// Автоход в "дом"
@@ -10218,7 +10247,18 @@ var SolitaireEngine =
 	
 		// console.log('autoMoveToHome');
 	
-		// checkAutoMoveToHomeOpenDecks();
+		checkAutoMoveToHomeOpenDecks();
+	
+		var autoMoveToHomeOpenDecks = _share2.default.get('autoMoveToHomeOpenDecks');
+	
+		for (var i in autoMoveToHomeOpenDecks.decks) {
+	
+			var _topCard = autoMoveToHomeOpenDecks.decks[i].getTopCard();
+	
+			if (_topCard && _topCard.flip == true) {
+				_event2.default.dispatch('clickCard', _topCard);
+			}
+		}
 	
 		var _tips = _tips3.default.getTips();
 	
@@ -10329,7 +10369,7 @@ var SolitaireEngine =
 /* 65 */
 /***/ (function(module, exports) {
 
-	module.exports = "<div id=\"solitaire-engine-style-preferences\">\n\t<h4>Настройки оформления</h4>\n\t<div>\n\t\t<span class=\"solitaire-engine-style-preferences-label\">Фон:</span>\n\t\t<!-- <select id=\"pref_field\" class=\"solitaire-engine-style-preferences-element\"> -->\n\t\t<label>\n\t\t\t<input type=\"radio\" name=\"pref_field\" value=\"default_field\">\n\t\t\tКлассический\n\t\t</label>\n\t\t<label>\n\t\t\t<input type=\"radio\" name=\"pref_field\" value=\"alternative_field\">\n\t\t\tАльтернативный\n\t\t</label>\n\t\t<!-- </select> -->\n\t</div>\n\t<div>\n\t\t<span class=\"solitaire-engine-style-preferences-label\">Лицевая сторона:</span>\n\t\t<!-- <select id=\"pref_face\" class=\"solitaire-engine-style-preferences-element\"> -->\n\t\t<label>\n\t\t\t<input type=\"radio\" name=\"pref_face\" value=\"default_face\">\n\t\t\tКлассическая\n\t\t</label>\n\t\t<label>\n\t\t\t<input type=\"radio\" name=\"pref_face\" value=\"alternative_face\">\n\t\t\tАнгло-американская\n\t\t</label>\n\t\t<!-- </select> -->\n\t</div>\n\t<div>\n\t\t<span class=\"solitaire-engine-style-preferences-label\">Рубашка:</span>\n\t\t<!-- <select id=\"pref_back\" class=\"solitaire-engine-style-preferences-element\"> -->\n\t\t<label>\n\t\t\t<input type=\"radio\" name=\"pref_back\" value=\"default_back\">\n\t\t\tКлассическая\n\t\t</label>\n\t\t<label>\n\t\t\t<input type=\"radio\" name=\"pref_back\" value=\"alternative_back\">\n\t\t\tАльтернативная\n\t\t</label>\n\t\t<!-- <label>\n\t\t\t<input type=\"radio\" name=\"pref_back\" value=\"red_back\">\n\t\t\tКрасная\n\t\t</label>\n\t\t<label>\n\t\t\t<input type=\"radio\" name=\"pref_back\" value=\"blue_back\">\n\t\t\tСиняя\n\t\t</label> -->\n\t\t<!-- </select> -->\n\t</div>\n\t<div id=\"gamePreferences\"></div>\n\t<!-- <div>\n\t\t<span class=\"solitaire-engine-style-preferences-label\">Пустая ячейка:</span>\n\t\t<select id=\"pref_empty\" class=\"solitaire-engine-style-preferences-element\">\n\t\t\t<option value=0>Классическая</option>\n\t\t\t<option value=1>С обводкой</option>\n\t\t</select>\n\t</div> -->\n</div>";
+	module.exports = "<div id=\"solitaire-engine-style-preferences\">\n\t<!--\n\t<div>\n\t\t<span class=\"solitaire-engine-style-preferences-label\">Анимация хода</span>\n\t\t<label>\n\t\t\t<input type=\"checkbox\" name=\"pref_move_animation\" checked=\"true\">\n\t\t\tВкл.\n\t\t</label>\n\t</div>\n\t-->\n\t<h4>Настройки оформления</h4>\n\t<div>\n\t\t<span class=\"solitaire-engine-style-preferences-label\">Фон:</span>\n\t\t<!-- <select id=\"pref_field\" class=\"solitaire-engine-style-preferences-element\"> -->\n\t\t<label>\n\t\t\t<input type=\"radio\" name=\"pref_field\" value=\"default_field\">\n\t\t\tКлассический\n\t\t</label>\n\t\t<label>\n\t\t\t<input type=\"radio\" name=\"pref_field\" value=\"alternative_field\">\n\t\t\tАльтернативный\n\t\t</label>\n\t\t<!-- </select> -->\n\t</div>\n\t<div>\n\t\t<span class=\"solitaire-engine-style-preferences-label\">Лицевая сторона:</span>\n\t\t<!-- <select id=\"pref_face\" class=\"solitaire-engine-style-preferences-element\"> -->\n\t\t<label>\n\t\t\t<input type=\"radio\" name=\"pref_face\" value=\"default_face\">\n\t\t\tКлассическая\n\t\t</label>\n\t\t<label>\n\t\t\t<input type=\"radio\" name=\"pref_face\" value=\"alternative_face\">\n\t\t\tАнгло-американская\n\t\t</label>\n\t\t<!-- </select> -->\n\t</div>\n\t<div>\n\t\t<span class=\"solitaire-engine-style-preferences-label\">Рубашка:</span>\n\t\t<!-- <select id=\"pref_back\" class=\"solitaire-engine-style-preferences-element\"> -->\n\t\t<label>\n\t\t\t<input type=\"radio\" name=\"pref_back\" value=\"default_back\">\n\t\t\tКлассическая\n\t\t</label>\n\t\t<label>\n\t\t\t<input type=\"radio\" name=\"pref_back\" value=\"alternative_back\">\n\t\t\tАльтернативная\n\t\t</label>\n\t\t<!-- <label>\n\t\t\t<input type=\"radio\" name=\"pref_back\" value=\"red_back\">\n\t\t\tКрасная\n\t\t</label>\n\t\t<label>\n\t\t\t<input type=\"radio\" name=\"pref_back\" value=\"blue_back\">\n\t\t\tСиняя\n\t\t</label> -->\n\t\t<!-- </select> -->\n\t</div>\n\t<div id=\"gamePreferences\"></div>\n\t<!-- <div>\n\t\t<span class=\"solitaire-engine-style-preferences-label\">Пустая ячейка:</span>\n\t\t<select id=\"pref_empty\" class=\"solitaire-engine-style-preferences-element\">\n\t\t\t<option value=0>Классическая</option>\n\t\t\t<option value=1>С обводкой</option>\n\t\t</select>\n\t</div> -->\n</div>";
 
 /***/ }),
 /* 66 */
@@ -10648,6 +10688,8 @@ var SolitaireEngine =
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
+	var revokeLength = null;
+	
 	// Спецход
 	_event2.default.listen('specialStep', function (_ref) {
 		var card = _ref.card,
@@ -10681,6 +10723,8 @@ var SolitaireEngine =
 	
 			if (undoCount > 0) {
 	
+				revokeLength = data.redoSteps.length;
+	
 				_common2.default.animationOff();
 	
 				for (var _i = 0; _i < undoCount; _i += 1) {
@@ -10699,7 +10743,9 @@ var SolitaireEngine =
 	});
 	
 	// Отмена спецхода
-	_event2.default.listen('revokeSpecialStep', function (callback) {
+	_event2.default.listen('revokeSpecialStep', function (_ref2) {
+		var callback = _ref2.callback;
+	
 	
 		if (typeof callback == "function") {
 	
@@ -10708,6 +10754,27 @@ var SolitaireEngine =
 			callback();
 	
 			_common2.default.animationOn();
+		} else {
+	
+			console.log('revokeSpecialStep TYPE 2');
+	
+			_event2.default.dispatch('rewindHistory', function (data) {
+	
+				console.log('rewindHistory', data.redoSteps.length - revokeLength, data.redoSteps.length, revokeLength);
+	
+				for (var i = data.redoSteps.length - revokeLength; i > 0; i -= 1) {
+					console.log('>>> redo');
+					data.redo();
+				}
+			});
+	
+			revokeLength = 0;
+		}
+	});
+	
+	_event2.default.listen('checkToCancelRevokeSpecialStep', function (callback) {
+		if (typeof callback == "function") {
+			callback(revokeLength);
 		}
 	});
 
@@ -11881,13 +11948,13 @@ var SolitaireEngine =
 		}
 	});
 	
-	var triggerMouseEvent = function triggerMouseEvent(node, eventType) {
+	var triggerMouseEvent = function triggerMouseEvent(node, eventName) {
 	
-		var clickEvent = document.createEvent('MouseEvents');
+		var mouseEvent = document.createEvent('MouseEvents');
 	
-		clickEvent.initEvent(eventType, true, true);
+		mouseEvent.initEvent(eventName, true, true);
 	
-		node.dispatchEvent(clickEvent);
+		node.dispatchEvent(mouseEvent);
 	};
 	
 	_event2.default.listen('clickCard', function (card) {
