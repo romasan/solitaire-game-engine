@@ -87,6 +87,8 @@ event.listen('moveDragDeck', data => {
 
 				common.curUnLock();
 
+				// console.log('moveDragDeck:callback');
+
 				data.callback();
 			}
 

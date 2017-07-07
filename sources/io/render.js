@@ -45,6 +45,8 @@ event.listen('clickCard', card => {
 
 	let _elDomElement = share.get('domElement:' + card.id);
 
+	console.log('clickCard', card.name);
+
 	triggerMouseEvent(_elDomElement.el, 'mousedown');
 })
 

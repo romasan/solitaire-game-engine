@@ -145,6 +145,7 @@ class stateManager {
 			}
 
 			_deck.cards = _cards;
+
 			_deck.Redraw();
 		}
 	}

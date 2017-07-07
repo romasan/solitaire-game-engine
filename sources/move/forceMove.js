@@ -133,6 +133,8 @@ let forceMove = ({from, to, deck, flip, callback, steps, save, addStep}) => { //
 
 		let forceMoveCallback = e => {
 
+			// console.log('forceMove:callback');
+
 			if(addStep) {
 
 				event.dispatch('addStep', {

@@ -60,6 +60,8 @@ let autoMoveToHome = e => {
 		}
 	}
 
+	// Tips.checkTips();
+
 	let _tips = Tips.getTips();
 
 	if(_tips.length) {
@@ -108,6 +110,8 @@ let autoMoveToHome = e => {
 
 			Tips.checkTips();
 
+			console.log('autoMoveToHome:move:END', tip.from.card.name);
+
 			autoMoveToHome();
 		};
 
@@ -119,6 +123,8 @@ let autoMoveToHome = e => {
 			"save"     : true                ,
 			"callback" : autoMoveToHomeCallback
 		};
+
+		console.log('autoMoveToHome:move', tip.from.card.name);
 
 		event.dispatch('forceMove', forceMoveData);
 	} else {

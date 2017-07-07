@@ -310,6 +310,20 @@ class deckClass {
 		event.listen('moveDragDeck', _callback);
 	}
 
+	// get cards() {
+	// 	window.getCardsCounter = window.getCardsCounter ? window.getCardsCounter + 1 : 1;
+	// 	if(window.getCardsCounter == 175) {
+	// 		throw new Error('I\'M HERE');
+	// 	}
+	// 	console.log('get cards', window.getCardsCounter, this._cards);
+	// 	return this._cards;
+	// }
+
+	// set cards(cards) {
+	// 	console.log('set cards', cards);
+	// 	this._cards = cards;
+	// }
+
 	// перерисовка стопки
 	Redraw(data) {
 
@@ -533,7 +547,7 @@ class deckClass {
 
 	Push(deck, afterVisible = false) {
 
-		// console.log('deck:Push', this.name, deck ? deck.map(e => e.name).join(',') : deck);
+		console.log('deck:Push', this.name, deck ? deck.map(e => e.name).join(',') : deck);
 
 		let visibleCardsCount = this.cardsCount();
 
@@ -743,6 +757,9 @@ class deckClass {
 	getCards(filters = {
 		"visible" : true
 	}) {
+
+		// filter
+		// this.cards = this.cards.filter(e => e);
 
 		let _cards = [];
 

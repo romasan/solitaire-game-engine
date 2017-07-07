@@ -192,6 +192,7 @@ export default class elClass {
 
 	animate(params, animationTime, callback, animationName) {
 
+
 		let _animation = share.get('animation');
 		
 		typeof animationTime == 'undefined' && (                          animationTime = share.get('animationTime'));
@@ -277,6 +278,7 @@ export default class elClass {
 
 					// event.dispatch('animationEnd', this);
 
+					console.log('animate:callback', counter);
 					if(counter == 0) {
 
 						// console.log('animation END ' + animationKey, counter);

@@ -106,7 +106,9 @@ class inputsClass {
 					data.preventDefault();
 					return false;
 				}
-			}, {"passive" : false});
+			}, {
+				"passive" : false
+			});
 
 			window.addEventListener('touchmove', data => {
 
@@ -118,7 +120,9 @@ class inputsClass {
 					// data.stopPropagation();
 					return false;
 				}
-			}, {"passive" : false});
+			}, {
+				"passive" : false
+			});
 
 			window.addEventListener('touchend', data => {
 
@@ -128,7 +132,9 @@ class inputsClass {
 					data.preventDefault();
 					return false;
 				}
-			}, {"passive" : false});
+			}, {
+				"passive" : false
+			});
 		} catch(e) {}
 	}
 

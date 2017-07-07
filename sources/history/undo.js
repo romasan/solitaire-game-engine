@@ -37,7 +37,7 @@ let undo = data => {
 
 		let deck = common.getElementByName(data.flip.deckName);
 
-		let card = deck.getCardByIndex(data.flip.cardIndex | 0);
+		let card = deck && deck.getCardByIndex(data.flip.cardIndex | 0);
 
 		if(
 			card                            &&
@@ -53,7 +53,7 @@ let undo = data => {
 
 		let deck = common.getElementByName(data.unflip.deckName, 'deck');
 
-		let card = deck.getCardByIndex(data.unflip.cardIndex | 0);
+		let card = deck && deck.getCardByIndex(data.unflip.cardIndex | 0);
 
 		// console.log('undo:unflip -> flip', data.unflip, deck.name, card.name, deck.cards.map(e => e.name));
 
@@ -75,14 +75,16 @@ let undo = data => {
 
 		let deck = common.getElementByName(data.hide.deckName, 'deck');
 
+		let card = deck && deck.getCardByIndex(data.hide.cardIndex | 0);
+
 		if(
-			deck                                                       &&
-			deck.cards[data.hide.cardIndex].name == data.hide.cardName
+			card                            &&
+			card.name == data.hide.cardName
 		) {
-			deck.cards[data.hide.cardIndex].visible = true;
+			card.visible = true;
 			deck.Redraw();
 		} else {
-			console.warn('Incorrect history atom of step [undo hide]:', data.hide, deck.cards[data.hide.cardIndex].name, data.hide.cardName);
+			console.warn('Incorrect history atom of step [undo hide]:', data.hide);
 		}
 	}
 
@@ -93,14 +95,16 @@ let undo = data => {
 
 		let deck = common.getElementByName(data.show.deckName, 'deck');
 
+		let card = deck && deck.getCardByIndex(data.show.cardIndex | 0);
+
 		if(
-			deck                                                       &&
-			deck.cards[data.show.cardIndex].name == data.show.cardName
+			card                            &&
+			card.name == data.show.cardName
 		) {
-			deck.cards[data.show.cardIndex].visible = false;
+			card.visible = false;
 			deck.Redraw();
 		} else {
-			console.warn('Incorrect history atom of step [undo show]:', data.show, deck.cards[data.show.cardIndex].name, data.show.cardName);
+			console.warn('Incorrect history atom of step [undo show]:', data.show);
 		}
 
 		deck.Redraw();

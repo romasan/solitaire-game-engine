@@ -65,6 +65,10 @@ let eachDecksInGroup = (groupName, callback) => {
 	}
 }
 
+event.listen('click:flipCard', e => {
+	console.log('click:flipCard', e);
+});
+
 let logCardsInDeck = deck => {
 
 	let _log = [deck.name + ' (' + deck.cards.length + '): '];
