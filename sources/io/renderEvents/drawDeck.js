@@ -139,7 +139,7 @@ event.listen('redrawDeck', data => {
 		}
 	}
 
-	console.log('drawDeck', data.cards);
+	console.log('redrawDeck', data.cards);
 
 	// перерисовка карт
 	for(let i in data.cards) {

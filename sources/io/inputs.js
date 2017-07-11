@@ -179,7 +179,9 @@ class inputsClass {
 		event.dispatch('startRunHistory');
 
 		// click empty deck
-		if( target.className.split(' ').indexOf('slot') >= 0 ) {
+		if(
+			target.className.split(' ').indexOf('slot') >= 0
+		) {
 
 			let _id   = target.id                 ,
 			    _deck = common.getElementById(_id);
@@ -326,7 +328,6 @@ class inputsClass {
 			return;
 		}
 
-
 		let _distance = _startCursor 
 			? Math.sqrt((e => e * e)(x - _startCursor.x) + (e => e * e)(y - _startCursor.y))
 			: 0;
@@ -455,22 +456,6 @@ class inputsClass {
 		share.set('dragDeck'   , null);
 		share.set('startCursor', null);
 	}
-
-	// onmove(x, y) {
-
-	// 	let _dop = document.elementFromPoint(x, y);
-
-	// 	if(_dop.className.split(' ').indexOf('card') >= 0) {
-
-	// 		event.dispatch('moveOnCard', _dop.className.split(' ').indexOf('card') >= 0
-	// 			? {
-	// 				"flip" : _dop.className.split(' ').indexOf('flip') >= 0,
-	// 				"id"   : _dop.id
-	// 			}
-	// 			: null
-	// 		);
-	// 	}
-	// }
 }
 
 let _inputs = null;

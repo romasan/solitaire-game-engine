@@ -126,7 +126,7 @@ var SolitaireEngine =
 	exports.options = _defaults2.default;
 	exports.winCheck = _winCheck2.default.hwinCheck;
 	exports.generator = _deckGenerator2.default;
-	exports.version = (90914912021).toString().split(9).slice(1).map(function (e) {
+	exports.version = (90914912053).toString().split(9).slice(1).map(function (e) {
 		return parseInt(e, 8);
 	}).join('.');
 	
@@ -1168,23 +1168,6 @@ var SolitaireEngine =
 				_share2.default.set('dragDeck', null);
 				_share2.default.set('startCursor', null);
 			}
-	
-			// onmove(x, y) {
-	
-			// 	let _dop = document.elementFromPoint(x, y);
-	
-			// 	if(_dop.className.split(' ').indexOf('card') >= 0) {
-	
-			// 		event.dispatch('moveOnCard', _dop.className.split(' ').indexOf('card') >= 0
-			// 			? {
-			// 				"flip" : _dop.className.split(' ').indexOf('flip') >= 0,
-			// 				"id"   : _dop.id
-			// 			}
-			// 			: null
-			// 		);
-			// 	}
-			// }
-	
 		}]);
 	
 		return inputsClass;
@@ -12239,7 +12222,7 @@ var SolitaireEngine =
 			}
 		}
 	
-		console.log('drawDeck', data.cards);
+		console.log('redrawDeck', data.cards);
 	
 		// перерисовка карт
 		for (var _i in data.cards) {

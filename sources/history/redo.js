@@ -93,7 +93,7 @@ let redo = data => {
 		let card = deck && deck.getCardByIndex(data.show.cardIndex | 0);
 
 		if(
-			card                                                       &&
+			card                            &&
 			card.name == data.show.cardName
 		) {
 			card.visible = true;
