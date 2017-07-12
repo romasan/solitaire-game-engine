@@ -116,8 +116,6 @@ class Event {
 								// "isCurLock" : null
 							}
 						},
-
-
 					);
 
 					if(this._events[eventName][i].once) {

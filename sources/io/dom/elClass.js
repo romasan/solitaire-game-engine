@@ -192,7 +192,6 @@ export default class elClass {
 
 	animate(params, animationTime, callback, animationName) {
 
-
 		let _animation = share.get('animation');
 		
 		typeof animationTime == 'undefined' && (                          animationTime = share.get('animationTime'));
@@ -257,11 +256,19 @@ export default class elClass {
 				for(let attrName in params) {
 
 					if(
-						reType(this.el.style[attrName]) != reType(params[attrName])
+						reType(this.el.style[attrName]) != reType(params[attrName]) && // old style not new style 
+						(
+							(el, attr) => ['left', 'top'].indexOf(attr) >= 0 // параметр left или top
+								? (
+									parseInt(this.el['offset' + attr[0].toUpperCase() + attr.slice(1)]) != parseInt(params[attr]) // offset not old style
+								)
+								: true
+						)(this.el.style, attrName)
 					) {
 						counter += 1;
 					}
-					this.el.style[attrName] = params[attrName];
+
+					this.el.style[attrName] = params[attrName]; // set new style
 				}
 
 				// console.log('### animation changes', this.el.id, counter);
@@ -278,7 +285,8 @@ export default class elClass {
 
 					// event.dispatch('animationEnd', this);
 
-					console.log('animate:callback', counter);
+					// console.log('animate:callback', counter, e.propertyName);
+
 					if(counter == 0) {
 
 						// console.log('animation END ' + animationKey, counter);
@@ -302,7 +310,9 @@ export default class elClass {
 				if(counter > 0) {
 					this.el.addEventListener('transitionend', transitionEndCallback, false);
 				} else {
+
 					counter = 1;
+
 					transitionEndCallback();
 				}
 

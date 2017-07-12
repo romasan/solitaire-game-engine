@@ -126,7 +126,7 @@ var SolitaireEngine =
 	exports.options = _defaults2.default;
 	exports.winCheck = _winCheck2.default.hwinCheck;
 	exports.generator = _deckGenerator2.default;
-	exports.version = (90914912053).toString().split(9).slice(1).map(function (e) {
+	exports.version = (90914912177).toString().split(9).slice(1).map(function (e) {
 		return parseInt(e, 8);
 	}).join('.');
 	
@@ -1902,6 +1902,8 @@ var SolitaireEngine =
 		if (_share2.default.get('noTips')) {
 			return false;
 		}
+	
+		// console.log('check tips');
 	
 		_event2.default.dispatch('hideTips');
 	
@@ -3720,9 +3722,7 @@ var SolitaireEngine =
 				var afterVisible = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
 	
 	
-				console.log('deck:Push', this.name, deck ? deck.map(function (e) {
-					return e.name;
-				}).join(',') : deck);
+				// console.log('deck:Push', this.name, deck ? deck.map(e => e.name).join(',') : deck);
 	
 				var visibleCardsCount = this.cardsCount();
 	
@@ -6595,14 +6595,12 @@ var SolitaireEngine =
 	
 	
 		// console.log('SWAP:', deck.name, fromIndex, toIndex);
-		var fromCard = deck.cards[fromIndex];
-		var toCard = deck.cards[toIndex];
 	
-		if (fromCard && toCard) {
+		if (deck.cards[fromIndex] && deck.cards[toIndex]) {
 	
-			var tmp = fromCard;
-			fromCard = toCard;
-			toCard = tmp;
+			var tmp = deck.cards[fromIndex];
+			deck.cards[fromIndex] = deck.cards[toIndex];
+			deck.cards[toIndex] = tmp;
 	
 			if (save) {
 				_event2.default.dispatch('addStep', {
@@ -8396,7 +8394,7 @@ var SolitaireEngine =
 		// Нестандартный ход (autosteps)
 		// if(share.get('stepType') != defaults.stepType) {return false;};
 	
-		var rulesCorrect = true; //!common.isLock();
+		var rulesCorrect = true; // !common.isLock();
 	
 		rulesCorrect = rulesCorrect && !deck.locked;
 	
@@ -10333,8 +10331,6 @@ var SolitaireEngine =
 	
 				_tips3.default.checkTips();
 	
-				console.log('autoMoveToHome:move:END', _tip.from.card.name);
-	
 				autoMoveToHome();
 			};
 	
@@ -10346,8 +10342,6 @@ var SolitaireEngine =
 				"save": true,
 				"callback": autoMoveToHomeCallback
 			};
-	
-			console.log('autoMoveToHome:move', _tip.from.card.name);
 	
 			_event2.default.dispatch('forceMove', forceMoveData);
 		} else {
@@ -11306,10 +11300,16 @@ var SolitaireEngine =
 	
 						for (var attrName in params) {
 	
-							if (reType(this.el.style[attrName]) != reType(params[attrName])) {
+							if (reType(this.el.style[attrName]) != reType(params[attrName]) && // old style not new style 
+							function (el, attr) {
+								return ['left', 'top'].indexOf(attr) >= 0 // параметр left или top
+								? parseInt(_this.el['offset' + attr[0].toUpperCase() + attr.slice(1)]) != parseInt(params[attr]) // offset not old style
+								: true;
+							}(this.el.style, attrName)) {
 								counter += 1;
 							}
-							this.el.style[attrName] = params[attrName];
+	
+							this.el.style[attrName] = params[attrName]; // set new style
 						}
 	
 						// console.log('### animation changes', this.el.id, counter);
@@ -11326,7 +11326,8 @@ var SolitaireEngine =
 	
 							// event.dispatch('animationEnd', this);
 	
-							console.log('animate:callback', counter);
+							// console.log('animate:callback', counter, e.propertyName);
+	
 							if (counter == 0) {
 	
 								// console.log('animation END ' + animationKey, counter);
@@ -11349,7 +11350,9 @@ var SolitaireEngine =
 						if (counter > 0) {
 							this.el.addEventListener('transitionend', transitionEndCallback, false);
 						} else {
+	
 							counter = 1;
+	
 							transitionEndCallback();
 						}
 					} catch (e) {}
@@ -11925,6 +11928,10 @@ var SolitaireEngine =
 	
 	var _share2 = _interopRequireDefault(_share);
 	
+	var _common = __webpack_require__(5);
+	
+	var _common2 = _interopRequireDefault(_common);
+	
 	var _elRender = __webpack_require__(71);
 	
 	var _elRender2 = _interopRequireDefault(_elRender);
@@ -11992,11 +11999,20 @@ var SolitaireEngine =
 	
 	_event2.default.listen('clickCard', function (card) {
 	
-		var _elDomElement = _share2.default.get('domElement:' + card.id);
+		// let _elDomElement = share.get('domElement:' + card.id);
 	
-		console.log('clickCard', card.name);
+		// console.log('clickCard', card.name);
 	
-		triggerMouseEvent(_elDomElement.el, 'mousedown');
+		// triggerMouseEvent(_elDomElement.el, 'mousedown');
+	
+		var deck = _common2.default.getElementById(card.parent);
+	
+		if (deck) {
+			_event2.default.dispatch('click:flipCard', {
+				"to": deck, // deckClass
+				"toCard": card // card
+			});
+		}
 	});
 	
 	_event2.default.listen('showCard', function (target) {
@@ -12222,8 +12238,6 @@ var SolitaireEngine =
 			}
 		}
 	
-		console.log('redrawDeck', data.cards);
-	
 		// перерисовка карт
 		for (var _i in data.cards) {
 	
@@ -12251,7 +12265,11 @@ var SolitaireEngine =
 				(0, _elRender2.default)(_cardDomElement2).removeClass('flip');
 			}
 	
-			(0, _elRender2.default)(_cardDomElement2).css(_params2);
+			// elRender(_cardDomElement)
+			// 	.css(_params);
+			for (var paramName in _params2) {
+				_cardDomElement2.el.style[paramName] = _params2[paramName];
+			}
 		}
 	});
 
@@ -13523,10 +13541,6 @@ var SolitaireEngine =
 			}
 		}
 	};
-	
-	_event2.default.listen('click:flipCard', function (e) {
-		console.log('click:flipCard', e);
-	});
 	
 	var logCardsInDeck = function logCardsInDeck(deck) {
 	

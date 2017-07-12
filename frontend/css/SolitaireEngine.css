@@ -23,7 +23,8 @@
   border-radius: 3px; }
 
 .card {
-  border-radius: 3px; }
+  border-radius: 3px;
+  will-change: unset; }
 
 .tip:before {
   content: attr(data-content);

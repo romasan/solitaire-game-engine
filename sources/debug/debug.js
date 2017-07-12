@@ -65,10 +65,6 @@ let eachDecksInGroup = (groupName, callback) => {
 	}
 }
 
-event.listen('click:flipCard', e => {
-	console.log('click:flipCard', e);
-});
-
 let logCardsInDeck = deck => {
 
 	let _log = [deck.name + ' (' + deck.cards.length + '): '];
@@ -86,7 +82,6 @@ let logCardsInDeck = deck => {
 		);
 		_log.push('text-decoration: none;');
 	}
-
 
 	console.groupCollapsed.apply(console, _log);
 	console.log(deck.cards);

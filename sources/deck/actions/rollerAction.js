@@ -101,7 +101,6 @@ class rollerAction extends deckAction {
 			"visible" : true
 		});
 
-
 		// есть видимые карты
 		if(cardsCount > 0) {
 

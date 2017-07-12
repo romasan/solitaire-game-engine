@@ -25,7 +25,7 @@ import common from 'common';
 
 let genCardByName = (deck, name, last = true) => {
 
-	let validatedCard = common.validateCardName(name);// {color, rank}
+	let validatedCard = common.validateCardName(name); // {color, rank}
 
 	if(validatedCard) {
 

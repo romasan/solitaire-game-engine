@@ -30,7 +30,8 @@ $img_dir :"/solitaire_engine/img/";
 }
 
 .card {
-	border-radius: 3px;
+	border-radius : 3px;
+	will-change   : unset;
 }
 
 .tip:before {

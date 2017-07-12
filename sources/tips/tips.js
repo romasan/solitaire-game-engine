@@ -43,6 +43,8 @@ let checkTips = e => {
 		return false;
 	}
 
+	// console.log('check tips');
+
 	event.dispatch('hideTips');
 
 	let _decks = Deck.getDecks({

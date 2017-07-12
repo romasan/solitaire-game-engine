@@ -547,7 +547,7 @@ class deckClass {
 
 	Push(deck, afterVisible = false) {
 
-		console.log('deck:Push', this.name, deck ? deck.map(e => e.name).join(',') : deck);
+		// console.log('deck:Push', this.name, deck ? deck.map(e => e.name).join(',') : deck);
 
 		let visibleCardsCount = this.cardsCount();
 

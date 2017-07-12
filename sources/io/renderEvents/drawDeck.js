@@ -77,7 +77,6 @@ event.listen('redrawDeckFlip', data => {
 
 		_cardDomElement.css(_params);
 	}
-
 });
 
 event.listen('redrawDeckIndexes', data => {
@@ -139,7 +138,6 @@ event.listen('redrawDeck', data => {
 		}
 	}
 
-	console.log('redrawDeck', data.cards);
 
 	// перерисовка карт
 	for(let i in data.cards) {
@@ -172,7 +170,10 @@ event.listen('redrawDeck', data => {
 				.removeClass('flip');
 		}
 
-		elRender(_cardDomElement)
-			.css(_params);
+		// elRender(_cardDomElement)
+		// 	.css(_params);
+		for(let paramName in _params) {
+			_cardDomElement.el.style[paramName] = _params[paramName];
+		}
 	}
 });

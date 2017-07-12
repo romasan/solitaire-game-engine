@@ -5,14 +5,12 @@ import event from 'event';
 export default (deck, fromIndex, toIndex, save = true) => {
 
 	// console.log('SWAP:', deck.name, fromIndex, toIndex);
-	let fromCard = deck.cards[fromIndex];
-	let toCard   = deck.cards[toIndex]  ;
 
-	if(fromCard && toCard) {
+	if(deck.cards[fromIndex] && deck.cards[toIndex]) {
 
-		let tmp  = fromCard;
-		fromCard = toCard  ;
-		toCard   = tmp     ;
+		let tmp               = deck.cards[fromIndex];
+		deck.cards[fromIndex] = deck.cards[toIndex]  ;
+		deck.cards[toIndex]   = tmp                  ;
 
 		if(save) {
 			event.dispatch('addStep', {

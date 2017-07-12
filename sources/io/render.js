@@ -1,9 +1,10 @@
 'use strict';
 
-import event from 'event'                  ;
-import share from 'share'                  ;
+import event          from 'event'         ;
+import share          from 'share'         ;
+import common         from 'common'        ;
 
-import elRender from 'elRender'            ;
+import elRender       from 'elRender'      ;
 
 import initField      from 'initField'     ;
 import drawDeck       from 'drawDeck'      ;
@@ -43,11 +44,20 @@ let triggerMouseEvent = (node, eventName) => {
 
 event.listen('clickCard', card => {
 
-	let _elDomElement = share.get('domElement:' + card.id);
+	// let _elDomElement = share.get('domElement:' + card.id);
 
-	console.log('clickCard', card.name);
+	// console.log('clickCard', card.name);
 
-	triggerMouseEvent(_elDomElement.el, 'mousedown');
+	// triggerMouseEvent(_elDomElement.el, 'mousedown');
+
+	let deck = common.getElementById(card.parent);
+
+	if(deck) {
+		event.dispatch('click:flipCard', {
+			"to"     : deck, // deckClass
+			"toCard" : card  // card
+		});
+	}
 })
 
 event.listen('showCard', target => {

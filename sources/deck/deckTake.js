@@ -11,7 +11,7 @@ export default (deck, cardId) => {
 	// Нестандартный ход (autosteps)
 	// if(share.get('stepType') != defaults.stepType) {return false;};
 
-	let rulesCorrect = true;//!common.isLock();
+	let rulesCorrect = true; // !common.isLock();
 
 	rulesCorrect = rulesCorrect && !deck.locked;
 
