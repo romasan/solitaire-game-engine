@@ -126,7 +126,7 @@ var SolitaireEngine =
 	exports.options = _defaults2.default;
 	exports.winCheck = _winCheck2.default.hwinCheck;
 	exports.generator = _deckGenerator2.default;
-	exports.version = (90914912177).toString().split(9).slice(1).map(function (e) {
+	exports.version = (90914912200).toString().split(9).slice(1).map(function (e) {
 		return parseInt(e, 8);
 	}).join('.');
 	
@@ -5975,16 +5975,16 @@ var SolitaireEngine =
 				}
 			};
 	
-			var cardsMove = [];
+			var moveDeck = [];
 	
 			for (var _i3 in cardsPop) {
-				cardsMove.push({
+				moveDeck.push({
 					"card": cardsPop[_i3]
 				});
 			}
 	
 			var moveDragDeckParams = {
-				"moveDeck": cardsMove,
+				"moveDeck": moveDeck,
 				"departure": deckFrom,
 				"destination": deckTo
 			};
@@ -6026,6 +6026,15 @@ var SolitaireEngine =
 				}
 	
 				_event2.default.dispatch('forceMoveEnd');
+	
+				var moveEndData = {
+					"from": deckFrom,
+					"to": deckTo,
+					"moveDeck": moveDeck,
+					"stepType": _share2.default.get('stepType')
+				};
+	
+				_event2.default.dispatch('moveEnd:force', moveEndData);
 	
 				if (typeof callback == 'function') {
 					callback();
@@ -8028,6 +8037,8 @@ var SolitaireEngine =
 	    */
 	
 				if (data.eventName.indexOf('moveEnd') >= 0) {
+	
+					console.log('###');
 	
 					if (data.eventData.from.name != deck.name) {
 						return;
@@ -11836,7 +11847,7 @@ var SolitaireEngine =
 							"stepType": _share2.default.get('stepType')
 						};
 	
-						_event2.default.dispatch('moveEnd:beforeSave', moveEndData); // used in autoStep
+						_event2.default.dispatch('moveEnd:beforeSave', moveEndData); // used in autoMoveToHome
 	
 						var _tips = _tips3.default.getTips();
 	

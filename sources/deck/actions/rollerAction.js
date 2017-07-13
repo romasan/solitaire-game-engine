@@ -33,6 +33,8 @@ class rollerAction extends deckAction {
 
 		if(data.eventName.indexOf('moveEnd') >= 0) {
 
+			console.log('###');
+
 			if(data.eventData.from.name != deck.name) {
 				return;
 			}

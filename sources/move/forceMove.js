@@ -111,17 +111,17 @@ let forceMove = ({from, to, deck, flip, callback, steps, save, addStep}) => { //
 			}
 		}
 
-		let cardsMove = [];
+		let moveDeck = [];
 
 		for(let i in cardsPop) {
-			cardsMove.push({
+			moveDeck.push({
 				"card" : cardsPop[i]
 			});
 		}
 
 		let moveDragDeckParams = {
-			"moveDeck"    : cardsMove,
-			"departure"   : deckFrom ,
+			"moveDeck"    : moveDeck,
+			"departure"   : deckFrom,
 			"destination" : deckTo
 		};
 
@@ -166,6 +166,15 @@ let forceMove = ({from, to, deck, flip, callback, steps, save, addStep}) => { //
 			}
 
 			event.dispatch('forceMoveEnd');
+
+			let moveEndData = {
+				"from"     : deckFrom             ,
+				"to"       : deckTo               ,
+				"moveDeck" : moveDeck             ,
+				"stepType" : share.get('stepType')
+			};
+
+			event.dispatch('moveEnd:force', moveEndData);
 
 			if(typeof callback == 'function') {
 				callback();

@@ -155,7 +155,7 @@ let Move = ({moveDeck, to, cursorMove}) => {
 						"stepType" : share.get('stepType')
 					};
 
-					event.dispatch('moveEnd:beforeSave', moveEndData); // used in autoStep
+					event.dispatch('moveEnd:beforeSave', moveEndData); // used in autoMoveToHome
 
 					let _tips = Tips.getTips();
 
