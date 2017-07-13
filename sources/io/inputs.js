@@ -100,7 +100,7 @@ class inputsClass {
 
 			window.addEventListener('touchstart', data => {
 
-				this.take(data.target, data.touches[0].clientX, data.touches[0].clientY);
+				this.take(data.target, data.touches[0].clientX, data.touches[0].clientY, true);
 
 				if(data.target.className.split(' ').indexOf('card') >= 0) {
 					data.preventDefault();
@@ -162,10 +162,21 @@ class inputsClass {
 		common.curUnLock();
 	}
 
-	take(target, x, y) {
+	take(target, x, y, touch) {
 
-		share.set('dragDeck'   , null);
-		share.set('startCursor', null);
+		if(touch) {
+
+			let _startCursor = share.get('startCursor'),
+			    _dragDeck    = share.get('dragDeck')   ;
+
+			if(_dragDeck || _startCursor) {
+				return;
+			}
+		} else {
+			
+			share.set('dragDeck'   , null);
+			share.set('startCursor', null);
+		}
 
 		if(
 			common.isCurLock()                                 ||

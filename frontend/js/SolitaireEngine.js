@@ -126,7 +126,7 @@ var SolitaireEngine =
 	exports.options = _defaults2.default;
 	exports.winCheck = _winCheck2.default.hwinCheck;
 	exports.generator = _deckGenerator2.default;
-	exports.version = (90914912200).toString().split(9).slice(1).map(function (e) {
+	exports.version = (90914912217).toString().split(9).slice(1).map(function (e) {
 		return parseInt(e, 8);
 	}).join('.');
 	
@@ -817,7 +817,7 @@ var SolitaireEngine =
 	
 				window.addEventListener('touchstart', function (data) {
 	
-					_this.take(data.target, data.touches[0].clientX, data.touches[0].clientY);
+					_this.take(data.target, data.touches[0].clientX, data.touches[0].clientY, true);
 	
 					if (data.target.className.split(' ').indexOf('card') >= 0) {
 						data.preventDefault();
@@ -877,10 +877,21 @@ var SolitaireEngine =
 			}
 		}, {
 			key: 'take',
-			value: function take(target, x, y) {
+			value: function take(target, x, y, touch) {
 	
-				_share2.default.set('dragDeck', null);
-				_share2.default.set('startCursor', null);
+				if (touch) {
+	
+					var _startCursor = _share2.default.get('startCursor'),
+					    _dragDeck = _share2.default.get('dragDeck');
+	
+					if (_dragDeck || _startCursor) {
+						return;
+					}
+				} else {
+	
+					_share2.default.set('dragDeck', null);
+					_share2.default.set('startCursor', null);
+				}
 	
 				if (_common2.default.isCurLock() || document.getElementsByClassName('animated').length || // TODO )==
 				_share2.default.get('gameIsWon') || _share2.default.get('sessionStarted')) {
@@ -1002,11 +1013,11 @@ var SolitaireEngine =
 	
 					// _deck.runActions();
 	
-					var _dragDeck = _deck2 ? _deck2.Take(_id2) : null;
+					var _dragDeck2 = _deck2 ? _deck2.Take(_id2) : null;
 	
-					_share2.default.set('dragDeck', _dragDeck);
+					_share2.default.set('dragDeck', _dragDeck2);
 	
-					if (_dragDeck) {
+					if (_dragDeck2) {
 	
 						_share2.default.set('startCursor', {
 							"x": x,
@@ -2627,6 +2638,8 @@ var SolitaireEngine =
 		}, {
 			key: 'Redraw',
 			value: function Redraw(data) {
+	
+				// console.log('Field:Redraw');
 	
 				// прокидываеем <новую> конфигурацию
 				if (data) {
@@ -6940,6 +6953,14 @@ var SolitaireEngine =
 	
 	var _common2 = _interopRequireDefault(_common);
 	
+	var _share = __webpack_require__(1);
+	
+	var _share2 = _interopRequireDefault(_share);
+	
+	var _field = __webpack_require__(12);
+	
+	var _field2 = _interopRequireDefault(_field);
+	
 	var _history = __webpack_require__(25);
 	
 	var _history2 = _interopRequireDefault(_history);
@@ -6947,10 +6968,6 @@ var SolitaireEngine =
 	var _redoAdvanced = __webpack_require__(31);
 	
 	var _redoAdvanced2 = _interopRequireDefault(_redoAdvanced);
-	
-	var _share = __webpack_require__(1);
-	
-	var _share2 = _interopRequireDefault(_share);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
@@ -7025,6 +7042,8 @@ var SolitaireEngine =
 		// After doing history
 	
 		_event2.default.dispatch('doHistory:end');
+	
+		setTimeout(_field2.default.Redraw, 0);
 	
 		// let _decks = common.getElementsByType('deck');
 	
@@ -8037,8 +8056,6 @@ var SolitaireEngine =
 	    */
 	
 				if (data.eventName.indexOf('moveEnd') >= 0) {
-	
-					console.log('###');
 	
 					if (data.eventData.from.name != deck.name) {
 						return;

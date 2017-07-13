@@ -2,11 +2,12 @@
 
 import event        from 'event'       ;
 import common       from 'common'      ;
+import share        from 'share'       ;
 
+import Field        from 'field'       ;
 import history      from 'history'     ;
 import redoAdvanced from 'redoAdvanced';
 
-import share        from 'share'       ;
 
 /*
  * Events:
@@ -82,6 +83,8 @@ event.listen('doHistory', e => {
 	// After doing history
 
 	event.dispatch('doHistory:end');
+
+	setTimeout(Field.Redraw, 0);
 
 	// let _decks = common.getElementsByType('deck');
 
