@@ -17,6 +17,7 @@ Internal use:
 
  * _down_up_cards
  * _down_up_rank_num
+ * _isFirst
 
 Rules:
 
@@ -33,11 +34,16 @@ Rules:
  * descendDeck
  * oneRankDeck
  * oneSuitDeck
- * ascend
- * descent
- * descentOne
- * ascendOne
+ * ascend | ascent
+ * descend | descent
+ * ascendOne | ascentOne
+ * ascendNum | ascentNum
+ * descendOne | descentOne
+ * descendNum | descentNum
  * ascdescOne
+ * ascdescNum
+ * ascendNumLoop | ascentNumLoop
+ * sum
  * sum14
  * around
  
@@ -47,13 +53,13 @@ let readyPutRules = {
 
 	// Relations filters
 
-	"linePrev" : deck => {
+	"linePrev" : data => {
 
-		let prev = getBeside(deck.to).prev;
+		let prev = getBeside(data.to).prev;
 
 		if(prev) {
 
-			deck.link = prev.to;
+			data.link = prev.to;
 
 			return true;
 		}
@@ -61,13 +67,13 @@ let readyPutRules = {
 		return false;
 	},
 
-	"lineNext" : deck => {
+	"lineNext" : data => {
 
-		let next = getBeside(deck.to).next;
+		let next = getBeside(data.to).next;
 
 		if(next) {
 
-			deck.link = next.to;
+			data.link = next.to;
 
 			return true;
 		}
@@ -77,14 +83,16 @@ let readyPutRules = {
 
 	// Internal use
 
-	"_down_up_cards" : deck => {
+	"_down_up_cards" : data => {
 
-		if(deck.cards.length == 0) {
+		if(data.cards.length == 0) {
 			return false;
 		}
 
-		let down = common.validateCardName(deck.cards[deck.cards.length - 1].name);
-		let up   = common.validateCardName(deck.putDeck[0].card.name);
+		let down = data.cards && data.cards[data.cards.length - 1];       // common.validateCardName(data.cards[data.cards.length - 1].name);
+		let up   = data.putDeck    &&
+		           data.putDeck[0] &&
+		           data.putDeck[0].card; // common.validateCardName(data.putDeck[0].card.name);
 
 		if(!down || !up) {
 			return false;
@@ -96,9 +104,9 @@ let readyPutRules = {
 		}
 	},
 
-	"_down_up_rank_num" : deck => {
+	"_down_up_rank_num" : data => {
 
-		let du = readyPutRules._down_up_cards(deck);
+		let du = readyPutRules._down_up_cards(data);
 
 		return du ? {
 			"down" : defaults.card.ranks.indexOf(du.down.rank),
@@ -106,14 +114,14 @@ let readyPutRules = {
 		} : false;
 	},
 
-	"_isFirst": (deck, _name) => {
+	"_isFirst": (data, _name) => {
 
-		if(deck.cards.length == 0) {
+		if(data.cards.length == 0) {
 
 			let _validate = null;
 
 			return (
-				(_validate = common.validateCardName(deck.putDeck[0].card.name)) &&
+				(_validate = common.validateCardName(data.putDeck[0].card.name)) &&
 				_validate.rank == _name
 			);
 		}
@@ -123,74 +131,74 @@ let readyPutRules = {
 
 	// Rules
 
-	"striped" : deck => {
+	"striped" : data => {
 
-		if(deck.cards.length == 0) {
+		if(data.cards.length == 0) {
 			return true;
 		}
 
-		let color_A   = common.validateCardName(deck.cards[deck.cards.length - 1].name).color,
+		let color_A   = common.validateCardName(data.cards[data.cards.length - 1].name).color,
 			color_B   = null,
 			_validate = null;
 
-		if(_validate = common.validateCardName(deck.putDeck[0].card.name)) {
+		if(_validate = common.validateCardName(data.putDeck[0].card.name)) {
 			color_B = _validate.color;
 		}
 
 		return color_A != color_B;
 	},
 
-	"firstAce"     : deck => readyPutRules._isFirst(deck, defaults.card.ranks[0]),
+	"firstAce"     : data => readyPutRules._isFirst(data, defaults.card.ranks[0]),
 
-	"firstKing"    : deck => readyPutRules._isFirst(deck, defaults.card.ranks[defaults.card.ranks.length - 1]),
+	"firstKing"    : data => readyPutRules._isFirst(data, defaults.card.ranks[defaults.card.ranks.length - 1]),
 
-	"notForEmpty"  : deck => deck.cards.length > 0,
+	"notForEmpty"  : data => data.cards.length > 0,
 
-	"onlyEmpty"    : deck => deck.cards.length == 0,
+	"onlyEmpty"    : data => data.cards.length == 0,
 
-	"oneRank"      : deck => {
+	"oneRank"      : data => {
 
-		if(deck.cards.length == 0) {
+		if(data.cards.length == 0) {
 			return true;
 		}
 
-		let du = readyPutRules._down_up_cards(deck);
+		let du = readyPutRules._down_up_cards(data);
 
 		return du && du.up.rank == du.down.rank;
 	},
 
-	"oneSuit"      : deck => {
+	"oneSuit"      : data => {
 
-		if(deck.cards.length == 0) {
+		if(data.cards.length == 0) {
 			return true;
 		}
 
-		let du = readyPutRules._down_up_cards(deck);
+		let du = readyPutRules._down_up_cards(data);
 
 		return du && du.up.suit == du.down.suit;
 	},
 
-	"any" : deck => true,
+	"any" : data => true,
 
-	"not" : deck => false,
+	"not" : data => false,
 
-	"ascendDeck" : deck => {//ascend deck by step
+	"ascendDeck" : data => { //ascend data by step
 
-		if(deck.putDeck.length == 1) {
+		if(data.putDeck.length == 1) {
 			return true;
 		}
 
 		let ruleCorrect = true;
 
-		for(let i in deck.putDeck) {
+		for(let i in data.putDeck) {
 
 			if(i > 0) {
 
 				let down = defaults.card.ranks.indexOf(
-					common.validateCardName(deck.putDeck[i - 1].card.name).rank
+					common.validateCardName(data.putDeck[i - 1].card.name).rank
 				),
 				    up   = defaults.card.ranks.indexOf(
-					common.validateCardName(deck.putDeck[i].card.name).rank
+					common.validateCardName(data.putDeck[i].card.name).rank
 				);
 
 				ruleCorrect = ruleCorrect && 1 + down == up;
@@ -199,24 +207,25 @@ let readyPutRules = {
 
 		return ruleCorrect;
 	},
+	"ascentDeck" : data => readyPutRules.ascendDeck(data), // обратная совместимость
 
-	"descendDeck" : deck => {//ascend deck by step
+	"descendDeck" : data => { //ascend data by step
 
-		if(deck.putDeck.length == 1) {
+		if(data.putDeck.length == 1) {
 			return true;
 		}
 
 		let ruleCorrect = true;
 
-		for(let i in deck.putDeck) {
+		for(let i in data.putDeck) {
 
 			if(i > 0) {
 
 				let down = defaults.card.ranks.indexOf(
-					common.validateCardName(deck.putDeck[i - 1].card.name).rank
+					common.validateCardName(data.putDeck[i - 1].card.name).rank
 				),
 				    up   = defaults.card.ranks.indexOf(
-					common.validateCardName(deck.putDeck[i].card.name).rank
+					common.validateCardName(data.putDeck[i].card.name).rank
 				);
 
 				ruleCorrect = ruleCorrect && down == 1 + up;
@@ -225,21 +234,22 @@ let readyPutRules = {
 
 		return ruleCorrect;
 	},
+	"descentDeck" : data => readyPutRules.descendDeck(data),
 
-	"oneRankDeck" : deck => {
+	"oneRankDeck" : data => {
 
-		if(deck.putDeck.length == 1) {
+		if(data.putDeck.length == 1) {
 			return true;
 		}
 
 		let ruleCorrect = true;
 
-		for(let i in deck.putDeck) {
+		for(let i in data.putDeck) {
 
 			if(i > 0) {
 
-				let down = common.validateCardName(deck.putDeck[i - 1].card.name).rank,
-				    up   = common.validateCardName(deck.putDeck[i].card.name).rank
+				let down = common.validateCardName(data.putDeck[i - 1].card.name).rank,
+				    up   = common.validateCardName(data.putDeck[i].card.name).rank
 
 				ruleCorrect = ruleCorrect && down == up;
 			}
@@ -248,20 +258,20 @@ let readyPutRules = {
 		return ruleCorrect;
 	},
 
-	"oneSuitDeck" : deck => {
+	"oneSuitDeck" : data => {
 
-		if(deck.putDeck.length == 1) {
+		if(data.putDeck.length == 1) {
 			return true;
 		}
 
 		let ruleCorrect = true;
 
-		for(let i in deck.putDeck) {
+		for(let i in data.putDeck) {
 
 			if(i > 0) {
 
-				let down = common.validateCardName(deck.putDeck[i - 1].card.name).suit,
-				    up   = common.validateCardName(deck.putDeck[i].card.name).suit
+				let down = common.validateCardName(data.putDeck[i - 1].card.name).suit,
+				    up   = common.validateCardName(data.putDeck[i].card.name).suit
 
 				ruleCorrect = ruleCorrect && down == up;
 			}
@@ -270,86 +280,142 @@ let readyPutRules = {
 		return ruleCorrect;
 	},
 
-	"ascend" : deck => {
+	"ascend" : data => {
 
-		if(deck.cards.length == 0) {
+		if(data.cards.length == 0) {
 			return true;
 		}
 
-		let da = readyPutRules._down_up_rank_num(deck);
+		let da = readyPutRules._down_up_rank_num(data);
 
 		return da && da.down < da.up;
 	},
+	"ascent" : data => readyPutRules.ascend(data),
 
-	"descent" : deck => {
+	"descend" : data => {
 
-		if(deck.cards.length == 0) {
+		if(data.cards.length == 0) {
 			return true;
 		}
 
-		let da = readyPutRules._down_up_rank_num(deck);
+		let da = readyPutRules._down_up_rank_num(data);
 
 		return da && da.down > da.up;
 	},
+	"descent" : data => readyPutRules.descend(data),
 
-	"descentOne" : deck => {// one step
+	"ascendOne" : data => { // one step
+		return readyPutRules.ascendNum(data, 1);
+	},
+	"ascentOne" : data => readyPutRules.ascendOne(data),
 
-		if(deck.cards.length == 0) {
+	"ascendNum" : (data, prop) => {
+
+		if(data.cards.length == 0) {
 			return true;
 		}
 
-		let da = readyPutRules._down_up_rank_num(deck);
+		let num = (prop | 0) > 0 ? (prop | 0) : 1;
 
-		return da && da.down == 1 + da.up;
+		let da = readyPutRules._down_up_rank_num(data);
+
+		return da && num + da.down == da.up;
+	},
+	"ascentNum" : (data, prop) => readyPutRules.ascendNum(data, prop),
+
+	"descendOne" : data => { // one step
+		return readyPutRules.descentNum(data, 1);
+	},
+	"descentOne" : data => readyPutRules.descendOne(data),
+
+	"descendNum" : (data, prop) => {
+
+		if(data.cards.length == 0) {
+			return true;
+		}
+
+		let num = (prop | 0) > 0 ? (prop | 0) : 1;
+
+		let da = readyPutRules._down_up_rank_num(data);
+
+		return da && da.down == num + da.up;
+	},
+	"descentNum" : (data, prop) => readyPutRules.descendNum(data, prop),
+
+	"ascdescOne" : data => {
+		return readyPutRules.ascdescNum(data, 1);
 	},
 
-	"ascendOne" : deck => {// one step
+	"ascdescNum" : (data, prop) => {
 
-		if(deck.cards.length == 0) {
+		if(data.cards.length == 0) {
 			return true;
 		}
 
-		let da = readyPutRules._down_up_rank_num(deck);
+		let num = (prop | 0) > 0 ? (prop | 0) : 1;
 
-		return da && 1 + da.down == da.up;
+		let da = readyPutRules._down_up_rank_num(data);
+
+		return da && Math.abs(da.down - da.up) == num;
 	},
 
-	"ascdescOne" : deck => {
+	"ascendNumLoop" : (data, prop) => {
 
-		if(deck.cards.length == 0) {
+		if(data.cards.length == 0) {
 			return true;
 		}
 
-		let da = readyPutRules._down_up_rank_num(deck);
+		let num = (prop | 0) > 0 ? (prop | 0) : 1;
 
-		return da && Math.abs(da.down - da.up) == 1;
+		let da = readyPutRules._down_up_rank_num(data);
+
+		console.log('ascendNumLoop', prop, da, data);
+
+		// TODO
+		return da && num + da.down == da.up;
 	},
+	"ascentNumLoop" : (data, prop) => readyPutRules.ascendNumLoop(data, prop),
 
-	"sum14" : deck => {
+	"descendNumLoop" : (data, prop) => {
+		// TODO
+		return false;
+	},
+	"descentNumLoop" : (data, prop) => readyPutRules.descendNumLoop(data, prop),
 
-		if(deck.cards.length == 0) {
+	"sum" : (data, prop) => {
+
+		if(data.cards.length == 0) {
 			return true;
 		}
 
-		let du = readyPutRules._down_up_cards(deck);
+		let num = (prop | 0) > 0 ? (prop | 0) : 1;
+
+		let du = readyPutRules._down_up_cards(data);
 		let _sum = du.down.value + du.up.value;
 
-		return _sum == 14;
+		return _sum == num;
+	},
+
+	"sum14" : data => {
+		return readyPutRules.sum(data, 14);
 	},
 
 	// TODO rules with params ??? or atom rules
-	// "sum" : (deck, data) => {} // rulename:data -> sum:14
+	// "sum" : (data, prop) => {} // rulename:prop -> sum:14
 
 	// query ?
 
-	"around" : deck => {// {from, putDeck, cards}
+	"around" : data => { // {from, putDeck, cards}
 
-		if(deck.cards.length == 0) {
+		if(data.cards.length == 0) {
 			return true;
 		}
 
-		let _around = deck.from.deck.getRelationsByName('around', {from: null});
-		let _parent = Deck.getDeckById(deck.cards[0].parent);
+		let _around = data.from.data.getRelationsByName('around', {
+			"from": null
+		});
+
+		let _parent = Deck.getDeckById(data.cards[0].parent);
 
 		for(let i in _around) {
 

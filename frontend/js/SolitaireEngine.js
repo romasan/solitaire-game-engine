@@ -126,7 +126,7 @@ var SolitaireEngine =
 	exports.options = _defaults2.default;
 	exports.winCheck = _winCheck2.default.hwinCheck;
 	exports.generator = _deckGenerator2.default;
-	exports.version = (90914912217).toString().split(9).slice(1).map(function (e) {
+	exports.version = (90914912233).toString().split(9).slice(1).map(function (e) {
 		return parseInt(e, 8);
 	}).join('.');
 	
@@ -3394,9 +3394,17 @@ var SolitaireEngine =
 				card.flip = _flipTypes2.default[flipType](i, length, flipData, _this);
 			};
 	
+			var stringWithColon = function stringWithColon(line) {
+				if (typeof line == "string" && line.indexOf(':') > 0) {
+					return line.split(':')[0];
+				} else {
+					return line;
+				}
+			};
+	
 			// Put
-			this.putRules = data.putRules ? typeof data.putRules == 'string' ? _putRules2.default[data.putRules] ? [data.putRules] : _defaults2.default.putRules : data.putRules.constructor == Array ? data.putRules.filter(function (ruleName) {
-				return typeof ruleName == 'string' && _putRules2.default[ruleName] // TODO Exception (putRule "***" not found)
+			this.putRules = data.putRules ? typeof data.putRules == 'string' ? _putRules2.default[stringWithColon(data.putRules)] ? [data.putRules] : _defaults2.default.putRules : data.putRules.constructor == Array ? data.putRules.filter(function (ruleName) {
+				return typeof ruleName == 'string' && _putRules2.default[stringWithColon(ruleName)] // TODO Exception (putRule "***" not found)
 				? true : false;
 			}) : _defaults2.default.putRules : _defaults2.default.putRules;
 	
@@ -3415,7 +3423,7 @@ var SolitaireEngine =
 			// Правила сложенной колоды
 			// Сложенная колода может использоваться для определения выиигрыша
 			// В сложенную колоду нельзя класть новые карты
-			this.fullRules = data.fullRules ? typeof data.fullRules == "string" ? _fullRules2.default[data.fullRules] ? [data.fullRules] : _defaults2.default.fullRules : data.putRules.constructor == Array ? data.fullRules.filter(function (ruleName) {
+			this.fullRules = data.fullRules ? typeof data.fullRules == "string" ? _fullRules2.default[data.fullRules] ? [data.fullRules] : _defaults2.default.fullRules : data.fullRules.constructor == Array ? data.fullRules.filter(function (ruleName) {
 				return typeof ruleName == "string" && _fullRules2.default[ruleName];
 			}) : _defaults2.default.fullRules : _defaults2.default.fullRules;
 	
@@ -4243,6 +4251,7 @@ var SolitaireEngine =
 	
 	 * _down_up_cards
 	 * _down_up_rank_num
+	 * _isFirst
 	
 	Rules:
 	
@@ -4259,11 +4268,16 @@ var SolitaireEngine =
 	 * descendDeck
 	 * oneRankDeck
 	 * oneSuitDeck
-	 * ascend
-	 * descent
-	 * descentOne
-	 * ascendOne
+	 * ascend | ascent
+	 * descend | descent
+	 * ascendOne | ascentOne
+	 * ascendNum | ascentNum
+	 * descendOne | descentOne
+	 * descendNum | descentNum
 	 * ascdescOne
+	 * ascdescNum
+	 * ascendNumLoop | ascentNumLoop
+	 * sum
 	 * sum14
 	 * around
 	 
@@ -4273,13 +4287,13 @@ var SolitaireEngine =
 	
 		// Relations filters
 	
-		"linePrev": function linePrev(deck) {
+		"linePrev": function linePrev(data) {
 	
-			var prev = (0, _getBeside2.default)(deck.to).prev;
+			var prev = (0, _getBeside2.default)(data.to).prev;
 	
 			if (prev) {
 	
-				deck.link = prev.to;
+				data.link = prev.to;
 	
 				return true;
 			}
@@ -4287,13 +4301,13 @@ var SolitaireEngine =
 			return false;
 		},
 	
-		"lineNext": function lineNext(deck) {
+		"lineNext": function lineNext(data) {
 	
-			var next = (0, _getBeside2.default)(deck.to).next;
+			var next = (0, _getBeside2.default)(data.to).next;
 	
 			if (next) {
 	
-				deck.link = next.to;
+				data.link = next.to;
 	
 				return true;
 			}
@@ -4303,14 +4317,14 @@ var SolitaireEngine =
 	
 		// Internal use
 	
-		"_down_up_cards": function _down_up_cards(deck) {
+		"_down_up_cards": function _down_up_cards(data) {
 	
-			if (deck.cards.length == 0) {
+			if (data.cards.length == 0) {
 				return false;
 			}
 	
-			var down = _common2.default.validateCardName(deck.cards[deck.cards.length - 1].name);
-			var up = _common2.default.validateCardName(deck.putDeck[0].card.name);
+			var down = data.cards && data.cards[data.cards.length - 1]; // common.validateCardName(data.cards[data.cards.length - 1].name);
+			var up = data.putDeck && data.putDeck[0] && data.putDeck[0].card; // common.validateCardName(data.putDeck[0].card.name);
 	
 			if (!down || !up) {
 				return false;
@@ -4322,9 +4336,9 @@ var SolitaireEngine =
 			};
 		},
 	
-		"_down_up_rank_num": function _down_up_rank_num(deck) {
+		"_down_up_rank_num": function _down_up_rank_num(data) {
 	
-			var du = readyPutRules._down_up_cards(deck);
+			var du = readyPutRules._down_up_cards(data);
 	
 			return du ? {
 				"down": _defaults2.default.card.ranks.indexOf(du.down.rank),
@@ -4332,13 +4346,13 @@ var SolitaireEngine =
 			} : false;
 		},
 	
-		"_isFirst": function _isFirst(deck, _name) {
+		"_isFirst": function _isFirst(data, _name) {
 	
-			if (deck.cards.length == 0) {
+			if (data.cards.length == 0) {
 	
 				var _validate = null;
 	
-				return (_validate = _common2.default.validateCardName(deck.putDeck[0].card.name)) && _validate.rank == _name;
+				return (_validate = _common2.default.validateCardName(data.putDeck[0].card.name)) && _validate.rank == _name;
 			}
 	
 			return true;
@@ -4346,84 +4360,84 @@ var SolitaireEngine =
 	
 		// Rules
 	
-		"striped": function striped(deck) {
+		"striped": function striped(data) {
 	
-			if (deck.cards.length == 0) {
+			if (data.cards.length == 0) {
 				return true;
 			}
 	
-			var color_A = _common2.default.validateCardName(deck.cards[deck.cards.length - 1].name).color,
+			var color_A = _common2.default.validateCardName(data.cards[data.cards.length - 1].name).color,
 			    color_B = null,
 			    _validate = null;
 	
-			if (_validate = _common2.default.validateCardName(deck.putDeck[0].card.name)) {
+			if (_validate = _common2.default.validateCardName(data.putDeck[0].card.name)) {
 				color_B = _validate.color;
 			}
 	
 			return color_A != color_B;
 		},
 	
-		"firstAce": function firstAce(deck) {
-			return readyPutRules._isFirst(deck, _defaults2.default.card.ranks[0]);
+		"firstAce": function firstAce(data) {
+			return readyPutRules._isFirst(data, _defaults2.default.card.ranks[0]);
 		},
 	
-		"firstKing": function firstKing(deck) {
-			return readyPutRules._isFirst(deck, _defaults2.default.card.ranks[_defaults2.default.card.ranks.length - 1]);
+		"firstKing": function firstKing(data) {
+			return readyPutRules._isFirst(data, _defaults2.default.card.ranks[_defaults2.default.card.ranks.length - 1]);
 		},
 	
-		"notForEmpty": function notForEmpty(deck) {
-			return deck.cards.length > 0;
+		"notForEmpty": function notForEmpty(data) {
+			return data.cards.length > 0;
 		},
 	
-		"onlyEmpty": function onlyEmpty(deck) {
-			return deck.cards.length == 0;
+		"onlyEmpty": function onlyEmpty(data) {
+			return data.cards.length == 0;
 		},
 	
-		"oneRank": function oneRank(deck) {
+		"oneRank": function oneRank(data) {
 	
-			if (deck.cards.length == 0) {
+			if (data.cards.length == 0) {
 				return true;
 			}
 	
-			var du = readyPutRules._down_up_cards(deck);
+			var du = readyPutRules._down_up_cards(data);
 	
 			return du && du.up.rank == du.down.rank;
 		},
 	
-		"oneSuit": function oneSuit(deck) {
+		"oneSuit": function oneSuit(data) {
 	
-			if (deck.cards.length == 0) {
+			if (data.cards.length == 0) {
 				return true;
 			}
 	
-			var du = readyPutRules._down_up_cards(deck);
+			var du = readyPutRules._down_up_cards(data);
 	
 			return du && du.up.suit == du.down.suit;
 		},
 	
-		"any": function any(deck) {
+		"any": function any(data) {
 			return true;
 		},
 	
-		"not": function not(deck) {
+		"not": function not(data) {
 			return false;
 		},
 	
-		"ascendDeck": function ascendDeck(deck) {
-			//ascend deck by step
+		"ascendDeck": function ascendDeck(data) {
+			//ascend data by step
 	
-			if (deck.putDeck.length == 1) {
+			if (data.putDeck.length == 1) {
 				return true;
 			}
 	
 			var ruleCorrect = true;
 	
-			for (var i in deck.putDeck) {
+			for (var i in data.putDeck) {
 	
 				if (i > 0) {
 	
-					var down = _defaults2.default.card.ranks.indexOf(_common2.default.validateCardName(deck.putDeck[i - 1].card.name).rank),
-					    up = _defaults2.default.card.ranks.indexOf(_common2.default.validateCardName(deck.putDeck[i].card.name).rank);
+					var down = _defaults2.default.card.ranks.indexOf(_common2.default.validateCardName(data.putDeck[i - 1].card.name).rank),
+					    up = _defaults2.default.card.ranks.indexOf(_common2.default.validateCardName(data.putDeck[i].card.name).rank);
 	
 					ruleCorrect = ruleCorrect && 1 + down == up;
 				};
@@ -4431,22 +4445,25 @@ var SolitaireEngine =
 	
 			return ruleCorrect;
 		},
+		"ascentDeck": function ascentDeck(data) {
+			return readyPutRules.ascendDeck(data);
+		}, // обратная совместимость
 	
-		"descendDeck": function descendDeck(deck) {
-			//ascend deck by step
+		"descendDeck": function descendDeck(data) {
+			//ascend data by step
 	
-			if (deck.putDeck.length == 1) {
+			if (data.putDeck.length == 1) {
 				return true;
 			}
 	
 			var ruleCorrect = true;
 	
-			for (var i in deck.putDeck) {
+			for (var i in data.putDeck) {
 	
 				if (i > 0) {
 	
-					var down = _defaults2.default.card.ranks.indexOf(_common2.default.validateCardName(deck.putDeck[i - 1].card.name).rank),
-					    up = _defaults2.default.card.ranks.indexOf(_common2.default.validateCardName(deck.putDeck[i].card.name).rank);
+					var down = _defaults2.default.card.ranks.indexOf(_common2.default.validateCardName(data.putDeck[i - 1].card.name).rank),
+					    up = _defaults2.default.card.ranks.indexOf(_common2.default.validateCardName(data.putDeck[i].card.name).rank);
 	
 					ruleCorrect = ruleCorrect && down == 1 + up;
 				};
@@ -4454,21 +4471,24 @@ var SolitaireEngine =
 	
 			return ruleCorrect;
 		},
+		"descentDeck": function descentDeck(data) {
+			return readyPutRules.descendDeck(data);
+		},
 	
-		"oneRankDeck": function oneRankDeck(deck) {
+		"oneRankDeck": function oneRankDeck(data) {
 	
-			if (deck.putDeck.length == 1) {
+			if (data.putDeck.length == 1) {
 				return true;
 			}
 	
 			var ruleCorrect = true;
 	
-			for (var i in deck.putDeck) {
+			for (var i in data.putDeck) {
 	
 				if (i > 0) {
 	
-					var down = _common2.default.validateCardName(deck.putDeck[i - 1].card.name).rank,
-					    up = _common2.default.validateCardName(deck.putDeck[i].card.name).rank;
+					var down = _common2.default.validateCardName(data.putDeck[i - 1].card.name).rank,
+					    up = _common2.default.validateCardName(data.putDeck[i].card.name).rank;
 	
 					ruleCorrect = ruleCorrect && down == up;
 				}
@@ -4477,20 +4497,20 @@ var SolitaireEngine =
 			return ruleCorrect;
 		},
 	
-		"oneSuitDeck": function oneSuitDeck(deck) {
+		"oneSuitDeck": function oneSuitDeck(data) {
 	
-			if (deck.putDeck.length == 1) {
+			if (data.putDeck.length == 1) {
 				return true;
 			}
 	
 			var ruleCorrect = true;
 	
-			for (var i in deck.putDeck) {
+			for (var i in data.putDeck) {
 	
 				if (i > 0) {
 	
-					var down = _common2.default.validateCardName(deck.putDeck[i - 1].card.name).suit,
-					    up = _common2.default.validateCardName(deck.putDeck[i].card.name).suit;
+					var down = _common2.default.validateCardName(data.putDeck[i - 1].card.name).suit,
+					    up = _common2.default.validateCardName(data.putDeck[i].card.name).suit;
 	
 					ruleCorrect = ruleCorrect && down == up;
 				}
@@ -4499,89 +4519,161 @@ var SolitaireEngine =
 			return ruleCorrect;
 		},
 	
-		"ascend": function ascend(deck) {
+		"ascend": function ascend(data) {
 	
-			if (deck.cards.length == 0) {
+			if (data.cards.length == 0) {
 				return true;
 			}
 	
-			var da = readyPutRules._down_up_rank_num(deck);
+			var da = readyPutRules._down_up_rank_num(data);
 	
 			return da && da.down < da.up;
 		},
+		"ascent": function ascent(data) {
+			return readyPutRules.ascend(data);
+		},
 	
-		"descent": function descent(deck) {
+		"descend": function descend(data) {
 	
-			if (deck.cards.length == 0) {
+			if (data.cards.length == 0) {
 				return true;
 			}
 	
-			var da = readyPutRules._down_up_rank_num(deck);
+			var da = readyPutRules._down_up_rank_num(data);
 	
 			return da && da.down > da.up;
 		},
+		"descent": function descent(data) {
+			return readyPutRules.descend(data);
+		},
 	
-		"descentOne": function descentOne(deck) {
+		"ascendOne": function ascendOne(data) {
 			// one step
+			return readyPutRules.ascendNum(data, 1);
+		},
+		"ascentOne": function ascentOne(data) {
+			return readyPutRules.ascendOne(data);
+		},
 	
-			if (deck.cards.length == 0) {
+		"ascendNum": function ascendNum(data, prop) {
+	
+			if (data.cards.length == 0) {
 				return true;
 			}
 	
-			var da = readyPutRules._down_up_rank_num(deck);
+			var num = (prop | 0) > 0 ? prop | 0 : 1;
 	
-			return da && da.down == 1 + da.up;
+			var da = readyPutRules._down_up_rank_num(data);
+	
+			return da && num + da.down == da.up;
+		},
+		"ascentNum": function ascentNum(data, prop) {
+			return readyPutRules.ascendNum(data, prop);
 		},
 	
-		"ascendOne": function ascendOne(deck) {
+		"descendOne": function descendOne(data) {
 			// one step
-	
-			if (deck.cards.length == 0) {
-				return true;
-			}
-	
-			var da = readyPutRules._down_up_rank_num(deck);
-	
-			return da && 1 + da.down == da.up;
+			return readyPutRules.descentNum(data, 1);
+		},
+		"descentOne": function descentOne(data) {
+			return readyPutRules.descendOne(data);
 		},
 	
-		"ascdescOne": function ascdescOne(deck) {
+		"descendNum": function descendNum(data, prop) {
 	
-			if (deck.cards.length == 0) {
+			if (data.cards.length == 0) {
 				return true;
 			}
 	
-			var da = readyPutRules._down_up_rank_num(deck);
+			var num = (prop | 0) > 0 ? prop | 0 : 1;
 	
-			return da && Math.abs(da.down - da.up) == 1;
+			var da = readyPutRules._down_up_rank_num(data);
+	
+			return da && da.down == num + da.up;
+		},
+		"descentNum": function descentNum(data, prop) {
+			return readyPutRules.descendNum(data, prop);
 		},
 	
-		"sum14": function sum14(deck) {
+		"ascdescOne": function ascdescOne(data) {
+			return readyPutRules.ascdescNum(data, 1);
+		},
 	
-			if (deck.cards.length == 0) {
+		"ascdescNum": function ascdescNum(data, prop) {
+	
+			if (data.cards.length == 0) {
 				return true;
 			}
 	
-			var du = readyPutRules._down_up_cards(deck);
+			var num = (prop | 0) > 0 ? prop | 0 : 1;
+	
+			var da = readyPutRules._down_up_rank_num(data);
+	
+			return da && Math.abs(da.down - da.up) == num;
+		},
+	
+		"ascendNumLoop": function ascendNumLoop(data, prop) {
+	
+			if (data.cards.length == 0) {
+				return true;
+			}
+	
+			var num = (prop | 0) > 0 ? prop | 0 : 1;
+	
+			var da = readyPutRules._down_up_rank_num(data);
+	
+			console.log('ascendNumLoop', prop, da, data);
+	
+			// TODO
+			return da && num + da.down == da.up;
+		},
+		"ascentNumLoop": function ascentNumLoop(data, prop) {
+			return readyPutRules.ascendNumLoop(data, prop);
+		},
+	
+		"descendNumLoop": function descendNumLoop(data, prop) {
+			// TODO
+			return false;
+		},
+		"descentNumLoop": function descentNumLoop(data, prop) {
+			return readyPutRules.descendNumLoop(data, prop);
+		},
+	
+		"sum": function sum(data, prop) {
+	
+			if (data.cards.length == 0) {
+				return true;
+			}
+	
+			var num = (prop | 0) > 0 ? prop | 0 : 1;
+	
+			var du = readyPutRules._down_up_cards(data);
 			var _sum = du.down.value + du.up.value;
 	
-			return _sum == 14;
+			return _sum == num;
+		},
+	
+		"sum14": function sum14(data) {
+			return readyPutRules.sum(data, 14);
 		},
 	
 		// TODO rules with params ??? or atom rules
-		// "sum" : (deck, data) => {} // rulename:data -> sum:14
+		// "sum" : (data, prop) => {} // rulename:prop -> sum:14
 	
 		// query ?
 	
-		"around": function around(deck) {
+		"around": function around(data) {
 			// {from, putDeck, cards}
 	
-			if (deck.cards.length == 0) {
+			if (data.cards.length == 0) {
 				return true;
 			}
 	
-			var _around = deck.from.deck.getRelationsByName('around', { from: null });
-			var _parent = _deck2.default.getDeckById(deck.cards[0].parent);
+			var _around = data.from.data.getRelationsByName('around', {
+				"from": null
+			});
+	
+			var _parent = _deck2.default.getDeckById(data.cards[0].parent);
 	
 			for (var i in _around) {
 	
@@ -8567,10 +8659,16 @@ var SolitaireEngine =
 					// }
 	
 					var ruleName = deck.putRules[ruleIndex];
+					var ruleProp = '';
+	
+					if (ruleName.indexOf(':') > 0) {
+						ruleProp = ruleName.split(':')[1];
+						ruleName = ruleName.split(':')[0];
+					}
 	
 					if (_putRules2.default[ruleName]) {
 	
-						var _param = {
+						var _data = {
 							"from": {
 								"deckId": _deckId,
 								"deck": _deck_departure
@@ -8580,7 +8678,8 @@ var SolitaireEngine =
 							"to": _deck
 							// "link"    : _link
 						};
-						rulesCorrect = rulesCorrect && _putRules2.default[ruleName](_param);
+	
+						rulesCorrect = rulesCorrect && _putRules2.default[ruleName](_data, ruleProp);
 						// _link = _param.link;
 					} else {
 						console.warn('putRule:', ruleName, 'not exists');
@@ -12963,7 +13062,7 @@ var SolitaireEngine =
 	 * empty
 	 * allInOne
 	 * allAscend
-	 * allDescent
+	 * allDescend
 	
 	Conposite rules:
 	
@@ -13174,7 +13273,7 @@ var SolitaireEngine =
 	
 		// step by step 3, 2, 1
 		// во всех колодах карты по убыванию
-		"allDescent": function allDescent(data) {
+		"allDescend": function allDescend(data) {
 	
 			data.asc_desk = 1;
 	

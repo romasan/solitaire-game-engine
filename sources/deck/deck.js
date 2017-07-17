@@ -181,15 +181,26 @@ class deckClass {
 			card.flip = flipTypes[flipType](i, length, flipData, this);
 		};
 
+		let stringWithColon = line => {
+			if(
+				typeof line == "string" &&
+				line.indexOf(':') > 0
+			) {
+				return line.split(':')[0];
+			} else {
+				return line;
+			}
+		};
+
 		// Put
 		this.putRules = data.putRules
 			? typeof data.putRules == 'string'
-				? putRules[data.putRules]
+				? putRules[stringWithColon(data.putRules)]
 					? [data.putRules]
 					: defaults.putRules
 				: data.putRules.constructor == Array
 					? data.putRules.filter(
-						ruleName => typeof ruleName == 'string' && putRules[ruleName] // TODO Exception (putRule "***" not found)
+						ruleName => typeof ruleName == 'string' && putRules[stringWithColon(ruleName)] // TODO Exception (putRule "***" not found)
 							? true
 							: false
 					)
@@ -223,7 +234,7 @@ class deckClass {
 				? fullRules[data.fullRules]
 					? [data.fullRules]
 					: defaults.fullRules
-				: data.putRules.constructor == Array
+				: data.fullRules.constructor == Array
 					? data.fullRules.filter(
 						ruleName => typeof ruleName == "string" && fullRules[ruleName]
 					)

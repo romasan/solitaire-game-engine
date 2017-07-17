@@ -43,10 +43,16 @@ export default (deck, putDeck) => {
 				// }
 
 				let ruleName = deck.putRules[ruleIndex];
+				let ruleProp = '';
+
+				if(ruleName.indexOf(':') > 0) {
+					ruleProp = ruleName.split(':')[1];
+					ruleName = ruleName.split(':')[0];
+				}
 
 				if(putRules[ruleName]) {
 
-					let _param = {
+					let _data = {
 						"from"    : {
 							"deckId" : _deckId        ,
 							"deck"   : _deck_departure
@@ -56,7 +62,8 @@ export default (deck, putDeck) => {
 						"to"      : _deck
 						// "link"    : _link
 					};
-					rulesCorrect = rulesCorrect && putRules[ruleName](_param);
+
+					rulesCorrect = rulesCorrect && putRules[ruleName](_data, ruleProp);
 					// _link = _param.link;
 
 				} else {

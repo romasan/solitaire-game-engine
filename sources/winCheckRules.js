@@ -27,7 +27,7 @@ Simple rules:
  * empty
  * allInOne
  * allAscend
- * allDescent
+ * allDescend
 
 Conposite rules:
 
@@ -247,7 +247,7 @@ let winCheckRules = {
 
 	// step by step 3, 2, 1
 	// во всех колодах карты по убыванию
-	"allDescent" : data => {
+	"allDescend" : data => {
 
 		data.asc_desk = 1;
 
