@@ -367,12 +367,20 @@ let readyPutRules = {
 
 		let num = (prop | 0) > 0 ? (prop | 0) : 1;
 
-		let da = readyPutRules._down_up_rank_num(data);
+		let du = readyPutRules._down_up_cards(data);
 
-		console.log('ascendNumLoop', prop, da, data);
+		// S:  1  2  3  4  5  6  7  8  9 10  J  Q  K
+		// V:  1  2  3  4  5  6  7  8  9 10 11 12 13
+		// #1  1  2  3  4  5  6  7  8  9 10 11 12 13
+		// #2  7  1  8  2  9  3 10  4 11  5 12  6 13
+		// #3  9  5  1 10  6  2 11  7  3 12  8  4 13
+		// #4 10  7  4  1 11  8  5  2 12  9  6  3 13
 
-		// TODO
-		return da && num + da.down == da.up;
+		return du && (
+			du.down.value + num > defaults.card.ranks.length
+				? du.down.value + num - defaults.card.ranks.length == du.up.value
+				: du.down.value + num                              == du.up.value
+		);
 	},
 	"ascentNumLoop" : (data, prop) => readyPutRules.ascendNumLoop(data, prop),
 

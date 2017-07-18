@@ -123,18 +123,6 @@ let checkTips = e => {
 				let fromParentCard = takeCardIndex  > 0 ? common.validateCardName(fromCards[takeCardIndex  - 1].name) : EMPTY;
 				let   toParentCard = toCards.length > 0 ? common.validateCardName(  toCards[toCards.length - 1].name) : EMPTY;
 
-				// кейсы:
-				// перетаскиваем одну карту
-				// перетаскиваем несколько
-				// со стопки
-				// с пустой стопки
-				// в стопку
-				// на пустой слот
-
-				// без подсветки:
-				// с пустой на пустую в пределах одной группы
-				// с одинаковой предыдущей картой в пределах одной группы, если предыдущая не перевёрнута
-
 				if(
 					fromDeck.parent == toDeck.parent &&
 					(
@@ -142,12 +130,6 @@ let checkTips = e => {
 						  toParentCard == EMPTY
 					) ||
 					(
-						// true == ((a,b,c,d) => {console.log('>>>', a, b, c, d);return true;})(
-						// 	fromParentCard                != EMPTY,
-						// 	toParentCard                  != EMPTY,
-						// 	fromCards[takeCardIndex  - 1] == false,
-						// 	fromParentCard.color          == toParentCard.color
-						// ) &&
 						fromParentCard                    != EMPTY              &&
 						  toParentCard                    != EMPTY              &&
 						fromCards[takeCardIndex - 1].flip == false              &&

@@ -126,7 +126,7 @@ var SolitaireEngine =
 	exports.options = _defaults2.default;
 	exports.winCheck = _winCheck2.default.hwinCheck;
 	exports.generator = _deckGenerator2.default;
-	exports.version = (90914912233).toString().split(9).slice(1).map(function (e) {
+	exports.version = (90914912244).toString().split(9).slice(1).map(function (e) {
 		return parseInt(e, 8);
 	}).join('.');
 	
@@ -1981,26 +1981,7 @@ var SolitaireEngine =
 					var fromParentCard = takeCardIndex > 0 ? _common2.default.validateCardName(fromCards[takeCardIndex - 1].name) : EMPTY;
 					var toParentCard = toCards.length > 0 ? _common2.default.validateCardName(toCards[toCards.length - 1].name) : EMPTY;
 	
-					// кейсы:
-					// перетаскиваем одну карту
-					// перетаскиваем несколько
-					// со стопки
-					// с пустой стопки
-					// в стопку
-					// на пустой слот
-	
-					// без подсветки:
-					// с пустой на пустую в пределах одной группы
-					// с одинаковой предыдущей картой в пределах одной группы, если предыдущая не перевёрнута
-	
-					if (fromDeck.parent == toDeck.parent && fromParentCard == EMPTY && toParentCard == EMPTY ||
-					// true == ((a,b,c,d) => {console.log('>>>', a, b, c, d);return true;})(
-					// 	fromParentCard                != EMPTY,
-					// 	toParentCard                  != EMPTY,
-					// 	fromCards[takeCardIndex  - 1] == false,
-					// 	fromParentCard.color          == toParentCard.color
-					// ) &&
-					fromParentCard != EMPTY && toParentCard != EMPTY && fromCards[takeCardIndex - 1].flip == false && fromParentCard.color == toParentCard.color && fromParentCard.value == toParentCard.value
+					if (fromDeck.parent == toDeck.parent && fromParentCard == EMPTY && toParentCard == EMPTY || fromParentCard != EMPTY && toParentCard != EMPTY && fromCards[takeCardIndex - 1].flip == false && fromParentCard.color == toParentCard.color && fromParentCard.value == toParentCard.value
 					// TODO в идеале надо узнать не появится ли ход если убрать карту
 					) {
 						draw = false;
@@ -4620,12 +4601,16 @@ var SolitaireEngine =
 	
 			var num = (prop | 0) > 0 ? prop | 0 : 1;
 	
-			var da = readyPutRules._down_up_rank_num(data);
+			var du = readyPutRules._down_up_cards(data);
 	
-			console.log('ascendNumLoop', prop, da, data);
+			// S:  1  2  3  4  5  6  7  8  9 10  J  Q  K
+			// V:  1  2  3  4  5  6  7  8  9 10 11 12 13
+			// #1  1  2  3  4  5  6  7  8  9 10 11 12 13
+			// #2  7  1  8  2  9  3 10  4 11  5 12  6 13
+			// #3  9  5  1 10  6  2 11  7  3 12  8  4 13
+			// #4 10  7  4  1 11  8  5  2 12  9  6  3 13
 	
-			// TODO
-			return da && num + da.down == da.up;
+			return du && (du.down.value + num > _defaults2.default.card.ranks.length ? du.down.value + num - _defaults2.default.card.ranks.length == du.up.value : du.down.value + num == du.up.value);
 		},
 		"ascentNumLoop": function ascentNumLoop(data, prop) {
 			return readyPutRules.ascendNumLoop(data, prop);
@@ -4725,16 +4710,16 @@ var SolitaireEngine =
 	Rules:
 	
 	 * not
-	 * notFirst
+	 * notFirst | notfirst
 	 * any
-	 * onlytop
+	 * onlyTop | onlytop
 	 
 	 */
 	
 	Object.defineProperty(exports, "__esModule", {
 		value: true
 	});
-	exports.default = {
+	var takeRules = {
 	
 		// SimpleRules
 		"not": function not(data) {
@@ -4744,13 +4729,19 @@ var SolitaireEngine =
 		"notFirst": function notFirst(data) {
 			return data.cardIndex > 0;
 		},
+		"notfirst": function notfirst(data) {
+			return takeRules.notFirst(data);
+		},
 	
 		"any": function any(data) {
 			return true;
 		},
 	
-		"onlytop": function onlytop(data) {
+		"onlyTop": function onlyTop(data) {
 			return data.cardIndex == data.deckLength - 1;
+		},
+		"onlytop": function onlytop(data) {
+			return takeRules.onlyTop(data);
 		}
 	
 		// TODO rules
@@ -4763,6 +4754,8 @@ var SolitaireEngine =
 		// 	return true;
 		// }
 	};
+	
+	exports.default = takeRules;
 
 /***/ }),
 /* 19 */

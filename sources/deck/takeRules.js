@@ -5,22 +5,24 @@
 Rules:
 
  * not
- * notFirst
+ * notFirst | notfirst
  * any
- * onlytop
+ * onlyTop | onlytop
  
  */
 
-export default {
+let takeRules = {
 				
 	// SimpleRules
 	"not"      : data => false                                ,
 
 	"notFirst" : data => data.cardIndex > 0                   ,
+	"notfirst" : data => takeRules.notFirst(data)             ,
 
 	"any"      : data => true                                 ,
 
-	"onlytop"  : data => data.cardIndex == data.deckLength - 1
+	"onlyTop"  : data => data.cardIndex == data.deckLength - 1,
+	"onlytop"  : data => takeRules.onlyTop(data)
 	
 	// TODO rules
 	
@@ -32,3 +34,5 @@ export default {
 	// 	return true;
 	// }
 };
+
+export default takeRules;
