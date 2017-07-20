@@ -126,7 +126,7 @@ var SolitaireEngine =
 	exports.options = _defaults2.default;
 	exports.winCheck = _winCheck2.default.hwinCheck;
 	exports.generator = _deckGenerator2.default;
-	exports.version = (90914912253).toString().split(9).slice(1).map(function (e) {
+	exports.version = (90914912315).toString().split(9).slice(1).map(function (e) {
 		return parseInt(e, 8);
 	}).join('.');
 	
@@ -4651,7 +4651,7 @@ var SolitaireEngine =
 				return true;
 			}
 	
-			var _around = data.from.data.getRelationsByName('around', {
+			var _around = data.from.deck.getRelationsByName('around', {
 				"from": null
 			});
 	

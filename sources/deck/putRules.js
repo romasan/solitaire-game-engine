@@ -412,7 +412,7 @@ let readyPutRules = {
 			return true;
 		}
 
-		let _around = data.from.data.getRelationsByName('around', {
+		let _around = data.from.deck.getRelationsByName('around', {
 			"from": null
 		});
 
