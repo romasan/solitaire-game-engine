@@ -7,10 +7,8 @@ import defaults from 'defaults';
 
 Filters:
 
- * group
- * groups
- * deck
- * decks
+ * group | groups
+ * deck | decks
 
 Tag filters:
 
@@ -23,16 +21,14 @@ Internal use:
 Simple rules:
 
  * newerWin
- * allEmpty
- * empty
+ * allEmpty | empty
  * allInOne
  * allAscend
  * allDescend
 
 Conposite rules:
 
- * query
- * lego
+ * query | lego
 
  */
 

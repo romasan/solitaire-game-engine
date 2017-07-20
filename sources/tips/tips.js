@@ -150,6 +150,8 @@ let checkTips = e => {
 			}
 		}
 	}
+
+	// console.log('Tips checked', _tips.length);
 };
 event.listen('makeStep' , checkTips);
 event.listen('checkTips', checkTips);

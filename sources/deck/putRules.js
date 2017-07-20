@@ -89,10 +89,10 @@ let readyPutRules = {
 			return false;
 		}
 
-		let down = data.cards && data.cards[data.cards.length - 1];       // common.validateCardName(data.cards[data.cards.length - 1].name);
-		let up   = data.putDeck    &&
-		           data.putDeck[0] &&
-		           data.putDeck[0].card; // common.validateCardName(data.putDeck[0].card.name);
+		let down = data.cards           && data.cards[data.cards.length - 1]; // common.validateCardName(data.cards[data.cards.length - 1].name);
+		let up   = data.putDeck         &&
+		           data.putDeck[0]      &&
+		           data.putDeck[0].card;                                      // common.validateCardName(data.putDeck[0].card.name);
 
 		if(!down || !up) {
 			return false;
@@ -369,13 +369,6 @@ let readyPutRules = {
 
 		let du = readyPutRules._down_up_cards(data);
 
-		// S:  1  2  3  4  5  6  7  8  9 10  J  Q  K
-		// V:  1  2  3  4  5  6  7  8  9 10 11 12 13
-		// #1  1  2  3  4  5  6  7  8  9 10 11 12 13
-		// #2  7  1  8  2  9  3 10  4 11  5 12  6 13
-		// #3  9  5  1 10  6  2 11  7  3 12  8  4 13
-		// #4 10  7  4  1 11  8  5  2 12  9  6  3 13
-
 		return du && (
 			du.down.value + num > defaults.card.ranks.length
 				? du.down.value + num - defaults.card.ranks.length == du.up.value
@@ -433,6 +426,26 @@ let readyPutRules = {
 		}
 
 		return false;
+	},
+
+	"notOneGroup" : (data, prop) => {
+
+		// console.log('notOneGroup', data.from.deck.parent, data.to.parent, prop);
+
+		let _result = data.from.deck.parent != data.to.parent;
+
+		if(prop == "excludeEmpty") {
+
+			let down = data && data.cards && data.cards[data.cards.length - 1];
+
+			if(!down) {
+				_result = true;
+			}
+		}
+
+		// console.log('result:', _result);
+
+		return _result;
 	}
 };
 

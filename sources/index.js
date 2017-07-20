@@ -51,7 +51,9 @@ exports.onChangePreferences = callback => {
 
 exports.init = gameConfig => {
 
-	event.dispatch('gameInit', {firstInit});
+	event.dispatch('gameInit', {
+		"firstInit" : firstInit
+	});
 
 	event.clearByTag(event.tags.inGame);
 	event.setTag    (event.tags.inGame);

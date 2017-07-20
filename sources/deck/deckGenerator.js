@@ -103,17 +103,19 @@ let genTypes = {
 	"spades"        : ranks => genTypes.s_only()
 };
 
-export default data => {
+let deckGenerator = data => {
 
 	let default_type = 'all';
 
 	let default_shuffle = false;
-	let max_iterations = 10;
+	let max_iterations  = 10;
 
-	let type       = data && data.type       && typeof data.type       == 'string'                                     ? data.type       : default_type;
-	let deckCount  = data && data.deckCount  && typeof data.deckCount  == 'number'                                     ? data.deckCount  : 52;
-	let iterations = data && data.iterations && typeof data.iterations == 'number' && data.iterations < max_iterations ? data.iterations : 1;
-	let shuffle    = data && data.shuffle    && typeof data.shuffle    != 'undefuned'                                  ? data.shuffle    : default_shuffle;
+	let type       = data && data.type       && typeof data.type       == 'string'                                        ? data.type       : default_type   ;
+	let deckCount  = data && data.deckCount  && typeof data.deckCount  == 'number'                                        ? data.deckCount  : 52             ;
+	let iterations = data && data.iterations && typeof data.iterations == 'number'    && data.iterations < max_iterations ? data.iterations : 1              ;
+	let shuffle    = data && data.shuffle    && typeof data.shuffle    != 'undefuned'                                     ? data.shuffle    : default_shuffle;
+
+	let excludeCards = data && data.excludeCards;
 
 	let _ranks = deckCount == 36
 		? defaults.card.ranks36
@@ -121,11 +123,11 @@ export default data => {
 
 	if(data && data.ranks) {
 
-		_ranks = []
+		_ranks = [];
 
 		for(i in data.ranks) {
 			if(defaults.card.rank.indexOf(data.ranks[i].toString()) >= 0) {
-				_ranks.push(data.ranks[i].toString())
+				_ranks.push(data.ranks[i].toString());
 			}
 		}
 	}
@@ -140,5 +142,11 @@ export default data => {
 		shuffleArray(_deck);
 	}
 
+	if(excludeCards) {
+		_deck = _deck.filter(e => excludeCards.indexOf(e) < 0);
+	}
+
 	return _deck;
 };
+
+export default deckGenerator;

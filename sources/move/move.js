@@ -12,6 +12,8 @@ import Field    from 'field'   ;
 
 let Move = ({moveDeck, to, cursorMove}) => {
 
+	// console.log("Move");
+
 	let _deck_departure   = moveDeck[0].card.parent                        &&
 	                        common.getElementById(moveDeck[0].card.parent)   , // стопка из которой взяли
 	    _deck_destination = null                                             , // в которую положили

@@ -167,6 +167,8 @@ let paddingTypes = {
 
 	"puffed": (params, card, index, length, deck, data) => {
 
+		// console.log('puffed', data);
+
 		let group = (data | 0) > 0 ? (data | 0) : 1; 
 
 		return {

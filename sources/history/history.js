@@ -36,6 +36,8 @@ class historyClass {
 
 	add(step) { // {move || flip ... }
 
+		// console.log('History:add', step);
+
 		this._nextId += 1;
 		let stepId = this._nextId | 0;
 

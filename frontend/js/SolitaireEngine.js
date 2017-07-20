@@ -126,7 +126,7 @@ var SolitaireEngine =
 	exports.options = _defaults2.default;
 	exports.winCheck = _winCheck2.default.hwinCheck;
 	exports.generator = _deckGenerator2.default;
-	exports.version = (90914912244).toString().split(9).slice(1).map(function (e) {
+	exports.version = (90914912253).toString().split(9).slice(1).map(function (e) {
 		return parseInt(e, 8);
 	}).join('.');
 	
@@ -140,7 +140,9 @@ var SolitaireEngine =
 	
 	exports.init = function (gameConfig) {
 	
-		_event2.default.dispatch('gameInit', { firstInit: firstInit });
+		_event2.default.dispatch('gameInit', {
+			"firstInit": firstInit
+		});
 	
 		_event2.default.clearByTag(_event2.default.tags.inGame);
 		_event2.default.setTag(_event2.default.tags.inGame);
@@ -1996,6 +1998,8 @@ var SolitaireEngine =
 				}
 			}
 		}
+	
+		// console.log('Tips checked', _tips.length);
 	};
 	_event2.default.listen('makeStep', checkTips);
 	_event2.default.listen('checkTips', checkTips);
@@ -4603,13 +4607,6 @@ var SolitaireEngine =
 	
 			var du = readyPutRules._down_up_cards(data);
 	
-			// S:  1  2  3  4  5  6  7  8  9 10  J  Q  K
-			// V:  1  2  3  4  5  6  7  8  9 10 11 12 13
-			// #1  1  2  3  4  5  6  7  8  9 10 11 12 13
-			// #2  7  1  8  2  9  3 10  4 11  5 12  6 13
-			// #3  9  5  1 10  6  2 11  7  3 12  8  4 13
-			// #4 10  7  4  1 11  8  5  2 12  9  6  3 13
-	
 			return du && (du.down.value + num > _defaults2.default.card.ranks.length ? du.down.value + num - _defaults2.default.card.ranks.length == du.up.value : du.down.value + num == du.up.value);
 		},
 		"ascentNumLoop": function ascentNumLoop(data, prop) {
@@ -4668,6 +4665,26 @@ var SolitaireEngine =
 			}
 	
 			return false;
+		},
+	
+		"notOneGroup": function notOneGroup(data, prop) {
+	
+			// console.log('notOneGroup', data.from.deck.parent, data.to.parent, prop);
+	
+			var _result = data.from.deck.parent != data.to.parent;
+	
+			if (prop == "excludeEmpty") {
+	
+				var down = data && data.cards && data.cards[data.cards.length - 1];
+	
+				if (!down) {
+					_result = true;
+				}
+			}
+	
+			// console.log('result:', _result);
+	
+			return _result;
 		}
 	};
 	
@@ -5374,6 +5391,8 @@ var SolitaireEngine =
 		},
 	
 		"puffed": function puffed(params, card, index, length, deck, data) {
+	
+			// console.log('puffed', data);
 	
 			var group = (data | 0) > 0 ? data | 0 : 1;
 	
@@ -6286,6 +6305,8 @@ var SolitaireEngine =
 			key: 'add',
 			value: function add(step) {
 				// {move || flip ... }
+	
+				// console.log('History:add', step);
 	
 				this._nextId += 1;
 				var stepId = this._nextId | 0;
@@ -11830,6 +11851,8 @@ var SolitaireEngine =
 		    cursorMove = _ref.cursorMove;
 	
 	
+		// console.log("Move");
+	
 		var _deck_departure = moveDeck[0].card.parent && _common2.default.getElementById(moveDeck[0].card.parent),
 		    // стопка из которой взяли
 		_deck_destination = null,
@@ -13035,10 +13058,8 @@ var SolitaireEngine =
 	
 	Filters:
 	
-	 * group
-	 * groups
-	 * deck
-	 * decks
+	 * group | groups
+	 * deck | decks
 	
 	Tag filters:
 	
@@ -13051,16 +13072,14 @@ var SolitaireEngine =
 	Simple rules:
 	
 	 * newerWin
-	 * allEmpty
-	 * empty
+	 * allEmpty | empty
 	 * allInOne
 	 * allAscend
 	 * allDescend
 	
 	Conposite rules:
 	
-	 * query
-	 * lego
+	 * query | lego
 	
 	 */
 	
@@ -13524,7 +13543,7 @@ var SolitaireEngine =
 		}
 	};
 	
-	exports.default = function (data) {
+	var deckGenerator = function deckGenerator(data) {
 	
 		var default_type = 'all';
 	
@@ -13535,6 +13554,8 @@ var SolitaireEngine =
 		var deckCount = data && data.deckCount && typeof data.deckCount == 'number' ? data.deckCount : 52;
 		var iterations = data && data.iterations && typeof data.iterations == 'number' && data.iterations < max_iterations ? data.iterations : 1;
 		var shuffle = data && data.shuffle && typeof data.shuffle != 'undefuned' ? data.shuffle : default_shuffle;
+	
+		var excludeCards = data && data.excludeCards;
 	
 		var _ranks = deckCount == 36 ? _defaults2.default.card.ranks36 : _defaults2.default.card.ranks;
 	
@@ -13559,8 +13580,16 @@ var SolitaireEngine =
 			shuffleArray(_deck);
 		}
 	
+		if (excludeCards) {
+			_deck = _deck.filter(function (e) {
+				return excludeCards.indexOf(e) < 0;
+			});
+		}
+	
 		return _deck;
 	};
+	
+	exports.default = deckGenerator;
 
 /***/ }),
 /* 91 */
