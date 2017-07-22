@@ -126,7 +126,7 @@ var SolitaireEngine =
 	exports.options = _defaults2.default;
 	exports.winCheck = _winCheck2.default.hwinCheck;
 	exports.generator = _deckGenerator2.default;
-	exports.version = (90914912315).toString().split(9).slice(1).map(function (e) {
+	exports.version = (90914912316).toString().split(9).slice(1).map(function (e) {
 		return parseInt(e, 8);
 	}).join('.');
 	
@@ -13647,9 +13647,13 @@ var SolitaireEngine =
 	
 	var _mapCommon2 = _interopRequireDefault(_mapCommon);
 	
+	__webpack_require__(92);
+	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
 	function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+	
+	function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
 	
 	try {
 	
@@ -13676,6 +13680,15 @@ var SolitaireEngine =
 			// document.body.addEventListener('transitionend', e => {
 			// 	console.log('TEST:', e);
 			// });
+	
+			document.body.onclick = function (e) {
+				try {
+					if (e.target.id == "insert_button") {
+						getDataFromPanel();
+						togglePanel();
+					}
+				} catch (e) {}
+			};
 		});
 	} catch (e) {}
 	
@@ -13750,11 +13763,64 @@ var SolitaireEngine =
 		console.groupEnd();
 	};
 	
+	var getDataFromPanel = function getDataFromPanel(e) {
+		var panel = document.getElementById('panel');
+		if (panel) {
+			[].concat(_toConsumableArray(document.getElementById('panel').children)).forEach(function (e) {
+				if (e.children.length == 2) {
+					if (e.children[1].type == 'text') {
+						gameConfig.decks.filter(function (d) {
+							return d.name == e.children[0].innerText;
+						})[0].fill = e.children[1].value.split(' ');
+					} else {
+						gameConfig.groups[e.children[0].innerText].fill = e.children[1].value.split('\n').map(function (d) {
+							return d.split(' ');
+						});
+					}
+				}
+			});
+			window.SolitaireEngine.init(window.gameConfig);
+		}
+	};
+	
+	var togglePanel = function togglePanel(e) {
+		try {
+			document.getElementById('panel').remove();
+		} catch (e) {
+			var el = document.createElement('div');
+			el.setAttribute('id', 'panel');
+			document.body.appendChild(el);
+			el.innerHTML += '\n\t' + function () {
+				var a = [];
+				for (var groupName in window.gameConfig.groups) {
+					var lines = _common2.default.getElementByName(groupName).getDecks().map(function (e) {
+						return e.getCards().map(function (c) {
+							return c.name;
+						}).join(' ');
+					});
+					a.push('\n\t\t\t\t<div>\n\t\t\t\t\t<label>' + groupName + '</label>\n\t\t\t\t\t<textarea rows="' + lines.length + '" id="line_' + groupName + '">' + lines.join('\n') + '</textarea>\n\t\t\t\t</div>\n\t\t\t');
+				}
+				return a.join('');
+			}() + '\n\t' + function () {
+				var a = [];
+				for (var i in window.gameConfig.decks) {
+					var deckName = window.gameConfig.decks[i].name;
+					var line = _common2.default.getElementByName(deckName).getCards().map(function (c) {
+						return c.name;
+					}).join(' ');
+					a.push('\n\t\t\t\t<div>\n\t\t\t\t\t<label>' + deckName + '</label>\n\t\t\t\t\t<input id="line_' + deckName + '" value="' + line + '"/>\n\t\t\t\t</div>\n\t\t\t');
+				}
+				return a.join('');
+			}() + '\n\t<div>\n\t\t<button id="insert_button">INSERT</button>\n\t</div>';
+		}
+	};
+	
 	var keys = {
 		"c": 67, // clear
 		"d": 68, // debug
 		"h": 72, // history
 		"n": 78, // next
+		"p": 80, // show panel
 		"s": 83 // stepType
 	};
 	try {
@@ -13781,6 +13847,8 @@ var SolitaireEngine =
 			} else if (e.keyCode == keys.s) {
 	
 				console.log('stepType:', _share2.default.get('stepType'));
+			} else if (e.keyCode == keys.p) {
+				togglePanel();
 			}
 	
 			// console.log('keyUp:', e);
@@ -13799,6 +13867,12 @@ var SolitaireEngine =
 		history: _history3.default,
 		mapCommon: _mapCommon2.default
 	}, _defineProperty(_share$defaults$commo, 'deckGenerator', _deckGenerator2.default), _defineProperty(_share$defaults$commo, 'validateCardName', _common2.default.validateCardName), _share$defaults$commo);
+
+/***/ }),
+/* 92 */
+/***/ (function(module, exports) {
+
+	// removed by extract-text-webpack-plugin
 
 /***/ })
 /******/ ]);

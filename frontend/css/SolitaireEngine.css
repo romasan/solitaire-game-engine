@@ -514,5 +514,27 @@
 
 .disabledButton {
   color: #c0c0c0; }
+#panel {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  background: #c0c0c0;
+  padding: 3px;
+  z-index: 999; }
+  #panel * {
+    display: inline-block;
+    vertical-align: top; }
+  #panel div {
+    display: block; }
+  #panel label {
+    width: 120px;
+    background: #cccccc;
+    font-weight: bold;
+    text-align: right; }
+  #panel textarea, #panel input {
+    width: 400px; }
+  #panel button {
+    float: right;
+    margin: 10px; }
 
 /*# sourceMappingURL=SolitaireEngine.css.map*/

@@ -1,0 +1,33 @@
+#panel {
+	position: absolute;
+	top: 5px;
+	right: 5px;
+	background: #c0c0c0;
+	padding: 3px;
+	z-index: 999;
+
+	* {
+		display: inline-block;
+		vertical-align: top;
+	}
+
+	div {
+		display: block;
+	}
+
+	label {
+		width: 120px;
+		background: #cccccc;
+		font-weight: bold;
+		text-align: right;
+	}
+
+	textarea, input {
+		width: 400px;
+	}
+
+	button {
+		float: right;
+		margin: 10px;
+	}
+}

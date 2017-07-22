@@ -13,7 +13,9 @@ import stateManager  from 'stateManager' ;
 import history       from 'history'      ;
 import mapCommon     from 'mapCommon'    ;
 
-try{
+import 'debug.scss'                      ;
+
+try {
 
 document.addEventListener("DOMContentLoaded", e => {
 
@@ -49,6 +51,15 @@ document.addEventListener("DOMContentLoaded", e => {
 	// document.body.addEventListener('transitionend', e => {
 	// 	console.log('TEST:', e);
 	// });
+
+	document.body.onclick = e => {
+		try {
+			if(e.target.id == "insert_button") {
+				getDataFromPanel();
+				togglePanel();
+			}
+		} catch(e) {}
+	}
 
 });
 } catch(e) {}
@@ -111,11 +122,71 @@ let solitaire_log = data => {
 	console.groupEnd();
 }
 
+let getDataFromPanel = e => {
+	let panel = document.getElementById('panel');
+	if(panel) {
+		[...document.getElementById('panel').children].forEach(
+			e => {
+				if(e.children.length == 2) {
+					if(e.children[1].type == 'text') {
+						gameConfig.decks.filter(d => d.name == e.children[0].innerText)[0].fill = e.children[1].value.split(' ')
+					} else {
+						gameConfig.groups[e.children[0].innerText].fill = e.children[1].value.split('\n').map(d => d.split(' '))
+					}
+				}
+			}
+		);
+		window.SolitaireEngine.init(window.gameConfig);
+	}
+};
+
+let togglePanel = e => {
+	try{
+		document.getElementById('panel').remove();
+	} catch(e) {
+		let el = document.createElement('div');
+		el.setAttribute('id', 'panel');
+		document.body.appendChild(el);
+		el.innerHTML += `
+	${(() => {
+		let a = [];
+		for(let groupName in window.gameConfig.groups) {
+			let lines = common.getElementByName(groupName).getDecks().map(e => e.getCards().map(c => c.name).join(' '));
+			a.push(`
+				<div>
+					<label>${groupName}</label>
+					<textarea rows="${lines.length}" id="line_${groupName}">${lines.join('\n')}</textarea>
+				</div>
+			`);
+		}
+		return a.join('');
+	})()}
+	${(() => {
+		let a = [];
+		for(let i in window.gameConfig.decks) {
+			let deckName = window.gameConfig.decks[i].name;
+			let line = common.getElementByName(deckName).getCards().map(c => c.name).join(' ');
+			a.push(`
+				<div>
+					<label>${deckName}</label>
+					<input id="line_${deckName}" value="${line}"/>
+				</div>
+			`);
+		}
+		return a.join('');
+	})()}
+	<div>
+		<button id="insert_button">INSERT</button>
+	</div>`;
+	}
+};
+
 let keys = {
 	"c" : 67, // clear
 	"d" : 68, // debug
 	"h" : 72, // history
 	"n" : 78, // next
+	"p" : 80, // show panel
 	"s" : 83  // stepType
 }
 try {
@@ -142,6 +213,8 @@ document.onkeyup = e => {
 	} else if(e.keyCode == keys.s) {
 
 		console.log('stepType:', share.get('stepType'));
+	} else if(e.keyCode == keys.p) {
+		togglePanel();
 	}
 
 	// console.log('keyUp:', e);
