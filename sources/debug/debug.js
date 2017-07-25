@@ -57,6 +57,23 @@ document.addEventListener("DOMContentLoaded", e => {
 			if(e.target.id == "insert_button") {
 				getDataFromPanel();
 				togglePanel();
+			} else if(e.target.tagName == 'LABEL') {
+				if(e.target.className.split(' ').indexOf('groupLabel') >= 0) {
+					[...document.getElementsByClassName('selectedGroup')].forEach(e => e.className = e.className.split(' ').filter(c => c != 'selectedGroup').join(' '));
+					let decks = common.getElementByName(e.target.innerText, 'group').getDecks();
+					for(let deckId in decks) {
+						let cards = decks[deckId].getCards();
+						for(let cardId in cards) {
+							document.getElementById(cards[cardId].id).className += ' selectedGroup';
+						}
+					}
+				} else if(e.target.className.split(' ').indexOf('deckLabel') >= 0) {
+					[...document.getElementsByClassName('selectedGroup')].forEach(e => e.className = e.className.split(' ').filter(c => c != 'selectedGroup').join(' '));
+					let cards = common.getElementByName(e.target.innerText, 'deck').getCards();
+					for(let cardId in cards) {
+						document.getElementById(cards[cardId].id).className += ' selectedGroup';
+					}
+				}
 			}
 		} catch(e) {}
 	}
@@ -129,9 +146,9 @@ let getDataFromPanel = e => {
 			e => {
 				if(e.children.length == 2) {
 					if(e.children[1].type == 'text') {
-						gameConfig.decks.filter(d => d.name == e.children[0].innerText)[0].fill = e.children[1].value.split(' ')
+						gameConfig.decks.filter(d => d.name == e.children[0].innerText)[0].fill = e.children[1].value.toLowerCase().split(' ')
 					} else {
-						gameConfig.groups[e.children[0].innerText].fill = e.children[1].value.split('\n').map(d => d.split(' '))
+						gameConfig.groups[e.children[0].innerText].fill = e.children[1].value.split('\n').map(d => d.toLowerCase().split(' '))
 					}
 				}
 			}
@@ -143,6 +160,7 @@ let getDataFromPanel = e => {
 let togglePanel = e => {
 	try{
 		document.getElementById('panel').remove();
+		[...document.getElementsByClassName('selectedGroup')].forEach(e => e.className = e.className.split(' ').filter(c => c != 'selectedGroup').join(' '));
 	} catch(e) {
 		let el = document.createElement('div');
 		el.setAttribute('id', 'panel');
@@ -151,10 +169,10 @@ let togglePanel = e => {
 	${(() => {
 		let a = [];
 		for(let groupName in window.gameConfig.groups) {
-			let lines = common.getElementByName(groupName).getDecks().map(e => e.getCards().map(c => c.name).join(' '));
+			let lines = common.getElementByName(groupName).getDecks().map(e => e.getCards().map(c => c.name).join(' ').toUpperCase());
 			a.push(`
 				<div>
-					<label>${groupName}</label>
+					<label class="groupLabel">${groupName}</label>
 					<textarea rows="${lines.length}" id="line_${groupName}">${lines.join('\n')}</textarea>
 				</div>
 			`);
@@ -165,10 +183,10 @@ let togglePanel = e => {
 		let a = [];
 		for(let i in window.gameConfig.decks) {
 			let deckName = window.gameConfig.decks[i].name;
-			let line = common.getElementByName(deckName).getCards().map(c => c.name).join(' ');
+			let line = common.getElementByName(deckName).getCards().map(c => c.name).join(' ').toUpperCase();
 			a.push(`
 				<div>
-					<label>${deckName}</label>
+					<label class="deckLabel">${deckName}</label>
 					<input id="line_${deckName}" value="${line}"/>
 				</div>
 			`);
@@ -176,7 +194,7 @@ let togglePanel = e => {
 		return a.join('');
 	})()}
 	<div>
-		<button id="insert_button">INSERT</button>
+		<button id="insert_button">NEW GAME</button>
 	</div>`;
 	}
 };

@@ -32,7 +32,7 @@ let redo = data => {
 	if(share.get('sessionStarted')) {
 
 		event.dispatch('stopAnimations');
-		stateManager.restore();
+		// stateManager.restore();
 	}
 
 	// redo flip

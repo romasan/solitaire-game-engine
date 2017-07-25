@@ -517,24 +517,45 @@
 #panel {
   position: absolute;
   top: 5px;
-  right: 5px;
-  background: #c0c0c0;
+  right: 22px;
+  background: #333333;
   padding: 3px;
   z-index: 999; }
   #panel * {
     display: inline-block;
-    vertical-align: top; }
+    vertical-align: top;
+    font-size: 10pt;
+    font-family: courier; }
   #panel div {
     display: block; }
   #panel label {
     width: 120px;
-    background: #cccccc;
+    background: #303030;
+    color: #ffffff;
     font-weight: bold;
-    text-align: right; }
+    text-align: right;
+    padding-right: 5px;
+    margin-right: -5px;
+    cursor: pointer; }
   #panel textarea, #panel input {
-    width: 400px; }
+    width: 400px;
+    color: #008000;
+    background: #1b1b1b;
+    font-weight: bold;
+    border: 0px;
+    margin: 1px;
+    padding: 1px; }
   #panel button {
     float: right;
     margin: 10px; }
+
+.selectedGroup:after {
+  content: attr(data-content);
+  background-color: #0000ff;
+  opacity: 0.5;
+  width: 100%;
+  height: 100%;
+  border-radius: 3px;
+  display: inline-block; }
 
 /*# sourceMappingURL=SolitaireEngine.css.map*/

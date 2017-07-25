@@ -20,6 +20,16 @@ import 'default_theme.scss'                ;
 import 'alternative_theme.scss'            ;
 import 'environment.css'                   ;
 
+share.set('nodraw', false);
+
+event.listen('render:on' , e => {
+	share.set('nodraw', false);
+});
+
+event.listen('render:off', e => {
+	share.set('nodraw', true);
+});
+
 event.listen('removeEl', data => {
 
 	let _elDomElement = share.get('domElement:' + data.id);

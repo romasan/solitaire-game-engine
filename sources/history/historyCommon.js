@@ -7,6 +7,7 @@ import share        from 'share'       ;
 import Field        from 'field'       ;
 import history      from 'history'     ;
 import redoAdvanced from 'redoAdvanced';
+import snapshot     from 'snapshot'    ;
 
 
 /*
@@ -91,6 +92,27 @@ event.listen('doHistory', e => {
 	// for(let deckIndex in _decks) {}
 
 	// console.groupEnd();
+});
+
+event.listen('scanAttempts', data => {
+
+	event.dispatch('render:off');
+	common.animationOff();
+
+	for(let i in data) {
+
+		event.dispatch('redo', e.data[i]);
+
+		if(
+			!redoAdvanced.handle(e.data[i][0]) &&
+			typeof e.callback == 'function'
+		) {
+			e.callback(e.data[i]);	
+		}
+	}
+
+	event.dispatch('render:on');
+	common.animationDefault();
 });
 
 event.listen('resetHistory', e => {

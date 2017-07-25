@@ -126,7 +126,7 @@ var SolitaireEngine =
 	exports.options = _defaults2.default;
 	exports.winCheck = _winCheck2.default.hwinCheck;
 	exports.generator = _deckGenerator2.default;
-	exports.version = (90914912316).toString().split(9).slice(1).map(function (e) {
+	exports.version = (90914912415).toString().split(9).slice(1).map(function (e) {
 		return parseInt(e, 8);
 	}).join('.');
 	
@@ -1332,7 +1332,7 @@ var SolitaireEngine =
 	
 	_event2.default.listen('startSession', function (e) {
 		_share2.default.set('sessionStarted', true);
-		_stateManager2.default.backup();
+		// stateManager.backup();
 	});
 	
 	_event2.default.listen('stopSession', function (e) {
@@ -6474,7 +6474,7 @@ var SolitaireEngine =
 		if (_share2.default.get('sessionStarted')) {
 	
 			_event2.default.dispatch('stopAnimations');
-			_stateManager2.default.restore();
+			// stateManager.restore();
 		}
 	
 		// undo flip
@@ -6816,7 +6816,7 @@ var SolitaireEngine =
 		if (_share2.default.get('sessionStarted')) {
 	
 			_event2.default.dispatch('stopAnimations');
-			_stateManager2.default.restore();
+			// stateManager.restore();
 		}
 	
 		// redo flip
@@ -7075,6 +7075,10 @@ var SolitaireEngine =
 	
 	var _redoAdvanced2 = _interopRequireDefault(_redoAdvanced);
 	
+	var _snapshot = __webpack_require__(93);
+	
+	var _snapshot2 = _interopRequireDefault(_snapshot);
+	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
 	/*
@@ -7156,6 +7160,24 @@ var SolitaireEngine =
 		// for(let deckIndex in _decks) {}
 	
 		// console.groupEnd();
+	});
+	
+	_event2.default.listen('scanAttempts', function (data) {
+	
+		_event2.default.dispatch('render:off');
+		_common2.default.animationOff();
+	
+		for (var i in data) {
+	
+			_event2.default.dispatch('redo', e.data[i]);
+	
+			if (!_redoAdvanced2.default.handle(e.data[i][0]) && typeof e.callback == 'function') {
+				e.callback(e.data[i]);
+			}
+		}
+	
+		_event2.default.dispatch('render:on');
+		_common2.default.animationDefault();
 	});
 	
 	_event2.default.listen('resetHistory', function (e) {
@@ -12118,6 +12140,16 @@ var SolitaireEngine =
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
 	// styles DOM
+	_share2.default.set('nodraw', false);
+	
+	_event2.default.listen('render:on', function (e) {
+		_share2.default.set('nodraw', false);
+	});
+	
+	_event2.default.listen('render:off', function (e) {
+		_share2.default.set('nodraw', true);
+	});
+	
 	_event2.default.listen('removeEl', function (data) {
 	
 		var _elDomElement = _share2.default.get('domElement:' + data.id);
@@ -13686,6 +13718,31 @@ var SolitaireEngine =
 					if (e.target.id == "insert_button") {
 						getDataFromPanel();
 						togglePanel();
+					} else if (e.target.tagName == 'LABEL') {
+						if (e.target.className.split(' ').indexOf('groupLabel') >= 0) {
+							[].concat(_toConsumableArray(document.getElementsByClassName('selectedGroup'))).forEach(function (e) {
+								return e.className = e.className.split(' ').filter(function (c) {
+									return c != 'selectedGroup';
+								}).join(' ');
+							});
+							var decks = _common2.default.getElementByName(e.target.innerText, 'group').getDecks();
+							for (var deckId in decks) {
+								var cards = decks[deckId].getCards();
+								for (var cardId in cards) {
+									document.getElementById(cards[cardId].id).className += ' selectedGroup';
+								}
+							}
+						} else if (e.target.className.split(' ').indexOf('deckLabel') >= 0) {
+							[].concat(_toConsumableArray(document.getElementsByClassName('selectedGroup'))).forEach(function (e) {
+								return e.className = e.className.split(' ').filter(function (c) {
+									return c != 'selectedGroup';
+								}).join(' ');
+							});
+							var _cards = _common2.default.getElementByName(e.target.innerText, 'deck').getCards();
+							for (var _cardId in _cards) {
+								document.getElementById(_cards[_cardId].id).className += ' selectedGroup';
+							}
+						}
 					}
 				} catch (e) {}
 			};
@@ -13771,10 +13828,10 @@ var SolitaireEngine =
 					if (e.children[1].type == 'text') {
 						gameConfig.decks.filter(function (d) {
 							return d.name == e.children[0].innerText;
-						})[0].fill = e.children[1].value.split(' ');
+						})[0].fill = e.children[1].value.toLowerCase().split(' ');
 					} else {
 						gameConfig.groups[e.children[0].innerText].fill = e.children[1].value.split('\n').map(function (d) {
-							return d.split(' ');
+							return d.toLowerCase().split(' ');
 						});
 					}
 				}
@@ -13786,6 +13843,11 @@ var SolitaireEngine =
 	var togglePanel = function togglePanel(e) {
 		try {
 			document.getElementById('panel').remove();
+			[].concat(_toConsumableArray(document.getElementsByClassName('selectedGroup'))).forEach(function (e) {
+				return e.className = e.className.split(' ').filter(function (c) {
+					return c != 'selectedGroup';
+				}).join(' ');
+			});
 		} catch (e) {
 			var el = document.createElement('div');
 			el.setAttribute('id', 'panel');
@@ -13796,9 +13858,9 @@ var SolitaireEngine =
 					var lines = _common2.default.getElementByName(groupName).getDecks().map(function (e) {
 						return e.getCards().map(function (c) {
 							return c.name;
-						}).join(' ');
+						}).join(' ').toUpperCase();
 					});
-					a.push('\n\t\t\t\t<div>\n\t\t\t\t\t<label>' + groupName + '</label>\n\t\t\t\t\t<textarea rows="' + lines.length + '" id="line_' + groupName + '">' + lines.join('\n') + '</textarea>\n\t\t\t\t</div>\n\t\t\t');
+					a.push('\n\t\t\t\t<div>\n\t\t\t\t\t<label class="groupLabel">' + groupName + '</label>\n\t\t\t\t\t<textarea rows="' + lines.length + '" id="line_' + groupName + '">' + lines.join('\n') + '</textarea>\n\t\t\t\t</div>\n\t\t\t');
 				}
 				return a.join('');
 			}() + '\n\t' + function () {
@@ -13807,11 +13869,11 @@ var SolitaireEngine =
 					var deckName = window.gameConfig.decks[i].name;
 					var line = _common2.default.getElementByName(deckName).getCards().map(function (c) {
 						return c.name;
-					}).join(' ');
-					a.push('\n\t\t\t\t<div>\n\t\t\t\t\t<label>' + deckName + '</label>\n\t\t\t\t\t<input id="line_' + deckName + '" value="' + line + '"/>\n\t\t\t\t</div>\n\t\t\t');
+					}).join(' ').toUpperCase();
+					a.push('\n\t\t\t\t<div>\n\t\t\t\t\t<label class="deckLabel">' + deckName + '</label>\n\t\t\t\t\t<input id="line_' + deckName + '" value="' + line + '"/>\n\t\t\t\t</div>\n\t\t\t');
 				}
 				return a.join('');
-			}() + '\n\t<div>\n\t\t<button id="insert_button">INSERT</button>\n\t</div>';
+			}() + '\n\t<div>\n\t\t<button id="insert_button">NEW GAME</button>\n\t</div>';
 		}
 	};
 	
@@ -13873,6 +13935,219 @@ var SolitaireEngine =
 /***/ (function(module, exports) {
 
 	// removed by extract-text-webpack-plugin
+
+/***/ }),
+/* 93 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+		value: true
+	});
+	
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	
+	var _getDecks = __webpack_require__(7);
+	
+	var _getDecks2 = _interopRequireDefault(_getDecks);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	/*
+	 * get
+	 * diff
+	 */
+	
+	var snapshot = function () {
+		function snapshot() {
+			_classCallCheck(this, snapshot);
+		}
+	
+		_createClass(snapshot, [{
+			key: 'get',
+			value: function get() {
+	
+				var state = {
+					"decks": {}
+				};
+	
+				var decks = (0, _getDecks2.default)();
+	
+				var uid = b = regeneratorRuntime.mark(function z(i) {
+					return regeneratorRuntime.wrap(function z$(_context) {
+						while (1) {
+							switch (_context.prev = _context.next) {
+								case 0:
+									if (false) {
+										_context.next = 5;
+										break;
+									}
+	
+									_context.next = 3;
+									return i++;
+	
+								case 3:
+									_context.next = 0;
+									break;
+	
+								case 5:
+								case 'end':
+									return _context.stop();
+							}
+						}
+					}, z, this);
+				})(0);
+	
+				for (var i in decks) {
+	
+					var deck = decks[i];
+	
+					state.decks[deck.name] = {
+						"cards": deck.getCards().map(function (card) {
+							return {
+								"uid": uid.next().value,
+								"id": card.id,
+								"name": card.name,
+								"visible": card.visible,
+								"flip": card.flip
+							};
+						})
+					};
+				}
+	
+				return state;
+			}
+		}, {
+			key: 'diff',
+			value: function diff(stateA, stateB) {
+	
+				var state = {
+					"decks": {}
+				};
+	
+				for (var indexA in stateA.deck) {
+					state.decks[indexA] = {
+						"cards": function (e) {
+	
+							var catds = {};
+	
+							var _loop = function _loop(i) {
+	
+								var cardA = e[i];
+								var cardB = null;
+	
+								for (var indexB in stateB.decks) {
+	
+									var filter = stateB[indexB].cards.filter(function (c) {
+										return c.uid == cardA.uid;
+									});
+	
+									if (filter.length) {
+										cardB = filter[0];
+									}
+								}
+	
+								cards[i] = {
+									"uid": e[i].uid,
+									"id": e[i].id,
+									"name": e[i].name,
+									"visible": cardB.visible,
+									"flip": cardB.flip
+								};
+							};
+	
+							for (var i in e) {
+								_loop(i);
+							}
+	
+							return cards;
+						}(state.decks[indexA])
+					};
+				}
+			}
+		}, {
+			key: 'summary',
+			value: function summary() {
+	
+				var state = {
+					"decks": {}
+				};
+	
+				for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+					args[_key] = arguments[_key];
+				}
+	
+				for (var argIndex in args) {
+	
+					var stateI = args[argIndex];
+	
+					if (argIndex == 0) {
+	
+						for (var indexI in stateI) {
+	
+							state.decks[indexI] = {
+								"cards": function (deck) {
+	
+									var cards = [];
+	
+									for (var cardIndex in deck.cards) {
+	
+										var card = deck.cards[cardIndex];
+	
+										cards[cardIndex] = {
+											"uid": card.uid,
+											"id": card.id,
+											"name": card.name,
+											"visible": card.visible,
+											"flip": card.flip
+										};
+									}
+	
+									return cards;
+								}(stateI[indexI])
+							};
+						}
+					} else {
+	
+						for (var _indexI in stateI) {
+	
+							state.decks[_indexI] = {
+	
+								"cards": function (deck) {
+	
+									var cards = [];
+	
+									for (var cardIndex in deck.cards) {
+	
+										var card = deck.cards[cardIndex];
+	
+										cards[cardIndex] = {
+											"uid": card.uid,
+											"id": card.id,
+											"name": card.name,
+											"visible": cards[cardIndex].visible || card.visible,
+											"flip": cards[cardIndex].flip && card.flip
+										};
+									}
+	
+									return cards;
+								}(stateI[_indexI])
+							};
+						}
+					}
+				}
+	
+				return state;
+			}
+		}]);
+	
+		return snapshot;
+	}();
+	
+	exports.default = new snapshot();
 
 /***/ })
 /******/ ]);

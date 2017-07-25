@@ -84,7 +84,7 @@ event.listen('actionBreak', e => {
 
 event.listen('startSession', e => {
 	share.set('sessionStarted', true);
-	stateManager.backup();
+	// stateManager.backup();
 });
 
 event.listen('stopSession', e => {

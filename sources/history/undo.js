@@ -29,7 +29,7 @@ let undo = data => {
 	if(share.get('sessionStarted')) {
 
 		event.dispatch('stopAnimations');
-		stateManager.restore();
+		// stateManager.restore();
 	}
 
 	// undo flip
