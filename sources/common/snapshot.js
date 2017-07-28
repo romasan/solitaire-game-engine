@@ -5,6 +5,9 @@ import getDecks from 'getDecks';
 /*
  * get
  * diff
+ * summary
+ * getInStateByUid
+ * applyState
  */
 
 class snapshot {
@@ -19,7 +22,9 @@ class snapshot {
 
 		let decks = getDecks();
 
-		let uid = b = (function* z(i) {while(true) {yield i++;}})(0);
+		// let uid = (function* (i) {while(true) {yield i++;}})(0);
+		// let uid = new (function (i) {this.next = function() {return {"value" : i++};}})(0);
+		let uid = (i => () => i++)(0);
 
 		for(let i in decks) {
 
@@ -28,10 +33,10 @@ class snapshot {
 			state.decks[deck.name] = {
 				"cards" : deck.getCards().map(card => {
 					return {
-						"uid"     : uid.next().value,
-						"id"      : card.id         ,
-						"name"    : card.name       ,
-						"visible" : card.visible    ,
+						"uid"     : uid()       ,
+						"id"      : card.id     ,
+						"name"    : card.name   ,
+						"visible" : card.visible,
 						"flip"    : card.flip
 					};
 				})
@@ -45,9 +50,10 @@ class snapshot {
 
 		let state = {
 			"decks" : {}
-		}
+		};
 
 		for(let indexA in stateA.deck) {
+
 			state.decks[indexA] = {
 				"cards" : (e => {
 
@@ -149,6 +155,45 @@ class snapshot {
 		}
 
 		return state;
+	}
+
+	getInStateByUid(state, uid) {
+
+		for(let deckName in state.decks) {
+
+			for(let i in state.decks[deckName]) {
+
+				if(state.decks[deckName][i].uid == uid) {
+
+					return state.decks[deckName][i];
+				}
+			}
+		}
+
+		return false;
+	}
+
+	applyState(summaryState) {
+
+		let decks = getDecks();
+
+		let uid = (i => () => i++)(0);
+
+		for(let i in decks) {
+
+			let deck = decks[i];
+
+			for(let cardIndex in deck.cards) {	
+
+				let stateCard = this.getInStateByUid(summaryState, uid());
+
+				let card = deck.cards[cardIndex];
+
+				// card.visible = stateCard.visible;
+
+				card.flip = stateCard.flip;
+			}
+		}
 	}
 }
 

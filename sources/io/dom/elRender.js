@@ -17,6 +17,10 @@ share.set('animatedCallback'     , e => null);
 
 let _allEl = data => {
 
+	if(share.get('nodraw')) {
+		return;
+	}
+
 	if(!data) {
 		throw new Error('elRender:empty arguments.');
 	}

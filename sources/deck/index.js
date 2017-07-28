@@ -61,6 +61,8 @@ class deckClass {
 
 	constructor(data, id) {
 
+		console.log('DECK', id);
+
 		if(!data) {
 			return false;
 		}
@@ -570,7 +572,8 @@ class deckClass {
 		}
 
 		// insert push deck after visible cards
-		this.cards.splice(visibleCardsCount, 0, ...deck); // TODO maybe concat faster than "..."?
+		this.cards.splice(visibleCardsCount, 0, ...deck); // TODO maybe concat faster than "..."?; is faster that concat+splices
+		// this.cards = this.cards.slice(0, visibleCardsCount).concat(deck, this.cards.slice(visibleCardsCount));
 	}
 
 	Pop(count, clearParent) {

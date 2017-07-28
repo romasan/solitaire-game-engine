@@ -28,6 +28,15 @@ let angleValidate = angle => {
 
 event.listen('moveDragDeck', data => {
 
+	if(share.get('nodraw')) {
+
+		if(typeof data.callback == "function") {
+			data.callback();
+		}
+
+		return;
+	}
+
 	// console.log('moveDragDeck', data);
 	// let _debugMoveDeck = data.moveDeck.map(e => e.card.name).join(',');
 
@@ -119,6 +128,15 @@ event.listen('moveDragDeckDone', data => {
 		return;
 	}
 
+	if(share.get('nodraw')) {
+
+		if(typeof data.callback == "function") {
+			data.callback();
+		}
+
+		return;
+	}
+
 	let _deck = data.deck.cards;
 
 	for(let i in _deck) {
@@ -130,7 +148,16 @@ event.listen('moveDragDeckDone', data => {
 	}
 });
 
-event.listen('dragDeck', data => {// {x, y, dragDeck, startCursor, deck}
+event.listen('dragDeck', data => { // {x, y, dragDeck, startCursor, deck}
+
+	if(share.get('nodraw')) {
+
+		if(data && typeof data.callback == "function") {
+			data.callback();
+		}
+
+		return;
+	}
 
 	for(let i in data.dragDeck) {
 

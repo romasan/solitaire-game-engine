@@ -9,6 +9,15 @@ import elRender from 'elRender';
 
 event.listen('initField', data => {
 
+	if(share.get('nodraw')) {
+
+		if(data && typeof data.callback == "function") {
+			data.callback();
+		}
+
+		return;
+	}
+
 	let domElement = data.field ? data.field : '#map';
 
 	if(typeof domElement == 'string') {

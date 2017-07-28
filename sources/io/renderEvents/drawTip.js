@@ -8,7 +8,16 @@ import Tips     from 'tips'    ;
 
 event.listen('showTip', data => {
 
-	if(data && data.el && data.type) {// data && data.el && data.el.domElement && data.type
+	if(share.get('nodraw')) {
+
+		if(data && typeof data.callback == "function") {
+			data.callback();
+		}
+
+		return;
+	}
+
+	if(data && data.el && data.type) { // data && data.el && data.el.domElement && data.type
 
 		let _elDomElement = share.get('domElement:' + data.el.id);
 
@@ -18,6 +27,15 @@ event.listen('showTip', data => {
 });
 
 event.listen('hideTips', data => {
+
+	if(share.get('nodraw')) {
+
+		if(data && typeof data.callback == "function") {
+			data.callback();
+		}
+
+		return;
+	}
 
 	if(data && data.types) {
 

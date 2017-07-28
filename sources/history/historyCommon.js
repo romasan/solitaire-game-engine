@@ -54,7 +54,7 @@ event.listen('saveSteps', e => {
 event.listen('doHistory', e => {
 
 	// console.groupCollapsed('DO HISTORY');
-	// console.log('DO HISTORY', e);
+	console.log('DO HISTORY');
 
 	// common.animationOff();
 	if(!e || !e.data) {
@@ -96,23 +96,56 @@ event.listen('doHistory', e => {
 
 event.listen('scanAttempts', data => {
 
-	event.dispatch('render:off');
+	Field.clear();
+
+	// event.dispatch('render:off');
 	common.animationOff();
 
-	for(let i in data) {
+	let diff = [];
 
-		event.dispatch('redo', e.data[i]);
+	for(let attemptIndex in data.attempts) {
 
-		if(
-			!redoAdvanced.handle(e.data[i][0]) &&
-			typeof e.callback == 'function'
-		) {
-			e.callback(e.data[i]);	
+		console.log('------- attempt', data.attempts[attemptIndex]);
+
+		let history = data.attempts[attemptIndex];
+
+		if(history) {
+
+			let snap = snapshot.get();
+
+			for(let i in history) {
+
+				console.log('redo', history[i]);
+
+				event.dispatch('redo', history[i]);
+
+				redoAdvanced.handle(history[i][0]);
+			}
+
+			diff.push(snapshot.diff(snap, snapshot.get()));
+
+			if(
+				attemptIndex < data.attempts.length - 1 &&
+				typeof data.callback == "function"
+			) {
+				console.log("callback");
+				data.callback();
+			}
 		}
 	}
 
-	event.dispatch('render:on');
+	let summary = snapshot.summary(...diff);
+
+	// event.dispatch('render:on');
 	common.animationDefault();
+
+	if(typeof data.callback == "function") {
+		data.callback();
+	}
+
+	// TODO apply summary changes
+	// snapshot.applyState(summary);
+	console.log('###', summary);
 });
 
 event.listen('resetHistory', e => {

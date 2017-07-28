@@ -2,6 +2,8 @@
 
 // window.innerWidth
 
+let distance = (a, b) => Math.sqrt((e => e * e)(a.x - b.x) + (e => e * e)(a.x - b.y));
+
 // Находит точку пересечения линий
 let _intersect2d = function(p1a, p1b, p2a, p2b) { // A_start5[1, 1], A_end[1, 1], B_start[1, 1], B_end[1, 1]
 
@@ -28,5 +30,6 @@ let _intersect2d = function(p1a, p1b, p2a, p2b) { // A_start5[1, 1], A_end[1, 1]
 let intersect = (a1, a2, b1, b2) => _intersect2d([a1.x, a1.y], [b1.x, b1.y], [a2.x, a2.y], [b2.x, b2.y]);
 
 export default {
+	"distance"  : distance ,
 	"intersect" : intersect
 }

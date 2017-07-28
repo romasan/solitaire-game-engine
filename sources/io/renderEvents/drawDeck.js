@@ -17,6 +17,15 @@ import applyChangedParameters from 'applyChangedParameters';
 
 event.listen('addDeckEl', data => {
 
+	if(share.get('nodraw')) {
+
+		if(data && typeof data.callback == "function") {
+			data.callback();
+		}
+
+		return;
+	}
+
 	applyChangedParameters(data);
 
 	let _deckDomElement = 
@@ -63,6 +72,15 @@ event.listen('redrawDeckFlip', data => {
 		return;
 	}
 
+	if(share.get('nodraw')) {
+
+		if(data && typeof data.callback == "function") {
+			data.callback();
+		}
+
+		return;
+	}
+
 	for(let i in data.cards) {
 
 		let _params = {};
@@ -88,6 +106,15 @@ event.listen('redrawDeckIndexes', data => {
 		return;
 	}
 
+	if(share.get('nodraw')) {
+
+		if(data && typeof data.callback == "function") {
+			data.callback();
+		}
+
+		return;
+	}
+
 	for(let i in data.cards) {
 
 		let _cardDomElement = share.get('domElement:' + data.cards[i].id);
@@ -102,6 +129,15 @@ event.listen('redrawDeck', data => {
 
 	if(share.get('noRedraw')) {
 		return false;
+	}
+
+	if(share.get('nodraw')) {
+
+		if(data && typeof data.callback == "function") {
+			data.callback();
+		}
+
+		return;
 	}
 
 	if(

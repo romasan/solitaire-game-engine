@@ -9,6 +9,15 @@ import elRender from 'elRender';
 // Move card to home
 event.listen('moveCardBack', data => {
 
+	if(share.get('nodraw')) {
+
+		if(data && typeof data.callback == "function") {
+			data.callback();
+		}
+
+		return;
+	}
+
 	if(share.get('lastCursorMove').distance > 0) {
 		common.curLock();
 	}

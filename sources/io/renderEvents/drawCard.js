@@ -18,6 +18,15 @@ import elRender from 'elRender';
 
 event.listen('addCardEl', data => {
 
+	if(share.get('nodraw')) {
+
+		if(data && typeof data.callback == "function") {
+			data.callback();
+		}
+
+		return;
+	}
+
 	let _params = {
 		"width"  : defaults.card.width  + 'px',
 		"height" : defaults.card.height + 'px'
@@ -92,6 +101,15 @@ event.listen('unmarkCard', data => {
 });
 
 event.listen('unflipCard', card => {
+
+	if(share.get('nodraw')) {
+
+		if(data && typeof data.callback == "function") {
+			data.callback();
+		}
+
+		return;
+	}
 
 	let el = share.get('domElement:' + card.id);
 

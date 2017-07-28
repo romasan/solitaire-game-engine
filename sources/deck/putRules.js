@@ -430,8 +430,6 @@ let readyPutRules = {
 
 	"notOneGroup" : (data, prop) => {
 
-		// console.log('notOneGroup', data.from.deck.parent, data.to.parent, prop);
-
 		let _result = data.from.deck.parent != data.to.parent;
 
 		if(prop == "excludeEmpty") {
@@ -442,8 +440,6 @@ let readyPutRules = {
 				_result = true;
 			}
 		}
-
-		// console.log('result:', _result);
 
 		return _result;
 	}

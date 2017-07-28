@@ -22,24 +22,42 @@ import 'environment.css'                   ;
 
 share.set('nodraw', false);
 
-event.listen('render:on' , e => {
+event.listen('render:on', e => {
+
+	console.log('RENDER ON');
+
 	share.set('nodraw', false);
 });
 
 event.listen('render:off', e => {
+
+	console.log('RENDER OFF');
+
 	share.set('nodraw', true);
 });
 
 event.listen('removeEl', data => {
 
+	if(share.get('nodraw')) {
+
+		if(data && typeof data.callback == "function") {
+			data.callback();
+		}
+
+		return;
+	}
+
 	let _elDomElement = share.get('domElement:' + data.id);
 
-	try {
+	// try {
+	if(_elDomElement) {
+
 		_elDomElement.remove();
 
 		share.delete('domElement:' + data.id);
-	} catch(e) {
-		console.warn('Dom element for', data.id, 'not found');
+	} else {
+	// } catch(e) {
+		// console.warn('Dom element for', data.id, 'not found');
 	}
 });
 
@@ -63,6 +81,7 @@ event.listen('clickCard', card => {
 	let deck = common.getElementById(card.parent);
 
 	if(deck) {
+
 		event.dispatch('click:flipCard', {
 			"to"     : deck, // deckClass
 			"toCard" : card  // card

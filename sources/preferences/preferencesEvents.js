@@ -26,8 +26,11 @@ let onShowParameters = e => {
 				? pref[prefName]
 				: defaults.pref[prefName];
 
-			$(`input[name='pref_${prefName}'][value='${(_pref).toString()}']`)
-				.prop({checked: true});
+			// $(`input[name='pref_${prefName}'][value='${(_pref).toString()}']`)
+			// 	.prop({checked: true});
+
+			document.querySelector(`input[name="pref_${prefName}"][value="${(_pref).toString()}"]`)
+				.setAttribute('checked', true);
 		}
 	} catch(e) {}
 
@@ -42,7 +45,9 @@ let applyParameters = e => {
 
 		for(let prefName in defaults.themes) {
 
-			let _value = $(`input[name='pref_${prefName}']:checked`).val();
+			// let _value = $(`input[name='pref_${prefName}']:checked`).val();
+
+			let _value = document.querySelector(`input[name="pref_${prefName}"]:checked`).value;
 
 			_value = _value == 'true'
 				? true
@@ -83,7 +88,9 @@ export default e => {
 	// TODO переделать без jQuery
 	try {
 
-		$('#bbParameters').click(onShowParameters);
+		// $('#bbParameters').click(onShowParameters);
+
+		document.getElementById('bbParameters').addEventListener('click', onShowParameters);
 		
 		// event.dispatch('addDomEvent', {
 		// 	"event"    : "click"
@@ -93,7 +100,11 @@ export default e => {
 
 		// $("#gpCommit").click(saveParameters);
 
-		$('#parametersPanel').on('change', 'input', applyParameters);
+		// $('#parametersPanel').on('change', 'input', applyParameters);
+
+		document.getElementById('parametersPanel')
+			.addEventListener('change', e => {e.target.nodeName == 'INPUT' ? applyParameters() : null});
+
 		// $("#solitaire-engine-style-preferences input").change(applyParameters);
 
 		// event.dispatch('addDomEvent', {

@@ -9,6 +9,10 @@ import elRender from 'elRender';
 
 event.listen('fieldThemesSet', pref => {
 
+	if(share.get('nodraw')) {
+		return;
+	}
+
 	let _fieldDomElement = share.get('domElement:field');
 	    _fieldDomElement = _fieldDomElement.parentNode.parentNode; // TODO может быть не корректно в отличном от текущего окружении
 
