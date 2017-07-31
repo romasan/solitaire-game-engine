@@ -35,6 +35,20 @@ let redo = data => {
 		// stateManager.restore();
 	}
 
+	const {
+		flip       ,
+		unflip     ,
+		hide       ,
+		show       ,
+		full       ,
+		lock       ,
+		swap       ,
+		move       ,
+		markCard   ,
+		unmarkCard ,
+		setStepType
+	} = data;
+
 	// redo flip
 	if(data.flip) {
 
@@ -81,7 +95,8 @@ let redo = data => {
 			card.visible = false;
 			deck.Redraw();
 		} else {
-			console.warn('Incorrect history substep [redo hide]:', data.hide);
+			let debugData = common.getElementsByType('deck').length;
+			console.warn('Incorrect history substep [redo hide]:', data.hide, debugData);
 		}
 	}
 
@@ -129,18 +144,15 @@ let redo = data => {
 	}
 
 	// redo swap
-	if(
-		typeof data.swap           != 'undefined' &&
-		typeof data.swap.deckName  != 'undefined' &&
-		typeof data.swap.fromIndex != 'undefined' &&
-		typeof data.swap.toIndex   != 'undefined'
-	) {
+	if(swap) {
 
-		let deck = common.getElementByName(data.swap.deckName, 'deck');
+		const {deckName, fromIndex, toIndex} = swap;
 
-		atom.swap(deck, data.swap.fromIndex, data.swap.toIndex, false);
+		let deck = deckName && common.getElementByName(deckName, 'deck');
 
-		deck.Redraw();
+		console.log('redo:swap', deckName, deck);
+
+		deck && atom.swap(deck, fromIndex, toIndex, false) && deck.Redraw();
 	}
 
 	// redo move

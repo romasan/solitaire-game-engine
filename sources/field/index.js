@@ -38,6 +38,8 @@ class Field {
 
 	create(data) {
 
+		// console.log('Field:create');
+
 		this.homeGroups = data.homeGroups ? data.homeGroups : [];
 
 		share.set('autoMoveToHomeOpenDecks', data.autoMoveToHomeOpenDecks ? data.autoMoveToHomeOpenDecks : []);

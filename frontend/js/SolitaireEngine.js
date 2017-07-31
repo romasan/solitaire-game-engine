@@ -126,7 +126,7 @@ var SolitaireEngine =
 	exports.options = _defaults2.default;
 	exports.winCheck = _winCheck2.default.hwinCheck;
 	exports.generator = _deckGenerator2.default;
-	exports.version = (90914912477).toString().split(9).slice(1).map(function (e) {
+	exports.version = (90914912524).toString().split(9).slice(1).map(function (e) {
 		return parseInt(e, 8);
 	}).join('.');
 	
@@ -2497,6 +2497,8 @@ var SolitaireEngine =
 			key: 'create',
 			value: function create(data) {
 	
+				// console.log('Field:create');
+	
 				this.homeGroups = data.homeGroups ? data.homeGroups : [];
 	
 				_share2.default.set('autoMoveToHomeOpenDecks', data.autoMoveToHomeOpenDecks ? data.autoMoveToHomeOpenDecks : []);
@@ -3287,8 +3289,6 @@ var SolitaireEngine =
 	
 			_classCallCheck(this, deckClass);
 	
-			console.log('DECK', id);
-	
 			if (!data) {
 				return false;
 			}
@@ -3306,6 +3306,11 @@ var SolitaireEngine =
 			    _new_id = _parent_el ? _parent_el.getDecks().length : id;
 	
 			this.name = typeof data.name == 'string' ? data.name : _parent_name + '_' + _new_id;
+	
+			console.log('DECK', id, this.name);
+			if (window.debug_A) {
+				window.debug_B = true;
+			}
 	
 			this.locked = data.locked ? true : false;
 			this.save = data.save ? true : false;
@@ -3717,6 +3722,11 @@ var SolitaireEngine =
 		}, {
 			key: 'clear',
 			value: function clear() {
+	
+				console.log('Deck:clear', this.name);
+				if (window.debug_B) {
+					throw new Error('debug_B');
+				}
 	
 				for (var i in this.cards) {
 					_event2.default.dispatch('removeEl', this.cards[i]);
@@ -6729,6 +6739,13 @@ var SolitaireEngine =
 	
 		// console.log('SWAP:', deck.name, fromIndex, toIndex);
 	
+		if (typeof deck == "undefined") {
+	
+			console.warn('Swap: deck is undefined');
+	
+			return false;
+		}
+	
 		if (deck.cards[fromIndex] && deck.cards[toIndex]) {
 	
 			var tmp = deck.cards[fromIndex];
@@ -6745,8 +6762,13 @@ var SolitaireEngine =
 				});
 			}
 		} else {
+	
 			console.warn('Card flip for', fromIndex, 'and', toIndex, 'cards in', deck.name, 'is impossible.');
+	
+			return false;
 		}
+	
+		return true;
 	};
 
 /***/ }),
@@ -6824,7 +6846,20 @@ var SolitaireEngine =
 			// stateManager.restore();
 		}
 	
+		var flip = data.flip,
+		    unflip = data.unflip,
+		    hide = data.hide,
+		    show = data.show,
+		    full = data.full,
+		    lock = data.lock,
+		    swap = data.swap,
+		    move = data.move,
+		    markCard = data.markCard,
+		    unmarkCard = data.unmarkCard,
+		    setStepType = data.setStepType;
+	
 		// redo flip
+	
 		if (data.flip) {
 	
 			var deck = _common2.default.getElementByName(data.flip.deckName);
@@ -6862,7 +6897,8 @@ var SolitaireEngine =
 					_card2.visible = false;
 					_deck2.Redraw();
 				} else {
-				console.warn('Incorrect history substep [redo hide]:', data.hide);
+				var debugData = _common2.default.getElementsByType('deck').length;
+				console.warn('Incorrect history substep [redo hide]:', data.hide, debugData);
 			}
 		}
 	
@@ -6903,13 +6939,17 @@ var SolitaireEngine =
 		}
 	
 		// redo swap
-		if (typeof data.swap != 'undefined' && typeof data.swap.deckName != 'undefined' && typeof data.swap.fromIndex != 'undefined' && typeof data.swap.toIndex != 'undefined') {
+		if (swap) {
+			var deckName = swap.deckName,
+			    fromIndex = swap.fromIndex,
+			    toIndex = swap.toIndex;
 	
-			var _deck4 = _common2.default.getElementByName(data.swap.deckName, 'deck');
 	
-			_atom2.default.swap(_deck4, data.swap.fromIndex, data.swap.toIndex, false);
+			var _deck4 = deckName && _common2.default.getElementByName(deckName, 'deck');
 	
-			_deck4.Redraw();
+			console.log('redo:swap', deckName, _deck4);
+	
+			_deck4 && _atom2.default.swap(_deck4, fromIndex, toIndex, false) && _deck4.Redraw();
 		}
 	
 		// redo move
@@ -7130,7 +7170,6 @@ var SolitaireEngine =
 	_event2.default.listen('doHistory', function (e) {
 	
 		// console.groupCollapsed('DO HISTORY');
-		console.log('DO HISTORY');
 	
 		// common.animationOff();
 		if (!e || !e.data) {
@@ -7178,7 +7217,7 @@ var SolitaireEngine =
 	
 		for (var attemptIndex in data.attempts) {
 	
-			console.log('------- attempt', data.attempts[attemptIndex]);
+			console.log('------- attempt', (attemptIndex | 0) + 1, 'from', data.attempts.length, 'with', data.attempts[attemptIndex].length, 'steps');
 	
 			var _history = data.attempts[attemptIndex];
 	
@@ -7188,7 +7227,7 @@ var SolitaireEngine =
 	
 				for (var i in _history) {
 	
-					console.log('redo', _history[i]);
+					// console.log('redo', history[i]);
 	
 					_event2.default.dispatch('redo', _history[i]);
 	
@@ -7198,7 +7237,6 @@ var SolitaireEngine =
 				diff.push(_snapshot2.default.diff(snap, _snapshot2.default.get()));
 	
 				if (attemptIndex < data.attempts.length - 1 && typeof data.callback == "function") {
-					console.log("callback");
 					data.callback();
 				}
 			}
@@ -7215,7 +7253,7 @@ var SolitaireEngine =
 	
 		// TODO apply summary changes
 		// snapshot.applyState(summary);
-		console.log('###', summary);
+		console.log('### SUMMARY:', summary);
 	});
 	
 	_event2.default.listen('resetHistory', function (e) {

@@ -61,8 +61,6 @@ class deckClass {
 
 	constructor(data, id) {
 
-		console.log('DECK', id);
-
 		if(!data) {
 			return false;
 		}
@@ -82,6 +80,9 @@ class deckClass {
 		this.name = typeof data.name == 'string' 
 			? data.name
 			: (_parent_name + '_' + _new_id);
+
+		console.log('DECK', id, this.name);
+		if(window.debug_A) {window.debug_B = true;}
 
 		this.locked           =        data.locked                        ? true                  : false                        ;
 		this.save             =        data.save                          ? true                  : false                        ;
@@ -547,6 +548,9 @@ class deckClass {
 	}
 
 	clear() {
+
+		console.log('Deck:clear', this.name);
+		if(window.debug_B) {throw new Error('debug_B');}
 
 		for(let i in this.cards) {
 			event.dispatch('removeEl', this.cards[i]);

@@ -54,7 +54,6 @@ event.listen('saveSteps', e => {
 event.listen('doHistory', e => {
 
 	// console.groupCollapsed('DO HISTORY');
-	console.log('DO HISTORY');
 
 	// common.animationOff();
 	if(!e || !e.data) {
@@ -105,7 +104,7 @@ event.listen('scanAttempts', data => {
 
 	for(let attemptIndex in data.attempts) {
 
-		console.log('------- attempt', data.attempts[attemptIndex]);
+		console.log('------- attempt', (attemptIndex | 0) + 1, 'from', data.attempts.length, 'with', data.attempts[attemptIndex].length, 'steps');
 
 		let history = data.attempts[attemptIndex];
 
@@ -115,7 +114,7 @@ event.listen('scanAttempts', data => {
 
 			for(let i in history) {
 
-				console.log('redo', history[i]);
+				// console.log('redo', history[i]);
 
 				event.dispatch('redo', history[i]);
 
@@ -128,7 +127,6 @@ event.listen('scanAttempts', data => {
 				attemptIndex < data.attempts.length - 1 &&
 				typeof data.callback == "function"
 			) {
-				console.log("callback");
 				data.callback();
 			}
 		}
@@ -145,7 +143,7 @@ event.listen('scanAttempts', data => {
 
 	// TODO apply summary changes
 	// snapshot.applyState(summary);
-	console.log('###', summary);
+	console.log('### SUMMARY:', summary);
 });
 
 event.listen('resetHistory', e => {
