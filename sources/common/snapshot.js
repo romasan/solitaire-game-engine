@@ -48,46 +48,53 @@ class snapshot {
 
 	diff(stateA, stateB) {
 
+		console.log('Diff:', stateA, stateB)
 
 		let state = {
 			"decks" : {}
 		};
 
-		for(let indexA in stateA.decks) {
+		for(let deckNameA in stateA.decks) {
 
-			console.log('diff', indexA);
-			state.decks[indexA] = {
-				"cards" : (deckA => {
+			let deckA = stateA.decks[deckNameA];
 
-					let cards = {};
+			let deck = [];
 
-					for(let i in deckA) {
+			// console.log('callback', deckA, stateB.decks[deckNameA]);
 
-						let cardA = deckA[i];
-						let cardB = null;
+			for(let cardIndexA in deckA.cards) {
 
-						for(let indexB in stateB.decks) {
+				let cardA = deckA.cards[cardIndexA];
+				let cardB = null;
 
-							let filter = stateB[indexB].cards.filter(cardB => cardB.uid == cardA.uid);
+				for(let deckIndexB in stateB.decks) {
 
-							if(filter.length) {
-								cardB = filter[0];
-								console.log('found', cardB.uid, cardB.name);
-							}
-						}
+					let deckB = stateB.decks[deckIndexB];
 
-						cards[i] = {
-							"uid"     : cardA.uid    ,
-							"id"      : cardA.id     ,
-							"name"    : cardA.name   ,
-							"visible" : cardB.visible,
-							"flip"    : cardB.flip
-						};
+					let filter = deckB.cards.filter(cardB => cardB.uid == cardA.uid);
+
+					if(filter.length) {
+
+						cardB = filter[0];
+
+						console.log('found', cardB.uid, cardA.name, cardB.name);
 					}
+				}
 
-					return cards;
-				})(state.decks[indexA])
+				deck[cardIndexA] = {
+					"uid"     : cardA.uid    ,
+					"id"      : cardA.id     ,
+					"name"    : cardA.name   ,
+					"visible" : cardB.visible,
+					"flip"    : cardB.flip
+				};
 			}
+
+			console.log(deck);
+
+			state.decks[deckNameA] = {
+				"cards" : deck
+			};
 		}
 
 		return state;

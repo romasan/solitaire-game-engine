@@ -50,76 +50,89 @@ let redo = data => {
 	} = data;
 
 	// redo flip
-	if(data.flip) {
+	if(flip) {
 
-		let deck = common.getElementByName(data.flip.deckName);
+		const {deckName, cardIndex, cardName} = flip;
 
-		let card = deck && deck.getCardByIndex(data.flip.cardIndex | 0);
+		let deck = common.getElementByName(deckName);
+
+		let card = deck && deck.getCardByIndex(cardIndex | 0);
 
 		if(
 			card                            &&
-			card.name == data.flip.cardName
+			card.name == cardName
 		) {
+
 			card.flip = true;
+
 			deck.Redraw();
 		}
 	}
 
 	// redo unflip
-	if(data.unflip) {
+	if(unflip) {
 
-		let deck = common.getElementByName(data.unflip.deckName, 'deck');
+		const {deckName, cardIndex, cardName} = unflip;
 
-		let card = deck && deck.getCardByIndex(data.unflip.cardIndex | 0);
+		let deck = common.getElementByName(deckName, 'deck');
+
+		let card = deck && deck.getCardByIndex(cardIndex | 0);
 
 		if(
 			card                              &&
-			card.name == data.unflip.cardName
+			card.name == cardName
 		) {
+
 			card.flip = false;
+
 			deck.Redraw();
 		}
 	}
 
 	// redo hide
-	if(data.hide) {
+	if(hide) {
 
-		let deck = common.getElementByName(data.hide.deckName, 'deck');
+		const {deckName, cardIndex, cardName} = hide;
 
-		let card = deck && deck.getCardByIndex(data.hide.cardIndex | 0);
+		let deck = common.getElementByName(deckName, 'deck');
+
+		let card = deck && deck.getCardByIndex(cardIndex | 0);
 
 		if(
 			card                            &&
-			card.name == data.hide.cardName // TODO check
+			card.name == cardName // TODO check
 		) {
 			card.visible = false;
 			deck.Redraw();
 		} else {
-			let debugData = common.getElementsByType('deck').length;
-			console.warn('Incorrect history substep [redo hide]:', data.hide, debugData);
+			console.warn('Incorrect history substep [redo hide]:', hide);
 		}
 	}
 
 	// redo show
-	if(data.show) {
+	if(show) {
 
-		let deck = common.getElementByName(data.show.deckName, 'deck');
+		const {deckName, cardIndex, cardName} = show;
 
-		let card = deck && deck.getCardByIndex(data.show.cardIndex | 0);
+		let deck = common.getElementByName(deckName, 'deck');
+
+		let card = deck && deck.getCardByIndex(cardIndex | 0);
 
 		if(
 			card                            &&
-			card.name == data.show.cardName
+			card.name == cardName
 		) {
+
 			card.visible = true;
+
 			deck.Redraw();
 		} else {
-			console.warn('Incorrect history substep [redo show]:', data.hide);
+			console.warn('Incorrect history substep [redo show]:', show);
 		}
 	}
 	
 	// redo full
-	if(data.full) {
+	if(full) {
 		// 
 	}
 
@@ -155,34 +168,34 @@ let redo = data => {
 
 	// redo move
 	if(
-		typeof data.move      != 'undefined' &&
-		typeof data.move.from != 'undefined' &&
-		typeof data.move.to   != 'undefined' &&
-		typeof data.move.deck != 'undefined'
+		typeof move      != 'undefined' &&
+		typeof move.from != 'undefined' &&
+		typeof move.to   != 'undefined' &&
+		typeof move.deck != 'undefined'
 	) {
 
 		// console.log('redo:move');
 
-		if(data.move.stepType) {
+		if(move.stepType) {
 
-			if(typeof data.move.stepType == 'string') {
-				share.set('stepType', data.move.stepType);
+			if(typeof move.stepType == 'string') {
+				share.set('stepType', move.stepType);
 			}
 
-			if(typeof data.move.stepType.redo == 'string') {
-				share.set('stepType', data.move.stepType.redo);
+			if(typeof move.stepType.redo == 'string') {
+				share.set('stepType', move.stepType.redo);
 			}
 		}
 
 		let forceMoveData = {
-			"from" : data.move.from,
-			"to"   : data.move.to  ,
-			"deck" : data.move.deck,
-			"flip" : data.move.flip
+			"from" : move.from,
+			"to"   : move.to  ,
+			"deck" : move.deck,
+			"flip" : move.flip
 		};
 
-		if(typeof data.move.flip == "boolean") {
-			forceMoveData.flip = data.move.flip;
+		if(typeof move.flip == "boolean") {
+			forceMoveData.flip = move.flip;
 		}
 
 		if(!share.get('showHistoryAnimation')) {
@@ -209,8 +222,10 @@ let redo = data => {
 		event.dispatch('forceMove', forceMoveData);
 	}
 
-	if(data.markCard) {
+	if(markCard) {
 		
+		const {deckName, cardIndex, cardName} = markCard;
+
 		let deck = common.getElementByName(data.markCard.deckName, 'deck');
 
 		let card = deck.getCardByIndex(data.markCard.cardIndex | 0);
@@ -225,15 +240,17 @@ let redo = data => {
 		}
 	}
 
-	if(data.unmarkCard) {
+	if(unmarkCard) {
 
-		let deck = common.getElementByName(data.unmarkCard.deckName, 'deck');
+		const {deckName, cardIndex, cardName} = unmarkCard;
 
-		let card = deck.getCardByIndex(data.unmarkCard.cardIndex | 0);
+		let deck = common.getElementByName(deckName, 'deck');
+
+		let card = deck.getCardByIndex(cardIndex | 0);
 
 		if(
 			card                                  &&
-			data.unmarkCard.cardName == card.name
+			cardName == card.name
 		) {
 			event.dispatch('unmarkCard', {
 				"card" : card
@@ -241,12 +258,13 @@ let redo = data => {
 		}
 	}
 
-	if(data.setStepType) {
-		if(typeof data.setStepType == "string") {
-			share.set('stepType', data.setStepType);
+	if(setStepType) {
+
+		if(typeof setStepType == "string") {
+			share.set('stepType', setStepType);
 		} else {
-			if(typeof data.setStepType.redo == "string") {
-				share.set('stepType', data.stepType.redo);
+			if(typeof setStepType.redo == "string") {
+				share.set('stepType', setStepType.redo);
 			}
 		}
 	}
