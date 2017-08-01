@@ -150,8 +150,6 @@ let redo = data => {
 
 		let deck = deckName && common.getElementByName(deckName, 'deck');
 
-		console.log('redo:swap', deckName, deck);
-
 		deck && atom.swap(deck, fromIndex, toIndex, false) && deck.Redraw();
 	}
 

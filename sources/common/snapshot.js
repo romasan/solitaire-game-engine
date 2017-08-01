@@ -48,35 +48,38 @@ class snapshot {
 
 	diff(stateA, stateB) {
 
+
 		let state = {
 			"decks" : {}
 		};
 
-		for(let indexA in stateA.deck) {
+		for(let indexA in stateA.decks) {
 
+			console.log('diff', indexA);
 			state.decks[indexA] = {
-				"cards" : (e => {
+				"cards" : (deckA => {
 
-					let catds = {};
+					let cards = {};
 
-					for(let i in e) {
+					for(let i in deckA) {
 
-						let cardA = e[i];
+						let cardA = deckA[i];
 						let cardB = null;
 
 						for(let indexB in stateB.decks) {
 
-							let filter = stateB[indexB].cards.filter(c => c.uid == cardA.uid);
+							let filter = stateB[indexB].cards.filter(cardB => cardB.uid == cardA.uid);
 
 							if(filter.length) {
 								cardB = filter[0];
+								console.log('found', cardB.uid, cardB.name);
 							}
 						}
 
 						cards[i] = {
-							"uid"     : e[i].uid     ,
-							"id"      : e[i].id      ,
-							"name"    : e[i].name    ,
+							"uid"     : cardA.uid    ,
+							"id"      : cardA.id     ,
+							"name"    : cardA.name   ,
 							"visible" : cardB.visible,
 							"flip"    : cardB.flip
 						};
@@ -86,6 +89,8 @@ class snapshot {
 				})(state.decks[indexA])
 			}
 		}
+
+		return state;
 	}
 
 	summary(...args) {

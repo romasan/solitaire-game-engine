@@ -126,7 +126,7 @@ var SolitaireEngine =
 	exports.options = _defaults2.default;
 	exports.winCheck = _winCheck2.default.hwinCheck;
 	exports.generator = _deckGenerator2.default;
-	exports.version = (90914912524).toString().split(9).slice(1).map(function (e) {
+	exports.version = (90914912551).toString().split(9).slice(1).map(function (e) {
 		return parseInt(e, 8);
 	}).join('.');
 	
@@ -3307,10 +3307,7 @@ var SolitaireEngine =
 	
 			this.name = typeof data.name == 'string' ? data.name : _parent_name + '_' + _new_id;
 	
-			console.log('DECK', id, this.name);
-			if (window.debug_A) {
-				window.debug_B = true;
-			}
+			// console.log('Deck', id, this.name);
 	
 			this.locked = data.locked ? true : false;
 			this.save = data.save ? true : false;
@@ -3723,10 +3720,7 @@ var SolitaireEngine =
 			key: 'clear',
 			value: function clear() {
 	
-				console.log('Deck:clear', this.name);
-				if (window.debug_B) {
-					throw new Error('debug_B');
-				}
+				// console.log('Deck:clear', this.name);
 	
 				for (var i in this.cards) {
 					_event2.default.dispatch('removeEl', this.cards[i]);
@@ -6947,8 +6941,6 @@ var SolitaireEngine =
 	
 			var _deck4 = deckName && _common2.default.getElementByName(deckName, 'deck');
 	
-			console.log('redo:swap', deckName, _deck4);
-	
 			_deck4 && _atom2.default.swap(_deck4, fromIndex, toIndex, false) && _deck4.Redraw();
 		}
 	
@@ -7208,7 +7200,7 @@ var SolitaireEngine =
 	
 	_event2.default.listen('scanAttempts', function (data) {
 	
-		_field2.default.clear();
+		// Field.clear();
 	
 		// event.dispatch('render:off');
 		_common2.default.animationOff();
@@ -7217,7 +7209,7 @@ var SolitaireEngine =
 	
 		for (var attemptIndex in data.attempts) {
 	
-			console.log('------- attempt', (attemptIndex | 0) + 1, 'from', data.attempts.length, 'with', data.attempts[attemptIndex].length, 'steps');
+			// console.log('Attempt', (attemptIndex | 0) + 1, 'from', data.attempts.length, 'with', data.attempts[attemptIndex].length, 'steps');
 	
 			var _history = data.attempts[attemptIndex];
 	
@@ -7234,7 +7226,9 @@ var SolitaireEngine =
 					_redoAdvanced2.default.handle(_history[i][0]);
 				}
 	
-				diff.push(_snapshot2.default.diff(snap, _snapshot2.default.get()));
+				var snap2 = _snapshot2.default.get();
+				console.log('>>>', snap, snap2);
+				diff.push(_snapshot2.default.diff(snap, snap2));
 	
 				if (attemptIndex < data.attempts.length - 1 && typeof data.callback == "function") {
 					data.callback();
@@ -7253,7 +7247,7 @@ var SolitaireEngine =
 	
 		// TODO apply summary changes
 		// snapshot.applyState(summary);
-		console.log('### SUMMARY:', summary);
+		console.log('### SUMMARY:', diff, summary);
 	});
 	
 	_event2.default.listen('resetHistory', function (e) {
@@ -7472,39 +7466,41 @@ var SolitaireEngine =
 					"decks": {}
 				};
 	
-				for (var indexA in stateA.deck) {
+				for (var indexA in stateA.decks) {
 	
+					console.log('diff', indexA);
 					state.decks[indexA] = {
-						"cards": function (e) {
+						"cards": function (deckA) {
 	
-							var catds = {};
+							var cards = {};
 	
 							var _loop = function _loop(i) {
 	
-								var cardA = e[i];
+								var cardA = deckA[i];
 								var cardB = null;
 	
 								for (var indexB in stateB.decks) {
 	
-									var filter = stateB[indexB].cards.filter(function (c) {
-										return c.uid == cardA.uid;
+									var filter = stateB[indexB].cards.filter(function (cardB) {
+										return cardB.uid == cardA.uid;
 									});
 	
 									if (filter.length) {
 										cardB = filter[0];
+										console.log('found', cardB.uid, cardB.name);
 									}
 								}
 	
 								cards[i] = {
-									"uid": e[i].uid,
-									"id": e[i].id,
-									"name": e[i].name,
+									"uid": cardA.uid,
+									"id": cardA.id,
+									"name": cardA.name,
 									"visible": cardB.visible,
 									"flip": cardB.flip
 								};
 							};
 	
-							for (var i in e) {
+							for (var i in deckA) {
 								_loop(i);
 							}
 	
@@ -7512,6 +7508,8 @@ var SolitaireEngine =
 						}(state.decks[indexA])
 					};
 				}
+	
+				return state;
 			}
 		}, {
 			key: 'summary',

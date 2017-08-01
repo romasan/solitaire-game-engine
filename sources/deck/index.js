@@ -81,8 +81,7 @@ class deckClass {
 			? data.name
 			: (_parent_name + '_' + _new_id);
 
-		console.log('DECK', id, this.name);
-		if(window.debug_A) {window.debug_B = true;}
+		// console.log('Deck', id, this.name);
 
 		this.locked           =        data.locked                        ? true                  : false                        ;
 		this.save             =        data.save                          ? true                  : false                        ;
@@ -549,8 +548,7 @@ class deckClass {
 
 	clear() {
 
-		console.log('Deck:clear', this.name);
-		if(window.debug_B) {throw new Error('debug_B');}
+		// console.log('Deck:clear', this.name);
 
 		for(let i in this.cards) {
 			event.dispatch('removeEl', this.cards[i]);

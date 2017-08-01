@@ -95,7 +95,7 @@ event.listen('doHistory', e => {
 
 event.listen('scanAttempts', data => {
 
-	Field.clear();
+	// Field.clear();
 
 	// event.dispatch('render:off');
 	common.animationOff();
@@ -104,7 +104,7 @@ event.listen('scanAttempts', data => {
 
 	for(let attemptIndex in data.attempts) {
 
-		console.log('------- attempt', (attemptIndex | 0) + 1, 'from', data.attempts.length, 'with', data.attempts[attemptIndex].length, 'steps');
+		// console.log('Attempt', (attemptIndex | 0) + 1, 'from', data.attempts.length, 'with', data.attempts[attemptIndex].length, 'steps');
 
 		let history = data.attempts[attemptIndex];
 
@@ -121,7 +121,9 @@ event.listen('scanAttempts', data => {
 				redoAdvanced.handle(history[i][0]);
 			}
 
-			diff.push(snapshot.diff(snap, snapshot.get()));
+			let snap2 = snapshot.get();
+			console.log('>>>', snap, snap2);
+			diff.push(snapshot.diff(snap, snap2));
 
 			if(
 				attemptIndex < data.attempts.length - 1 &&
@@ -143,7 +145,7 @@ event.listen('scanAttempts', data => {
 
 	// TODO apply summary changes
 	// snapshot.applyState(summary);
-	console.log('### SUMMARY:', summary);
+	console.log('### SUMMARY:', diff, summary);
 });
 
 event.listen('resetHistory', e => {
