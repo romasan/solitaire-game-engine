@@ -42,6 +42,7 @@ let redo = data => {
 		show       ,
 		full       ,
 		lock       ,
+		unlock     ,
 		swap       ,
 		move       ,
 		markCard   ,
@@ -138,20 +139,20 @@ let redo = data => {
 
 	// redo lock
 	if(
-		typeof data.lock != 'undefined'
+		typeof lock != 'undefined'
 	) {
-		for(let i in data.lock) {
-			let _element = common.getElementsByName(data.lock[i])[0];
+		for(let i in lock) {
+			let _element = common.getElementsByName(lock[i])[0];
 			_element.lock();
 		}
 	}
 
 	// redo unlock
 	if(
-		typeof data.unlock != 'undefined'
+		typeof unlock != 'undefined'
 	) {
-		for(let i in data.unlock) {
-			let _element = common.getElementsByName(data.unlock[i])[0];
+		for(let i in unlock) {
+			let _element = common.getElementsByName(unlock[i])[0];
 			_element.unlock();
 		}
 	}
@@ -167,35 +168,32 @@ let redo = data => {
 	}
 
 	// redo move
-	if(
-		typeof move      != 'undefined' &&
-		typeof move.from != 'undefined' &&
-		typeof move.to   != 'undefined' &&
-		typeof move.deck != 'undefined'
-	) {
+	if(move) {
 
 		// console.log('redo:move');
 
+		const {from, to, deck, flip, stepType} = move;
+
 		if(move.stepType) {
 
-			if(typeof move.stepType == 'string') {
-				share.set('stepType', move.stepType);
+			if(typeof stepType == 'string') {
+				share.set('stepType', stepType);
 			}
 
-			if(typeof move.stepType.redo == 'string') {
-				share.set('stepType', move.stepType.redo);
+			if(typeof stepType.redo == 'string') {
+				share.set('stepType', stepType.redo);
 			}
 		}
 
 		let forceMoveData = {
-			"from" : move.from,
-			"to"   : move.to  ,
-			"deck" : move.deck,
-			"flip" : move.flip
+			"from" : from,
+			"to"   : to  ,
+			"deck" : deck,
+			"flip" : flip
 		};
 
 		if(typeof move.flip == "boolean") {
-			forceMoveData.flip = move.flip;
+			forceMoveData.flip = flip;
 		}
 
 		if(!share.get('showHistoryAnimation')) {
@@ -226,13 +224,13 @@ let redo = data => {
 		
 		const {deckName, cardIndex, cardName} = markCard;
 
-		let deck = common.getElementByName(data.markCard.deckName, 'deck');
+		let deck = common.getElementByName(deckName, 'deck');
 
-		let card = deck.getCardByIndex(data.markCard.cardIndex | 0);
+		let card = deck.getCardByIndex(cardIndex | 0);
 
 		if(
-			card                                &&
-			data.markCard.cardName == card.name
+			card                  &&
+			cardName == card.name
 		) {
 			event.dispatch('markCard', {
 				"card" : card
@@ -249,7 +247,7 @@ let redo = data => {
 		let card = deck.getCardByIndex(cardIndex | 0);
 
 		if(
-			card                                  &&
+			card                  &&
 			cardName == card.name
 		) {
 			event.dispatch('unmarkCard', {
@@ -289,6 +287,7 @@ event.listen('redo', redoData => {
 
 	// History.reset();
 	let history = History.get();
+
 	if(history.length > 0) {
 		for(let i = history.length - 1; i >= 0; i -= 1) {
 			

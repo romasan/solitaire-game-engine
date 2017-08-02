@@ -97,6 +97,8 @@ event.listen('scanAttempts', data => {
 
 	// Field.clear();
 
+	// console.log('scanAttempts', data);
+
 	// event.dispatch('render:off');
 	common.animationOff();
 

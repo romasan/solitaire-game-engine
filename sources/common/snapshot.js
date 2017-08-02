@@ -16,6 +16,8 @@ class snapshot {
 
 	get() {
 
+		console.groupCollapsed('snapshot:get');
+
 		let state = {
 			"decks" : {}
 		};
@@ -24,6 +26,7 @@ class snapshot {
 
 		// let uid = (function* (i) {while(true) {yield i++;}})(0);
 		// let uid = new (function (i) {this.next = function() {return {"value" : i++};}})(0);
+
 		let uid = (i => () => i++)(0);
 
 		for(let i in decks) {
@@ -31,22 +34,32 @@ class snapshot {
 			let deck = decks[i];
 
 			state.decks[deck.name] = {
+
 				"cards" : deck.getCards().map(card => {
-					return {
+
+					let _card = {
 						"uid"     : uid()       ,
 						"id"      : card.id     ,
 						"name"    : card.name   ,
 						"visible" : card.visible,
 						"flip"    : card.flip
 					};
+
+					console.log('card:', _card.uid, _card.name, _card.id, _card.flip);
+
+					return _card;
 				})
 			}
 		}
 
+		console.groupEnd();
+
 		return state;
 	}
 
-	diff(stateA, stateB) {
+	diff(stateA, stateB) { // A - from, B - to
+
+		console.groupCollapsed('snapshot:diff');
 
 		console.log('Diff:', stateA, stateB)
 
@@ -71,7 +84,7 @@ class snapshot {
 
 					let deckB = stateB.decks[deckIndexB];
 
-					let filter = deckB.cards.filter(cardB => cardB.uid == cardA.uid);
+					let filter = deckB.cards.filter(cardB => cardB.id == cardA.id);
 
 					if(filter.length) {
 
@@ -96,6 +109,8 @@ class snapshot {
 				"cards" : deck
 			};
 		}
+
+		console.groupEnd();
 
 		return state;
 	}

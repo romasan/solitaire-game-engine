@@ -21,6 +21,8 @@ import stateManager from 'stateManager';
  * unlock
  * swap
  * move
+ * markCard
+ * unmarkCard
  * setStepType
  */
 
@@ -32,30 +34,51 @@ let undo = data => {
 		// stateManager.restore();
 	}
 
+	const {
+		flip       ,
+		unflip     ,
+		hide       ,
+		show       ,
+		full       ,
+		lock       ,
+		unlock     ,
+		swap       ,
+		move       ,
+		markCard   ,
+		unmarkCard ,
+		setStepType
+	} = data;
+
 	// undo flip
-	if(data.flip) {
+	if(flip) {
 
-		let deck = common.getElementByName(data.flip.deckName);
+		const {deckName, cardIndex, cardName} = flip;
 
-		let card = deck && deck.getCardByIndex(data.flip.cardIndex | 0);
+		let deck = common.getElementByName(deckName);
+
+		let card = deck && deck.getCardByIndex(cardIndex | 0);
 
 		if(
 			card                            &&
-			card.name == data.flip.cardName
+			card.name == cardName
 		) {
+
 			card.flip = false;
+
 			deck.Redraw();
 		}
 	}
 
 	// undo unflip
-	if(data.unflip) {
+	if(unflip) {
 
-		let deck = common.getElementByName(data.unflip.deckName, 'deck');
+		const {deckName, cardIndex, cardName} = unflip;
 
-		let card = deck && deck.getCardByIndex(data.unflip.cardIndex | 0);
+		let deck = common.getElementByName(deckName, 'deck');
 
-		// console.log('undo:unflip -> flip', data.unflip, deck.name, card.name, deck.cards.map(e => e.name));
+		let card = deck && deck.getCardByIndex(cardIndex | 0);
+
+		// console.log('undo:unflip -> flip', unflip, deck.name, card.name, deck.cards.map(e => e.name));
 
 		// event.dispatch('removeMarkCard', {
 		// 	"card" : card
@@ -63,7 +86,7 @@ let undo = data => {
 
 		if(
 			card                              &&
-			card.name == data.unflip.cardName
+			card.name == cardName
 		) {
 			card.flip = true;
 			deck.Redraw();
@@ -71,115 +94,109 @@ let undo = data => {
 	}
 
 	// undo hide
-	if(data.hide) {
+	if(hide) {
 
-		let deck = common.getElementByName(data.hide.deckName, 'deck');
+		const {deckName, cardIndex, cardName} = hide;
 
-		let card = deck && deck.getCardByIndex(data.hide.cardIndex | 0);
+		let deck = common.getElementByName(deckName, 'deck');
+
+		let card = deck && deck.getCardByIndex(cardIndex | 0);
 
 		if(
 			card                            &&
-			card.name == data.hide.cardName
+			card.name == cardName
 		) {
 			card.visible = true;
 			deck.Redraw();
 		} else {
-			console.warn('Incorrect history atom of step [undo hide]:', data.hide);
+			console.warn('Incorrect history atom of step [undo hide]:', hide);
 		}
 	}
 
 	// undo show
-	if(data.show) {
+	if(show) {
 
-		// console.log('UNDO SHOW:', data.show);
+		const {deckName, cardIndex, cardName} = show;
 
-		let deck = common.getElementByName(data.show.deckName, 'deck');
+		let deck = common.getElementByName(deckName, 'deck');
 
-		let card = deck && deck.getCardByIndex(data.show.cardIndex | 0);
+		let card = deck && deck.getCardByIndex(cardIndex | 0);
 
 		if(
 			card                            &&
-			card.name == data.show.cardName
+			card.name == cardName
 		) {
 			card.visible = false;
 			deck.Redraw();
 		} else {
-			console.warn('Incorrect history atom of step [undo show]:', data.show);
+			console.warn('Incorrect history atom of step [undo show]:', show);
 		}
 
 		deck.Redraw();
 	}
 
 	// undo full
-	if(data.full) {
+	if(full) {
 		// TODO
 	}
 
 	// undo lock
 	if(
-		typeof data.lock != 'undefined'
+		typeof lock != 'undefined'
 	) {
-		for(let i in data.lock) {
-			let _element = common.getElementsByName(data.lock[i])[0];
+		for(let i in lock) {
+			let _element = common.getElementsByName(lock[i])[0];
 			_element.unlock();
 		}
 	}
 
 	// undo unlock
 	if(
-		typeof data.unlock != 'undefined'
+		typeof unlock != 'undefined'
 	) {
-		for(let i in data.unlock) {
-			let _element = common.getElementsByName(data.unlock[i])[0];
+		for(let i in unlock) {
+			let _element = common.getElementsByName(unlock[i])[0];
 			_element.lock();
 		}
 	}
 
 	// redo swap
-	if(
-		typeof data.swap           != 'undefined' &&
-		typeof data.swap.deckName  != 'undefined' &&
-		typeof data.swap.fromIndex != 'undefined' &&
-		typeof data.swap.toIndex   != 'undefined'
-	) {
+	if(swap) {
 
-		let deck = common.getElementByName(data.swap.deckName, 'deck');
+		const {deckName, fromIndex, toIndex} = swap;
 
-		atom.swap(deck, data.swap.fromIndex, data.swap.toIndex, false);
+		let deck = deckName && common.getElementByName(deckName, 'deck');
 
-		deck.Redraw();
+		deck && atom.swap(deck, fromIndex, toIndex, false) && deck.Redraw();
 	}
 
 	// undo move
-	if(
-		typeof data.move      != 'undefined' &&
-		typeof data.move.from != 'undefined' &&
-		typeof data.move.to   != 'undefined' &&
-		typeof data.move.deck != 'undefined'
-	) {
+	if(move) {
 
-		// console.log('undo:move', JSON.stringify(data.move));
+		// console.log('undo:move', JSON.stringify(move));
 
-		if(data.move.stepType) {
+		const {from, to, deck, flip, stepType} = move;
 
-			if(typeof data.move.stepType == 'string') {
-				share.set('stepType', data.move.stepType);
+		if(stepType) {
+
+			if(typeof stepType == 'string') {
+				share.set('stepType', stepType);
 			}
 
-			if(typeof data.move.stepType.undo == 'string') {
-				share.set('stepType', data.move.stepType.undo);
+			if(typeof stepType.undo == 'string') {
+				share.set('stepType', stepType.undo);
 			}
 		}
 
 		let forceMoveData = {
-			"from" : data.move.to  , // from ->
-			"to"   : data.move.from, //      <- to
-			"deck" : data.move.deck
-			// "flip" : data.move.flip
+			"from" : to  , // from ->
+			"to"   : from, //      <- to
+			"deck" : deck
+			// "flip" : flip
 		};
 
-		if(typeof data.move.flip == "boolean") {
-			forceMoveData.flip = !data.move.flip;
+		if(typeof flip == "boolean") {
+			forceMoveData.flip = !flip;
 		}
 
 		if(!share.get('showHistoryAnimation')) {
@@ -206,11 +223,47 @@ let undo = data => {
 		event.dispatch('forceMove', forceMoveData);
 	}
 
+	if(markCard) {
+		
+		const {deckName, cardIndex, cardName} = markCard;
+
+		let deck = common.getElementByName(deckName, 'deck');
+
+		let card = deck.getCardByIndex(cardIndex | 0);
+
+		if(
+			card                  &&
+			cardName == card.name
+		) {
+			event.dispatch('unmarkCard', {
+				"card" : card
+			});
+		}
+	}
+
+	if(unmarkCard) {
+
+		const {deckName, cardIndex, cardName} = unmarkCard;
+
+		let deck = common.getElementByName(deckName, 'deck');
+
+		let card = deck.getCardByIndex(cardIndex | 0);
+
+		if(
+			card                  &&
+			cardName == card.name
+		) {
+			event.dispatch('markCard', {
+				"card" : card
+			});
+		}
+	}
+
 	if(
-		data.setStepType &&
-		typeof data.setStepType.undo == "string"
+		setStepType                         &&
+		typeof setStepType.undo == "string"
 	) {
-		share.set('stepType', data.stepType.undo);
+		share.set('stepType', stepType.undo);
 	}
 };
 
@@ -233,6 +286,7 @@ event.listen('undo', undoData => {
 
 	// History.reset();
 	let history = History.get();
+
 	if(history.length > 0) {
 		for(let i = history.length - 1; i >= 0; i -= 1) {
 			
