@@ -97,16 +97,12 @@ event.listen('scanAttempts', data => {
 
 	// Field.clear();
 
-	// console.log('scanAttempts', data);
-
 	// event.dispatch('render:off');
 	common.animationOff();
 
-	let diff = [];
+	let stateDifferences = [];
 
 	for(let attemptIndex in data.attempts) {
-
-		// console.log('Attempt', (attemptIndex | 0) + 1, 'from', data.attempts.length, 'with', data.attempts[attemptIndex].length, 'steps');
 
 		let history = data.attempts[attemptIndex];
 
@@ -116,16 +112,14 @@ event.listen('scanAttempts', data => {
 
 			for(let i in history) {
 
-				// console.log('redo', history[i]);
-
 				event.dispatch('redo', history[i]);
 
 				redoAdvanced.handle(history[i][0]);
 			}
 
 			let snap2 = snapshot.get();
-			console.log('>>>', snap, snap2);
-			diff.push(snapshot.diff(snap, snap2));
+
+			stateDifferences.push(snapshot.diff(snap, snap2));
 
 			if(
 				attemptIndex < data.attempts.length - 1 &&
@@ -136,7 +130,7 @@ event.listen('scanAttempts', data => {
 		}
 	}
 
-	let summary = snapshot.summary(...diff);
+	let summary = snapshot.summary(stateDifferences);
 
 	// event.dispatch('render:on');
 	common.animationDefault();
@@ -145,9 +139,7 @@ event.listen('scanAttempts', data => {
 		data.callback();
 	}
 
-	// TODO apply summary changes
-	// snapshot.applyState(summary);
-	console.log('### SUMMARY:', diff, summary);
+	snapshot.applyState(summary);
 });
 
 event.listen('resetHistory', e => {

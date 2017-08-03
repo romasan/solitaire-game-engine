@@ -16,8 +16,6 @@ class snapshot {
 
 	get() {
 
-		console.groupCollapsed('snapshot:get');
-
 		let state = {
 			"decks" : {}
 		};
@@ -45,91 +43,80 @@ class snapshot {
 						"flip"    : card.flip
 					};
 
-					console.log('card:', _card.uid, _card.name, _card.id, _card.flip);
-
 					return _card;
 				})
 			}
 		}
 
-		console.groupEnd();
-
 		return state;
 	}
 
-	diff(stateA, stateB) { // A - from, B - to
-
-		console.groupCollapsed('snapshot:diff');
-
-		console.log('Diff:', stateA, stateB)
+	diff(stateFrom, stateTo) { // A - from, B - to
 
 		let state = {
 			"decks" : {}
 		};
 
-		for(let deckNameA in stateA.decks) {
+		for(let deckNameFrom in stateFrom.decks) {
 
-			let deckA = stateA.decks[deckNameA];
+			let deckFrom = stateFrom.decks[deckNameFrom];
 
 			let deck = [];
 
-			// console.log('callback', deckA, stateB.decks[deckNameA]);
+			for(let cardIndexFrom in deckFrom.cards) {
 
-			for(let cardIndexA in deckA.cards) {
+				let cardFrom = deckFrom.cards[cardIndexFrom];
+				let cardTo   = null;
 
-				let cardA = deckA.cards[cardIndexA];
-				let cardB = null;
+				for(let deckIndexTo in stateTo.decks) {
 
-				for(let deckIndexB in stateB.decks) {
+					let deckTo = stateTo.decks[deckIndexTo];
 
-					let deckB = stateB.decks[deckIndexB];
-
-					let filter = deckB.cards.filter(cardB => cardB.id == cardA.id);
+					let filter = deckTo.cards.filter(cardTo => cardTo.id == cardFrom.id);
 
 					if(filter.length) {
-
-						cardB = filter[0];
-
-						console.log('found', cardB.uid, cardA.name, cardB.name);
+						cardTo = filter[0];
 					}
 				}
 
-				deck[cardIndexA] = {
-					"uid"     : cardA.uid    ,
-					"id"      : cardA.id     ,
-					"name"    : cardA.name   ,
-					"visible" : cardB.visible,
-					"flip"    : cardB.flip
-				};
+				if(cardTo) {
+
+					deck[cardIndexFrom] = {
+						"uid"     : cardFrom.uid  ,
+						"id"      : cardFrom.id   ,
+						"name"    : cardFrom.name ,
+						"visible" : cardTo.visible,
+						"flip"    : cardTo.flip
+					};
+				} else {
+					console.warn('card', cardFrom.name, 'with id', cardFrom.id, 'not found');
+				}
 			}
 
-			console.log(deck);
-
-			state.decks[deckNameA] = {
+			state.decks[deckNameFrom] = {
 				"cards" : deck
 			};
 		}
 
-		console.groupEnd();
-
 		return state;
 	}
 
-	summary(...args) {
+	summary(stateDifferences) {
 
 		let state = {
 			"decks" : {}
-		}
+		};
 
-		for(let argIndex in args) {
+		for(let argIndex in stateDifferences) {
 
-			let stateI = args[argIndex];
+			let stateI = stateDifferences[argIndex];
 
 			if(argIndex == 0) {
 
-				for(let indexI in stateI) {
+				for(let indexI in stateI.decks) {
 
 					state.decks[indexI] = {
+
 						"cards" : (deck => {
 
 							let cards = [];
@@ -148,12 +135,12 @@ class snapshot {
 							}
 
 							return cards;
-						})(stateI[indexI])
+						})(stateI.decks[indexI])
 					}
 				}
 			} else {
 
-				for(let indexI in stateI) {
+				for(let indexI in stateI.decks) {
 
 					state.decks[indexI] = {
 
@@ -175,7 +162,7 @@ class snapshot {
 							}
 
 							return cards;
-						})(stateI[indexI])
+						})(stateI.decks[indexI])
 					}
 				}
 			}
@@ -188,11 +175,11 @@ class snapshot {
 
 		for(let deckName in state.decks) {
 
-			for(let i in state.decks[deckName]) {
+			for(let i in state.decks[deckName].cards) {
 
-				if(state.decks[deckName][i].uid == uid) {
+				if(state.decks[deckName].cards[i].uid == uid) {
 
-					return state.decks[deckName][i];
+					return state.decks[deckName].cards[i];
 				}
 			}
 		}
@@ -210,15 +197,29 @@ class snapshot {
 
 			let deck = decks[i];
 
-			for(let cardIndex in deck.cards) {	
+			if(deck.showPrevAttempts) {
 
-				let stateCard = this.getInStateByUid(summaryState, uid());
+				let changes = false;
 
-				let card = deck.cards[cardIndex];
+				for(let cardIndex in deck.cards) {
 
-				// card.visible = stateCard.visible;
+					let _uid = uid();
 
-				card.flip = stateCard.flip;
+					let stateCard = this.getInStateByUid(summaryState, _uid);
+
+					let card = deck.cards[cardIndex];
+
+
+					changes = changes || card.flip    != stateCard.flip   ;
+					changes = changes || card.visible != stateCard.visible;
+
+					card.visible = stateCard.visible;
+					card.flip    = stateCard.flip;
+				}
+
+				if(changes) {
+					deck.Redraw();
+				}
 			}
 		}
 	}

@@ -51,6 +51,7 @@ export default {
 	"animationTime"       : 200 , // time in milliseconds for 100px
 
 	"showPrefFlipCard"    : true,
+	"showPrevAttempts"    : false,
 
 	"inputParams" : {
 		"doubleClick" : false

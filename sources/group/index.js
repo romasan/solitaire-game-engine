@@ -27,6 +27,7 @@ const PARAMS = {
 	"actions"          : { "type" : 'any' },
 	"tags"             : { "type" : 'any' },
 	"showPrefFlipCard" : { "type" :  null },
+	"showPrevAttempts" : { "type" :  null },
 	"save" : {
 		"type"    : 'boolean',
 		"default" : true

@@ -126,7 +126,7 @@ var SolitaireEngine =
 	exports.options = _defaults2.default;
 	exports.winCheck = _winCheck2.default.hwinCheck;
 	exports.generator = _deckGenerator2.default;
-	exports.version = (90914912632).toString().split(9).slice(1).map(function (e) {
+	exports.version = (90914912633).toString().split(9).slice(1).map(function (e) {
 		return parseInt(e, 8);
 	}).join('.');
 	
@@ -619,6 +619,7 @@ var SolitaireEngine =
 		"animationTime": 200, // time in milliseconds for 100px
 	
 		"showPrefFlipCard": true,
+		"showPrevAttempts": false,
 	
 		"inputParams": {
 			"doubleClick": false
@@ -2758,6 +2759,7 @@ var SolitaireEngine =
 		"actions": { "type": 'any' },
 		"tags": { "type": 'any' },
 		"showPrefFlipCard": { "type": null },
+		"showPrevAttempts": { "type": null },
 		"save": {
 			"type": 'boolean',
 			"default": true
@@ -3317,6 +3319,7 @@ var SolitaireEngine =
 			this.autoHide = typeof data.autoHide == 'boolean' ? data.autoHide : _defaults2.default.autohide;
 			this.autoCheckFlip = typeof data.autoCheckFlip == 'boolean' ? data.autoCheckFlip : _defaults2.default.autoCheckFlip;
 			this.showPrefFlipCard = typeof data.showPrefFlipCard == 'boolean' ? data.showPrefFlipCard : _share2.default.get('showPrefFlipCard');
+			this.showPrevAttempts = typeof data.showPrevAttempts == 'boolean' ? data.showPrevAttempts : _defaults2.default.showPrevAttempts;
 	
 			this.data = {};
 	
@@ -4114,6 +4117,7 @@ var SolitaireEngine =
 	};
 	
 	exports.default = {
+		// TODO use as static methods
 		"deckCardNames": _deckCardNames2.default,
 		"addDeck": addDeck,
 		"getDeck": _getDeck2.default,
@@ -7317,16 +7321,12 @@ var SolitaireEngine =
 	
 		// Field.clear();
 	
-		// console.log('scanAttempts', data);
-	
 		// event.dispatch('render:off');
 		_common2.default.animationOff();
 	
-		var diff = [];
+		var stateDifferences = [];
 	
 		for (var attemptIndex in data.attempts) {
-	
-			// console.log('Attempt', (attemptIndex | 0) + 1, 'from', data.attempts.length, 'with', data.attempts[attemptIndex].length, 'steps');
 	
 			var _history = data.attempts[attemptIndex];
 	
@@ -7336,16 +7336,14 @@ var SolitaireEngine =
 	
 				for (var i in _history) {
 	
-					// console.log('redo', history[i]);
-	
 					_event2.default.dispatch('redo', _history[i]);
 	
 					_redoAdvanced2.default.handle(_history[i][0]);
 				}
 	
 				var snap2 = _snapshot2.default.get();
-				console.log('>>>', snap, snap2);
-				diff.push(_snapshot2.default.diff(snap, snap2));
+	
+				stateDifferences.push(_snapshot2.default.diff(snap, snap2));
 	
 				if (attemptIndex < data.attempts.length - 1 && typeof data.callback == "function") {
 					data.callback();
@@ -7353,7 +7351,7 @@ var SolitaireEngine =
 			}
 		}
 	
-		var summary = _snapshot2.default.summary.apply(_snapshot2.default, diff);
+		var summary = _snapshot2.default.summary(stateDifferences);
 	
 		// event.dispatch('render:on');
 		_common2.default.animationDefault();
@@ -7362,9 +7360,7 @@ var SolitaireEngine =
 			data.callback();
 		}
 	
-		// TODO apply summary changes
-		// snapshot.applyState(summary);
-		console.log('### SUMMARY:', diff, summary);
+		_snapshot2.default.applyState(summary);
 	});
 	
 	_event2.default.listen('resetHistory', function (e) {
@@ -7542,8 +7538,6 @@ var SolitaireEngine =
 			key: 'get',
 			value: function get() {
 	
-				console.groupCollapsed('snapshot:get');
-	
 				var state = {
 					"decks": {}
 				};
@@ -7575,104 +7569,89 @@ var SolitaireEngine =
 								"flip": card.flip
 							};
 	
-							console.log('card:', _card.uid, _card.name, _card.id, _card.flip);
-	
 							return _card;
 						})
 					};
 				}
 	
-				console.groupEnd();
-	
 				return state;
 			}
 		}, {
 			key: 'diff',
-			value: function diff(stateA, stateB) {
+			value: function diff(stateFrom, stateTo) {
 				// A - from, B - to
-	
-				console.groupCollapsed('snapshot:diff');
-	
-				console.log('Diff:', stateA, stateB);
 	
 				var state = {
 					"decks": {}
 				};
 	
-				for (var deckNameA in stateA.decks) {
+				for (var deckNameFrom in stateFrom.decks) {
 	
-					var deckA = stateA.decks[deckNameA];
+					var deckFrom = stateFrom.decks[deckNameFrom];
 	
 					var deck = [];
 	
-					// console.log('callback', deckA, stateB.decks[deckNameA]);
+					var _loop = function _loop(cardIndexFrom) {
 	
-					var _loop = function _loop(cardIndexA) {
+						var cardFrom = deckFrom.cards[cardIndexFrom];
+						var cardTo = null;
 	
-						var cardA = deckA.cards[cardIndexA];
-						var cardB = null;
+						for (var deckIndexTo in stateTo.decks) {
 	
-						for (var deckIndexB in stateB.decks) {
+							var deckTo = stateTo.decks[deckIndexTo];
 	
-							var deckB = stateB.decks[deckIndexB];
-	
-							var filter = deckB.cards.filter(function (cardB) {
-								return cardB.id == cardA.id;
+							var filter = deckTo.cards.filter(function (cardTo) {
+								return cardTo.id == cardFrom.id;
 							});
 	
 							if (filter.length) {
-	
-								cardB = filter[0];
-	
-								console.log('found', cardB.uid, cardA.name, cardB.name);
+								cardTo = filter[0];
 							}
 						}
 	
-						deck[cardIndexA] = {
-							"uid": cardA.uid,
-							"id": cardA.id,
-							"name": cardA.name,
-							"visible": cardB.visible,
-							"flip": cardB.flip
-						};
+						if (cardTo) {
+	
+							deck[cardIndexFrom] = {
+								"uid": cardFrom.uid,
+								"id": cardFrom.id,
+								"name": cardFrom.name,
+								"visible": cardTo.visible,
+								"flip": cardTo.flip
+							};
+						} else {
+							console.warn('card', cardFrom.name, 'with id', cardFrom.id, 'not found');
+						}
 					};
 	
-					for (var cardIndexA in deckA.cards) {
-						_loop(cardIndexA);
+					for (var cardIndexFrom in deckFrom.cards) {
+						_loop(cardIndexFrom);
 					}
 	
-					console.log(deck);
-	
-					state.decks[deckNameA] = {
+					state.decks[deckNameFrom] = {
 						"cards": deck
 					};
 				}
-	
-				console.groupEnd();
 	
 				return state;
 			}
 		}, {
 			key: 'summary',
-			value: function summary() {
+			value: function summary(stateDifferences) {
 	
 				var state = {
 					"decks": {}
 				};
 	
-				for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
-					args[_key] = arguments[_key];
-				}
+				for (var argIndex in stateDifferences) {
 	
-				for (var argIndex in args) {
-	
-					var stateI = args[argIndex];
+					var stateI = stateDifferences[argIndex];
 	
 					if (argIndex == 0) {
 	
-						for (var indexI in stateI) {
+						for (var indexI in stateI.decks) {
 	
 							state.decks[indexI] = {
+	
 								"cards": function (deck) {
 	
 									var cards = [];
@@ -7691,12 +7670,12 @@ var SolitaireEngine =
 									}
 	
 									return cards;
-								}(stateI[indexI])
+								}(stateI.decks[indexI])
 							};
 						}
 					} else {
 	
-						for (var _indexI in stateI) {
+						for (var _indexI in stateI.decks) {
 	
 							state.decks[_indexI] = {
 	
@@ -7718,7 +7697,7 @@ var SolitaireEngine =
 									}
 	
 									return cards;
-								}(stateI[_indexI])
+								}(stateI.decks[_indexI])
 							};
 						}
 					}
@@ -7732,11 +7711,11 @@ var SolitaireEngine =
 	
 				for (var deckName in state.decks) {
 	
-					for (var i in state.decks[deckName]) {
+					for (var i in state.decks[deckName].cards) {
 	
-						if (state.decks[deckName][i].uid == uid) {
+						if (state.decks[deckName].cards[i].uid == uid) {
 	
-							return state.decks[deckName][i];
+							return state.decks[deckName].cards[i];
 						}
 					}
 				}
@@ -7759,15 +7738,28 @@ var SolitaireEngine =
 	
 					var deck = decks[i];
 	
-					for (var cardIndex in deck.cards) {
+					if (deck.showPrevAttempts) {
 	
-						var stateCard = this.getInStateByUid(summaryState, uid());
+						var changes = false;
 	
-						var card = deck.cards[cardIndex];
+						for (var cardIndex in deck.cards) {
 	
-						// card.visible = stateCard.visible;
+							var _uid = uid();
 	
-						card.flip = stateCard.flip;
+							var stateCard = this.getInStateByUid(summaryState, _uid);
+	
+							var card = deck.cards[cardIndex];
+	
+							changes = changes || card.flip != stateCard.flip;
+							changes = changes || card.visible != stateCard.visible;
+	
+							card.visible = stateCard.visible;
+							card.flip = stateCard.flip;
+						}
+	
+						if (changes) {
+							deck.Redraw();
+						}
 					}
 				}
 			}

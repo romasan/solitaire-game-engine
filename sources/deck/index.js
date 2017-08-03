@@ -91,6 +91,7 @@ class deckClass {
 		this.autoHide         = typeof data.autoHide         == 'boolean' ? data.autoHide         : defaults.autohide            ;
 		this.autoCheckFlip    = typeof data.autoCheckFlip    == 'boolean' ? data.autoCheckFlip    : defaults.autoCheckFlip       ;
 		this.showPrefFlipCard = typeof data.showPrefFlipCard == 'boolean' ? data.showPrefFlipCard : share.get('showPrefFlipCard');
+		this.showPrevAttempts = typeof data.showPrevAttempts == 'boolean' ? data.showPrevAttempts : defaults.showPrevAttempts    ;
 
 		this.data = {};
 
@@ -897,6 +898,7 @@ let addDeck = data => {
 };
 
 export default {
+	// TODO use as static methods
 	"deckCardNames" : deckCardNames,
 	"addDeck"       : addDeck      ,
 	"getDeck"       : getDeck      ,
