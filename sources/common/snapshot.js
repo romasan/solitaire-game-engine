@@ -83,7 +83,7 @@ class snapshot {
 
 					deck[cardIndexFrom] = {
 						"uid"     : cardFrom.uid  ,
-						"id"      : cardFrom.id   ,
+						// "id"      : cardFrom.id   ,
 						"name"    : cardFrom.name ,
 						"visible" : cardTo.visible,
 						"flip"    : cardTo.flip
@@ -103,15 +103,29 @@ class snapshot {
 
 	summary(stateDifferences) {
 
+		console.groupCollapsed('>summary');
+		let i = 0;
+		console.log(
+			stateDifferences.map(
+				e => Object.entries(e.decks).map(
+					([z, d]) => z + ((l => Array(l > 0 ? l : 0).join(' '))(18 - z.length)) + ': '  + d.cards.map(
+						c => c.flip ? c.name : '%c' + (++i && c.name) + '%c'
+					).join(',')
+				).join('\n')
+			).join('\n---\n'),
+			...[...Array(i * 2)].map((e, i) => "color:" + ((i % 2) ? "blue" : "default"))
+		);
+		console.groupEnd();
+
 		let state = {
 			"decks" : {}
 		};
 
-		for(let argIndex in stateDifferences) {
+		for(let stateIndex in stateDifferences) {
 
-			let stateI = stateDifferences[argIndex];
+			let stateI = stateDifferences[stateIndex];
 
-			if(argIndex == 0) {
+			if(stateIndex == 0) {
 
 				for(let indexI in stateI.decks) {
 
@@ -127,7 +141,7 @@ class snapshot {
 
 								cards[cardIndex] = {
 									"uid"     : card.uid    ,
-									"id"      : card.id     ,
+									// "id"      : card.id     ,
 									"name"    : card.name   ,
 									"visible" : card.visible,
 									"flip"    : card.flip
@@ -153,11 +167,11 @@ class snapshot {
 								let card = deck.cards[cardIndex];
 
 								cards[cardIndex] = {
-									"uid"     : card.uid                                ,
-									"id"      : card.id                                 ,
-									"name"    : card.name                               ,
-									"visible" : cards[cardIndex].visible || card.visible,
-									"flip"    : cards[cardIndex].flip    && card.flip
+									"uid"     : card.uid                                     ,
+									// "id"      : card.id                                      ,
+									"name"    : card.name                                    ,
+									"visible" : deck.cards[cardIndex].visible || card.visible,
+									"flip"    : deck.cards[cardIndex].flip    && card.flip
 								};
 							}
 
@@ -167,6 +181,17 @@ class snapshot {
 				}
 			}
 		}
+
+		i = 0;
+		console.log(
+			'summary\n' + 
+			Object.entries(state.decks).map(
+				([z, d]) => z + ((l => Array(l > 0 ? l : 0).join(' '))(18 - z.length)) + ': '  + d.cards.map(
+					c => c.flip ? c.name : '%c' + (++i && c.name) + '%c'
+				).join(',')
+			).join('\n'),
+			...[...Array(i * 2)].map((e, i) => "color:" + ((i % 2) ? "blue" : "default"))
+		);
 
 		return state;
 	}
@@ -187,7 +212,9 @@ class snapshot {
 		return false;
 	}
 
-	applyState(summaryState) {
+	applyState(summaryState, aliases) {
+
+		console.log('applyState', summaryState);
 
 		let decks = getDecks();
 
@@ -209,15 +236,20 @@ class snapshot {
 
 					let card = deck.cards[cardIndex];
 
+					let values = ['flip', 'visible'];
 
-					changes = changes || card.flip    != stateCard.flip   ;
-					changes = changes || card.visible != stateCard.visible;
+					for(let valueIndex in values) {
 
-					card.visible = stateCard.visible;
-					card.flip    = stateCard.flip;
+						let value = values[valueIndex];
+
+						changes = changes || card[value] != stateCard[value];
+
+						card[value] = stateCard[value];
+					}
 				}
 
 				if(changes) {
+					console.log('changes in deck', deck.name);
 					deck.Redraw();
 				}
 			}

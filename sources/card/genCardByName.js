@@ -4,24 +4,37 @@ import event  from 'event' ;
 import share  from 'share' ;
 import common from 'common';
 
-// class card {
+class cardClass {
 
-// 	constructor(e) {
-// 		deck.id      = e.id;
-// 		deck.name    = e.name;
-// 		deck.type    = 'card';
-// 		deck.visible = true;
-// 		deck.flip    = false;
-// 	}
+	constructor(data) {
 
-// 	set domElement(e) {
+		const values = [
+			'id'     ,
+			'name'   ,
+			'type'   ,
+			'visible',
+			'flip'   ,
+			'parent' ,
+			'color'  ,
+			'value'  ,
+			'suit'   ,
+			'rank'
+		];
 
-// 	}
+		for(let i in values) {
+			let value = values[i];
+			this[value] = data[value];
+		}
+	}
 
-// 	get domElement() {
-// 		return null;
-// 	}
-// };
+	static genCardByName(deck, name, last = true) {
+		// TODO
+	}
+
+	static validateCardName(name) {
+		// TODO
+	}
+}
 
 let genCardByName = (deck, name, last = true) => {
 
@@ -44,13 +57,15 @@ let genCardByName = (deck, name, last = true) => {
 			"rank"    : validatedCard.rank
 		};
 
-		event.dispatch('addCardEl', _card);
+		let card = new cardClass(_card);
+
+		event.dispatch('addCardEl', card);
 
 		let _elements = share.get('elements');
-		_elements[_id] = _card;
+		_elements[_id] = card;
 		share.set('elements', _elements);
 
-		deck.Push([_card]);
+		deck.Push([card]);
 		
 		if(last) {
 			deck.checkFlip();
