@@ -31,7 +31,6 @@ $img_dir :"/solitaire_engine/img/";
 
 .card {
 	border-radius : 3px;
-	will-change   : unset;
 }
 
 .tip:before {
@@ -171,4 +170,12 @@ $img_dir :"/solitaire_engine/img/";
 .card.flip {
 	background: none;
 	background-image: none;
+}
+
+.prevFlip.flip:hover {
+	margin-top: -30px;
+}
+
+.prevFlip.flip:after {
+	opacity: 0.5;
 }

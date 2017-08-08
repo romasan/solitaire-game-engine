@@ -126,7 +126,7 @@ var SolitaireEngine =
 	exports.options = _defaults2.default;
 	exports.winCheck = _winCheck2.default.hwinCheck;
 	exports.generator = _deckGenerator2.default;
-	exports.version = (90914913033).toString().split(9).slice(1).map(function (e) {
+	exports.version = (90914913157).toString().split(9).slice(1).map(function (e) {
 		return parseInt(e, 8);
 	}).join('.');
 	
@@ -7322,7 +7322,9 @@ var SolitaireEngine =
 	
 		// Field.clear();
 	
-		_event2.default.dispatch('render:off');
+		console.log('scanAttempts');
+	
+		// event.dispatch('render:off');
 		_common2.default.animationOff();
 	
 		var stateDifferences = [];
@@ -7354,14 +7356,14 @@ var SolitaireEngine =
 	
 		var summary = _snapshot2.default.summary(stateDifferences);
 	
-		_event2.default.dispatch('render:on');
+		// event.dispatch('render:on');
 		_common2.default.animationDefault();
 	
 		if (typeof data.callback == "function") {
 			data.callback();
 		}
 	
-		_snapshot2.default.applyState(summary);
+		_snapshot2.default.applyState(summary, { "flip": "prevFlip" });
 	});
 	
 	_event2.default.listen('resetHistory', function (e) {
@@ -7642,13 +7644,11 @@ var SolitaireEngine =
 								"flip": cardTo.flip
 							};
 						} else {
-							var allCards = _common2.default.getElementsByType('card');
-							allCards.sort(function (a, b) {
-								return (a.id.replace(/^\D+/g, '') | 0) > (b.id.replace(/^\D+/g, '') | 0) ? 1 : -1;
-							});
-							console.warn('card', cardFrom.name, 'with id', cardFrom.id, 'not found in', deckNameFrom, allCards[0].id, '...', allCards[allCards.length - 1].id, allCards.filter(function (e) {
-								return e.name == cardFrom.name;
-							})[0], stateTo.decks);
+							// let allCards = common.getElementsByType('card');
+							// allCards.sort((a, b) => (a.id.replace( /^\D+/g, '') | 0) > (b.id.replace( /^\D+/g, '') | 0) ? 1 : -1);
+							// console.warn('card', cardFrom.name, 'with id', cardFrom.id, 'not found in', deckNameFrom,
+							// 	allCards[0].id, '...', allCards[allCards.length - 1].id, allCards.filter(e => e.name == cardFrom.name)[0],
+							// 	stateTo.decks);
 						}
 					};
 	
@@ -7762,7 +7762,9 @@ var SolitaireEngine =
 			}
 		}, {
 			key: 'applyState',
-			value: function applyState(summaryState, aliases) {
+			value: function applyState(summaryState) {
+				var aliases = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+	
 	
 				// console.log('applyState', summaryState);
 	
@@ -7785,24 +7787,29 @@ var SolitaireEngine =
 						for (var cardIndex in deck.cards) {
 	
 							var _uid = uid();
-	
 							var stateCard = this.getInStateByUid(summaryState, _uid);
-	
 							var card = deck.cards[cardIndex];
-	
-							var values = ['flip', 'visible'];
+							var values = ['flip']; // , 'visible'];
 	
 							for (var valueIndex in values) {
 	
 								var value = values[valueIndex];
 	
-								changes = changes || card[value] != stateCard[value];
+								console.log(card);
+								if (value in aliases) {
 	
-								if (card[value] != stateCard[value]) {
-									console.log(deck.name, card.name, value, card[value], '->', stateCard[value]);
+									var alias = aliases[value];
+	
+									card.classList[alias] = card[value] != stateCard[value];
+								} else {
+	
+									if (card[value] != stateCard[value]) {
+	
+										card[value] = stateCard[value];
+	
+										changes = true;
+									}
 								}
-	
-								card[value] = stateCard[value];
 							}
 						}
 	
@@ -9265,6 +9272,8 @@ var SolitaireEngine =
 			_classCallCheck(this, cardClass);
 	
 			this.type = 'card';
+	
+			this.classList = {};
 	
 			var values = ['id', 'name', 'visible', 'flip', 'parent', 'color', 'value', 'suit', 'rank'];
 	
@@ -11930,6 +11939,9 @@ var SolitaireEngine =
 			key: 'hide',
 			value: function hide() {
 				try {
+	
+					console.log('HIDE CARD');
+	
 					return this.css({
 						"display": 'none'
 					});
@@ -13056,10 +13068,15 @@ var SolitaireEngine =
 	
 		// full deck (add class full to all cards in deck)
 		if (data.deck.full) {
+	
 			var _cards = data.deck.getCards();
+	
 			for (var i in _cards) {
+	
 				var _cardDomElement = _share2.default.get('domElement:' + _cards[i].id);
+	
 				if (_cardDomElement) {
+	
 					(0, _elRender2.default)(_cardDomElement).addClass('full');
 				}
 			}
@@ -13090,6 +13107,20 @@ var SolitaireEngine =
 			} else {
 	
 				(0, _elRender2.default)(_cardDomElement2).removeClass('flip');
+			}
+	
+			console.log(data.cards[_i].classList);
+			for (var _class in data.cards[_i].classList) {
+	
+				if (data.cards[_i].classList[_class] === true) {
+	
+					console.log(data.deck.name, data.cards[_i].name, _class);
+	
+					(0, _elRender2.default)(_cardDomElement2).addClass(_class);
+				} else {
+	
+					(0, _elRender2.default)(_cardDomElement2).removeClass(_class);
+				}
 			}
 	
 			// elRender(_cardDomElement)

@@ -105,11 +105,11 @@ class snapshot {
 						"flip"    : cardTo.flip
 					};
 				} else {
-					let allCards = common.getElementsByType('card');
-					allCards.sort((a, b) => (a.id.replace( /^\D+/g, '') | 0) > (b.id.replace( /^\D+/g, '') | 0) ? 1 : -1);
-					console.warn('card', cardFrom.name, 'with id', cardFrom.id, 'not found in', deckNameFrom,
-						allCards[0].id, '...', allCards[allCards.length - 1].id, allCards.filter(e => e.name == cardFrom.name)[0],
-						stateTo.decks);
+					// let allCards = common.getElementsByType('card');
+					// allCards.sort((a, b) => (a.id.replace( /^\D+/g, '') | 0) > (b.id.replace( /^\D+/g, '') | 0) ? 1 : -1);
+					// console.warn('card', cardFrom.name, 'with id', cardFrom.id, 'not found in', deckNameFrom,
+					// 	allCards[0].id, '...', allCards[allCards.length - 1].id, allCards.filter(e => e.name == cardFrom.name)[0],
+					// 	stateTo.decks);
 				}
 			}
 
@@ -198,7 +198,7 @@ class snapshot {
 		return false;
 	}
 
-	applyState(summaryState, aliases) {
+	applyState(summaryState, aliases = {}) {
 
 		// console.log('applyState', summaryState);
 
@@ -217,24 +217,31 @@ class snapshot {
 				for(let cardIndex in deck.cards) {
 
 					let _uid = uid();
-
 					let stateCard = this.getInStateByUid(summaryState, _uid);
-
 					let card = deck.cards[cardIndex];
-
-					let values = ['flip', 'visible'];
+					let values = ['flip']; // , 'visible'];
 
 					for(let valueIndex in values) {
 
 						let value = values[valueIndex];
 
-						changes = changes || card[value] != stateCard[value];
+						console.log(card);
+						if(value in aliases) {
 
-						if(card[value] != stateCard[value]) {
-							console.log(deck.name, card.name, value, card[value], '->', stateCard[value]);
+							let alias = aliases[value];
+
+
+							card.classList[alias] = (card[value] != stateCard[value]);
+						} else {
+
+							if(card[value] != stateCard[value]) {
+
+								card[value] = stateCard[value];
+
+								changes = true;
+							}
 						}
 
-						card[value] = stateCard[value];
 					}
 				}
 

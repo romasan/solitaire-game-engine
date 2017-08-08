@@ -98,7 +98,9 @@ event.listen('scanAttempts', data => {
 
 	// Field.clear();
 
-	event.dispatch('render:off');
+	console.log('scanAttempts');
+
+	// event.dispatch('render:off');
 	common.animationOff();
 
 	let stateDifferences = [];
@@ -133,14 +135,14 @@ event.listen('scanAttempts', data => {
 
 	let summary = snapshot.summary(stateDifferences);
 
-	event.dispatch('render:on');
+	// event.dispatch('render:on');
 	common.animationDefault();
 
 	if(typeof data.callback == "function") {
 		data.callback();
 	}
 
-	snapshot.applyState(summary);
+	snapshot.applyState(summary, {"flip" : "prevFlip"});
 });
 
 event.listen('resetHistory', e => {

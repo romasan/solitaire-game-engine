@@ -10,6 +10,8 @@ class cardClass {
 
 		this.type = 'card';
 
+		this.classList = {};
+
 		const values = [
 			'id'     ,
 			'name'   ,

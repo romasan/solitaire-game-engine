@@ -164,10 +164,15 @@ event.listen('redrawDeck', data => {
 
 	// full deck (add class full to all cards in deck)
 	if(data.deck.full) {
+
 		let _cards = data.deck.getCards();
+
 		for(let i in _cards) {
+
 			let _cardDomElement = share.get('domElement:' + _cards[i].id);
+
 			if(_cardDomElement) {
+
 				elRender(_cardDomElement)
 					.addClass('full');
 			}
@@ -204,6 +209,22 @@ event.listen('redrawDeck', data => {
 
 			elRender(_cardDomElement)
 				.removeClass('flip');
+		}
+		
+		console.log(data.cards[i].classList);
+		for(let _class in data.cards[i].classList) {
+
+			if(data.cards[i].classList[_class] === true) {
+
+				console.log(data.deck.name, data.cards[i].name, _class);
+
+				elRender(_cardDomElement)
+					.addClass(_class);
+			} else {
+
+				elRender(_cardDomElement)
+					.removeClass(_class);
+			}
 		}
 
 		// elRender(_cardDomElement)

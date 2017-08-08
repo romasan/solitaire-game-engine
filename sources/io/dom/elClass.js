@@ -144,6 +144,9 @@ export default class elClass {
 
 	hide() {
 		try {
+
+			console.log('HIDE CARD');
+
 			return this.css({
 				"display" : 'none'
 			});
