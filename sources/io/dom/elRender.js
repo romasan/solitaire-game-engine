@@ -66,6 +66,11 @@ _allEl.stopAnimations = e => {
 	// }
 
 	// return;
+
+	if(share.get('nodraw')) {
+		return;
+	}
+
 	event.dispatch('clearCallbacks');
 
 	_allEl('.animated')

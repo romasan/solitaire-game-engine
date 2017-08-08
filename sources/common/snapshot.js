@@ -1,5 +1,7 @@
 'use strict';
 
+import common   from 'common'  ;
+
 import getDecks from 'getDecks';
 
 /*
@@ -33,7 +35,7 @@ class snapshot {
 
 			state.decks[deck.name] = {
 
-				"cards" : deck.getCards().map(card => {
+				"cards" : deck.cards.map(card => {
 
 					let _card = {
 						"uid"     : uid()       ,
@@ -53,6 +55,20 @@ class snapshot {
 
 	diff(stateFrom, stateTo) { // A - from, B - to
 
+		// console.groupCollapsed('diff');
+		// let i = 0;
+		// console.log(
+		// 	[stateFrom, stateTo].map(
+		// 		e => Object.entries(e.decks).map(
+		// 			([z, d]) => z + ((l => Array(l > 0 ? l : 0).join(' '))(18 - z.length)) + ': '  + d.cards.map(
+		// 				c => c.flip ? c.name : '%c' + (++i && c.name) + '%c'
+		// 			).join(',')
+		// 		).join('\n')
+		// 	).join('\n---\n'),
+		// 	...[...Array(i * 2)].map((e, i) => "color:" + ((i % 2) ? "blue" : "default"))
+		// );
+		// console.groupEnd();
+
 		let state = {
 			"decks" : {}
 		};
@@ -68,9 +84,9 @@ class snapshot {
 				let cardFrom = deckFrom.cards[cardIndexFrom];
 				let cardTo   = null;
 
-				for(let deckIndexTo in stateTo.decks) {
+				for(let deckNameTo in stateTo.decks) {
 
-					let deckTo = stateTo.decks[deckIndexTo];
+					let deckTo = stateTo.decks[deckNameTo];
 
 					let filter = deckTo.cards.filter(cardTo => cardTo.id == cardFrom.id);
 
@@ -89,7 +105,11 @@ class snapshot {
 						"flip"    : cardTo.flip
 					};
 				} else {
-					console.warn('card', cardFrom.name, 'with id', cardFrom.id, 'not found');
+					let allCards = common.getElementsByType('card');
+					allCards.sort((a, b) => (a.id.replace( /^\D+/g, '') | 0) > (b.id.replace( /^\D+/g, '') | 0) ? 1 : -1);
+					console.warn('card', cardFrom.name, 'with id', cardFrom.id, 'not found in', deckNameFrom,
+						allCards[0].id, '...', allCards[allCards.length - 1].id, allCards.filter(e => e.name == cardFrom.name)[0],
+						stateTo.decks);
 				}
 			}
 
@@ -103,21 +123,7 @@ class snapshot {
 
 	summary(stateDifferences) {
 
-		console.groupCollapsed('>summary');
-		let i = 0;
-		console.log(
-			stateDifferences.map(
-				e => Object.entries(e.decks).map(
-					([z, d]) => z + ((l => Array(l > 0 ? l : 0).join(' '))(18 - z.length)) + ': '  + d.cards.map(
-						c => c.flip ? c.name : '%c' + (++i && c.name) + '%c'
-					).join(',')
-				).join('\n')
-			).join('\n---\n'),
-			...[...Array(i * 2)].map((e, i) => "color:" + ((i % 2) ? "blue" : "default"))
-		);
-		console.groupEnd();
-
-		let state = {
+		let summaryState = {
 			"decks" : {}
 		};
 
@@ -125,67 +131,47 @@ class snapshot {
 
 			let stateI = stateDifferences[stateIndex];
 
+			console.groupCollapsed('summary', stateIndex);
+			let i = 0;
+			console.log(
+				Object.entries(stateI.decks).map(
+						([z, d]) => z + ((l => Array(l > 0 ? l : 0).join(' '))(18 - z.length)) + ': '  + d.cards.map(
+							c => c.flip ? c.name : '%c' + (++i && c.name) + '%c'
+						).join(',')
+					).join('\n'),
+				...[...Array(i * 2)].map((e, i) => "color:" + ((i % 2) ? "blue" : "default"))
+			);
+			console.groupEnd();
+
 			if(stateIndex == 0) {
-
-				for(let indexI in stateI.decks) {
-
-					state.decks[indexI] = {
-
-						"cards" : (deck => {
-
-							let cards = [];
-
-							for(let cardIndex in deck.cards) {
-
-								let card = deck.cards[cardIndex];
-
-								cards[cardIndex] = {
-									"uid"     : card.uid    ,
-									// "id"      : card.id     ,
-									"name"    : card.name   ,
-									"visible" : card.visible,
-									"flip"    : card.flip
-								};
-							}
-
-							return cards;
-						})(stateI.decks[indexI])
-					}
-				}
+				summaryState = stateI;
 			} else {
 
-				for(let indexI in stateI.decks) {
+				for(let deckName in stateI.decks) {
 
-					state.decks[indexI] = {
+					let deck     = stateI.decks[deckName];
+					let deckPrev = summaryState.decks[deckName];
 
-						"cards" : (deck => {
+					summaryState.decks[deckName] = {
 
-							let cards = [];
+						"cards" : deck.cards.map((card, i, deck) => {
 
-							for(let cardIndex in deck.cards) {
-
-								let card = deck.cards[cardIndex];
-
-								cards[cardIndex] = {
-									"uid"     : card.uid                                     ,
-									// "id"      : card.id                                      ,
-									"name"    : card.name                                    ,
-									"visible" : deck.cards[cardIndex].visible || card.visible,
-									"flip"    : deck.cards[cardIndex].flip    && card.flip
-								};
-							}
-
-							return cards;
-						})(stateI.decks[indexI])
+							return {
+								"uid"     : card.uid                           ,
+								"name"    : card.name                          ,
+								"visible" : deckPrev.cards[i].visible || card.visible,
+								"flip"    : deckPrev.cards[i].flip    && card.flip
+							};
+						})
 					}
 				}
 			}
 		}
 
-		i = 0;
+		let i = 0;
 		console.log(
-			'summary\n' + 
-			Object.entries(state.decks).map(
+			'summary result\n' + 
+			Object.entries(summaryState.decks).map(
 				([z, d]) => z + ((l => Array(l > 0 ? l : 0).join(' '))(18 - z.length)) + ': '  + d.cards.map(
 					c => c.flip ? c.name : '%c' + (++i && c.name) + '%c'
 				).join(',')
@@ -193,7 +179,7 @@ class snapshot {
 			...[...Array(i * 2)].map((e, i) => "color:" + ((i % 2) ? "blue" : "default"))
 		);
 
-		return state;
+		return summaryState;
 	}
 
 	getInStateByUid(state, uid) {
@@ -214,7 +200,7 @@ class snapshot {
 
 	applyState(summaryState, aliases) {
 
-		console.log('applyState', summaryState);
+		// console.log('applyState', summaryState);
 
 		let decks = getDecks();
 
@@ -244,12 +230,18 @@ class snapshot {
 
 						changes = changes || card[value] != stateCard[value];
 
+						if(card[value] != stateCard[value]) {
+							console.log(deck.name, card.name, value, card[value], '->', stateCard[value]);
+						}
+
 						card[value] = stateCard[value];
 					}
 				}
 
 				if(changes) {
+
 					console.log('changes in deck', deck.name);
+
 					deck.Redraw();
 				}
 			}

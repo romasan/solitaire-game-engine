@@ -126,7 +126,7 @@ var SolitaireEngine =
 	exports.options = _defaults2.default;
 	exports.winCheck = _winCheck2.default.hwinCheck;
 	exports.generator = _deckGenerator2.default;
-	exports.version = (90914912711).toString().split(9).slice(1).map(function (e) {
+	exports.version = (90914913033).toString().split(9).slice(1).map(function (e) {
 		return parseInt(e, 8);
 	}).join('.');
 	
@@ -7243,6 +7243,7 @@ var SolitaireEngine =
 	 * addStep
 	 * saveSteps
 	 * doHistory
+	 * scanAttempts
 	 * resetHistory
 	 * newGame
 	 * quickHistoryMove
@@ -7321,7 +7322,7 @@ var SolitaireEngine =
 	
 		// Field.clear();
 	
-		// event.dispatch('render:off');
+		_event2.default.dispatch('render:off');
 		_common2.default.animationOff();
 	
 		var stateDifferences = [];
@@ -7353,7 +7354,7 @@ var SolitaireEngine =
 	
 		var summary = _snapshot2.default.summary(stateDifferences);
 	
-		// event.dispatch('render:on');
+		_event2.default.dispatch('render:on');
 		_common2.default.animationDefault();
 	
 		if (typeof data.callback == "function") {
@@ -7515,6 +7516,10 @@ var SolitaireEngine =
 	
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 	
+	var _common = __webpack_require__(5);
+	
+	var _common2 = _interopRequireDefault(_common);
+	
 	var _getDecks = __webpack_require__(7);
 	
 	var _getDecks2 = _interopRequireDefault(_getDecks);
@@ -7563,7 +7568,7 @@ var SolitaireEngine =
 	
 					state.decks[deck.name] = {
 	
-						"cards": deck.getCards().map(function (card) {
+						"cards": deck.cards.map(function (card) {
 	
 							var _card = {
 								"uid": uid(),
@@ -7585,6 +7590,20 @@ var SolitaireEngine =
 			value: function diff(stateFrom, stateTo) {
 				// A - from, B - to
 	
+				// console.groupCollapsed('diff');
+				// let i = 0;
+				// console.log(
+				// 	[stateFrom, stateTo].map(
+				// 		e => Object.entries(e.decks).map(
+				// 			([z, d]) => z + ((l => Array(l > 0 ? l : 0).join(' '))(18 - z.length)) + ': '  + d.cards.map(
+				// 				c => c.flip ? c.name : '%c' + (++i && c.name) + '%c'
+				// 			).join(',')
+				// 		).join('\n')
+				// 	).join('\n---\n'),
+				// 	...[...Array(i * 2)].map((e, i) => "color:" + ((i % 2) ? "blue" : "default"))
+				// );
+				// console.groupEnd();
+	
 				var state = {
 					"decks": {}
 				};
@@ -7600,9 +7619,9 @@ var SolitaireEngine =
 						var cardFrom = deckFrom.cards[cardIndexFrom];
 						var cardTo = null;
 	
-						for (var deckIndexTo in stateTo.decks) {
+						for (var deckNameTo in stateTo.decks) {
 	
-							var deckTo = stateTo.decks[deckIndexTo];
+							var deckTo = stateTo.decks[deckNameTo];
 	
 							var filter = deckTo.cards.filter(function (cardTo) {
 								return cardTo.id == cardFrom.id;
@@ -7623,7 +7642,13 @@ var SolitaireEngine =
 								"flip": cardTo.flip
 							};
 						} else {
-							console.warn('card', cardFrom.name, 'with id', cardFrom.id, 'not found');
+							var allCards = _common2.default.getElementsByType('card');
+							allCards.sort(function (a, b) {
+								return (a.id.replace(/^\D+/g, '') | 0) > (b.id.replace(/^\D+/g, '') | 0) ? 1 : -1;
+							});
+							console.warn('card', cardFrom.name, 'with id', cardFrom.id, 'not found in', deckNameFrom, allCards[0].id, '...', allCards[allCards.length - 1].id, allCards.filter(function (e) {
+								return e.name == cardFrom.name;
+							})[0], stateTo.decks);
 						}
 					};
 	
@@ -7641,97 +7666,71 @@ var SolitaireEngine =
 		}, {
 			key: 'summary',
 			value: function summary(stateDifferences) {
-				var _console, _console2;
+				var _console;
 	
-				console.groupCollapsed('>summary');
-				var i = 0;
-				(_console = console).log.apply(_console, [stateDifferences.map(function (e) {
-					return Object.entries(e.decks).map(function (_ref) {
-						var _ref2 = _slicedToArray(_ref, 2),
-						    z = _ref2[0],
-						    d = _ref2[1];
+				var summaryState = {
+					"decks": {}
+				};
+	
+				var _loop2 = function _loop2(stateIndex) {
+					var _console2;
+	
+					var stateI = stateDifferences[stateIndex];
+	
+					console.groupCollapsed('summary', stateIndex);
+					var i = 0;
+					(_console2 = console).log.apply(_console2, [Object.entries(stateI.decks).map(function (_ref3) {
+						var _ref4 = _slicedToArray(_ref3, 2),
+						    z = _ref4[0],
+						    d = _ref4[1];
 	
 						return z + function (l) {
 							return Array(l > 0 ? l : 0).join(' ');
 						}(18 - z.length) + ': ' + d.cards.map(function (c) {
 							return c.flip ? c.name : '%c' + (++i && c.name) + '%c';
 						}).join(',');
-					}).join('\n');
-				}).join('\n---\n')].concat(_toConsumableArray([].concat(_toConsumableArray(Array(i * 2))).map(function (e, i) {
-					return "color:" + (i % 2 ? "blue" : "default");
-				}))));
-				console.groupEnd();
+					}).join('\n')].concat(_toConsumableArray([].concat(_toConsumableArray(Array(i * 2))).map(function (e, i) {
+						return "color:" + (i % 2 ? "blue" : "default");
+					}))));
+					console.groupEnd();
 	
-				var state = {
-					"decks": {}
+					if (stateIndex == 0) {
+						summaryState = stateI;
+					} else {
+						var _loop3 = function _loop3(deckName) {
+	
+							var deck = stateI.decks[deckName];
+							var deckPrev = summaryState.decks[deckName];
+	
+							summaryState.decks[deckName] = {
+	
+								"cards": deck.cards.map(function (card, i, deck) {
+	
+									return {
+										"uid": card.uid,
+										"name": card.name,
+										"visible": deckPrev.cards[i].visible || card.visible,
+										"flip": deckPrev.cards[i].flip && card.flip
+									};
+								})
+							};
+						};
+	
+						for (var deckName in stateI.decks) {
+							_loop3(deckName);
+						}
+					}
 				};
 	
 				for (var stateIndex in stateDifferences) {
-	
-					var stateI = stateDifferences[stateIndex];
-	
-					if (stateIndex == 0) {
-	
-						for (var indexI in stateI.decks) {
-	
-							state.decks[indexI] = {
-	
-								"cards": function (deck) {
-	
-									var cards = [];
-	
-									for (var cardIndex in deck.cards) {
-	
-										var card = deck.cards[cardIndex];
-	
-										cards[cardIndex] = {
-											"uid": card.uid,
-											// "id"      : card.id     ,
-											"name": card.name,
-											"visible": card.visible,
-											"flip": card.flip
-										};
-									}
-	
-									return cards;
-								}(stateI.decks[indexI])
-							};
-						}
-					} else {
-	
-						for (var _indexI in stateI.decks) {
-	
-							state.decks[_indexI] = {
-	
-								"cards": function (deck) {
-	
-									var cards = [];
-	
-									for (var cardIndex in deck.cards) {
-	
-										var card = deck.cards[cardIndex];
-	
-										cards[cardIndex] = {
-											"uid": card.uid,
-											// "id"      : card.id                                      ,
-											"name": card.name,
-											"visible": deck.cards[cardIndex].visible || card.visible,
-											"flip": deck.cards[cardIndex].flip && card.flip
-										};
-									}
-	
-									return cards;
-								}(stateI.decks[_indexI])
-							};
-						}
-					}
+					_loop2(stateIndex);
 				}
 	
-				i = 0;
-				(_console2 = console).log.apply(_console2, ['summary\n' + Object.entries(state.decks).map(function (_ref3) {
-					var _ref4 = _slicedToArray(_ref3, 2),
-					    z = _ref4[0],
-					    d = _ref4[1];
+				var i = 0;
+				(_console = console).log.apply(_console, ['summary result\n' + Object.entries(summaryState.decks).map(function (_ref) {
+					var _ref2 = _slicedToArray(_ref, 2),
+					    z = _ref2[0],
+					    d = _ref2[1];
 	
 					return z + function (l) {
 						return Array(l > 0 ? l : 0).join(' ');
@@ -7742,7 +7741,7 @@ var SolitaireEngine =
 					return "color:" + (i % 2 ? "blue" : "default");
 				}))));
 	
-				return state;
+				return summaryState;
 			}
 		}, {
 			key: 'getInStateByUid',
@@ -7765,7 +7764,7 @@ var SolitaireEngine =
 			key: 'applyState',
 			value: function applyState(summaryState, aliases) {
 	
-				console.log('applyState', summaryState);
+				// console.log('applyState', summaryState);
 	
 				var decks = (0, _getDecks2.default)();
 	
@@ -7799,12 +7798,18 @@ var SolitaireEngine =
 	
 								changes = changes || card[value] != stateCard[value];
 	
+								if (card[value] != stateCard[value]) {
+									console.log(deck.name, card.name, value, card[value], '->', stateCard[value]);
+								}
+	
 								card[value] = stateCard[value];
 							}
 						}
 	
 						if (changes) {
+	
 							console.log('changes in deck', deck.name);
+	
 							deck.Redraw();
 						}
 					}
@@ -9259,11 +9264,17 @@ var SolitaireEngine =
 		function cardClass(data) {
 			_classCallCheck(this, cardClass);
 	
-			var values = ['id', 'name', 'type', 'visible', 'flip', 'parent', 'color', 'value', 'suit', 'rank'];
+			this.type = 'card';
+	
+			var values = ['id', 'name', 'visible', 'flip', 'parent', 'color', 'value', 'suit', 'rank'];
 	
 			for (var i in values) {
+	
 				var value = values[i];
-				this[value] = data[value];
+	
+				if (typeof data[value] != 'undefined') {
+					this[value] = data[value];
+				}
 			}
 		}
 	
@@ -9297,7 +9308,6 @@ var SolitaireEngine =
 			var _card = {
 				"id": _id,
 				"name": name,
-				"type": 'card',
 				"visible": true,
 				"flip": false,
 				"parent": deck.id,
@@ -11727,6 +11737,11 @@ var SolitaireEngine =
 		// }
 	
 		// return;
+	
+		if (_share2.default.get('nodraw')) {
+			return;
+		}
+	
 		_event2.default.dispatch('clearCallbacks');
 	
 		_allEl('.animated').stop().css({
@@ -12722,16 +12737,10 @@ var SolitaireEngine =
 	_share2.default.set('nodraw', false);
 	
 	_event2.default.listen('render:on', function (e) {
-	
-		console.log('RENDER ON');
-	
 		_share2.default.set('nodraw', false);
 	});
 	
 	_event2.default.listen('render:off', function (e) {
-	
-		console.log('RENDER OFF');
-	
 		_share2.default.set('nodraw', true);
 	});
 	

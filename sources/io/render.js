@@ -23,16 +23,10 @@ import 'environment.css'                   ;
 share.set('nodraw', false);
 
 event.listen('render:on', e => {
-
-	console.log('RENDER ON');
-
 	share.set('nodraw', false);
 });
 
 event.listen('render:off', e => {
-
-	console.log('RENDER OFF');
-
 	share.set('nodraw', true);
 });
 

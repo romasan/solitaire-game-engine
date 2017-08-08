@@ -8,10 +8,11 @@ class cardClass {
 
 	constructor(data) {
 
+		this.type = 'card';
+
 		const values = [
 			'id'     ,
 			'name'   ,
-			'type'   ,
 			'visible',
 			'flip'   ,
 			'parent' ,
@@ -22,8 +23,12 @@ class cardClass {
 		];
 
 		for(let i in values) {
+
 			let value = values[i];
-			this[value] = data[value];
+
+			if(typeof data[value] != 'undefined') {
+				this[value] = data[value];
+			}
 		}
 	}
 
@@ -47,7 +52,6 @@ let genCardByName = (deck, name, last = true) => {
 		let _card = {
 			"id"      : _id                ,
 			"name"    : name               ,
-			"type"    : 'card'             ,
 			"visible" : true               ,
 			"flip"    : false              ,
 			"parent"  : deck.id            ,

@@ -16,6 +16,7 @@ import snapshot     from 'snapshot'    ;
  * addStep
  * saveSteps
  * doHistory
+ * scanAttempts
  * resetHistory
  * newGame
  * quickHistoryMove
@@ -97,7 +98,7 @@ event.listen('scanAttempts', data => {
 
 	// Field.clear();
 
-	// event.dispatch('render:off');
+	event.dispatch('render:off');
 	common.animationOff();
 
 	let stateDifferences = [];
@@ -132,7 +133,7 @@ event.listen('scanAttempts', data => {
 
 	let summary = snapshot.summary(stateDifferences);
 
-	// event.dispatch('render:on');
+	event.dispatch('render:on');
 	common.animationDefault();
 
 	if(typeof data.callback == "function") {
