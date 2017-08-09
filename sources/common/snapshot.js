@@ -225,11 +225,10 @@ class snapshot {
 
 						let value = values[valueIndex];
 
-						console.log(card);
 						if(value in aliases) {
 
 							let alias = aliases[value];
-
+							console.log('>>>');
 
 							card.classList[alias] = (card[value] != stateCard[value]);
 						} else {

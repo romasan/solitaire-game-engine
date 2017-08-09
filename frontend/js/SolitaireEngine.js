@@ -126,7 +126,7 @@ var SolitaireEngine =
 	exports.options = _defaults2.default;
 	exports.winCheck = _winCheck2.default.hwinCheck;
 	exports.generator = _deckGenerator2.default;
-	exports.version = (90914913157).toString().split(9).slice(1).map(function (e) {
+	exports.version = (90914913165).toString().split(9).slice(1).map(function (e) {
 		return parseInt(e, 8);
 	}).join('.');
 	
@@ -7795,10 +7795,10 @@ var SolitaireEngine =
 	
 								var value = values[valueIndex];
 	
-								console.log(card);
 								if (value in aliases) {
 	
 									var alias = aliases[value];
+									console.log('>>>');
 	
 									card.classList[alias] = card[value] != stateCard[value];
 								} else {
@@ -13109,7 +13109,7 @@ var SolitaireEngine =
 				(0, _elRender2.default)(_cardDomElement2).removeClass('flip');
 			}
 	
-			console.log(data.cards[_i].classList);
+			// console.log(data.cards[i].classList);
 			for (var _class in data.cards[_i].classList) {
 	
 				if (data.cards[_i].classList[_class] === true) {

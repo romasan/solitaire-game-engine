@@ -55,10 +55,10 @@ let config = {
 					"presets" : ['es2015']
 				}
 			},
-			
+
 			{
-				"test"   : /\.scss$|\.css$/,
-				"loader" : ExtractTextPlugin.extract('style', 'css!sass')
+				"test"    : /\.scss$|\.css$/,
+				"loader"  : ExtractTextPlugin.extract('style', 'css!sass')
 			},
 
 			{

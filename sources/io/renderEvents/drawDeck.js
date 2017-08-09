@@ -211,7 +211,7 @@ event.listen('redrawDeck', data => {
 				.removeClass('flip');
 		}
 		
-		console.log(data.cards[i].classList);
+		// console.log(data.cards[i].classList);
 		for(let _class in data.cards[i].classList) {
 
 			if(data.cards[i].classList[_class] === true) {
