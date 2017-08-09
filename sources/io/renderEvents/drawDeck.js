@@ -140,6 +140,8 @@ event.listen('redrawDeck', data => {
 		return;
 	}
 
+	// console.log('redrawDeck', data.deck.name);
+
 	if(
 		data          &&
 		data.deckData &&
@@ -215,8 +217,6 @@ event.listen('redrawDeck', data => {
 		for(let _class in data.cards[i].classList) {
 
 			if(data.cards[i].classList[_class] === true) {
-
-				console.log(data.deck.name, data.cards[i].name, _class);
 
 				elRender(_cardDomElement)
 					.addClass(_class);

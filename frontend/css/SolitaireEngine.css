@@ -139,8 +139,15 @@
   background: none;
   background-image: none; }
 
+.prevFlip.flip {
+  transition: 0.2s; }
+
 .prevFlip.flip:hover {
-  margin-top: -30px; }
+  transition: 0.2s;
+  margin-left: -20px; }
+
+.prevFlip.flip:hover:after {
+  opacity: 0; }
 
 .prevFlip.flip:after {
   opacity: 0.5; }

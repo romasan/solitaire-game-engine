@@ -126,7 +126,7 @@ var SolitaireEngine =
 	exports.options = _defaults2.default;
 	exports.winCheck = _winCheck2.default.hwinCheck;
 	exports.generator = _deckGenerator2.default;
-	exports.version = (90914913165).toString().split(9).slice(1).map(function (e) {
+	exports.version = (90914913216).toString().split(9).slice(1).map(function (e) {
 		return parseInt(e, 8);
 	}).join('.');
 	
@@ -7333,6 +7333,8 @@ var SolitaireEngine =
 	
 			var _history = data.attempts[attemptIndex];
 	
+			console.log('scanAttempts:attempts', attemptIndex, _history);
+	
 			if (_history) {
 	
 				var snap = _snapshot2.default.get();
@@ -7668,6 +7670,8 @@ var SolitaireEngine =
 			value: function summary(stateDifferences) {
 				var _console;
 	
+				console.log('snapshot:summary', stateDifferences);
+	
 				var summaryState = {
 					"decks": {}
 				};
@@ -7766,7 +7770,7 @@ var SolitaireEngine =
 				var aliases = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
 	
 	
-				// console.log('applyState', summaryState);
+				console.log('applyState', summaryState);
 	
 				var decks = (0, _getDecks2.default)();
 	
@@ -7780,7 +7784,7 @@ var SolitaireEngine =
 	
 					var deck = decks[i];
 	
-					if (deck.showPrevAttempts) {
+					if (deck.showPrevAttempts && summaryState.decks && deck.name in summaryState.decks) {
 	
 						var changes = false;
 	
@@ -7798,9 +7802,9 @@ var SolitaireEngine =
 								if (value in aliases) {
 	
 									var alias = aliases[value];
-									console.log('>>>');
 	
 									card.classList[alias] = card[value] != stateCard[value];
+									// console.log(card.name)
 								} else {
 	
 									if (card[value] != stateCard[value]) {
@@ -7813,12 +7817,12 @@ var SolitaireEngine =
 							}
 						}
 	
-						if (changes) {
+						// if(changes) {
 	
-							console.log('changes in deck', deck.name);
+						// console.log('changes in deck', deck.name);
 	
-							deck.Redraw();
-						}
+						deck.Redraw();
+						// }
 					}
 				}
 			}
@@ -13050,6 +13054,8 @@ var SolitaireEngine =
 			return;
 		}
 	
+		// console.log('redrawDeck', data.deck.name);
+	
 		if (data && data.deckData && data.deck && data.params) {
 			(0, _applyChangedParameters2.default)(data);
 		}
@@ -13113,8 +13119,6 @@ var SolitaireEngine =
 			for (var _class in data.cards[_i].classList) {
 	
 				if (data.cards[_i].classList[_class] === true) {
-	
-					console.log(data.deck.name, data.cards[_i].name, _class);
 	
 					(0, _elRender2.default)(_cardDomElement2).addClass(_class);
 				} else {

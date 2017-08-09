@@ -123,6 +123,8 @@ class snapshot {
 
 	summary(stateDifferences) {
 
+		console.log('snapshot:summary', stateDifferences);
+
 		let summaryState = {
 			"decks" : {}
 		};
@@ -157,8 +159,8 @@ class snapshot {
 						"cards" : deck.cards.map((card, i, deck) => {
 
 							return {
-								"uid"     : card.uid                           ,
-								"name"    : card.name                          ,
+								"uid"     : card.uid                                 ,
+								"name"    : card.name                                ,
 								"visible" : deckPrev.cards[i].visible || card.visible,
 								"flip"    : deckPrev.cards[i].flip    && card.flip
 							};
@@ -200,7 +202,7 @@ class snapshot {
 
 	applyState(summaryState, aliases = {}) {
 
-		// console.log('applyState', summaryState);
+		console.log('applyState', summaryState);
 
 		let decks = getDecks();
 
@@ -210,16 +212,20 @@ class snapshot {
 
 			let deck = decks[i];
 
-			if(deck.showPrevAttempts) {
+			if(
+				deck.showPrevAttempts           &&
+				             summaryState.decks &&
+				deck.name in summaryState.decks
+			) {
 
 				let changes = false;
 
 				for(let cardIndex in deck.cards) {
 
-					let _uid = uid();
+					let _uid      = uid();
 					let stateCard = this.getInStateByUid(summaryState, _uid);
-					let card = deck.cards[cardIndex];
-					let values = ['flip']; // , 'visible'];
+					let card      = deck.cards[cardIndex];
+					let values    = ['flip']; // , 'visible'];
 
 					for(let valueIndex in values) {
 
@@ -228,9 +234,9 @@ class snapshot {
 						if(value in aliases) {
 
 							let alias = aliases[value];
-							console.log('>>>');
 
 							card.classList[alias] = (card[value] != stateCard[value]);
+							// console.log(card.name)
 						} else {
 
 							if(card[value] != stateCard[value]) {
@@ -240,16 +246,15 @@ class snapshot {
 								changes = true;
 							}
 						}
-
 					}
 				}
 
-				if(changes) {
+				// if(changes) {
 
-					console.log('changes in deck', deck.name);
+					// console.log('changes in deck', deck.name);
 
-					deck.Redraw();
-				}
+				deck.Redraw();
+				// }
 			}
 		}
 	}

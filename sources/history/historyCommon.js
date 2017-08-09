@@ -109,6 +109,8 @@ event.listen('scanAttempts', data => {
 
 		let history = data.attempts[attemptIndex];
 
+		console.log('scanAttempts:attempts', attemptIndex, history);
+
 		if(history) {
 
 			let snap = snapshot.get();
