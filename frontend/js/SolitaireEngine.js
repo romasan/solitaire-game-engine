@@ -126,7 +126,7 @@ var SolitaireEngine =
 	exports.options = _defaults2.default;
 	exports.winCheck = _winCheck2.default.hwinCheck;
 	exports.generator = _deckGenerator2.default;
-	exports.version = (90914913216).toString().split(9).slice(1).map(function (e) {
+	exports.version = (90914913251).toString().split(9).slice(1).map(function (e) {
 		return parseInt(e, 8);
 	}).join('.');
 	
@@ -7322,9 +7322,9 @@ var SolitaireEngine =
 	
 		// Field.clear();
 	
-		console.log('scanAttempts');
+		// console.log('scanAttempts');
 	
-		// event.dispatch('render:off');
+		_event2.default.dispatch('render:off');
 		_common2.default.animationOff();
 	
 		var stateDifferences = [];
@@ -7333,7 +7333,7 @@ var SolitaireEngine =
 	
 			var _history = data.attempts[attemptIndex];
 	
-			console.log('scanAttempts:attempts', attemptIndex, _history);
+			// console.log('scanAttempts:attempts', attemptIndex, history);
 	
 			if (_history) {
 	
@@ -7358,14 +7358,16 @@ var SolitaireEngine =
 	
 		var summary = _snapshot2.default.summary(stateDifferences);
 	
-		// event.dispatch('render:on');
+		_event2.default.dispatch('render:on');
 		_common2.default.animationDefault();
 	
 		if (typeof data.callback == "function") {
 			data.callback();
 		}
 	
-		_snapshot2.default.applyState(summary, { "flip": "prevFlip" });
+		_snapshot2.default.applyState(summary, {
+			"flip": "prevFlip"
+		});
 	});
 	
 	_event2.default.listen('resetHistory', function (e) {
@@ -7516,8 +7518,6 @@ var SolitaireEngine =
 		value: true
 	});
 	
-	var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }();
-	
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 	
 	var _common = __webpack_require__(5);
@@ -7529,8 +7529,6 @@ var SolitaireEngine =
 	var _getDecks2 = _interopRequireDefault(_getDecks);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-	
-	function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
 	
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 	
@@ -7668,40 +7666,33 @@ var SolitaireEngine =
 		}, {
 			key: 'summary',
 			value: function summary(stateDifferences) {
-				var _console;
 	
-				console.log('snapshot:summary', stateDifferences);
+				// console.log('snapshot:summary', stateDifferences);
 	
 				var summaryState = {
 					"decks": {}
 				};
 	
-				var _loop2 = function _loop2(stateIndex) {
-					var _console2;
+				for (var stateIndex in stateDifferences) {
 	
 					var stateI = stateDifferences[stateIndex];
 	
-					console.groupCollapsed('summary', stateIndex);
-					var i = 0;
-					(_console2 = console).log.apply(_console2, [Object.entries(stateI.decks).map(function (_ref3) {
-						var _ref4 = _slicedToArray(_ref3, 2),
-						    z = _ref4[0],
-						    d = _ref4[1];
-	
-						return z + function (l) {
-							return Array(l > 0 ? l : 0).join(' ');
-						}(18 - z.length) + ': ' + d.cards.map(function (c) {
-							return c.flip ? c.name : '%c' + (++i && c.name) + '%c';
-						}).join(',');
-					}).join('\n')].concat(_toConsumableArray([].concat(_toConsumableArray(Array(i * 2))).map(function (e, i) {
-						return "color:" + (i % 2 ? "blue" : "default");
-					}))));
-					console.groupEnd();
+					// console.groupCollapsed('summary', stateIndex);
+					// let i = 0;
+					// console.log(
+					// 	Object.entries(stateI.decks).map(
+					// 			([z, d]) => z + ((l => Array(l > 0 ? l : 0).join(' '))(18 - z.length)) + ': '  + d.cards.map(
+					// 				c => c.flip ? c.name : '%c' + (++i && c.name) + '%c'
+					// 			).join(',')
+					// 		).join('\n'),
+					// 	...[...Array(i * 2)].map((e, i) => "color:" + ((i % 2) ? "blue" : "default"))
+					// );
+					// console.groupEnd();
 	
 					if (stateIndex == 0) {
 						summaryState = stateI;
 					} else {
-						var _loop3 = function _loop3(deckName) {
+						var _loop2 = function _loop2(deckName) {
 	
 							var deck = stateI.decks[deckName];
 							var deckPrev = summaryState.decks[deckName];
@@ -7721,29 +7712,21 @@ var SolitaireEngine =
 						};
 	
 						for (var deckName in stateI.decks) {
-							_loop3(deckName);
+							_loop2(deckName);
 						}
 					}
-				};
-	
-				for (var stateIndex in stateDifferences) {
-					_loop2(stateIndex);
 				}
 	
-				var i = 0;
-				(_console = console).log.apply(_console, ['summary result\n' + Object.entries(summaryState.decks).map(function (_ref) {
-					var _ref2 = _slicedToArray(_ref, 2),
-					    z = _ref2[0],
-					    d = _ref2[1];
-	
-					return z + function (l) {
-						return Array(l > 0 ? l : 0).join(' ');
-					}(18 - z.length) + ': ' + d.cards.map(function (c) {
-						return c.flip ? c.name : '%c' + (++i && c.name) + '%c';
-					}).join(',');
-				}).join('\n')].concat(_toConsumableArray([].concat(_toConsumableArray(Array(i * 2))).map(function (e, i) {
-					return "color:" + (i % 2 ? "blue" : "default");
-				}))));
+				// let i = 0;
+				// console.log(
+				// 	'summary result\n' + 
+				// 	Object.entries(summaryState.decks).map(
+				// 		([z, d]) => z + ((l => Array(l > 0 ? l : 0).join(' '))(18 - z.length)) + ': '  + d.cards.map(
+				// 			c => c.flip ? c.name : '%c' + (++i && c.name) + '%c'
+				// 		).join(',')
+				// 	).join('\n'),
+				// 	...[...Array(i * 2)].map((e, i) => "color:" + ((i % 2) ? "blue" : "default"))
+				// );
 	
 				return summaryState;
 			}
@@ -7770,7 +7753,7 @@ var SolitaireEngine =
 				var aliases = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
 	
 	
-				console.log('applyState', summaryState);
+				// console.log('applyState', summaryState);
 	
 				var decks = (0, _getDecks2.default)();
 	

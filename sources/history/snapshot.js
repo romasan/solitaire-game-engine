@@ -123,7 +123,7 @@ class snapshot {
 
 	summary(stateDifferences) {
 
-		console.log('snapshot:summary', stateDifferences);
+		// console.log('snapshot:summary', stateDifferences);
 
 		let summaryState = {
 			"decks" : {}
@@ -133,17 +133,17 @@ class snapshot {
 
 			let stateI = stateDifferences[stateIndex];
 
-			console.groupCollapsed('summary', stateIndex);
-			let i = 0;
-			console.log(
-				Object.entries(stateI.decks).map(
-						([z, d]) => z + ((l => Array(l > 0 ? l : 0).join(' '))(18 - z.length)) + ': '  + d.cards.map(
-							c => c.flip ? c.name : '%c' + (++i && c.name) + '%c'
-						).join(',')
-					).join('\n'),
-				...[...Array(i * 2)].map((e, i) => "color:" + ((i % 2) ? "blue" : "default"))
-			);
-			console.groupEnd();
+			// console.groupCollapsed('summary', stateIndex);
+			// let i = 0;
+			// console.log(
+			// 	Object.entries(stateI.decks).map(
+			// 			([z, d]) => z + ((l => Array(l > 0 ? l : 0).join(' '))(18 - z.length)) + ': '  + d.cards.map(
+			// 				c => c.flip ? c.name : '%c' + (++i && c.name) + '%c'
+			// 			).join(',')
+			// 		).join('\n'),
+			// 	...[...Array(i * 2)].map((e, i) => "color:" + ((i % 2) ? "blue" : "default"))
+			// );
+			// console.groupEnd();
 
 			if(stateIndex == 0) {
 				summaryState = stateI;
@@ -170,16 +170,16 @@ class snapshot {
 			}
 		}
 
-		let i = 0;
-		console.log(
-			'summary result\n' + 
-			Object.entries(summaryState.decks).map(
-				([z, d]) => z + ((l => Array(l > 0 ? l : 0).join(' '))(18 - z.length)) + ': '  + d.cards.map(
-					c => c.flip ? c.name : '%c' + (++i && c.name) + '%c'
-				).join(',')
-			).join('\n'),
-			...[...Array(i * 2)].map((e, i) => "color:" + ((i % 2) ? "blue" : "default"))
-		);
+		// let i = 0;
+		// console.log(
+		// 	'summary result\n' + 
+		// 	Object.entries(summaryState.decks).map(
+		// 		([z, d]) => z + ((l => Array(l > 0 ? l : 0).join(' '))(18 - z.length)) + ': '  + d.cards.map(
+		// 			c => c.flip ? c.name : '%c' + (++i && c.name) + '%c'
+		// 		).join(',')
+		// 	).join('\n'),
+		// 	...[...Array(i * 2)].map((e, i) => "color:" + ((i % 2) ? "blue" : "default"))
+		// );
 
 		return summaryState;
 	}
@@ -202,7 +202,7 @@ class snapshot {
 
 	applyState(summaryState, aliases = {}) {
 
-		console.log('applyState', summaryState);
+		// console.log('applyState', summaryState);
 
 		let decks = getDecks();
 

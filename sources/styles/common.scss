@@ -175,10 +175,12 @@ $img_dir :"/solitaire_engine/img/";
 .prevFlip.flip {
 	transition: 0.2s;
 }
+
 .prevFlip.flip:hover {
 	transition: 0.2s;
 	margin-left: -20px;
 }
+
 .prevFlip.flip:hover:after {
 	opacity: 0;
 }
