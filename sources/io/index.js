@@ -5,6 +5,7 @@ import share          from 'share'         ;
 import common         from 'common'        ;
 
 import elRender       from 'elRender'      ;
+import inputs         from 'inputs'        ;
 
 import initField      from 'initField'     ;
 import drawDeck       from 'drawDeck'      ;

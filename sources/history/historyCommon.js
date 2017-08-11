@@ -100,7 +100,7 @@ event.listen('scanAttempts', data => {
 
 	// console.log('scanAttempts');
 
-	event.dispatch('render:off');
+	// event.dispatch('render:off');
 	common.animationOff();
 
 	let stateDifferences = [];
@@ -137,7 +137,7 @@ event.listen('scanAttempts', data => {
 
 	let summary = snapshot.summary(stateDifferences);
 
-	event.dispatch('render:on');
+	// event.dispatch('render:on');
 	common.animationDefault();
 
 	if(typeof data.callback == "function") {

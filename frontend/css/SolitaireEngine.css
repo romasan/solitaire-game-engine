@@ -147,10 +147,12 @@
   margin-left: -20px; }
 
 .prevFlip.flip:hover:after {
-  opacity: 0; }
+  opacity: 0;
+  transition: opacity 0.2s; }
 
 .prevFlip.flip:after {
-  opacity: 0.5; }
+  opacity: 0.5;
+  transition: opacity 0.2s; }
 .default_field {
   background: green; }
 

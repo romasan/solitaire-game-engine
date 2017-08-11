@@ -6,13 +6,12 @@ import event         from 'event'        ;
 import defaults      from 'defaults'     ;
 
 // init
-import Inputs        from 'inputs'       ;
 import Move          from 'move'         ;
 import forceMove     from 'forceMove'    ;
-import render        from 'render'       ;
+import io            from 'io'           ;
 import Field         from 'field'        ;
 import common        from 'common'       ;
-import winCheck      from 'winCheck'     ;
+import winCheck      from 'wincheck'     ;
 import History       from 'history'      ;
 import Tips          from 'tips'         ;
 import deckGenerator from 'deckGenerator';
