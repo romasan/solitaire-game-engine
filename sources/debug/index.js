@@ -17,7 +17,132 @@ import 'debug.scss'                      ;
 
 try {
 
+	// var triggerMouseEvent = (node, eventName, x, y) => {
+
+	//     let mouseEvent = document.createEvent('MouseEvents');
+	//     mouseEvent.initEvent(eventName, true, true, window, 0, 0, 0, x, y, false, false, false, false, 0, null);
+	//     document.body.dispatchEvent(mouseEvent);
+	// };
+
+	var triggerMouseEvent = function(node, eventName, x, y) {
+		var evt = document.createEvent("MouseEvents");
+		evt.initMouseEvent(eventName, true, true, window, 0, 0, 0, (x | 0), (y | 0), false, false, false, false, 0, null);
+		node.dispatchEvent(evt);
+	}
+
+	// (function(){
+	// var evt = document.createEvent("MouseEvents");
+	// evt.initMouseEvent("mousemove", true, true, window, 0, 0, 0, 80, 20, false, false, false, false, 0, null);
+	// document.body.dispatchEvent(evt);
+	// })()
+
+	let storage = [];
+	let record = false;
+
+	let startTime = Date.now();
+
+	let start = e => {
+		startTime = Date.now();
+		record = true;
+	};
+
+	let stop = e => {
+		record = false;
+		console.log('storage:', storage);
+	};
+
+	let _zip = a => a.map(e =>
+		(e.time).toString(25) + '-' +
+		(['click', 'mousemove', 'mouseup', 'mousedown'].indexOf(e.name)) +
+		(e.clientX).toString(25) + 'z' + 
+		(e.clientY).toString(25)
+	).join(' ');
+
+	let _unzip = a => a.split(' ').map(e => ({
+		"time" : parseInt(e.slice(0, e.indexOf('-')), 25),
+		"name" : ['click', 'mousemove', 'mouseup', 'mousedown'][e.slice(e.indexOf('-') + 1)[0] | 0],
+		"clientX" : parseInt(e.slice(e.indexOf('-') + 2, e.indexOf('z')), 25),
+		"clientY" : parseInt(e.slice(e.indexOf('z') + 1), 25)
+	}));
+
+	let play = i => {
+		if(typeof i == "undefined") {
+			i = 0;
+		}
+		if(i >= storage.length) {
+			document.getElementById('play_record_button').classList.remove("blue_button");
+			return;
+		}
+		setTimeout(e => {
+			let el = document.elementFromPoint(storage[i].clientX, storage[i].clientY);
+			triggerMouseEvent(el, storage[i].name, storage[i].clientX, storage[i].clientY);
+			i += 1;
+			play(i);
+		}, storage[i].time);
+	};
+
+	let export_record = e => {
+		prompt("export", JSON.stringify({"storage":_zip(storage)}));
+	};
+
+	let import_record = e => {
+		storage = _unzip(JSON.parse(prompt("import")).storage);
+	};
+
 document.addEventListener("DOMContentLoaded", e => {
+
+	let drag = false;
+
+	document.body.addEventListener('mousedown', data => {
+		if(!record) {return;}
+		drag = true;
+		let time = Date.now();
+		storage.push({
+			time : time - startTime,
+			name : 'mousedown',
+			clientX : data.clientX,
+			clientY : data.clientY
+		});
+		startTime = time;
+	});
+
+	document.body.addEventListener('mouseup', data => {
+		if(!record) {return;}
+		drag = false;
+		let time = Date.now();
+		storage.push({
+			time : time - startTime,
+			name : 'mouseup',
+			clientX : data.clientX,
+			clientY : data.clientY
+		});
+		startTime = time;
+	});
+
+	document.body.addEventListener('click', data => {
+		if(!record) {return;}
+		drag = false;
+		let time = Date.now();
+		storage.push({
+			time : time - startTime,
+			name : 'click',
+			clientX : data.clientX,
+			clientY : data.clientY
+		});
+		startTime = time;
+	});
+
+	document.body.addEventListener('mousemove', data => {
+		if(!record || !drag) {return;}
+		let time = Date.now();
+		storage.push({
+			time : time - startTime,
+			name : 'mousemove',
+			clientX : data.clientX,
+			clientY : data.clientY
+		});
+		startTime = time;
+	});
 
 	// Firebug
 
@@ -74,7 +199,31 @@ document.addEventListener("DOMContentLoaded", e => {
 						document.getElementById(cards[cardId].id).className += ' selectedGroup';
 					}
 				}
-			}
+			} else if(e.target.id == 'start_record_button') {
+				if(record) {
+					document.getElementById('start_record_button').classList.remove("red_button");
+					storage.pop();
+					storage.pop();
+					storage.pop();
+					stop();
+				} else {
+					document.getElementById('start_record_button').classList.add("red_button");
+					storage = [];
+					start();
+				}
+			} else if(e.target.id == 'stop_record_button') {
+				document.getElementById('start_record_button').classList.remove("red_button");
+				stop();
+			} else if(e.target.id == 'play_record_button') {
+				document.getElementById('start_record_button').classList.remove("red_button");
+				document.getElementById('play_record_button').classList.add("blue_button");
+				stop();
+				play();
+			} else if(e.target.id == 'export_record_button') {
+				export_record();
+			} else if(e.target.id == 'import_record_button') {
+				import_record();
+			} 
 		} catch(e) {}
 	}
 
@@ -157,10 +306,27 @@ let getDataFromPanel = e => {
 	}
 };
 
+let toggleRecordPanel = e => {
+	try{
+		document.getElementById('record_panel').remove();
+		[...document.getElementsByClassName('selectedGroup')].forEach(e => e.className = e.className.split(' ').filter(c => c != 'selectedGroup').join(' '));
+	} catch(e) {
+		let el = document.createElement('div');
+		el.setAttribute('id', 'record_panel');
+		document.body.appendChild(el);
+		el.innerHTML += `
+			<button id="start_record_button">REC</button>
+			<!---<button id="stop_record_button">STOP</button>--->
+			<button id="play_record_button">PLAY</button>
+			<button id="export_record_button">EXPORT</button>
+			<button id="import_record_button">IMPORT</button>
+		`;
+	}
+};
+
 let togglePanel = e => {
 	try{
 		document.getElementById('panel').remove();
-		[...document.getElementsByClassName('selectedGroup')].forEach(e => e.className = e.className.split(' ').filter(c => c != 'selectedGroup').join(' '));
 	} catch(e) {
 		let el = document.createElement('div');
 		el.setAttribute('id', 'panel');
@@ -205,6 +371,7 @@ let keys = {
 	"h" : 72, // history
 	"n" : 78, // next
 	"p" : 80, // show panel
+	"r" : 82, // record
 	"s" : 83  // stepType
 }
 try {
@@ -233,6 +400,8 @@ document.onkeyup = e => {
 		console.log('stepType:', share.get('stepType'));
 	} else if(e.keyCode == keys.p) {
 		togglePanel();
+	} else if(e.keyCode == keys.r) {
+		toggleRecordPanel();
 	}
 
 	// console.log('keyUp:', e);

@@ -1,3 +1,5 @@
 node_modules/
+frontend/js/
+frontend/css/
 npm-debug.log
 *.map

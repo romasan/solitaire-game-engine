@@ -53,3 +53,19 @@
 	border-radius    : 3px;
 	display          : inline-block;
 }
+
+#record_panel {
+	position: fixed;
+	top: 1px;
+    left: 1px;
+}
+
+.red_button {
+	background: #ff0000;
+	color: #ffffff;
+}
+
+.blue_button {
+	background: #0000ff;
+	color: #ffffff;
+}
