@@ -15,6 +15,8 @@ import mapCommon     from 'mapCommon'    ;
 
 import 'debug.scss'                      ;
 
+let solitaireField = null;
+
 try {
 
 	// var triggerMouseEvent = (node, eventName, x, y) => {
@@ -25,9 +27,24 @@ try {
 	// };
 
 	var triggerMouseEvent = function(node, eventName, x, y) {
-		var evt = document.createEvent("MouseEvents");
-		evt.initMouseEvent(eventName, true, true, window, 0, 0, 0, (x | 0), (y | 0), false, false, false, false, 0, null);
-		node.dispatchEvent(evt);
+		try {
+			var evt = document.createEvent("MouseEvents");
+			evt.initMouseEvent(eventName, true, true, window, 0, 0, 0, (x | 0), (y | 0), false, false, false, false, 0, null);
+			node.dispatchEvent(evt);
+
+			// let _el = document.createElement('div');
+			// _el.style.background = eventName == 'click' ? 'red' : eventName == 'mousemove' ? 'blue' : 'yellow';
+			// _el.style.position = 'absolute';
+			// _el.style.width = (eventName == 'mouseup' ? '3' : '2') + 'px';
+			// _el.style.height = '2px';
+			// _el.style.left = ((x | 0) - 1) + 'px';
+			// _el.style.top = ((y | 0) - 1) + 'px';
+			// _el.style['z-index'] = '999';
+			// _el.className = 'dot';
+			// document.body.appendChild(_el);
+		} catch(e) {
+			console.log('>>>', e);
+		}
 	}
 
 	// (function(){
@@ -41,6 +58,20 @@ try {
 
 	let startTime = Date.now();
 
+	let _zip = a => a.map(e =>
+		(e.time).toString(25) + '.' +
+		(['click', 'mousemove', 'mouseup', 'mousedown'].indexOf(e.name)) +
+		(e.clientX).toString(25) + 'z' + 
+		(e.clientY).toString(25)
+	).join(' ');
+
+	let _unzip = a => a.split(' ').map(e => ({
+		"time" : parseInt(e.slice(0, e.indexOf('.')), 25),
+		"name" : ['click', 'mousemove', 'mouseup', 'mousedown'][e.slice(e.indexOf('.') + 1)[0] | 0],
+		"clientX" : parseInt(e.slice(e.indexOf('.') + 2, e.indexOf('z')), 25),
+		"clientY" : parseInt(e.slice(e.indexOf('z') + 1), 25)
+	}));
+
 	let start = e => {
 		startTime = Date.now();
 		record = true;
@@ -51,31 +82,25 @@ try {
 		console.log('storage:', storage);
 	};
 
-	let _zip = a => a.map(e =>
-		(e.time).toString(25) + '-' +
-		(['click', 'mousemove', 'mouseup', 'mousedown'].indexOf(e.name)) +
-		(e.clientX).toString(25) + 'z' + 
-		(e.clientY).toString(25)
-	).join(' ');
-
-	let _unzip = a => a.split(' ').map(e => ({
-		"time" : parseInt(e.slice(0, e.indexOf('-')), 25),
-		"name" : ['click', 'mousemove', 'mouseup', 'mousedown'][e.slice(e.indexOf('-') + 1)[0] | 0],
-		"clientX" : parseInt(e.slice(e.indexOf('-') + 2, e.indexOf('z')), 25),
-		"clientY" : parseInt(e.slice(e.indexOf('z') + 1), 25)
-	}));
-
 	let play = i => {
 		if(typeof i == "undefined") {
 			i = 0;
 		}
+		document.getElementById('play_record_button').innerHTML = ((i / (storage.length / 100)) | 0) + '%';
 		if(i >= storage.length) {
 			document.getElementById('play_record_button').classList.remove("blue_button");
+			document.getElementById('play_record_button').innerHTML = 'PLAY';
 			return;
 		}
 		setTimeout(e => {
-			let el = document.elementFromPoint(storage[i].clientX, storage[i].clientY);
-			triggerMouseEvent(el, storage[i].name, storage[i].clientX, storage[i].clientY);
+			if(!solitaireField) {
+				solitaireField = document.getElementsByClassName('solitaireField')[0];
+			}
+			let field = solitaireField.getBoundingClientRect();
+			let x = (storage[i].clientX | 0) + (field.left | 0),
+			    y = (storage[i].clientY | 0) + (field.top | 0);
+			let el = document.elementFromPoint(x, y);
+			triggerMouseEvent(el, storage[i].name, x, y);
 			i += 1;
 			play(i);
 		}, storage[i].time);
@@ -91,17 +116,23 @@ try {
 
 document.addEventListener("DOMContentLoaded", e => {
 
+	solitaireField = document.getElementsByClassName('solitaireField')[0];
+
 	let drag = false;
 
 	document.body.addEventListener('mousedown', data => {
 		if(!record) {return;}
 		drag = true;
 		let time = Date.now();
+		if(!solitaireField) {
+			solitaireField = document.getElementsByClassName('solitaireField')[0];
+		}
+		let field = solitaireField.getBoundingClientRect();
 		storage.push({
 			time : time - startTime,
 			name : 'mousedown',
-			clientX : data.clientX,
-			clientY : data.clientY
+			clientX : (data.clientX - field.left | 0),
+			clientY : (data.clientY - field.top | 0)
 		});
 		startTime = time;
 	});
@@ -110,11 +141,15 @@ document.addEventListener("DOMContentLoaded", e => {
 		if(!record) {return;}
 		drag = false;
 		let time = Date.now();
+		if(!solitaireField) {
+			solitaireField = document.getElementsByClassName('solitaireField')[0];
+		}
+		let field = solitaireField.getBoundingClientRect();
 		storage.push({
 			time : time - startTime,
 			name : 'mouseup',
-			clientX : data.clientX,
-			clientY : data.clientY
+			clientX : (data.clientX - field.left | 0),
+			clientY : (data.clientY - field.top | 0)
 		});
 		startTime = time;
 	});
@@ -123,11 +158,15 @@ document.addEventListener("DOMContentLoaded", e => {
 		if(!record) {return;}
 		drag = false;
 		let time = Date.now();
+		if(!solitaireField) {
+			solitaireField = document.getElementsByClassName('solitaireField')[0];
+		}
+		let field = solitaireField.getBoundingClientRect();
 		storage.push({
 			time : time - startTime,
 			name : 'click',
-			clientX : data.clientX,
-			clientY : data.clientY
+			clientX : (data.clientX - field.left | 0),
+			clientY : (data.clientY - field.top | 0)
 		});
 		startTime = time;
 	});
@@ -135,11 +174,15 @@ document.addEventListener("DOMContentLoaded", e => {
 	document.body.addEventListener('mousemove', data => {
 		if(!record || !drag) {return;}
 		let time = Date.now();
+		if(!solitaireField) {
+			solitaireField = document.getElementsByClassName('solitaireField')[0];
+		}
+		let field = solitaireField.getBoundingClientRect();
 		storage.push({
 			time : time - startTime,
 			name : 'mousemove',
-			clientX : data.clientX,
-			clientY : data.clientY
+			clientX : (data.clientX - field.left | 0),
+			clientY : (data.clientY - field.top | 0)
 		});
 		startTime = time;
 	});
@@ -202,6 +245,7 @@ document.addEventListener("DOMContentLoaded", e => {
 			} else if(e.target.id == 'start_record_button') {
 				if(record) {
 					document.getElementById('start_record_button').classList.remove("red_button");
+					storage.pop();
 					storage.pop();
 					storage.pop();
 					storage.pop();
@@ -406,6 +450,7 @@ document.onkeyup = e => {
 
 	// console.log('keyUp:', e);
 }
+event.listen('solitaire_log', solitaire_log);
 } catch(e) {}
 
 export default {

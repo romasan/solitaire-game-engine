@@ -1,6 +1,7 @@
 'use strict';
 
 import event      from 'event'     ;
+import share      from 'share'     ;
 
 import deckAction from 'deckAction';
 import Deck       from 'deck'      ;
@@ -59,13 +60,15 @@ class rollerAction extends deckAction {
 				deck.showCardByIndex(next, true);
 
 				// save step
-				event.dispatch('addStep', {
-					"show" : {
-						"cardIndex" : next                 ,
-						"cardName"  : deck.cards[next].name,
-						"deckName"  : deck            .name
-					}
-				});
+				if(!share.get('inHistory')) {
+					event.dispatch('addStep', {
+						"show" : {
+							"cardIndex" : next                 ,
+							"cardName"  : deck.cards[next].name,
+							"deckName"  : deck            .name
+						}
+					});
+				}
 
 				event.dispatch('checkTips');
 			}

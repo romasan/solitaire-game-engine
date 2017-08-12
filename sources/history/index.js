@@ -46,7 +46,7 @@ class historyClass {
 			"step" : step
 		});
 
-		// console.groupCollapsed('History:add', stepId);
+		// console.groupCollapsed('%cHistory:add', 'color: #00ff00', stepId);
 		// console.log(JSON.stringify(step, true, 2));
 		// console.groupEnd();
 

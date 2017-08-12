@@ -234,6 +234,8 @@ class Field {
 			}
 		}
 
+		event.dispatch('removeCardElements');
+
 		share.set('elements', {});
 	}
 }

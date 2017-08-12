@@ -67,7 +67,9 @@ event.listen('doHistory', e => {
 	// console.log('doHistory:start');
 	for(let i in e.data) {
 
+		share.set('inHistory', true);
 		event.dispatch('redo', e.data[i]);
+		share.set('inHistory', false);
 
 		if(
 			!redoAdvanced.handle(e.data[i][0]) &&
@@ -98,7 +100,7 @@ event.listen('scanAttempts', data => {
 
 	// Field.clear();
 
-	// console.log('scanAttempts');
+	console.groupCollapsed('scanAttempts');
 
 	// event.dispatch('render:off');
 	common.animationOff();
@@ -147,6 +149,8 @@ event.listen('scanAttempts', data => {
 	snapshot.applyState(summary, {
 		"flip" : "prevFlip"
 	});
+
+	console.groupEnd();
 });
 
 event.listen('resetHistory', e => {

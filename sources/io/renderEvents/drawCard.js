@@ -14,6 +14,7 @@ import elRender from 'elRender';
  * markCard
  * unmarkCard
  * unflipCard
+ * removeCardElements
  */
 
 event.listen('addCardEl', data => {
@@ -120,6 +121,13 @@ event.listen('unflipCard', card => {
 		el.removeClass('flip');
 	} 
 });
+
+event.listen('removeCardElements', e => {
+	let item = null;
+	while(item = document.getElementsByClassName('card')[0]) {
+	    item.remove();
+	}
+})
 
 // let specialStepMark = null;
 

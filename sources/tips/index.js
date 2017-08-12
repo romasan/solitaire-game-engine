@@ -120,8 +120,8 @@ let checkTips = e => {
 				let takeCardIndex   = _tips[i].from.deck.getCardIndexById(_tips[i].from.card.id);
 				let takeCardsLength = fromCards.length - takeCardIndex;
 
-				let fromParentCard = takeCardIndex  > 0 ? common.validateCardName(fromCards[takeCardIndex  - 1].name) : EMPTY;
-				let   toParentCard = toCards.length > 0 ? common.validateCardName(  toCards[toCards.length - 1].name) : EMPTY;
+				let fromParentCard = fromCards.length > 0 && takeCardIndex  > 0 ? common.validateCardName(fromCards[takeCardIndex  - 1].name) : EMPTY;
+				let   toParentCard =   toCards.length > 0                       ? common.validateCardName(  toCards[toCards.length - 1].name) : EMPTY;
 
 				if(
 					fromDeck.parent == toDeck.parent &&

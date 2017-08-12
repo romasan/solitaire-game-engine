@@ -299,15 +299,19 @@ event.listen('redo', redoData => {
 	}
 
 	// Обратная совместимость
+	// console.groupCollapsed('redo');
 	if(redoData instanceof Array) {
 
 		for(let _i in redoData) {
 			let data = redoData[_i];
+			// console.log(JSON.stringify(redoData[_i], true, 2));
 			redo(data);
 		}
 	} else {
+		// console.log(JSON.stringify(redoData, true, 2));
 		redo(redoData);
 	}
+	// console.groupEnd();
 
 	Tips.checkTips();
 
