@@ -123,10 +123,12 @@ event.listen('unflipCard', card => {
 });
 
 event.listen('removeCardElements', e => {
-	let item = null;
-	while(item = document.getElementsByClassName('card')[0]) {
-	    item.remove();
-	}
+
+	// let item = null;
+
+	// while(item = document.getElementsByClassName('card')[0]) {
+	//     item.remove();
+	// }
 })
 
 // let specialStepMark = null;

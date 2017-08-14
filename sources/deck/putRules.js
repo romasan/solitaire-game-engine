@@ -1,6 +1,5 @@
 'use strict';
 
-import common    from 'common'   ;
 import defaults  from 'defaults' ;
 
 import Deck      from 'deck'     ;
@@ -89,10 +88,10 @@ let readyPutRules = {
 			return false;
 		}
 
-		let down = data.cards           && data.cards[data.cards.length - 1]; // common.validateCardName(data.cards[data.cards.length - 1].name);
+		let down = data.cards           && data.cards[data.cards.length - 1];
 		let up   = data.putDeck         &&
 		           data.putDeck[0]      &&
-		           data.putDeck[0].card;                                      // common.validateCardName(data.putDeck[0].card.name);
+		           data.putDeck[0].card;
 
 		if(!down || !up) {
 			return false;
@@ -121,8 +120,8 @@ let readyPutRules = {
 			let _validate = null;
 
 			return (
-				(_validate = common.validateCardName(data.putDeck[0].card.name)) &&
-				_validate.rank == _name
+				data.putDeck[0].card               &&
+				data.putDeck[0].card.rank == _name
 			);
 		}
 
@@ -137,12 +136,12 @@ let readyPutRules = {
 			return true;
 		}
 
-		let color_A   = common.validateCardName(data.cards[data.cards.length - 1].name).color,
+		let color_A   = data.cards[data.cards.length - 1].color,
 			color_B   = null,
 			_validate = null;
 
-		if(_validate = common.validateCardName(data.putDeck[0].card.name)) {
-			color_B = _validate.color;
+		if(data.putDeck[0].card) {
+			color_B = data.putDeck[0].card.color;
 		}
 
 		return color_A != color_B;
@@ -195,10 +194,10 @@ let readyPutRules = {
 			if(i > 0) {
 
 				let down = defaults.card.ranks.indexOf(
-					common.validateCardName(data.putDeck[i - 1].card.name).rank
+					data.putDeck[i - 1].card.rank
 				),
 				    up   = defaults.card.ranks.indexOf(
-					common.validateCardName(data.putDeck[i].card.name).rank
+					data.putDeck[i].card.rank
 				);
 
 				ruleCorrect = ruleCorrect && 1 + down == up;
@@ -222,10 +221,10 @@ let readyPutRules = {
 			if(i > 0) {
 
 				let down = defaults.card.ranks.indexOf(
-					common.validateCardName(data.putDeck[i - 1].card.name).rank
+					data.putDeck[i - 1].card.rank
 				),
 				    up   = defaults.card.ranks.indexOf(
-					common.validateCardName(data.putDeck[i].card.name).rank
+					data.putDeck[i].card.rank
 				);
 
 				ruleCorrect = ruleCorrect && down == 1 + up;
@@ -248,8 +247,8 @@ let readyPutRules = {
 
 			if(i > 0) {
 
-				let down = common.validateCardName(data.putDeck[i - 1].card.name).rank,
-				    up   = common.validateCardName(data.putDeck[i].card.name).rank
+				let down = data.putDeck[i - 1].card.rank,
+				    up   = data.putDeck[i].card.rank
 
 				ruleCorrect = ruleCorrect && down == up;
 			}
@@ -270,8 +269,8 @@ let readyPutRules = {
 
 			if(i > 0) {
 
-				let down = common.validateCardName(data.putDeck[i - 1].card.name).suit,
-				    up   = common.validateCardName(data.putDeck[i].card.name).suit
+				let down = data.putDeck[i - 1].card.suit,
+				    up   = data.putDeck[i].card.suit
 
 				ruleCorrect = ruleCorrect && down == up;
 			}
@@ -304,12 +303,7 @@ let readyPutRules = {
 	},
 	"descent"           : data => readyPutRules.descend(data),
 
-	"ascendOne"         : data => {
-		console.log('ascendOne', data);
-		// TODO
-		// remove validateCardName from putRules.js and winCheckRules.js
-		return readyPutRules.ascendNum(data, 1);
-	},
+	"ascendOne"         : data => readyPutRules.ascendNum(data, 1),
 	"ascentOne"         : data => readyPutRules.ascendOne(data),
 
 	"ascendNum"         : (data, prop) => {
@@ -377,7 +371,21 @@ let readyPutRules = {
 	"ascentNumLoop"     : (data, prop) => readyPutRules.ascendNumLoop(data, prop),
 
 	"descendNumLoop"    : (data, prop) => {
-		// TODO
+		
+		// if(data.cards.length == 0) {
+		// 	return true;
+		// }
+
+		// let num = (prop | 0) > 0 ? (prop | 0) : 1;
+
+		// let du = readyPutRules._down_up_cards(data);
+
+		// return du && (
+		// 	du.down.value + num > defaults.card.ranks.length
+		// 		? du.down.value + num - defaults.card.ranks.length == du.up.value
+		// 		: du.down.value + num                              == du.up.value
+		// );
+
 		return false;
 	},
 	"descentNumLoop"    : (data, prop) => readyPutRules.descendNumLoop(data, prop),
