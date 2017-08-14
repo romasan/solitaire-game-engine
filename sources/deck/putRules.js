@@ -304,7 +304,12 @@ let readyPutRules = {
 	},
 	"descent"           : data => readyPutRules.descend(data),
 
-	"ascendOne"         : data => readyPutRules.ascendNum(data, 1),
+	"ascendOne"         : data => {
+		console.log('ascendOne', data);
+		// TODO
+		// remove validateCardName from putRules.js and winCheckRules.js
+		return readyPutRules.ascendNum(data, 1);
+	},
 	"ascentOne"         : data => readyPutRules.ascendOne(data),
 
 	"ascendNum"         : (data, prop) => {

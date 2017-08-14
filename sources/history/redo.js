@@ -195,10 +195,6 @@ let redo = data => {
 			forceMoveData.flip = flip;
 		}
 
-		// TODO
-		// нужно в rollerAction знать что он вызван из истории и не сохранять в историю ходы
-		// action вызывается после forceMove (после хода из стопки)
-
 		if(!share.get('showHistoryAnimation')) {
 
 			common.animationOff();
@@ -277,7 +273,7 @@ event.listen('redo', redoData => {
 		return;
 	}
 
-	share.set('inRedo', true);
+	// share.set('inRedo', true);
 
 	// inputs.break();
 	event.dispatch('inputsBreak');
@@ -296,30 +292,30 @@ event.listen('redo', redoData => {
 	if(history.length > 0) {
 		for(let i = history.length - 1; i >= 0; i -= 1) {
 			
-			console.groupCollapsed('redo:<<<');
-			console.log(JSON.stringify(history[i], true, 2));
-			console.groupEnd();
+			// console.groupCollapsed('redo:<<<');
+			// console.log(JSON.stringify(history[i], true, 2));
+			// console.groupEnd();
 
 			undo(history[i]);
 		}
 	}
 
 	// Обратная совместимость
-	console.groupCollapsed('redo');
+	// console.groupCollapsed('redo');
 	if(redoData instanceof Array) {
 
 		for(let _i in redoData) {
 			let data = redoData[_i];
-			console.log(JSON.stringify(redoData[_i], true, 2));
+			// console.log(JSON.stringify(redoData[_i], true, 2));
 			redo(data);
 		}
 	} else {
-		console.log(JSON.stringify(redoData, true, 2));
+		// console.log(JSON.stringify(redoData, true, 2));
 		redo(redoData);
 	}
-	console.groupEnd();
+	// console.groupEnd();
 
-	share.set('inRedo', false);
+	// share.set('inRedo', false);
 
 	Tips.checkTips();
 

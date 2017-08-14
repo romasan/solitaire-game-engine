@@ -56,6 +56,8 @@ event.listen('doHistory', e => {
 
 	console.groupCollapsed('DO HISTORY');
 
+	let _time = Date.now();
+
 	// common.animationOff();
 	if(!e || !e.data) {
 		console.warn('doHistory data:', e);
@@ -93,6 +95,8 @@ event.listen('doHistory', e => {
 
 	// for(let deckIndex in _decks) {}
 
+	console.log(((Date.now() - _time) / 1e3) + 's.');
+
 	console.groupEnd();
 });
 
@@ -101,6 +105,7 @@ event.listen('scanAttempts', data => {
 	// Field.clear();
 
 	console.groupCollapsed('scanAttempts');
+	let _time = Date.now();
 
 	// event.dispatch('render:off');
 	common.animationOff();
@@ -149,6 +154,8 @@ event.listen('scanAttempts', data => {
 	snapshot.applyState(summary, {
 		"flip" : "prevFlip"
 	});
+
+	console.log(((Date.now() - _time) / 1e3) + 's.');
 
 	console.groupEnd();
 });
