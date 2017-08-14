@@ -23,6 +23,12 @@ import getDeck                from 'getDeck'               ;
 import applyChangedParameters from 'applyChangedParameters';
 
 /*
+ * deckCardNames
+ * addDeck
+ * getDeck
+ * getDecks
+ * getDeckById
+ *
  * Redraw
  * getSomeCards
  * lock
@@ -324,19 +330,49 @@ class deckClass {
 		event.listen('moveDragDeck', _callback);
 	}
 
-	// get cards() {
-	// 	window.getCardsCounter = window.getCardsCounter ? window.getCardsCounter + 1 : 1;
-	// 	if(window.getCardsCounter == 175) {
-	// 		throw new Error('I\'M HERE');
-	// 	}
-	// 	console.log('get cards', window.getCardsCounter, this._cards);
-	// 	return this._cards;
-	// }
+	static deckCardNames(data) {
+		return deckCardNames(data);
+	}
 
-	// set cards(cards) {
-	// 	console.log('set cards', cards);
-	// 	this._cards = cards;
-	// }
+	static addDeck(data) {
+
+		if(!data) {
+			return false;
+		}
+
+		let id = 'deck_' + common.genId();
+
+		let _deck = new deckClass(data, id);
+
+		// fill deck
+		if(data.fill) {
+			for(let i in data.fill) {
+				if(typeof data.fill[i] == 'string') {
+					_deck.genCardByName(data.fill[i], i == data.fill.length - 1);
+				}
+			}
+		}
+
+		let _elements = share.get('elements');
+
+		_elements[id] = _deck;
+
+		share.set('elements', _elements);
+
+		return _deck;
+	}
+
+	static getDeck(name, groupName) {
+		return getDeck(name, groupName);
+	}
+
+	static getDecks(data) {
+		return getDecks(data);
+	}
+
+	static getDeckById(id) {
+		return getDeckById(id);
+	}
 
 	// перерисовка стопки
 	Redraw(data) {
@@ -356,15 +392,6 @@ class deckClass {
 			"cards" : this.cards
 		});
 	}
-
-	// getTopCard() {
-
-	// 	if(this.cards.length == 0) {
-	// 		return false;
-	// 	}
-
-	// 	return this.cards[this.cards.length - 1];
-	// }
 
 	getSomeCards(count) {
 
@@ -675,20 +702,6 @@ class deckClass {
 		this.Redraw();
 	}
 
-	// getCardsByName(cardName) {
-	// 	var _cards = [];
-	// 	for(var i in this.cards) {
-	// 		if(this.cards[i].name == cardName) {
-	// 			_cards.push(this.cards[i]);
-	// 		}
-	// 	}
-	// 	return _cards;
-	// }
-
-	// Card(cardName) {
-	// 	return this.getCardsByName(cardName)[0];
-	// }
-
 	hideCards(redraw = true, save) {
 
 		for(let i in this.cards) {
@@ -868,40 +881,4 @@ class deckClass {
 	}
 }
 
-// add deck
-let addDeck = data => {
-
-	if(!data) {
-		return false;
-	}
-
-	let id = 'deck_' + common.genId();
-
-	let _deck = new deckClass(data, id);
-
-	// fill deck
-	if(data.fill) {
-		for(let i in data.fill) {
-			if(typeof data.fill[i] == 'string') {
-				_deck.genCardByName(data.fill[i], i == data.fill.length - 1);
-			}
-		}
-	}
-
-	let _elements = share.get('elements');
-
-	_elements[id] = _deck;
-
-	share.set('elements', _elements);
-
-	return _deck;
-};
-
-export default {
-	// TODO use as static methods
-	"deckCardNames" : deckCardNames,
-	"addDeck"       : addDeck      ,
-	"getDeck"       : getDeck      ,
-	"getDecks"      : getDecks     ,
-	"getDeckById"   : getDeckById
-};
+export default deckClass;

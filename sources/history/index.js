@@ -46,9 +46,11 @@ class historyClass {
 			"step" : step
 		});
 
-		// console.groupCollapsed('%cHistory:add', 'color: #00ff00', stepId);
-		// console.log(JSON.stringify(step, true, 2));
-		// console.groupEnd();
+		if(share.get('inRedo')) {
+			console.groupCollapsed('%cHistory:add', 'color: #00ff00', stepId);
+			console.log(JSON.stringify(step, true, 2));
+			console.groupEnd();
+		}
 
 		return stepId;
 	}

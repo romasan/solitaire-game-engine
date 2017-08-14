@@ -27,6 +27,8 @@ class rollerAction extends deckAction {
 			return;
 		}
 
+		let _save = data.eventName == 'moveEnd:force' ? false : true; // !share.get('noSave');
+
 		/*
 		 * действие совершаемое после хода из стопки
 		 * если задан такой event
@@ -57,10 +59,10 @@ class rollerAction extends deckAction {
 
 				let next = deck.cards.length - hiddenCardsCount;
 
-				deck.showCardByIndex(next, true);
+				deck.showCardByIndex(next, true); // index, redraw
 
 				// save step
-				if(!share.get('inHistory')) {
+				if(_save) {
 					event.dispatch('addStep', {
 						"show" : {
 							"cardIndex" : next                 ,
@@ -176,8 +178,8 @@ class rollerAction extends deckAction {
 								}
 
 								// reset deck
-								deck.showCards   (false); // no redraw, add in history
-								deck.flipAllCards(false); // no redraw, add in history
+								deck.showCards   (false); // no redraw, not add in history
+								deck.flipAllCards(false); // no redraw, not add in history
 
 								// rewindStatus = 'done';
 
@@ -194,34 +196,38 @@ class rollerAction extends deckAction {
 									let next = unflipCardsCount - i - 1;
 
 									if(i < next) {
-										Atom.swap(deck, i, next, true);
+										Atom.swap(deck, i, next, _save); // deck, fromIndex, toIndex, save
 									}
 								}
 
 								// Hide visible flipped cards
 								for(let i = 0; i < unflipCardsCount; i += 1) {
 
-									deck.hideCardByIndex(i, true);
+									deck.hideCardByIndex(i, true); // index, redraw
 
 									// save step
-									event.dispatch('addStep', {
-										"hide" : {
-											"cardIndex" : i                 ,
-											"cardName"  : deck.cards[i].name,
-											"deckName"  : deck         .name
-										}
-									});
+									if(_save) {
+										event.dispatch('addStep', {
+											"hide" : {
+												"cardIndex" : i                 ,
+												"cardName"  : deck.cards[i].name,
+												"deckName"  : deck         .name
+											}
+										});
+									}
 								}
 
 								found = true;
 
 								// reset deck
-								deck.showCards   (false, true); // no redraw, add in history
-								deck.flipAllCards(false, true); // no redraw, add in history
+								deck.showCards   (false, _save); // no redraw, add in history
+								deck.flipAllCards(false, _save); // no redraw, add in history
 
 								deck.Redraw();
 
-								event.dispatch('saveSteps');
+								if(_save) {
+									event.dispatch('saveSteps');
+								}
 
 								// rewindStatus = 'break';
 							}
@@ -239,8 +245,8 @@ class rollerAction extends deckAction {
 				// ещё есть скрытые карты
 				if(hiddenCardsCount > 0) {
 
-					deck.showCards   (false, true); // no redraw
-					deck.flipAllCards(false, true); // no redraw
+					deck.showCards   (false, _save); // no redraw, add to history
+					deck.flipAllCards(false, _save); // no redraw, add to history
 
 					// event.dispatch('saveSteps');
 					this.run(deck, data);
@@ -256,9 +262,11 @@ class rollerAction extends deckAction {
 				hiddenCardsCount == 0 && // нет скрытых карт
 				unflipCardsCount == 0    // нет открытых видимых карт
 			) {
-				event.dispatch('addStep', {
-					"rollerActionStart" : deck.name
-				});
+				if(_save) {
+					event.dispatch('addStep', {
+						"rollerActionStart" : deck.name
+					});
+				}
 			}
 
 			// количество скрываемых дальше открытых карт
@@ -277,13 +285,15 @@ class rollerAction extends deckAction {
 
 						deck.hideCardByIndex(i);
 
-						event.dispatch('addStep', {
-							"hide" : {
-								"cardIndex" : i                 ,
-								"cardName"  : deck.cards[i].name,
-								"deckName"  : deck         .name
-							}
-						});
+						if(_save) {
+							event.dispatch('addStep', {
+								"hide" : {
+									"cardIndex" : i                 ,
+									"cardName"  : deck.cards[i].name,
+									"deckName"  : deck         .name
+								}
+							});
+						}
 					}
 				}
 			}
@@ -297,7 +307,7 @@ class rollerAction extends deckAction {
 					let next = cardsCount * 2 - i - unflippedCount - 1;
 
 					if(i < next) {
-						Atom.swap(deck, i, next, true);
+						Atom.swap(deck, i, next, _save);
 					}
 				}
 			}
@@ -316,13 +326,15 @@ class rollerAction extends deckAction {
 
 				deck.cards[i].flip = false;
 
-				event.dispatch('addStep', {
-					"unflip" : {
-						"cardIndex" : i                 ,
-						"cardName"  : deck.cards[i].name,
-						"deckName"  : deck.name
-					}
-				});
+				if(_save) {
+					event.dispatch('addStep', {
+						"unflip" : {
+							"cardIndex" : i                 ,
+							"cardName"  : deck.cards[i].name,
+							"deckName"  : deck.name
+						}
+					});
+				}
 			}
 
 			// количество видимых карт
@@ -341,12 +353,14 @@ class rollerAction extends deckAction {
 					let next = cardsCount * 2 - i - unflippedCount - 1;
 
 					if(i < next) {
-						Atom.swap(deck, i, next, true);
+						Atom.swap(deck, i, next, _save);
 					}
 				}
 			}
 
-			event.dispatch('saveSteps');
+			if(_save) {
+				event.dispatch('saveSteps');
+			}
 
 		// нет видимых карт
 		} else {
@@ -360,8 +374,8 @@ class rollerAction extends deckAction {
 
 			if(hiddenCardsCount > 0) {
 
-				deck.showCards   (false, true); // no redraw
-				deck.flipAllCards(false, true); // no redraw
+				deck.showCards   (false, _save); // no redraw, save
+				deck.flipAllCards(false, _save); // no redraw, save
 
 				// event.dispatch('saveSteps');
 

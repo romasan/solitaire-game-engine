@@ -1,7 +1,7 @@
 'use strict';
 
 import defaults  from 'defaults' ;
-import common    from 'common'   ;
+// import common    from 'common'   ;
 
 import Group     from 'group'    ;
 import Deck      from 'deck'     ;
@@ -65,14 +65,14 @@ let fullRules = {
 
 		let _card = deck.getTopCard();
 
-		return _card && common.validateCardName(_card.name);
+		return _card; // && common.validateCardName(_card.name);
 	},
 
 	"_bottomCard" : deck => {
 
 		let _card = deck.getCards()[0];
 
-		return _card && common.validateCardName(_card.name);
+		return _card; // && common.validateCardName(_card.name);
 	},
 
 	"_besideTopCardRecoursive" : (deck, direction, callback) => {
@@ -118,8 +118,10 @@ let fullRules = {
 
 		for(let i = _cardsCount; i > 0; i -= 1) {
 			_check = _check && callback(
-				common.validateCardName(_cards[i]    .name),
-				common.validateCardName(_cards[i - 1].name)
+				// common.validateCardName(_cards[i]    .name),
+				_cards[i],
+				// common.validateCardName(_cards[i - 1].name)
+				_cards[i - 1]
 			);
 		}
 

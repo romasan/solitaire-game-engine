@@ -53,7 +53,7 @@ let readyPutRules = {
 
 	// Relations filters
 
-	"linePrev" : data => {
+	"linePrev"          : data => {
 
 		let prev = getBeside(data.to).prev;
 
@@ -67,7 +67,7 @@ let readyPutRules = {
 		return false;
 	},
 
-	"lineNext" : data => {
+	"lineNext"          : data => {
 
 		let next = getBeside(data.to).next;
 
@@ -83,7 +83,7 @@ let readyPutRules = {
 
 	// Internal use
 
-	"_down_up_cards" : data => {
+	"_down_up_cards"    : data => {
 
 		if(data.cards.length == 0) {
 			return false;
@@ -114,7 +114,7 @@ let readyPutRules = {
 		} : false;
 	},
 
-	"_isFirst": (data, _name) => {
+	"_isFirst"          : (data, _name) => {
 
 		if(data.cards.length == 0) {
 
@@ -131,7 +131,7 @@ let readyPutRules = {
 
 	// Rules
 
-	"striped" : data => {
+	"striped"           : data => {
 
 		if(data.cards.length == 0) {
 			return true;
@@ -148,15 +148,15 @@ let readyPutRules = {
 		return color_A != color_B;
 	},
 
-	"firstAce"     : data => readyPutRules._isFirst(data, defaults.card.ranks[0]),
+	"firstAce"          : data => readyPutRules._isFirst(data, defaults.card.ranks[0]),
 
-	"firstKing"    : data => readyPutRules._isFirst(data, defaults.card.ranks[defaults.card.ranks.length - 1]),
+	"firstKing"         : data => readyPutRules._isFirst(data, defaults.card.ranks[defaults.card.ranks.length - 1]),
 
-	"notForEmpty"  : data => data.cards.length > 0,
+	"notForEmpty"       : data => data.cards.length > 0,
 
-	"onlyEmpty"    : data => data.cards.length == 0,
+	"onlyEmpty"         : data => data.cards.length == 0,
 
-	"oneRank"      : data => {
+	"oneRank"           : data => {
 
 		if(data.cards.length == 0) {
 			return true;
@@ -167,7 +167,7 @@ let readyPutRules = {
 		return du && du.up.rank == du.down.rank;
 	},
 
-	"oneSuit"      : data => {
+	"oneSuit"           : data => {
 
 		if(data.cards.length == 0) {
 			return true;
@@ -178,11 +178,11 @@ let readyPutRules = {
 		return du && du.up.suit == du.down.suit;
 	},
 
-	"any" : data => true,
+	"any"               : data => true,
 
-	"not" : data => false,
+	"not"               : data => false,
 
-	"ascendDeck" : data => { //ascend data by step
+	"ascendDeck"        : data => { //ascend data by step
 
 		if(data.putDeck.length == 1) {
 			return true;
@@ -207,9 +207,9 @@ let readyPutRules = {
 
 		return ruleCorrect;
 	},
-	"ascentDeck" : data => readyPutRules.ascendDeck(data), // обратная совместимость
+	"ascentDeck"        : data => readyPutRules.ascendDeck(data), // обратная совместимость
 
-	"descendDeck" : data => { //ascend data by step
+	"descendDeck"       : data => { //ascend data by step
 
 		if(data.putDeck.length == 1) {
 			return true;
@@ -234,9 +234,9 @@ let readyPutRules = {
 
 		return ruleCorrect;
 	},
-	"descentDeck" : data => readyPutRules.descendDeck(data),
+	"descentDeck"       : data => readyPutRules.descendDeck(data),
 
-	"oneRankDeck" : data => {
+	"oneRankDeck"       : data => {
 
 		if(data.putDeck.length == 1) {
 			return true;
@@ -258,7 +258,7 @@ let readyPutRules = {
 		return ruleCorrect;
 	},
 
-	"oneSuitDeck" : data => {
+	"oneSuitDeck"       : data => {
 
 		if(data.putDeck.length == 1) {
 			return true;
@@ -280,7 +280,7 @@ let readyPutRules = {
 		return ruleCorrect;
 	},
 
-	"ascend" : data => {
+	"ascend"            : data => {
 
 		if(data.cards.length == 0) {
 			return true;
@@ -290,9 +290,9 @@ let readyPutRules = {
 
 		return da && da.down < da.up;
 	},
-	"ascent" : data => readyPutRules.ascend(data),
+	"ascent"            : data => readyPutRules.ascend(data),
 
-	"descend" : data => {
+	"descend"           : data => {
 
 		if(data.cards.length == 0) {
 			return true;
@@ -302,14 +302,12 @@ let readyPutRules = {
 
 		return da && da.down > da.up;
 	},
-	"descent" : data => readyPutRules.descend(data),
+	"descent"           : data => readyPutRules.descend(data),
 
-	"ascendOne" : data => { // one step
-		return readyPutRules.ascendNum(data, 1);
-	},
-	"ascentOne" : data => readyPutRules.ascendOne(data),
+	"ascendOne"         : data => readyPutRules.ascendNum(data, 1),
+	"ascentOne"         : data => readyPutRules.ascendOne(data),
 
-	"ascendNum" : (data, prop) => {
+	"ascendNum"         : (data, prop) => {
 
 		if(data.cards.length == 0) {
 			return true;
@@ -321,14 +319,12 @@ let readyPutRules = {
 
 		return da && num + da.down == da.up;
 	},
-	"ascentNum" : (data, prop) => readyPutRules.ascendNum(data, prop),
+	"ascentNum"         : (data, prop) => readyPutRules.ascendNum(data, prop),
 
-	"descendOne" : data => { // one step
-		return readyPutRules.descentNum(data, 1);
-	},
-	"descentOne" : data => readyPutRules.descendOne(data),
+	"descendOne"        : data => readyPutRules.descentNum(data, 1),
+	"descentOne"        : data => readyPutRules.descendOne(data),
 
-	"descendNum" : (data, prop) => {
+	"descendNum"        : (data, prop) => {
 
 		if(data.cards.length == 0) {
 			return true;
@@ -340,13 +336,11 @@ let readyPutRules = {
 
 		return da && da.down == num + da.up;
 	},
-	"descentNum" : (data, prop) => readyPutRules.descendNum(data, prop),
+	"descentNum"        : (data, prop) => readyPutRules.descendNum(data, prop),
 
-	"ascdescOne" : data => {
-		return readyPutRules.ascdescNum(data, 1);
-	},
+	"ascdescOne"        : data => readyPutRules.ascdescNum(data, 1),
 
-	"ascdescNum" : (data, prop) => {
+	"ascdescNum"        : (data, prop) => {
 
 		if(data.cards.length == 0) {
 			return true;
@@ -359,7 +353,7 @@ let readyPutRules = {
 		return da && Math.abs(da.down - da.up) == num;
 	},
 
-	"ascendNumLoop" : (data, prop) => {
+	"ascendNumLoop"     : (data, prop) => {
 
 		if(data.cards.length == 0) {
 			return true;
@@ -375,15 +369,15 @@ let readyPutRules = {
 				: du.down.value + num                              == du.up.value
 		);
 	},
-	"ascentNumLoop" : (data, prop) => readyPutRules.ascendNumLoop(data, prop),
+	"ascentNumLoop"     : (data, prop) => readyPutRules.ascendNumLoop(data, prop),
 
-	"descendNumLoop" : (data, prop) => {
+	"descendNumLoop"    : (data, prop) => {
 		// TODO
 		return false;
 	},
-	"descentNumLoop" : (data, prop) => readyPutRules.descendNumLoop(data, prop),
+	"descentNumLoop"    : (data, prop) => readyPutRules.descendNumLoop(data, prop),
 
-	"sum" : (data, prop) => {
+	"sum"               : (data, prop) => {
 
 		if(data.cards.length == 0) {
 			return true;
@@ -397,16 +391,9 @@ let readyPutRules = {
 		return _sum == num;
 	},
 
-	"sum14" : data => {
-		return readyPutRules.sum(data, 14);
-	},
+	"sum14"             : data => readyPutRules.sum(data, 14),
 
-	// TODO rules with params ??? or atom rules
-	// "sum" : (data, prop) => {} // rulename:prop -> sum:14
-
-	// query ?
-
-	"around" : data => { // {from, putDeck, cards}
+	"around"            : data => { // {from, putDeck, cards}
 
 		if(data.cards.length == 0) {
 			return true;
@@ -428,7 +415,7 @@ let readyPutRules = {
 		return false;
 	},
 
-	"notOneGroup" : (data, prop) => {
+	"notOneGroup"       : (data, prop) => {
 
 		let _result = data.from.deck.parent != data.to.parent;
 

@@ -43,6 +43,9 @@ const PARAMS = {
 };
 
 /*
+ * add
+ * getByName
+ *
  * addDeck
  * Fill
  * getDeckById
@@ -110,6 +113,102 @@ class groupClass {
 		this.deckIndex = [];
 
 		this.tags = data.tags;
+	}
+
+	static add(data) {
+
+		if(!data) {
+			return false;
+		}
+
+		if(!data.decks) {
+			return false;
+		}
+
+		let id = 'group_' + common.genId();
+
+		let _el_group = new groupClass(data, id);
+
+		if(data.decks) {
+
+			if(typeof data.decks == 'number') {
+				data.decks = {
+					"generator" : {
+						"type"  : 'count'   ,
+						"count" : data.decks
+					}
+				};
+			}
+
+			if(data.decks.generator) {
+
+				if(data.decks.generator.type) {
+
+					if(groupGenerator[data.decks.generator.type]) {
+
+						data.decks = groupGenerator[data.decks.generator.type](_el_group, data.decks.generator);
+					} else {
+						console.warn('Deck generator type "' + data.decks.generator.type + '" not found.');
+						return;
+					}
+				} else {
+					console.warn('Deck generator type is null.');
+					return;
+				};
+
+				data.placement = null;
+
+			}
+
+			// relations TO <-> FROM
+			// if( data.backRelations ) TODO
+			for(let to in data.decks) {
+
+				for(let relId in data.decks[to].relations) {
+
+					let _relation = null;
+					try {
+						_relation = Object.assign({}, data.decks[to].relations[relId]);
+					} catch(e) {
+						_relation = data.decks[to].relations[relId];
+					}
+
+					// TODO обратные связи
+					// затирают прямы связи в IE
+					// for(let from in data.decks) {
+
+					// 	if(data.decks[from].name == _relation.to) {
+					// 		_relation.to = null;
+					// 		_relation.from = data.decks[to].name;
+					// 		data.decks[from].relations.push(_relation)
+					// 	}
+					// }
+				}
+			}
+
+			for(let d in data.decks) {
+				_el_group.addDeck(data.decks[d]);
+			};
+		}
+
+		let _elements = share.get('elements');
+		_elements[id] = _el_group;
+		share.set('elements', _elements);
+
+		// fill group
+		if(data && data.fill) {
+
+			let _checkFillDeck = data.fill.length;
+			if(_checkFillDeck) {
+				_el_group.Fill(data.fill);
+			}
+		}
+
+		return _el_group;
+	}
+
+	static getByName(name) {
+		return common.getElementsByName(name, 'group')[0];
 	}
 
 	// Add deck to group
@@ -328,104 +427,4 @@ class groupClass {
 	}
 }
 
-// add group
-
-let add = data => {
-
-	if(!data) {
-		return false;
-	}
-
-	if(!data.decks) {
-		return false;
-	}
-
-	let id = 'group_' + common.genId();
-
-	let _el_group = new groupClass(data, id);
-
-	if(data.decks) {
-
-		if(typeof data.decks == 'number') {
-			data.decks = {
-				"generator" : {
-					"type"  : 'count'   ,
-					"count" : data.decks
-				}
-			};
-		}
-
-		if(data.decks.generator) {
-
-			if(data.decks.generator.type) {
-
-				if(groupGenerator[data.decks.generator.type]) {
-
-					data.decks = groupGenerator[data.decks.generator.type](_el_group, data.decks.generator);
-				} else {
-					console.warn('Deck generator type "' + data.decks.generator.type + '" not found.');
-					return;
-				}
-			} else {
-				console.warn('Deck generator type is null.');
-				return;
-			};
-
-			data.placement = null;
-
-		}
-
-		// relations TO <-> FROM
-		// if( data.backRelations ) TODO
-		for(let to in data.decks) {
-
-			for(let relId in data.decks[to].relations) {
-
-				let _relation = null;
-				try {
-					_relation = Object.assign({}, data.decks[to].relations[relId]);
-				} catch(e) {
-					_relation = data.decks[to].relations[relId];
-				}
-
-				// TODO обратные связи
-				// затирают прямы связи в IE
-				// for(let from in data.decks) {
-
-				// 	if(data.decks[from].name == _relation.to) {
-				// 		_relation.to = null;
-				// 		_relation.from = data.decks[to].name;
-				// 		data.decks[from].relations.push(_relation)
-				// 	}
-				// }
-			}
-		}
-
-		for(let d in data.decks) {
-			_el_group.addDeck(data.decks[d]);
-		};
-	}
-
-	let _elements = share.get('elements');
-	_elements[id] = _el_group;
-	share.set('elements', _elements);
-
-	// fill group
-	if(data && data.fill) {
-
-		let _checkFillDeck = data.fill.length;
-		if(_checkFillDeck) {
-			_el_group.Fill(data.fill);
-		}
-	}
-
-	return _el_group;
-};
-
-// TODO rename to "getByName"
-let getByName = name => common.getElementsByName(name, 'group')[0];
-
-export default {
-	"getByName" : getByName,
-	"add"       : add
-};
+export default groupClass;

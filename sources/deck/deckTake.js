@@ -2,7 +2,7 @@
 
 import share     from 'share'    ;
 import defaults  from 'defaults' ;
-import common    from 'common'   ;
+// import common    from 'common'   ;
 
 import takeRules from 'takeRules';
 
@@ -37,21 +37,22 @@ export default (deck, cardId) => {
 
 		if(cards[i].id == cardId) {
 
+			let _card = cards[i];
 			cardIndex = i | 0;
-			cardName  = cards[i].name;
+			cardName  = _card.name;
 
-			let _name = common.validateCardName(cardName);
+			// let _name = common.validateCardName(cardName);
 
-			rulesCorrect = rulesCorrect && _name;
+			// rulesCorrect = rulesCorrect && _name;
 
-			if(_name) {
-				cardSuit = _name.suit;
-				cardRank = _name.rank;
-			}
+			// if(_name) {
+			cardSuit = _card.suit;
+			cardRank = _card.rank;
+			// }
 
 			rulesCorrect = rulesCorrect && (
-				!cards[i].flip                         &&
-				 cards[i].flip == defaults.canMoveFlip
+				!_card.flip                         &&
+				 _card.flip == defaults.canMoveFlip
 			);
 		}
 

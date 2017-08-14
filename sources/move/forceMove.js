@@ -51,7 +51,7 @@ let forceMove = ({from, to, deck, flip, callback, steps, save, addStep}) => { //
 	// let deckFromCards = deckFrom.cards;
 	let deckFromCards = deckFrom.getCards();
 
-	// let details = "";
+	let details = "";
 
 	for(let i in deckFromCards) {
 
@@ -66,7 +66,7 @@ let forceMove = ({from, to, deck, flip, callback, steps, save, addStep}) => { //
 
 				// console.warn('forceMove:check:false', deckFrom.name, deckTo.name, deckFromCards[i].name, deck[_index]);
 
-				// details = `check->false, _index: ${_index}, i: ${i}, ${deckFromCards[i].name} != ${deck[_index]}, deckFromCards: ${deckFromCards.map(e => e.name)}, deck: ${deck}`;
+				details = `check->false, _index: ${_index}, i: ${i}, ${deckFromCards[i].name} != ${deck[_index]}, deckFromCards: ${deckFromCards.map(e => e.name)}, deck: ${deck}`;
 
 				check = false;
 			}
@@ -203,8 +203,8 @@ let forceMove = ({from, to, deck, flip, callback, steps, save, addStep}) => { //
 
 		event.dispatch('moveDragDeck', moveDragDeckParams);
 	} else {
-		console.warn('forceMove:Ход невозможен', from, to); // , "Details:", details, _counter, {from, to, deck, flip, steps, save});
-		// event.dispatch('solitaire_log');
+		console.warn('forceMove:Ход невозможен', from, to, "Details:", details, _counter, {from, to, deck, flip, steps, save});
+		event.dispatch('solitaire_log');
 	}
 };
 

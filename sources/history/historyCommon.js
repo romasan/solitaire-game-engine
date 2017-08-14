@@ -54,7 +54,7 @@ event.listen('saveSteps', e => {
 
 event.listen('doHistory', e => {
 
-	// console.groupCollapsed('DO HISTORY');
+	console.groupCollapsed('DO HISTORY');
 
 	// common.animationOff();
 	if(!e || !e.data) {
@@ -67,9 +67,9 @@ event.listen('doHistory', e => {
 	// console.log('doHistory:start');
 	for(let i in e.data) {
 
-		share.set('inHistory', true);
+		// share.set('noSave', true);
 		event.dispatch('redo', e.data[i]);
-		share.set('inHistory', false);
+		// share.set('noSave', false);
 
 		if(
 			!redoAdvanced.handle(e.data[i][0]) &&
@@ -93,7 +93,7 @@ event.listen('doHistory', e => {
 
 	// for(let deckIndex in _decks) {}
 
-	// console.groupEnd();
+	console.groupEnd();
 });
 
 event.listen('scanAttempts', data => {

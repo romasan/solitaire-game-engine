@@ -1,6 +1,6 @@
 'use strict';
 
-export default deck => {// {deck}
+export default deck => { // deckClass
 
 	let prev = deck.getRelationsByName('beside', {
 		"from" : null,

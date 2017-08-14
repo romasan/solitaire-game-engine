@@ -6,6 +6,7 @@ import defaults from 'defaults';
  * shuffleArray
  * genType
  * genTypes
+ * deckGenerator
  */
 
 let shuffleArray = deck => {
