@@ -33,14 +33,14 @@ event.listen('render:off', e => {
 
 event.listen('removeEl', data => {
 
-	if(share.get('nodraw')) {
+	// if(share.get('nodraw')) {
 
-		if(data && typeof data.callback == "function") {
-			data.callback();
-		}
+	// 	if(data && typeof data.callback == "function") {
+	// 		data.callback();
+	// 	}
 
-		return;
-	}
+	// 	return;
+	// }
 
 	let _elDomElement = share.get('domElement:' + data.id);
 

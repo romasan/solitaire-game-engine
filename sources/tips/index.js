@@ -119,9 +119,7 @@ let checkTips = e => {
 				let takeCardIndex   = _tips[i].from.deck.getCardIndexById(_tips[i].from.card.id);
 				let takeCardsLength = fromCards.length - takeCardIndex;
 
-				// let fromParentCard = fromCards.length > 0 && takeCardIndex  > 0 ? common.validateCardName(fromCards[takeCardIndex  - 1].name) : EMPTY;
 				let fromParentCard = fromCards.length > 0 && takeCardIndex  > 0 ? fromCards[takeCardIndex  - 1] : EMPTY;
-				// let   toParentCard =   toCards.length > 0                       ? common.validateCardName(  toCards[toCards.length - 1].name) : EMPTY;
 				let   toParentCard =   toCards.length > 0                       ?   toCards[toCards.length - 1] : EMPTY;
 
 				if(

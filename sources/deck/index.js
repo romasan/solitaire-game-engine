@@ -13,7 +13,7 @@ import paddingTypes           from 'paddingTypes'          ;
 import deckActions            from 'deckActions'           ;
 import Take                   from 'deckTake'              ;
 import Put                    from 'deckPut'               ;
-import genCardByName          from 'genCardByName'         ;
+import Card                   from 'card'                  ;
 import Group                  from 'group'                 ;
 
 import getDecks               from 'getDecks'              ;
@@ -677,7 +677,7 @@ class deckClass {
 
 	// создать карту
 	genCardByName(name, last) {
-		return genCardByName(this, name, last);
+		Card.genCardByName(this, name, last);
 	}
 
 	hide() {

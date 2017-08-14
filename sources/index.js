@@ -57,7 +57,7 @@ exports.init = gameConfig => {
 	event.clearByTag(event.tags.inGame);
 	event.setTag    (event.tags.inGame);
 
-	Field.clear();
+	// Field.clear();
 	Field.create(gameConfig);
 
 	if(firstInit) {

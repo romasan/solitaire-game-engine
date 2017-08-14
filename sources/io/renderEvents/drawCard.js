@@ -115,7 +115,7 @@ event.listen('unflipCard', card => {
 	let el = share.get('domElement:' + card.id);
 
 	if(
-		el                   &&
+		el                  &&
 		el.hasClass('flip')
 	) {
 		el.removeClass('flip');
@@ -124,11 +124,11 @@ event.listen('unflipCard', card => {
 
 event.listen('removeCardElements', e => {
 
-	// let item = null;
+	let item = null;
 
-	// while(item = document.getElementsByClassName('card')[0]) {
-	//     item.remove();
-	// }
+	while(item = document.getElementsByClassName('card')[0]) {
+		item.remove();
+	}
 })
 
 // let specialStepMark = null;

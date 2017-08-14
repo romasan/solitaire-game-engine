@@ -1,6 +1,5 @@
 'use strict';
 
-import common   from 'common'  ;
 import defaults from 'defaults';
 
 /*
@@ -166,8 +165,8 @@ let winCheckRules = {
 			for(let cardIndex in cards) {
 				if(cardIndex > 0) {
 
-					let down = common.validateCardName(cards[(cardIndex | 0) - 1].name),
-					      up = common.validateCardName(cards[(cardIndex | 0)]    .name);
+					let down = cards[(cardIndex | 0) - 1],
+					      up = cards[(cardIndex | 0)]    ;
 
 					let cardsRankS = defaults.card.ranks;
 
@@ -258,7 +257,7 @@ let winCheckRules = {
 
 			let topCard = deck.getTopCard();
 
-			let topCardRank = common.validateCardName(topCard.name).rank;
+			let topCardRank = topCard.rank;
 
 			if(
 				typeof topCardRank != 'undefined'                                  &&
@@ -279,7 +278,7 @@ let winCheckRules = {
 
 			let topCard = deck.getTopCard();
 
-			let topCardRank = common.validateCardName(topCard.name).rank;
+			let topCardRank = topCard.rank;
 
 			if(
 				typeof topCardRank != 'undefined'                                  &&

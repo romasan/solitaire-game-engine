@@ -40,14 +40,10 @@ export default (deck, cardId) => {
 			cardIndex = i | 0;
 			cardName  = _card.name;
 
-			// let _name = common.validateCardName(cardName);
-
-			// rulesCorrect = rulesCorrect && _name;
-
-			// if(_name) {
-			cardSuit = _card.suit;
-			cardRank = _card.rank;
-			// }
+			if(_card) {
+				cardSuit = _card.suit;
+				cardRank = _card.rank;
+			}
 
 			rulesCorrect = rulesCorrect && (
 				!_card.flip                         &&

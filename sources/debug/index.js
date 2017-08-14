@@ -8,7 +8,7 @@ import common        from 'common'       ;
 import field         from 'field'        ;
 import deckGenerator from 'deckGenerator';
 import elRender      from 'elRender'     ;
-import _storage       from 'storage'     ;
+import _storage      from 'storage'      ;
 import stateManager  from 'stateManager' ;
 import history       from 'history'      ;
 import mapCommon     from 'mapCommon'    ;
@@ -25,13 +25,13 @@ let triggerMouseEvent = (node, eventName, x, y) => {
 
 		// let _el = document.createElement('div');
 		// _el.style.background = eventName == 'click' ? 'red' : eventName == 'mousemove' ? 'blue' : 'yellow';
-		// _el.style.position = 'absolute';
-		// _el.style.width = (eventName == 'mouseup' ? '3' : '2') + 'px';
-		// _el.style.height = '2px';
-		// _el.style.left = ((x | 0) - 1) + 'px';
-		// _el.style.top = ((y | 0) - 1) + 'px';
+		// _el.style.position   = 'absolute';
+		// _el.style.width      = (eventName == 'mouseup' ? '3' : '2') + 'px';
+		// _el.style.height     = '2px';
+		// _el.style.left       = ((x | 0) - 1) + 'px';
+		// _el.style.top        = ((y | 0) - 1) + 'px';
 		// _el.style['z-index'] = '999';
-		// _el.className = 'dot';
+		// _el.className        = 'dot';
 		// document.body.appendChild(_el);
 	} catch(e) {}
 };
@@ -97,12 +97,15 @@ let play = i => {
 };
 
 let export_record = e => {
-	prompt("export", JSON.stringify({"storage":_zip(storage)}));
+	prompt("export", JSON.stringify({
+		"storage" : _zip(storage)
+	}));
 };
 
 let import_record = e => {
 	storage = _unzip(JSON.parse(prompt("import")).storage);
 };
+
 try {
 	document.addEventListener("DOMContentLoaded", e => {
 
@@ -449,5 +452,4 @@ export default {
 	history      ,
 	mapCommon    ,
 	deckGenerator
-	// validateCardName : common.validateCardName
 };

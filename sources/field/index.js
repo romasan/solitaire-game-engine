@@ -38,6 +38,8 @@ class Field {
 
 	create(data) {
 
+		this.clear();
+
 		// console.log('Field:create');
 
 		this.homeGroups = data.homeGroups ? data.homeGroups : [];
@@ -223,6 +225,8 @@ class Field {
 
 	clear() {
 
+		// console.log('Field:clear');
+
 		let _elements = share.get('elements');
 
 		for(let i in _elements) {
@@ -234,7 +238,7 @@ class Field {
 			}
 		}
 
-		event.dispatch('removeCardElements');
+		// event.dispatch('removeCardElements');
 
 		share.set('elements', {});
 	}
