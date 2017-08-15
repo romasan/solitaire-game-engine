@@ -1,10 +1,10 @@
 'use strict';
 
-import share    from 'share'   ;
-import event    from 'event'   ;
-import defaults from 'defaults';
+import share    from '../common/share'   ;
+import event    from '../common/event'   ;
+import defaults from '../common/defaults';
 
-import storage  from 'storage' ;
+import storage  from '../common/storage' ;
 
 export default e => {
 

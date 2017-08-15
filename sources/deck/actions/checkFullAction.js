@@ -1,9 +1,9 @@
 'use strict';
 
-import event      from 'event'     ;
+import event      from '../../common/event';
 
-import Group      from 'group'     ;
-import deckAction from 'deckAction';
+import Group      from '../../group'       ;
+import deckAction from './deckAction'      ;
 
 class checkFullAction extends deckAction {
 

@@ -1,10 +1,10 @@
 'use strict';
 
-import event    from 'event'   ;
-import share    from 'share'   ;
+import event    from '../../common/event';
+import share    from '../../common/share';
 
-import elRender from 'elRender';
-import Tips     from 'tips'    ;
+import elRender from '../dom/elRender'   ;
+import Tips     from '../../tips'        ;
 
 event.listen('showTip', data => {
 

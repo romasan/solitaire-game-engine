@@ -1,19 +1,19 @@
 'use strict';
 
-import share         from 'share'        ;
-import event         from 'event'        ;
-import defaults      from 'defaults'     ;
-import common        from 'common'       ;
+import common        from '../common'                    ;
+import share         from '../common/share'              ;
+import event         from '../common/event'              ;
+import defaults      from '../common/defaults'           ;
 
-import field         from 'field'        ;
-import deckGenerator from 'deckGenerator';
-import elRender      from 'elRender'     ;
-import _storage      from 'storage'      ;
-import stateManager  from 'stateManager' ;
-import history       from 'history'      ;
-import mapCommon     from 'mapCommon'    ;
+import field         from '../field'                     ;
+import deckGenerator from '../deck/deckGenerator'        ;
+import elRender      from '../io/dom/elRender'           ;
+import _storage      from '../common/storage'            ;
+import stateManager  from '../common/stateManager'       ;
+import history       from '../history'                   ;
+import mapCommon     from '../group/generators/mapCommon';
 
-import 'debug.scss'                      ;
+import './debug.scss'                                    ;
 
 let solitaireField = null;
 

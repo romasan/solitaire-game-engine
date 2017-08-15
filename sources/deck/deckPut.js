@@ -1,11 +1,11 @@
 'use strict';
 
-import share    from 'share'   ;
-import defaults from 'defaults';
+import share    from '../common/share'   ;
+import defaults from '../common/defaults';
 
-import Field    from 'field'   ;
-import Deck     from 'deck'    ;
-import putRules from 'putRules';
+import Field    from '../field'          ;
+import Deck     from './'                ;
+import putRules from './putRules'        ;
 
 export default (deck, putDeck) => {
 

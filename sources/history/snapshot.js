@@ -1,8 +1,8 @@
 'use strict';
 
-import common   from 'common'  ;
+import common   from '../common'  ;
 
-import getDecks from 'getDecks';
+import getDecks from '../deck/getDecks';
 
 /*
  * get

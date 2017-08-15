@@ -1,19 +1,19 @@
 'use strict';
 
-import event          from 'event'               ;
-import share          from 'share'               ;
-import defaults       from 'defaults'            ;
-import common         from 'common'              ;
+import event          from '../common/event'               ;
+import share          from '../common/share'               ;
+import defaults       from '../common/defaults'            ;
+import common         from '../common'                     ;
 
 // Actions
-import deal           from 'dealAction'          ;
-import kickAction     from 'kickAction'          ;
-import stepsAround    from 'stepsAroundAction'   ;
-import changeStepType from 'changeStepTypeAction';
-import lock           from 'lockAction'          ;
-import unlock         from 'unlockAction'        ;
-import checkFull      from 'checkFullAction'     ;
-import roller         from 'rollerAction'        ;
+import deal           from './actions/dealAction'          ;
+import kickAction     from './actions/kickAction'          ;
+import stepsAround    from './actions/stepsAroundAction'   ;
+import changeStepType from './actions/changeStepTypeAction';
+import lock           from './actions/lockAction'          ;
+import unlock         from './actions/unlockAction'        ;
+import checkFull      from './actions/checkFullAction'     ;
+import roller         from './actions/rollerAction'        ;
 
 let _actions = {
 	"deal"           : deal          ,

@@ -1,9 +1,9 @@
 'use strict';
 
-import defaults  from 'defaults' ;
+import defaults  from '../common/defaults'                     ;
 
-import Deck      from 'deck'     ;
-import getBeside from 'getBeside';
+import Deck      from './'                                     ;
+import getBeside from '../group/generators/relations/getBeside';
 
 /*
 

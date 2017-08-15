@@ -1,13 +1,13 @@
 'use strict';
 
-import event      from 'event'     ;
-import share      from 'share'     ;
-import defaults   from 'defaults'  ;
-import common     from 'common'    ;
+import event      from '../../common/event'   ;
+import share      from '../../common/share'   ;
+import defaults   from '../../common/defaults';
+import common     from '../../common'         ;
 
-import forceMove  from 'forceMove' ;
-import deckAction from 'deckAction';
-import History    from 'history'   ;
+import forceMove  from '../../move/forceMove' ;
+import deckAction from './deckAction'         ;
+import History    from '../../history'        ;
 
 const stepType = 'dealStepType';
 

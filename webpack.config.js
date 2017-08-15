@@ -19,33 +19,33 @@ let _index = 1;
 
 let version = parseInt('9' + _json.version.split('.').map(e => parseInt(e).toString(8)).join(9));
 
-let directoryTree = require('directory-tree');
-let getTree = data => {
+// let directoryTree = require('directory-tree');
+// let getTree = data => {
 
-	let pathTree = [];
+// 	let pathTree = [];
 
-	for(let i in data.children) {
-		if(data.children[i].children) {
-			pathTree.push('./' + data.children[i].path);
-			pathTree = [...pathTree, ...getTree(data.children[i])];
-		}
-	}
+// 	for(let i in data.children) {
+// 		if(data.children[i].children) {
+// 			pathTree.push('./' + data.children[i].path);
+// 			pathTree = [...pathTree, ...getTree(data.children[i])];
+// 		}
+// 	}
 
-	return pathTree;
-};
-let dirTree = ['./sources/', ...getTree(directoryTree('./sources/'))];
+// 	return pathTree;
+// };
+// let dirTree = ['./sources/', ...getTree(directoryTree('./sources/'))];
 
 let config = {
-	"entry": "index",
+	"entry": "./sources/index",
 	"output": {
 		"path"     : "./frontend/js/",
 		"filename" : "SolitaireEngine.js",
 		"library"  : "SolitaireEngine"
 	},
-	"resolve": {
-		"modulesDirectories" : dirTree,
-		"extensions"         : ['', '.js']
-	},
+	// "resolve": {
+	// 	"modulesDirectories" : dirTree,
+	// 	"extensions"         : ['', '.js']
+	// },
 	"module": {
 		"loaders": [
 			{

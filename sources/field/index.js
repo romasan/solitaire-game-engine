@@ -1,15 +1,15 @@
 'use strict';
 
-import share        from 'share'       ;
-import event        from 'event'       ;
-import defaults     from 'defaults'    ;
-import common       from 'common'      ;
+import share        from '../common/share'          ;
+import event        from '../common/event'          ;
+import defaults     from '../common/defaults'       ;
+import common       from '../common'                ;
 
-import Group        from 'group'       ;
-import Deck         from 'deck'        ;
-import Tips         from 'tips'        ;
-import addAutoSteps from 'addAutoSteps';
-import storage      from 'storage'     ;
+import Group        from '../group'                 ;
+import Deck         from '../deck'                  ;
+import Tips         from '../tips'                  ;
+import addAutoSteps from '../autosteps/addAutoSteps';
+import storage      from '../common/storage'        ;
 
 // Model
 // let values = {

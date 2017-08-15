@@ -1,6 +1,6 @@
 'use strict';
 
-import mapCommon from 'mapCommon';
+import mapCommon from '../mapCommon';
 
 export default data => {// {x, y, map, mapSize, el, data}
 

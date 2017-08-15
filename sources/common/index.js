@@ -1,20 +1,20 @@
 'use strict';
 
-import share              from 'share'             ;
-import event              from 'event'             ;
-import defaults           from 'defaults'          ;
-import stateManager       from 'stateManager'      ;
+import share              from './share'                          ;
+import event              from './event'                          ;
+import defaults           from './defaults'                       ;
+import stateManager       from './stateManager'                   ;
 
-import Tips               from 'tips'              ;
-import Field              from 'field'             ;
-import History            from 'history'           ;
+import Tips               from '../tips'                          ;
+import Field              from '../field'                         ;
+import History            from '../history'                       ;
 
-import drawPreferences    from 'drawPreferences'   ;
-import preferencesEvents  from 'preferencesEvents' ;
-import defaultPreferences from 'defaultPreferences';
-import specialStep        from 'specialStep'       ;
-import showFlipCardOnMove from 'showFlipCardOnMove';
-import elRender           from 'elRender'          ;
+import drawPreferences    from '../preferences/drawPreferences'   ;
+import preferencesEvents  from '../preferences/preferencesEvents' ;
+import defaultPreferences from '../preferences/defaultPreferences';
+import specialStep        from '../history/specialStep'           ;
+import showFlipCardOnMove from '../tips/showFlipCardOnMove'       ;
+import elRender           from '../io/dom/elRender'               ;
 
 /*
  * Listeners:
@@ -309,16 +309,17 @@ let toggleSpecialStepMode = data => {
 // event.listen('toggleSpecialStepMode', toggleSpecialStepMode);
 
 export default {
-	"isCurLock"         : isCurLock        ,
-	"curLock"           : curLock          ,
-	"curUnLock"         : curUnLock        ,
-	"getElements"       : getElements      ,
-	"getElementById"    : getElementById   ,
-	"getElementsByName" : getElementsByName,
-	"getElementByName"  : getElementByName ,
-	"getElementsByType" : getElementsByType,
-	"genId"             : genId            ,
-	"animationOn"       : animationOn      ,
-	"animationOff"      : animationOff     ,
-	"animationDefault"  : animationDefault
+	stateManager     ,
+	isCurLock        ,
+	curLock          ,
+	curUnLock        ,
+	getElements      ,
+	getElementById   ,
+	getElementsByName,
+	getElementByName ,
+	getElementsByType,
+	genId            ,
+	animationOn      ,
+	animationOff     ,
+	animationDefault
 };

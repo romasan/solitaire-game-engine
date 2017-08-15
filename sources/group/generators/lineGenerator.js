@@ -4,7 +4,7 @@
 
 'use strict';
 
-import relationsGenerator from 'relationsGenerator';
+import relationsGenerator from './relations/relationsGenerator';
 
 export default (group, data) => {
 

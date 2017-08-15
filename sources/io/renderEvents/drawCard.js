@@ -1,12 +1,12 @@
 'use strict';
 
-import share    from 'share'   ;
-import event    from 'event'   ;
-import defaults from 'defaults';
-import common   from 'common'  ;
+import share    from '../../common/share'   ;
+import event    from '../../common/event'   ;
+import defaults from '../../common/defaults';
+import common   from '../../common'         ;
 
-import Field    from 'field'   ;
-import elRender from 'elRender';
+import Field    from '../../field'          ;
+import elRender from '../dom/elRender'      ;
 
 /*
  * addCardEl

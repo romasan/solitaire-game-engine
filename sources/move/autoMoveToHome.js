@@ -1,11 +1,11 @@
 'use strict';
 
-import event  from 'event' ;
-import share  from 'share' ;
-import common from 'common';
+import event  from '../common/event';
+import share  from '../common/share';
+import common from '../common'      ;
 
-import Field  from 'field' ;
-import Tips   from 'tips'  ;
+import Field  from '../field'       ;
+import Tips   from '../tips'        ;
 
 let checkAutoMoveToHomeOpenDecks = e => {
 

@@ -4,10 +4,10 @@
 
 'use strict';
 
-import defaults           from 'defaults'          ;
+import defaults           from '../../common/defaults'         ;
 
-import relationsGenerator from 'relationsGenerator';
-import mapCommon          from 'mapCommon'         ;
+import relationsGenerator from './relations/relationsGenerator';
+import mapCommon          from './mapCommon'                   ;
 
 // let getName = (el)=>{
 // 	return typeof el == "string" ? el : typeof el != "undefined" && typeof el.name == "string" ? el.name : null;

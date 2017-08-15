@@ -1,13 +1,13 @@
 'use strict';
 
-import event         from 'event'        ;
-import share         from 'share'        ;
-import common        from 'common'       ;
-import defaults      from 'defaults'     ;
+import event         from '../common/event'   ;
+import share         from '../common/share'   ;
+import defaults      from '../common/defaults';
+import common        from '../common'         ;
 
-import undo          from 'undo'         ;
-import redo          from 'redo'         ;
-import historyCommon from 'historyCommon';
+import undo          from './undo'            ;
+import redo          from './redo'            ;
+import historyCommon from './historyCommon'   ;
 
 /*
  * reset

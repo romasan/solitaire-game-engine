@@ -1,6 +1,6 @@
 'use strict';
 
-import deckGenerator  from 'deckGenerator' ;
+import deckGenerator from '../deck/deckGenerator';
 
 let nextCards = deckGenerator().map(e => [e]);
 

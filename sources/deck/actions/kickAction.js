@@ -1,11 +1,11 @@
 'use strict';
 
-import event      from 'event'     ;
-import share      from 'share'     ;
-import common     from 'common'    ;
-import defaults   from 'defaults'  ;
+import event      from '../../common/event'   ;
+import share      from '../../common/share'   ;
+import common     from '../../common'         ;
+import defaults   from '../../common/defaults';
 
-import deckAction from 'deckAction';
+import deckAction from './deckAction'         ;
 
 const stepType = 'kickStepType';
 

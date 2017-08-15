@@ -1,6 +1,6 @@
 'use strict';
 
-import fallAutoStep from 'fallAutoStep';
+import fallAutoStep from './fallAutoStep';
 
 const autosteps = {
 	fallAutoStep

@@ -4,12 +4,12 @@
 
 // export default jquery;
 
-import defaults from 'defaults'    ;
-import share    from 'share'       ;
-import event    from 'event'       ;
+import defaults from '../../common/defaults';
+import share    from '../../common/share'   ;
+import event    from '../../common/event'   ;
 
-import elClass    from 'elClass'   ;
-import allElClass from 'allElClass';
+import elClass    from './elClass'          ;
+import allElClass from './allElClass'       ;
 
 share.set('animatedElements'     , 0        );
 share.set('animatedElementsStack', []       );

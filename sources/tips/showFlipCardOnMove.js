@@ -1,9 +1,9 @@
 'use strict';
 
-import event  from 'event' ;
-import common from 'common';
+import event  from '../common/event';
+import common from '../common'      ;
 
-import Tips   from 'tips'  ;
+import Tips   from './'             ;
 
 let usedCardId = null;
 

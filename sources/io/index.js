@@ -1,25 +1,25 @@
 'use strict';
 
-import event          from 'event'         ;
-import share          from 'share'         ;
-import common         from 'common'        ;
+import event          from '../common/event'              ;
+import share          from '../common/share'              ;
+import common         from '../common'                    ;
 
-import elRender       from 'elRender'      ;
-import inputs         from 'inputs'        ;
+import elRender       from './dom/elRender'               ;
+import inputs         from './inputs'                     ;
 
-import initField      from 'initField'     ;
-import drawDeck       from 'drawDeck'      ;
-import drawCard       from 'drawCard'      ;
-import drawTip        from 'drawTip'       ;
-import moveDragDeck   from 'moveDragDeck'  ;
-import moveCardBack   from 'moveCardBack'  ;
-import fieldThemesSet from 'fieldThemesSet';
+import initField      from './renderEvents/initField'     ;
+import drawDeck       from './renderEvents/drawDeck'      ;
+import drawCard       from './renderEvents/drawCard'      ;
+import drawTip        from './renderEvents/drawTip'       ;
+import moveDragDeck   from './renderEvents/moveDragDeck'  ;
+import moveCardBack   from './renderEvents/moveCardBack'  ;
+import fieldThemesSet from './renderEvents/fieldThemesSet';
 
 // styles DOM
-import 'common.scss'                       ;
-import 'default_theme.scss'                ;
-import 'alternative_theme.scss'            ;
-import 'environment.css'                   ;
+import '../styles/common.scss'                            ;
+import '../styles/default_theme.scss'                     ;
+import '../styles/alternative_theme.scss'                 ;
+import '../styles/environment.css'                        ;
 
 share.set('nodraw', false);
 

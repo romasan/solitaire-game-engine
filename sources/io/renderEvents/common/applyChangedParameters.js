@@ -1,6 +1,6 @@
 'use strict';
 
-import defaults from 'defaults';
+import defaults from '../../../common/defaults';
 
 let applyChangedParameters = (data, rewrite = true) => {
 

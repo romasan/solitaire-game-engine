@@ -1,14 +1,14 @@
 'use strict';
 
-import event          from 'event'         ;
-import share          from 'share'         ;
-import defaults       from 'defaults'      ;
-import common         from 'common'        ;
+import event          from '../common/event'   ;
+import share          from '../common/share'   ;
+import defaults       from '../common/defaults';
+import common         from '../common'         ;
 
-import Deck           from 'deck'          ;
-import groupFill      from 'groupFill'     ;
-import groupRedraw    from 'groupRedraw'   ;
-import groupGenerator from 'groupGenerator';
+import Deck           from '../deck'           ;
+import groupFill      from './groupFill'       ;
+import groupRedraw    from './groupRedraw'     ;
+import groupGenerator from './groupGenerator'  ;
 
 const PARAMS = {
 	"flip"             : { "type" : 'any' },

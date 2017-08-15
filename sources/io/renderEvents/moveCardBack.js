@@ -1,10 +1,10 @@
 'use strict';
 
-import event    from 'event'   ;
-import share    from 'share'   ;
-import common   from 'common'  ;
+import event    from '../../common/event';
+import share    from '../../common/share';
+import common   from '../../common'      ;
 
-import elRender from 'elRender';
+import elRender from '../dom/elRender'   ;
 
 // Move card to home
 event.listen('moveCardBack', data => {

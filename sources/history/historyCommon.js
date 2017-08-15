@@ -1,13 +1,13 @@
 'use strict'
 
-import event        from 'event'       ;
-import common       from 'common'      ;
-import share        from 'share'       ;
+import event        from '../common/event';
+import share        from '../common/share';
+import common       from '../common'      ;
 
-import Field        from 'field'       ;
-import history      from 'history'     ;
-import redoAdvanced from 'redoAdvanced';
-import snapshot     from 'snapshot'    ;
+import Field        from '../field'       ;
+import history      from './'             ;
+import redoAdvanced from './redoAdvanced' ;
+import snapshot     from './snapshot'     ;
 
 
 /*

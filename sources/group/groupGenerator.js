@@ -4,10 +4,10 @@
 
 'use strict';
 
-import   countGenerator from 'countGenerator'  ;
-import     fanGenerator from 'fanGenerator'    ;
-import     mapGenerator from 'mapGenerator'    ;
-import    lineGenerator from 'lineGenerator'   ;
+import countGenerator from './generators/countGenerator';
+import   fanGenerator from './generators/fanGenerator'  ;
+import   mapGenerator from './generators/mapGenerator'  ;
+import  lineGenerator from './generators/lineGenerator' ;
 // import rhombusGenerator from 'rhombusGenerator';
 // import   roundGenerator from 'roundGenerator'  ;
 

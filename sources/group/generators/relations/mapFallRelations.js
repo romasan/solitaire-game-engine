@@ -1,6 +1,6 @@
 'use strict';
 
-import mapCommon from 'mapCommon';
+import mapCommon from '../mapCommon';
 
 // map froup generator fall relations
 

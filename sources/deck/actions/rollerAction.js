@@ -1,12 +1,12 @@
 'use strict';
 
-import event      from 'event'     ;
-import share      from 'share'     ;
+import event      from '../../common/event';
+import share      from '../../common/share';
 
-import deckAction from 'deckAction';
-import Deck       from 'deck'      ;
-import History    from 'history'   ;
-import Atom       from 'atom'      ;
+import deckAction from './deckAction'      ;
+import Deck       from '../'               ;
+import History    from '../../history'     ;
+import Atom       from '../atom'           ;
 
 const defaultOpenCount = 3;
 

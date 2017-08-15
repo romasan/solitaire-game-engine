@@ -1,9 +1,9 @@
 'use strict';
 
-import event  from 'event' ;
-import common from 'common';
+import event  from '../common/event';
+import common from '../common'      ;
 
-import Deck   from 'deck'  ;
+import Deck   from '../deck'        ;
 
 let revokeLength = null;
 

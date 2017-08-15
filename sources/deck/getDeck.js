@@ -1,6 +1,6 @@
 'use strict';
 
-import common from 'common';
+import common from '../common';
 
 export default (name, groupName) => {
 

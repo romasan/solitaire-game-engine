@@ -1,9 +1,9 @@
 'use strict';
 
-import share     from 'share'    ;
-import defaults  from 'defaults' ;
+import share     from '../common/share'   ;
+import defaults  from '../common/defaults';
 
-import takeRules from 'takeRules';
+import takeRules from './takeRules'       ;
 
 export default (deck, cardId) => {
 

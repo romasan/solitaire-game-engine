@@ -1,14 +1,14 @@
 'use strict';
 
-import event          from 'event'         ;
-import share          from 'share'         ;
-import defaults       from 'defaults'      ;
+import event          from '../common/event'       ;
+import share          from '../common/share'       ;
+import defaults       from '../common/defaults'    ;
 
-import allToAll       from 'allToAll'      ;
-import bestTip        from 'bestTip'       ;
-import Deck           from 'deck'          ;
-import Field          from 'field'         ;
-import autoMoveToHome from 'autoMoveToHome';
+import allToAll       from './allToAll'            ;
+import bestTip        from './bestTip'             ;
+import Deck           from '../deck'               ;
+import Field          from '../field'              ;
+import autoMoveToHome from '../move/autoMoveToHome';
 
 const EMPTY = "EMPTY";
 
