@@ -53,6 +53,8 @@ export default {
 	"showPrefFlipCard"    : true,
 	"showPrevAttempts"    : false,
 
+	"checkNextCards"      : false,
+
 	"inputParams" : {
 		"doubleClick" : false
 	},

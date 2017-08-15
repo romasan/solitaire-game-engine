@@ -79,13 +79,14 @@ class deckClass {
 
 		this.id = id;
 
-		let _parent_el   = Group.getByName(data.parent)                  ,
-		    _parent_name = _parent_el ? _parent_el.name : 'no_parent_'   ,
-		    _new_id      = _parent_el ? _parent_el.getDecks().length : id;
+		// let _parent_el   = Group.getByName(data.parent)                  ,
+		//     _parent_name = _parent_el ? _parent_el.name : 'no_parent_'   ,
+		// 	_new_id      = _parent_el ? _parent_el.getDecks().length : id;
+		let _parent_name = data.parent ? data.parent : 'no_parent';
 
 		this.name = typeof data.name == 'string' 
 			? data.name
-			: (_parent_name + '_' + _new_id);
+			: (_parent_name + '_' + id);
 
 		// console.log('Deck', id, this.name);
 
@@ -98,6 +99,7 @@ class deckClass {
 		this.autoCheckFlip    = typeof data.autoCheckFlip    == 'boolean' ? data.autoCheckFlip    : defaults.autoCheckFlip       ;
 		this.showPrefFlipCard = typeof data.showPrefFlipCard == 'boolean' ? data.showPrefFlipCard : share.get('showPrefFlipCard');
 		this.showPrevAttempts = typeof data.showPrevAttempts == 'boolean' ? data.showPrevAttempts : defaults.showPrevAttempts    ;
+		this.checkNextCards   = typeof data.checkNextCards   == 'boolean' ? data.checkNextCards   : defaults.checkNextCards    ;
 
 		this.data = {};
 
@@ -266,7 +268,7 @@ class deckClass {
 								paddingData = e.length > 1             // save method data
 									? e.slice(1).join(':')
 									: '';
-								return paddingTypes[name];             // use method(data.paddingType:)(:data.paddingType)
+								return paddingTypes[name];             // use method(data.paddingType)
 							}
 
 							return paddingTypes[defaults.paddingType]; // use default
@@ -362,6 +364,11 @@ class deckClass {
 		return _deck;
 	}
 
+	// /**
+	//   * Return deck by name from group named "groupName".
+    //   * @param name name of deck
+    //   * @param groupName name of group
+    //   */
 	static getDeck(name, groupName) {
 		return getDeck(name, groupName);
 	}
@@ -602,8 +609,7 @@ class deckClass {
 		}
 
 		// insert push deck after visible cards
-		this.cards.splice(visibleCardsCount, 0, ...deck); // TODO maybe concat faster than "..."?; is faster that concat+splices
-		// this.cards = this.cards.slice(0, visibleCardsCount).concat(deck, this.cards.slice(visibleCardsCount));
+		this.cards.splice(visibleCardsCount, 0, ...deck);
 	}
 
 	Pop(count, clearParent) {

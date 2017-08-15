@@ -8,6 +8,7 @@ import common     from '../../common'         ;
 import forceMove  from '../../move/forceMove' ;
 import deckAction from './deckAction'         ;
 import History    from '../../history'        ;
+import Deck       from '../'                  ;
 
 const stepType = 'dealStepType';
 

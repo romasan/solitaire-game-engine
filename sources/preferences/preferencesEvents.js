@@ -85,7 +85,6 @@ let saveParameters = pref => {
 
 export default e => {
 
-	// TODO переделать без jQuery
 	try {
 
 		// $('#bbParameters').click(onShowParameters);

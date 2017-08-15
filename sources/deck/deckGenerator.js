@@ -10,7 +10,7 @@ import defaults from '../common/defaults';
  */
 
 let shuffleArray = deck => {
-	for(let j, x, i = deck.length; i; j = Math.floor(Math.random() * i), x = deck[--i], deck[i] = deck[j], deck[j] = x) {};
+	for(let j, x, i = deck.length; i; j = Math.floor(Math.random() * i), x = deck[--i], deck[i] = deck[j], deck[j] = x);
 };
 
 let genType = (_cardsColors, _cardsRanks) => {

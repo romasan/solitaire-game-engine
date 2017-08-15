@@ -28,6 +28,7 @@ const PARAMS = {
 	"tags"             : { "type" : 'any' },
 	"showPrefFlipCard" : { "type" :  null },
 	"showPrevAttempts" : { "type" :  null },
+	"checkNextCards"   : { "type" :  null },
 	"save" : {
 		"type"    : 'boolean',
 		"default" : true
@@ -194,6 +195,7 @@ class groupClass {
 		let _elements = share.get('elements');
 		_elements[id] = _el_group;
 		share.set('elements', _elements);
+		console.log('>>>add group to share:', _el_group.name);
 
 		// fill group
 		if(data && data.fill) {

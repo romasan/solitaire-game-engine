@@ -9,6 +9,8 @@ import putRules from './putRules'        ;
 
 export default (deck, putDeck) => {
 
+	// console.log('deckPut:', putDeck);
+
 	let _stepType = share.get('stepType');
 
 	let rulesCorrect = true;
@@ -21,8 +23,8 @@ export default (deck, putDeck) => {
 	// Нестандартный ход (autosteps)
 	if(_stepType != defaults.stepType) {
 
-		rulesCorrect = rulesCorrect   &&
-			Field.autoSteps           &&
+		rulesCorrect = rulesCorrect    &&
+			Field.autoSteps            &&
 			Field.autoSteps[_stepType]
 				? Field.autoSteps[_stepType].manual({
 					"putDeck" : putDeck,

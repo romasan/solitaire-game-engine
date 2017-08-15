@@ -9,6 +9,7 @@ import bestTip        from './bestTip'             ;
 import Deck           from '../deck'               ;
 import Field          from '../field'              ;
 import autoMoveToHome from '../move/autoMoveToHome';
+import getNextCards   from './getNextCards'        ;
 
 const EMPTY = "EMPTY";
 
@@ -37,6 +38,8 @@ let _tips = [];
 let getTips = e => _tips;
 
 let checkTips = e => {
+
+	getNextCards();
 
 	if(share.get('noTips')) {
 		return false;

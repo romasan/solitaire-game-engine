@@ -113,78 +113,55 @@ try {
 
 		let drag = false;
 
-		document.body.addEventListener('mousedown', data => {
-			if(!record) {return;}
-			drag = true;
-			let time = Date.now();
-			if(!solitaireField) {
-				solitaireField = document.getElementsByClassName('solitaireField')[0];
-			}
-			let field = solitaireField.getBoundingClientRect();
-			storage.push({
-				time : time - startTime,
-				name : 'mousedown',
-				clientX : (data.clientX - field.left | 0),
-				clientY : (data.clientY - field.top | 0)
-			});
-			startTime = time;
-		});
+		let mouseEvents = [
+			{"event": 'mousedown', "setDrag" : true     },
+			{"event": 'mouseup'  , "setDrag" : false    },
+			{"event": 'click'                           },
+			{"event": 'mousemove', "exitOnNoDrag" : true}
+		];
 
-		document.body.addEventListener('mouseup', data => {
-			if(!record) {return;}
-			drag = false;
-			let time = Date.now();
-			if(!solitaireField) {
-				solitaireField = document.getElementsByClassName('solitaireField')[0];
-			}
-			let field = solitaireField.getBoundingClientRect();
-			storage.push({
-				time : time - startTime,
-				name : 'mouseup',
-				clientX : (data.clientX - field.left | 0),
-				clientY : (data.clientY - field.top | 0)
-			});
-			startTime = time;
-		});
+		for (let i in mouseEvents) {
 
-		document.body.addEventListener('click', data => {
-			if(!record) {return;}
-			drag = false;
-			let time = Date.now();
-			if(!solitaireField) {
-				solitaireField = document.getElementsByClassName('solitaireField')[0];
-			}
-			let field = solitaireField.getBoundingClientRect();
-			storage.push({
-				time : time - startTime,
-				name : 'click',
-				clientX : (data.clientX - field.left | 0),
-				clientY : (data.clientY - field.top | 0)
-			});
-			startTime = time;
-		});
+			let mouseEvent = mouseEvents[i];
 
-		document.body.addEventListener('mousemove', data => {
-			if(!record || !drag) {return;}
-			let time = Date.now();
-			if(!solitaireField) {
-				solitaireField = document.getElementsByClassName('solitaireField')[0];
-			}
-			let field = solitaireField.getBoundingClientRect();
-			storage.push({
-				time : time - startTime,
-				name : 'mousemove',
-				clientX : (data.clientX - field.left | 0),
-				clientY : (data.clientY - field.top | 0)
-			});
-			startTime = time;
-		});
+			document.body.addEventListener(mouseEvent.event, data => {
+
+				if (!record) {
+					return;
+				}
+
+				if (mouseEvent.exitOnNoDrag && !drag) {
+					return;
+				}
+
+				if (typeof mouseEvent.setDrag == "boolean") {
+					drag = mouseEvent.setDrag;
+				}
+
+				let time = Date.now();
+
+				if (!solitaireField) {
+					solitaireField = document.getElementsByClassName('solitaireField')[0];
+				}
+
+				let field = solitaireField.getBoundingClientRect();
+
+				storage.push({
+					time : time - startTime,
+					name : mouseEvent.event,
+					clientX : (data.clientX - field.left | 0),
+					clientY : (data.clientY - field.top  | 0)
+				});
+
+				startTime = time;
+			})
+		}
 
 		// Firebug
 
-		if(document.location.hash == '#debug') {
+		if (document.location.hash == '#debug') {
 			(function(F, i, r, e, b, u, g, L, I, T, E) {
-				if(F.getElementById(b)) { return; }
+				if (F.getElementById(b)) { return; }
 				E = F[i + 'NS'] && F.documentElement.namespaceURI;
 				E = E
 					? F[i + 'NS'](E, 'script')
@@ -214,25 +191,25 @@ try {
 				if(e.target.id == "insert_button") {
 					getDataFromPanel();
 					togglePanel();
-				} else if(e.target.tagName == 'LABEL') {
-					if(e.target.className.split(' ').indexOf('groupLabel') >= 0) {
+				} else if (e.target.tagName == 'LABEL') {
+					if (e.target.className.split(' ').indexOf('groupLabel') >= 0) {
 						[...document.getElementsByClassName('selectedGroup')].forEach(e => e.className = e.className.split(' ').filter(c => c != 'selectedGroup').join(' '));
 						let decks = common.getElementByName(e.target.innerText, 'group').getDecks();
-						for(let deckId in decks) {
+						for (let deckId in decks) {
 							let cards = decks[deckId].getCards();
-							for(let cardId in cards) {
+							for (let cardId in cards) {
 								document.getElementById(cards[cardId].id).className += ' selectedGroup';
 							}
 						}
-					} else if(e.target.className.split(' ').indexOf('deckLabel') >= 0) {
+					} else if (e.target.className.split(' ').indexOf('deckLabel') >= 0) {
 						[...document.getElementsByClassName('selectedGroup')].forEach(e => e.className = e.className.split(' ').filter(c => c != 'selectedGroup').join(' '));
 						let cards = common.getElementByName(e.target.innerText, 'deck').getCards();
-						for(let cardId in cards) {
+						for (let cardId in cards) {
 							document.getElementById(cards[cardId].id).className += ' selectedGroup';
 						}
 					}
-				} else if(e.target.id == 'start_record_button') {
-					if(record) {
+				} else if (e.target.id == 'start_record_button') {
+					if (record) {
 						document.getElementById('start_record_button').classList.remove("red_button");
 						storage.pop();
 						storage.pop();
@@ -244,17 +221,17 @@ try {
 						storage = [];
 						start();
 					}
-				} else if(e.target.id == 'stop_record_button') {
+				} else if (e.target.id == 'stop_record_button') {
 					document.getElementById('start_record_button').classList.remove("red_button");
 					stop();
-				} else if(e.target.id == 'play_record_button') {
+				} else if (e.target.id == 'play_record_button') {
 					document.getElementById('start_record_button').classList.remove("red_button");
 					document.getElementById('play_record_button').classList.add("blue_button");
 					stop();
 					play();
-				} else if(e.target.id == 'export_record_button') {
+				} else if (e.target.id == 'export_record_button') {
 					export_record();
-				} else if(e.target.id == 'import_record_button') {
+				} else if (e.target.id == 'import_record_button') {
 					import_record();
 				} 
 			} catch(e) {}
@@ -267,8 +244,8 @@ let eachDecksInGroup = (groupName, callback) => {
 	let group = common.getElementByName(groupName, 'group');
 	let decks = group.getDecks();
 
-	for(let deckIndex in decks) {
-		if(typeof callback == "function") {
+	for (let deckIndex in decks) {
+		if (typeof callback == "function") {
 			callback(decks[deckIndex]); // , data ? (decks[deckIndex].name == data.from ? '>' : decks[deckIndex].name == data.to ? '<' : ' ') : null);
 		}
 	}
@@ -278,7 +255,7 @@ let logCardsInDeck = deck => {
 
 	let _log = [deck.name + ' (' + deck.cards.length + '): '];
 
-	for(let card of deck.cards) {
+	for (let card of deck.cards) {
 		_log[0] += '%c' + card.name + '%c ';
 		_log.push(
 			card.visible
@@ -302,7 +279,7 @@ let solitaire_log = data => {
 	console.groupCollapsed('debug log');
 
 	let groups = common.getElementsByType('group');
-	for(let i in groups) {
+	for (let i in groups) {
 		console.groupCollapsed('Group:', groups[i].name);
 		eachDecksInGroup(groups[i].name, logCardsInDeck);
 		console.groupEnd();
@@ -312,7 +289,7 @@ let solitaire_log = data => {
 		"parent" : 'field'
 	});
 
-	for(let i in decks) {
+	for (let i in decks) {
 		// console.log('Deck:', decks[i].name);
 		logCardsInDeck(decks[i]);
 	}
