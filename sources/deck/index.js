@@ -99,7 +99,7 @@ class deckClass {
 		this.autoCheckFlip    = typeof data.autoCheckFlip    == 'boolean' ? data.autoCheckFlip    : defaults.autoCheckFlip       ;
 		this.showPrefFlipCard = typeof data.showPrefFlipCard == 'boolean' ? data.showPrefFlipCard : share.get('showPrefFlipCard');
 		this.showPrevAttempts = typeof data.showPrevAttempts == 'boolean' ? data.showPrevAttempts : defaults.showPrevAttempts    ;
-		this.checkNextCards   = typeof data.checkNextCards   == 'boolean' ? data.checkNextCards   : defaults.checkNextCards    ;
+		this.checkNextCards   = typeof data.checkNextCards   == 'boolean' ? data.checkNextCards   : defaults.checkNextCards      ;
 
 		this.data = {};
 

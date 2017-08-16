@@ -3,7 +3,7 @@
 }
 
 #markCard.markCardButtonActive {
-	color: yellow;
+	color: #FFFF00;
 }
 
 #specialMoveBtn.specialStepButtonActive {
@@ -11,5 +11,5 @@
 }
 
 .disabledButton {
-	color: #c0c0c0;
+	color: #C0C0C0;
 }

@@ -24,16 +24,23 @@ let getTree = data => {
 
 	let pathTree = [];
 
-	for(let i in data.children) {
-		if(data.children[i].children) {
-			pathTree.push('./' + data.children[i].path);
-			pathTree = [...pathTree, ...getTree(data.children[i])];
+	// for(let i in data.children) {
+	// 	if(data.children[i].children) {
+	// 		pathTree.push('./' + data.children[i].path);
+	// 		pathTree = [...pathTree, ...getTree(data.children[i])];
+	// 	}
+	// }
+	
+	data.children.forEach(child => {
+		if(child.children) {
+			pathTree.push('./' + child.path);
+			pathTree = [...pathTree, ...getTree(child)];
 		}
-	}
+	})
 
 	return pathTree;
 };
-let dirTree = ['./sources/', ...getTree(directoryTree('./sources/'))];
+let dirTree = ['./sources/', ...getTree( directoryTree('./sources/') )];
 
 let config = {
 	"entry": "./sources/index",

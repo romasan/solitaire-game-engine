@@ -190,3 +190,7 @@ $img_dir :"/solitaire_engine/img/";
 	opacity: 0.5;
 	transition: opacity 0.2s;
 }
+
+.slot:after {
+	content: attr(data-content);
+}

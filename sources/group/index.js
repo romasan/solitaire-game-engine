@@ -65,12 +65,14 @@ class groupClass {
 	constructor(data, id) {
 
 		this.type = 'group';
-
+		
 		this.id = id
-
+		
 		this.name = data.name && typeof data.name == 'string' 
-			? data.name 
-			: ('name_' + id);
+		? data.name 
+		: ('name_' + id);
+		
+		// console.log('Group:', this.name, data);
 
 		this.position = {
 			"x" : data.position && data.position.x && typeof data.position.x == 'number' 
@@ -195,7 +197,8 @@ class groupClass {
 		let _elements = share.get('elements');
 		_elements[id] = _el_group;
 		share.set('elements', _elements);
-		console.log('>>>add group to share:', _el_group.name);
+
+		// console.log('>>>add group to share:', _el_group.name);
 
 		// fill group
 		if(data && data.fill) {
