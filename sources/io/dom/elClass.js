@@ -33,7 +33,7 @@ export default class elClass {
 
 		this.el = data;
 
-		if(!data) {
+		if (!data) {
 			this.el = null;
 		}
 
@@ -42,19 +42,20 @@ export default class elClass {
 	}
 
 	attr(attributes) {
+
 		try {
 
-			for(let attrName in attributes) {
-				this.el[attrName] = attributes[attrName];
+			for (let attrName in attributes) {
+				this.el.setAttribute(attrName, attributes[attrName]);
 			}
 
 			return this;
-		} catch(e) {}
+		} catch (e) {}
 	}
 
 	setAttribute(name, value) {
 		try {
-			if(
+			if (
 				typeof name  == "string" &&
 				typeof value == "string"
 			) {
@@ -64,23 +65,25 @@ export default class elClass {
 	}
 
 	hasClass(className) {
+
 		try {
 
 			let _classes = this.el.className.split(' ');
 
 			return _classes.indexOf(className) >= 0;
-		} catch(e) {}
+		} catch (e) {}
 	}
 
 	toggleClass(className) {
+
 		try {
 
-			if(this.hasClass(className)) {
+			if (this.hasClass(className)) {
 				this.removeClass(className);
 			} else {
 				this.addClass(className);
 			}
-		} catch(e) {}
+		} catch (e) {}
 	}
 
 	addClass(className) {
@@ -89,18 +92,18 @@ export default class elClass {
 
 			let _classes = this.el.className.split(' ');
 
-			if(!this.hasClass(className)) {
+			if (!this.hasClass(className)) {
 				_classes.push(className);
 				this.el.className = _classes.join(' ');
 			}
 
 			return this;
-		} catch(e) {}
+		} catch (e) {}
 	}
 
 	removeClass(className) {
 
-		if(!this.el || !this.el.className) {
+		if (!this.el || !this.el.className) {
 			return this;
 		}
 
@@ -111,8 +114,8 @@ export default class elClass {
 			// if(this.hasClass(className)) {
 			let _clone = [];
 
-			for(let i in _classes) {
-				if(_classes[i] != className) {
+			for (let i in _classes) {
+				if (_classes[i] != className) {
 					_clone.push(_classes[i]);
 				}
 			}
@@ -123,26 +126,27 @@ export default class elClass {
 			// }
 
 			return this;
-		} catch(e) {}
+		} catch (e) {}
 	}
 
 	css(a) {
 
-		if(!this.el) {
+		if (!this.el) {
 			return this;
 		}
 
 		try {
 
-			for(let attrName in a) {
+			for (let attrName in a) {
 				this.el.style[attrName] = a[attrName];
 			}
 
 			return this;
-		} catch(e) {}
+		} catch (e) {}
 	}
 
 	hide() {
+
 		try {
 
 			console.log('HIDE CARD');
@@ -150,21 +154,23 @@ export default class elClass {
 			return this.css({
 				"display" : 'none'
 			});
-		} catch(e) {}
+		} catch (e) {}
 	}
 
 	show() {
+
 		try {
 			return this.css({
 				"display" : 'block'
 			});
-		} catch(e) {}
+		} catch (e) {}
 	}
 
 	append(el) {
+
 		try {
 
-			if(el.el) {
+			if (el.el) {
 				el = el.el;
 			}
 
@@ -172,17 +178,18 @@ export default class elClass {
 			
 			return this;
 
-		} catch(e) {}
+		} catch (e) {}
 	}
 
 	html(el) {
+
 		try {
 
-			if(typeof el == 'undefined') {
+			if (typeof el == 'undefined') {
 				return this.el.innerHTML;
 			}
 
-			if(el.el) {
+			if (el.el) {
 				el = el.el;
 			}
 
@@ -190,7 +197,7 @@ export default class elClass {
 
 			return this;
 
-		} catch(e) {}
+		} catch (e) {}
 	}
 
 	animate(params, animationTime, callback, animationName) {
@@ -213,7 +220,7 @@ export default class elClass {
 			let _e = data + '';
 
 			let _px = _e.split('px');
-			if(_px.length == 2) {
+			if (_px.length == 2) {
 				return (_px[0] | 0) + 'px'
 			}
 
@@ -224,7 +231,7 @@ export default class elClass {
 
 			let _int = parseInt(data);
 
-			if(_int.toString() != "NaN") {
+			if (_int.toString() != "NaN") {
 				return _int | 0;
 			}
 
@@ -237,7 +244,7 @@ export default class elClass {
 		 * Animation On
 		 */
 
-		if(_animation) {
+		if (_animation) {
 
 			try {
 
@@ -247,7 +254,7 @@ export default class elClass {
 
 				let distance = Math.sqrt((e => e * e)(left) + (e => e * e)(top)) | 0;
 
-				if(distance > 100) {
+				if (distance > 100) {
 					animationTime = animationTime + (animationTime * (distance / 100)) / 5;
 					// console.log('New animationTime: from', defaults.animationTime, 'to', animationTime, 'for', distance + 'px');
 				}
@@ -256,9 +263,9 @@ export default class elClass {
 					"transition" : (animationTime / 1000) + 's'
 				});
 
-				for(let attrName in params) {
+				for (let attrName in params) {
 
-					if(
+					if (
 						reType(this.el.style[attrName]) != reType(params[attrName]) && // old style not new style 
 						(
 							(el, attr) => ['left', 'top'].indexOf(attr) >= 0 // параметр left или top
@@ -290,7 +297,7 @@ export default class elClass {
 
 					// console.log('animate:callback', counter, e.propertyName);
 
-					if(counter == 0) {
+					if (counter == 0) {
 
 						// console.log('animation END ' + animationKey, counter);
 
@@ -300,7 +307,7 @@ export default class elClass {
 							"transition" : null
 						});
 
-						if(typeof this._animationCallbacks[animationName] == 'function') {
+						if (typeof this._animationCallbacks[animationName] == 'function') {
 							this._animationCallbacks[animationName]();
 							this._animationCallbacks[animationName] = null;
 						}
@@ -310,7 +317,7 @@ export default class elClass {
 
 				};
 
-				if(counter > 0) {
+				if (counter > 0) {
 					this.el.addEventListener('transitionend', transitionEndCallback, false);
 				} else {
 
@@ -319,18 +326,19 @@ export default class elClass {
 					transitionEndCallback();
 				}
 
-			} catch(e) {}
+			} catch (e) {}
 		
 		/*
 		 * Animation Off
 		 */
 
 		} else {
+
 			try {
 				
-				for(let attrName in params) {
+				for (let attrName in params) {
 
-					if(
+					if (
 						reType(this.el.style[attrName]) != reType(params[attrName])
 					) {
 						counter += 1;
@@ -338,13 +346,13 @@ export default class elClass {
 					this.el.style[attrName] = params[attrName];
 				}
 
-				if(typeof this._animationCallbacks[animationName] == 'function') {
+				if (typeof this._animationCallbacks[animationName] == 'function') {
 					this._animationCallbacks[animationName]();
 					this._animationCallbacks[animationName] = null;
 				}
 
 				event.dispatch('allAnimationsEnd', animationName);
-			} catch(e) {}
+			} catch (e) {}
 		}
 	}
 
@@ -356,7 +364,7 @@ export default class elClass {
 		try {
 			// this.el.remove();
 			this.el.parentNode.removeChild(this.el);
-		} catch(e) {}
+		} catch (e) {}
 	}
 
 	parent() {
@@ -367,7 +375,7 @@ export default class elClass {
 
 		try {
 			this.el.parentNode.insertBefore(html, this.el.nextElementSibling);
-		} catch(e) {}
+		} catch (e) {}
 
 		return this;
 	}
@@ -376,7 +384,7 @@ export default class elClass {
 
 		try {
 			this.el.parentNode.insertBefore(html, this.el);
-		} catch(e) {}
+		} catch (e) {}
 
 		return this;
 	}
@@ -386,7 +394,7 @@ export default class elClass {
 	}
 
 	trigger(eventName) {
-		if(typeof this.el[eventName] == 'function') {
+		if (typeof this.el[eventName] == 'function') {
 			this.el[eventName]();
 		}
 	}

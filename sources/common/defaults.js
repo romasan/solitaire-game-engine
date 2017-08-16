@@ -50,6 +50,8 @@ export default {
 	"animation"           : true,
 	"animationTime"       : 200 , // time in milliseconds for 100px
 
+	// "noReplayHistory"     : false,
+
 	"showPrefFlipCard"    : true,
 	"showPrevAttempts"    : false,
 
@@ -106,6 +108,38 @@ export default {
 		"ranks"   : [ '1', '2', '3', '4', '5', '6', '7', '8', '9', '10', 'j', 'q', 'k' ],
 		"values"  : [  1 ,  2 ,  3 ,  4 ,  5 ,  6 ,  7 ,  8 ,  9 ,  10 ,  11,  12,  13 ],
 		"ranks36" : [ '1',                     '6', '7', '8', '9', '10', 'j', 'q', 'k' ],
+		"names"   : {
+			"ru" : [
+				'Туз'     ,
+				'Двойка'  ,
+				'Тройка'  ,
+				'Четвёрка',
+				'Пятёркa' ,
+				'Шестёрка',
+				'Семёрка' ,
+				'Восмёрка',
+				'Девятка' ,
+				'Десятка' ,
+				'Валет'   ,
+				'Дама'    ,
+				'Король'
+			],
+			"en" : [
+				'Ace'  ,
+				'Two'  ,
+				'Three',
+				'Four' ,
+				'Five' ,
+				'Six'  ,
+				'Seven',
+				'Eight',
+				'Nine' ,
+				'Ten'  ,
+				'Jack' ,
+				'Queen',
+				'King'
+			]
+		},
 
 		"colors" : {
 			"red"   : [ 'h', 'd' ],

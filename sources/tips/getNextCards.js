@@ -3,10 +3,12 @@
 import event         from '../common/event'      ;
 
 import deckGenerator from '../deck/deckGenerator';
-import card          from '../card'              ;
+import Card          from '../card'              ;
 import Deck          from '../deck'              ;
 
-let nextCards = deckGenerator().map(e => card.validateCardName(e));
+let nextCards = deckGenerator().map(e => Card.validateCardName(e));
+
+let _cardNames = [];
 
 let getNextCards = e => {
 
@@ -35,7 +37,7 @@ let getNextCards = e => {
 						"index" : 0,
 						"card"  : _card
 					}])) {
-						cards.push(_card.name);
+						cards.push(_card);
 					}
 				} catch (e) {
 					console.log(e);

@@ -17,9 +17,9 @@ import applyChangedParameters from './common/applyChangedParameters';
 
 event.listen('addDeckEl', data => {
 
-	if(share.get('nodraw')) {
+	if (share.get('nodraw')) {
 
-		if(data && typeof data.callback == "function") {
+		if (data && typeof data.callback == "function") {
 			data.callback();
 		}
 
@@ -48,12 +48,12 @@ event.listen('addDeckEl', data => {
 		})
 		.setAttribute('data-content', data.deckData.label);
 
-	if(data.deckData.showSlot) {
+	if (data.deckData.showSlot) {
 		elRender(_deckDomElement)
 			.addClass('slot');
 	}
 
-	if(data.deckData.class) {
+	if (data.deckData.class) {
 		elRender(_deckDomElement)
 			.addClass(data.deckData.class);
 	}
@@ -68,26 +68,26 @@ event.listen('addDeckEl', data => {
 
 event.listen('redrawDeckFlip', data => {
 
-	if(!data || !data.cards) {
+	if (!data || !data.cards) {
 		return;
 	}
 
-	if(share.get('nodraw')) {
+	if (share.get('nodraw')) {
 
-		if(data && typeof data.callback == "function") {
+		if (data && typeof data.callback == "function") {
 			data.callback();
 		}
 
 		return;
 	}
 
-	for(let i in data.cards) {
+	for (let i in data.cards) {
 
 		let _params = {};
 
 		let _cardDomElement = share.get('domElement:' + data.cards[i].id);
 
-		if(data.cards[i].flip) {
+		if (data.cards[i].flip) {
 			_cardDomElement.addClass('flip');
 		} else {
 			_cardDomElement.removeClass('flip');
@@ -99,23 +99,23 @@ event.listen('redrawDeckFlip', data => {
 
 event.listen('redrawDeckIndexes', data => {
 
-	if(
+	if (
 		!data       ||
 		!data.cards
 	) {
 		return;
 	}
 
-	if(share.get('nodraw')) {
+	if (share.get('nodraw')) {
 
-		if(data && typeof data.callback == "function") {
+		if (data && typeof data.callback == "function") {
 			data.callback();
 		}
 
 		return;
 	}
 
-	for(let i in data.cards) {
+	for (let i in data.cards) {
 
 		let _cardDomElement = share.get('domElement:' + data.cards[i].id);
 
@@ -127,13 +127,13 @@ event.listen('redrawDeckIndexes', data => {
 
 event.listen('redrawDeck', data => {
 
-	if(share.get('noRedraw')) {
+	if (share.get('noRedraw')) {
 		return false;
 	}
 
-	if(share.get('nodraw')) {
+	if (share.get('nodraw')) {
 
-		if(data && typeof data.callback == "function") {
+		if (data && typeof data.callback == "function") {
 			data.callback();
 		}
 
@@ -142,7 +142,7 @@ event.listen('redrawDeck', data => {
 
 	// console.log('redrawDeck', data.deck.name);
 
-	if(
+	if (
 		data          &&
 		data.deckData &&
 		data.deck     &&
@@ -165,15 +165,15 @@ event.listen('redrawDeck', data => {
 		.css(_params);
 
 	// full deck (add class full to all cards in deck)
-	if(data.deck.full) {
+	if (data.deck.full) {
 
 		let _cards = data.deck.getCards();
 
-		for(let i in _cards) {
+		for (let i in _cards) {
 
 			let _cardDomElement = share.get('domElement:' + _cards[i].id);
 
-			if(_cardDomElement) {
+			if (_cardDomElement) {
 
 				elRender(_cardDomElement)
 					.addClass('full');
@@ -183,7 +183,7 @@ event.listen('redrawDeck', data => {
 
 
 	// перерисовка карт
-	for(let i in data.cards) {
+	for (let i in data.cards) {
 
 		let _card_position = data.deck.padding(i);
 		let _zIndex        = (data.params.startZIndex | 0) + (i | 0);
@@ -203,7 +203,7 @@ event.listen('redrawDeck', data => {
 
 		let _cardDomElement = share.get('domElement:' + data.cards[i].id);
 
-		if(data.cards[i].flip) {
+		if (data.cards[i].flip) {
 
 			elRender(_cardDomElement)
 				.addClass('flip');
@@ -214,9 +214,9 @@ event.listen('redrawDeck', data => {
 		}
 		
 		// console.log(data.cards[i].classList);
-		for(let _class in data.cards[i].classList) {
+		for (let _class in data.cards[i].classList) {
 
-			if(data.cards[i].classList[_class] === true) {
+			if (data.cards[i].classList[_class] === true) {
 
 				elRender(_cardDomElement)
 					.addClass(_class);
@@ -229,8 +229,35 @@ event.listen('redrawDeck', data => {
 
 		// elRender(_cardDomElement)
 		// 	.css(_params);
-		for(let paramName in _params) {
+		for (let paramName in _params) {
 			_cardDomElement.el.style[paramName] = _params[paramName];
 		}
+	}
+});
+
+event.listen('updateNextCards', function(data) {
+
+	for (let deckId in data) {
+
+		let _cardDomElement = share.get('domElement:' + deckId);
+
+		let _cards = data[deckId];
+
+		let _content = '';
+		
+		let oneRank = _cards.every(function(e) {
+			return e.rank == this.rank;
+		}, _cards[0]);
+
+		if (oneRank) {
+			// _content = defaults.card.names[share.get('locale')][defaults.card.ranks.indexOf(_cards[0].rank)];
+			_content = _cards[0].rank.toUpperCase();
+		} else {
+			_content = data[deckId].map(e => e.name).join(', ').toUpperCase();
+		}
+
+		elRender(_cardDomElement).attr({
+			"data-content" : _content
+		});
 	}
 });

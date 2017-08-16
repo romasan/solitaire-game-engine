@@ -69,7 +69,9 @@ class Field {
 			"animationTime"        : 'number' , // время анимации
 			"showHistoryAnimation" : 'boolean',
 			"showPrefFlipCard"     : 'boolean',
-			"gameIsWon"            : 'boolean'
+			"gameIsWon"            : 'boolean',
+			// "noReplayHistory"      : 'boolean',
+			"locale"               : 'string'
 		};
 
 		for(let valueName in _values) {

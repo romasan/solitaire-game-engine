@@ -54,6 +54,10 @@ event.listen('saveSteps', e => {
 
 event.listen('doHistory', e => {
 
+	// if(share.get('noReplayHistory')) {
+	// 	return;
+	// }
+
 	console.groupCollapsed('DO HISTORY');
 
 	let _time = Date.now();
