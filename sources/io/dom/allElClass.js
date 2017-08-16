@@ -23,14 +23,14 @@ export default class allElClass {
 		
 		this.elements = [];
 
-		for(let i in elements) {
+		for (let i in elements) {
 			this.elements.push(new elClass(elements[i]));
 		}
 	}
 
 	attr(attributes) {
 
-		for(let i in this.elements) {
+		for (let i in this.elements) {
 			this.elements[i].attr(attributes)
 		}
 
@@ -39,7 +39,7 @@ export default class allElClass {
 
 	toggleClass(className) {
 
-		for(let i in this.elements) {
+		for (let i in this.elements) {
 			this.elements[i].toggleClass(className);
 		}
 
@@ -48,7 +48,7 @@ export default class allElClass {
 
 	addClass(className) {
 
-		for(let i in this.elements) {
+		for (let i in this.elements) {
 			this.elements[i].addClass(className);
 		}
 
@@ -57,7 +57,7 @@ export default class allElClass {
 
 	removeClass(className) {
 
-		for(let i in this.elements) {
+		for (let i in this.elements) {
 			this.elements[i].removeClass(className);
 		}
 
@@ -66,7 +66,7 @@ export default class allElClass {
 
 	css(a) {
 
-		for(let i in this.elements) {
+		for (let i in this.elements) {
 			this.elements[i].css(a);
 		}
 
@@ -75,7 +75,7 @@ export default class allElClass {
 
 	hide() {
 
-		for(let i in this.elements) {
+		for (let i in this.elements) {
 			this.elements[i].hide();
 		}
 
@@ -84,7 +84,7 @@ export default class allElClass {
 
 	show() {
 
-		for(let i in this.elements) {
+		for (let i in this.elements) {
 			this.elements[i].show();
 		}
 
@@ -99,7 +99,7 @@ export default class allElClass {
 
 		let counter = 0;
 
-		for(let i in this.elements) {
+		for (let i in this.elements) {
 
 			counter += 1;
 
@@ -107,7 +107,7 @@ export default class allElClass {
 
 				counter -= 1;
 
-				if(counter == 0) {
+				if (counter == 0) {
 					callback();
 				}
 			});
@@ -118,7 +118,7 @@ export default class allElClass {
 
 	stop() {
 
-		for(let i in this.elements) {
+		for (let i in this.elements) {
 			this.elements[i].stop();
 		}
 
@@ -127,7 +127,7 @@ export default class allElClass {
 
 	remove() {
 
-		for(let i in this.elements) {
+		for (let i in this.elements) {
 			// this.elements[i].remove();
 			this.elements[i].parentNode.removeChild(this.elements[i]);
 		}

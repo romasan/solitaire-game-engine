@@ -98,17 +98,17 @@ class groupClass {
 
 		// сохраняем атрибуты чтобы прокинуть их колодам
 		this.parameters = {};
-		for(let paramName in PARAMS) {
-			if(PARAMS[paramName].type == 'any') {
+		for (let paramName in PARAMS) {
+			if (PARAMS[paramName].type == 'any') {
 				this.parameters[paramName] = data[paramName]
 					? data[paramName]
 					: defaults[paramName];
-			} else if(PARAMS[paramName].type == 'boolean') {
+			} else if (PARAMS[paramName].type == 'boolean') {
 				this.parameters[paramName] = typeof data[paramName] == 'boolean'
 					? data[paramName]
 					: PARAMS[paramName].default;
 				// this.parameters[paramName] = typeof data[paramName] == "boolean" ? data[paramName] : defaults[paramName];
-			} else if(typeof data[paramName] != 'undefined') {
+			} else if (typeof data[paramName] != 'undefined') {
 				this.parameters[paramName] = data[paramName];
 			}
 		};
@@ -120,11 +120,11 @@ class groupClass {
 
 	static add(data) {
 
-		if(!data) {
+		if (!data) {
 			return false;
 		}
 
-		if(!data.decks) {
+		if (!data.decks) {
 			return false;
 		}
 
@@ -132,9 +132,9 @@ class groupClass {
 
 		let _el_group = new groupClass(data, id);
 
-		if(data.decks) {
+		if (data.decks) {
 
-			if(typeof data.decks == 'number') {
+			if (typeof data.decks == 'number') {
 				data.decks = {
 					"generator" : {
 						"type"  : 'count'   ,
@@ -143,11 +143,11 @@ class groupClass {
 				};
 			}
 
-			if(data.decks.generator) {
+			if (data.decks.generator) {
 
-				if(data.decks.generator.type) {
+				if (data.decks.generator.type) {
 
-					if(groupGenerator[data.decks.generator.type]) {
+					if (groupGenerator[data.decks.generator.type]) {
 
 						data.decks = groupGenerator[data.decks.generator.type](_el_group, data.decks.generator);
 					} else {
@@ -164,23 +164,23 @@ class groupClass {
 			}
 
 			// relations TO <-> FROM
-			// if( data.backRelations ) TODO
-			for(let to in data.decks) {
+			// if ( data.backRelations ) TODO
+			for (let to in data.decks) {
 
-				for(let relId in data.decks[to].relations) {
+				for (let relId in data.decks[to].relations) {
 
 					let _relation = null;
 					try {
 						_relation = Object.assign({}, data.decks[to].relations[relId]);
-					} catch(e) {
+					} catch (e) {
 						_relation = data.decks[to].relations[relId];
 					}
 
 					// TODO обратные связи
 					// затирают прямы связи в IE
-					// for(let from in data.decks) {
+					// for (let from in data.decks) {
 
-					// 	if(data.decks[from].name == _relation.to) {
+					// 	if (data.decks[from].name == _relation.to) {
 					// 		_relation.to = null;
 					// 		_relation.from = data.decks[to].name;
 					// 		data.decks[from].relations.push(_relation)
@@ -189,7 +189,7 @@ class groupClass {
 				}
 			}
 
-			for(let d in data.decks) {
+			for (let d in data.decks) {
 				_el_group.addDeck(data.decks[d]);
 			};
 		}
@@ -201,10 +201,10 @@ class groupClass {
 		// console.log('>>>add group to share:', _el_group.name);
 
 		// fill group
-		if(data && data.fill) {
+		if (data && data.fill) {
 
 			let _checkFillDeck = data.fill.length;
-			if(_checkFillDeck) {
+			if (_checkFillDeck) {
 				_el_group.Fill(data.fill);
 			}
 		}
@@ -219,11 +219,11 @@ class groupClass {
 	// Add deck to group
 	addDeck(data) {
 
-		if(!data) {
+		if (!data) {
 			return;
 		}
 
-		if(!data.position) {
+		if (!data.position) {
 			data.position = {
 				"x" : 0, 
 				"y" : 0
@@ -232,7 +232,7 @@ class groupClass {
 
 		// сортировка элементов в группе по заданному индексу и порядку добавления
 
-		if(!data.parent) {
+		if (!data.parent) {
 			data.parent = this.name;
 		}
 
@@ -246,7 +246,7 @@ class groupClass {
 		// остальные вставляются в промежутки или добавляются в конец
 		let _index = 0;
 
-		if(
+		if (
 			data.groupIndex                                                                    &&
 			decks[ this.deckIndex[data.groupIndex - 1] ].this.deckIndex == data.this.deckIndex &&
 			typeof data.groupIndex == 'number'                                                 &&
@@ -256,23 +256,23 @@ class groupClass {
 			data.groupIndex = null;
 		}
 
-		if(data.groupIndex && typeof data.groupIndex == 'number') {
+		if (data.groupIndex && typeof data.groupIndex == 'number') {
 
-			if(this.deckIndex[data.groupIndex - 1]) {
+			if (this.deckIndex[data.groupIndex - 1]) {
 
-				for(;typeof this.deckIndex[_index] != 'undefined';_index += 1) {}
+				for (;typeof this.deckIndex[_index] != 'undefined';_index += 1) {}
 
-				if(placement) {
+				if (placement) {
 
 					let _index    = this.deckIndex[data.groupIndex - 1];
 
 					let _elements = share.get('elements');
 
-					if(placement.x) {
+					if (placement.x) {
 						_elements[_index].x( this.position.x + (placement.x + defaults.card.width) * _index );
 					}
 
-					if(placement.y) {
+					if (placement.y) {
 						_elements[_index].y( this.position.y + (placement.y + defaults.card.width) * _index );
 					}
 
@@ -291,41 +291,41 @@ class groupClass {
 			}
 
 		} else {
-			for(;typeof this.deckIndex[_index] != 'undefined';_index += 1);
+			for (;typeof this.deckIndex[_index] != 'undefined';_index += 1);
 			this.deckIndex[_index] = true;
 		}
 
 		// смещаем координаты колод относительно координад группы
-		if(this.placement) {
+		if (this.placement) {
 
-			if(this.placement.x) {
+			if (this.placement.x) {
 				data.position.x = (this.placement.x + defaults.card.width)  * (_index);
 			}
 
-			if(this.placement.y) {
+			if (this.placement.y) {
 				data.position.y = (this.placement.y + defaults.card.height) * (_index);
 			}
 		}
 
 		// прокидываем некоторые атрибуты всем колодам группы (у атрибутов заданных колоде приоритет выше)
-		for(let paramName in PARAMS) {
+		for (let paramName in PARAMS) {
 
-			if(PARAMS[paramName].type == 'any') {
-				if(
+			if (PARAMS[paramName].type == 'any') {
+				if (
 					this.parameters[paramName]        &&
 					typeof data[paramName] == 'undefined'
 				) {
 					data[paramName] = this.parameters[paramName];
 				};
-			} else if(PARAMS[paramName].type == 'boolean') {
+			} else if (PARAMS[paramName].type == 'boolean') {
 
-				if(
+				if (
 					typeof this.parameters[paramName] == 'boolean' &&
 					typeof data[paramName] == 'undefined'
 				) {
 					data[paramName] = this.parameters[paramName];
 				}			
-			} else if(typeof this.parameters[paramName] != 'undefined') {
+			} else if (typeof this.parameters[paramName] != 'undefined') {
 				data[paramName] = this.parameters[paramName];
 			}
 		};
@@ -351,8 +351,8 @@ class groupClass {
 
 	getDeckIndexById(id) {
 
-		for(let i in this.deckIndex) {
-			if(this.deckIndex[i] == id) {
+		for (let i in this.deckIndex) {
+			if (this.deckIndex[i] == id) {
 				return i;
 			}
 		}
@@ -368,7 +368,7 @@ class groupClass {
 
 		let _count = 0;
 
-		for(let i in this.decks) {
+		for (let i in this.decks) {
 			_count += 1;
 		}
 
@@ -386,8 +386,8 @@ class groupClass {
 
 		let _decks = {};
 
-		for(let d in this.decks) {
-			if(this.decks[d].name == name) {
+		for (let d in this.decks) {
+			if (this.decks[d].name == name) {
 				_decks[d] = decks[d];
 			}
 		}
@@ -400,9 +400,9 @@ class groupClass {
 
 		let _decks = [];
 
-		for(let i in this.decks) {
-			if(data && data.visible) {
-				if(this.decks[i].visible) {
+		for (let i in this.decks) {
+			if (data && data.visible) {
+				if (this.decks[i].visible) {
 					_decks.push(this.decks[i]);
 				}
 			} else {
@@ -422,8 +422,8 @@ class groupClass {
 
 		let has = false;
 
-		for(let deckId in decks) {
-			if(decks[deckId].name == deckName) {
+		for (let deckId in decks) {
+			if (decks[deckId].name == deckName) {
 				has = true;
 			}
 		}

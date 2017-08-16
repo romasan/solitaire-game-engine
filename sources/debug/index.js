@@ -33,7 +33,7 @@ let triggerMouseEvent = (node, eventName, x, y) => {
 		// _el.style['z-index'] = '999';
 		// _el.className        = 'dot';
 		// document.body.appendChild(_el);
-	} catch(e) {}
+	} catch (e) {}
 };
 
 let storage = [];
@@ -67,13 +67,13 @@ let stop = e => {
 
 let play = i => {
 
-	if(typeof i == "undefined") {
+	if (typeof i == "undefined") {
 		i = 0;
 	}
 
 	document.getElementById('play_record_button').innerHTML = ((i / (storage.length / 100)) | 0) + '%';
 
-	if(i >= storage.length) {
+	if (i >= storage.length) {
 		document.getElementById('play_record_button').classList.remove("blue_button");
 		document.getElementById('play_record_button').innerHTML = 'PLAY';
 		return;
@@ -81,7 +81,7 @@ let play = i => {
 
 	setTimeout(e => {
 
-		if(!solitaireField) {
+		if (!solitaireField) {
 			solitaireField = document.getElementsByClassName('solitaireField')[0];
 		}
 
@@ -188,7 +188,7 @@ try {
 
 		document.body.onclick = e => {
 			try {
-				if(e.target.id == "insert_button") {
+				if (e.target.id == "insert_button") {
 					getDataFromPanel();
 					togglePanel();
 				} else if (e.target.tagName == 'LABEL') {
@@ -234,10 +234,10 @@ try {
 				} else if (e.target.id == 'import_record_button') {
 					import_record();
 				} 
-			} catch(e) {}
+			} catch (e) {}
 		}
 	});
-} catch(e) {}
+} catch (e) {}
 
 let eachDecksInGroup = (groupName, callback) => {
 
@@ -300,11 +300,11 @@ event.listen('solitaire_log', solitaire_log);
 
 let getDataFromPanel = e => {
 	let panel = document.getElementById('panel');
-	if(panel) {
+	if (panel) {
 		[...document.getElementById('panel').children].forEach(
 			e => {
-				if(e.children.length == 2) {
-					if(e.children[1].type == 'text') {
+				if (e.children.length == 2) {
+					if (e.children[1].type == 'text') {
 						gameConfig.decks.filter(d => d.name == e.children[0].innerText)[0].fill = e.children[1].value.toLowerCase().split(' ')
 					} else {
 						gameConfig.groups[e.children[0].innerText].fill = e.children[1].value.split('\n').map(d => d.toLowerCase().split(' '))
@@ -317,10 +317,10 @@ let getDataFromPanel = e => {
 };
 
 let toggleRecordPanel = e => {
-	try{
+	try {
 		document.getElementById('record_panel').remove();
 		[...document.getElementsByClassName('selectedGroup')].forEach(e => e.className = e.className.split(' ').filter(c => c != 'selectedGroup').join(' '));
-	} catch(e) {
+	} catch (e) {
 		let el = document.createElement('div');
 		el.setAttribute('id', 'record_panel');
 		document.body.appendChild(el);
@@ -335,16 +335,16 @@ let toggleRecordPanel = e => {
 };
 
 let togglePanel = e => {
-	try{
+	try {
 		document.getElementById('panel').remove();
-	} catch(e) {
+	} catch (e) {
 		let el = document.createElement('div');
 		el.setAttribute('id', 'panel');
 		document.body.appendChild(el);
 		el.innerHTML += `
 	${(() => {
 		let a = [];
-		for(let groupName in window.gameConfig.groups) {
+		for (let groupName in window.gameConfig.groups) {
 			let lines = common.getElementByName(groupName).getDecks().map(e => e.getCards().map(c => c.name).join(' ').toUpperCase());
 			a.push(`
 				<div>
@@ -357,7 +357,7 @@ let togglePanel = e => {
 	})()}
 	${(() => {
 		let a = [];
-		for(let i in window.gameConfig.decks) {
+		for (let i in window.gameConfig.decks) {
 			let deckName = window.gameConfig.decks[i].name;
 			let line = common.getElementByName(deckName).getCards().map(c => c.name).join(' ').toUpperCase();
 			a.push(`
@@ -388,34 +388,34 @@ let keys = {
 try {
 	document.onkeyup = e => {
 
-		if(e.keyCode == keys.d) {
+		if (e.keyCode == keys.d) {
 
 			solitaire_log();
-		} else if(e.keyCode == keys.n) {
+		} else if (e.keyCode == keys.n) {
 
 			event.dispatch('next_history_step');
-		} else if(e.keyCode == keys.c) {
+		} else if (e.keyCode == keys.c) {
 
 			console.clear();
 			window._debug = window._debug ? false : true;
 			console.log('_debug', window._debug ? 'ON' : 'OFF');
-		} else if(e.keyCode == keys.h) {
+		} else if (e.keyCode == keys.h) {
 
 			// console.log('History:', history.get(false));
 			let _history = history.get(false);
 			console.groupCollapsed('debug:history', _history.length);
 			console.log('%c' + JSON.stringify(_history, true, 2), 'background: #faede0;');
 			console.groupEnd();
-		} else if(e.keyCode == keys.s) {
+		} else if (e.keyCode == keys.s) {
 
 			console.log('stepType:', share.get('stepType'));
-		} else if(e.keyCode == keys.p) {
+		} else if (e.keyCode == keys.p) {
 			togglePanel();
-		} else if(e.keyCode == keys.r) {
+		} else if (e.keyCode == keys.r) {
 			toggleRecordPanel();
 		}
 	}
-} catch(e) {}
+} catch (e) {}
 
 export default {
 	share        ,

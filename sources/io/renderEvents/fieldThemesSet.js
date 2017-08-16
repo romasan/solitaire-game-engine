@@ -9,17 +9,17 @@ import elRender from '../dom/elRender'      ;
 
 event.listen('fieldThemesSet', pref => {
 
-	if(share.get('nodraw')) {
+	if (share.get('nodraw')) {
 		return;
 	}
 
 	let _fieldDomElement = share.get('domElement:field');
 	    _fieldDomElement = _fieldDomElement.parentNode.parentNode; // TODO может быть не корректно в отличном от текущего окружении
 
-	for(let prefName in defaults.themes) {
+	for (let prefName in defaults.themes) {
 
 		// Clear old themes
-		for(let i in defaults.themes[prefName]) {
+		for (let i in defaults.themes[prefName]) {
 
 			let themeName = defaults.themes[prefName][i];
 

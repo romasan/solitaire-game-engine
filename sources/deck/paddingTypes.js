@@ -24,7 +24,7 @@ let paddingTypes = {
 		let _y = params.y,
 		    _x = params.x;
 
-		for(let i = 0; i < index; i += 1) {
+		for (let i = 0; i < index; i += 1) {
 			_y += deck[i] && deck[i].flip ? params.flip_padding_y : params.padding_y;
 			_x += deck[i] && deck[i].flip ? params.flip_padding_x : params.padding_x;
 		}
@@ -46,13 +46,13 @@ let paddingTypes = {
 
 		let _data = data ? data.split(':') : [];
 
-		if(_data.length > 1) {
+		if (_data.length > 1) {
 
-			if(_data[0] == "x") {
+			if (_data[0] == "x") {
 				_plus.x = _data[1] | 0;	
-			} else if(_data[0] == "y") {
+			} else if (_data[0] == "y") {
 				_plus.y = _data[1] | 0;	
-			} else if(_data[0] == "xy") {
+			} else if (_data[0] == "xy") {
 				_plus.x = _data[1] | 0;
 				_plus.y = _data[2] | 0;
 			}
@@ -60,7 +60,7 @@ let paddingTypes = {
 			_plus.x = _data[0] | 0;
 		}
 
-		if(card.flip == false) {
+		if (card.flip == false) {
 			_padding.x += _plus.x;
 			_padding.y += _plus.y;
 		}
@@ -86,7 +86,7 @@ let paddingTypes = {
 	// 	_deg    = Math.PI / 180,
 	// 	_a      = Math.sin(_angle * _deg) * _radius,
 	// 	_b      = Math.cos(_angle * _deg) * _radius;
-	// 	// if(_angle > 360) _angle -= 360;
+	// 	// if (_angle > 360) _angle -= 360;
 	// 	return {
 	// 		"x" : params.x + _a,
 	// 		"y" : params.y - _b
@@ -97,7 +97,7 @@ let paddingTypes = {
 
 		let _params = {};
 
-		for(let name in params) {
+		for (let name in params) {
 			_params[name] = params[name];
 		}
 
@@ -113,7 +113,7 @@ let paddingTypes = {
 
 		let _params = {};
 
-		for(let name in params) {
+		for (let name in params) {
 			_params[name] = params[name];
 		}
 
@@ -138,7 +138,7 @@ let paddingTypes = {
 
 		let correct = 0;
 
-		if(
+		if (
 			index     >= length - open && // delimiter and after
 			card.flip == false            // closed cards
 		) {
@@ -149,7 +149,7 @@ let paddingTypes = {
 			}
 		} else {                          // before delimiter
 
-			if(index >= length - open) {
+			if (index >= length - open) {
 				correct += 1;
 			}
 

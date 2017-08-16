@@ -10,9 +10,9 @@ export default autoStepsParams => {
 	
 	let _autosteps = {};
 
-	for(let autoStepName in autoStepsParams) {
+	for (let autoStepName in autoStepsParams) {
 		
-		if(autosteps[autoStepName]) {
+		if (autosteps[autoStepName]) {
 			
 			let _autostep = new autosteps[autoStepName](autoStepsParams[autoStepName]);
 			_autostep.init(autoStepName);

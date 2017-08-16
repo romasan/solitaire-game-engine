@@ -21,7 +21,7 @@ export default (deck, putDeck) => {
 	rulesCorrect = rulesCorrect && !deck.locked;
 
 	// Нестандартный ход (autosteps)
-	if(_stepType != defaults.stepType) {
+	if (_stepType != defaults.stepType) {
 
 		rulesCorrect = rulesCorrect    &&
 			Field.autoSteps            &&
@@ -36,23 +36,23 @@ export default (deck, putDeck) => {
 		// let _link = null; // target deck name?
 		let _deck = deck;
 
-		for(let ruleIndex in deck.putRules) {
+		for (let ruleIndex in deck.putRules) {
 
-			if(rulesCorrect) {
+			if (rulesCorrect) {
 
-				// if(_link) {
+				// if (_link) {
 				// 	_deck = Deck.getDeck(_link);
 				// }
 
 				let ruleName = deck.putRules[ruleIndex];
 				let ruleProp = '';
 
-				if(ruleName.indexOf(':') > 0) {
+				if (ruleName.indexOf(':') > 0) {
 					ruleProp = ruleName.split(':')[1];
 					ruleName = ruleName.split(':')[0];
 				}
 
-				if(putRules[ruleName]) {
+				if (putRules[ruleName]) {
 
 					let _data = {
 						"from"    : {

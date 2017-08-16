@@ -52,7 +52,7 @@ let applyChangedParameters = (data, rewrite = true) => {
 		'flipPaddingX' : 'flip_padding_x'
 	};
 
-	for(let key in paddingValues) {
+	for (let key in paddingValues) {
 
 		let value = paddingValues[key];
 

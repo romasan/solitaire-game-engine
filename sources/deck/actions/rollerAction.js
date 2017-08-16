@@ -18,7 +18,7 @@ class rollerAction extends deckAction {
 
 	run(deck, data) {
 
-		if(
+		if (
 			!deck                   ||
 			!data                   ||
 			!deck.cards             ||
@@ -34,9 +34,9 @@ class rollerAction extends deckAction {
 		 * если задан такой event
 		 */
 
-		if(data.eventName.indexOf('moveEnd') >= 0) {
+		if (data.eventName.indexOf('moveEnd') >= 0) {
 
-			if(data.eventData.from.name != deck.name) {
+			if (data.eventData.from.name != deck.name) {
 				return;
 			}
 
@@ -52,7 +52,7 @@ class rollerAction extends deckAction {
 			});
 
 			// если нет открытых карт показать предыдущую скрытую
-			if(
+			if (
 				unflipCardsCount    == 0 &&
 				hiddenCardsCount >  0
 			) {
@@ -62,7 +62,7 @@ class rollerAction extends deckAction {
 				deck.showCardByIndex(next, true); // index, redraw
 
 				// save step
-				if(_save) {
+				if (_save) {
 					event.dispatch('addStep', {
 						"show" : {
 							"cardIndex" : next                 ,
@@ -87,7 +87,7 @@ class rollerAction extends deckAction {
 		 * предпочтительно клик
 		 */
 
-		if(data.eventData.to.name != deck.name) {
+		if (data.eventData.to.name != deck.name) {
 			return false;
 		}
 
@@ -107,7 +107,7 @@ class rollerAction extends deckAction {
 		});
 
 		// есть видимые карты
-		if(cardsCount > 0) {
+		if (cardsCount > 0) {
 
 			// количество открытых видимых карт
 			let unflipCardsCount = deck.cardsCount({
@@ -122,7 +122,7 @@ class rollerAction extends deckAction {
 			});
 
 			// не осталось видимых закрытых карт
-			if(flipCardsCount == 0) {
+			if (flipCardsCount == 0) {
 
 				// количество скрытых карт
 				hiddenCardsCount = deck.cardsCount({
@@ -137,18 +137,18 @@ class rollerAction extends deckAction {
 
 					let stepsCount = 0;
 
-					for(let i = data.history.length - 1; i >= 0 && !found; i -= 1) {
+					for (let i = data.history.length - 1; i >= 0 && !found; i -= 1) {
 
 						stepsCount += 1;
 
 						let step = data.history[i];
 
 						// find action end
-						// for(let atomIndex in step) {
+						// for (let atomIndex in step) {
 
 						// 	let atom = step[atomIndex];
 
-						// 	if(
+						// 	if (
 						// 		!found                                   &&
 						// 		typeof atom.rollerActionEnd == "string"  &&
 						// 		       atom.rollerActionEnd == deck.name
@@ -158,12 +158,12 @@ class rollerAction extends deckAction {
 						// 	}
 						// }
 
-						for(let atomIndex in step) {
+						for (let atomIndex in step) {
 
 							let atom = step[atomIndex];
 
 							// rewind
-							if(
+							if (
 								!found                                     &&
 								typeof atom.rollerActionStart == "string"  &&
 								       atom.rollerActionStart == deck.name
@@ -173,7 +173,7 @@ class rollerAction extends deckAction {
 
 								event.dispatch('resetHistory');
 
-								for(let i = 0; i < stepsCount; i += 1) {
+								for (let i = 0; i < stepsCount; i += 1) {
 									data.undo();
 								}
 
@@ -185,28 +185,28 @@ class rollerAction extends deckAction {
 
 							// reset
 							// если ход в истории найден раньше начала прокруток остановить rewind
-							} else if(
+							} else if (
 								!found    &&
 								atom.move
 							) {
 
 								// Swap
-								for(let i = 0; i < ((unflipCardsCount / 2) | 0); i += 1) {
+								for (let i = 0; i < ((unflipCardsCount / 2) | 0); i += 1) {
 
 									let next = unflipCardsCount - i - 1;
 
-									if(i < next) {
+									if (i < next) {
 										Atom.swap(deck, i, next, _save); // deck, fromIndex, toIndex, save
 									}
 								}
 
 								// Hide visible flipped cards
-								for(let i = 0; i < unflipCardsCount; i += 1) {
+								for (let i = 0; i < unflipCardsCount; i += 1) {
 
 									deck.hideCardByIndex(i, true); // index, redraw
 
 									// save step
-									if(_save) {
+									if (_save) {
 										event.dispatch('addStep', {
 											"hide" : {
 												"cardIndex" : i                 ,
@@ -225,7 +225,7 @@ class rollerAction extends deckAction {
 
 								deck.Redraw();
 
-								if(_save) {
+								if (_save) {
 									event.dispatch('saveSteps');
 								}
 
@@ -243,7 +243,7 @@ class rollerAction extends deckAction {
 				});
 
 				// ещё есть скрытые карты
-				if(hiddenCardsCount > 0) {
+				if (hiddenCardsCount > 0) {
 
 					deck.showCards   (false, _save); // no redraw, add to history
 					deck.flipAllCards(false, _save); // no redraw, add to history
@@ -258,11 +258,11 @@ class rollerAction extends deckAction {
 			}
 
 			// первая прокрутка
-			if(
+			if (
 				hiddenCardsCount == 0 && // нет скрытых карт
 				unflipCardsCount == 0    // нет открытых видимых карт
 			) {
-				if(_save) {
+				if (_save) {
 					event.dispatch('addStep', {
 						"rollerActionStart" : deck.name
 					});
@@ -273,19 +273,19 @@ class rollerAction extends deckAction {
 			let unflippedCount = 0;
 
 			// скрываем открытые видимые карты
-			if(unflipCardsCount > 0) {
+			if (unflipCardsCount > 0) {
 
 				let cards = deck.getCards();
 
-				for(let i in cards) {
+				for (let i in cards) {
 
-					if(cards[i].flip == false) {
+					if (cards[i].flip == false) {
 
 						unflippedCount += 1;
 
 						deck.hideCardByIndex(i);
 
-						if(_save) {
+						if (_save) {
 							event.dispatch('addStep', {
 								"hide" : {
 									"cardIndex" : i                 ,
@@ -300,13 +300,13 @@ class rollerAction extends deckAction {
 
 			// далее карты выкладываются в обратном порядке
 			// поэтому возвращаем выложенные на предыдущей итерации карты в исходное положение
-			if(openCount > 1) {
+			if (openCount > 1) {
 
-				for(let i = cardsCount - unflippedCount; i < cardsCount; i += 1) {
+				for (let i = cardsCount - unflippedCount; i < cardsCount; i += 1) {
 
 					let next = cardsCount * 2 - i - unflippedCount - 1;
 
-					if(i < next) {
+					if (i < next) {
 						Atom.swap(deck, i, next, _save);
 					}
 				}
@@ -316,7 +316,7 @@ class rollerAction extends deckAction {
 			unflippedCount = 0;
 
 			// открываем следующие openCount|3 карт
-			for(
+			for (
 				let i  =           flipCardsCount - 1        ;
 				    i >= 0 && i >= flipCardsCount - openCount;
 				    i -= 1
@@ -326,7 +326,7 @@ class rollerAction extends deckAction {
 
 				deck.cards[i].flip = false;
 
-				if(_save) {
+				if (_save) {
 					event.dispatch('addStep', {
 						"unflip" : {
 							"cardIndex" : i                 ,
@@ -343,22 +343,22 @@ class rollerAction extends deckAction {
 			});
 
 			// карты выкладываются в обратном порядке
-			if(
+			if (
 				openCount > 1// &&
 				// unflippedCount
 			) {
 
-				for(let i = cardsCount - unflippedCount; i < cardsCount; i += 1) {
+				for (let i = cardsCount - unflippedCount; i < cardsCount; i += 1) {
 
 					let next = cardsCount * 2 - i - unflippedCount - 1;
 
-					if(i < next) {
+					if (i < next) {
 						Atom.swap(deck, i, next, _save);
 					}
 				}
 			}
 
-			if(_save) {
+			if (_save) {
 				event.dispatch('saveSteps');
 			}
 
@@ -372,7 +372,7 @@ class rollerAction extends deckAction {
 				"visible" : false
 			});
 
-			if(hiddenCardsCount > 0) {
+			if (hiddenCardsCount > 0) {
 
 				deck.showCards   (false, _save); // no redraw, save
 				deck.flipAllCards(false, _save); // no redraw, save

@@ -41,13 +41,13 @@ class inputsClass {
 
 			document.body.addEventListener('mousedown', data => {
 
-				if(data.button !== 0) {
+				if (data.button !== 0) {
 					return;
 				}
 
 				let newTime = new Date().getTime();
 
-				// if(
+				// if (
 				// 	lastCoord                   &&
 				// 	lastCoord.x == data.clientX &&
 				// 	lastCoord.y == data.clientY &&
@@ -76,7 +76,7 @@ class inputsClass {
 
 			document.body.addEventListener('mouseup', data => {
 
-				if(breakUp) {
+				if (breakUp) {
 
 					breakUp = false;
 
@@ -105,13 +105,13 @@ class inputsClass {
 
 			// Touch events
 
-			if(isMobileOrTablet) {
+			if (isMobileOrTablet) {
 
 				window.addEventListener('touchstart', data => {
 
 					this.take(data.target, data.touches[0].clientX, data.touches[0].clientY, true);
 
-					if(data.target.className.split(' ').indexOf('card') >= 0) {
+					if (data.target.className.split(' ').indexOf('card') >= 0) {
 						data.preventDefault();
 						return false;
 					}
@@ -123,8 +123,8 @@ class inputsClass {
 
 					this.drag(data.touches[0].clientX, data.touches[0].clientY);
 
-					// if(share.get('startCursor')) {
-					if(data.target.className.split(' ').indexOf('card') >= 0) {
+					// if (share.get('startCursor')) {
+					if (data.target.className.split(' ').indexOf('card') >= 0) {
 						data.preventDefault();
 						// data.stopPropagation();
 						return false;
@@ -137,7 +137,7 @@ class inputsClass {
 
 					this.put(data.changedTouches[0].target, data.changedTouches[0].clientX, data.changedTouches[0].clientY);
 
-					if(data.target.className.split(' ').indexOf('card') >= 0) {
+					if (data.target.className.split(' ').indexOf('card') >= 0) {
 						data.preventDefault();
 						return false;
 					}
@@ -145,14 +145,14 @@ class inputsClass {
 					"passive" : false
 				});
 			}
-		} catch(e) {}
+		} catch (e) {}
 	}
 
 	_break() {
 
 		let _dragDeck = share.get('dragDeck');
 
-		if(
+		if (
 			_dragDeck                &&
 			_dragDeck[0]             &&
 			_dragDeck[0].card        &&
@@ -161,7 +161,7 @@ class inputsClass {
 
 			let _deck = Deck.getDeckById(_dragDeck[0].card.parent);
 
-			if(_deck) {
+			if (_deck) {
 				_deck.Redraw();
 			}
 		}
@@ -174,12 +174,12 @@ class inputsClass {
 
 	take(target, x, y, touch) {
 
-		if(touch) {
+		if (touch) {
 
 			let _startCursor = share.get('startCursor'),
 			    _dragDeck    = share.get('dragDeck')   ;
 
-			if(_dragDeck || _startCursor) {
+			if (_dragDeck || _startCursor) {
 				return;
 			}
 		} else {
@@ -188,7 +188,7 @@ class inputsClass {
 			share.set('startCursor', null);
 		}
 
-		if(
+		if (
 			common.isCurLock()                                 ||
 			document.getElementsByClassName('animated').length || // TODO )==
 			share.get('gameIsWon')                             ||
@@ -200,21 +200,21 @@ class inputsClass {
 		event.dispatch('startRunHistory');
 
 		// click empty deck
-		if(
+		if (
 			target.className.split(' ').indexOf('slot') >= 0
 		) {
 
 			let _id   = target.id                 ,
 			    _deck = common.getElementById(_id);
 
-			if(
+			if (
 				share.get('markerMode')      ||
 				share.get('specialStepMode')
 			) { // break;
 				_deck = null;
 			}
 
-			if(_deck) {
+			if (_deck) {
 
 				event.dispatch('click', {
 					"to"     : _deck,
@@ -229,7 +229,7 @@ class inputsClass {
 		}
 
 		// click card in deck
-		if(
+		if (
 			target.className.split(' ').indexOf('draggable') >= 0
 		) {
 
@@ -239,7 +239,7 @@ class inputsClass {
 			    _deck   = _parent               ? Deck.getDeckById(_parent)  : null;
 
 			// mark card
-			if(_deck && share.get('markerMode')) { // break;
+			if (_deck && share.get('markerMode')) { // break;
 
 				event.dispatch('toggleMarkCard', {
 					"card"     : _card,
@@ -264,7 +264,7 @@ class inputsClass {
 				_deck = null;
 			}
 
-			if(_deck && share.get('specialStepMode')) { // break;
+			if (_deck && share.get('specialStepMode')) { // break;
 				event.dispatch('specialStep', {
 					"card" : _card,
 					"callback" : done => {
@@ -276,7 +276,7 @@ class inputsClass {
 				_deck = null;
 			}
 
-			if(_deck) {
+			if (_deck) {
 
 				// event.dispatch('dragStart', {
 				// 	"deck" : _deck,
@@ -288,7 +288,7 @@ class inputsClass {
 					"toCard" : _card
 				});
 
-				if(_card.flip) {
+				if (_card.flip) {
 
 					event.dispatch('click:flipCard', {
 						"to"     : _deck,
@@ -297,7 +297,7 @@ class inputsClass {
 
 					// this.put(target, x, y, false);
 
-					if(!defaults.canMoveFlip) {
+					if (!defaults.canMoveFlip) {
 						return;
 					}
 
@@ -310,7 +310,7 @@ class inputsClass {
 				}
 
 				// нельзя брать перевёрнутые карты
-				if(_card.flip) {
+				if (_card.flip) {
 					return;
 				}
 			}
@@ -321,7 +321,7 @@ class inputsClass {
 
 			share.set('dragDeck', _dragDeck);
 
-			if(_dragDeck) {
+			if (_dragDeck) {
 
 				share.set('startCursor', {
 					"x" : x,
@@ -338,14 +338,14 @@ class inputsClass {
 
 	drag(x, y) {
 
-		if(common.isCurLock()) {
+		if (common.isCurLock()) {
 			return;
 		}
 
 		let _startCursor = share.get('startCursor'),
 		    _dragDeck    = share.get('dragDeck')   ;
 
-		if(!_dragDeck || !_startCursor) {
+		if (!_dragDeck || !_startCursor) {
 			return;
 		}
 
@@ -394,14 +394,14 @@ class inputsClass {
 
 	put(target, x, y, dbclick) {
 
-		if(common.isCurLock()) {
+		if (common.isCurLock()) {
 			return;
 		}
 
 		let _startCursor = share.get('startCursor'), // начальная позиция курсора
 		    _dragDeck    = share.get('dragDeck')   ;
 
-		if(!_dragDeck || !_startCursor) {
+		if (!_dragDeck || !_startCursor) {
 			return;
 		}
 
@@ -432,7 +432,7 @@ class inputsClass {
 			}
 		};
 
-		if(
+		if (
 			_distance == 0      &&
 			_deck.autoUnflipTop
 		) {
@@ -448,7 +448,7 @@ class inputsClass {
 		// let _top  = target.style.top;
 		// let _left = target.style.left;
 		// event.dispatch('hideCard', target);
-		if(!dbclick) {
+		if (!dbclick) {
 			// target.style.display = 'none';
 
 			// target.style.top  = y + 'px';
@@ -457,14 +457,14 @@ class inputsClass {
 		// let _dop = document.elementFromPoint(x, y);
 		let _dop = 'field';
 		// event.dispatch('showCard', target);
-		if(!dbclick) {
+		if (!dbclick) {
 			// target.style.display = 'block';
 
 			// target.style.top  = _top;
 			// target.style.left = _left;
 		}
 
-		// if(_dop && _dop.id) {
+		// if (_dop && _dop.id) {
 		event.dispatch('move', {
 			"moveDeck"   : _dragDeck                        ,
 			"to"         : _dop && _dop.id ? _dop.id : 'mat',
@@ -482,13 +482,13 @@ class inputsClass {
 let _inputs = null;
 
 event.listen('newGame', e => {
-	if(!_inputs) {
+	if (!_inputs) {
 		_inputs = new inputsClass();
 	}
 })
 
 event.listen('inputsBreak', e => {
-	if(_inputs) {
+	if (_inputs) {
 		_inputs._break();
 	}
 });

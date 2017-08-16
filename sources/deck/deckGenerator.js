@@ -10,18 +10,18 @@ import defaults from '../common/defaults';
  */
 
 let shuffleArray = deck => {
-	for(let j, x, i = deck.length; i; j = Math.floor(Math.random() * i), x = deck[--i], deck[i] = deck[j], deck[j] = x);
+	for (let j, x, i = deck.length; i; j = Math.floor(Math.random() * i), x = deck[--i], deck[i] = deck[j], deck[j] = x);
 };
 
 let genType = (_cardsColors, _cardsRanks) => {
 
 	let _deck = [];
 
-	for(let cardColorIndex in _cardsColors) {
+	for (let cardColorIndex in _cardsColors) {
 
 		let cardColor = _cardsColors[cardColorIndex];
 
-		for(let cardRankIndex in _cardsRanks) {
+		for (let cardRankIndex in _cardsRanks) {
 
 			let cardRank = _cardsRanks[cardRankIndex];
 
@@ -122,12 +122,12 @@ let deckGenerator = data => {
 		? defaults.card.ranks36
 		: defaults.card.ranks;
 
-	if(data && data.ranks) {
+	if (data && data.ranks) {
 
 		_ranks = [];
 
-		for(i in data.ranks) {
-			if(defaults.card.rank.indexOf(data.ranks[i].toString()) >= 0) {
+		for (i in data.ranks) {
+			if (defaults.card.rank.indexOf(data.ranks[i].toString()) >= 0) {
 				_ranks.push(data.ranks[i].toString());
 			}
 		}
@@ -135,15 +135,15 @@ let deckGenerator = data => {
 
 	let _deck = [];
 
-	for(;iterations > 0;iterations -= 1) {
+	for (;iterations > 0;iterations -= 1) {
 		_deck = _deck.concat(genTypes[type](_ranks));
 	}
 
-	if(shuffle) {
+	if (shuffle) {
 		shuffleArray(_deck);
 	}
 
-	if(excludeCards) {
+	if (excludeCards) {
 		_deck = _deck.filter(e => excludeCards.indexOf(e) < 0);
 	}
 

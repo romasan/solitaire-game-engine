@@ -20,7 +20,7 @@ let onShowParameters = e => {
 	!pref && (pref = defaults.pref);
 
 	try {
-		for(let prefName in defaults.themes) {
+		for (let prefName in defaults.themes) {
 
 			let _pref = pref[prefName] && defaults.themes[prefName].indexOf(pref[prefName]) >= 0
 				? pref[prefName]
@@ -32,7 +32,7 @@ let onShowParameters = e => {
 			document.querySelector(`input[name="pref_${prefName}"][value="${(_pref).toString()}"]`)
 				.setAttribute('checked', true);
 		}
-	} catch(e) {}
+	} catch (e) {}
 
 	gamePreferences.show(pref);
 };
@@ -43,7 +43,7 @@ let applyParameters = e => {
 
 	try {
 
-		for(let prefName in defaults.themes) {
+		for (let prefName in defaults.themes) {
 
 			// let _value = $(`input[name='pref_${prefName}']:checked`).val();
 
@@ -57,7 +57,7 @@ let applyParameters = e => {
 
 			pref[prefName] = _value;
 		}
-	} catch(e) {}
+	} catch (e) {}
 
 	event.dispatch('fieldThemesSet', pref);
 
@@ -69,7 +69,7 @@ let applyParameters = e => {
 
 	let changePreferencesCallback = share.get('changePreferencesCallback');
 
-	if(typeof changePreferencesCallback == 'function') {
+	if (typeof changePreferencesCallback == 'function') {
 
 		let _data = pref;
 
@@ -111,5 +111,5 @@ export default e => {
 		// 	"element"  : ".solitaire-engine-style-preferences-element",
 		// 	"callback" : applyParameters
 		// });
-	} catch(e) {}
+	} catch (e) {}
 };

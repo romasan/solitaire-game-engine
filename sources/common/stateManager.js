@@ -48,7 +48,7 @@ class stateManager {
 
 		this._state = {};
 
-		for(let i in this._sourceList) {
+		for (let i in this._sourceList) {
 
 			let _element = share.get(this._sourceList[i]);
 
@@ -67,18 +67,18 @@ class stateManager {
 
 		let _decks = getDecks();
 
-		for(let deckId in _decks) {
+		for (let deckId in _decks) {
 
 			let _cards = [];
 
-			for(let cardId in _decks[deckId].cards) {
+			for (let cardId in _decks[deckId].cards) {
 
 				let _card = {
 					"name" : _decks[deckId].cards[cardId].name,
 					"id"   : _decks[deckId].cards[cardId].id
 				};
 
-				for(let i in cardAttributes) {
+				for (let i in cardAttributes) {
 					let _name    = cardAttributes[i];
 					_card[_name] = _decks[deckId].cards[cardId][_name];
 				}
@@ -96,7 +96,7 @@ class stateManager {
 
 	restore() {
 
-		if(!this._state) {
+		if (!this._state) {
 
 			console.warn('Restore fail. Store is empty.');
 
@@ -104,29 +104,29 @@ class stateManager {
 		}
 
 		// restore share
-		for(let i in this._clearList) {
+		for (let i in this._clearList) {
 			share.delete(this._clearList[i]);
 		}
 
-		for(let i in this._sourceList) {
+		for (let i in this._sourceList) {
 			share.set(this._sourceList[i], this._state[this._sourceList[i]], true);
 		}
 
-		for(let deckId in this._state.model) {
+		for (let deckId in this._state.model) {
 
 			let _deck = getDeckById(deckId);
 
 			let _cards = [];
 
-			for(let cardIndex in this._state.model[deckId].cards) {
+			for (let cardIndex in this._state.model[deckId].cards) {
 
 				let cardId = this._state.model[deckId].cards[cardIndex].id;
 
 				let _card = common.getElementById(cardId);
 
-				if(_card.name == this._state.model[deckId].cards[cardIndex].name) {
+				if (_card.name == this._state.model[deckId].cards[cardIndex].name) {
 
-					for(let attrIndex in cardAttributes) {
+					for (let attrIndex in cardAttributes) {
 						let attrName = cardAttributes[attrIndex];
 							_card[attrName] = this._state.model[deckId].cards[cardIndex][attrName];
 					}

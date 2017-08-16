@@ -17,7 +17,7 @@ class shareClass {
 	}
 
 	get(name) {
-		if(typeof this._data[name] != 'undefined') {
+		if (typeof this._data[name] != 'undefined') {
 
 			// TODO решить наконец проблему, 
 			// почему Object.assign не работает после babel-я
@@ -33,14 +33,14 @@ class shareClass {
 	set(name, data, forceClone = false) {
 
 		// "foo", "bar", false
-		if(typeof name == 'string') {
+		if (typeof name == 'string') {
 
 			event.dispatch('shareChange:' + name, {
 				"from" : this._data[name],
 				"to"   : data
 			});
 
-			if(
+			if (
 				typeof forceClone == 'boolean' && forceClone
 			) {
 				try {
@@ -54,7 +54,7 @@ class shareClass {
 					: data instanceof Array
 						? Object.assign([], data)
 						: Object.assign({}, data);
-				} catch(e) {
+				} catch (e) {
 					this._data[name] = data;
 				}
 
@@ -65,20 +65,20 @@ class shareClass {
 			event.dispatch('shareSet:' + name, data);
 
 		// {"foo" : "bar"}, false
-		} else if(name instanceof Object) {
+		} else if (name instanceof Object) {
 
-			if(typeof data == 'boolean') {
+			if (typeof data == 'boolean') {
 				forceClone = data;
 			}
 
-			for(let _name in name) {
+			for (let _name in name) {
 
 				event.dispatch('shareChange:' + name, {
 					"from" : this._data[_name],
 					"to"   : name[_name]
 				});
 
-				if(
+				if (
 					typeof forceClone == 'boolean' && forceClone
 				) {
 					try {
@@ -88,7 +88,7 @@ class shareClass {
 						: name[_name] instanceof Array
 							? Object.assign([], name[_name])
 							: Object.assign({}, name[_name]);
-					} catch(e) {
+					} catch (e) {
 						this._data[_name] = name[_name];
 					}
 

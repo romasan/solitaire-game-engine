@@ -8,14 +8,14 @@ import takeRules from './takeRules'       ;
 export default (deck, cardId) => {
 
 	// Нестандартный ход (autosteps)
-	// if(share.get('stepType') != defaults.stepType) {return false;};
+	// if (share.get('stepType') != defaults.stepType) {return false;};
 
 	let rulesCorrect = true; // !common.isLock();
 
 	rulesCorrect = rulesCorrect && !deck.locked;
 
 	// смотрим не заполнена ли колода
-	if(typeof deck.full == 'boolean') {
+	if (typeof deck.full == 'boolean') {
 		rulesCorrect = rulesCorrect && !deck.full;
 	}
 
@@ -32,15 +32,15 @@ export default (deck, cardId) => {
 	let takeDeck = [];
 
 	let cards = deck.getCards();
-	for(let i in cards) {
+	for (let i in cards) {
 
-		if(cards[i].id == cardId) {
+		if (cards[i].id == cardId) {
 
 			let _card = cards[i];
 			cardIndex = i | 0;
 			cardName  = _card.name;
 
-			if(_card) {
+			if (_card) {
 				cardSuit = _card.suit;
 				cardRank = _card.rank;
 			}
@@ -51,7 +51,7 @@ export default (deck, cardId) => {
 			);
 		}
 
-		if(cardIndex >= 0) {
+		if (cardIndex >= 0) {
 
 			takeDeck.push({
 				"index" : i       ,
@@ -69,11 +69,11 @@ export default (deck, cardId) => {
 		"deckLength" : deckLength
 	}
 
-	for(let ruleIndex in deck.takeRules) {
+	for (let ruleIndex in deck.takeRules) {
 
 		let ruleName = deck.takeRules[ruleIndex];
 
-		if(takeRules[ruleName]) {
+		if (takeRules[ruleName]) {
 			rulesCorrect = rulesCorrect && takeRules[ruleName](_attrs);
 		} else {
 			console.warn('Incorrect take rule:', ruleName);

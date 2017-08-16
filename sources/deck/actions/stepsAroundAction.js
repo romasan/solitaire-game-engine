@@ -21,7 +21,7 @@ class stepsAroundAction extends deckAction {
 
 		let _stepType = share.get('stepType');
 
-		if(_stepType != defaults.stepType) {
+		if (_stepType != defaults.stepType) {
 
 			super.break();
 
@@ -38,15 +38,15 @@ class stepsAroundAction extends deckAction {
 		// выполняется для всех вокруг
 		// ход не делается
 		// вместо хода выполняется едействие для текущей стопки (если _central, по умолчанию true)
-		if(typeof data.actionData.run == 'string') {
+		if (typeof data.actionData.run == 'string') {
 
 			let _central = typeof data.actionData.central == 'boolean' ? data.actionData.central : true;
 
 			let _runStack = [];
 
-			for(let i in _relations) {
+			for (let i in _relations) {
 
-				if(
+				if (
 					Tips.fromTo(deck.name, _relations[i].to)
 				) {
 					_runStack.push(_relations[i]);
@@ -58,18 +58,18 @@ class stepsAroundAction extends deckAction {
 			let _callback = e => {
 
 				_counter -= 1;
-				if(_counter === 0) {
+				if (_counter === 0) {
 
 					this.end();
 					// event.dispatch(data.actionData.dispatch)
 				}
 			}
 
-			if(_counter === 0) {
+			if (_counter === 0) {
 
 				this.end();
 
-			} else if(_central) {
+			} else if (_central) {
 
 				_counter += 1;
 
@@ -79,12 +79,12 @@ class stepsAroundAction extends deckAction {
 				});
 			}
 
-			for(let i in _runStack) {
+			for (let i in _runStack) {
 
 				let _data = null;
 				try {
 					_data = Object.assign({}, _runStack[i]);
-				} catch(e) {
+				} catch (e) {
 					_data = _runStack[i];
 				}
 
@@ -97,7 +97,7 @@ class stepsAroundAction extends deckAction {
 
 			let _callback = e => {
 
-				if(share.get('stepType') == stepType) {
+				if (share.get('stepType') == stepType) {
 					this.end();
 				}
 			};
@@ -113,7 +113,7 @@ class stepsAroundAction extends deckAction {
 		common.curUnLock();
 		// Tips.checkTips();
 
-		if(data.actionData.dispatch) {
+		if (data.actionData.dispatch) {
 			event.dispatch(data.actionData.dispatch, data.eventData);
 		}
 

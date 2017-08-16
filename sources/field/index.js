@@ -47,7 +47,7 @@ class Field {
 		share.set('autoMoveToHomeOpenDecks', data.autoMoveToHomeOpenDecks ? data.autoMoveToHomeOpenDecks : []);
 
 		// вкл./выкл. подсказок
-		if(typeof data.showTips == 'boolean' && data.showTips) {
+		if (typeof data.showTips == 'boolean' && data.showTips) {
 			Tips.showTips({
 				"init" : true
 			});
@@ -74,7 +74,7 @@ class Field {
 			"locale"               : 'string'
 		};
 
-		for(let valueName in _values) {
+		for (let valueName in _values) {
 			share.set(
 				valueName, 
 				typeof data[valueName] == _values[valueName] 
@@ -87,19 +87,19 @@ class Field {
 		share.set('winCheck', data.winCheck);
 
 		// Настройки оформления (если нет сохранений)
-		if(data.theme) {
+		if (data.theme) {
 			share.set('theme', data.theme);
 		}
 
 		// Дополнительные настройки игры
-		if(data.preferences) {
+		if (data.preferences) {
 
 			let _pref = storage.get('pref'),
 			    _preferences = {}          ,
 			    _prefData    = {}          ;
 
-			for(let prefName in data.preferences) {
-				if(typeof prefName == 'string') {
+			for (let prefName in data.preferences) {
+				if (typeof prefName == 'string') {
 
 					_preferences[prefName] = data.preferences[prefName];
 
@@ -116,14 +116,14 @@ class Field {
 		}
 
 		// параметры отображения подсказок
-		for(let tipParamName in defaults.tipsParams) {
+		for (let tipParamName in defaults.tipsParams) {
 			this.tipsParams[tipParamName] = (data.tipsParams && typeof data.tipsParams[tipParamName] != 'undefined')
 				? data.tipsParams[tipParamName]
 				: defaults.tipsParams[tipParamName]
 		}
 
 		// параметры ввода
-		for(let inputParamName in defaults.inputParams) {
+		for (let inputParamName in defaults.inputParams) {
 			this.inputParams[inputParamName] = (data.inputParams && typeof data.inputParams[inputParamName] != 'undefined')
 				? data.inputParams[inputParamName]
 				: defaults.inputParams[inputParamName]
@@ -131,12 +131,12 @@ class Field {
 
 		// дополнительные параметры отображения
 		// начальная позиция порядка отображения элементов
-		if(data.startZIndex && typeof data.startZIndex == 'number') {
+		if (data.startZIndex && typeof data.startZIndex == 'number') {
 			share.set('start_z_index', data.startZIndex);
 		}
 
 		// инициализация автоходов
-		if(data.autoSteps) {
+		if (data.autoSteps) {
 			this.autoSteps = addAutoSteps(data.autoSteps);
 		}
 
@@ -145,32 +145,32 @@ class Field {
 		event.dispatch('initField', data);
 
 		// Отрисовка элементов
-		if(data.groups) {
-			for(let groupName in data.groups) {
+		if (data.groups) {
+			for (let groupName in data.groups) {
 				data.groups[groupName].name = groupName;
 				Group.add(data.groups[groupName]);
 			}
 		}
 
-		if(data.decks) {
-			for(let e in data.decks) {
+		if (data.decks) {
+			for (let e in data.decks) {
 				Deck.addDeck(data.decks[e]);
 			}
 		}
 
-		if(data.fill) {
+		if (data.fill) {
 
 			let _decks = Deck.getDecks();
 			let _fill  = null;
 			try {
 				_fill = Object.assign([], data.fill);
-			} catch(e) {
+			} catch (e) {
 				_fill = data.fill;
 			}
 
-			for(;_fill.length;) {
-				for(let deckId in _decks) {
-					if(_fill.length) {
+			for (;_fill.length;) {
+				for (let deckId in _decks) {
+					if (_fill.length) {
 						let _card = _fill.shift();
 						_decks[deckId].Fill([_card]);
 					}
@@ -190,24 +190,24 @@ class Field {
 		// console.log('Field:Redraw');
 
 		// прокидываеем <новую> конфигурацию
-		if(data) {
+		if (data) {
 
 			// ерерисовываем все группы и стопки в них
-			for(let _groupName in data.groups) {
+			for (let _groupName in data.groups) {
 
 				let _group = Group.getByName(_groupName);
 
-				if(_group) {
+				if (_group) {
 					_group.Redraw(data.groups[_groupName]);
 				}
 			}
 
 			// перерисовываем отдельно стоящие стопки
-			for(let i in data.decks) {
+			for (let i in data.decks) {
 
 				let _deck = Deck.getDeck(data.decks[i].name);
 
-				if(_deck) {
+				if (_deck) {
 					_deck.Redraw(data.decks[i]);
 				}
 			}
@@ -219,7 +219,7 @@ class Field {
 			let _decks = Deck.getDecks();
 
 			// перерисовываем каждую
-			for(let i in _decks) {
+			for (let i in _decks) {
 				_decks[i].Redraw();
 			}
 		}
@@ -231,11 +231,11 @@ class Field {
 
 		let _elements = share.get('elements');
 
-		for(let i in _elements) {
-			if(_elements[i].type == 'deck') {
+		for (let i in _elements) {
+			if (_elements[i].type == 'deck') {
 				_elements[i].clear();
 				_elements[i] = null;
-			} else if(_elements[i].type == 'group') {
+			} else if (_elements[i].type == 'group') {
 				_elements[i] = null;
 			}
 		}

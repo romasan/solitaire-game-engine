@@ -8,19 +8,19 @@ export default data => {
 
 	let _elements = share.get('elements');
 
-	if(data && data.visible) {
+	if (data && data.visible) {
 
-		for(let deckId in _elements) {
-			if(_elements[deckId].type == 'deck') {
-				if(_elements[deckId].visible) {
+		for (let deckId in _elements) {
+			if (_elements[deckId].type == 'deck') {
+				if (_elements[deckId].visible) {
 					_decks[deckId] = _elements[deckId];
 				}
 			};
 		};
 	} else {
 
-		for(let deckId in _elements) {
-			if(_elements[deckId].type == 'deck') {
+		for (let deckId in _elements) {
+			if (_elements[deckId].type == 'deck') {
 				_decks[deckId] = _elements[deckId];
 			};
 		};

@@ -17,29 +17,29 @@ share.set('animatedCallback'     , e => null);
 
 let _allEl = data => {
 
-	if(share.get('nodraw')) {
+	if (share.get('nodraw')) {
 		return;
 	}
 
-	if(!data) {
+	if (!data) {
 		throw new Error('elRender:empty arguments.');
 	}
 
-	if(typeof data == 'string') {
+	if (typeof data == 'string') {
 
 		try {
 
-			if(data[0] == '#') {
+			if (data[0] == '#') {
 				
 				let _element = document.getElementById(data.slice(1, Infinity));
 
 				return new elClass(_element);			
-			} else if(data[0] == '.') {
+			} else if (data[0] == '.') {
 				
 				let _elements = document.getElementsByClassName(data.slice(1, Infinity));
 
 				return new allElClass(_elements);			
-			} else if(data[0] == '<') {
+			} else if (data[0] == '<') {
 				
 				let _temp = document.createElement('temp');
 				_temp.innerHTML = data;
@@ -47,9 +47,9 @@ let _allEl = data => {
 
 				return new elClass(_element);			
 			}
-		} catch(data) {}
+		} catch (data) {}
 		
-	} else if(data.el || data.elements) {
+	} else if (data.el || data.elements) {
 		return data;
 	} else {
 		return new elClass(data);
@@ -61,13 +61,13 @@ _allEl.stopAnimations = e => {
 
 	// console.log('STOP ANIMATIONS');
 
-	// if(!share.get('animation')) {
+	// if (!share.get('animation')) {
 	// 	return;
 	// }
 
 	// return;
 
-	if(share.get('nodraw')) {
+	if (share.get('nodraw')) {
 		return;
 	}
 

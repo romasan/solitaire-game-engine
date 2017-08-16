@@ -15,11 +15,11 @@ class changeStepTypeAction extends deckAction {
 
 	run(deck, data) {
 
-		if(data.eventData.to.name != deck.name) {
+		if (data.eventData.to.name != deck.name) {
 			return false;
 		}
 
-		if(typeof data.actionData.to != 'string') {
+		if (typeof data.actionData.to != 'string') {
 
 			// !data.actionData.dispatch
 			super.end();

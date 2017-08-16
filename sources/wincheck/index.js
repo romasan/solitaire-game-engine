@@ -14,7 +14,7 @@ let winCheck = params => {
 
 	let winCheck = share.get('winCheck');
 
-	if(!winCheck) {
+	if (!winCheck) {
 		return false;
 	}
 
@@ -22,12 +22,12 @@ let winCheck = params => {
 		? winCheck.rules
 		: winCheck;
 
-	for(let ruleName in winCheck) {
+	for (let ruleName in winCheck) {
 
 		hasRules = true;
 
 		// winCheck - Object
-		if(
+		if (
 			typeof ruleName == "string" &&
 			winCheck[ruleName]
 		) {
@@ -39,7 +39,7 @@ let winCheck = params => {
 			});
 
 		// winCheck - Array of string
-		} else if(
+		} else if (
 			typeof ruleName == "number"  &&
 			winCheck[winCheck[ruleName]]
 		) {
@@ -53,16 +53,16 @@ let winCheck = params => {
 		}
 	}
 
-	if(!hasRules) {
+	if (!hasRules) {
 		rulesCorrect = rulesCorrect && winCheckRules.newerWin();
 	}
 
-	if(
+	if (
 		rulesCorrect           ||
 		share.get('gameIsWon')
 	) {
 
-		if(params && params.noCallback) {
+		if (params && params.noCallback) {
 			return true;
 		}
 
@@ -84,11 +84,11 @@ event.listen('winCheck', winCheck);
 // hidden check
 let hwinCheck = params => {
 
-	if(!params) {
+	if (!params) {
 		params = {};
 	}
 
-	if(typeof params.show == 'undefined') {
+	if (typeof params.show == 'undefined') {
 		params.show = false;
 	}
 

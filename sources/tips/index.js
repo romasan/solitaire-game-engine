@@ -41,7 +41,7 @@ let checkTips = e => {
 
 	getNextCards();
 
-	if(share.get('noTips')) {
+	if (share.get('noTips')) {
 		return false;
 	}
 
@@ -59,7 +59,7 @@ let checkTips = e => {
 	});
 	// console.groupEnd();
 
-	if(
+	if (
 		_tips.length == 0                          &&
 		share.get('stepType') == defaults.stepType
 	) {
@@ -73,17 +73,17 @@ let checkTips = e => {
 		? defaults.showTips
 		: share.get('showTips');
 
-	if(_showTips) {
+	if (_showTips) {
 
 		let _homeGroups = Field.homeGroups;
 
-		for(let i in _tips) {
+		for (let i in _tips) {
 
 			let draw   = false;
 			let toHome = false;
 
 			// TODO инициализировать "hideTipsInDom" в Field.js 
-			if(
+			if (
 				// (
 				// 	_tips[i].to.count === 0            &&
 				// 	Field.tipsParams.hideOnEmpty
@@ -96,11 +96,11 @@ let checkTips = e => {
 			) {
 
 				// не выделять подсказки с ходом из "дома"
-				if(_homeGroups.indexOf(_tips[i].from.deck.parent) < 0) {
+				if (_homeGroups.indexOf(_tips[i].from.deck.parent) < 0) {
 					draw = true;
 				}
 
-				if(_homeGroups.indexOf(_tips[i].to.deck.parent) >= 0) {
+				if (_homeGroups.indexOf(_tips[i].to.deck.parent) >= 0) {
 					toHome = true;
 				}
 			} else {
@@ -108,7 +108,7 @@ let checkTips = e => {
 			}
 
 			// Filter
-			if(
+			if (
 				draw                                       &&
 				share.get('stepType') == defaults.stepType
 			) {
@@ -125,7 +125,7 @@ let checkTips = e => {
 				let fromParentCard = fromCards.length > 0 && takeCardIndex  > 0 ? fromCards[takeCardIndex  - 1] : EMPTY;
 				let   toParentCard =   toCards.length > 0                       ?   toCards[toCards.length - 1] : EMPTY;
 
-				if(
+				if (
 					fromDeck.parent == toDeck.parent &&
 					(
 						fromParentCard == EMPTY &&
@@ -144,7 +144,7 @@ let checkTips = e => {
 				}
 			}
 
-			if(draw) {
+			if (draw) {
 				event.dispatch('showTip', {
 					"type" : toHome ? 'tipToHome' : 'tip',
 					"el"   : _tips[i].from.card
@@ -165,7 +165,7 @@ let showTips = data => {
 	// _showTips = true;
 	share.set('showTips', true);
 
-	if(data && data.init) {
+	if (data && data.init) {
 		return;
 	}
 
@@ -179,7 +179,7 @@ let hideTips = data => {
 	// _showTips = false;
 	share.set('showTips', false);
 
-	if(data && data.init) {
+	if (data && data.init) {
 		return;
 	}
 
@@ -191,7 +191,7 @@ event.listen('tips:off', hideTips);
 // лучший ход на в текущем положении перетаскиваемой стопки
 let tipsMove = data => {
 
-	if(!share.get('showTipPriority')) {
+	if (!share.get('showTipPriority')) {
 		return;
 	}
 
@@ -199,7 +199,7 @@ let tipsMove = data => {
 		"types" : ['tipPriority']
 	});
 
-	if(
+	if (
 		share.showTipPriority                          &&
 		data                                           &&
 		data.moveDeck                                  &&
@@ -210,7 +210,7 @@ let tipsMove = data => {
 
 		let Tip = bestTip(data.moveDeck, data.cursorMove);
 
-		if(Tip) {
+		if (Tip) {
 
 			event.dispatch('showTip', {
 				"el"   : Tip.to.deck  ,
@@ -223,13 +223,13 @@ let tipsMove = data => {
 // tips destination decks
 let tipsDestination = data => {
 
-	if(share.get('showTipsDestination')) {
+	if (share.get('showTipsDestination')) {
 
 		event.dispatch('hideTips');
 
-		if(data && data.currentCard && data.currentCard.id) {
-			for(let i in _tips) {
-				if(_tips[i].from.card.id == data.currentCard.id) {					
+		if (data && data.currentCard && data.currentCard.id) {
+			for (let i in _tips) {
+				if (_tips[i].from.card.id == data.currentCard.id) {					
 
 					event.dispatch('showTip', {
 						"el"   : _tips[i].to.deck, 
@@ -244,8 +244,8 @@ let tipsDestination = data => {
 // has tips with from
 let checkFrom = from => {
 
-	for(let i in _tips) {
-		if(
+	for (let i in _tips) {
+		if (
 			_tips[i].from.deck.name == from
 		) {
 			return true;
@@ -258,8 +258,8 @@ let checkFrom = from => {
 // has tips with from and to
 let fromTo = (from, to) => {
 
-	for(let i in _tips) {
-		if(
+	for (let i in _tips) {
+		if (
 			_tips[i].from.deck.name == from &&
 			_tips[i].to  .deck.name == to
 		) {

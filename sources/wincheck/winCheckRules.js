@@ -38,16 +38,16 @@ let winCheckRules = {
 	// возвращает колоды определённой группы/групп
 	"group" : data => { // string | Array of string
 
-		if(!data.filter || !data.filterArgs) {
+		if (!data.filter || !data.filterArgs) {
 			return false;
 		}
 
 		let decksLength = 0;
 		let decks = {};
 
-		for(let deckName in data.decks) {
+		for (let deckName in data.decks) {
 
-			if(
+			if (
 				(
 					typeof data.filterArgs       == 'string'        &&
 					data.decks[deckName].parent  == data.filterArgs
@@ -72,18 +72,18 @@ let winCheckRules = {
 	// by Tag
 	"select" : data => { // string
 
-		if(!data.filter || !data.filterArgs) {
+		if (!data.filter || !data.filterArgs) {
 			return false;
 		}
 
 		let decksLength = 0;
 		let decks = {};
 
-		for(let deckName in data.decks) {
+		for (let deckName in data.decks) {
 
 			let deck = data.decks[deckName];
 
-			if(data.decks[deckName].tags.indexOf(data.filterArgs) >= 0) {
+			if (data.decks[deckName].tags.indexOf(data.filterArgs) >= 0) {
 
 				decksLength += 1;
 				decks[deckName] = deck;
@@ -97,15 +97,15 @@ let winCheckRules = {
 
 	"deck" : data => {
 
-		if(!data.filter || !data.filterArgs) {
+		if (!data.filter || !data.filterArgs) {
 			return false;
 		}
 
 		let decksLength = 0;
 		let decks = {};
 
-		for(let deckName in data.decks) {
-			if(
+		for (let deckName in data.decks) {
+			if (
 				typeof data.filterArgs    == 'string'                   &&
 				data.decks[deckName].name == data.filterArgs            ||
 				data.filterArgs.indexOf(data.decks[deckName].name) >= 0
@@ -129,8 +129,8 @@ let winCheckRules = {
 		let decks = {};
 		let decksLength = 0;
 
-		for(let deckName in data.decks) {
-			if(data.decks[deckName].tags.indexOf('last') >= 0) {
+		for (let deckName in data.decks) {
+			if (data.decks[deckName].tags.indexOf('last') >= 0) {
 				decksLength += 1
 				decks[deckName] = data.decks[deckName];
 			}
@@ -145,7 +145,7 @@ let winCheckRules = {
 
 	"_asc_desk" : data => {
 
-		if(
+		if (
 			!data                            ||
 			typeof data.asc_desk != 'number'
 		) {
@@ -154,16 +154,16 @@ let winCheckRules = {
 
 		let correct = true;
 
-		for(let deckName in data.decks) {
+		for (let deckName in data.decks) {
 
-			if(!correct) {
+			if (!correct) {
 				return false;
 			}
 
 			let cards = data.decks[deckName].cards;
 
-			for(let cardIndex in cards) {
-				if(cardIndex > 0) {
+			for (let cardIndex in cards) {
+				if (cardIndex > 0) {
 
 					let down = cards[(cardIndex | 0) - 1],
 					      up = cards[(cardIndex | 0)]    ;
@@ -193,7 +193,7 @@ let winCheckRules = {
 
 		let correct = true;
 
-		for(let deckName in data.decks) {
+		for (let deckName in data.decks) {
 			correct = correct && data.decks[deckName].cards.length == 0;
 		}
 
@@ -211,8 +211,8 @@ let winCheckRules = {
 			decksLength     = 0,
 			fillDeckName    = 0;
 
-		for(let deckName in data.decks) {
-			if(data.decks[deckName].cards.length == 0) {
+		for (let deckName in data.decks) {
+			if (data.decks[deckName].cards.length == 0) {
 				emptyDecksCount += 1;
 			} else {
 				fillDeckName = deckName;
@@ -222,7 +222,7 @@ let winCheckRules = {
 
 		let correct = emptyDecksCount == decksLength - 1;
 
-		if(data.filter && correct) {
+		if (data.filter && correct) {
 			let decks = {};
 			decks[fillDeckName] = data.decks[fillDeckName];
 			data.decks = decks;
@@ -251,7 +251,7 @@ let winCheckRules = {
 
 	"topKing"    : data => {
 
-		for(let deckName in data.decks) {
+		for (let deckName in data.decks) {
 
 			let deck = data.decks[deckName];
 
@@ -259,7 +259,7 @@ let winCheckRules = {
 
 			let topCardRank = topCard.rank;
 
-			if(
+			if (
 				typeof topCardRank != 'undefined'                                  &&
 				topCardRank != defaults.card.ranks[defaults.card.ranks.length - 1]
 			) {
@@ -272,7 +272,7 @@ let winCheckRules = {
 
 	"topAce"     : data => {
 
-		for(let deckName in data.decks) {
+		for (let deckName in data.decks) {
 
 			let deck = data.decks[deckName];
 
@@ -280,7 +280,7 @@ let winCheckRules = {
 
 			let topCardRank = topCard.rank;
 
-			if(
+			if (
 				typeof topCardRank != 'undefined'                                  &&
 				topCardRank != defaults.card.ranks[0]
 			) {
@@ -300,7 +300,7 @@ let winCheckRules = {
 		// 	rulesArgs
 		// }
 
-		if(
+		if (
 			!data           ||
 			!data.rulesArgs
 		) {
@@ -310,11 +310,11 @@ let winCheckRules = {
 		let _correct = true;
 
 		// apply filters
-		for(let next in data.rulesArgs) {
+		for (let next in data.rulesArgs) {
 
 			let _decksClone = {};
 
-			for(let deckName in data.decks) {
+			for (let deckName in data.decks) {
 				_decksClone[deckName] = data.decks[deckName];
 			}
 
@@ -325,15 +325,15 @@ let winCheckRules = {
 			};
 
 			// применяем фильтры, оставляем только интересующие колоды
-			if(_correct && data.rulesArgs[next].filters) {
+			if (_correct && data.rulesArgs[next].filters) {
 
 				queryData.filter = true;
 
 				// пробегаемся по фильтрам
-				for(let i in data.rulesArgs[next].filters) {
+				for (let i in data.rulesArgs[next].filters) {
 
 					// фильтр - строковый параметр
-					if(
+					if (
 						typeof data.rulesArgs[next].filters[i] == 'string' &&
 						winCheckRules[data.rulesArgs[next].filters[i]]
 					) {
@@ -348,9 +348,9 @@ let winCheckRules = {
 							data.rulesArgs[next].filters[i].toString() == '[object Object]'
 						) {
 
-							for(let filterName in data.rulesArgs[next].filters[i]) {
+							for (let filterName in data.rulesArgs[next].filters[i]) {
 
-								if(winCheckRules[filterName]) {
+								if (winCheckRules[filterName]) {
 
 									queryData.filterArgs = data.rulesArgs[next].filters[i][filterName];
 
@@ -369,10 +369,10 @@ let winCheckRules = {
 			}
 
 			// применяем правила к оставшимся колодам
-			if(data.rulesArgs[next].rules) {
+			if (data.rulesArgs[next].rules) {
 
-				for(let i in data.rulesArgs[next].rules) {
-					if(winCheckRules[data.rulesArgs[next].rules[i]]) {
+				for (let i in data.rulesArgs[next].rules) {
+					if (winCheckRules[data.rulesArgs[next].rules[i]]) {
 						_correct = _correct && winCheckRules[data.rulesArgs[next].rules[i]](queryData);
 					} else {
 						_correct = _correct && winCheckRules.newerWin();

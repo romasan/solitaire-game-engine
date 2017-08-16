@@ -33,9 +33,9 @@ event.listen('render:off', e => {
 
 event.listen('removeEl', data => {
 
-	// if(share.get('nodraw')) {
+	// if (share.get('nodraw')) {
 
-	// 	if(data && typeof data.callback == "function") {
+	// 	if (data && typeof data.callback == "function") {
 	// 		data.callback();
 	// 	}
 
@@ -45,13 +45,13 @@ event.listen('removeEl', data => {
 	let _elDomElement = share.get('domElement:' + data.id);
 
 	// try {
-	if(_elDomElement) {
+	if (_elDomElement) {
 
 		_elDomElement.remove();
 
 		share.delete('domElement:' + data.id);
 	} else {
-	// } catch(e) {
+	// } catch (e) {
 		// console.warn('Dom element for', data.id, 'not found');
 	}
 });
@@ -75,7 +75,7 @@ event.listen('clickCard', card => {
 
 	let deck = common.getElementById(card.parent);
 
-	if(deck) {
+	if (deck) {
 
 		event.dispatch('click:flipCard', {
 			"to"     : deck, // deckClass

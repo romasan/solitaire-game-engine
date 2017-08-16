@@ -21,7 +21,7 @@ let Move = ({moveDeck, to, cursorMove}) => {
 
 	let _stepType = share.get('stepType');
 
-	if(
+	if (
 		!cursorMove.dbclick           &&
 		 cursorMove.distance    === 0 &&
 		share.get('moveDistance') > 0 &&
@@ -33,7 +33,7 @@ let Move = ({moveDeck, to, cursorMove}) => {
 	}
 
 	// выйти если не стандартный ход
-	if(
+	if (
 		_stepType != defaults.stepType  &&
 		(
 			 Field.autoSteps            &&
@@ -61,17 +61,17 @@ let Move = ({moveDeck, to, cursorMove}) => {
 
 	let _el = null;
 
-	if(_success) {
+	if (_success) {
 		_el = common.getElementById(to); // получаем карту/стопку
 	}
 
 	_success = _success && _el;
 
 	// если положили на карту узнаём из какой она стопки
-	if(_success) {
-		if(_el.type == 'card') {
+	if (_success) {
+		if (_el.type == 'card') {
 			_deck_destination = common.getElementById(_el.parent);
-		} else if(_el.type == 'deck') {
+		} else if (_el.type == 'deck') {
 			_deck_destination = _el;
 		}
 	}
@@ -84,19 +84,19 @@ let Move = ({moveDeck, to, cursorMove}) => {
 	_success = _success && _deck_destination.id != _deck_departure.id;
 
 	// смотрим не одна и та же ли эта стопка
-	if(_success) {
+	if (_success) {
 
 		// узнаём можно ли положить карты на папку назначения
 		let _put = _deck_destination.Put(moveDeck);
 		_success = _success && _put;
 
-		if(_put) {
+		if (_put) {
 
 			// если можно положить карты берём их из исходной стопки
 			let _pop = _deck_departure.Pop(moveDeck.length);
 			_success = _success && _pop;
 
-			if(_pop) {
+			if (_pop) {
 
 				// ложим карты в колоду назначения
 				_deck_destination.Push(_pop, false);
@@ -106,8 +106,8 @@ let Move = ({moveDeck, to, cursorMove}) => {
 
 				let _checkMoveEnd = false;
 
-				for(let _actionName in _deck_destination.actions) {
-					if(_deck_destination.actions[_actionName].event == 'moveEnd') {
+				for (let _actionName in _deck_destination.actions) {
+					if (_deck_destination.actions[_actionName].event == 'moveEnd') {
 						_checkMoveEnd = true;
 					}
 				}
@@ -130,7 +130,7 @@ let Move = ({moveDeck, to, cursorMove}) => {
 						}
 					});
 
-					if(
+					if (
 						// !event.has('moveEnd', {
 						!event.has('actionEvent:moveEnd:' + _deck_destination.name, {
 							tag: event.tags.inGame
@@ -142,7 +142,7 @@ let Move = ({moveDeck, to, cursorMove}) => {
 
 					Tips.checkTips();
 
-					if(
+					if (
 						_deck_departure.autoUnflipTop                                &&
 						_deck_departure.cards.length > 0                             &&
 						_deck_departure.cards[_deck_departure.cards.length - 1].flip
@@ -161,7 +161,7 @@ let Move = ({moveDeck, to, cursorMove}) => {
 
 					let _tips = Tips.getTips();
 
-					if(
+					if (
 						_deck_destination.save         ||
 						_tips.length > 0               &&
 						_stepType != defaults.stepType
@@ -177,12 +177,12 @@ let Move = ({moveDeck, to, cursorMove}) => {
 						"show" : true
 					});
 
-					if(_deck_departure.autoCheckFlip) {
+					if (_deck_departure.autoCheckFlip) {
 						_deck_departure.checkFlip();
 						_deck_departure.Redraw();
 					}
 
-					if(_deck_destination.autoCheckFlip) {
+					if (_deck_destination.autoCheckFlip) {
 						_deck_destination.checkFlip();
 						_deck_destination.Redraw();
 					}
@@ -200,10 +200,10 @@ let Move = ({moveDeck, to, cursorMove}) => {
 
 	// если не удалось положить карты, вернуть обратно
 	// или положить на лучшее возможное место
-	if(!_success && _deck_departure) {
+	if (!_success && _deck_departure) {
 
 		// достаточно ли перетащили (если клика не достаточно и не двойной клик)
-		if(
+		if (
 			Field.inputParams.doubleClick                    &&
 			cursorMove.dbclick                               ||
 			cursorMove.distance >= share.get('moveDistance')
@@ -211,7 +211,7 @@ let Move = ({moveDeck, to, cursorMove}) => {
 
 			let Tip = bestTip(moveDeck, cursorMove);
 
-			if(Tip) {
+			if (Tip) {
 
 				Move({
 					"moveDeck"   : moveDeck      ,

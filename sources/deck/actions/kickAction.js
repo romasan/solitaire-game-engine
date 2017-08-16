@@ -21,7 +21,7 @@ class kickAction extends deckAction {
 	run(deck, data) { // Deck, {actionData, eventData, eventName}
 
 		// если тип хода не стандартный не выполнять кик
-		if(share.get('stepType') != defaults.stepType) {
+		if (share.get('stepType') != defaults.stepType) {
 
 			super.break();
 
@@ -29,7 +29,7 @@ class kickAction extends deckAction {
 		}
 
 		// TODO спорный момент
-		if(
+		if (
 			typeof data.eventData.stepType == 'string'          &&
 			       data.eventData.stepType != defaults.stepType
 		) {
@@ -39,7 +39,7 @@ class kickAction extends deckAction {
 			return false;
 		}
 
-		if(data.eventData.to.name != deck.name) {// data.eventData.to - куда мы перетащили карты
+		if (data.eventData.to.name != deck.name) {// data.eventData.to - куда мы перетащили карты
 
 			super.break();
 
@@ -61,7 +61,7 @@ class kickAction extends deckAction {
 
 			let _addStep = historyData => {
 
-				for(let i in _deck) {
+				for (let i in _deck) {
 
 					event.dispatch('addStep', {
 						"flip" : {
@@ -98,7 +98,7 @@ class kickAction extends deckAction {
 
 			let eventStepType = data.eventData.stepType;
 
-			if(data.actionData.dispatch) {
+			if (data.actionData.dispatch) {
 
 				// event.dispatch('kick:end');
 

@@ -24,8 +24,8 @@ export default data => {// {x, y, map, mapSize, el, data}
 
 	let _directions = [];
 
-	for(let i in data.data.directions) {
-		if(
+	for (let i in data.data.directions) {
+		if (
 			!_directions.indexOf(data.data.directions[i])           >= 0 && // этого направления ещё не было
 			!_directions.indexOf(opposite[data.data.directions[i]]) >= 0    // противоположного направления тоже не было
 		) {
@@ -33,7 +33,7 @@ export default data => {// {x, y, map, mapSize, el, data}
 		}
 	}
 
-	for(let i in _directions) {
+	for (let i in _directions) {
 
 		let x = null,
 		    y = null;
@@ -45,7 +45,7 @@ export default data => {// {x, y, map, mapSize, el, data}
 				x = (data.x | 0) + mapCommon.beSide.left.x;
 				y = (data.y | 0) + mapCommon.beSide.left.y;
 
-				if(mapCommon.exist(x, y, data.mapSize, data.map)) {
+				if (mapCommon.exist(x, y, data.mapSize, data.map)) {
 					_relations.push({
 						"name"      : 'fall'             ,
 						"direction" : 'left'             ,
@@ -60,7 +60,7 @@ export default data => {// {x, y, map, mapSize, el, data}
 				x = (data.x | 0) + mapCommon.beSide.right.x;
 				y = (data.y | 0) + mapCommon.beSide.right.y;
 
-				if(mapCommon.exist(x, y, data.mapSize, data.map)) {
+				if (mapCommon.exist(x, y, data.mapSize, data.map)) {
 					_relations.push({
 						"name"      : 'fall',
 						"direction" : 'right',
@@ -75,7 +75,7 @@ export default data => {// {x, y, map, mapSize, el, data}
 				x = (data.x | 0) + mapCommon.beSide.up.x;
 				y = (data.y | 0) + mapCommon.beSide.up.y;
 
-				if(mapCommon.exist(x, y, data.mapSize, data.map)) {
+				if (mapCommon.exist(x, y, data.mapSize, data.map)) {
 					_relations.push({
 						"name"      : 'fall',
 						"direction" : 'up',
@@ -90,7 +90,7 @@ export default data => {// {x, y, map, mapSize, el, data}
 				x = (data.x | 0) + mapCommon.beSide.down.x;
 				y = (data.y | 0) + mapCommon.beSide.down.y;
 
-				if(mapCommon.exist(x, y, data.mapSize, data.map)) {
+				if (mapCommon.exist(x, y, data.mapSize, data.map)) {
 					_relations.push({
 						"name"      : 'fall',
 						"direction" : 'down',

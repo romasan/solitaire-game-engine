@@ -81,7 +81,7 @@ let fullRules = {
 		let _deck   = deck;
 		let _beside = getBeside(_deck)[direction];
 
-		for(;_beside && _check;) {
+		for (;_beside && _check;) {
 
 			let besideDeck = Deck.getDeck(_beside.to);
 
@@ -115,7 +115,7 @@ let fullRules = {
 
 		let _cardsCount = _cards.length;
 
-		for(let i = _cardsCount; i > 0; i -= 1) {
+		for (let i = _cardsCount; i > 0; i -= 1) {
 			_check = _check && callback(
 				_cards[i],
 				_cards[i - 1]
@@ -144,8 +144,8 @@ let fullRules = {
 		let queryDecks = [];
 
 		// Groups
-		if(data.groups) {
-			for(let groupNameIndex in data.groups) {
+		if (data.groups) {
+			for (let groupNameIndex in data.groups) {
 
 				let groupName = data.groups[groupNameIndex];
 
@@ -156,14 +156,14 @@ let fullRules = {
 				let _select = data.select ? data.select : 'all';
 
 				// 	select: first | second | last | all
-				if(_select == "first") {
+				if (_select == "first") {
 					// TODO select deck with index 0
 					let _deck = _group.getDeckByIndex(1);
 
 					queryDecks.push(_deck);
-				} else if(_select == "second") {
+				} else if (_select == "second") {
 					// --/-- index 0
-				} else if(_select == "last") {
+				} else if (_select == "last") {
 					// --/-- max index
 				} else {
 					// all
@@ -172,43 +172,43 @@ let fullRules = {
 		}
 
 		// Decks
-		if(data.decks) {
-			for(let deckNameIndex in data.decks) {
+		if (data.decks) {
+			for (let deckNameIndex in data.decks) {
 
 				let deckName = data.decks[deckNameIndex];
 				// get deck by name
 				let _deck = Deck.getDeck(deckName);
 
-				if(_deck) {
+				if (_deck) {
 					queryDecks.push(_deck);
 				}
 			}
 		}
 
 		// Rules
-		for(let deckIndex in queryDecks) {
+		for (let deckIndex in queryDecks) {
 
 			let deck = queryDecks[deckIndex];
 
-			for(let ruleIndex in data.rules) {
+			for (let ruleIndex in data.rules) {
 
 				let rule = data.rules[ruleIndex];
 
 				// TODO тут предполагается что все "подправила" будут только строковые
-				if(fullRules[rule]) {
+				if (fullRules[rule]) {
 					_correct = _correct && fullRules[rule](deck);
 				}
 			}
 
-			if(data.anyRule) {
+			if (data.anyRule) {
 
 				let _anyCorrect = false;
 
-				for(let ruleIndex in data.anyRule) {
+				for (let ruleIndex in data.anyRule) {
 
 					let _rule = data.anyRule[ruleIndex];
 
-					if(fullRules[_rule]) {
+					if (fullRules[_rule]) {
 						_anyCorrect = _anyCorrect || fullRules[_rule](deck);
 					}
 				}

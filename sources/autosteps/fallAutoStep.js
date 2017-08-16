@@ -31,7 +31,7 @@ export default class fallAutoStep extends autoStep {
 
 		// console.log('fallAutoStep:check', _tips.length);
 
-		if(_tips.length == 0) {
+		if (_tips.length == 0) {
 
 			this.end();
 			// Tips.checkTips();
@@ -79,8 +79,8 @@ export default class fallAutoStep extends autoStep {
 			"from" : null
 		});
 
-		for(let i in _relations) {
-			if(
+		for (let i in _relations) {
+			if (
 				_relations[i].to == _to.name &&
 				_to.cardsCount() === 0
 			) {

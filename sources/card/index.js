@@ -25,11 +25,11 @@ class cardClass {
 			'rank'
 		];
 
-		for(let i in values) {
+		for (let i in values) {
 
 			let value = values[i];
 
-			if(typeof data[value] != 'undefined') {
+			if (typeof data[value] != 'undefined') {
 				this[value] = data[value];
 			}
 		}
@@ -39,7 +39,7 @@ class cardClass {
 		
 		let validatedCard = this.validateCardName(name); // {color, rank}
 
-		if(validatedCard) {
+		if (validatedCard) {
 
 			let _id = 'card_' + common.genId();
 
@@ -65,7 +65,7 @@ class cardClass {
 
 			deck.Push([card]);
 			
-			if(last) {
+			if (last) {
 				deck.checkFlip();
 				deck.Redraw();
 			}
@@ -78,7 +78,7 @@ class cardClass {
 
 	static validateCardName(name) {
 
-		if(typeof name != 'string') {
+		if (typeof name != 'string') {
 
 			console.warn('Warning: validate name must have string type "' + name + '"', name);
 
@@ -90,13 +90,13 @@ class cardClass {
 		    color = null                                                   ,
 		    value = defaults.card.values[defaults.card.ranks.indexOf(rank)];
 
-		for(let colorName in defaults.card.colors) {
-			if(defaults.card.colors[colorName].indexOf(suit) >= 0) {
+		for (let colorName in defaults.card.colors) {
+			if (defaults.card.colors[colorName].indexOf(suit) >= 0) {
 				color = colorName;
 			}
 		}
 
-		if(
+		if (
 			defaults.card.suits.indexOf(suit) >= 0 &&
 			defaults.card.ranks.indexOf(rank) >= 0
 		) {

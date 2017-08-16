@@ -21,7 +21,7 @@ export default (group, data) => {
 	let _count = data.count;
 	let _decks = [];
 
-	for(let deckIndex = 0; deckIndex < _count; deckIndex += 1) {
+	for (let deckIndex = 0; deckIndex < _count; deckIndex += 1) {
 
 		let _deckName = group.name + '_deck' + (deckIndex + 1);
 
@@ -37,32 +37,32 @@ export default (group, data) => {
 	// TODO надо поправить перекрытие тегов из генератора и группы
 	_decks[0].tags.push('first');
 
-	if(data.first) {
+	if (data.first) {
 
 		let _deck = _decks[0];
 
-		for(let propName in data.first) {
+		for (let propName in data.first) {
 			_deck[propName] = data.first[propName];
 		}
 	}
 
-	if(_decks[1]) {
+	if (_decks[1]) {
 		_decks[1].tags.push('second');
 	}
 
 	_decks[_decks.length - 1].tags.push('last');
 
-	if(data.last) {
+	if (data.last) {
 
 		let _deck = _decks[_decks.length - 1];
 
-		for(let propName in data.last) {
+		for (let propName in data.last) {
 			_deck[propName] = data.last[propName];
 		}
 	}
 
 	// Generate relations
-	for(let deckIndex in _decks) {
+	for (let deckIndex in _decks) {
 
 		let _relations = [];
 
@@ -70,12 +70,12 @@ export default (group, data) => {
 			"beside" : "lineBesideRelations"
 		};
 
-		if(data.relations) {
+		if (data.relations) {
 
-			for(let relGenName in _relGenerators) {
+			for (let relGenName in _relGenerators) {
 
 				// TODO
-				if(data.relations[relGenName]) {
+				if (data.relations[relGenName]) {
 					_relations = _relations.concat(relationsGenerator[_relGenerators[relGenName]]({
 						"deckIndex" : deckIndex                 ,
 						"count"     : _count                    ,

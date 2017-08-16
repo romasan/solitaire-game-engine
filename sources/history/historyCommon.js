@@ -24,11 +24,11 @@ import snapshot     from './snapshot'     ;
 
 event.listen('addStep', data => {
 
-	if(data.step) {
+	if (data.step) {
 
 		let stepId = history.add(data.step);
 
-		if(typeof data.callback == "function") {
+		if (typeof data.callback == "function") {
 			data.callback(stepId);
 		}
 	} else {
@@ -45,7 +45,7 @@ event.listen('saveSteps', e => {
 	// console.log('%c' + JSON.stringify(data, true, 2), 'background: #cceacc;');
 	// console.groupEnd();
 
-	if(data.length) {
+	if (data.length) {
 		event.dispatch('makeStep', data);
 	} else {
 		console.warn('Empty history to save.');
@@ -54,7 +54,7 @@ event.listen('saveSteps', e => {
 
 event.listen('doHistory', e => {
 
-	// if(share.get('noReplayHistory')) {
+	// if (share.get('noReplayHistory')) {
 	// 	return;
 	// }
 
@@ -63,7 +63,7 @@ event.listen('doHistory', e => {
 	let _time = Date.now();
 
 	// common.animationOff();
-	if(!e || !e.data) {
+	if (!e || !e.data) {
 		console.warn('doHistory data:', e);
 	}
 
@@ -71,13 +71,13 @@ event.listen('doHistory', e => {
 	common.animationOff();
 
 	// console.log('doHistory:start');
-	for(let i in e.data) {
+	for (let i in e.data) {
 
 		// share.set('noSave', true);
 		event.dispatch('redo', e.data[i]);
 		// share.set('noSave', false);
 
-		if(
+		if (
 			!redoAdvanced.handle(e.data[i][0]) &&
 			typeof e.callback == 'function'
 		) {
@@ -97,7 +97,7 @@ event.listen('doHistory', e => {
 
 	// let _decks = common.getElementsByType('deck');
 
-	// for(let deckIndex in _decks) {}
+	// for (let deckIndex in _decks) {}
 
 	console.log(((Date.now() - _time) / 1e3) + 's.');
 
@@ -116,17 +116,17 @@ event.listen('scanAttempts', data => {
 
 	let stateDifferences = [];
 
-	for(let attemptIndex in data.attempts) {
+	for (let attemptIndex in data.attempts) {
 
 		let history = data.attempts[attemptIndex];
 
 		// console.log('scanAttempts:attempts', attemptIndex, history);
 
-		if(history) {
+		if (history) {
 
 			let snap = snapshot.get();
 
-			for(let i in history) {
+			for (let i in history) {
 
 				event.dispatch('redo', history[i]);
 
@@ -137,7 +137,7 @@ event.listen('scanAttempts', data => {
 
 			stateDifferences.push(snapshot.diff(snap, snap2));
 
-			if(
+			if (
 				attemptIndex < data.attempts.length - 1 &&
 				typeof data.callback == "function"
 			) {
@@ -151,7 +151,7 @@ event.listen('scanAttempts', data => {
 	event.dispatch('render:on');
 	common.animationDefault();
 
-	if(typeof data.callback == "function") {
+	if (typeof data.callback == "function") {
 		data.callback();
 	}
 
@@ -178,7 +178,7 @@ event.listen('newGame', e => {
 
 event.listen('quickHistoryMove', callback => {
 
-	if(typeof callback) {
+	if (typeof callback) {
 
 		common.animationOff();
 

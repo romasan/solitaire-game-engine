@@ -60,11 +60,11 @@ exports.init = gameConfig => {
 	// Field.clear();
 	Field.create(gameConfig);
 
-	if(firstInit) {
+	if (firstInit) {
 
 		firstInit = false;
 
-		if(typeof preloadCallback == 'function') {
+		if (typeof preloadCallback == 'function') {
 			let _data = share.get('gamePreferencesData');
 			preloadCallback(_data);
 		}
@@ -73,7 +73,7 @@ exports.init = gameConfig => {
 
 	let changePreferencesCallback = share.get('changePreferencesCallback');
 
-	if(typeof changePreferencesCallback == 'function') {
+	if (typeof changePreferencesCallback == 'function') {
 		let _data = share.get('gamePreferencesData');
 		changePreferencesCallback(_data, {
 			"stepType" : share.get('stepType')
@@ -87,7 +87,7 @@ exports.init = gameConfig => {
 	}
 };
 
-if(dev) {
+if (dev) {
 	console.log('Solitaire Engine v.', exports.version);
 	let debug = require('debug');
 	exports.debug = debug.default;

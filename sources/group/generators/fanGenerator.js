@@ -45,16 +45,16 @@ export default (group, data) => {
 				"y" : 0
 			};
 
-	for(let deckIndex = 0; deckIndex < _count; deckIndex += 1) {
+	for (let deckIndex = 0; deckIndex < _count; deckIndex += 1) {
 
 		let _a = Math.sin(_angle * _deg) * _radius;
 		let _b = Math.cos(_angle * _deg) * _radius;
 
-		if(_angle > 360) {
+		if (_angle > 360) {
 			_angle -= 360;
 		}
 
-		if(_angle > 180) {
+		if (_angle > 180) {
 			_angle = _angle - 360;
 		}
 

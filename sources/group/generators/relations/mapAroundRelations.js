@@ -6,9 +6,9 @@ export default data => {// {x, y, map, mapSize, el, data}
 
 	let _relations = [];
 
-	for(let i in mapCommon.aroundRelations) {
+	for (let i in mapCommon.aroundRelations) {
 
-		if(
+		if (
 			mapCommon.inMap(
 				data.x + mapCommon.aroundRelations[i].x,
 				data.y + mapCommon.aroundRelations[i].y, data.mapSize

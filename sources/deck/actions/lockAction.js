@@ -16,7 +16,7 @@ class lockAction extends deckAction {
 
 	run(deck, data) {
 
-		if(data.eventData.to.name != deck.name) {
+		if (data.eventData.to.name != deck.name) {
 			return false;
 		}
 

@@ -27,7 +27,7 @@ import stateManager from '../common/stateManager';
 
 let undo = data => {
 
-	if(share.get('sessionStarted')) {
+	if (share.get('sessionStarted')) {
 
 		event.dispatch('stopAnimations');
 		// stateManager.restore();
@@ -49,7 +49,7 @@ let undo = data => {
 	} = data;
 
 	// undo flip
-	if(flip) {
+	if (flip) {
 
 		const {deckName, cardIndex, cardName} = flip;
 
@@ -57,7 +57,7 @@ let undo = data => {
 
 		let card = deck && deck.getCardByIndex(cardIndex | 0);
 
-		if(
+		if (
 			card                            &&
 			card.name == cardName
 		) {
@@ -69,7 +69,7 @@ let undo = data => {
 	}
 
 	// undo unflip
-	if(unflip) {
+	if (unflip) {
 
 		const {deckName, cardIndex, cardName} = unflip;
 
@@ -83,7 +83,7 @@ let undo = data => {
 		// 	"card" : card
 		// });
 
-		if(
+		if (
 			card                              &&
 			card.name == cardName
 		) {
@@ -93,7 +93,7 @@ let undo = data => {
 	}
 
 	// undo hide
-	if(hide) {
+	if (hide) {
 
 		const {deckName, cardIndex, cardName} = hide;
 
@@ -101,7 +101,7 @@ let undo = data => {
 
 		let card = deck && deck.getCardByIndex(cardIndex | 0);
 
-		if(
+		if (
 			card                            &&
 			card.name == cardName
 		) {
@@ -113,7 +113,7 @@ let undo = data => {
 	}
 
 	// undo show
-	if(show) {
+	if (show) {
 
 		const {deckName, cardIndex, cardName} = show;
 
@@ -121,7 +121,7 @@ let undo = data => {
 
 		let card = deck && deck.getCardByIndex(cardIndex | 0);
 
-		if(
+		if (
 			card                            &&
 			card.name == cardName
 		) {
@@ -135,32 +135,32 @@ let undo = data => {
 	}
 
 	// undo full
-	if(full) {
+	if (full) {
 		// TODO
 	}
 
 	// undo lock
-	if(
+	if (
 		typeof lock != 'undefined'
 	) {
-		for(let i in lock) {
+		for (let i in lock) {
 			let _element = common.getElementsByName(lock[i])[0];
 			_element.unlock();
 		}
 	}
 
 	// undo unlock
-	if(
+	if (
 		typeof unlock != 'undefined'
 	) {
-		for(let i in unlock) {
+		for (let i in unlock) {
 			let _element = common.getElementsByName(unlock[i])[0];
 			_element.lock();
 		}
 	}
 
 	// redo swap
-	if(swap) {
+	if (swap) {
 
 		const {deckName, fromIndex, toIndex} = swap;
 
@@ -170,19 +170,19 @@ let undo = data => {
 	}
 
 	// undo move
-	if(move) {
+	if (move) {
 
 		// console.log('undo:move', JSON.stringify(move));
 
 		const {from, to, deck, flip, stepType} = move;
 
-		if(stepType) {
+		if (stepType) {
 
-			if(typeof stepType == 'string') {
+			if (typeof stepType == 'string') {
 				share.set('stepType', stepType);
 			}
 
-			if(typeof stepType.undo == 'string') {
+			if (typeof stepType.undo == 'string') {
 				share.set('stepType', stepType.undo);
 			}
 		}
@@ -194,11 +194,11 @@ let undo = data => {
 			// "flip" : flip
 		};
 
-		if(typeof flip == "boolean") {
+		if (typeof flip == "boolean") {
 			forceMoveData.flip = !flip;
 		}
 
-		if(!share.get('showHistoryAnimation')) {
+		if (!share.get('showHistoryAnimation')) {
 
 			common.animationOff();
 
@@ -222,7 +222,7 @@ let undo = data => {
 		event.dispatch('forceMove', forceMoveData);
 	}
 
-	if(markCard) {
+	if (markCard) {
 		
 		const {deckName, cardIndex, cardName} = markCard;
 
@@ -230,7 +230,7 @@ let undo = data => {
 
 		let card = deck.getCardByIndex(cardIndex | 0);
 
-		if(
+		if (
 			card                  &&
 			cardName == card.name
 		) {
@@ -240,7 +240,7 @@ let undo = data => {
 		}
 	}
 
-	if(unmarkCard) {
+	if (unmarkCard) {
 
 		const {deckName, cardIndex, cardName} = unmarkCard;
 
@@ -248,7 +248,7 @@ let undo = data => {
 
 		let card = deck.getCardByIndex(cardIndex | 0);
 
-		if(
+		if (
 			card                  &&
 			cardName == card.name
 		) {
@@ -258,7 +258,7 @@ let undo = data => {
 		}
 	}
 
-	if(
+	if (
 		setStepType                         &&
 		typeof setStepType.undo == "string"
 	) {
@@ -268,7 +268,7 @@ let undo = data => {
 
 event.listen('undo', undoData => {
 
-	if(!undoData || share.get('stopRunHistory')) {
+	if (!undoData || share.get('stopRunHistory')) {
 		return;
 	}
 
@@ -279,15 +279,15 @@ event.listen('undo', undoData => {
 	// console.log('%c' + JSON.stringify(undoData, true, 2), 'background:#d6deff');
 	// console.groupEnd();
 
-	if(share.get('animation')) {
+	if (share.get('animation')) {
 		event.dispatch('stopAnimations');
 	}
 
 	// History.reset();
 	let history = History.get();
 
-	if(history.length > 0) {
-		for(let i = history.length - 1; i >= 0; i -= 1) {
+	if (history.length > 0) {
+		for (let i = history.length - 1; i >= 0; i -= 1) {
 			
 			// console.groupCollapsed('<<<');
 			// console.log(JSON.stringify(history[i], true, 2));
@@ -298,11 +298,11 @@ event.listen('undo', undoData => {
 	}
 
 	// Обратная совместимость
-	if(undoData instanceof Array) {
+	if (undoData instanceof Array) {
 
 		undoData.reverse();
 
-		for(let _i in undoData) {
+		for (let _i in undoData) {
 			let data = undoData[_i];
 			undo(data);
 		}

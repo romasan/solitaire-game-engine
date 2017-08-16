@@ -22,7 +22,7 @@ class allToAll {
 		this._decks = data.decks;
 		this._moves = [];
 
-		for(let deckIndex in this._decks) {
+		for (let deckIndex in this._decks) {
 
 			let _cards = this._decks[deckIndex].cards;
 			// each cards in  current deck
@@ -37,13 +37,13 @@ class allToAll {
 	// патаемся взять карту
 	cardsInTakeDeck(_cards, deckIndex) {
 
-		for(let cardIndex in _cards) {
+		for (let cardIndex in _cards) {
 
 			let _id = _cards[cardIndex].id;
 
 			let _take = this._decks[deckIndex].Take(_id);
 
-			if(_take) {
+			if (_take) {
 				this.decksToPut(_cards, _take, deckIndex, cardIndex);
 			};
 		};
@@ -53,12 +53,12 @@ class allToAll {
 	// пробегаем все остальные колоды и пробуем положить на них то что взяли
 	decksToPut(_cards, _take, deckIndex, cardIndex) {
 
-		for(let deckIndex_2 in this._decks) {
+		for (let deckIndex_2 in this._decks) {
 
-			if(deckIndex != deckIndex_2) {
+			if (deckIndex != deckIndex_2) {
 
 				let _put = this._decks[deckIndex_2].Put(_take);
-				if(_put) {
+				if (_put) {
 					this.put(deckIndex_2, deckIndex, cardIndex, _cards)
 				};
 			};

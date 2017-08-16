@@ -33,7 +33,7 @@ class Event {
 
 	listen(eventName, callback, context, once) {
 
-		if(
+		if (
 			typeof callback  != 'function' ||
 			typeof eventName != 'string'
 		) {
@@ -42,7 +42,7 @@ class Event {
 
 		this._id += 1;
 
-		if(this._events[eventName]) {
+		if (this._events[eventName]) {
 
 			this._events[eventName].push({
 				"id"       : this._id ,
@@ -71,18 +71,18 @@ class Event {
 
 	remove(data) {
 
-		if(typeof data == 'number') {
+		if (typeof data == 'number') {
 
-			for(let eventName in this._events) {
+			for (let eventName in this._events) {
 				this._events[eventName] = this._events[eventName].filter(e => e.id != data);
 			}
-		} else if(typeof data == 'string' && this._events[eventName]) {
+		} else if (typeof data == 'string' && this._events[eventName]) {
 
 			delete this._events[data]
-		} else if(data) { // } && typeof data.context == 'string') {
+		} else if (data) { // } && typeof data.context == 'string') {
 
-			for(let key in data) {
-				for(let eventName in this._events) {
+			for (let key in data) {
+				for (let eventName in this._events) {
 					this._events[eventName] = this._events[eventName].filter(e => e[key] != data[key]);
 				}
 			}
@@ -93,11 +93,11 @@ class Event {
 
 	dispatch(eventName, data) {
 
-		if(this._events[eventName]) {
+		if (this._events[eventName]) {
 
-			for(let i in this._events[eventName]) {
+			for (let i in this._events[eventName]) {
 
-				if(this._events[eventName][i]) {
+				if (this._events[eventName][i]) {
 
 					this._events[eventName][i].callback(
 
@@ -118,7 +118,7 @@ class Event {
 						},
 					);
 
-					if(this._events[eventName][i].once) {
+					if (this._events[eventName][i].once) {
 						delete this._events[eventName][i];
 					}
 				}
@@ -138,26 +138,26 @@ class Event {
 
 	clearByTag(tag) {
 
-		for(let eventName in this._events) {
+		for (let eventName in this._events) {
 			this._events[eventName] = this._events[eventName].filter(e => e.tag != tag);
 		}
 	}
 
 	get(eventName, filter) {
 
-		if(filter) {
+		if (filter) {
 
 			let _events = [];
 
-			for(let i in this._events[eventName]) {
+			for (let i in this._events[eventName]) {
 
 				let _correct = true;
 
-				for(let _attr in filter) {
+				for (let _attr in filter) {
 					_correct = _correct && this._events[eventName][i][_attr] == filter[_attr];
 				}
 
-				if(_correct) {
+				if (_correct) {
 					_events.push(this._events[eventName][i]);
 				}
 			}
@@ -170,19 +170,19 @@ class Event {
 
 	has(eventName, filter) {
 
-		if(filter) {
+		if (filter) {
 
 			let _count = 0;
 
-			for(let i in this._events[eventName]) {
+			for (let i in this._events[eventName]) {
 
 				let _correct = true;
 
-				for(let _attr in filter) {
+				for (let _attr in filter) {
 					_correct = _correct && this._events[eventName][i][_attr] == filter[_attr];
 				}
 
-				if(_correct) {
+				if (_correct) {
 					_count += 1;
 				}
 			}
@@ -205,7 +205,7 @@ class Event {
 
 	_debug() {
 		let data = {};
-		for(let eventName in this._events) {
+		for (let eventName in this._events) {
 			data[eventName] = this._events[eventName].length;
 		}
 		return data;

@@ -29,7 +29,7 @@ class snapshot {
 
 		let uid = (i => () => i++)(0);
 
-		for(let i in decks) {
+		for (let i in decks) {
 
 			let deck = decks[i];
 
@@ -73,29 +73,29 @@ class snapshot {
 			"decks" : {}
 		};
 
-		for(let deckNameFrom in stateFrom.decks) {
+		for (let deckNameFrom in stateFrom.decks) {
 
 			let deckFrom = stateFrom.decks[deckNameFrom];
 
 			let deck = [];
 
-			for(let cardIndexFrom in deckFrom.cards) {
+			for (let cardIndexFrom in deckFrom.cards) {
 
 				let cardFrom = deckFrom.cards[cardIndexFrom];
 				let cardTo   = null;
 
-				for(let deckNameTo in stateTo.decks) {
+				for (let deckNameTo in stateTo.decks) {
 
 					let deckTo = stateTo.decks[deckNameTo];
 
 					let filter = deckTo.cards.filter(cardTo => cardTo.id == cardFrom.id);
 
-					if(filter.length) {
+					if (filter.length) {
 						cardTo = filter[0];
 					}
 				}
 
-				if(cardTo) {
+				if (cardTo) {
 
 					deck[cardIndexFrom] = {
 						"uid"     : cardFrom.uid  ,
@@ -129,7 +129,7 @@ class snapshot {
 			"decks" : {}
 		};
 
-		for(let stateIndex in stateDifferences) {
+		for (let stateIndex in stateDifferences) {
 
 			let stateI = stateDifferences[stateIndex];
 
@@ -145,11 +145,11 @@ class snapshot {
 			// );
 			// console.groupEnd();
 
-			if(stateIndex == 0) {
+			if (stateIndex == 0) {
 				summaryState = stateI;
 			} else {
 
-				for(let deckName in stateI.decks) {
+				for (let deckName in stateI.decks) {
 
 					let deck     = stateI.decks[deckName];
 					let deckPrev = summaryState.decks[deckName];
@@ -186,11 +186,11 @@ class snapshot {
 
 	getInStateByUid(state, uid) {
 
-		for(let deckName in state.decks) {
+		for (let deckName in state.decks) {
 
-			for(let i in state.decks[deckName].cards) {
+			for (let i in state.decks[deckName].cards) {
 
-				if(state.decks[deckName].cards[i].uid == uid) {
+				if (state.decks[deckName].cards[i].uid == uid) {
 
 					return state.decks[deckName].cards[i];
 				}
@@ -208,11 +208,11 @@ class snapshot {
 
 		let uid = (i => () => i++)(0);
 
-		for(let i in decks) {
+		for (let i in decks) {
 
 			let deck = decks[i];
 
-			if(
+			if (
 				deck.showPrevAttempts           &&
 				             summaryState.decks &&
 				deck.name in summaryState.decks
@@ -220,18 +220,18 @@ class snapshot {
 
 				let changes = false;
 
-				for(let cardIndex in deck.cards) {
+				for (let cardIndex in deck.cards) {
 
 					let _uid      = uid();
 					let stateCard = this.getInStateByUid(summaryState, _uid);
 					let card      = deck.cards[cardIndex];
 					let values    = ['flip']; // , 'visible'];
 
-					for(let valueIndex in values) {
+					for (let valueIndex in values) {
 
 						let value = values[valueIndex];
 
-						if(value in aliases) {
+						if (value in aliases) {
 
 							let alias = aliases[value];
 
@@ -239,7 +239,7 @@ class snapshot {
 							// console.log(card.name)
 						} else {
 
-							if(card[value] != stateCard[value]) {
+							if (card[value] != stateCard[value]) {
 
 								card[value] = stateCard[value];
 
@@ -249,7 +249,7 @@ class snapshot {
 					}
 				}
 
-				// if(changes) {
+				// if (changes) {
 
 					// console.log('changes in deck', deck.name);
 

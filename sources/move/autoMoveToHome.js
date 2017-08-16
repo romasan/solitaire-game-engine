@@ -11,7 +11,7 @@ let checkAutoMoveToHomeOpenDecks = e => {
 
 	let autoMoveToHomeOpenDecks = share.get('autoMoveToHomeOpenDecks');
 
-	if(autoMoveToHomeOpenDecks.checked) {
+	if (autoMoveToHomeOpenDecks.checked) {
 		return;
 	}
 
@@ -20,20 +20,20 @@ let checkAutoMoveToHomeOpenDecks = e => {
 		"decks"   : []
 	};
 
-	for(let i in autoMoveToHomeOpenDecks) {
+	for (let i in autoMoveToHomeOpenDecks) {
 
 		let el = common.getElementByName(autoMoveToHomeOpenDecks[i]);
 
-		if(el) {
+		if (el) {
 
-			if(el.type == 'group') {
+			if (el.type == 'group') {
 
 				let _decks = el.getDecks();
 
-				for(let deckIndex in _decks) {
+				for (let deckIndex in _decks) {
 					_data.decks.push(_decks[deckIndex]);
 				}
-			} else if(el.type == 'deck') {
+			} else if (el.type == 'deck') {
 				_data.decks.push(el);
 			}
 		}
@@ -51,11 +51,11 @@ let autoMoveToHome = e => {
 
 	let autoMoveToHomeOpenDecks = share.get('autoMoveToHomeOpenDecks');
 
-	for(let i in autoMoveToHomeOpenDecks.decks) {
+	for (let i in autoMoveToHomeOpenDecks.decks) {
 
 		let _topCard = autoMoveToHomeOpenDecks.decks[i].getTopCard();
 
-		if(_topCard && _topCard.flip == true) {
+		if (_topCard && _topCard.flip == true) {
 			event.dispatch('clickCard', _topCard);
 		}
 	}
@@ -64,7 +64,7 @@ let autoMoveToHome = e => {
 
 	let _tips = Tips.getTips();
 
-	if(_tips.length) {
+	if (_tips.length) {
 		event.dispatch('autoMoveToHome:start');
 	}
 
@@ -73,14 +73,14 @@ let autoMoveToHome = e => {
 	let _homeGroups = Field.homeGroups;
 	let homeGroupDecksNames = [];
 
-	for(let groupNameIndex in _homeGroups) {
+	for (let groupNameIndex in _homeGroups) {
 
 		let groupName = _homeGroups[groupNameIndex];
 
 		let group = common.getElementsByName(groupName, 'deck')[0];
 		let decks = group.getDecks();
 
-		for(let deckIndex in decks) {
+		for (let deckIndex in decks) {
 
 			let deck = decks[deckIndex];
 
@@ -90,11 +90,11 @@ let autoMoveToHome = e => {
 
 	let suitableTips = [];
 
-	for(let tipIndex in _tips) {
+	for (let tipIndex in _tips) {
 
 		let tip = _tips[tipIndex];
 
-		if(
+		if (
 			homeGroupDecksNames.indexOf(tip.to  .deck.name) >= 0 &&
 			homeGroupDecksNames.indexOf(tip.from.deck.name) <  0
 		) {
@@ -102,7 +102,7 @@ let autoMoveToHome = e => {
 		}
 	}
 
-	if(suitableTips.length > 0) {
+	if (suitableTips.length > 0) {
 
 		let tip = suitableTips[0];
 

@@ -14,7 +14,7 @@ class redoAdvanced {
 	handle(data) {
 
 		// Run action
-		if(
+		if (
 			       data.runAction                        &&
 			typeof data.runAction.actionName == 'string' &&
 			typeof data.runAction.deckName   == 'string'
@@ -35,7 +35,7 @@ class redoAdvanced {
 		}
 
 		// Make move
-		if(
+		if (
 			       data.makeMove                           &&
 			       data.makeMove.to                        &&
 			       data.makeMove.from                      &&
@@ -49,25 +49,25 @@ class redoAdvanced {
 
 			let to = null;
 
-			if(typeof data.makeMove.to.cardName == "string") {
+			if (typeof data.makeMove.to.cardName == "string") {
 				let toCard = common.getElementByName(data.makeMove.to.cardName, 'card');
 				to = toCard.id;
-			} else if(typeof data.makeMove.to.deckName == "string") {
+			} else if (typeof data.makeMove.to.deckName == "string") {
 				to = common.getElementByName(data.makeMove.to.deckName, 'deck').id;
 			}
-			if(to) {
+			if (to) {
 
 				let moveDeck = [];
 				let fromDeckCards = fromDeck.getCards();
 
 				let found = false;
-				for(let i in fromDeckCards) {
+				for (let i in fromDeckCards) {
 
-					if(fromDeckCards[i].name == fromCard.name) {
+					if (fromDeckCards[i].name == fromCard.name) {
 						found = true;
 					}
 
-					if(found) {
+					if (found) {
 						moveDeck.push({
 							"card"  : fromDeckCards[i],
 							"index" : i

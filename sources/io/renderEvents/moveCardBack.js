@@ -9,20 +9,20 @@ import elRender from '../dom/elRender'   ;
 // Move card to home
 event.listen('moveCardBack', data => {
 
-	if(share.get('nodraw')) {
+	if (share.get('nodraw')) {
 
-		if(data && typeof data.callback == "function") {
+		if (data && typeof data.callback == "function") {
 			data.callback();
 		}
 
 		return;
 	}
 
-	if(share.get('lastCursorMove').distance > 0) {
+	if (share.get('lastCursorMove').distance > 0) {
 		common.curLock();
 	}
 
-	for(let i in data.moveDeck) {
+	for (let i in data.moveDeck) {
 
 		let _position = data.departure.padding(data.moveDeck[i].index);
 
@@ -42,11 +42,11 @@ event.listen('moveCardBack', data => {
 
 					common.curUnLock();
 
-					if(data.departure) {
+					if (data.departure) {
 						data.departure.Redraw();
 					}
 
-					if(typeof data.callback == 'function') {
+					if (typeof data.callback == 'function') {
 						data.callback();
 					}
 				},

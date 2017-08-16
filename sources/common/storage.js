@@ -15,10 +15,10 @@ class storage {
 	constructor() {
 
 		try {
-			if(!localStorage.hasOwnProperty('SolitaireEngine')) {
+			if (!localStorage.hasOwnProperty('SolitaireEngine')) {
 				localStorage.SolitaireEngine = "{}";
 			}
-		} catch(e) {}
+		} catch (e) {}
 	}
 
 	set(key, data) {
@@ -32,7 +32,7 @@ class storage {
 			let _data = JSON.stringify(_ls);
 
 			localStorage.SolitaireEngine = _data;
-		} catch(e) {}
+		} catch (e) {}
 	}
 
 	get(key) {
@@ -42,7 +42,7 @@ class storage {
 			let _ls = JSON.parse(localStorage.SolitaireEngine);
 
 			return _ls[key];
-		} catch(e) {
+		} catch (e) {
 			return null;
 		}
 	}
@@ -51,7 +51,7 @@ class storage {
 
 		try {
 			localStorage.SolitaireEngine = "{}";
-		} catch(e) {}
+		} catch (e) {}
 	}
 }
 

@@ -9,7 +9,7 @@ let usedCardId = null;
 
 let showFlipCardOnMove = data => { // to, toCard
 
-	if(!data.toCard || !data.toCard.parent) {
+	if (!data.toCard || !data.toCard.parent) {
 		return;
 	}
 
@@ -17,14 +17,14 @@ let showFlipCardOnMove = data => { // to, toCard
 
 	let deck = common.getElementById(data.toCard.parent);
 
-	if(
+	if (
 		!deck               ||
 		!deck.autoUnflipTop
 	) {
 		return;
 	}
 
-	// if(
+	// if (
 	// 	!data.deck                           ||
 	// 	!data.card                           ||
 	// 	 data.deck.showPrefFlipCard == false
@@ -34,7 +34,7 @@ let showFlipCardOnMove = data => { // to, toCard
 
 	// let moveDistance = share.get('moveDistance');
 
-	// if(
+	// if (
 	// 	moveDistance  > 0            &&
 	// 	data.distance < moveDistance ||
 	// 	usedCardId == data.card.id
@@ -46,10 +46,10 @@ let showFlipCardOnMove = data => { // to, toCard
 
 	let inTips = false;
 
-	for(let i in tips) {
-		// if(tips[i].from == deck.name) {
+	for (let i in tips) {
+		// if (tips[i].from == deck.name) {
 		let fromDeck = common.getElementById(tips[i].from.card.parent);
-		if(
+		if (
 			fromDeck                   && 
 			fromDeck.name == deck.name
 		) {
@@ -57,13 +57,13 @@ let showFlipCardOnMove = data => { // to, toCard
 		}
 	}
 
-	if(!inTips) {
+	if (!inTips) {
 		return;
 	}
 
 	// usedCardId = data.card.id;
 
-	// if(
+	// if (
 	// 	typeof data.card.flip == "boolean" &&
 	// 	       data.card.flip == false
 	// ) {
@@ -75,14 +75,14 @@ let showFlipCardOnMove = data => { // to, toCard
 
 	let prevCard = deck.cards.length > moveDeckCount ? deck.cards[deck.cards.length - moveDeckCount - 1] : null;
 
-		// for(let i = data.deck.cards.length - 1; i >= 0 && !prevCard; i -= 1) {
-		// 	if(data.deck.cards[i].id == data.card.id && i > 0) {
+		// for (let i = data.deck.cards.length - 1; i >= 0 && !prevCard; i -= 1) {
+		// 	if (data.deck.cards[i].id == data.card.id && i > 0) {
 		// 		prevCard = data.deck.cards[i - 1];
 		// 	}
 		// }
 
-		// if(prevCard) {
-	if(prevCard) {
+		// if (prevCard) {
+	if (prevCard) {
 		// event.dispatch('unflipCard', prevCard);
 		event.dispatch('unflipCard', prevCard);
 	}

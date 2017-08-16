@@ -56,7 +56,7 @@ let readyPutRules = {
 
 		let prev = getBeside(data.to).prev;
 
-		if(prev) {
+		if (prev) {
 
 			data.link = prev.to;
 
@@ -70,7 +70,7 @@ let readyPutRules = {
 
 		let next = getBeside(data.to).next;
 
-		if(next) {
+		if (next) {
 
 			data.link = next.to;
 
@@ -84,7 +84,7 @@ let readyPutRules = {
 
 	"_down_up_cards"    : data => {
 
-		if(data.cards.length == 0) {
+		if (data.cards.length == 0) {
 			return false;
 		}
 
@@ -93,7 +93,7 @@ let readyPutRules = {
 		           data.putDeck[0]      &&
 		           data.putDeck[0].card;
 
-		if(!down || !up) {
+		if (!down || !up) {
 			return false;
 		}
 
@@ -115,7 +115,7 @@ let readyPutRules = {
 
 	"_isFirst"          : (data, _name) => {
 
-		if(data.cards.length == 0) {
+		if (data.cards.length == 0) {
 
 			let _validate = null;
 
@@ -132,7 +132,7 @@ let readyPutRules = {
 
 	"striped"           : data => {
 
-		if(data.cards.length == 0) {
+		if (data.cards.length == 0) {
 			return true;
 		}
 
@@ -140,7 +140,7 @@ let readyPutRules = {
 			color_B   = null,
 			_validate = null;
 
-		if(data.putDeck[0].card) {
+		if (data.putDeck[0].card) {
 			color_B = data.putDeck[0].card.color;
 		}
 
@@ -157,7 +157,7 @@ let readyPutRules = {
 
 	"oneRank"           : data => {
 
-		if(data.cards.length == 0) {
+		if (data.cards.length == 0) {
 			return true;
 		}
 
@@ -168,7 +168,7 @@ let readyPutRules = {
 
 	"oneSuit"           : data => {
 
-		if(data.cards.length == 0) {
+		if (data.cards.length == 0) {
 			return true;
 		}
 
@@ -183,15 +183,15 @@ let readyPutRules = {
 
 	"ascendDeck"        : data => { //ascend data by step
 
-		if(data.putDeck.length == 1) {
+		if (data.putDeck.length == 1) {
 			return true;
 		}
 
 		let ruleCorrect = true;
 
-		for(let i in data.putDeck) {
+		for (let i in data.putDeck) {
 
-			if(i > 0) {
+			if (i > 0) {
 
 				let down = defaults.card.ranks.indexOf(
 					data.putDeck[i - 1].card.rank
@@ -210,15 +210,15 @@ let readyPutRules = {
 
 	"descendDeck"       : data => { //ascend data by step
 
-		if(data.putDeck.length == 1) {
+		if (data.putDeck.length == 1) {
 			return true;
 		}
 
 		let ruleCorrect = true;
 
-		for(let i in data.putDeck) {
+		for (let i in data.putDeck) {
 
-			if(i > 0) {
+			if (i > 0) {
 
 				let down = defaults.card.ranks.indexOf(
 					data.putDeck[i - 1].card.rank
@@ -237,15 +237,15 @@ let readyPutRules = {
 
 	"oneRankDeck"       : data => {
 
-		if(data.putDeck.length == 1) {
+		if (data.putDeck.length == 1) {
 			return true;
 		}
 
 		let ruleCorrect = true;
 
-		for(let i in data.putDeck) {
+		for (let i in data.putDeck) {
 
-			if(i > 0) {
+			if (i > 0) {
 
 				let down = data.putDeck[i - 1].card.rank,
 				    up   = data.putDeck[i].card.rank
@@ -259,15 +259,15 @@ let readyPutRules = {
 
 	"oneSuitDeck"       : data => {
 
-		if(data.putDeck.length == 1) {
+		if (data.putDeck.length == 1) {
 			return true;
 		}
 
 		let ruleCorrect = true;
 
-		for(let i in data.putDeck) {
+		for (let i in data.putDeck) {
 
-			if(i > 0) {
+			if (i > 0) {
 
 				let down = data.putDeck[i - 1].card.suit,
 				    up   = data.putDeck[i].card.suit
@@ -281,7 +281,7 @@ let readyPutRules = {
 
 	"ascend"            : data => {
 
-		if(data.cards.length == 0) {
+		if (data.cards.length == 0) {
 			return true;
 		}
 
@@ -293,7 +293,7 @@ let readyPutRules = {
 
 	"descend"           : data => {
 
-		if(data.cards.length == 0) {
+		if (data.cards.length == 0) {
 			return true;
 		}
 
@@ -308,7 +308,7 @@ let readyPutRules = {
 
 	"ascendNum"         : (data, prop) => {
 
-		if(data.cards.length == 0) {
+		if (data.cards.length == 0) {
 			return true;
 		}
 
@@ -325,7 +325,7 @@ let readyPutRules = {
 
 	"descendNum"        : (data, prop) => {
 
-		if(data.cards.length == 0) {
+		if (data.cards.length == 0) {
 			return true;
 		}
 
@@ -341,7 +341,7 @@ let readyPutRules = {
 
 	"ascdescNum"        : (data, prop) => {
 
-		if(data.cards.length == 0) {
+		if (data.cards.length == 0) {
 			return true;
 		}
 
@@ -354,7 +354,7 @@ let readyPutRules = {
 
 	"ascendNumLoop"     : (data, prop) => {
 
-		if(data.cards.length == 0) {
+		if (data.cards.length == 0) {
 			return true;
 		}
 
@@ -372,7 +372,7 @@ let readyPutRules = {
 
 	"descendNumLoop"    : (data, prop) => {
 		
-		// if(data.cards.length == 0) {
+		// if (data.cards.length == 0) {
 		// 	return true;
 		// }
 
@@ -392,7 +392,7 @@ let readyPutRules = {
 
 	"sum"               : (data, prop) => {
 
-		if(data.cards.length == 0) {
+		if (data.cards.length == 0) {
 			return true;
 		}
 
@@ -408,7 +408,7 @@ let readyPutRules = {
 
 	"around"            : data => { // {from, putDeck, cards}
 
-		if(data.cards.length == 0) {
+		if (data.cards.length == 0) {
 			return true;
 		}
 
@@ -418,9 +418,9 @@ let readyPutRules = {
 
 		let _parent = Deck.getDeckById(data.cards[0].parent);
 
-		for(let i in _around) {
+		for (let i in _around) {
 
-			if(_around[i].to == _parent.name) {
+			if (_around[i].to == _parent.name) {
 				return true;
 			}
 		}
@@ -432,11 +432,11 @@ let readyPutRules = {
 
 		let _result = data.from.deck.parent != data.to.parent;
 
-		if(prop == "excludeEmpty") {
+		if (prop == "excludeEmpty") {
 
 			let down = data && data.cards && data.cards[data.cards.length - 1];
 
-			if(!down) {
+			if (!down) {
 				_result = true;
 			}
 		}

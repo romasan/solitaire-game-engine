@@ -13,13 +13,13 @@ export default (moveDeck, cursorMove) => {
 
 	// выбрать подсказки для стопки из кторорой взяли карты
 	let _tips = Tips.getTips();
-	for(let i in _tips) {
-		if(_tips[i].from.card.id == moveDeck[0].card.id) {
+	for (let i in _tips) {
+		if (_tips[i].from.card.id == moveDeck[0].card.id) {
 			_autoTips.push(_tips[i]);
 		}
 	}
 
-	if(_autoTips.length == 0) {
+	if (_autoTips.length == 0) {
 		return false;
 	}
 
@@ -35,11 +35,11 @@ export default (moveDeck, cursorMove) => {
 
 	// console.log(_autoTips.map(e => e.distance), _autoTips.length);
 	// вариантов несколько
-	if(_autoTips.length > 1) {
+	if (_autoTips.length > 1) {
 
 		// ищем расстояние до карт/стопок назначения от перетаскиваемой карты
 		// и направление перетаскивания
-		for(let i in _autoTips) {
+		for (let i in _autoTips) {
 
 			// координаты центра перетаскиваемой карты/стопки
 			let center_from = {
@@ -50,7 +50,7 @@ export default (moveDeck, cursorMove) => {
 			let _cardsCount = _autoTips[i].to.deck.cardsCount();
 			let _destination_deck_position = null;
 
-			if(_cardsCount) {
+			if (_cardsCount) {
 				// координаты последней карты стопки назначения
 				_destination_deck_position = _autoTips[i].to.deck.padding(_cardsCount);
 			} else {
@@ -70,7 +70,7 @@ export default (moveDeck, cursorMove) => {
 			// смотрим находится ли стопка назначения в направлении движения
 			_autoTips[i].inHorisontalDirection = false;
 
-			if(
+			if (
 				(cursorMove.direction.x > 0 && center_to.x > center_from.x) ||
 				(cursorMove.direction.x < 0 && center_to.x < center_from.x)
 			) {
@@ -84,48 +84,48 @@ export default (moveDeck, cursorMove) => {
 
 		// если карта над ближайшей, то этот ход с самым высоким приоритетом
 		// карта над другой стопкой или над полем
-		if(_autoTips[0].distance > inDistance) {
+		if (_autoTips[0].distance > inDistance) {
 			
 			// есть домашние группы
-			if(_homeGroups.length) {
+			if (_homeGroups.length) {
 
 				let _tips = [];
 
-				for(let homeGroupIndex in _homeGroups) {
+				for (let homeGroupIndex in _homeGroups) {
 
-					for(let i in _autoTips) {
-						if(_autoTips[i].to.deck.parent == _homeGroups[homeGroupIndex]) {
+					for (let i in _autoTips) {
+						if (_autoTips[i].to.deck.parent == _homeGroups[homeGroupIndex]) {
 							_tips.push(_autoTips[i]);
 						}
 					}
 				}
 
 				// есть подсказки ведущие в homeGroups
-				if(_tips.length) {
+				if (_tips.length) {
 					_autoTips = _tips;
 				}
 			}
 
 			// у пустых стопок назначения приоритет меньше
-			for(let i = 0; i < _autoTips.length; i += 1) {
+			for (let i = 0; i < _autoTips.length; i += 1) {
 
 				let _tips = [];
 
-				if(_autoTips[i].to.deck.cardsCount()) {
+				if (_autoTips[i].to.deck.cardsCount()) {
 					_tips.push(_autoTips[i]);
 				}
 
-				if(_tips.length) {
+				if (_tips.length) {
 					_autoTips = _tips;
 				}
 			}
 
 			// ищем ближайшую стопку из подсказок
-			if(_in_direction_count == 0) {
+			if (_in_direction_count == 0) {
 
 				let _tips = _autoTips.filter(e => e.inHorisontalDirection);
 
-				if(_tips.length) {
+				if (_tips.length) {
 					_autoTips = _tips;
 				}
 			}

@@ -56,8 +56,8 @@ let addActionEvent = eventName => {
 		// callback
 		data => {
 
-			for(let i in _decksActions) {
-				if(_decksActions[i].event == eventName) {
+			for (let i in _decksActions) {
+				if (_decksActions[i].event == eventName) {
 
 					let _actionName = _decksActions[i].action;
 
@@ -65,7 +65,7 @@ let addActionEvent = eventName => {
 					    ? data.to.name == _decksActions[i].deck.name
 					    : true;
 
-					if(
+					if (
 						_canRun //                &&
 						// !share.get('gameIsWon')
 					) {
@@ -92,21 +92,21 @@ let addActionEvent = eventName => {
 
 let add = deck => {
 
-	for(let actionName in deck.actions) {
+	for (let actionName in deck.actions) {
 
 		// если такой action существует
-		if(typeof _actions[actionName] != 'undefined') {
+		if (typeof _actions[actionName] != 'undefined') {
 
-			if(!deck.actions[actionName].events) {
+			if (!deck.actions[actionName].events) {
 				// если не описано событие выполнять по клику
-				if(typeof deck.actions[actionName].event == "string") {
+				if (typeof deck.actions[actionName].event == "string") {
 					deck.actions[actionName].events = [deck.actions[actionName].event];
 				} else {
 					deck.actions[actionName].events = ['click'];
 				}
 			}
 
-			for(let i in deck.actions[actionName].events) {
+			for (let i in deck.actions[actionName].events) {
 
 				let _event = deck.actions[actionName].events[i];
 
@@ -120,7 +120,7 @@ let add = deck => {
 				share.set('actionEvent:' + deck.name + ':' + _event, true);
 
 				// создаём событие если оно еще не создано
-				if(!_events.indexOf(_event) >= 0) {
+				if (!_events.indexOf(_event) >= 0) {
 
 					// сохраняем событие в список с уже созданными
 					_events.push(_event);
@@ -142,12 +142,12 @@ let autoRunActions = deck => {
 
 	common.animationDefault();
 
-	for(let actionName in deck.actions) {
+	for (let actionName in deck.actions) {
 
 		// Требуется запуск при инициализации
-		if(deck.actions[actionName].autorun) {
+		if (deck.actions[actionName].autorun) {
 
-			if(_actions[actionName]) {
+			if (_actions[actionName]) {
 
 				_actions[actionName].run(
 
@@ -167,7 +167,7 @@ let autoRunActions = deck => {
 
 let runAction = data => { // {actionName, deckName, <eventData>, eventName}
 
-	if(_actions[data.actionName]) {
+	if (_actions[data.actionName]) {
 		_actions[data.actionName].run(
 
 			data.deck,

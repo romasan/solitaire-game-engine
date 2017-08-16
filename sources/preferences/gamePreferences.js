@@ -16,13 +16,13 @@ class gamePreferences {
 
 	draw() {
 
-		if(this.exist) {
+		if (this.exist) {
 			return;
 		}		
 
 		let _preferences = share.get('gamePreferences');
 
-		for(let prefName in _preferences) {
+		for (let prefName in _preferences) {
 			
 			// let _label = $('<div>').append(
 			// 	$('<span>')
@@ -37,7 +37,7 @@ class gamePreferences {
 			let _label = document.createElement('div');
 			    _label.appendChild(el);
 
-			for(let i in _preferences[prefName].options) {
+			for (let i in _preferences[prefName].options) {
 				
 				// $(_label).append(
 				// 	$('<label>')
@@ -85,8 +85,8 @@ class gamePreferences {
 
 		let _preferences = share.get('gamePreferences');
 
-		for(let prefName in _preferences) {
-			if(pref && typeof pref[prefName] != 'undefined') {
+		for (let prefName in _preferences) {
+			if (pref && typeof pref[prefName] != 'undefined') {
 
 				// $(`input[name='gamePref_${prefName}'][value='${(pref[prefName]).toString()}']`)
 				// 	.prop({ "checked": true });
@@ -108,7 +108,7 @@ class gamePreferences {
 
 		let _preferences = share.get('gamePreferences');
 
-		for(let prefName in _preferences) {
+		for (let prefName in _preferences) {
 
 			// let _value = $(`input[name='gamePref_${prefName}']:checked`).val();
 

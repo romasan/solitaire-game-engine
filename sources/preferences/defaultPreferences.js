@@ -11,16 +11,16 @@ export default e => {
 	// Сохранённые настройки
 	let pref = storage.get('pref');
 
-	if(!pref) {
+	if (!pref) {
 
 		// Настройки по умолчанию из конфигурации
 		let theme = share.get('theme');
 
-		if(theme) {
+		if (theme) {
 
 			pref = {};
 
-			for(let prefName in defaults.pref) {
+			for (let prefName in defaults.pref) {
 				pref[prefName] = typeof theme[prefName] == 'undefined'
 					? defaults.pref[prefName]
 					: defaults.themes[prefName].indexOf(theme[prefName]) >= 0
@@ -36,11 +36,11 @@ export default e => {
 		}
 	}
 
-	for(let prefName in pref) {
+	for (let prefName in pref) {
 
-		if(defaults.themes[prefName]) {
+		if (defaults.themes[prefName]) {
 
-			if(defaults.themes[prefName].indexOf(pref[prefName]) < 0) {
+			if (defaults.themes[prefName].indexOf(pref[prefName]) < 0) {
 
 				pref[prefName] = defaults.pref[prefName];
 			}

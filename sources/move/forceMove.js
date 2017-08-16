@@ -13,7 +13,7 @@ let forceMove = ({from, to, deck, flip, callback, steps, save, addStep}) => { //
 
 	// console.log('forceMove', from, to);
 
-	if(
+	if (
 		!from ||
 		!to   ||
 		!deck
@@ -21,7 +21,7 @@ let forceMove = ({from, to, deck, flip, callback, steps, save, addStep}) => { //
 		return;
 	}
 
-	if(!deck.length) {
+	if (!deck.length) {
 		return;
 	}
 
@@ -35,7 +35,7 @@ let forceMove = ({from, to, deck, flip, callback, steps, save, addStep}) => { //
 		? Deck.getDeck(to)
 		: to;
 
-	if(
+	if (
 		!deckFrom                ||
 		 deckFrom.type != 'deck' ||
 		!deckTo                  ||
@@ -53,13 +53,13 @@ let forceMove = ({from, to, deck, flip, callback, steps, save, addStep}) => { //
 
 	let details = "";
 
-	for(let i in deckFromCards) {
+	for (let i in deckFromCards) {
 
-		if(i >= deckFromCards.length - deck.length) {
+		if (i >= deckFromCards.length - deck.length) {
 
 			let _index = i - (deckFromCards.length | 0) + (deck.length | 0);
 
-			if(
+			if (
 				deck[_index]                          &&
 				deckFromCards[i].name != deck[_index]
 			) {
@@ -73,13 +73,13 @@ let forceMove = ({from, to, deck, flip, callback, steps, save, addStep}) => { //
 		}
 	}
 
-	if(check) {
+	if (check) {
 
 		let cardsPop = deckFrom.Pop(deck.length);
 
 		// перевернуть карты во время хода
-		if(typeof flip == "boolean") {
-			for(let i in cardsPop) {
+		if (typeof flip == "boolean") {
+			for (let i in cardsPop) {
 				cardsPop[i].flip = flip; // !cardsPop[i].flip;
 			}
 		}
@@ -92,18 +92,18 @@ let forceMove = ({from, to, deck, flip, callback, steps, save, addStep}) => { //
 
 		let breakForceMove = e => {
 
-			if(share.get('inHistoryMove')) {
+			if (share.get('inHistoryMove')) {
 				return;
 			}
 
 			let _cards = deckTo.Pop(deck.length);
 
-			if(cardsPop) {
+			if (cardsPop) {
 
 				deckFrom.Push(_cards);
 
-				if(typeof flip == "boolean") {
-					for(let i in cardsPop) {
+				if (typeof flip == "boolean") {
+					for (let i in cardsPop) {
 						cardsPop[i].flip = !flip;
 					}
 				}
@@ -111,7 +111,7 @@ let forceMove = ({from, to, deck, flip, callback, steps, save, addStep}) => { //
 				deckFrom.Redraw();
 				deckTo  .Redraw();
 
-				if(steps && steps.length) {
+				if (steps && steps.length) {
 
 					// TODO History.clearByContext('deal'); ?
 					event.dispatch('deleteHistory', steps);
@@ -121,7 +121,7 @@ let forceMove = ({from, to, deck, flip, callback, steps, save, addStep}) => { //
 
 		let moveDeck = [];
 
-		for(let i in cardsPop) {
+		for (let i in cardsPop) {
 			moveDeck.push({
 				"card" : cardsPop[i]
 			});
@@ -134,7 +134,7 @@ let forceMove = ({from, to, deck, flip, callback, steps, save, addStep}) => { //
 		};
 
 		let eventId = event.once('clearCallbacks', e => {
-			if(typeof breakForceMove == "function") {
+			if (typeof breakForceMove == "function") {
 				breakForceMove();
 			}
 		});
@@ -143,7 +143,7 @@ let forceMove = ({from, to, deck, flip, callback, steps, save, addStep}) => { //
 
 			// console.log('forceMove:callback');
 
-			if(addStep) {
+			if (addStep) {
 
 				event.dispatch('addStep', {
 					"move" : {
@@ -158,7 +158,7 @@ let forceMove = ({from, to, deck, flip, callback, steps, save, addStep}) => { //
 
 			breakForceMove = null;
 
-			if(
+			if (
 				deckFrom.autoUnflipTop                         &&
 				deckFrom.cards.length > 0                      &&
 				deckFrom.cards[deckFrom.cards.length - 1].flip
@@ -169,7 +169,7 @@ let forceMove = ({from, to, deck, flip, callback, steps, save, addStep}) => { //
 				deckFrom.unflipTopCard(addStep);
 			}
 
-			if(save) {
+			if (save) {
 				event.dispatch('saveSteps');
 			}
 
@@ -184,16 +184,16 @@ let forceMove = ({from, to, deck, flip, callback, steps, save, addStep}) => { //
 
 			event.dispatch('moveEnd:force', moveEndData);
 
-			if(typeof callback == 'function') {
+			if (typeof callback == 'function') {
 				callback();
 			}
 
-			if(deckFrom.autoCheckFlip) {
+			if (deckFrom.autoCheckFlip) {
 				deckFrom.checkFlip();
 				deckFrom.Redraw();
 			}
 
-			if(deckTo.autoCheckFlip) {
+			if (deckTo.autoCheckFlip) {
 				deckTo.checkFlip();
 				deckTo.Redraw();
 			}

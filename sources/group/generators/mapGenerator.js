@@ -55,19 +55,19 @@ export default (group, data) => {
 	let _mapSize = mapCommon.mapSize(data.map);
 
 	// {name: 'groupName_deck_0_0'}
-	for(let y in data.map) {
-		for(let x in data.map[y]) {
+	for (let y in data.map) {
+		for (let x in data.map[y]) {
 
-			if(
+			if (
 				typeof data.map[y][x] == 'boolean' && data.map[y][x]     ||
 				typeof data.map[y][x] == 'number'  && data.map[y][x] > 0
 			) {
 				data.map[y][x] = {};
 			};
 
-			if(typeof data.map[y][x] == 'string') {
+			if (typeof data.map[y][x] == 'string') {
 				data.map[y][x] = {name: data.map[y][x]};
-			} else if(
+			} else if (
 				data.map[y][x]                            &&
 				typeof data.map[y][x]      != 'undefined' &&
 				typeof data.map[y][x].name != 'string'
@@ -77,15 +77,15 @@ export default (group, data) => {
 		}
 	}
 
-	for(let _y in data.map) {
-		for(let _x in data.map[_y]) {
+	for (let _y in data.map) {
+		for (let _x in data.map[_y]) {
 
 			let x = _x | 0,
 			    y = _y | 0;
 
 			let _el = data.map[y][x];
 
-			if(_el) {
+			if (_el) {
 
 				let _deck = {
 					"name"     : data.map[y][x].name,// (group.name + "_deck" + _index) OR (group.name + '_' + data.map[y][x])
@@ -103,11 +103,11 @@ export default (group, data) => {
 					"fall"   : 'mapFallRelations'
 				};
 
-				if(data.relations) {
+				if (data.relations) {
 
-					for(let relGenName in _relGenerators) {
+					for (let relGenName in _relGenerators) {
 
-						if(data.relations[relGenName]) {
+						if (data.relations[relGenName]) {
 							_relations = _relations.concat(relationsGenerator[_relGenerators[relGenName]]({
 								"x"       : x,
 								"y"       : y, 

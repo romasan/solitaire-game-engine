@@ -19,9 +19,9 @@ import elRender from '../dom/elRender'      ;
 
 event.listen('addCardEl', data => {
 
-	if(share.get('nodraw')) {
+	if (share.get('nodraw')) {
 
-		if(data && typeof data.callback == "function") {
+		if (data && typeof data.callback == "function") {
 			data.callback();
 		}
 
@@ -55,14 +55,14 @@ event.listen('toggleMarkCard', data => {
 
 	let el = share.get('domElement:' + data.card.id);
 
-	if(
+	if (
 		el                   &&
 		!el.hasClass('flip')
 	) {
 
 		let cardIsMarked = null;
 
-		if(el.hasClass('marker')) {
+		if (el.hasClass('marker')) {
 
 			cardIsMarked = false;
 
@@ -74,7 +74,7 @@ event.listen('toggleMarkCard', data => {
 			el.addClass('marker');
 		}
 
-		if(typeof data.callback == "function") {
+		if (typeof data.callback == "function") {
 			data.callback(cardIsMarked);
 		}
 	}
@@ -84,7 +84,7 @@ event.listen('markCard', data => {
 
 	let el = share.get('domElement:' + data.card.id);
 
-	if(el) {
+	if (el) {
 		el.removeClass('marker');
 	}
 });
@@ -93,7 +93,7 @@ event.listen('unmarkCard', data => {
 
 	let el = share.get('domElement:' + data.card.id);
 
-	if(
+	if (
 		el                   &&
 		!el.hasClass('flip')
 	) {
@@ -103,9 +103,9 @@ event.listen('unmarkCard', data => {
 
 event.listen('unflipCard', card => {
 
-	if(share.get('nodraw')) {
+	if (share.get('nodraw')) {
 
-		if(data && typeof data.callback == "function") {
+		if (data && typeof data.callback == "function") {
 			data.callback();
 		}
 
@@ -114,7 +114,7 @@ event.listen('unflipCard', card => {
 
 	let el = share.get('domElement:' + card.id);
 
-	if(
+	if (
 		el                  &&
 		el.hasClass('flip')
 	) {
@@ -135,21 +135,21 @@ event.listen('removeCardElements', e => {
 
 // event.listen('moveOnCard', card => {
 
-// 	if(card) {
+// 	if (card) {
 
-// 		if(
+// 		if (
 // 			share.get('specialStepMode') &&
 // 			!data.flip
 // 		) {
 
 // 			let el = share.get('domElement:' + data.id);
 
-// 			if(specialStepMark == data.id)
+// 			if (specialStepMark == data.id)
 
 // 			el.addClass('specialStepMark');
 // 		}
 // 	} else {
-// 		if(specialStepMark) {
+// 		if (specialStepMark) {
 // 			// unmarkCard
 // 			specialStepMark = null;
 // 		}
@@ -161,7 +161,7 @@ event.listen('removeCardElements', e => {
 
 // 	let el = share.get('domElement:' + card.id);
 
-// 	if(card.flip) {
+// 	if (card.flip) {
 // 		el.addClass('flip');
 // 	} else {
 // 		el.removeClass('flip');

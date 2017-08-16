@@ -35,7 +35,7 @@ class dealAction extends deckAction {
 		// default data.actionData.from      - deck.name
 		// default data.actionData.stepType  - NULL
 
-		if(
+		if (
 			typeof data.actionData.stepType == 'string'              &&
 			       data.actionData.stepType != share.get('stepType')
 		) {
@@ -53,11 +53,11 @@ class dealAction extends deckAction {
 			: deck;
 
 		// смотрим остались ли карты
-		if(dealDeck.cards.length == 0) {
+		if (dealDeck.cards.length == 0) {
 
 			let _stepType = share.get('stepType');
 
-			if(_stepType != defaults.stepType) {
+			if (_stepType != defaults.stepType) {
 
 				share.set('stepType', defaults.stepType);
 
@@ -73,7 +73,7 @@ class dealAction extends deckAction {
 			let history = History.get(false);
 
 			// есть ли что либо на запись в историю
-			if(history.length > 0) {
+			if (history.length > 0) {
 
 				// console.log('dealAction:nomoves:save');
 
@@ -84,7 +84,7 @@ class dealAction extends deckAction {
 		}
 
 		// to == toGroup ???
-		if(data.actionData.toGroup && !data.actionData.to) {
+		if (data.actionData.toGroup && !data.actionData.to) {
 			
 			data.actionData.to = data.actionData.toGroup;
 			
@@ -94,31 +94,31 @@ class dealAction extends deckAction {
 		let _decks = [];
 
 		// есть куда раздавать
-		if(data.actionData.to) {
+		if (data.actionData.to) {
 
 			// выбираем стопки для раздачи
 
 			// передали имя стопки/группы
-			if(typeof data.actionData.to == 'string') {
+			if (typeof data.actionData.to == 'string') {
 
 				// ищем элементы с таким именем
 				let _elements = common.getElementsByName(data.actionData.to);
-				for(let i in _elements) {
+				for (let i in _elements) {
 
 					// это группа
-					if(_elements[i].type == 'group') {
+					if (_elements[i].type == 'group') {
 
 						// _decks = _decks.concat(Group.Group(data.actionData.to).decks);
 						// let __decks = Group.Group(data.actionData.to).decks;
 
 						// берём колоды из группы
-						for(let deckIndex in _elements[i].decks) {
+						for (let deckIndex in _elements[i].decks) {
 							_decks.push(_elements[i].decks[deckIndex]);
 						}
 					};
 
 					// это колода, добавляем её в список
-					if(_elements[i].type == 'deck') {
+					if (_elements[i].type == 'deck') {
 						_decks.push(_el);
 					};
 
@@ -127,21 +127,21 @@ class dealAction extends deckAction {
 			// передали массив имён стопок/групп
 			} else {
 
-				for(let i in data.actionData.to) {
+				for (let i in data.actionData.to) {
 
 					let _elements = common.getElementsByName(data.actionData.to[i]);
 
-					for(let elIndex in _elements) {
+					for (let elIndex in _elements) {
 
-						if(_elements[elIndex].type == 'group') {
+						if (_elements[elIndex].type == 'group') {
 							// _decks = _decks.concat(Group.Group(data.actionData.to[i]).decks);
 							// let __decks = Group.Group(data.actionData.to[i]).decks;
-							for(let deckIndex in _elements[elIndex].decks) {
+							for (let deckIndex in _elements[elIndex].decks) {
 								_decks.push(_elements[elIndex].decks[deckIndex]);
 							}
 						};
 
-						if(_elements[elIndex].type == 'deck') {
+						if (_elements[elIndex].type == 'deck') {
 							_decks.push(_elements[elIndex]);
 						};
 					}
@@ -160,15 +160,15 @@ class dealAction extends deckAction {
 		let moveDecks = _decks.filter(e => e.cards.length == 0);
 		let _iterations = moveDecks.length;
 
-		// for(let deckId in _decks) {
-		for(let deckId in moveDecks) {
+		// for (let deckId in _decks) {
+		for (let deckId in moveDecks) {
 
 			// флаг что такой ход возможен
 			let _canStep = data.actionData.onlyEmpty
 				? moveDecks[deckId].cards.length == 0
 				: true;
 
-			if(
+			if (
 				_canStep &&
 				dealDeck.cards.length > 0
 			) {
@@ -186,7 +186,7 @@ class dealAction extends deckAction {
 
 				// #1
 
-				if(!dealDeck.autoCheckFlip) {
+				if (!dealDeck.autoCheckFlip) {
 					event.dispatch('addStep', {
 						"step" : {
 							"unflip" : {
@@ -230,18 +230,18 @@ class dealAction extends deckAction {
 
 					// console.log('dealAction:run:_callback', _iterations);
 
-					if(_iterations == 0) {
+					if (_iterations == 0) {
 						// _after();
 						// let _after = e => {
 							
 						// #2
 
-						if(_makeStep && save) { // && hasNextSteps
+						if (_makeStep && save) { // && hasNextSteps
 							// сохраняем если раздача удалась
 							event.dispatch('saveSteps');
 						}
 
-						if(data.actionData.dispatch) {
+						if (data.actionData.dispatch) {
 
 							event.dispatch(data.actionData.dispatch, !_makeStep);
 						} else {
@@ -252,7 +252,7 @@ class dealAction extends deckAction {
 						}
 
 						// TODO if "autoCheckFlip" param for deck
-						// if(dealDeck.autoCheckFlip) {
+						// if (dealDeck.autoCheckFlip) {
 						// 	dealDeck.checkFlip();
 						// 	dealDeck.Redraw();
 						// }
@@ -277,7 +277,7 @@ class dealAction extends deckAction {
 					"steps"    : _steps               // массив с Id ходов приготовленных на запись в историю
 				};
 
-				if(!dealDeck.autoCheckFlip) {
+				if (!dealDeck.autoCheckFlip) {
 					forceMoveData.flip = false;
 				}
 

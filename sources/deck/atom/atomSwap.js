@@ -6,20 +6,20 @@ export default (deck, fromIndex, toIndex, save = true) => {
 
 	// console.log('SWAP:', deck.name, fromIndex, toIndex);
 
-	if(typeof deck == "undefined") {
+	if (typeof deck == "undefined") {
 
 		console.warn('Swap: deck is undefined')
 
 		return false;
 	}
 
-	if(deck.cards[fromIndex] && deck.cards[toIndex]) {
+	if (deck.cards[fromIndex] && deck.cards[toIndex]) {
 
 		let tmp               = deck.cards[fromIndex];
 		deck.cards[fromIndex] = deck.cards[toIndex]  ;
 		deck.cards[toIndex]   = tmp                  ;
 
-		if(save) {
+		if (save) {
 			event.dispatch('addStep', {
 				"swap" : {
 					"deckName"  : deck.name,

@@ -18,5 +18,5 @@ export default e => {
 		div.innerHTML = _html;
 
 		el.parentNode.insertBefore(div, el);
-	} catch(e) {}
+	} catch (e) {}
 };

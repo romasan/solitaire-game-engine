@@ -15,11 +15,11 @@ import elRender from '../dom/elRender'      ;
 
 let angleValidate = angle => {
 
-	// if(angle < 0  ) {
+	// if (angle < 0  ) {
 	// 	angle += 360;
 	// }
 
-	// if(angle > 360) {
+	// if (angle > 360) {
 	// 	angle -= 360;
 	// }
 
@@ -28,9 +28,9 @@ let angleValidate = angle => {
 
 event.listen('moveDragDeck', data => {
 
-	if(share.get('nodraw')) {
+	if (share.get('nodraw')) {
 
-		if(typeof data.callback == "function") {
+		if (typeof data.callback == "function") {
 			data.callback();
 		}
 
@@ -44,7 +44,7 @@ event.listen('moveDragDeck', data => {
 
 	let _lastIndex = data.moveDeck.length - 1;
 
-	for(let i in data.moveDeck) {
+	for (let i in data.moveDeck) {
 
 		let _position = data.destination.padding(data.destination.cardsCount() - data.moveDeck.length + (i | 0), true);
 		_position.random = Math.random();
@@ -59,7 +59,7 @@ event.listen('moveDragDeck', data => {
 				"transform" : 'rotate(' + departureAngle + 'deg)'
 			})
 
-		if(departureAngle - destinationAngle > 180) {
+		if (departureAngle - destinationAngle > 180) {
 
 			departureAngle = departureAngle - 360;
 			elRender(_cardDomElement)
@@ -68,7 +68,7 @@ event.listen('moveDragDeck', data => {
 				})
 		};
 
-		if(departureAngle - destinationAngle < -180) {
+		if (departureAngle - destinationAngle < -180) {
 			destinationAngle -= 360;
 		}
 
@@ -89,7 +89,7 @@ event.listen('moveDragDeck', data => {
 			// data.departure  .Redraw();
 			data.destination.Redraw();
 
-			if(
+			if (
 				_last                              &&
 				typeof data.callback == 'function'
 			) {
@@ -124,13 +124,13 @@ event.listen('moveDragDeck', data => {
 
 event.listen('moveDragDeckDone', data => {
 
-	if(!data.deck.full) {
+	if (!data.deck.full) {
 		return;
 	}
 
-	if(share.get('nodraw')) {
+	if (share.get('nodraw')) {
 
-		if(typeof data.callback == "function") {
+		if (typeof data.callback == "function") {
 			data.callback();
 		}
 
@@ -139,7 +139,7 @@ event.listen('moveDragDeckDone', data => {
 
 	let _deck = data.deck.cards;
 
-	for(let i in _deck) {
+	for (let i in _deck) {
 
 		let _cardDomElement = share.get('domElement:' + _deck[i].id);
 
@@ -150,16 +150,16 @@ event.listen('moveDragDeckDone', data => {
 
 event.listen('dragDeck', data => { // {x, y, dragDeck, startCursor, deck}
 
-	if(share.get('nodraw')) {
+	if (share.get('nodraw')) {
 
-		if(data && typeof data.callback == "function") {
+		if (data && typeof data.callback == "function") {
 			data.callback();
 		}
 
 		return;
 	}
 
-	for(let i in data.dragDeck) {
+	for (let i in data.dragDeck) {
 
 		let _zoom = share.get('zoom');
 

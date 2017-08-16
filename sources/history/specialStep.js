@@ -16,7 +16,7 @@ event.listen('specialStep', ({card, callback}) => {
 
 		let index = -1;
 
-		for(
+		for (
 			let i  = data.history.length - 1;
 			    i >= 0                      ; // && index <= 0;
 			    i -= 1
@@ -24,11 +24,11 @@ event.listen('specialStep', ({card, callback}) => {
 
 			let step = data.history[i];
 
-			for(let atomIndex in step) {
+			for (let atomIndex in step) {
 
 				let atom = step[atomIndex];
 
-				if(
+				if (
 					atom.move                     &&
 					// atom.move.to   == deckName &&
 					atom.move.deck[0] == cardName
@@ -40,13 +40,13 @@ event.listen('specialStep', ({card, callback}) => {
 
 		let undoCount = index >= 0 ? data.history.length - index : 0;
 
-		if(undoCount > 0) {
+		if (undoCount > 0) {
 
 			revokeLength = data.redoSteps.length;
 
 			common.animationOff();
 
-			for(let i = 0; i < undoCount; i += 1) {
+			for (let i = 0; i < undoCount; i += 1) {
 				data.undo();
 			}
 
@@ -55,7 +55,7 @@ event.listen('specialStep', ({card, callback}) => {
 			event.dispatch('specialStep:done');
 		}
 
-		if(typeof callback == "function") {
+		if (typeof callback == "function") {
 			callback(undoCount > 0);
 		}
 	});
@@ -64,7 +64,7 @@ event.listen('specialStep', ({card, callback}) => {
 // Отмена спецхода
 event.listen('revokeSpecialStep', ({callback}) => {
 
-	if(typeof callback == "function") {
+	if (typeof callback == "function") {
 
 		common.animationOff();
 
@@ -79,7 +79,7 @@ event.listen('revokeSpecialStep', ({callback}) => {
 
 			console.log('rewindHistory', data.redoSteps.length - revokeLength, data.redoSteps.length, revokeLength);
 
-			for(let i = data.redoSteps.length - revokeLength; i > 0; i -= 1) {
+			for (let i = data.redoSteps.length - revokeLength; i > 0; i -= 1) {
 				console.log('>>> redo');
 				data.redo();
 			}
@@ -90,7 +90,7 @@ event.listen('revokeSpecialStep', ({callback}) => {
 });
 
 event.listen('checkToCancelRevokeSpecialStep', callback => {
-	if(typeof callback == "function") {
+	if (typeof callback == "function") {
 		callback(revokeLength);
 	}
 });

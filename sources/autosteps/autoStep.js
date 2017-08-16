@@ -14,26 +14,26 @@ export default class {
 
 	constructor(params) {
 
-		if(typeof params.groups != 'undefined') {
+		if (typeof params.groups != 'undefined') {
 			this.groups = params.groups;
 		}
 		
-		if(typeof params.event == 'string') {
+		if (typeof params.event == 'string') {
 			this.event = params.event;
 		}
 
-		if(typeof params.dispatch == 'string') {
+		if (typeof params.dispatch == 'string') {
 			this.dispatch = params.dispatch;
 		}
 
-		if(typeof params.autoStep == 'boolean') {
+		if (typeof params.autoStep == 'boolean') {
 			this.autoStep = params.autoStep;
 		}
 	}
 
 	start(data) {
 
-		if(!this.autoStep) {
+		if (!this.autoStep) {
 			event.dispatch('stopSession');
 		}
 
@@ -43,7 +43,7 @@ export default class {
 
 		// console.log('autoStep', this.autoStep, this._name, data);
 
-		if(this.autoStep) {
+		if (this.autoStep) {
 
 			common.curLock();
 			// TODO run data.before();
@@ -51,9 +51,9 @@ export default class {
 			this.auto();
 		} else {
 
-			// if(this.check()) {
+			// if (this.check()) {
 				
-			if(data && typeof data.before == 'function') {
+			if (data && typeof data.before == 'function') {
 
 				data.before({
 					"stepType" : this.stepType
@@ -62,7 +62,7 @@ export default class {
 
 			let _check = this.check();
 			
-			if(!_check) {
+			if (!_check) {
 				// this.end();
 			} else {
 				event.dispatch('saveSteps');
@@ -77,7 +77,7 @@ export default class {
 		// let _stepType = share.get('stepType');
 		share.set('stepType', defaults.stepType);
 
-		if(this.dispatch) {
+		if (this.dispatch) {
 
 			let _data = {
 				"stepType" : share.get('stepType') // TODO defaults.stepType | _stepType
@@ -86,8 +86,8 @@ export default class {
 				// }
 			};
 
-			if(data) {
-				for(let valueName in data) {
+			if (data) {
+				for (let valueName in data) {
 					_data[valueName] = data[valueName];
 				}
 			}
@@ -105,15 +105,15 @@ export default class {
 
 		this.stepType = stepType;
 
-		if(this.event) {
+		if (this.event) {
 			event.listen(this.event, data => {
-				// if(!share.get('gameIsWon')) {
+				// if (!share.get('gameIsWon')) {
 				this.start(data);
 				// }
 			});
 		}
 		
-		if(!this.autoStep) {
+		if (!this.autoStep) {
 
 			event.listen(
 				
@@ -121,7 +121,7 @@ export default class {
 
 				e => {
 
-					if(share.get('stepType') != this.stepType) {
+					if (share.get('stepType') != this.stepType) {
 						return; 
 					}
 				

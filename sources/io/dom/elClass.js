@@ -61,7 +61,7 @@ export default class elClass {
 			) {
 				this.el.setAttribute(name, value);
 			}
-		} catch(e) {}
+		} catch (e) {}
 	}
 
 	hasClass(className) {
@@ -111,7 +111,7 @@ export default class elClass {
 
 			let _classes = this.el.className.split(' ');
 
-			// if(this.hasClass(className)) {
+			// if (this.hasClass(className)) {
 			let _clone = [];
 
 			for (let i in _classes) {

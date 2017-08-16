@@ -6,7 +6,7 @@ import mapCommon from '../mapCommon';
 
 // let getBeside = (_x, _y, mapSize, map, el, type)=>{
 
-// 	if(typeof el[type] == "string") {
+// 	if (typeof el[type] == "string") {
 
 // 		switch(el[type]) {
 // 			case 'left':
