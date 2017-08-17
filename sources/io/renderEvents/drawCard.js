@@ -85,7 +85,7 @@ event.listen('markCard', data => {
 	let el = share.get('domElement:' + data.card.id);
 
 	if (el) {
-		el.removeClass('marker');
+		el.addClass('marker');
 	}
 });
 
@@ -94,8 +94,8 @@ event.listen('unmarkCard', data => {
 	let el = share.get('domElement:' + data.card.id);
 
 	if (
-		el                   &&
-		!el.hasClass('flip')
+		el //                  &&
+		// !el.hasClass('flip')
 	) {
 		el.removeClass('marker');
 	}
