@@ -6,13 +6,15 @@ import deckGenerator from '../deck/deckGenerator';
 import Card          from '../card'              ;
 import Deck          from '../deck'              ;
 
-let nextCards = deckGenerator().map(e => Card.validateCardName(e));
+let nextCards = deckGenerator({
+	"cardDescription" : true
+});
 
 let _cardNames = [];
 
-let getNextCards = e => {
+let genNextCards = e => {
 
-	// console.log('getNextCards');
+	// console.log('genNextCards');
 
 	let decks = Deck.getDecks();
 
@@ -51,4 +53,6 @@ let getNextCards = e => {
 	event.dispatch('updateNextCards', _nextCards);
 }
 
-export default getNextCards;
+event.listen('genNextCards', genNextCards);
+
+export default genNextCards;

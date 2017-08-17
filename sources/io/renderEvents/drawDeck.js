@@ -252,7 +252,7 @@ event.listen('updateNextCards', function(data) {
 		if (oneRank) {
 			// _content = defaults.card.names[share.get('locale')][defaults.card.ranks.indexOf(_cards[0].rank)];
 			// _content = _cards[0].rank.toUpperCase();
-			_content = defaults.card.aliases[defaults.card.ranks.indexOf(_cards[0].rank)];			
+			_content = _cards.length ? defaults.card.aliases[defaults.card.ranks.indexOf(_cards[0].rank)] : '';
 		} else {
 			_content = data[deckId].map(e => e.name).join(', ').toUpperCase();
 		}

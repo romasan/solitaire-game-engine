@@ -1,6 +1,9 @@
 'use strict';
 
 import defaults from '../common/defaults';
+import event    from '../common/event'   ;
+
+import Card     from '../card'           ;
 
 /*
  * shuffleArray
@@ -111,10 +114,11 @@ let deckGenerator = data => {
 	let default_shuffle = false;
 	let max_iterations  = 10;
 
-	let type       = data && data.type       && typeof data.type       == 'string'                                        ? data.type       : default_type   ;
-	let deckCount  = data && data.deckCount  && typeof data.deckCount  == 'number'                                        ? data.deckCount  : 52             ;
-	let iterations = data && data.iterations && typeof data.iterations == 'number'    && data.iterations < max_iterations ? data.iterations : 1              ;
-	let shuffle    = data && data.shuffle    && typeof data.shuffle    != 'undefuned'                                     ? data.shuffle    : default_shuffle;
+	let type            = data && typeof data.type            == 'string'                                        ? data.type            : default_type   ;
+	let deckCount       = data && typeof data.deckCount       == 'number'                                        ? data.deckCount       : 52             ;
+	let iterations      = data && typeof data.iterations      == 'number'    && data.iterations < max_iterations ? data.iterations      : 1              ;
+	let shuffle         = data && typeof data.shuffle         != 'undefuned'                                     ? data.shuffle         : default_shuffle;
+	let cardDescription = data && typeof data.cardDescription == 'boolean'                                       ? data.cardDescription : false;
 
 	let excludeCards = data && data.excludeCards;
 
@@ -147,7 +151,17 @@ let deckGenerator = data => {
 		_deck = _deck.filter(e => excludeCards.indexOf(e) < 0);
 	}
 
+	if(cardDescription) {
+		_deck = _deck.map(e => Card.validateCardName(e));
+	}
+
 	return _deck;
 };
+
+event.listen('generateDeck', e => {
+	if(typeof e.callback == "function") {
+		e.callback( deckGenerator(e.data) );
+	}
+});
 
 export default deckGenerator;

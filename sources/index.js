@@ -14,6 +14,7 @@ import common        from './common'            ;
 import winCheck      from './wincheck'          ;
 import History       from './history'           ;
 import Tips          from './tips'              ;
+import genNextCards  from './tips/genNextCards' ;
 import deckGenerator from './deck/deckGenerator';
 
 let preloadCallback = null,
@@ -65,7 +66,9 @@ exports.init = gameConfig => {
 		firstInit = false;
 
 		if (typeof preloadCallback == 'function') {
+
 			let _data = share.get('gamePreferencesData');
+
 			preloadCallback(_data);
 		}
 
@@ -74,7 +77,9 @@ exports.init = gameConfig => {
 	let changePreferencesCallback = share.get('changePreferencesCallback');
 
 	if (typeof changePreferencesCallback == 'function') {
+
 		let _data = share.get('gamePreferencesData');
+
 		changePreferencesCallback(_data, {
 			"stepType" : share.get('stepType')
 		});

@@ -37,22 +37,22 @@ class cardClass {
 
 	static genCardByName(deck, name, last = true) {
 		
-		let validatedCard = this.validateCardName(name); // {color, rank}
+		const {color, value, suit, rank, isCard} = this.validateCardName(name);
 
-		if (validatedCard) {
+		if (isCard) {
 
 			let _id = 'card_' + common.genId();
 
 			let _card = {
-				"id"      : _id                ,
-				"name"    : name               ,
-				"visible" : true               ,
-				"flip"    : false              ,
-				"parent"  : deck.id            ,
-				"color"   : validatedCard.color,
-				"value"   : validatedCard.value,
-				"suit"    : validatedCard.suit ,
-				"rank"    : validatedCard.rank
+				"id"      : _id    ,
+				"name"    : name   ,
+				"visible" : true   ,
+				"flip"    : false  ,
+				"parent"  : deck.id,
+				"color"   : color  ,
+				"value"   : value  ,
+				"suit"    : suit   ,
+				"rank"    : rank
 			};
 
 			let card = new cardClass(_card);
@@ -101,11 +101,12 @@ class cardClass {
 			defaults.card.ranks.indexOf(rank) >= 0
 		) {
 			return {
-				"color" : color,
-				"value" : value,
-				"name"  : name ,
-				"suit"  : suit , 
-				"rank"  : rank
+				"color"  : color,
+				"value"  : value,
+				"name"   : name ,
+				"suit"   : suit , 
+				"rank"   : rank ,
+				"isCard" : true
 			}
 		} else {
 

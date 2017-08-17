@@ -5,7 +5,6 @@ import event              from './event'                          ;
 import defaults           from './defaults'                       ;
 import stateManager       from './stateManager'                   ;
 
-import Tips               from '../tips'                          ;
 import Field              from '../field'                         ;
 import History            from '../history'                       ;
 
@@ -74,11 +73,13 @@ event.listen('gameInited', e => {
 });
 
 event.listen('moveEnd', e => {
-	Tips.checkTips();
+	// Tips.checkTips();
+	event.dispatch('checkTips');
 });
 
 event.listen('actionBreak', e => {
-	Tips.checkTips();
+	// Tips.checkTips();
+	event.dispatch('checkTips');
 });
 
 event.listen('startSession', e => {
@@ -234,7 +235,8 @@ event.listen('historyReapeater', data => {
 		share.set('noRedraw', false);
 		Field.Redraw();
 		share.set('noTips', false);
-		Tips.checkTips();
+		// Tips.checkTips();
+		event.dispatch('checkTips');
 	}
 });
 

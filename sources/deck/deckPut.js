@@ -20,6 +20,8 @@ export default (deck, putDeck) => {
 
 	rulesCorrect = rulesCorrect && !deck.locked;
 
+	rulesCorrect = rulesCorrect && !deck.full;
+
 	// Нестандартный ход (autosteps)
 	if (_stepType != defaults.stepType) {
 

@@ -91,6 +91,10 @@ class Event {
 		}
 	}
 
+	pass(eventName, nextEvent, data) {
+		this.dispatch(nextEvent, data);
+	}
+
 	dispatch(eventName, data) {
 
 		if (this._events[eventName]) {
@@ -99,6 +103,7 @@ class Event {
 
 				if (this._events[eventName][i]) {
 
+					// let _result = 
 					this._events[eventName][i].callback(
 
 						data,
@@ -119,12 +124,34 @@ class Event {
 					);
 
 					if (this._events[eventName][i].once) {
+
 						delete this._events[eventName][i];
+
+						// this._removeEmpty(eventName);
+
+						// return _result;
 					}
 				}
 			}
 
-			this._events[eventName] = this._events[eventName].filter(e => e);
+			this._removeEmpty(eventName);
+
+			// return {
+			// 	"done" : true
+			// }
+		}
+
+		// return {
+		// 	"done" : false
+		// }
+	}
+
+	_removeEmpty(eventName) {
+
+		this._events[eventName] = this._events[eventName].filter(e => e);
+
+		if(this._events[eventName].length == 0) {
+			delete this._events[eventName];
 		}
 	}
 

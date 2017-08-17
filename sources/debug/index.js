@@ -43,14 +43,14 @@ let startTime = Date.now();
 
 let _zip = a => a.map(e =>
 	(e.time).toString(25) + '.' +
-	(['click', 'mousemove', 'mouseup', 'mousedown'].indexOf(e.name)) +
+	(['click', 'mousemove', 'mouseup', 'mousedown', 'dblclick'].indexOf(e.name)) +
 	(e.clientX).toString(25) + 'z' + 
 	(e.clientY).toString(25)
 ).join(' ');
 
 let _unzip = a => a.split(' ').map(e => ({
 	"time" : parseInt(e.slice(0, e.indexOf('.')), 25),
-	"name" : ['click', 'mousemove', 'mouseup', 'mousedown'][e.slice(e.indexOf('.') + 1)[0] | 0],
+	"name" : ['click', 'mousemove', 'mouseup', 'mousedown', 'dblclick'][e.slice(e.indexOf('.') + 1)[0] | 0],
 	"clientX" : parseInt(e.slice(e.indexOf('.') + 2, e.indexOf('z')), 25),
 	"clientY" : parseInt(e.slice(e.indexOf('z') + 1), 25)
 }));
@@ -117,6 +117,7 @@ try {
 			{"event": 'mousedown', "setDrag" : true     },
 			{"event": 'mouseup'  , "setDrag" : false    },
 			{"event": 'click'                           },
+			{"event": 'dblclick'                        },
 			{"event": 'mousemove', "exitOnNoDrag" : true}
 		];
 
