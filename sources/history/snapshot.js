@@ -16,6 +16,9 @@ class snapshot {
 
 	constructor() {}
 
+	/**
+	 * Get play state of game field
+	 */
 	get() {
 
 		let state = {
@@ -53,6 +56,11 @@ class snapshot {
 		return state;
 	}
 
+	/**
+	 * Comparison of two snapshots of the initial state and the final state
+	 * @param {*} stateFrom - the first snapshot
+	 * @param {*} stateTo  - the second snapshot
+	 */
 	diff(stateFrom, stateTo) { // A - from, B - to
 
 		// console.groupCollapsed('diff');
@@ -121,6 +129,10 @@ class snapshot {
 		return state;
 	}
 
+	/**
+	 * Comparison of all differences between states, and obtaining a summary state
+	 * @param {*} stateDifferences - Array of snapshot diffs
+	 */
 	summary(stateDifferences) {
 
 		// console.log('snapshot:summary', stateDifferences);
@@ -184,6 +196,11 @@ class snapshot {
 		return summaryState;
 	}
 
+	/**
+	 * Get card info in state
+	 * @param {*} state 
+	 * @param {number} uid 
+	 */
 	getInStateByUid(state, uid) {
 
 		for (let deckName in state.decks) {
@@ -200,6 +217,11 @@ class snapshot {
 		return false;
 	}
 
+	/**
+	 * Apply the resulting total state
+	 * @param {*} summaryState - resulting state
+	 * @param {*} aliases - replacing parameters with classes
+	 */
 	applyState(summaryState, aliases = {}) {
 
 		// console.log('applyState', summaryState);

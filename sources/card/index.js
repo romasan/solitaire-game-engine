@@ -4,6 +4,7 @@ import common   from '../common'         ;
 import event    from '../common/event'   ;
 import share    from '../common/share'   ;
 import defaults from '../common/defaults';
+import Deck     from '../deck'           ;
 
 class cardClass {
 
@@ -35,6 +36,12 @@ class cardClass {
 		}
 	}
 
+	/**
+	 * Generate card by name
+	 * @param {Deck} deck 
+	 * @param {string} name 
+	 * @param {boolean} last 
+	 */
 	static genCardByName(deck, name, last = true) {
 		
 		const {color, value, suit, rank, isCard} = this.validateCardName(name);
@@ -76,6 +83,10 @@ class cardClass {
 		return false;
 	}
 
+	/**
+	 * Validate card name
+	 * @param {string} name 
+	 */
 	static validateCardName(name) {
 
 		if (typeof name != 'string') {

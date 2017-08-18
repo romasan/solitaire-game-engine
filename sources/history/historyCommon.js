@@ -9,18 +9,31 @@ import history      from './'             ;
 import redoAdvanced from './redoAdvanced' ;
 import snapshot     from './snapshot'     ;
 
-
 /*
+ * stopRunHistory
+ * startRunHistory
+ * 
  * Events:
  *
  * addStep
  * saveSteps
  * doHistory
  * scanAttempts
+ * appendLastStep
  * resetHistory
  * newGame
  * quickHistoryMove
  */
+
+let stopRunHistory = e => {
+	share.set('stopRunHistory', true);
+};
+event.listen('stopRunHistory', stopRunHistory);
+
+let startRunHistory = e => {
+	share.set('stopRunHistory', false);
+};
+event.listen('startRunHistory', startRunHistory);
 
 event.listen('addStep', data => {
 
@@ -162,6 +175,42 @@ event.listen('scanAttempts', data => {
 	console.log(((Date.now() - _time) / 1e3) + 's.');
 
 	console.groupEnd();
+});
+
+event.listen('appendLastStep', step => {
+
+	event.dispatch('rewindHistory', data => {
+
+		const {
+			attemptId,
+			history  ,
+			redoSteps,
+			undo     ,
+			redo
+		} = data;
+
+		// stopRunHistory();
+
+		let lastStep = history[history.length - 1];
+
+		console.log(step, lastStep);
+
+		// undo();
+
+		// lastStep = {...lastStep, ...step};
+		// event.dispatch('makeStep', lastStep);
+
+		// if (redoSteps.length) {
+		// 	for (let i in redoSteps) {
+		// 		event.dispatch('makeStep', redoSteps[i]);
+		// 	}
+		// 	for (let i in redoSteps) {
+		// 		undo();
+		// 	}
+		// }
+
+		// startRunHistory();
+	})
 });
 
 event.listen('resetHistory', e => {

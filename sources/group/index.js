@@ -118,6 +118,11 @@ class groupClass {
 		this.tags = data.tags;
 	}
 
+	/**
+	 * Add new group
+	 * @param {*} data
+	 * @return groupClass
+	 */
 	static add(data) {
 
 		if (!data) {
@@ -212,11 +217,19 @@ class groupClass {
 		return _el_group;
 	}
 
+	/**
+	 * Get group by name
+	 * @param {string} name 
+	 * @return groupClass
+	 */
 	static getByName(name) {
 		return common.getElementsByName(name, 'group')[0];
 	}
 
-	// Add deck to group
+	/**
+	 * Add deck to group
+	 * @param {*} data 
+	 */
 	addDeck(data) {
 
 		if (!data) {
@@ -340,15 +353,28 @@ class groupClass {
 		this.decks[_el.id] = _el;
 	}
 
-	// Fill group
+	/**
+	 * Fill decks in groups
+	 * @param {string[]} cardNames 
+	 */
 	Fill(cardNames) {
 		groupFill(this, cardNames);
 	}
 
+	/**
+	 * Get deck by id
+	 * @param {string} id
+	 * @returns {Deck}
+	 */
 	getDeckById(id) {
 		return this.decks[id];
 	}
 
+	/**
+	 * Get deck index in group by deck id
+	 * @param {number} id
+	 * @returns {number}
+	 */
 	getDeckIndexById(id) {
 
 		for (let i in this.deckIndex) {
@@ -360,10 +386,18 @@ class groupClass {
 		return null;
 	}
 
+	/**
+	 * Get deck id by deck index in group
+	 * @param {number} index 
+	 * @returns {string}
+	 */
 	getDeckIdByIndex(index) {
 		return this.deckIndex[(index | 0) - 1];
 	}
 
+	/**
+	 * Count of decks in group
+	 */
 	get decksCount() {
 
 		let _count = 0;
@@ -375,6 +409,11 @@ class groupClass {
 		return _count;
 	}
 
+	/**
+	 * Get a deck according to the deck index in the group
+	 * @param {number} index
+	 * @returns {Deck}
+	 */
 	getDeckByIndex(index) {
 
 		let id = this.getDeckIdByIndex(index);
@@ -382,6 +421,11 @@ class groupClass {
 		return this.getDeckById(id);
 	}
 
+	/**
+	 * Get decks from group by their name
+	 * @param {string} name
+	 * @returns {Deck[]}
+	 */
 	getDecksByName(name) {
 
 		let _decks = {};
@@ -395,7 +439,11 @@ class groupClass {
 		return _decks;
 	}
 
-	// Get decks from group
+	/**
+	 * Get decks from group (use filter)
+	 * @param {*} data
+	 * @returns {Deck[]}
+	 */
 	getDecks(data) {
 
 		let _decks = [];
@@ -413,11 +461,19 @@ class groupClass {
 		return _decks;
 	}
 
-	// Redraw group
+	/**
+	 * Redraw group
+	 * @param {*} data 
+	 */
 	Redraw(data) {
 		groupRedraw(this, data);
 	}
 
+	/**
+	 * Check for the existence of a deck in a group
+	 * @param {string} deckName
+	 * @returns {boolean}
+	 */
 	hasDeck(deckName) {
 
 		let has = false;

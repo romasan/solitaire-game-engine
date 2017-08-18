@@ -11,7 +11,22 @@
 		"default_back"      : "Классическая"        ,
 		"alternative_back"  : "Альтернативная"      ,
 		"red_back"          : "Красная"             ,
-		"blue_back"         : "Синяя"               
+		"blue_back"         : "Синяя"               ,
+		"cards"             : [
+			"Туз"     ,
+			"Двойка"  ,
+			"Тройка"  ,
+			"Четвёрка",
+			"Пятёркa" ,
+			"Шестёрка",
+			"Семёрка" ,
+			"Восмёрка",
+			"Девятка" ,
+			"Десятка" ,
+			"Валет"   ,
+			"Дама"    ,
+			"Король"
+		]
 	},
 	"en": {
 		"title_preferences" : "Decor preferences"   ,
@@ -25,6 +40,21 @@
 		"default_back"      : "Default back"        ,
 		"alternative_back"  : "Alternative back"    ,
 		"red_back"          : "Red back"            ,
-		"blue_back"         : "Blue back"           
+		"blue_back"         : "Blue back"           ,
+		"cards"             : [
+			"Ace"  ,
+			"Two"  ,
+			"Three",
+			"Four" ,
+			"Five" ,
+			"Six"  ,
+			"Seven",
+			"Eight",
+			"Nine" ,
+			"Ten"  ,
+			"Jack" ,
+			"Queen",
+			"King"
+		]
 	}
 }

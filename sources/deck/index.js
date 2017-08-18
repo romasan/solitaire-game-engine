@@ -332,10 +332,19 @@ class deckClass {
 		event.listen('moveDragDeck', _callback);
 	}
 
+	/**
+	 * Return deck cards names
+	 * @param {*} data 
+	 */
 	static deckCardNames(data) {
 		return deckCardNames(data);
 	}
 
+	/**
+	 * Add new deck
+	 * @param {*} data
+	 * @returns {deckClass}
+	 */
 	static addDeck(data) {
 
 		if (!data) {
@@ -364,24 +373,38 @@ class deckClass {
 		return _deck;
 	}
 
-	// /**
-	//   * Return deck by name from group named "groupName".
-    //   * @param name name of deck
-    //   * @param groupName name of group
-    //   */
+	/**
+	 * Return deck by name from group named "groupName"
+	 * @param {string} name 
+	 * @param {string} groupName 
+	 * @returns {deckClass}
+	 */
 	static getDeck(name, groupName) {
 		return getDeck(name, groupName);
 	}
 
+	/**
+	 * Get decks
+	 * @param {*} data
+	 * @returns {deckClass[]}
+	 */
 	static getDecks(data) {
 		return getDecks(data);
 	}
 
+	/**
+	 * Get deck by id
+	 * @param {number} id
+	 * @returns {deckClass}
+	 */
 	static getDeckById(id) {
 		return getDeckById(id);
 	}
 
-	// перерисовка стопки
+	/**
+	 * Deck redraw
+	 * @param {*} data 
+	 */
 	Redraw(data) {
 
 		// console.log('deck:Redraw', this.name);

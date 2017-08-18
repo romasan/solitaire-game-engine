@@ -36,6 +36,10 @@ class Field {
 		this.inputParams = {};
 	}
 
+	/**
+	 * Create new game field
+	 * @param {*} data 
+	 */
 	create(data) {
 
 		this.clear();
@@ -185,6 +189,10 @@ class Field {
 		event.dispatch('newGame');
 	}
 
+	/**
+	 * Redraw game field
+	 * @param {*} data 
+	 */
 	Redraw(data) {
 
 		// console.log('Field:Redraw');
@@ -225,6 +233,9 @@ class Field {
 		}
 	}
 
+	/**
+	 * Clear game field
+	 */
 	clear() {
 
 		// console.log('Field:clear');

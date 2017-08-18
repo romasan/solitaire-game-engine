@@ -2,6 +2,8 @@
 
 export default data => {// Take deck [{card, index}]
 
+	console.log('deckCardNames', data);
+
 	let _deck = [];
 
 	for (let i in data) {

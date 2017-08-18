@@ -42,8 +42,6 @@ import elRender           from '../io/dom/elRender'               ;
  * animationOn
  * animationDefault
  * animationOff
- * stopRunHistory
- * startRunHistory
  * toggleMarkerMode
  * toggleSpecialStepMode
  */
@@ -91,6 +89,8 @@ event.listen('stopSession', e => {
 	share.set('sessionStarted', false);
 	// stateManager.backup();
 });
+
+// io
 
 let isCurLock = e => {
 	return share.get('curLockState');
@@ -192,11 +192,7 @@ let getElementsByType = (type, filter) => {
 
 // ID generator
 
-let _id = 0;
-
-let genId = e => {
-	return _id += 1;
-};
+let genId = (i => () => i++)(0);
 
 // animations
 
@@ -217,15 +213,7 @@ let animationOff = e => {
 	share.set('animation', false);
 };
 
-let stopRunHistory = e => {
-	share.set('stopRunHistory', true);
-};
-event.listen('stopRunHistory', stopRunHistory);
-
-let startRunHistory = e => {
-	share.set('stopRunHistory', false);
-};
-event.listen('startRunHistory', startRunHistory);
+// history
 
 event.listen('historyReapeater', data => {
 	if (data) {
@@ -240,9 +228,9 @@ event.listen('historyReapeater', data => {
 	}
 });
 
-share.set('stepType', defaults.stepType);
+// default step type
 
-// Input modes
+share.set('stepType', defaults.stepType);
 
 // Markers
 
@@ -267,8 +255,6 @@ let toggleMarkerMode = data => {
 	}
 };
 event.listen('toggleMarkerMode', toggleMarkerMode);
-
-// Special step (rewind to step with card)
 
 let toggleSpecialStepMode = data => {
 

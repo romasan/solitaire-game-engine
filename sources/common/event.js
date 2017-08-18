@@ -3,7 +3,7 @@
 import share from './share';
 
 /*
- * listen
+ * listen | on
  * once
  * remove
  * dispatch
@@ -31,6 +31,14 @@ class Event {
 		this._id = 0;
 	}
 
+	/**
+	 * Subscribe to the event
+	 * @param {string} eventName 
+	 * @param {function} callback 
+	 * @param {*} context 
+	 * @param {boolean} once 
+	 * @returns {number} - subscription id
+	 */
 	listen(eventName, callback, context, once) {
 
 		if (
@@ -64,11 +72,18 @@ class Event {
 
 		return this._id | 0;
 	}
+	on(eventName, callback, context, once) {
+		this.listen(eventName, callback, context, once);
+	}
 
 	once(eventName, callback, context) {
 		return this.listen(eventName, callback, context, true);
 	}
 
+	/**
+	 * Remove subscriptions
+	 * @param {*} data 
+	 */
 	remove(data) {
 
 		if (typeof data == 'number') {
@@ -91,10 +106,23 @@ class Event {
 		}
 	}
 
+	/**
+	 * Cross dispatch
+	 * @param {string} eventName 
+	 * @param {string} nextEvent 
+	 * @param {*} data 
+	 */
 	pass(eventName, nextEvent, data) {
-		this.dispatch(nextEvent, data);
+		this.listen(eventName, e => {
+			this.dispatch(nextEvent, data);
+		})
 	}
 
+	/**
+	 * Dispatch event
+	 * @param {string} eventName 
+	 * @param {*} data 
+	 */
 	dispatch(eventName, data) {
 
 		if (this._events[eventName]) {
@@ -155,14 +183,25 @@ class Event {
 		}
 	}
 
+	/**
+	 * Remove all events
+	 */
 	clear() {
 		this._events = {};
 	}
 
+	/**
+	 * Set TAG for next subscriptions
+	 * @param {string} tag 
+	 */
 	setTag(tag) {
 		this._tag = tag;
 	}
 
+	/**
+	 * Delete subscriptions with a specific tag
+	 * @param {string} tag 
+	 */
 	clearByTag(tag) {
 
 		for (let eventName in this._events) {
@@ -170,6 +209,11 @@ class Event {
 		}
 	}
 
+	/**
+	 * Get subscriptions with a specific name
+	 * @param {string} eventName 
+	 * @param {*} filter 
+	 */
 	get(eventName, filter) {
 
 		if (filter) {
@@ -195,6 +239,11 @@ class Event {
 		}
 	}
 
+	/**
+	 * Are there subscriptions with a specific name
+	 * @param {string} eventName 
+	 * @param {*} filter 
+	 */
 	has(eventName, filter) {
 
 		if (filter) {
@@ -220,6 +269,9 @@ class Event {
 		}
 	}
 
+	/**
+	 * Get all subscriptions
+	 */
 	_getAll() {
 		return this._events;
 	}
@@ -227,16 +279,6 @@ class Event {
 	// getEventsByName(eventName) {
 	// 	return this._events.indexOf(eventName) >= 0 ? this._events[this._events.indexOf(eventName)] : null;
 	// }
-
-	// log() {}
-
-	_debug() {
-		let data = {};
-		for (let eventName in this._events) {
-			data[eventName] = this._events[eventName].length;
-		}
-		return data;
-	}
 };
 
 export default new Event();
