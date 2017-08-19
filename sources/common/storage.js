@@ -1,17 +1,14 @@
 'use strict';
 
-/*
- * set
- * get
- * clear
- */
-
 class storage {
 
 	// TODO настройки сохраняются для всех игр,
 	// возможно нужно будет для каждой отдельно,
 	// тогда в конфигурацию нужно будет включить gameId
 
+	/**
+	 * Create storage
+	 */
 	constructor() {
 
 		try {
@@ -21,6 +18,11 @@ class storage {
 		} catch (e) {}
 	}
 
+	/**
+	 * Add value in to storage
+	 * @param {string} key 
+	 * @param {*} data 
+	 */
 	set(key, data) {
 
 		try {
@@ -35,6 +37,10 @@ class storage {
 		} catch (e) {}
 	}
 
+	/**
+	 * Get value from storage
+	 * @param {string} key 
+	 */
 	get(key) {
 
 		try {
@@ -46,7 +52,10 @@ class storage {
 			return null;
 		}
 	}
-	
+
+	/**
+	 * Clear storage
+	 */
 	clear() {
 
 		try {

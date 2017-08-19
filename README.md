@@ -6,6 +6,8 @@
 	npm run build
 #### Отладка:
 	npm run dev
+#### Генерация документации
+	npm run docs
 #### Иннициирование и запуск игры:
 Пример:
 SolitaireEngine.init([Field](#field));

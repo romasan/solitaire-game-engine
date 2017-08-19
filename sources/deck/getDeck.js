@@ -1,8 +1,15 @@
 'use strict';
 
 import common from '../common';
+import Deck   from './'       ;
 
-export default (name, groupName) => {
+/**
+ * Get a deck by name from a group with a specific name
+ * @param {string} name
+ * @param {string} groupName
+ * @returns {false|Deck}
+ */
+let getDeck = (name, groupName) => {
 
 	let _decks = common.getElementsByName(name, 'deck');
 
@@ -19,3 +26,5 @@ export default (name, groupName) => {
 		return _decks[0];
 	}
 }
+
+export default getDeck;

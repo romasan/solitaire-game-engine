@@ -7,8 +7,7 @@ const OptimizeCssAssetsPlugin = require("optimize-css-assets-webpack-plugin");
 const LiveReloadPlugin        = require('webpack-livereload-plugin');
 const WebpackNotifierPlugin   = require('webpack-notifier');
 
-const gen = process.env.MODE == 'gen';
-const dev = process.env.MODE == 'dev' || gen;
+const dev = process.env.MODE == 'dev';
 
 console.log('MODE:', process.env.MODE ? process.env.MODE : 'prod');
 
@@ -19,28 +18,21 @@ let _index = 1;
 
 let version = parseInt('9' + _json.version.split('.').map(e => parseInt(e).toString(8)).join(9));
 
-let directoryTree = require('directory-tree');
-let getTree = data => {
+// let directoryTree = require('directory-tree');
+// let getTree = data => {
 
-	let pathTree = [];
-
-	// for(let i in data.children) {
-	// 	if(data.children[i].children) {
-	// 		pathTree.push('./' + data.children[i].path);
-	// 		pathTree = [...pathTree, ...getTree(data.children[i])];
-	// 	}
-	// }
+// 	let pathTree = [];
 	
-	data.children.forEach(child => {
-		if(child.children) {
-			pathTree.push('./' + child.path);
-			pathTree = [...pathTree, ...getTree(child)];
-		}
-	})
+// 	data.children.forEach(child => {
+// 		if(child.children) {
+// 			pathTree.push('./' + child.path);
+// 			pathTree = [...pathTree, ...getTree(child)];
+// 		}
+// 	})
 
-	return pathTree;
-};
-let dirTree = ['./sources/', ...getTree( directoryTree('./sources/') )];
+// 	return pathTree;
+// };
+// let dirTree = ['./sources/', ...getTree( directoryTree('./sources/') )];
 
 let config = {
 	"entry": "./sources/index",
@@ -49,10 +41,10 @@ let config = {
 		"filename" : "SolitaireEngine.js",
 		"library"  : "SolitaireEngine"
 	},
-	"resolve": {
-		"modulesDirectories" : dirTree,
-		"extensions"         : ['', '.js']
-	},
+	// "resolve": {
+	// 	"modulesDirectories" : dirTree,
+	// 	"extensions"         : ['', '.js']
+	// },
 	"module": {
 		"loaders": [
 			{
@@ -120,22 +112,18 @@ let config = {
 
 if(dev) {
 
-	if(!gen) {
-	
-		config.watch = true;
-		config.watchOptions = {
-			"aggregateTimeout": 100
-		};
-	
-		config.devtool = "source-map";
+	config.watch = true;
+	config.watchOptions = {
+		"aggregateTimeout": 100
+	};
 
-		config.plugins.push(
-			new LiveReloadPlugin({
-				"appendScriptTag": true
-			})			
-		);
-	}
+	config.devtool = "source-map";
 
+	config.plugins.push(
+		new LiveReloadPlugin({
+			"appendScriptTag": true
+		})			
+	);
 } else {
 
 	config.plugins.push(

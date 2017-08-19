@@ -3,19 +3,19 @@
 import event    from './event'   ;
 import defaults from './defaults';
 
-/*
- * get
- * set
- * getAll
- * delete
- */
-
 class shareClass {
 
+	/**
+	 * Create shared storage
+	 */
 	constructor() {
 		this._data = {};
 	}
 
+	/**
+	 * Get element by name
+	 * @param {string} name 
+	 */
 	get(name) {
 		if (typeof this._data[name] != 'undefined') {
 
@@ -30,6 +30,12 @@ class shareClass {
 		}
 	}
 
+	/**
+	 * Add new element
+	 * @param {string} name 
+	 * @param {*} data 
+	 * @param {*} forceClone 
+	 */
 	set(name, data, forceClone = false) {
 
 		// "foo", "bar", false
@@ -104,10 +110,17 @@ class shareClass {
 		}
 	}
 
+	/**
+	 * Get all elements
+	 */
 	getAll() {
 		return this._data;
 	}
 
+	/**
+	 * Delete element by name
+	 * @param {string} name 
+	 */
 	delete(name) {
 		delete this._data[name];
 	}

@@ -11,22 +11,105 @@ import Tips         from '../tips'                  ;
 import addAutoSteps from '../autosteps/addAutoSteps';
 import storage      from '../common/storage'        ;
 
-// Model
-// let values = {
-// 	"homeGroups": {
-// 		"type": ["array", "string"],
-// 		"value": [],
-// 		"dest": "array"
-// 	}
-// }
-
-/*
- * create
- * Redraw
- * clear
+/**
+ * @typedef {Object} Vector2d
+ * @property {number} x
+ * @property {number} y
  */
 
-class Field {
+/**
+ * @typedef {Object} query
+ */
+
+ /**
+ * @typedef {Object} inputparams
+ * @property {boolean} doubleClick
+ */
+
+/**
+ * @typedef {Object} wincheck
+ * @property {string|query} query
+ */
+
+/**
+ * @typedef {Object} group
+ * @property {string} id
+ * @property {string|string[]} flip
+ * @property {?boolean} showSlot
+ * @property {string|string[]} takeRules
+ * @property {string|string[]} putRules
+ * @property {string|string[]} fullRules
+ * @property {?boolean} autoHide
+ * @property {?Vector2d} paddingType
+ * @property {?Vector2d} padding
+ * @property {?number} paddingX
+ * @property {?number} paddingY
+ * @property {?Vector2d} flipPadding
+ * @property {?number} flipPaddingX
+ * @property {?number} flipPaddingY
+ * @property {string|string[]} actions
+ * @property {string[]} tags
+ * @property {?boolean} showPrefFlipCard
+ * @property {?boolean} showPrevAttempts
+ * @property {?boolean} checkNextCards
+ * @property {?boolean} save
+ * @property {?boolean} autoUnflipTop
+ * @property {?boolean} autoCheckFlip
+ */
+
+ /**
+ * @typedef {string} putrules
+ */
+// @property {"striped"|"firstAce"|"firstKing"|"notForEmpty"|"onlyEmpty"|"oneRank"|"oneSuit"|"any"|"not"|"ascendDeck"|"ascentDeck"|"descendDeck"|"descentDeck"|"oneRankDeck"|"oneSuitDeck"|"ascend"|"ascent"|"descend"|"descent"|"ascendOne"|"ascentOne"|"ascendNum"|"ascentNum"|"descendOne"|"descentOne"|"descendNum"|"descentNum"|"ascdescOne"|"ascdescNum"|"ascendNumLoop"|"ascentNumLoop"|"descendNumLoop"|"descentNumLoop"|"sum"|"sum14"|"around"|"notOneGroup"}
+
+ /**
+ * @typedef {Object} deck
+ * @property {string} id
+ * @property {string} name
+ * @property {?Vector2d} position
+ * @property {?boolean} locked
+ * @property {?boolean} save
+ * @property {?boolean} visible
+ * @property {?number} deckIndex
+ * @property {?string} deckIndex
+ * @property {?boolean} autoHide
+ * @property {?boolean} autoCheckFlip
+ * @property {?boolean} showPrefFlipCard
+ * @property {?boolean} showPrevAttempts
+ * @property {?boolean} checkNextCards
+ * @property {?boolean} showSlot
+ * @property {?Vector2d} padding
+ * @property {number} paddingX
+ * @property {number} paddingY
+ * @property {?Vector2d} flipPadding
+ * @property {number} flipPaddingX
+ * @property {number} flipPaddingY
+ * @property {?number} startZIndex
+ * @property {?number} rotate
+ * @property {?boolean} autoUnflipTop
+ * @property {string|string[]} flip
+ * @property {putrules|putrules[]} putRules
+ * @property {string|string[]} takeRules
+ * @property {string|string[]} fullRules
+ * @property {?string} padding
+ * @property {string|string[]} actions
+ * @property {*[]} relations
+ * @property {string[]} tags
+ */
+
+/**
+ * @typedef {Object} gameConfig
+ * @property {?string} field
+ * @property {wincheck} winCheck
+ * @property {number} zoom
+ * @property {number} moveDistance
+ * @property {inputparams} inputParams
+ * @property {{groupName: group}} groups
+ * @property {string[]} homeGroups
+ * @property {deck[]} decks
+ */
+
+ class Field {
 
 	constructor() {
 
@@ -38,7 +121,7 @@ class Field {
 
 	/**
 	 * Create new game field
-	 * @param {*} data 
+	 * @param {gameConfig} data 
 	 */
 	create(data) {
 

@@ -14,15 +14,11 @@ let cardAttributes = [
 	'flip'
 ];
 
-/*
- * backup
- * restore
- * get
- * log
- */
-
 class stateManager {
 
+	/**
+	 * Create state manager
+	 */
 	constructor() {
 
 		this._state = null;
@@ -42,6 +38,9 @@ class stateManager {
 		];
 	}
 
+	/**
+	 * Backup state
+	 */
 	backup() {
 
 		event.dispatch('debugFlag', {flag : 2, color : 'green', text : 'sm:backup'});
@@ -94,6 +93,9 @@ class stateManager {
 		}
 	}
 
+	/**
+	 * Restore state from backup
+	 */
 	restore() {
 
 		if (!this._state) {
@@ -150,11 +152,10 @@ class stateManager {
 		}
 	}
 
+	/**
+	 * Get stored state
+	 */
 	get() {
-		return this._state;
-	}
-
-	log() {
 		return this._state;
 	}
 }

@@ -6,7 +6,11 @@ const autosteps = {
 	fallAutoStep
 };
 
-export default autoStepsParams => {
+/**
+ * Add autosteps or new types of moves
+ * @param {*} autoStepsParams 
+ */
+let addAutoSteps = autoStepsParams => {
 	
 	let _autosteps = {};
 
@@ -25,3 +29,5 @@ export default autoStepsParams => {
 
 	return _autosteps;
 };
+
+export default addAutoSteps;

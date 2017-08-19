@@ -10,6 +10,10 @@ import Tips     from '../tips'           ;
 
 export default class fallAutoStep extends autoStep {
 
+	/**
+	 * Create auto step
+	 * @param {*} params 
+	 */
 	constructor(params) {
 
 		super(params);
@@ -22,7 +26,10 @@ export default class fallAutoStep extends autoStep {
 		// event.listen('fallAutoStepCheck', this.check);
 	}
 
-	// есть ли ещё ходы этого типа
+	/**
+	 * Check if there are possible moves for the current type of moves
+	 * @param {*} data 
+	 */
 	check() {
 
 		Tips.checkTips();
@@ -48,6 +55,9 @@ export default class fallAutoStep extends autoStep {
 	// 	console.log('FALL AUTO STEP');
 	// }
 
+	/**
+	 * Automatic execution
+	 */
 	auto() {
 
 		// TODO
@@ -65,6 +75,10 @@ export default class fallAutoStep extends autoStep {
 	// manual если autostep = false
 	// если click = true, вручную отрабатываем перемещения карт возвращаем false
 	// если click = false то отрабатывается move а здесь проверка возможен ли ход
+	/**
+	 * Check for progress for the current type of move
+	 * @param {*} data 
+	 */
 	manual(data) {
 
 		// console.log('fallAutoStep:manual');

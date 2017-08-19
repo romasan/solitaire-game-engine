@@ -7,7 +7,19 @@ import Field    from '../field'          ;
 import Deck     from './'                ;
 import putRules from './putRules'        ;
 
-export default (deck, putDeck) => {
+/**
+ * @typedef {Object} deckTakeReturns
+ * @property {number} index
+ * @property {Card} card
+ */
+
+/**
+ * Checking, the possibility of putting the card
+ * @param {Deck} deck
+ * @param {deckTakeReturns[]} putDeck 
+ * @returns {boolean}
+ */
+let deckPut = (deck, putDeck) => {
 
 	// console.log('deckPut:', putDeck);
 
@@ -80,3 +92,5 @@ export default (deck, putDeck) => {
 
 	return rulesCorrect;
 };
+
+export default deckPut;

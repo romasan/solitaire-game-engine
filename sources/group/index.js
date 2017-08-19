@@ -43,25 +43,13 @@ const PARAMS = {
 	},
 };
 
-/*
- * add
- * getByName
- *
- * addDeck
- * Fill
- * getDeckById
- * getDeckIndexById
- * getDeckIdByIndex
- * decksCount
- * getDeckByIndex
- * getDecksByName
- * getDecks
- * Redraw
- * hasDeck
- */
-
 class groupClass {
 
+	/**
+	 * Create group
+	 * @param {*} data 
+	 * @param {string} id 
+	 */
 	constructor(data, id) {
 
 		this.type = 'group';

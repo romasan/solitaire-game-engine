@@ -4,8 +4,22 @@ import share     from '../common/share'   ;
 import defaults  from '../common/defaults';
 
 import takeRules from './takeRules'       ;
+import Deck      from './'                ;
+import Card      from '../card'           ;
 
-export default (deck, cardId) => {
+/**
+ * @typedef {Object} deckTakeReturns
+ * @property {number} index
+ * @property {Card} card
+ */
+
+/**
+ * Take card from deck by cardId
+ * @param {Deck} deck
+ * @param {string} cardId
+ * @returns {deckTakeReturns[]}
+ */
+let deckTake = (deck, cardId) => {
 
 	// Нестандартный ход (autosteps)
 	// if (share.get('stepType') != defaults.stepType) {return false;};
@@ -90,3 +104,5 @@ export default (deck, cardId) => {
 
 	return rulesCorrect;
 };
+
+export default deckTake;

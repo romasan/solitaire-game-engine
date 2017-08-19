@@ -8,6 +8,10 @@ import Deck     from '../deck'           ;
 
 class cardClass {
 
+	/**
+	 * Create card
+	 * @param {*} data 
+	 */
 	constructor(data) {
 
 		this.type = 'card';
@@ -37,10 +41,11 @@ class cardClass {
 	}
 
 	/**
-	 * Generate card by name
+	 * Generate card by name and add in to deck
 	 * @param {Deck} deck 
 	 * @param {string} name 
 	 * @param {boolean} last 
+	 * @returns {cardClass}
 	 */
 	static genCardByName(deck, name, last = true) {
 		

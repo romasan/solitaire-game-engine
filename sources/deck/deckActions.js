@@ -14,6 +14,7 @@ import lock           from './actions/lockAction'          ;
 import unlock         from './actions/unlockAction'        ;
 import checkFull      from './actions/checkFullAction'     ;
 import roller         from './actions/rollerAction'        ;
+import Deck           from './'                            ;
 
 let _actions = {
 	"deal"           : deal          ,
@@ -33,17 +34,17 @@ let _actions = {
  * runAction
  */
 
-let _decksActions  = [],
-    _events        = [];
+let _decksActions = [],
+	_events = [];
 
 event.listen('logActions', e => {
 	console.log('_decksActions', _decksActions);
-	console.log('_events'      , _events);
+	console.log('_events', _events);
 });
 
 event.listen('initField', e => {
 	_decksActions = [];
-	_events       = [];
+	_events = [];
 });
 
 let addActionEvent = eventName => {
@@ -51,7 +52,7 @@ let addActionEvent = eventName => {
 	event.listen(
 
 		// event name
-		eventName, 
+		eventName,
 
 		// callback
 		data => {
@@ -62,8 +63,8 @@ let addActionEvent = eventName => {
 					let _actionName = _decksActions[i].action;
 
 					let _canRun = eventName.indexOf('click') == 0
-					    ? data.to.name == _decksActions[i].deck.name
-					    : true;
+						? data.to.name == _decksActions[i].deck.name
+						: true;
 
 					if (
 						_canRun //                &&
@@ -71,7 +72,7 @@ let addActionEvent = eventName => {
 					) {
 						_actions[_actionName].run(
 
-							_decksActions[i].deck, 
+							_decksActions[i].deck,
 
 							{
 								"actionData" : _decksActions[i].deck.actions[_actionName],
@@ -89,7 +90,10 @@ let addActionEvent = eventName => {
 	);
 
 };
-
+/**
+ * Add actions by names
+ * @param {Deck} deck 
+ */
 let add = deck => {
 
 	for (let actionName in deck.actions) {
@@ -112,7 +116,7 @@ let add = deck => {
 
 				// сохраняем action
 				_decksActions.push({
-					"deck"   : deck      , 
+					"deck"   : deck      ,
 					"event"  : _event    ,
 					"action" : actionName
 				});

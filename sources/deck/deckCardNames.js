@@ -1,8 +1,6 @@
 'use strict';
 
-export default data => {// Take deck [{card, index}]
-
-	console.log('deckCardNames', data);
+let deckCardNames = data => { // Take deck [{card, index}]
 
 	let _deck = [];
 
@@ -21,3 +19,5 @@ export default data => {// Take deck [{card, index}]
 
 	return _deck;
 }
+
+export default deckCardNames;

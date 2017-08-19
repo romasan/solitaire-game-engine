@@ -2,21 +2,11 @@
 
 import share from './share';
 
-/*
- * listen | on
- * once
- * remove
- * dispatch
- * clear
- * setTag
- * clearByTag
- * get
- * has
- * _getAll
- */
-
 class Event {
 
+	/**
+	 * Create event emitter
+	 */
 	constructor() {
 
 		this.tags = {
@@ -72,10 +62,20 @@ class Event {
 
 		return this._id | 0;
 	}
+
+	/**
+	 * @alias listen
+	 */
 	on(eventName, callback, context, once) {
 		this.listen(eventName, callback, context, once);
 	}
 
+	/**
+	 * Subscribe and execute only once
+	 * @param {string} eventName 
+	 * @param {function} callback 
+	 * @param {*} context 
+	 */
 	once(eventName, callback, context) {
 		return this.listen(eventName, callback, context, true);
 	}
@@ -174,6 +174,10 @@ class Event {
 		// }
 	}
 
+	/**
+	 * Delete events without subscribes
+	 * @param {string} eventName 
+	 */
 	_removeEmpty(eventName) {
 
 		this._events[eventName] = this._events[eventName].filter(e => e);
@@ -184,7 +188,7 @@ class Event {
 	}
 
 	/**
-	 * Remove all events
+	 * Delete all events
 	 */
 	clear() {
 		this._events = {};

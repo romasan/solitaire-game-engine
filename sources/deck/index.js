@@ -22,61 +22,38 @@ import deckCardNames          from './deckCardNames'                            
 import getDeck                from './getDeck'                                       ;
 import applyChangedParameters from '../io/renderEvents/common/applyChangedParameters';
 
-/*
- * deckCardNames
- * addDeck
- * getDeck
- * getDecks
- * getDeckById
- *
- * Redraw
- * getSomeCards
- * lock
- * unlock
- * checkFlip
- * unflipCardByIndex
- * unflipTopCard
- * flipAllCards
- * unflipAllCards
- * checkFull
- * Fill
- * clear
- * Push
- * Pop
- * Take
- * Put
- * genCardByName
- * hide
- * show
- * hideCards
- * hideCardByIndex
- * showCards
- * showCardByIndex
- * getCardsNames
- * getCards
- * getTopCards
- * getTopCard
- * cardsCount
- * getCardByIndex
- * getCardIndexById
- * getRelationsByName
- * hasTag
- */
-
 class deckClass {
 
+	/**
+	 * Create a deck
+	 * @param {*} data 
+	 * @param {string} id
+	 */
 	constructor(data, id) {
 
 		if (!data) {
 			return false;
 		}
 
+		/**
+		 * @type {Card[]}
+		 */
 		this.cards = [];
 
 		// parameters
+		/**
+		 * @type {string}
+		 */
 		this.type = 'deck';
+
+		/**
+		 * @type {boolean}
+		 */
 		this.full = false;
 
+		/**
+		 * @type {string}
+		 */
 		this.id = id;
 
 		// let _parent_el   = Group.getByName(data.parent)                  ,
@@ -84,22 +61,64 @@ class deckClass {
 		// 	_new_id      = _parent_el ? _parent_el.getDecks().length : id;
 		let _parent_name = data.parent ? data.parent : 'no_parent';
 
-		this.name = typeof data.name == 'string' 
+		/**
+		 * @type {name}
+		 */
+		this.name = typeof data.name == 'string'
 			? data.name
 			: (_parent_name + '_' + id);
 
 		// console.log('Deck', id, this.name);
 
-		this.locked           =        data.locked                        ? true                  : false                        ;
-		this.save             =        data.save                          ? true                  : false                        ;
-		this.visible          = typeof data.visible          == 'boolean' ? data.visible          : true                         ;
-		this.deckIndex        = typeof data.deckIndex        == 'number'  ? data.deckIndex        : null                         ;
-		this.parent           = typeof data.parent           == 'string'  ? data.parent           : 'field'                      ;
-		this.autoHide         = typeof data.autoHide         == 'boolean' ? data.autoHide         : defaults.autohide            ;
-		this.autoCheckFlip    = typeof data.autoCheckFlip    == 'boolean' ? data.autoCheckFlip    : defaults.autoCheckFlip       ;
+		/**
+		 * @type {boolean}
+		 */
+		this.locked = data.locked ? true : false;
+
+		/**
+		 * @type {boolean}
+		 */
+		this.save = data.save ? true : false;
+
+		/**
+		 * @type {boolean}
+		 */
+		this.visible = typeof data.visible == 'boolean' ? data.visible : true;
+
+		/**
+		 * @type {number}
+		 */
+		this.deckIndex = typeof data.deckIndex == 'number' ? data.deckIndex : null;
+
+		/**
+		 * @type {string}
+		 */
+		this.parent = typeof data.parent == 'string' ? data.parent : 'field';
+
+		/**
+		 * @type {boolean}
+		 */
+		this.autoHide = typeof data.autoHide == 'boolean' ? data.autoHide : defaults.autohide;
+
+		/**
+		 * @type {boolean}
+		 */
+		this.autoCheckFlip = typeof data.autoCheckFlip == 'boolean' ? data.autoCheckFlip : defaults.autoCheckFlip;
+
+		/**
+		 * @type {boolean}
+		 */
 		this.showPrefFlipCard = typeof data.showPrefFlipCard == 'boolean' ? data.showPrefFlipCard : share.get('showPrefFlipCard');
-		this.showPrevAttempts = typeof data.showPrevAttempts == 'boolean' ? data.showPrevAttempts : defaults.showPrevAttempts    ;
-		this.checkNextCards   = typeof data.checkNextCards   == 'boolean' ? data.checkNextCards   : defaults.checkNextCards      ;
+
+		/**
+		 * @type {boolean}
+		 */
+		this.showPrevAttempts = typeof data.showPrevAttempts == 'boolean' ? data.showPrevAttempts : defaults.showPrevAttempts;
+
+		/**
+		 * @type {boolean}
+		 */
+		this.checkNextCards = typeof data.checkNextCards == 'boolean' ? data.checkNextCards : defaults.checkNextCards;
 
 		this.data = {};
 
@@ -155,21 +174,37 @@ class deckClass {
 			"params"   : this._params
 		}, false);
 
+		/**
+		 * @typedef {Object} Vector2d
+		 * @property {number} x
+		 * @property {number} y
+		 */
+
+		/**
+		 * Get position
+		 * @returns {Vector2d}
+		 */
 		this.getPosition = e => {
 			return {
-				"x" : __data.params.x,
-				"y" : __data.params.y
+				"x": __data.params.x,
+				"y": __data.params.y
 			};
 		}
 
+		/**
+		 * @type {number}
+		 */
 		this.rotate = this._params.rotate;
 
+		/**
+		 * @type {boolean}
+		 */
 		this.autoUnflipTop = typeof data.autoUnflipTop == 'boolean' ? data.autoUnflipTop : defaults.autoUnflipTop;
 
 		// Flip
 		let flipData = null;
 
-		let flipType = data.flip && typeof data.flip == 'string' 
+		let flipType = data.flip && typeof data.flip == 'string'
 			? data.flip.indexOf(':') > 0
 				? (e => {
 
@@ -188,10 +223,21 @@ class deckClass {
 					: defaults.flip_type
 			: defaults.flip_type;
 
-		this.cardFlipCheck = (card, i, length) => {
-			card.flip = flipTypes[flipType](i, length, flipData, this);
+		/**
+		 * Check card flip
+		 * @param {Card} card
+		 * @param {number} index
+		 * @param {number} length
+		 */
+		this.cardFlipCheck = (card, index, length) => {
+			card.flip = flipTypes[flipType](index, length, flipData, this);
 		};
 
+		/**
+		 * Parse string with parameter
+		 * @param {string} line
+		 * @returns {string}
+		 */
 		let stringWithColon = line => {
 			if (
 				typeof line == "string" &&
@@ -203,7 +249,10 @@ class deckClass {
 			}
 		};
 
-		// Put
+		/**
+		 * Put rules
+		 * @type {string|string[]}
+		 */
 		this.putRules = data.putRules
 			? typeof data.putRules == 'string'
 				? putRules[stringWithColon(data.putRules)]
@@ -222,8 +271,10 @@ class deckClass {
 			this.putRules = defaults.putRules;
 		}
 
-		// Take
-		// можно ли взять карту/стопку
+		/**
+		 * Take rules
+		 * @type {string|string[]}
+		 */
 		this.takeRules = data.takeRules
 			? typeof data.takeRules == 'string'
 				? takeRules[data.takeRules]
@@ -236,10 +287,13 @@ class deckClass {
 					: defaults.takeRules
 			: defaults.takeRules;
 
-		// Full
 		// Правила сложенной колоды
 		// Сложенная колода может использоваться для определения выиигрыша
 		// В сложенную колоду нельзя класть новые карты
+		/**
+		 * Full rules
+		 * @type {string|string[]}
+		 */
 		this.fullRules = data.fullRules
 			? typeof data.fullRules == "string"
 				? fullRules[data.fullRules]
@@ -277,6 +331,11 @@ class deckClass {
 				: paddingTypes[defaults.paddingType]                   // use default
 			: paddingTypes[defaults.paddingType];                      // use default
 
+		/**
+		 * Get padding for card by index
+		 * @param {number}
+		 * @returns {Vector2d}
+		 */
 		this.padding = index => {
 
 			let _cards = this.getCards();
@@ -293,6 +352,9 @@ class deckClass {
 			);
 		}
 
+		/**
+		 * Deck actions
+		 */
 		this.actions = [];
 
 		if (data.actions) {
@@ -300,14 +362,18 @@ class deckClass {
 			deckActions.add(this);
 		}
 
-		// Relations
+		/**
+		 * Relations
+		 */
+		this.relations = [];
 		if (data.relations) {
 			this.relations = data.relations;
-		} else {
-			this.relations = [];
 		}
 
 		// Tags
+		/**
+		 * @type {string[]}
+		 */
 		this.tags = data.tags ? data.tags : [];
 
 		event.dispatch('addDeckEl', {
@@ -334,7 +400,8 @@ class deckClass {
 
 	/**
 	 * Return deck cards names
-	 * @param {*} data 
+	 * @param {*[]} data
+	 * @returns {string[]}
 	 */
 	static deckCardNames(data) {
 		return deckCardNames(data);
@@ -374,7 +441,7 @@ class deckClass {
 	}
 
 	/**
-	 * Return deck by name from group named "groupName"
+	 * Get a deck by name from a group with a specific name
 	 * @param {string} name 
 	 * @param {string} groupName 
 	 * @returns {deckClass}
@@ -423,6 +490,11 @@ class deckClass {
 		});
 	}
 
+	/**
+	 * Get some cards
+	 * @param {number} count 
+	 * @returns {Card[]}
+	 */
 	getSomeCards(count) {
 
 		let _cards = [];
@@ -442,14 +514,23 @@ class deckClass {
 		return _cards;
 	}
 
+	/**
+	 * Lock deck
+	 */
 	lock() {
 		this.locked = true;
 	}
 
+	/**
+	 * Unlock deck
+	 */
 	unlock() {
 		this.locked = false;
 	}
 
+	/**
+	 * Check cards flip
+	 */
 	checkFlip() {
 
 		for (let cardIndex in this.cards) {
@@ -464,6 +545,11 @@ class deckClass {
 		event.dispatch('redrawDeckFlip', this);
 	}
 
+	/**
+	 * Unflip card by index
+	 * @param {number} index 
+	 * @param {boolean} save 
+	 */
 	unflipCardByIndex(index, save) {
 
 		// console.log('deck:unflipCardByIndex:', this.name, index);
@@ -476,7 +562,7 @@ class deckClass {
 			this.Redraw();
 
 			if (save) {
-				
+
 				event.dispatch('addStep', {
 					"unflip" : {
 						"deckName"  : this.name             ,
@@ -488,6 +574,10 @@ class deckClass {
 		}
 	}
 
+	/**
+	 * Unflip top card in deck
+	 * @param {boolean} save 
+	 */
 	unflipTopCard(save) {
 
 		// console.log('deck:unflipTopCard:', save);
@@ -508,6 +598,11 @@ class deckClass {
 		}
 	}
 
+	/**
+	 * Flip all cards in deck
+	 * @param {boolean} redraw 
+	 * @param {boolean} save 
+	 */
 	flipAllCards(redraw = true, save) {
 
 		for (let i in this.cards) {
@@ -530,6 +625,11 @@ class deckClass {
 		}
 	}
 
+	/**
+	 * Unflip all cards in deck
+	 * @param {boolean} redraw 
+	 * @param {boolean} save 
+	 */
 	unflipAllCards(redraw = true, save) {
 
 		console.log('deck:unflipAllCards', save);
@@ -554,12 +654,15 @@ class deckClass {
 		}
 	}
 
+	/**
+	 * Checking the completeness of the deck
+	 */
 	checkFull() {
 
 		if (
-			!this.full                &&
-			this.fullRules            &&
-			this.fullRules.length > 0
+			!this.full                 &&
+			 this.fullRules            &&
+			 this.fullRules.length > 0
 		) {
 
 			let full = true;
@@ -597,6 +700,10 @@ class deckClass {
 		return this.full;
 	}
 
+	/**
+	 * Filling the deck with name-generated cards
+	 * @param {string[]} cardNames
+	 */
 	Fill(cardNames) {
 
 		for (let i in cardNames) {
@@ -604,6 +711,9 @@ class deckClass {
 		}
 	}
 
+	/**
+	 * Clear deck
+	 */
 	clear() {
 
 		// console.log('Deck:clear', this.name);
@@ -618,6 +728,11 @@ class deckClass {
 		event.dispatch('removeEl', this);
 	}
 
+	/**
+	 * Push card or pile in to deck
+	 * @param {*[]} deck 
+	 * @param {boolean} afterVisible 
+	 */
 	Push(deck, afterVisible = false) {
 
 		// console.log('deck:Push', this.name, deck ? deck.map(e => e.name).join(',') : deck);
@@ -626,7 +741,7 @@ class deckClass {
 
 		// change cards parent id
 		if (deck && typeof deck.length == "number") {
-			deck = deck.map(e => (e.parent = this.id, e)); 
+			deck = deck.map(e => (e.parent = this.id, e));
 		} else {
 			console.warn('deck:Push:map', deck, this.name);
 		}
@@ -635,6 +750,11 @@ class deckClass {
 		this.cards.splice(visibleCardsCount, 0, ...deck);
 	}
 
+	/**
+	 * Pop card from deck
+	 * @param {number} count 
+	 * @param {boolean} clearParent - delete values about the parent from cards
+	 */
 	Pop(count, clearParent) {
 
 		// console.log('%cdeck:Pop', 'color:orange;font-weight:bold;', this.name, count, this.cards.length);
@@ -650,13 +770,13 @@ class deckClass {
 
 		let _deck = [];
 
-		for (;count;count -= 1) {
+		for (; count; count -= 1) {
 
 			// get top visible card
 			let _pop = _cards.pop();
 
 			// remove this card from cards list
-			for (let i = 0; i < this.cards.length;i += 1) {
+			for (let i = 0; i < this.cards.length; i += 1) {
 				if (this.cards[i].id == _pop.id) {
 
 					this.cards.splice(i, 1);
@@ -694,21 +814,42 @@ class deckClass {
 		return _deck;
 	}
 
+	/**
+	 * @typedef {Object} deckTakeReturns
+	 * @property {number} index
+	 * @property {Card} card
+	 */
+
+	/**
+	 * Take card from deck by cardId
+	 * @param {string} cardId
+	 * @returns {deckTakeReturns[]}
+	 */
 	Take(cardId) {
 		return Take(this, cardId);
 	}
 
-	// проверяем, можем ли положить стопку/карту
-	// возвращает true, если согласно правилам сюда можно положить карту
+	/**
+	 * Checking, the possibility of putting the card
+	 * @param {deckTakeReturns[]} putDeck 
+	 * @returns {boolean}
+	 */
 	Put(putDeck) {
 		return Put(this, putDeck);
 	}
 
-	// создать карту
+	/**
+	 * Generate card by name and add in to deck
+	 * @param {string} name 
+	 * @param {boolean} last 
+	 */
 	genCardByName(name, last) {
 		Card.genCardByName(this, name, last);
 	}
 
+	/**
+	 * Hide deck
+	 */
 	hide() {
 
 		this.visible = false;
@@ -720,6 +861,9 @@ class deckClass {
 		this.Redraw();
 	}
 
+	/**
+	 * Show deck
+	 */
 	show() {
 
 		this.visible = false;
@@ -731,6 +875,11 @@ class deckClass {
 		this.Redraw();
 	}
 
+	/**
+	 * Hide card from deck
+	 * @param {boolean} redraw 
+	 * @param {?boolean} save 
+	 */
 	hideCards(redraw = true, save) {
 
 		for (let i in this.cards) {
@@ -755,6 +904,11 @@ class deckClass {
 	}
 
 	// TODO можно использовать только для карт сверху
+	/**
+	 * Hide card by index
+	 * @param {number} index 
+	 * @param {boolean} redraw 
+	 */
 	hideCardByIndex(index, redraw) {
 		if (this.cards[index]) {
 
@@ -766,6 +920,12 @@ class deckClass {
 		}
 	}
 
+	/**
+	 * Show cards from deck
+	 * @param {?boolean} redraw 
+	 * @param {?boolean} save 
+	 * @param {?boolean} forceAll 
+	 */
 	showCards(redraw = true, save, forceAll) {
 
 		for (let i in this.cards) {
@@ -791,6 +951,11 @@ class deckClass {
 		}
 	}
 
+	/**
+	 * Show card by index
+	 * @param {number} index 
+	 * @param {?boolean} redraw 
+	 */
 	showCardByIndex(index, redraw) {
 		if (this.cards[index]) {
 
@@ -802,6 +967,10 @@ class deckClass {
 		}
 	}
 
+	/**
+	 * Get card names
+	 * @returns {string[]}
+	 */
 	getCardsNames() {
 
 		let _cardsNames = [];
@@ -813,8 +982,13 @@ class deckClass {
 		return _cardsNames;
 	}
 
+	/**
+	 * Get cards
+	 * @param {*} filters 
+	 * @returns {Card[]}
+	 */
 	getCards(filters = {
-		"visible" : true
+		"visible": true
 	}) {
 
 		// filter
@@ -842,22 +1016,48 @@ class deckClass {
 		return _cards;
 	}
 
+	/**
+	 * Get top cards
+	 * @param {number} count 
+	 * @param {*} filters 
+	 * @returns {Card[]}
+	 */
 	getTopCards(count, filters) {
 		return this.getCards(filters).slice(-(count | 0));
 	}
 
+	/**
+	 * Get top card
+	 * @param {*} filters 
+	 * @returns {Card}
+	 */
 	getTopCard(filters) {
 		return this.getTopCards(1, filters)[0];
 	}
 
+	/**
+	 * Count of cards
+	 * @param {*} filters 
+	 * @returns {number}
+	 */
 	cardsCount(filters) {
 		return this.getCards(filters).length;
 	}
 
+	/**
+	 * Get card from deck by index
+	 * @param {number} index
+	 * @returns {false|Card}
+	 */
 	getCardByIndex(index) {
 		return this.cards[index] ? this.cards[index] : false;
 	}
 
+	/**
+	 * Get card index by id
+	 * @param {string} id
+	 * @returns {false|number} 
+	 */
 	getCardIndexById(id) {
 
 		let index = false;
@@ -871,6 +1071,21 @@ class deckClass {
 		return index;
 	}
 
+	/**
+	 * @typedef {Object} deckRelation
+	 * @property {string} type
+	 * @property {string} name
+	 * @property {?string} id
+	 * @property {?string} direction
+	 * @property {string} to
+	 */
+
+	/**
+	 * Get deck relations with other decks by relation name
+	 * @param {string} relationName 
+	 * @param {*} filters 
+	 * @returns {deckRelation[]}
+	 */
 	getRelationsByName(relationName, filters) {
 
 		let _relations = [];
@@ -898,6 +1113,10 @@ class deckClass {
 		return _relations;
 	}
 
+	/**
+	 * Check for the existence of a TAG in a deck
+	 * @param {number} tagName
+	 */
 	hasTag(tagName) {
 
 		for (let i in this.tags) {

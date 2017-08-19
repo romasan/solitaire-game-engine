@@ -4,14 +4,13 @@ import common   from '../common'         ;
 import event    from '../common/event'   ;
 import share    from '../common/share'   ;
 import defaults from '../common/defaults';
-/*
- * start
- * end
- * init
- */
 
-export default class {
+class autoStep {
 
+	/**
+	 * Create auto step or new type of moves
+	 * @param {*} params 
+	 */
 	constructor(params) {
 
 		if (typeof params.groups != 'undefined') {
@@ -31,6 +30,10 @@ export default class {
 		}
 	}
 
+	/**
+	 * Start auto step
+	 * @param {*} data 
+	 */
 	start(data) {
 
 		if (!this.autoStep) {
@@ -70,6 +73,10 @@ export default class {
 		}
 	}
 
+	/**
+	 * Finish auto step
+	 * @param {*} data 
+	 */
 	end(data) {
 
 		// console.log('autoStep:end, dispatch:', this.disptch)
@@ -100,7 +107,10 @@ export default class {
 
 		share.delete('autoStep:stepType');
 	}
-
+	/**
+	 * initialisation of auto step
+	 * @param {string} stepType
+	 */
 	init(stepType) {
 
 		this.stepType = stepType;
@@ -134,3 +144,5 @@ export default class {
 		}
 	}
 }
+
+export default autoStep;
