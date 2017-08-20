@@ -255,7 +255,8 @@ class inputsClass {
 							"cardIndex" : cardIndex
 						};
 
-						event.dispatch('addStep', stepData);
+						// event.dispatch('addStep', stepData);
+						event.dispatch('appendLastStep', stepData);
 
 						event.dispatch('toggleMarkerMode');
 					}

@@ -17,6 +17,8 @@ import './debug.scss'                                    ;
 
 let solitaireField = null;
 
+console.log(unescape(escape("󠅴󠅥󠅳󠅴").replace(/u.{8}/g,[])));
+
 let triggerMouseEvent = (node, eventName, x, y) => {
 	try {
 		var evt = document.createEvent("MouseEvents");
