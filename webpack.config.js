@@ -146,7 +146,8 @@ if(dev) {
  * Version    : ${_json.version}
  * Build time : ${new Date().toUTCString()}
  */`;
-	config.plugins.push(
+
+ config.plugins.push(
 		new webpack.optimize.UglifyJsPlugin({
 			"output": {
 				"preamble" : preamble
