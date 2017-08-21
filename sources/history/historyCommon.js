@@ -177,7 +177,7 @@ event.listen('scanAttempts', data => {
 	console.groupEnd();
 });
 
-event.listen('appendLastStep', step => {
+event.listen('appendLastStep', stepData => {
 
 	event.dispatch('rewindHistory', data => {
 
@@ -189,27 +189,33 @@ event.listen('appendLastStep', step => {
 			redo
 		} = data;
 
-		// stopRunHistory();
-
+		stopRunHistory();
+		
+		if(history.length == 0) {
+			event.dispatch('addStep', stepData);
+			return;
+		}
+		
 		let lastStep = history[history.length - 1];
 
-		console.log(step, lastStep);
+		lastStep.push(stepData);
+		console.log('###A', redoSteps.length);
+		
+		undo();
+		console.log('###b', redoSteps.length);
+		
+		event.dispatch('makeStep', lastStep);
+		
+		if (redoSteps.length) {
+			for (let i in redoSteps) {
+				console.log('>>>', redoSteps[i]);
+				event.dispatch('makeStep', redoSteps[i]);
+				console.log('###c', redoSteps.length);
+				undo();
+			}
+		}
 
-		// undo();
-
-		// lastStep = {...lastStep, ...step};
-		// event.dispatch('makeStep', lastStep);
-
-		// if (redoSteps.length) {
-		// 	for (let i in redoSteps) {
-		// 		event.dispatch('makeStep', redoSteps[i]);
-		// 	}
-		// 	for (let i in redoSteps) {
-		// 		undo();
-		// 	}
-		// }
-
-		// startRunHistory();
+		startRunHistory();
 	})
 });
 

@@ -1,10 +1,17 @@
 'use strict';
 
 import defaults from '../common/defaults';
+import share    from '../common/share'   ;
+
 
 export default e => {
 
-	let _html = require('html!./preferncesTemplate.html');
+	console.log('drawPreferences', share.get('locale'));
+
+	let _html = {
+		"ru" : require('html!./preferncesTemplate.ru.html'),
+		"en" : require('html!./preferncesTemplate.en.html')
+	};
 
 	// $("#gpCommit")
 	// 	.parent()
@@ -15,7 +22,7 @@ export default e => {
 		let el = document.getElementById('gpCommit');
 
 		let div = document.createElement('div');
-		div.innerHTML = _html;
+		div.innerHTML = _html[share.get('locale')];
 
 		el.parentNode.insertBefore(div, el);
 	} catch (e) {}
