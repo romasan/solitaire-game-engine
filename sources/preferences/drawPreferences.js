@@ -8,6 +8,12 @@ export default e => {
 
 	console.log('drawPreferences', share.get('locale'));
 
+	let _locale = null;
+		_locale = _locale || share.get('locale');
+		_locale = _locale || defaults.locale;
+
+	console.log('locale', _locale);
+
 	let _html = {
 		"ru" : require('html!./preferncesTemplate.ru.html'),
 		"en" : require('html!./preferncesTemplate.en.html')
@@ -22,7 +28,7 @@ export default e => {
 		let el = document.getElementById('gpCommit');
 
 		let div = document.createElement('div');
-		div.innerHTML = _html[share.get('locale')];
+		div.innerHTML = _html[_locale];
 
 		el.parentNode.insertBefore(div, el);
 	} catch (e) {}

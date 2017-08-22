@@ -72,6 +72,8 @@ exports.init = gameConfig => {
 			preloadCallback(_data);
 		}
 
+		event.dispatch('firstInit');
+
 	}
 
 	let changePreferencesCallback = share.get('changePreferencesCallback');
