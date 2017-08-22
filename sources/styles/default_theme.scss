@@ -51,5 +51,6 @@ $ranks : ("d", "s", "h", "c");
 	.flip:after {
 		box-sizing : border-box;
 		margin-top : 0px;
+		margin-right: -1px;
 	}
 }
