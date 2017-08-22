@@ -73,7 +73,6 @@ exports.init = gameConfig => {
 		}
 
 		event.dispatch('firstInit');
-
 	}
 
 	let changePreferencesCallback = share.get('changePreferencesCallback');

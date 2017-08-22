@@ -6,22 +6,14 @@ import share    from '../common/share'   ;
 
 export default e => {
 
-	console.log('drawPreferences', share.get('locale'));
-
 	let _locale = null;
 		_locale = _locale || share.get('locale');
 		_locale = _locale || defaults.locale;
-
-	console.log('locale', _locale);
 
 	let _html = {
 		"ru" : require('html!./preferncesTemplate.ru.html'),
 		"en" : require('html!./preferncesTemplate.en.html')
 	};
-
-	// $("#gpCommit")
-	// 	.parent()
-	// 	.before(_html);
 
 	try {
 

@@ -219,8 +219,8 @@ let redo = data => {
 		event.dispatch('forceMove', forceMoveData);
 	}
 
-	if (markCard) {
-		
+	if (markCard && share.get('inDoHistory')) {
+
 		const {deckName, cardIndex, cardName} = markCard;
 
 		let deck = common.getElementByName(deckName, 'deck');
@@ -237,7 +237,7 @@ let redo = data => {
 		}
 	}
 
-	if (unmarkCard) {
+	if (unmarkCard && share.get('inDoHistory')) {
 
 		const {deckName, cardIndex, cardName} = unmarkCard;
 
@@ -278,9 +278,9 @@ event.listen('redo', redoData => {
 	// inputs.break();
 	event.dispatch('inputsBreak');
 
-	console.groupCollapsed('REDO');
-	console.log('%c' + JSON.stringify(redoData, true, 2), 'background:#fff7d6');
-	console.groupEnd();
+	// console.groupCollapsed('REDO');
+	// console.log('%c' + JSON.stringify(redoData, true, 2), 'background:#fff7d6');
+	// console.groupEnd();
 
 	if (share.get('animation')) {
 		event.dispatch('stopAnimations');
@@ -292,9 +292,9 @@ event.listen('redo', redoData => {
 	if (history.length > 0) {
 		for (let i = history.length - 1; i >= 0; i -= 1) {
 			
-			console.groupCollapsed('redo:<<<');
-			console.log(JSON.stringify(history[i], true, 2));
-			console.groupEnd();
+			// console.groupCollapsed('redo:<<<');
+			// console.log(JSON.stringify(history[i], true, 2));
+			// console.groupEnd();
 
 			undo(history[i]);
 		}

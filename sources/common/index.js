@@ -48,8 +48,6 @@ import elRender           from '../io/dom/elRender'               ;
 
 event.listen('gameInit', data => {
 
-	console.log('gameInit');
-
 	share.set('stepType', defaults.stepType);
 
 	share.delete('sessionStarted');
@@ -68,7 +66,7 @@ event.listen('gameInit', data => {
 // event.listen('gameInited', e => {});
 
 event.listen('firstInit', e => {
-	console.log('FIRST INIT');
+
 	defaultPreferences();
 	drawPreferences();
 	preferencesEvents();

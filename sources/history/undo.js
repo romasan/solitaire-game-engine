@@ -222,41 +222,41 @@ let undo = data => {
 		event.dispatch('forceMove', forceMoveData);
 	}
 
-	if (markCard) {
+	// if (markCard) {
 		
-		const {deckName, cardIndex, cardName} = markCard;
+	// 	const {deckName, cardIndex, cardName} = markCard;
 
-		let deck = common.getElementByName(deckName, 'deck');
+	// 	let deck = common.getElementByName(deckName, 'deck');
 
-		let card = deck.getCardByIndex(cardIndex | 0);
+	// 	let card = deck.getCardByIndex(cardIndex | 0);
 
-		if (
-			card                  &&
-			cardName == card.name
-		) {
-			event.dispatch('unmarkCard', {
-				"card" : card
-			});
-		}
-	}
+	// 	if (
+	// 		card                  &&
+	// 		cardName == card.name
+	// 	) {
+	// 		event.dispatch('unmarkCard', {
+	// 			"card" : card
+	// 		});
+	// 	}
+	// }
 
-	if (unmarkCard) {
+	// if (unmarkCard) {
 
-		const {deckName, cardIndex, cardName} = unmarkCard;
+	// 	const {deckName, cardIndex, cardName} = unmarkCard;
 
-		let deck = common.getElementByName(deckName, 'deck');
+	// 	let deck = common.getElementByName(deckName, 'deck');
 
-		let card = deck.getCardByIndex(cardIndex | 0);
+	// 	let card = deck.getCardByIndex(cardIndex | 0);
 
-		if (
-			card                  &&
-			cardName == card.name
-		) {
-			event.dispatch('markCard', {
-				"card" : card
-			});
-		}
-	}
+	// 	if (
+	// 		card                  &&
+	// 		cardName == card.name
+	// 	) {
+	// 		event.dispatch('markCard', {
+	// 			"card" : card
+	// 		});
+	// 	}
+	// }
 
 	if (
 		setStepType                         &&

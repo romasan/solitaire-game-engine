@@ -5,28 +5,6 @@ import share    from '../../common/share'   ;
 import defaults from '../../common/defaults';
 import common   from '../../common'         ;
 
-/*
- * attr
- * hasClass
- * toggleClass
- * addClass
- * removeClass
- * css
- * hide
- * show
- * append
- * html
- * animate
- * stop
- * remove
- * parent
- * after
- * before
- * listen
- * trigger
- * click
- */
-
 export default class elClass {
 
 	constructor(data) {
@@ -41,6 +19,10 @@ export default class elClass {
 		this._animationIndex = 0;
 	}
 
+	/**
+	 * Add attributes
+	 * @param {*} attributes 
+	 */
 	attr(attributes) {
 
 		try {
@@ -53,6 +35,11 @@ export default class elClass {
 		} catch (e) {}
 	}
 
+	/**
+	 * Add attribute
+	 * @param {string} name 
+	 * @param {string} value 
+	 */
 	setAttribute(name, value) {
 		try {
 			if (
@@ -64,6 +51,10 @@ export default class elClass {
 		} catch (e) {}
 	}
 
+	/**
+	 * Checking the existence of a class for an element
+	 * @param {string} className
+	 */
 	hasClass(className) {
 
 		try {
@@ -74,6 +65,10 @@ export default class elClass {
 		} catch (e) {}
 	}
 
+	/**
+	 * Toggle class
+	 * @param {string} className 
+	 */
 	toggleClass(className) {
 
 		try {
@@ -86,6 +81,10 @@ export default class elClass {
 		} catch (e) {}
 	}
 
+	/**
+	 * Add class name
+	 * @param {string} className 
+	 */
 	addClass(className) {
 
 		try {
@@ -101,6 +100,10 @@ export default class elClass {
 		} catch (e) {}
 	}
 
+	/**
+	 * Remove class
+	 * @param {string} className 
+	 */
 	removeClass(className) {
 
 		if (!this.el || !this.el.className) {
@@ -129,7 +132,11 @@ export default class elClass {
 		} catch (e) {}
 	}
 
-	css(a) {
+	/**
+	 * Add css styles
+	 * @param {*} a 
+	 */
+	css(styles) {
 
 		if (!this.el) {
 			return this;
@@ -137,14 +144,17 @@ export default class elClass {
 
 		try {
 
-			for (let attrName in a) {
-				this.el.style[attrName] = a[attrName];
+			for (let attrName in styles) {
+				this.el.style[attrName] = styles[attrName];
 			}
 
 			return this;
 		} catch (e) {}
 	}
 
+	/**
+	 * Hide element
+	 */
 	hide() {
 
 		try {
@@ -157,6 +167,9 @@ export default class elClass {
 		} catch (e) {}
 	}
 
+	/**
+	 * Show element
+	 */
 	show() {
 
 		try {
@@ -166,6 +179,10 @@ export default class elClass {
 		} catch (e) {}
 	}
 
+	/**
+	 * Append element
+	 * @param {elClass|HTMLElement} el 
+	 */
 	append(el) {
 
 		try {
@@ -181,6 +198,10 @@ export default class elClass {
 		} catch (e) {}
 	}
 
+	/**
+	 * Set HTML
+	 * @param {elClass|HTMLElement} el 
+	 */
 	html(el) {
 
 		try {
@@ -200,6 +221,13 @@ export default class elClass {
 		} catch (e) {}
 	}
 
+	/**
+	 * Animate element
+	 * @param {*} params 
+	 * @param {?number} animationTime 
+	 * @param {?function} callback 
+	 * @param {?string} animationName 
+	 */
 	animate(params, animationTime, callback, animationName) {
 
 		let _animation = share.get('animation');
@@ -360,6 +388,9 @@ export default class elClass {
 		this._animationCallbacks = [];
 	}
 
+	/**
+	 * Delete element
+	 */
 	remove() {
 		try {
 			// this.el.remove();
@@ -367,10 +398,17 @@ export default class elClass {
 		} catch (e) {}
 	}
 
+	/**
+	 * Get parent element
+	 */
 	parent() {
 		return new elClass(this.el.parentNode);
 	}
 
+	/**
+	 * Add HTML after element
+	 * @param {HTMLElement} html 
+	 */
 	after(html) {
 
 		try {
@@ -380,6 +418,10 @@ export default class elClass {
 		return this;
 	}
 
+	/**
+	 * Add HTML before element
+	 * @param {HTMLElement} html 
+	 */
 	before(html) {
 
 		try {
@@ -389,16 +431,29 @@ export default class elClass {
 		return this;
 	}
 
+	/**
+	 * Add event listener
+	 * @param {string} eventName 
+	 * @param {function} callback 
+	 */
 	listen(eventName, callback) {
 		this.el.addEventListener(eventName, callback);
 	}
 
+	/**
+	 * Dispatch DOM element event
+	 * @param {*} eventName 
+	 */
 	trigger(eventName) {
 		if (typeof this.el[eventName] == 'function') {
 			this.el[eventName]();
 		}
 	}
 
+	/**
+	 * Add click event listener
+	 * @param {function} callback 
+	 */
 	click(callback) {
 		this.listen('click', callback);
 	}

@@ -18,6 +18,9 @@ import Tips     from '../tips'           ;
 
 class inputsClass {
 
+	/**
+	 * Create inputs handler
+	 */
 	constructor() {
 
 		share.set('dragDeck'   , null);
@@ -148,6 +151,9 @@ class inputsClass {
 		} catch (e) {}
 	}
 
+	/**
+	 * Break inputs
+	 */
 	_break() {
 
 		let _dragDeck = share.get('dragDeck');
@@ -172,6 +178,13 @@ class inputsClass {
 		common.curUnLock();
 	}
 
+	/**
+	 * Take card
+	 * @param {EventTarget} target 
+	 * @param {number} x 
+	 * @param {number} y 
+	 * @param {boolean} touch 
+	 */
 	take(target, x, y, touch) {
 
 		if (touch) {
@@ -255,8 +268,8 @@ class inputsClass {
 							"cardIndex" : cardIndex
 						};
 
-						// event.dispatch('addStep', stepData);
-						event.dispatch('appendLastStep', stepData);
+						event.dispatch('addStep', stepData);
+						// event.dispatch('appendToLastStep', stepData);
 
 						event.dispatch('toggleMarkerMode');
 					}
@@ -337,6 +350,11 @@ class inputsClass {
 		}
 	}
 
+	/**
+	 * Drag card
+	 * @param {number} x 
+	 * @param {number} y 
+	 */
 	drag(x, y) {
 
 		if (common.isCurLock()) {
@@ -393,6 +411,13 @@ class inputsClass {
 		// });
 	}
 
+	/**
+	 * Put card
+	 * @param {EventTarget} target 
+	 * @param {number} x 
+	 * @param {number} y 
+	 * @param {boolean} dbclick 
+	 */
 	put(target, x, y, dbclick) {
 
 		if (common.isCurLock()) {
@@ -486,7 +511,7 @@ event.listen('newGame', e => {
 	if (!_inputs) {
 		_inputs = new inputsClass();
 	}
-})
+});
 
 event.listen('inputsBreak', e => {
 	if (_inputs) {

@@ -71,9 +71,10 @@ event.listen('doHistory', e => {
 	// 	return;
 	// }
 
-	console.groupCollapsed('DO HISTORY');
+	// console.groupCollapsed('DO HISTORY');
+	share.set('inDoHistory', true);	
 
-	let _time = Date.now();
+	// let _time = Date.now();
 
 	// common.animationOff();
 	if (!e || !e.data) {
@@ -83,7 +84,6 @@ event.listen('doHistory', e => {
 	// event.dispatch('stopRunHistory');
 	common.animationOff();
 
-	// console.log('doHistory:start');
 	for (let i in e.data) {
 
 		// share.set('noSave', true);
@@ -97,12 +97,8 @@ event.listen('doHistory', e => {
 			e.callback(e.data[i]);	
 		}
 	}
-	// console.log('doHistory:end');
 
 	common.animationDefault();
-	// event.dispatch('startRunHistory');
-
-	// After doing history
 
 	event.dispatch('doHistory:end');
 
@@ -110,11 +106,11 @@ event.listen('doHistory', e => {
 
 	// let _decks = common.getElementsByType('deck');
 
-	// for (let deckIndex in _decks) {}
+	// console.log(((Date.now() - _time) / 1e3) + 's.');
 
-	console.log(((Date.now() - _time) / 1e3) + 's.');
+	share.set('inDoHistory', false);			
 
-	console.groupEnd();
+	// console.groupEnd();
 });
 
 event.listen('scanAttempts', data => {
@@ -177,7 +173,7 @@ event.listen('scanAttempts', data => {
 	console.groupEnd();
 });
 
-event.listen('appendLastStep', stepData => {
+event.listen('appendToLastStep', stepData => {
 
 	event.dispatch('rewindHistory', data => {
 
@@ -199,18 +195,20 @@ event.listen('appendLastStep', stepData => {
 		let lastStep = history[history.length - 1];
 
 		lastStep.push(stepData);
-		console.log('###A', redoSteps.length);
 		
 		undo();
-		console.log('###b', redoSteps.length);
 		
 		event.dispatch('makeStep', lastStep);
 		
-		if (redoSteps.length) {
-			for (let i in redoSteps) {
-				console.log('>>>', redoSteps[i]);
+		if (redoSteps.length > 1) {
+
+			let _length = redoSteps.length - 1;
+
+			for (let i = redoSteps.length - 2; i >= 0; i -= 1) {
 				event.dispatch('makeStep', redoSteps[i]);
-				console.log('###c', redoSteps.length);
+			}
+
+			for(let i = 0; i < _length; i += 1) {
 				undo();
 			}
 		}
