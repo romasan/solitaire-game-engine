@@ -122,6 +122,7 @@ event.listen('scanAttempts', data => {
 
 	event.dispatch('render:off');
 	common.animationOff();
+	share.set('noSave', true);	
 
 	let stateDifferences = [];
 
@@ -159,6 +160,7 @@ event.listen('scanAttempts', data => {
 
 	event.dispatch('render:on');
 	common.animationDefault();
+	share.set('noSave', false);		
 
 	if (typeof data.callback == "function") {
 		data.callback();

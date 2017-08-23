@@ -41,7 +41,7 @@ class DrawLine {
 
     constructor() {
         this.name = '';
-        this.id = 
+        this.id = Draw.nexId();
     }
 
     draw(data) {
@@ -64,7 +64,6 @@ class _String extends DrawLine {
 
     constructor(data) {
         this.data = data;
-        this.id = 
     }
 
     draw() {

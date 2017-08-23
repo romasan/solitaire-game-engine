@@ -36,6 +36,10 @@ class historyClass {
 
 	add(step) { // {move || flip ... }
 
+		if (share.get('noSave')) {
+			return;
+		}
+
 		// console.log('History:add', step);
 
 		this._nextId += 1;
