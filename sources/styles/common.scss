@@ -194,3 +194,7 @@ $img_dir :"/solitaire_engine/img/";
 .slot:after {
 	content: attr(data-content);
 }
+
+.card.tip.full:after {
+	content: none;
+}

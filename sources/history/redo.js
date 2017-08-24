@@ -16,7 +16,6 @@ import undo         from './undo'                ;
  * unflip
  * hide
  * show
- * full
  * lock
  * unlock
  * swap
@@ -39,7 +38,6 @@ let redo = data => {
 		unflip     ,
 		hide       ,
 		show       ,
-		full       ,
 		lock       ,
 		unlock     ,
 		swap       ,
@@ -131,11 +129,6 @@ let redo = data => {
 		}
 	}
 	
-	// redo full
-	if (full) {
-		// 
-	}
-
 	// redo lock
 	if (
 		typeof lock != 'undefined'
@@ -278,9 +271,9 @@ event.listen('redo', redoData => {
 	// inputs.break();
 	event.dispatch('inputsBreak');
 
-	// console.groupCollapsed('REDO');
-	// console.log('%c' + JSON.stringify(redoData, true, 2), 'background:#fff7d6');
-	// console.groupEnd();
+	console.groupCollapsed('REDO');
+	console.log('%c' + JSON.stringify(redoData, true, 2), 'background:#fff7d6');
+	console.groupEnd();
 
 	if (share.get('animation')) {
 		event.dispatch('stopAnimations');
@@ -290,6 +283,7 @@ event.listen('redo', redoData => {
 	let history = History.get();
 
 	if (history.length > 0) {
+
 		for (let i = history.length - 1; i >= 0; i -= 1) {
 			
 			// console.groupCollapsed('redo:<<<');

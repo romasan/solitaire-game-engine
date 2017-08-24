@@ -37,6 +37,7 @@ class historyClass {
 	add(step) { // {move || flip ... }
 
 		if (share.get('noSave')) {
+			console.warn('Add step to history break.');
 			return;
 		}
 

@@ -35,8 +35,8 @@ let startRunHistory = e => {
 };
 event.listen('startRunHistory', startRunHistory);
 
-event.listen('addStep', data => {
-
+let addStep = data => {
+	
 	if (data.step) {
 
 		let stepId = history.add(data.step);
@@ -47,10 +47,11 @@ event.listen('addStep', data => {
 	} else {
 		history.add(data);
 	}
-});
+};
+event.listen('addStep', addStep);
 
 // save steps to client history
-event.listen('saveSteps', e => {
+let saveSteps = e => {
 
 	let data = history.get();
 
@@ -63,15 +64,19 @@ event.listen('saveSteps', e => {
 	} else {
 		console.warn('Empty history to save.');
 	}
-});
+};
+event.listen('saveSteps', saveSteps);
 
-event.listen('doHistory', e => {
-
+let doHistory = e => {
+	
 	// if (share.get('noReplayHistory')) {
 	// 	return;
 	// }
 
-	// console.groupCollapsed('DO HISTORY');
+	console.groupCollapsed('DO HISTORY');
+
+	event.dispatch('solitaire_log');
+	
 	share.set('inDoHistory', true);	
 
 	// let _time = Date.now();
@@ -110,10 +115,11 @@ event.listen('doHistory', e => {
 
 	share.set('inDoHistory', false);			
 
-	// console.groupEnd();
-});
+	console.groupEnd();
+};
+event.listen('doHistory', doHistory);
 
-event.listen('scanAttempts', data => {
+let scanAttempts = data => {
 
 	// Field.clear();
 
@@ -173,10 +179,11 @@ event.listen('scanAttempts', data => {
 	// console.log(((Date.now() - _time) / 1e3) + 's.');
 
 	// console.groupEnd();
-});
+};
+event.listen('scanAttempts', scanAttempts);
 
-event.listen('appendToLastStep', stepData => {
-
+let appendToLastStep = stepData => {
+	
 	event.dispatch('rewindHistory', data => {
 
 		const {
@@ -217,22 +224,26 @@ event.listen('appendToLastStep', stepData => {
 
 		startRunHistory();
 	})
-});
+};
+event.listen('appendToLastStep', appendToLastStep);
 
-event.listen('resetHistory', e => {
+let resetHistory = e => {
 	history.reset();
-});
+};
+event.listen('resetHistory', resetHistory);
 
-event.listen('deleteHistory', steps => {
+let deleteHistory = steps => {
 	history.delete(steps);
-});
+};
+event.listen('deleteHistory', deleteHistory);
 
-event.listen('newGame', e => {
+let newGame = e => {
 	history.reset();
-});
+};
+event.listen('newGame', newGame);
 
-event.listen('quickHistoryMove', callback => {
-
+let quickHistoryMove = callback => {
+	
 	if (typeof callback) {
 
 		common.animationOff();
@@ -241,4 +252,5 @@ event.listen('quickHistoryMove', callback => {
 
 		common.animationOn();
 	}
-})
+};
+event.listen('quickHistoryMove', quickHistoryMove);

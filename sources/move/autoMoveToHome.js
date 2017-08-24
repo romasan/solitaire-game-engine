@@ -132,5 +132,4 @@ let autoMoveToHome = e => {
 		event.dispatch('autoMoveToHome:done');
 	}
 };
-
 event.listen('autoMoveToHome', autoMoveToHome);

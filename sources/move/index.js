@@ -6,11 +6,25 @@ import defaults from '../common/defaults';
 import common   from '../common'         ;
 
 import Deck     from '../deck'           ;
+import Card     from '../card'           ;
 import Tips     from '../tips'           ;
 import bestTip  from '../tips/bestTip'   ;
 import Field    from '../field'          ;
 
-let Move = ({moveDeck, to, cursorMove}) => {
+/**
+ * @typedef {Object} moveData
+ * @property {{card:Card}[]} moveDeck
+ * @property {string} to
+ * @property {*} cursorMove
+ */
+
+/**
+ * Move cards from one deck to another
+ * @param {moveData} data 
+ */
+let Move = data => {
+
+	const {moveDeck, to, cursorMove} = data;
 
 	// console.log("Move");
 

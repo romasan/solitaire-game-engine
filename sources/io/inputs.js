@@ -203,7 +203,7 @@ class inputsClass {
 
 		if (
 			common.isCurLock()                                 ||
-			document.getElementsByClassName('animated').length || // TODO )==
+			document.getElementsByClassName('animated').length || // TODO
 			share.get('gameIsWon')                             ||
 			share.get('sessionStarted')
 		) {

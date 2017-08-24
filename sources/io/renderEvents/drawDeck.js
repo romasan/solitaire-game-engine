@@ -165,18 +165,21 @@ event.listen('redrawDeck', data => {
 		.css(_params);
 
 	// full deck (add class full to all cards in deck)
-	if (data.deck.full) {
-
-		let _cards = data.deck.getCards();
-
-		for (let i in _cards) {
-
-			let _cardDomElement = share.get('domElement:' + _cards[i].id);
-
-			if (_cardDomElement) {
-
+	
+	let _cards = data.deck.getCards();
+	
+	for (let i in _cards) {
+		
+		let _cardDomElement = share.get('domElement:' + _cards[i].id);
+		
+		if (_cardDomElement) {
+			
+			if (data.deck.full) {
 				elRender(_cardDomElement)
 					.addClass('full');
+			} else {
+				elRender(_cardDomElement)
+					.removeClass('full');
 			}
 		}
 	}

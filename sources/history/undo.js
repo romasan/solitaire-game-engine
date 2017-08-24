@@ -15,7 +15,6 @@ import stateManager from '../common/stateManager';
  * unflip
  * hide
  * show
- * full
  * lock
  * unlock
  * swap
@@ -38,7 +37,6 @@ let undo = data => {
 		unflip     ,
 		hide       ,
 		show       ,
-		full       ,
 		lock       ,
 		unlock     ,
 		swap       ,
@@ -132,11 +130,6 @@ let undo = data => {
 		}
 
 		deck.Redraw();
-	}
-
-	// undo full
-	if (full) {
-		// TODO
 	}
 
 	// undo lock
@@ -287,6 +280,7 @@ event.listen('undo', undoData => {
 	let history = History.get();
 
 	if (history.length > 0) {
+
 		for (let i = history.length - 1; i >= 0; i -= 1) {
 			
 			// console.groupCollapsed('<<<');

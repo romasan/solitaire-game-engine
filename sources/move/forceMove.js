@@ -6,10 +6,30 @@ import common from '../common'      ;
 
 import Deck   from '../deck'        ;
 import Tips   from '../tips'        ;
+import Card   from '../card'        ;
 
-let forceMove = ({from, to, deck, flip, callback, steps, save, addStep}) => { // {from, to, deck, <flip>, <callback>, <steps>, <save>, <addStep>}
+/**
+ * @typedef {Object} forceMoveData
+ * @property {string|Deck} from
+ * @property {string|Deck} to
+ * @property {string[]} deck
+ * @property {?boolean} flip
+ * @property {?function} callback
+ * @property {?*[]} steps
+ * @property {?boolean} save
+ * @property {?boolean} addStep
+ */
 
-	// console.log('forceMove', from, to);
+ /**
+  * Make move from history
+  * @param {forceMoveData} data
+  */
+let forceMove = data => { // {from, to, deck, <flip>, <callback>, <steps>, <save>, <addStep>}
+
+	const {from, to, deck, flip, callback, steps, save, addStep} = data;
+
+	console.log('forceMove', from, to, deck);
+	event.dispatch('solitaire_log');
 
 	if (
 		!from ||
@@ -24,11 +44,17 @@ let forceMove = ({from, to, deck, flip, callback, steps, save, addStep}) => { //
 	}
 
 	// departure (from)
+	/**
+	 * @type {Deck}
+	 */
 	let deckFrom = typeof from == 'string'
 		? Deck.getDeck(from)
 		: from;
 
 	// destination (to)
+	/**
+	 * @type {Deck}
+	 */
 	let deckTo   = typeof to   == 'string'
 		? Deck.getDeck(to)
 		: to;
@@ -44,7 +70,10 @@ let forceMove = ({from, to, deck, flip, callback, steps, save, addStep}) => { //
 
 	let check = true;
 
-	// let deckFromCards = deckFrom.cards;
+	// let deckFromCards = deckFrom.cards;	
+	/**
+	 * @type {Card[]}
+	 */
 	let deckFromCards = deckFrom.getCards();
 
 	for (let i in deckFromCards) {
@@ -58,7 +87,14 @@ let forceMove = ({from, to, deck, flip, callback, steps, save, addStep}) => { //
 				deckFromCards[i].name != deck[_index]
 			) {
 
-				// console.warn('forceMove:check:false', deckFrom.name, deckTo.name, deckFromCards[i].name, deck[_index]);
+				console.warn(
+					'forceMove:check:false',
+					deckFrom.name,
+					deckTo.name,
+					i, deckFromCards.length, deck.length,
+					deckFromCards[i].name, deck[_index]
+				);
+				event.dispatch('solitaire_log');
 
 				check = false;
 			}
