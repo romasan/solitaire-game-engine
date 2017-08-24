@@ -117,8 +117,8 @@ event.listen('scanAttempts', data => {
 
 	// Field.clear();
 
-	console.groupCollapsed('scanAttempts');
-	let _time = Date.now();
+	// console.groupCollapsed('scanAttempts');
+	// let _time = Date.now();
 
 	event.dispatch('render:off');
 	common.animationOff();
@@ -170,9 +170,9 @@ event.listen('scanAttempts', data => {
 		"flip" : "prevFlip"
 	});
 
-	console.log(((Date.now() - _time) / 1e3) + 's.');
+	// console.log(((Date.now() - _time) / 1e3) + 's.');
 
-	console.groupEnd();
+	// console.groupEnd();
 });
 
 event.listen('appendToLastStep', stepData => {
