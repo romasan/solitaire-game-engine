@@ -90,7 +90,6 @@ class historyClass {
 		// console.groupEnd();
 
 		if (reset) {
-
 			this.reset(true);
 		}
 

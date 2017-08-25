@@ -73,10 +73,8 @@ let doHistory = e => {
 	// 	return;
 	// }
 
-	console.groupCollapsed('DO HISTORY');
+	// console.groupCollapsed('DO HISTORY');
 
-	event.dispatch('solitaire_log');
-	
 	share.set('inDoHistory', true);	
 
 	// let _time = Date.now();
@@ -115,7 +113,7 @@ let doHistory = e => {
 
 	share.set('inDoHistory', false);			
 
-	console.groupEnd();
+	// console.groupEnd();
 };
 event.listen('doHistory', doHistory);
 

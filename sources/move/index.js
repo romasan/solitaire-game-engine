@@ -129,7 +129,7 @@ let Move = data => {
 				let issetMoves = null;
 
 				let _callback = e => {
-					
+
 					// TODO add card index ?
 					event.dispatch('addStep', {
 						"move" : {

@@ -24,12 +24,9 @@ import Card   from '../card'        ;
   * Make move from history
   * @param {forceMoveData} data
   */
-let forceMove = data => { // {from, to, deck, <flip>, <callback>, <steps>, <save>, <addStep>}
+let forceMove = data => {
 
 	const {from, to, deck, flip, callback, steps, save, addStep} = data;
-
-	console.log('forceMove', from, to, deck);
-	event.dispatch('solitaire_log');
 
 	if (
 		!from ||
@@ -38,10 +35,13 @@ let forceMove = data => { // {from, to, deck, <flip>, <callback>, <steps>, <save
 	) {
 		return;
 	}
-
+	
 	if (!deck.length) {
 		return;
 	}
+	
+	// console.log('forceMove', from, to, deck);
+	// event.dispatch('solitaire_log', '%cforceMove:start|color: green');
 
 	// departure (from)
 	/**
@@ -87,14 +87,11 @@ let forceMove = data => { // {from, to, deck, <flip>, <callback>, <steps>, <save
 				deckFromCards[i].name != deck[_index]
 			) {
 
-				console.warn(
-					'forceMove:check:false',
-					deckFrom.name,
-					deckTo.name,
-					i, deckFromCards.length, deck.length,
-					deckFromCards[i].name, deck[_index]
-				);
-				event.dispatch('solitaire_log');
+				console.warn('forceMove:check:false', deckFrom.name, deckTo.name); //,
+				// 	i, deckFromCards.length, deck.length,
+				// 	deckFromCards[i].name, deck[_index]
+				// );
+				// event.dispatch('solitaire_log', '%cforceMove:warn|color: red');
 
 				check = false;
 			}
@@ -233,6 +230,8 @@ let forceMove = data => { // {from, to, deck, <flip>, <callback>, <steps>, <save
 	} else {
 		console.warn('forceMove:Ход невозможен', from, to);
 	}
+
+	// event.dispatch('solitaire_log', '%cforceMove:done|color: orange');
 };
 
 event.listen('forceMove', forceMove);

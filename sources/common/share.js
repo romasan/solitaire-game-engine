@@ -10,6 +10,7 @@ class shareClass {
 	 */
 	constructor() {
 		this._data = {};
+		// this.names = {};
 	}
 
 	/**
@@ -30,6 +31,20 @@ class shareClass {
 		}
 	}
 
+	// _addName(name) {
+	// 	this.names[name] = name;
+	// }
+
+	// _checkNames() {
+	// 	this.names = ((names, result) =>{
+	// 		for (let name in names) {
+	// 			if (this._data[name]) {
+	// 				result[name] = name;
+	// 			}
+	// 		}
+	// 	})(this.names, {});
+	// }
+
 	/**
 	 * Add new element
 	 * @param {string} name 
@@ -37,6 +52,8 @@ class shareClass {
 	 * @param {*} forceClone 
 	 */
 	set(name, data, forceClone = false) {
+
+		// this._addName(name);
 
 		// "foo", "bar", false
 		if (typeof name == 'string') {
@@ -123,6 +140,7 @@ class shareClass {
 	 */
 	delete(name) {
 		delete this._data[name];
+		// this._checkNames();
 	}
 }
 

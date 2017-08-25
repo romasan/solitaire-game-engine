@@ -275,9 +275,9 @@ let logCardsInDeck = deck => {
 	console.groupEnd();
 };
 
-let solitaire_log = data => {
+let solitaire_log = (context = '') => {
 
-	console.groupCollapsed('debug log');
+	console.groupCollapsed(...context.split('|'), 'debug log');
 
 	let groups = common.getElementsByType('group');
 	for (let i in groups) {

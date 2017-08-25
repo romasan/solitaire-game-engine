@@ -66,7 +66,14 @@ class deckClass {
 		 */
 		this.name = typeof data.name == 'string'
 			? data.name
-			: (_parent_name + '_' + id);
+			: (_parent_name + '_' + data.deckIndex);
+		
+		if (
+			typeof data.name != "string" &&
+				  !data.deckIndex
+		) {
+			console.warn('Deck name', this.name, 'is incorrect');
+		}
 
 		// console.log('Deck', id, this.name);
 
