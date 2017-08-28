@@ -32,5 +32,11 @@
     "webpack": "^1.13.0",
     "webpack-livereload-plugin": "^0.11.0",
     "webpack-notifier": "^1.4.1"
+  },
+  "dependencies": {
+    "immutable": "^3.8.1",
+    "react": "^15.6.1",
+    "react-dom": "^15.6.1",
+    "redux": "^3.7.2"
   }
 }
