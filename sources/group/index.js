@@ -10,6 +10,8 @@ import groupFill      from './groupFill'       ;
 import groupRedraw    from './groupRedraw'     ;
 import groupGenerator from './groupGenerator'  ;
 
+import React, {Component} from 'react';
+
 const PARAMS = {
 	"flip"             : { "type" : 'any' },
 	"showSlot"         : { "type" : 'any' },
@@ -43,67 +45,74 @@ const PARAMS = {
 	},
 };
 
-class groupClass {
+class groupClass extends Component {
 
 	/**
 	 * Create group
 	 * @param {*} data 
 	 * @param {string} id 
 	 */
-	constructor(data, id) {
+	// constructor(data, id) {
 
-		this.type = 'group';
+	// 	this.type = 'group';
 		
-		this.id = id
+	// 	this.id = id
 		
-		this.name = data.name && typeof data.name == 'string' 
-		? data.name 
-		: ('name_' + id);
+	// 	this.name = data.name && typeof data.name == 'string' 
+	// 	? data.name 
+	// 	: ('name_' + id);
 		
-		// console.log('Group:', this.name, data);
+	// 	// console.log('Group:', this.name, data);
 
-		this.position = {
-			"x" : data.position && data.position.x && typeof data.position.x == 'number' 
-				? data.position.x 
-				: 0,
-			"y" : data.position && data.position.y && typeof data.position.y == 'number' 
-				? data.position.y 
-				: 0,
-		};
+	// 	this.position = {
+	// 		"x" : data.position && data.position.x && typeof data.position.x == 'number' 
+	// 			? data.position.x 
+	// 			: 0,
+	// 		"y" : data.position && data.position.y && typeof data.position.y == 'number' 
+	// 			? data.position.y 
+	// 			: 0,
+	// 	};
 
-		this.placement = data.placement 
-			? {
-				"x" : data.placement.x 
-					? data.placement.x 
-					: 0, 
-				"y" : data.placement.y 
-					? data.placement.y 
-					: 0
-			} 
-			: null
+	// 	this.placement = data.placement 
+	// 		? {
+	// 			"x" : data.placement.x 
+	// 				? data.placement.x 
+	// 				: 0, 
+	// 			"y" : data.placement.y 
+	// 				? data.placement.y 
+	// 				: 0
+	// 		} 
+	// 		: null
 
-		this.decks = {};
+	// 	this.decks = {};
 
-		// сохраняем атрибуты чтобы прокинуть их колодам
-		this.parameters = {};
-		for (let paramName in PARAMS) {
-			if (PARAMS[paramName].type == 'any') {
-				this.parameters[paramName] = data[paramName]
-					? data[paramName]
-					: defaults[paramName];
-			} else if (PARAMS[paramName].type == 'boolean') {
-				this.parameters[paramName] = typeof data[paramName] == 'boolean'
-					? data[paramName]
-					: PARAMS[paramName].default;
-				// this.parameters[paramName] = typeof data[paramName] == "boolean" ? data[paramName] : defaults[paramName];
-			} else if (typeof data[paramName] != 'undefined') {
-				this.parameters[paramName] = data[paramName];
-			}
-		};
+	// 	// сохраняем атрибуты чтобы прокинуть их колодам
+	// 	this.parameters = {};
+	// 	for (let paramName in PARAMS) {
+	// 		if (PARAMS[paramName].type == 'any') {
+	// 			this.parameters[paramName] = data[paramName]
+	// 				? data[paramName]
+	// 				: defaults[paramName];
+	// 		} else if (PARAMS[paramName].type == 'boolean') {
+	// 			this.parameters[paramName] = typeof data[paramName] == 'boolean'
+	// 				? data[paramName]
+	// 				: PARAMS[paramName].default;
+	// 			// this.parameters[paramName] = typeof data[paramName] == "boolean" ? data[paramName] : defaults[paramName];
+	// 		} else if (typeof data[paramName] != 'undefined') {
+	// 			this.parameters[paramName] = data[paramName];
+	// 		}
+	// 	};
 
-		this.deckIndex = [];
+	// 	this.deckIndex = [];
 
-		this.tags = data.tags;
+	// 	this.tags = data.tags;
+	// }
+
+	render() {
+		return <div class="group">
+			// array of decks
+			// array of cards
+		</div>;
 	}
 
 	/**

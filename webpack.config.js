@@ -41,29 +41,28 @@ let config = {
 		"filename" : "SolitaireEngine.js",
 		"library"  : "SolitaireEngine"
 	},
-	// "resolve": {
-	// 	"modulesDirectories" : dirTree,
-	// 	"extensions"         : ['', '.js']
-	// },
 	"module": {
 		"loaders": [
 			{
 				"test"   :	 /\.js$/,
 				"loader" : 'babel',
 				"query"  : {
-					"presets" : ['es2015']
+					"presets" : [
+						'es2015',
+						'react'
+					]
 				}
 			},
 
 			{
 				"test"    : /\.scss$|\.css$/,
 				"loader"  : ExtractTextPlugin.extract('style', 'css!sass')
-			},
-
-			{
-				"test"   : /\.hamlc$/,
-				"loader" : "hamlc-loader"
 			}
+
+			// {
+			// 	"test"   : /\.hamlc$/,
+			// 	"loader" : "hamlc-loader"
+			// }
 
 			// {
 			//	 test: /\.hamlc$/,
@@ -71,6 +70,10 @@ let config = {
 			// }
 		]
 	},
+	// "resolve": {
+	// 	// "modulesDirectories" : dirTree,
+	// 	"extensions" : ['.js', '.jsx']
+	// },
 	"plugins": [
 		
 		new ExtractTextPlugin("../css/SolitaireEngine.css", {
@@ -83,30 +86,31 @@ let config = {
 		}),
 
 		// My plugin
-		new function() {
-			this.apply = function(e) {
-				e.plugin('done', function() {
-					if(dev) {
+		// new function() {
+		function() {
+			this.plugin('done', function() {
+				if(dev) {
 
-						let fs = require('fs');
-						let _ver = _json.version.split('.');
-						_ver[_ver.length - 1] = (_ver[_ver.length - 1]|0) + 1;
-						_json.version = _ver.join('.');
+					let fs = require('fs');
+					let _ver = _json.version.split('.');
+					_ver[_ver.length - 1] = (_ver[_ver.length - 1]|0) + 1;
+					_json.version = _ver.join('.');
 
-						let _time = new Date().toUTCString();
-						// _json.devBuildTime = _time;
-						console.log('BUILD:', _json.version, _time, '#' + _index);
-						_index += 1;
+					let _time = new Date().toUTCString();
+					// _json.devBuildTime = _time;
+					console.log('BUILD:', _json.version, _time, '#' + _index);
+					_index += 1;
 
-						fs.writeFile(_file, JSON.stringify(_json, null, 2));
-					}
-				});
-			};
+					fs.writeFile(_file, JSON.stringify(_json, null, 2));
+				}
+			});
 		},
 
 		new WebpackNotifierPlugin({
 			"alwaysNotify" : dev
 		})
+
+		// new webpack.HotModuleReplacementPlugin()
 	]
 };
 

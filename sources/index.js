@@ -17,24 +17,15 @@ import Tips          from './tips'              ;
 import genNextCards  from './tips/genNextCards' ;
 import deckGenerator from './deck/deckGenerator';
 
+import actions       from './actions'           ;
+import store         from './store'             ;
+
+import React from 'react';
+import ReactDOM, {render} from 'react-dom';
+
 let preloadCallback = null,
     firstInit       = true;
-
-/*
- * Exports:
- *
- * event
- * options
- * winCheck
- * generator
- * version
- * onload
- * onChangePreferences
- * init
- * Redraw
- * debug
- */
-
+	
 exports.event     = event;
 exports.options   = defaults;
 exports.winCheck  = winCheck.hwinCheck;
@@ -49,17 +40,29 @@ exports.onChangePreferences = callback => {
 	share.set('changePreferencesCallback', callback);
 };
 
+render(
+    <Field/>,
+    document.getElementById('map')
+);
+
 exports.init = gameConfig => {
 
-	event.dispatch('gameInit', {
-		"firstInit" : firstInit
+	store.dispatch({
+		type: actions.INIT_STATE,
+		data: gameConfig
 	});
 
-	event.clearByTag(event.tags.inGame);
-	event.setTag    (event.tags.inGame);
+	console.log(gameConfig);
 
-	// Field.clear();
-	Field.create(gameConfig);
+	// event.dispatch('gameInit', {
+	// 	"firstInit" : firstInit
+	// });
+
+	// event.clearByTag(event.tags.inGame);
+	// event.setTag    (event.tags.inGame);
+
+	// Field.create(gameConfig);
+	store.dispatch(actions.INIT_STATE);	
 
 	if (firstInit) {
 
@@ -88,9 +91,9 @@ exports.init = gameConfig => {
 
 	event.dispatch('gameInited');
 
-	exports.Redraw = data => {
-		Field.Redraw(data);
-	}
+	// exports.Redraw = data => {
+	// 	Field.Redraw(data);
+	// }
 };
 
 if (dev) {

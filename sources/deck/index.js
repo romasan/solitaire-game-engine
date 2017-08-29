@@ -22,6 +22,8 @@ import deckCardNames          from './deckCardNames'                            
 import getDeck                from './getDeck'                                       ;
 import applyChangedParameters from '../io/renderEvents/common/applyChangedParameters';
 
+import React, {Component} from 'react';
+
 class deckClass {
 
 	/**
@@ -29,380 +31,384 @@ class deckClass {
 	 * @param {*} data 
 	 * @param {string} id
 	 */
-	constructor(data, id) {
+	// constructor(data, id) {
 
-		if (!data) {
-			return false;
-		}
+	// 	if (!data) {
+	// 		return false;
+	// 	}
 
-		/**
-		 * @type {Card[]}
-		 */
-		this.cards = [];
+	// 	/**
+	// 	 * @type {Card[]}
+	// 	 */
+	// 	this.cards = [];
 
-		// parameters
-		/**
-		 * @type {string}
-		 */
-		this.type = 'deck';
+	// 	// parameters
+	// 	/**
+	// 	 * @type {string}
+	// 	 */
+	// 	this.type = 'deck';
 
-		/**
-		 * @type {boolean}
-		 */
-		this.full = false;
+	// 	/**
+	// 	 * @type {boolean}
+	// 	 */
+	// 	this.full = false;
 
-		/**
-		 * @type {string}
-		 */
-		this.id = id;
+	// 	/**
+	// 	 * @type {string}
+	// 	 */
+	// 	this.id = id;
 
-		// let _parent_el   = Group.getByName(data.parent)                  ,
-		//     _parent_name = _parent_el ? _parent_el.name : 'no_parent_'   ,
-		// 	_new_id      = _parent_el ? _parent_el.getDecks().length : id;
-		let _parent_name = data.parent ? data.parent : 'no_parent';
+	// 	// let _parent_el   = Group.getByName(data.parent)                  ,
+	// 	//     _parent_name = _parent_el ? _parent_el.name : 'no_parent_'   ,
+	// 	// 	_new_id      = _parent_el ? _parent_el.getDecks().length : id;
+	// 	let _parent_name = data.parent ? data.parent : 'no_parent';
 
-		/**
-		 * @type {name}
-		 */
-		this.name = typeof data.name == 'string'
-			? data.name
-			: (_parent_name + '_' + data.deckIndex);
+	// 	/**
+	// 	 * @type {name}
+	// 	 */
+	// 	this.name = typeof data.name == 'string'
+	// 		? data.name
+	// 		: (_parent_name + '_' + data.deckIndex);
 		
-		if (
-			typeof data.name != "string" &&
-				  !data.deckIndex
-		) {
-			console.warn('Deck name', this.name, 'is incorrect');
-		}
+	// 	if (
+	// 		typeof data.name != "string" &&
+	// 			  !data.deckIndex
+	// 	) {
+	// 		console.warn('Deck name', this.name, 'is incorrect');
+	// 	}
 
-		// console.log('Deck', id, this.name);
+	// 	// console.log('Deck', id, this.name);
 
-		/**
-		 * @type {boolean}
-		 */
-		this.locked = data.locked ? true : false;
+	// 	/**
+	// 	 * @type {boolean}
+	// 	 */
+	// 	this.locked = data.locked ? true : false;
 
-		/**
-		 * @type {boolean}
-		 */
-		this.save = data.save ? true : false;
+	// 	/**
+	// 	 * @type {boolean}
+	// 	 */
+	// 	this.save = data.save ? true : false;
 
-		/**
-		 * @type {boolean}
-		 */
-		this.visible = typeof data.visible == 'boolean' ? data.visible : true;
+	// 	/**
+	// 	 * @type {boolean}
+	// 	 */
+	// 	this.visible = typeof data.visible == 'boolean' ? data.visible : true;
 
-		/**
-		 * @type {number}
-		 */
-		this.deckIndex = typeof data.deckIndex == 'number' ? data.deckIndex : null;
+	// 	/**
+	// 	 * @type {number}
+	// 	 */
+	// 	this.deckIndex = typeof data.deckIndex == 'number' ? data.deckIndex : null;
 
-		/**
-		 * @type {string}
-		 */
-		this.parent = typeof data.parent == 'string' ? data.parent : 'field';
+	// 	/**
+	// 	 * @type {string}
+	// 	 */
+	// 	this.parent = typeof data.parent == 'string' ? data.parent : 'field';
 
-		/**
-		 * @type {boolean}
-		 */
-		this.autoHide = typeof data.autoHide == 'boolean' ? data.autoHide : defaults.autohide;
+	// 	/**
+	// 	 * @type {boolean}
+	// 	 */
+	// 	this.autoHide = typeof data.autoHide == 'boolean' ? data.autoHide : defaults.autohide;
 
-		/**
-		 * @type {boolean}
-		 */
-		this.autoCheckFlip = typeof data.autoCheckFlip == 'boolean' ? data.autoCheckFlip : defaults.autoCheckFlip;
+	// 	/**
+	// 	 * @type {boolean}
+	// 	 */
+	// 	this.autoCheckFlip = typeof data.autoCheckFlip == 'boolean' ? data.autoCheckFlip : defaults.autoCheckFlip;
 
-		/**
-		 * @type {boolean}
-		 */
-		this.showPrefFlipCard = typeof data.showPrefFlipCard == 'boolean' ? data.showPrefFlipCard : share.get('showPrefFlipCard');
+	// 	/**
+	// 	 * @type {boolean}
+	// 	 */
+	// 	this.showPrefFlipCard = typeof data.showPrefFlipCard == 'boolean' ? data.showPrefFlipCard : share.get('showPrefFlipCard');
 
-		/**
-		 * @type {boolean}
-		 */
-		this.showPrevAttempts = typeof data.showPrevAttempts == 'boolean' ? data.showPrevAttempts : defaults.showPrevAttempts;
+	// 	/**
+	// 	 * @type {boolean}
+	// 	 */
+	// 	this.showPrevAttempts = typeof data.showPrevAttempts == 'boolean' ? data.showPrevAttempts : defaults.showPrevAttempts;
 
-		/**
-		 * @type {boolean}
-		 */
-		this.checkNextCards = typeof data.checkNextCards == 'boolean' ? data.checkNextCards : defaults.checkNextCards;
+	// 	/**
+	// 	 * @type {boolean}
+	// 	 */
+	// 	this.checkNextCards = typeof data.checkNextCards == 'boolean' ? data.checkNextCards : defaults.checkNextCards;
 
-		this.data = {};
+	// 	this.data = {};
 
-		// changed parameters
-		if (typeof data.showSlot == 'undefined') {
-			data.showSlot = defaults.showSlot;
-		}
+	// 	// changed parameters
+	// 	if (typeof data.showSlot == 'undefined') {
+	// 		data.showSlot = defaults.showSlot;
+	// 	}
 
-		if (data.padding) {
-			if (
-				typeof data.padding.x == 'number' &&
-				typeof data.paddingX  != 'number'
-			) {
-				data.paddingX = data.padding.x;
-			}
-			if (
-				typeof data.padding.y == 'number' &&
-				typeof data.paddingY  != 'number'
-			) {
-				data.paddingY = data.padding.y;
-			}
-		}
+	// 	if (data.padding) {
+	// 		if (
+	// 			typeof data.padding.x == 'number' &&
+	// 			typeof data.paddingX  != 'number'
+	// 		) {
+	// 			data.paddingX = data.padding.x;
+	// 		}
+	// 		if (
+	// 			typeof data.padding.y == 'number' &&
+	// 			typeof data.paddingY  != 'number'
+	// 		) {
+	// 			data.paddingY = data.padding.y;
+	// 		}
+	// 	}
 
-		if (data.flipPadding) {
-			if (
-				typeof data.flipPadding.x == 'number' &&
-				typeof data.flipPaddingX  != 'number'
-			) {
-				data.flipPaddingX = data.flipPadding.x;
-			}
-			if (
-				typeof data.flipPadding.y == 'number' &&
-				typeof data.flipPaddingY  != 'number'
-			) {
-				data.flipPaddingY = data.flipPadding.y;
-			}
-		}
+	// 	if (data.flipPadding) {
+	// 		if (
+	// 			typeof data.flipPadding.x == 'number' &&
+	// 			typeof data.flipPaddingX  != 'number'
+	// 		) {
+	// 			data.flipPaddingX = data.flipPadding.x;
+	// 		}
+	// 		if (
+	// 			typeof data.flipPadding.y == 'number' &&
+	// 			typeof data.flipPaddingY  != 'number'
+	// 		) {
+	// 			data.flipPaddingY = data.flipPadding.y;
+	// 		}
+	// 	}
 
-		this._params = {
-			"padding_y"      : typeof data.paddingY     == 'number' ? data.paddingY     : defaults.padding_y     ,
-			"flip_padding_y" : typeof data.flipPaddingY == 'number' ? data.flipPaddingY : defaults.flip_padding_y,
-			"padding_x"      : typeof data.paddingX     == 'number' ? data.paddingX     : defaults.padding_x     ,
-			"flip_padding_x" : typeof data.flipPaddingX == 'number' ? data.flipPaddingX : defaults.flip_padding_x,
-			"startZIndex"    : typeof data.startZIndex  == 'number' ? data.startZIndex  : defaults.startZIndex   ,
-			"rotate"         : typeof data.rotate       == 'number' ? data.rotate       : defaults.rotate        ,
-			"x"              : 0                                                                                 ,
-			"y"              : 0
-		};
+	// 	this._params = {
+	// 		"padding_y"      : typeof data.paddingY     == 'number' ? data.paddingY     : defaults.padding_y     ,
+	// 		"flip_padding_y" : typeof data.flipPaddingY == 'number' ? data.flipPaddingY : defaults.flip_padding_y,
+	// 		"padding_x"      : typeof data.paddingX     == 'number' ? data.paddingX     : defaults.padding_x     ,
+	// 		"flip_padding_x" : typeof data.flipPaddingX == 'number' ? data.flipPaddingX : defaults.flip_padding_x,
+	// 		"startZIndex"    : typeof data.startZIndex  == 'number' ? data.startZIndex  : defaults.startZIndex   ,
+	// 		"rotate"         : typeof data.rotate       == 'number' ? data.rotate       : defaults.rotate        ,
+	// 		"x"              : 0                                                                                 ,
+	// 		"y"              : 0
+	// 	};
 
-		let __data = applyChangedParameters({
-			"deckData" : data        ,
-			"deck"     : this        ,
-			"params"   : this._params
-		}, false);
+	// 	let __data = applyChangedParameters({
+	// 		"deckData" : data        ,
+	// 		"deck"     : this        ,
+	// 		"params"   : this._params
+	// 	}, false);
 
-		/**
-		 * @typedef {Object} Vector2d
-		 * @property {number} x
-		 * @property {number} y
-		 */
+	// 	/**
+	// 	 * @typedef {Object} Vector2d
+	// 	 * @property {number} x
+	// 	 * @property {number} y
+	// 	 */
 
-		/**
-		 * Get position
-		 * @returns {Vector2d}
-		 */
-		this.getPosition = e => {
-			return {
-				"x": __data.params.x,
-				"y": __data.params.y
-			};
-		}
+	// 	/**
+	// 	 * Get position
+	// 	 * @returns {Vector2d}
+	// 	 */
+	// 	this.getPosition = e => {
+	// 		return {
+	// 			"x": __data.params.x,
+	// 			"y": __data.params.y
+	// 		};
+	// 	}
 
-		/**
-		 * @type {number}
-		 */
-		this.rotate = this._params.rotate;
+	// 	/**
+	// 	 * @type {number}
+	// 	 */
+	// 	this.rotate = this._params.rotate;
 
-		/**
-		 * @type {boolean}
-		 */
-		this.autoUnflipTop = typeof data.autoUnflipTop == 'boolean' ? data.autoUnflipTop : defaults.autoUnflipTop;
+	// 	/**
+	// 	 * @type {boolean}
+	// 	 */
+	// 	this.autoUnflipTop = typeof data.autoUnflipTop == 'boolean' ? data.autoUnflipTop : defaults.autoUnflipTop;
 
-		// Flip
-		let flipData = null;
+	// 	// Flip
+	// 	let flipData = null;
 
-		let flipType = data.flip && typeof data.flip == 'string'
-			? data.flip.indexOf(':') > 0
-				? (e => {
+	// 	let flipType = data.flip && typeof data.flip == 'string'
+	// 		? data.flip.indexOf(':') > 0
+	// 			? (e => {
 
-					let name = e[0];
+	// 				let name = e[0];
 
-					if (e.length == 2) {
-						flipData = e[1];
-					}
+	// 				if (e.length == 2) {
+	// 					flipData = e[1];
+	// 				}
 
-					return flipTypes[name]
-						? name
-						: defaults.flip_type;
-				})(data.flip.split(':'))
-				: flipTypes[data.flip]
-					? data.flip
-					: defaults.flip_type
-			: defaults.flip_type;
+	// 				return flipTypes[name]
+	// 					? name
+	// 					: defaults.flip_type;
+	// 			})(data.flip.split(':'))
+	// 			: flipTypes[data.flip]
+	// 				? data.flip
+	// 				: defaults.flip_type
+	// 		: defaults.flip_type;
 
-		/**
-		 * Check card flip
-		 * @param {Card} card
-		 * @param {number} index
-		 * @param {number} length
-		 */
-		this.cardFlipCheck = (card, index, length) => {
-			card.flip = flipTypes[flipType](index, length, flipData, this);
-		};
+	// 	/**
+	// 	 * Check card flip
+	// 	 * @param {Card} card
+	// 	 * @param {number} index
+	// 	 * @param {number} length
+	// 	 */
+	// 	this.cardFlipCheck = (card, index, length) => {
+	// 		card.flip = flipTypes[flipType](index, length, flipData, this);
+	// 	};
 
-		/**
-		 * Parse string with parameter
-		 * @param {string} line
-		 * @returns {string}
-		 */
-		let stringWithColon = line => {
-			if (
-				typeof line == "string" &&
-				line.indexOf(':') > 0
-			) {
-				return line.split(':')[0];
-			} else {
-				return line;
-			}
-		};
+	// 	/**
+	// 	 * Parse string with parameter
+	// 	 * @param {string} line
+	// 	 * @returns {string}
+	// 	 */
+	// 	let stringWithColon = line => {
+	// 		if (
+	// 			typeof line == "string" &&
+	// 			line.indexOf(':') > 0
+	// 		) {
+	// 			return line.split(':')[0];
+	// 		} else {
+	// 			return line;
+	// 		}
+	// 	};
 
-		/**
-		 * Put rules
-		 * @type {string|string[]}
-		 */
-		this.putRules = data.putRules
-			? typeof data.putRules == 'string'
-				? putRules[stringWithColon(data.putRules)]
-					? [data.putRules]
-					: defaults.putRules
-				: data.putRules.constructor == Array
-					? data.putRules.filter(
-						ruleName => typeof ruleName == 'string' && putRules[stringWithColon(ruleName)] // TODO Exception (putRule "***" not found)
-							? true
-							: false
-					)
-					: defaults.putRules
-			: defaults.putRules;
+	// 	/**
+	// 	 * Put rules
+	// 	 * @type {string|string[]}
+	// 	 */
+	// 	this.putRules = data.putRules
+	// 		? typeof data.putRules == 'string'
+	// 			? putRules[stringWithColon(data.putRules)]
+	// 				? [data.putRules]
+	// 				: defaults.putRules
+	// 			: data.putRules.constructor == Array
+	// 				? data.putRules.filter(
+	// 					ruleName => typeof ruleName == 'string' && putRules[stringWithColon(ruleName)] // TODO Exception (putRule "***" not found)
+	// 						? true
+	// 						: false
+	// 				)
+	// 				: defaults.putRules
+	// 		: defaults.putRules;
 
-		if (this.putRules.length == 0) {
-			this.putRules = defaults.putRules;
-		}
+	// 	if (this.putRules.length == 0) {
+	// 		this.putRules = defaults.putRules;
+	// 	}
 
-		/**
-		 * Take rules
-		 * @type {string|string[]}
-		 */
-		this.takeRules = data.takeRules
-			? typeof data.takeRules == 'string'
-				? takeRules[data.takeRules]
-					? [data.takeRules]
-					: defaults.takeRules
-				: data.takeRules.constructor == Array
-					? data.takeRules.filter(
-						ruleName => typeof ruleName == 'string' && takeRules[ruleName] // TODO Exception (takeRule "***" not found)
-					)
-					: defaults.takeRules
-			: defaults.takeRules;
+	// 	/**
+	// 	 * Take rules
+	// 	 * @type {string|string[]}
+	// 	 */
+	// 	this.takeRules = data.takeRules
+	// 		? typeof data.takeRules == 'string'
+	// 			? takeRules[data.takeRules]
+	// 				? [data.takeRules]
+	// 				: defaults.takeRules
+	// 			: data.takeRules.constructor == Array
+	// 				? data.takeRules.filter(
+	// 					ruleName => typeof ruleName == 'string' && takeRules[ruleName] // TODO Exception (takeRule "***" not found)
+	// 				)
+	// 				: defaults.takeRules
+	// 		: defaults.takeRules;
 
-		// Правила сложенной колоды
-		// Сложенная колода может использоваться для определения выиигрыша
-		// В сложенную колоду нельзя класть новые карты
-		/**
-		 * Full rules
-		 * @type {string|string[]}
-		 */
-		this.fullRules = data.fullRules
-			? typeof data.fullRules == "string"
-				? fullRules[data.fullRules]
-					? [data.fullRules]
-					: defaults.fullRules
-				: data.fullRules.constructor == Array
-					? data.fullRules.filter(
-						ruleName => typeof ruleName == "string" && fullRules[ruleName]
-					)
-					: defaults.fullRules
-			: defaults.fullRules;
+	// 	// Правила сложенной колоды
+	// 	// Сложенная колода может использоваться для определения выиигрыша
+	// 	// В сложенную колоду нельзя класть новые карты
+	// 	/**
+	// 	 * Full rules
+	// 	 * @type {string|string[]}
+	// 	 */
+	// 	this.fullRules = data.fullRules
+	// 		? typeof data.fullRules == "string"
+	// 			? fullRules[data.fullRules]
+	// 				? [data.fullRules]
+	// 				: defaults.fullRules
+	// 			: data.fullRules.constructor == Array
+	// 				? data.fullRules.filter(
+	// 					ruleName => typeof ruleName == "string" && fullRules[ruleName]
+	// 				)
+	// 				: defaults.fullRules
+	// 		: defaults.fullRules;
 
-		// Padding
-		// порядок карт в колоде
-		let paddingData = null;
-		let padding = data.paddingType                                 // isset data.paddingType
-			? typeof data.paddingType == 'string'                      // is string
-				? paddingTypes[data.paddingType]                       // isset method
-					? paddingTypes[data.paddingType]                   // use method(data.paddingType)
-					: data.paddingType.indexOf(':') >= 0               // is method with attribute
-						? (e => {
+	// 	// Padding
+	// 	// порядок карт в колоде
+	// 	let paddingData = null;
+	// 	let padding = data.paddingType                                 // isset data.paddingType
+	// 		? typeof data.paddingType == 'string'                      // is string
+	// 			? paddingTypes[data.paddingType]                       // isset method
+	// 				? paddingTypes[data.paddingType]                   // use method(data.paddingType)
+	// 				: data.paddingType.indexOf(':') >= 0               // is method with attribute
+	// 					? (e => {
 
-							let name = e[0];                           // method name
+	// 						let name = e[0];                           // method name
 
-							if (paddingTypes[name]) {
-								paddingData = e.length > 1             // save method data
-									? e.slice(1).join(':')
-									: '';
-								return paddingTypes[name];             // use method(data.paddingType)
-							}
+	// 						if (paddingTypes[name]) {
+	// 							paddingData = e.length > 1             // save method data
+	// 								? e.slice(1).join(':')
+	// 								: '';
+	// 							return paddingTypes[name];             // use method(data.paddingType)
+	// 						}
 
-							return paddingTypes[defaults.paddingType]; // use default
-						})(data.paddingType.split(':'))
-						: paddingTypes[defaults.paddingType]           // use default
-				: paddingTypes[defaults.paddingType]                   // use default
-			: paddingTypes[defaults.paddingType];                      // use default
+	// 						return paddingTypes[defaults.paddingType]; // use default
+	// 					})(data.paddingType.split(':'))
+	// 					: paddingTypes[defaults.paddingType]           // use default
+	// 			: paddingTypes[defaults.paddingType]                   // use default
+	// 		: paddingTypes[defaults.paddingType];                      // use default
 
-		/**
-		 * Get padding for card by index
-		 * @param {number}
-		 * @returns {Vector2d}
-		 */
-		this.padding = index => {
+	// 	/**
+	// 	 * Get padding for card by index
+	// 	 * @param {number}
+	// 	 * @returns {Vector2d}
+	// 	 */
+	// 	this.padding = index => {
 
-			let _cards = this.getCards();
-			let _index = index < _cards.length ? index : _cards.length - 1;
-			let _card  = _cards[_index] ? _cards[_index] : this.cards[index];
+	// 		let _cards = this.getCards();
+	// 		let _index = index < _cards.length ? index : _cards.length - 1;
+	// 		let _card  = _cards[_index] ? _cards[_index] : this.cards[index];
 
-			return padding(
-				this._params ,
-				_card        ,
-				_index       ,
-				_cards.length,
-				_cards       ,
-				paddingData
-			);
-		}
+	// 		return padding(
+	// 			this._params ,
+	// 			_card        ,
+	// 			_index       ,
+	// 			_cards.length,
+	// 			_cards       ,
+	// 			paddingData
+	// 		);
+	// 	}
 
-		/**
-		 * Deck actions
-		 */
-		this.actions = [];
+	// 	/**
+	// 	 * Deck actions
+	// 	 */
+	// 	this.actions = [];
 
-		if (data.actions) {
-			this.actions = data.actions;
-			deckActions.add(this);
-		}
+	// 	if (data.actions) {
+	// 		this.actions = data.actions;
+	// 		deckActions.add(this);
+	// 	}
 
-		/**
-		 * Relations
-		 */
-		this.relations = [];
-		if (data.relations) {
-			this.relations = data.relations;
-		}
+	// 	/**
+	// 	 * Relations
+	// 	 */
+	// 	this.relations = [];
+	// 	if (data.relations) {
+	// 		this.relations = data.relations;
+	// 	}
 
-		// Tags
-		/**
-		 * @type {string[]}
-		 */
-		this.tags = data.tags ? data.tags : [];
+	// 	// Tags
+	// 	/**
+	// 	 * @type {string[]}
+	// 	 */
+	// 	this.tags = data.tags ? data.tags : [];
 
-		event.dispatch('addDeckEl', {
-			"deckData" : data        , 
-			"deck"     : this        ,
-			"params"   : this._params
-		});
+	// 	event.dispatch('addDeckEl', {
+	// 		"deckData" : data        , 
+	// 		"deck"     : this        ,
+	// 		"params"   : this._params
+	// 	});
 
-		// Подписывается на перетаскивание стопки/карты
-		let _callback = data => {
+	// 	// Подписывается на перетаскивание стопки/карты
+	// 	let _callback = data => {
 
-			// TODO
-			// проверять fill только для тех стопок котрые участвовали в Action
+	// 		// TODO
+	// 		// проверять fill только для тех стопок котрые участвовали в Action
 
-			if (data.destination.name != this.name) {
-				return;
-			}
+	// 		if (data.destination.name != this.name) {
+	// 			return;
+	// 		}
 
-			this.checkFull();
-		};
+	// 		this.checkFull();
+	// 	};
 
-		event.listen('moveDragDeck', _callback);
+	// 	event.listen('moveDragDeck', _callback);
+	// }
+
+	render() {
+		return <div class="deck"></div>;
 	}
 
 	/**

@@ -11,21 +11,30 @@ import Tips         from '../tips'                  ;
 import addAutoSteps from '../autosteps/addAutoSteps';
 import storage      from '../common/storage'        ;
 
-class Field {
+import React, {Component}  from 'react'                    ;
 
-	constructor() {
+class Field extends Component {
 
-		share.set('elements', {});
+	// constructor() {
 
-		this.tipsParams  = {};
-		this.inputParams = {};
+	// 	share.set('elements', {});
+
+	// 	this.tipsParams  = {};
+	// 	this.inputParams = {};
+	// }
+
+	render() {
+		return <div class="solitaireField">
+			// array of decks
+			// array of cards
+		</div>;
 	}
 
 	/**
 	 * Create new game field
 	 * @param {*} data
 	 */
-	create(data) {
+	create(state, data) {
 
 		this.clear();
 
@@ -172,6 +181,8 @@ class Field {
 
 		// событие: игра началась
 		event.dispatch('newGame');
+
+		// return state;
 	}
 
 	/**

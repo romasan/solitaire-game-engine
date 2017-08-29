@@ -6,38 +6,44 @@ import share    from '../common/share'   ;
 import defaults from '../common/defaults';
 import Deck     from '../deck'           ;
 
-class cardClass {
+import React, {Component} from 'react';
+
+class cardClass extends Component {
 
 	/**
 	 * Create card
 	 * @param {*} data 
 	 */
-	constructor(data) {
+	// constructor(data) {
 
-		this.type = 'card';
+	// 	this.type = 'card';
 
-		this.classList = {};
+	// 	this.classList = {};
 
-		const values = [
-			'id'     ,
-			'name'   ,
-			'visible',
-			'flip'   ,
-			'parent' ,
-			'color'  ,
-			'value'  ,
-			'suit'   ,
-			'rank'
-		];
+	// 	const values = [
+	// 		'id'     ,
+	// 		'name'   ,
+	// 		'visible',
+	// 		'flip'   ,
+	// 		'parent' ,
+	// 		'color'  ,
+	// 		'value'  ,
+	// 		'suit'   ,
+	// 		'rank'
+	// 	];
 
-		for (let i in values) {
+	// 	for (let i in values) {
 
-			let value = values[i];
+	// 		let value = values[i];
 
-			if (typeof data[value] != 'undefined') {
-				this[value] = data[value];
-			}
-		}
+	// 		if (typeof data[value] != 'undefined') {
+	// 			this[value] = data[value];
+	// 		}
+	// 	}
+	// }
+
+	render() {
+		return <div class="card"></div>;
 	}
 
 	/**
