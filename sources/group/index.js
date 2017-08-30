@@ -115,6 +115,10 @@ class groupClass extends Component {
 		</div>;
 	}
 
+	create(state, data) {
+		return state;
+	}
+
 	/**
 	 * Add new group
 	 * @param {*} data

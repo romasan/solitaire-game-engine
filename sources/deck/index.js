@@ -24,7 +24,7 @@ import applyChangedParameters from '../io/renderEvents/common/applyChangedParame
 
 import React, {Component} from 'react';
 
-class deckClass {
+class deckClass extends Component {
 
 	/**
 	 * Create a deck
@@ -408,7 +408,31 @@ class deckClass {
 	// }
 
 	render() {
-		return <div class="deck"></div>;
+
+		const {slot} = this.props;		
+		
+		const transform = 'rotate(0deg)';
+		// const left      = '284px';
+		// const top       = '15px';
+		const width     = '71px';
+		const height    = '96px';
+		const display   = 'block';
+		const position  = 'relative';
+
+		return <div className={`el deck ${slot ? 'slot' : ''}`}
+			style ={{
+				transform,
+				// left     ,
+				// top      ,
+				width    ,
+				height   ,
+				display,
+				position
+			}}></div>;
+	}
+
+	static create(state, data) {
+		return state;
 	}
 
 	/**

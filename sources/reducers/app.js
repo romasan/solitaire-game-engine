@@ -1,11 +1,11 @@
 import {Map} from 'immutable';
 
-import {create} from '../field';
+import Field from '../field';
 
-export default function reducer(state, action) {
+export default function(state = Map({}), action) {
     switch (action.type) {
         case 'INIT_STATE':
-            return action.data ? create(Map({}), action.data): Map({});
+            return action.data ? Field.create(Map({}), action.data): Map({});
         default:
             return state;
     }

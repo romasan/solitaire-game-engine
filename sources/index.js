@@ -40,19 +40,24 @@ exports.onChangePreferences = callback => {
 	share.set('changePreferencesCallback', callback);
 };
 
-render(
-    <Field/>,
-    document.getElementById('map')
-);
-
 exports.init = gameConfig => {
-
+	
+	console.log('gameConfig', gameConfig);
+	
 	store.dispatch({
 		type: actions.INIT_STATE,
 		data: gameConfig
 	});
+	
+	console.log( 'state', store.getState().app.toJS() );
 
-	console.log(gameConfig);
+	render(
+		<Field/>,
+		document.getElementById('map')
+	);
+
+	return;
+
 
 	// event.dispatch('gameInit', {
 	// 	"firstInit" : firstInit

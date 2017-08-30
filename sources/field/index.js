@@ -7,11 +7,13 @@ import common       from '../common'                ;
 
 import Group        from '../group'                 ;
 import Deck         from '../deck'                  ;
+import Card         from '../card'                  ;
 import Tips         from '../tips'                  ;
 import addAutoSteps from '../autosteps/addAutoSteps';
 import storage      from '../common/storage'        ;
 
-import React, {Component}  from 'react'                    ;
+import React, {Component} from 'react';
+import {Map, List, fromJS} from 'immutable';
 
 class Field extends Component {
 
@@ -23,26 +25,49 @@ class Field extends Component {
 	// 	this.inputParams = {};
 	// }
 
+	
 	render() {
-		return <div class="solitaireField">
-			// array of decks
-			// array of cards
+
+		let cards = [];
+
+		let a = ['c1', 'd2', 'h3'];
+
+		let classes = [
+			"solitaireField",
+			"default_field",
+			"default_face",
+			"alternative_back",
+			"solitaireField"
+		];
+
+		for(let i in a) {
+			cards.push(<Card key={i} name={a[i]}/>);
+		}
+
+		return <div className={classes.join(' ')}>
+			<Deck slot={true}/>
+			{cards}
 		</div>;
 	}
 
 	/**
 	 * Create new game field
+	 * @param {Map} state
 	 * @param {*} data
 	 */
-	create(state, data) {
+	static create(state, data) {
 
-		this.clear();
+		// this.clear();
+		let _state = Map({});
+		
+		// this.homeGroups = data.homeGroups ? data.homeGroups : [];
+		
+		_state = _state.set('homeGroups', fromJS( data.homeGroups ? data.homeGroups : [] ));
+		
+		// share.set('autoMoveToHomeOpenDecks', data.autoMoveToHomeOpenDecks ? data.autoMoveToHomeOpenDecks : []);
+		_state = _state.set('autoMoveToHomeOpenDecks', fromJS( data.autoMoveToHomeOpenDecks ? data.autoMoveToHomeOpenDecks : [] ));
 
-		// console.log('Field:create');
-
-		this.homeGroups = data.homeGroups ? data.homeGroups : [];
-
-		share.set('autoMoveToHomeOpenDecks', data.autoMoveToHomeOpenDecks ? data.autoMoveToHomeOpenDecks : []);
+		return _state;
 
 		// вкл./выкл. подсказок
 		if (typeof data.showTips == 'boolean' && data.showTips) {
@@ -82,12 +107,12 @@ class Field extends Component {
 		}
 
 		// условие выигрыша
-		share.set('winCheck', data.winCheck);
+		// share.set('winCheck', data.winCheck);
 
 		// Настройки оформления (если нет сохранений)
-		if (data.theme) {
-			share.set('theme', data.theme);
-		}
+		// if (data.theme) {
+		// 	share.set('theme', data.theme);
+		// }
 
 		// Дополнительные настройки игры
 		if (data.preferences) {
@@ -177,12 +202,12 @@ class Field extends Component {
 		}
 
 		// Найти возможные ходы
-		Tips.checkTips();
+		// Tips.checkTips();
 
 		// событие: игра началась
-		event.dispatch('newGame');
+		// event.dispatch('newGame');
 
-		// return state;
+		return state;
 	}
 
 	/**
@@ -253,4 +278,4 @@ class Field extends Component {
 	}
 }
 
-export default new Field();
+export default Field;

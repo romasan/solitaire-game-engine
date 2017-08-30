@@ -43,7 +43,31 @@ class cardClass extends Component {
 	// }
 
 	render() {
-		return <div class="card"></div>;
+		
+		const {name, flip} = this.props;
+
+		const transform = 'rotate(0deg)';
+		// const left      = '284px';
+		// const top       = '15px';
+		const width     = '71px';
+		const height    = '96px';
+		const display   = 'block';
+		const position  = 'relative';
+
+		return <div className={`el card ${name} ${flip ? 'flip' : ''}`}
+			style ={{
+				transform,
+				// left     ,
+				// top      ,
+				width    ,
+				height   ,
+				display,
+				position
+			}}></div>;
+	}
+
+	static create(state, data) {
+		return state;
 	}
 
 	/**
