@@ -49,7 +49,7 @@ exports.init = gameConfig => {
 		data: gameConfig
 	});
 	
-	console.log( 'state', store.getState().app.toJS() );
+	console.log( 'state', JSON.stringify( store.getState().app.toJS() , true, 2) );
 
 	render(
 		<Field/>,

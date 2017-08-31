@@ -67,6 +67,38 @@ class cardClass extends Component {
 	}
 
 	static create(state, data) {
+
+		let _id = 'card_' + common.genId();
+
+		const {name} = data;
+
+		let suit  = name.slice(0, 1)                                       ,
+		    rank  = name.slice(1, 3)                                       ,
+		    color = null                                                   ,
+			value = defaults.card.values[defaults.card.ranks.indexOf(rank)];
+
+		let parent = "";
+			
+		for (let colorName in defaults.card.colors) {
+			if (defaults.card.colors[colorName].indexOf(suit) >= 0) {
+				color = colorName;
+			}
+		}
+
+		const _card = {
+			"id"      : _id   ,
+			"name"    : name  ,
+			"visible" : true  ,
+			"flip"    : false ,
+			"parent"  : parent,
+			"color"   : color ,
+			"value"   : value ,
+			"suit"    : suit  ,
+			"rank"    : rank
+		};
+
+		state.push(_card);
+
 		return state;
 	}
 
@@ -83,7 +115,6 @@ class cardClass extends Component {
 
 		if (isCard) {
 
-			let _id = 'card_' + common.genId();
 
 			let _card = {
 				"id"      : _id    ,

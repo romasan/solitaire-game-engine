@@ -432,6 +432,38 @@ class deckClass extends Component {
 	}
 
 	static create(state, data) {
+
+		const {
+			locked,
+			save,
+			visible,
+			autoHide,
+			autoCheckFlip,
+			autoUnflipTop,
+			showPrefFlipCard,
+			showPrevAttempts,
+			checkNextCards,
+			deckIndex,
+			rotate,
+			parent
+		} = data;
+
+		state.id   = "";
+		state.name = "";
+		state.type = "deck";		
+
+		state.full = false;
+		state.locked = locked;
+		state.locked = save;
+		state.locked = visible;
+
+		state.data = {};
+		state.padding = {};
+		state.flipPadding = {};
+		state.params = {};
+		
+		state.cards = [];
+
 		return state;
 	}
 

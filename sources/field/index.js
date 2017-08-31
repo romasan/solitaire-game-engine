@@ -58,31 +58,18 @@ class Field extends Component {
 	static create(state, data) {
 
 		// this.clear();
-		let _state = Map({});
+		const _state = {};
 		
-		// this.homeGroups = data.homeGroups ? data.homeGroups : [];
+		_state['homeGroups'] = data.homeGroups ? data.homeGroups : [];
 		
-		_state = _state.set('homeGroups', fromJS( data.homeGroups ? data.homeGroups : [] ));
+		_state['autoMoveToHomeOpenDecks'] = data.autoMoveToHomeOpenDecks ? data.autoMoveToHomeOpenDecks : [];
 		
-		// share.set('autoMoveToHomeOpenDecks', data.autoMoveToHomeOpenDecks ? data.autoMoveToHomeOpenDecks : []);
-		_state = _state.set('autoMoveToHomeOpenDecks', fromJS( data.autoMoveToHomeOpenDecks ? data.autoMoveToHomeOpenDecks : [] ));
-
-		return _state;
-
 		// вкл./выкл. подсказок
-		if (typeof data.showTips == 'boolean' && data.showTips) {
-			Tips.showTips({
-				"init" : true
-			});
-		} else {
-			Tips.hideTips({
-				"init" : true
-			});
-		}
-
+		_state['autoMoveToHomeOpenDecks'] = typeof data.showTips == "boolean" ? data.showTips : defaults.showTips;
+		
 		// устанвливаем тип хода по умолчанию
-		share.set('stepType', defaults.stepType);
-
+		_state['stepType'] = defaults.stepType;
+		
 		let _values = {
 			"showTipsDestination"  : 'boolean', // Альтернативные подсказки
 			"showTipPriority"      : 'boolean',
@@ -96,23 +83,20 @@ class Field extends Component {
 			// "noReplayHistory"      : 'boolean',
 			"locale"               : 'string'
 		};
-
+		
 		for (let valueName in _values) {
-			share.set(
-				valueName, 
-				typeof data[valueName] == _values[valueName] 
-					? data[valueName] 
-					: defaults[valueName]
-			);	
-		}
 
+			_state[valueName] = typeof data[valueName] == _values[valueName]
+				? data[valueName] 
+				: defaults[valueName];
+		}
+		
 		// условие выигрыша
 		// share.set('winCheck', data.winCheck);
-
+		_state['stepType'] = data.winCheck;
+		
 		// Настройки оформления (если нет сохранений)
-		// if (data.theme) {
-		// 	share.set('theme', data.theme);
-		// }
+		_state['theme'] = data.theme;
 
 		// Дополнительные настройки игры
 		if (data.preferences) {
@@ -132,57 +116,80 @@ class Field extends Component {
 				}
 			}
 
-			share.set('gamePreferences',     _preferences);
-			share.set('gamePreferencesData', _prefData);
+			// share.set('gamePreferences',     _preferences);
+			_state['gamePreferences'] = _preferences;
+			
+			// share.set('gamePreferencesData', _prefData);
+			_state['gamePreferencesData'] = _prefData;
 		} else {
-			share.set('gamePreferences', {});
+			// share.set('gamePreferences', {});
+			_state['gamePreferences'] = {};
 		}
+
+		_state.tipsParams = {};
 
 		// параметры отображения подсказок
 		for (let tipParamName in defaults.tipsParams) {
-			this.tipsParams[tipParamName] = (data.tipsParams && typeof data.tipsParams[tipParamName] != 'undefined')
-				? data.tipsParams[tipParamName]
-				: defaults.tipsParams[tipParamName]
+			_state.tipsParams[tipParamName] = (data.tipsParams && typeof data.tipsParams[tipParamName] != 'undefined')
+			? data.tipsParams[tipParamName]
+			: defaults.tipsParams[tipParamName]
 		}
 
+		_state.inputParams = {};
+		
 		// параметры ввода
 		for (let inputParamName in defaults.inputParams) {
-			this.inputParams[inputParamName] = (data.inputParams && typeof data.inputParams[inputParamName] != 'undefined')
-				? data.inputParams[inputParamName]
-				: defaults.inputParams[inputParamName]
+			_state.inputParams[inputParamName] = (data.inputParams && typeof data.inputParams[inputParamName] != 'undefined')
+			? data.inputParams[inputParamName]
+			: defaults.inputParams[inputParamName]
 		}
-
+		
 		// дополнительные параметры отображения
 		// начальная позиция порядка отображения элементов
 		if (data.startZIndex && typeof data.startZIndex == 'number') {
-			share.set('start_z_index', data.startZIndex);
+			_state['start_z_index'] = data.startZIndex;
 		}
-
+		
 		// инициализация автоходов
-		if (data.autoSteps) {
-			this.autoSteps = addAutoSteps(data.autoSteps);
-		}
+		// if (data.autoSteps) {
+		// 	this.autoSteps = addAutoSteps(data.autoSteps);
+		// }
 
+		
 		// NOTE: на событие подписан deckActions
 		// если ставить позже отрисовки элементов, переделать
-		event.dispatch('initField', data);
+		// event.dispatch('initField', data);
 
+		_state.groups = {};
+		
 		// Отрисовка элементов
 		if (data.groups) {
+			
 			for (let groupName in data.groups) {
+				
 				data.groups[groupName].name = groupName;
-				Group.add(data.groups[groupName]);
+				// Group.add(data.groups[groupName]);
+				
+				Group.create(_state.groups, groupName, data.groups[groupName]);
 			}
 		}
+		
+		_state.decks = [];
 
 		if (data.decks) {
+
 			for (let e in data.decks) {
-				Deck.addDeck(data.decks[e]);
+
+				// Deck.addDeck(data.decks[e]);
+
+				_state.decks.push(
+					Deck.create({}, data.decks[e])
+				);
 			}
 		}
-
+		
 		if (data.fill) {
-
+			
 			let _decks = Deck.getDecks();
 			let _fill  = null;
 			try {
@@ -190,7 +197,7 @@ class Field extends Component {
 			} catch (e) {
 				_fill = data.fill;
 			}
-
+			
 			for (;_fill.length;) {
 				for (let deckId in _decks) {
 					if (_fill.length) {
@@ -200,14 +207,14 @@ class Field extends Component {
 				}
 			}
 		}
-
+		
 		// Найти возможные ходы
 		// Tips.checkTips();
-
+		
 		// событие: игра началась
 		// event.dispatch('newGame');
-
-		return state;
+		
+		return fromJS(_state);
 	}
 
 	/**

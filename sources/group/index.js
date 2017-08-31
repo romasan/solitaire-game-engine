@@ -115,7 +115,7 @@ class groupClass extends Component {
 		</div>;
 	}
 
-	create(state, data) {
+	static create(state, name, data) {
 		return state;
 	}
 
