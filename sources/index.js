@@ -22,6 +22,7 @@ import store         from './store'             ;
 
 import React from 'react';
 import ReactDOM, {render} from 'react-dom';
+import {Provider} from 'react-redux';
 
 let preloadCallback = null,
     firstInit       = true;
@@ -42,17 +43,19 @@ exports.onChangePreferences = callback => {
 
 exports.init = gameConfig => {
 	
-	console.log('gameConfig', gameConfig);
+	console.log('gameConfig', gameConfig);	
 	
 	store.dispatch({
 		type: actions.INIT_STATE,
 		data: gameConfig
 	});
 	
-	console.log( 'state', JSON.stringify( store.getState().app.toJS() , true, 2) );
+	console.log( 'state', JSON.stringify( store.getState().toJS() , true, 2) );	
 
 	render(
-		<Field/>,
+		<Provider store={store}>
+			<Field/>
+		</Provider>,
 		document.getElementById('map')
 	);
 

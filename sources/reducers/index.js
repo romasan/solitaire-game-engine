@@ -1,7 +1,13 @@
-import {combineReducers} from 'redux';
+import {Map} from 'immutable';
 
-import app from './app';
+import Field from '../field';
 
-export default combineReducers({
-    app
-});
+export default function(state = Map({}), action) {
+    switch (action.type) {
+        case 'INIT_STATE':
+            return action.data ? Field.create(Map({}), action.data): Map({});
+        default:
+            return state;
+    }
+    return state;
+}

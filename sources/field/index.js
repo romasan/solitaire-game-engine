@@ -14,6 +14,7 @@ import storage      from '../common/storage'        ;
 
 import React, {Component} from 'react';
 import {Map, List, fromJS} from 'immutable';
+import {connect} from 'react-redux';
 
 class Field extends Component {
 
@@ -39,6 +40,8 @@ class Field extends Component {
 			"alternative_back",
 			"solitaireField"
 		];
+
+		// console.log('>>>', this.props);
 
 		for(let i in a) {
 			cards.push(<Card key={i} name={a[i]}/>);
@@ -285,4 +288,6 @@ class Field extends Component {
 	}
 }
 
-export default Field;
+export default connect(state => state.toJS())(Field);
+
+// export default Field;

@@ -420,7 +420,7 @@ class deckClass extends Component {
 		const position  = 'relative';
 
 		return <div className={`el deck ${slot ? 'slot' : ''}`}
-			style ={{
+			style = {{
 				transform,
 				// left     ,
 				// top      ,
