@@ -41,14 +41,21 @@ class Field extends Component {
 			"solitaireField"
 		];
 
-		// console.log('>>>', this.props);
+		console.log('>>>', this.props);
 
 		for(let i in a) {
-			cards.push(<Card key={i} name={a[i]}/>);
+			// key = id ???
+			cards.push(<Card key={'card_' + i} name={a[i]}/>);
 		}
 
+		let decks = [
+			<Deck slot={true} key="deck_1"/>
+		];
+
+		// for(let i in this.props.decks) {}
+
 		return <div className={classes.join(' ')}>
-			<Deck slot={true}/>
+			{decks}
 			{cards}
 		</div>;
 	}
@@ -179,6 +186,7 @@ class Field extends Component {
 		
 		_state.decks = [];
 
+		// init decks from field
 		if (data.decks) {
 
 			for (let e in data.decks) {
@@ -191,6 +199,8 @@ class Field extends Component {
 			}
 		}
 		
+		// fill decks
+		// top priority
 		if (data.fill) {
 			
 			let _decks = Deck.getDecks();

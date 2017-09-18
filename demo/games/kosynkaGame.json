@@ -46,7 +46,6 @@
                 "oneSuit"   , 
                 "firstAce"  ,
                 "ascendDeck"
-                // "oneSuitDeck"
             ],
             "decks" : 4
         },

@@ -50,7 +50,7 @@ exports.init = gameConfig => {
 		data: gameConfig
 	});
 	
-	console.log( 'state', JSON.stringify( store.getState().toJS() , true, 2) );	
+	console.log( 'state:', JSON.stringify( store.getState().toJS() , true, 2) );	
 
 	render(
 		<Provider store={store}>
