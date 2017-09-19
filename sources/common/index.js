@@ -8,12 +8,14 @@ import stateManager       from './stateManager'                   ;
 import Field              from '../field'                         ;
 import History            from '../history'                       ;
 
+// TODO make preferences as react component
 import drawPreferences    from '../preferences/drawPreferences'   ;
+
 import preferencesEvents  from '../preferences/preferencesEvents' ;
 import defaultPreferences from '../preferences/defaultPreferences';
 import specialStep        from '../history/specialStep'           ;
 import showFlipCardOnMove from '../tips/showFlipCardOnMove'       ;
-import elRender           from '../io/dom/elRender'               ;
+// import elRender           from '../io/dom/elRender'               ;
 
 /*
  * Listeners:

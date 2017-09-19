@@ -29,10 +29,6 @@ class Field extends Component {
 	
 	render() {
 
-		let cards = [];
-
-		let a = ['c1', 'd2', 'h3'];
-
 		let classes = [
 			"solitaireField",
 			"default_field",
@@ -40,19 +36,29 @@ class Field extends Component {
 			"alternative_back",
 			"solitaireField"
 		];
-
+		
 		console.log('>>>', this.props);
+		
+		let cards = [];
 
+		let a = ['c1', 'd2', 'h3'];
 		for(let i in a) {
 			// key = id ???
-			cards.push(<Card key={'card_' + i} name={a[i]}/>);
+			cards.push(
+				<Card key={'card_' + i} name={a[i]}/>
+			);
 		}
 
 		let decks = [
-			<Deck slot={true} key="deck_1"/>
+			// <Deck slot={true} key="deck_1"/>
 		];
 
-		// for(let i in this.props.decks) {}
+		for(let i in this.props.decks) {
+			const {id, slot} = this.props.decks[i];
+			decks.push(
+				<Deck slot={slot} key={id}/>			
+			);
+		}
 
 		return <div className={classes.join(' ')}>
 			{decks}
@@ -69,6 +75,8 @@ class Field extends Component {
 
 		// this.clear();
 		const _state = {};
+
+		_state.currentId = 0;
 		
 		_state['homeGroups'] = data.homeGroups ? data.homeGroups : [];
 		
@@ -193,8 +201,13 @@ class Field extends Component {
 
 				// Deck.addDeck(data.decks[e]);
 
+				console.log('###', _state);
+
 				_state.decks.push(
-					Deck.create({}, data.decks[e])
+					Deck.create({
+						"id"               : 'deck_' + _state.currentId++,
+						"showPrefFlipCard" : _state.showPrefFlipCard
+					}, data.decks[e])
 				);
 			}
 		}

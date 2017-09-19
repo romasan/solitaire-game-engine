@@ -74,6 +74,8 @@ let doHistory = e => {
 	// }
 
 	// console.groupCollapsed('DO HISTORY');
+	console.log('%cDO HISTORY: STOP!', 'color: red;font-weight: bold;');
+	return;
 
 	share.set('inDoHistory', true);	
 
@@ -122,6 +124,10 @@ let scanAttempts = data => {
 	// Field.clear();
 
 	// console.groupCollapsed('scanAttempts');
+
+	console.log('%cSCANATTEMPTS: STOP!', 'color: red; font-weight: bold;');
+	return;
+
 	// let _time = Date.now();
 
 	event.dispatch('render:off');

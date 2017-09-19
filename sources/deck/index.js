@@ -26,168 +26,13 @@ import React, {Component} from 'react';
 
 class deckClass extends Component {
 
-	/**
-	 * Create a deck
-	 * @param {*} data 
-	 * @param {string} id
-	 */
 	// constructor(data, id) {
-
-	// 	if (!data) {
-	// 		return false;
-	// 	}
-
-	// 	/**
-	// 	 * @type {Card[]}
-	// 	 */
-	// 	this.cards = [];
-
-	// 	// parameters
-	// 	/**
-	// 	 * @type {string}
-	// 	 */
-	// 	this.type = 'deck';
-
-	// 	/**
-	// 	 * @type {boolean}
-	// 	 */
-	// 	this.full = false;
-
-	// 	/**
-	// 	 * @type {string}
-	// 	 */
-	// 	this.id = id;
-
-	// 	// let _parent_el   = Group.getByName(data.parent)                  ,
-	// 	//     _parent_name = _parent_el ? _parent_el.name : 'no_parent_'   ,
-	// 	// 	_new_id      = _parent_el ? _parent_el.getDecks().length : id;
-	// 	let _parent_name = data.parent ? data.parent : 'no_parent';
-
-	// 	/**
-	// 	 * @type {name}
-	// 	 */
-	// 	this.name = typeof data.name == 'string'
-	// 		? data.name
-	// 		: (_parent_name + '_' + data.deckIndex);
-		
-	// 	if (
-	// 		typeof data.name != "string" &&
-	// 			  !data.deckIndex
-	// 	) {
-	// 		console.warn('Deck name', this.name, 'is incorrect');
-	// 	}
-
-	// 	// console.log('Deck', id, this.name);
-
-	// 	/**
-	// 	 * @type {boolean}
-	// 	 */
-	// 	this.locked = data.locked ? true : false;
-
-	// 	/**
-	// 	 * @type {boolean}
-	// 	 */
-	// 	this.save = data.save ? true : false;
-
-	// 	/**
-	// 	 * @type {boolean}
-	// 	 */
-	// 	this.visible = typeof data.visible == 'boolean' ? data.visible : true;
-
-	// 	/**
-	// 	 * @type {number}
-	// 	 */
-	// 	this.deckIndex = typeof data.deckIndex == 'number' ? data.deckIndex : null;
-
-	// 	/**
-	// 	 * @type {string}
-	// 	 */
-	// 	this.parent = typeof data.parent == 'string' ? data.parent : 'field';
-
-	// 	/**
-	// 	 * @type {boolean}
-	// 	 */
-	// 	this.autoHide = typeof data.autoHide == 'boolean' ? data.autoHide : defaults.autohide;
-
-	// 	/**
-	// 	 * @type {boolean}
-	// 	 */
-	// 	this.autoCheckFlip = typeof data.autoCheckFlip == 'boolean' ? data.autoCheckFlip : defaults.autoCheckFlip;
-
-	// 	/**
-	// 	 * @type {boolean}
-	// 	 */
-	// 	this.showPrefFlipCard = typeof data.showPrefFlipCard == 'boolean' ? data.showPrefFlipCard : share.get('showPrefFlipCard');
-
-	// 	/**
-	// 	 * @type {boolean}
-	// 	 */
-	// 	this.showPrevAttempts = typeof data.showPrevAttempts == 'boolean' ? data.showPrevAttempts : defaults.showPrevAttempts;
-
-	// 	/**
-	// 	 * @type {boolean}
-	// 	 */
-	// 	this.checkNextCards = typeof data.checkNextCards == 'boolean' ? data.checkNextCards : defaults.checkNextCards;
-
-	// 	this.data = {};
-
-	// 	// changed parameters
-	// 	if (typeof data.showSlot == 'undefined') {
-	// 		data.showSlot = defaults.showSlot;
-	// 	}
-
-	// 	if (data.padding) {
-	// 		if (
-	// 			typeof data.padding.x == 'number' &&
-	// 			typeof data.paddingX  != 'number'
-	// 		) {
-	// 			data.paddingX = data.padding.x;
-	// 		}
-	// 		if (
-	// 			typeof data.padding.y == 'number' &&
-	// 			typeof data.paddingY  != 'number'
-	// 		) {
-	// 			data.paddingY = data.padding.y;
-	// 		}
-	// 	}
-
-	// 	if (data.flipPadding) {
-	// 		if (
-	// 			typeof data.flipPadding.x == 'number' &&
-	// 			typeof data.flipPaddingX  != 'number'
-	// 		) {
-	// 			data.flipPaddingX = data.flipPadding.x;
-	// 		}
-	// 		if (
-	// 			typeof data.flipPadding.y == 'number' &&
-	// 			typeof data.flipPaddingY  != 'number'
-	// 		) {
-	// 			data.flipPaddingY = data.flipPadding.y;
-	// 		}
-	// 	}
-
-	// 	this._params = {
-	// 		"padding_y"      : typeof data.paddingY     == 'number' ? data.paddingY     : defaults.padding_y     ,
-	// 		"flip_padding_y" : typeof data.flipPaddingY == 'number' ? data.flipPaddingY : defaults.flip_padding_y,
-	// 		"padding_x"      : typeof data.paddingX     == 'number' ? data.paddingX     : defaults.padding_x     ,
-	// 		"flip_padding_x" : typeof data.flipPaddingX == 'number' ? data.flipPaddingX : defaults.flip_padding_x,
-	// 		"startZIndex"    : typeof data.startZIndex  == 'number' ? data.startZIndex  : defaults.startZIndex   ,
-	// 		"rotate"         : typeof data.rotate       == 'number' ? data.rotate       : defaults.rotate        ,
-	// 		"x"              : 0                                                                                 ,
-	// 		"y"              : 0
-	// 	};
 
 	// 	let __data = applyChangedParameters({
 	// 		"deckData" : data        ,
 	// 		"deck"     : this        ,
 	// 		"params"   : this._params
 	// 	}, false);
-
-	// 	/**
-	// 	 * @typedef {Object} Vector2d
-	// 	 * @property {number} x
-	// 	 * @property {number} y
-	// 	 */
 
 	// 	/**
 	// 	 * Get position
@@ -199,16 +44,6 @@ class deckClass extends Component {
 	// 			"y": __data.params.y
 	// 		};
 	// 	}
-
-	// 	/**
-	// 	 * @type {number}
-	// 	 */
-	// 	this.rotate = this._params.rotate;
-
-	// 	/**
-	// 	 * @type {boolean}
-	// 	 */
-	// 	this.autoUnflipTop = typeof data.autoUnflipTop == 'boolean' ? data.autoUnflipTop : defaults.autoUnflipTop;
 
 	// 	// Flip
 	// 	let flipData = null;
@@ -361,30 +196,6 @@ class deckClass extends Component {
 	// 		);
 	// 	}
 
-	// 	/**
-	// 	 * Deck actions
-	// 	 */
-	// 	this.actions = [];
-
-	// 	if (data.actions) {
-	// 		this.actions = data.actions;
-	// 		deckActions.add(this);
-	// 	}
-
-	// 	/**
-	// 	 * Relations
-	// 	 */
-	// 	this.relations = [];
-	// 	if (data.relations) {
-	// 		this.relations = data.relations;
-	// 	}
-
-	// 	// Tags
-	// 	/**
-	// 	 * @type {string[]}
-	// 	 */
-	// 	this.tags = data.tags ? data.tags : [];
-
 	// 	event.dispatch('addDeckEl', {
 	// 		"deckData" : data        , 
 	// 		"deck"     : this        ,
@@ -409,7 +220,9 @@ class deckClass extends Component {
 
 	render() {
 
-		const {slot} = this.props;		
+		console.log('###DECK:', this.props);
+
+		const {showSlot} = this.props;		
 		
 		const transform = 'rotate(0deg)';
 		// const left      = '284px';
@@ -419,7 +232,7 @@ class deckClass extends Component {
 		const display   = 'block';
 		const position  = 'relative';
 
-		return <div className={`el deck ${slot ? 'slot' : ''}`}
+		return <div className={`el deck${showSlot ? ' slot' : ''}`}
 			style = {{
 				transform,
 				// left     ,
@@ -433,36 +246,153 @@ class deckClass extends Component {
 
 	static create(state, data) {
 
-		const {
-			locked,
-			save,
-			visible,
-			autoHide,
-			autoCheckFlip,
-			autoUnflipTop,
-			showPrefFlipCard,
-			showPrevAttempts,
-			checkNextCards,
-			deckIndex,
-			rotate,
-			parent
-		} = data;
+		console.log('%cDeck create', 'color: blue');
 
-		state.id   = "";
-		state.name = "";
-		state.type = "deck";		
+		state.cards = [];
+		
+		// parameters
+		state.type = "deck";
 
 		state.full = false;
-		state.locked = locked;
-		state.locked = save;
-		state.locked = visible;
+
+		// state.id   = 'deck_' + id;
+
+		let _parent_name = data.parent ? data.parent : 'no_parent';
+
+		state.name = typeof data.name == 'string'
+			? data.name
+			: (_parent_name + '_' + data.deckIndex);
+
+		if (
+			typeof data.name != "string" &&
+					!data.deckIndex
+		) {
+			console.warn('Deck name', state.name, 'is incorrect');
+		}
+
+		state.locked = data.locked ? true : false;
+
+		state.save = data.save ? true : false;
+
+		state.visible = typeof data.visible == 'boolean' ? data.visible : true;
+
+		state.deckIndex = typeof data.deckIndex == 'number' ? data.deckIndex : null;
+
+		state.parent = typeof data.parent == 'string' ? data.parent : 'field';
+
+		state.autoHide = typeof data.autoHide == 'boolean' ? data.autoHide : defaults.autoHide;
+
+		state.autoCheckFlip = typeof data.autoCheckFlip == 'boolean' ? data.autoCheckFlip : defaults.autoCheckFlip;
+
+		if (typeof data.showPrefFlipCard == 'boolean') {
+			state.showPrefFlipCard = data.showPrefFlipCard;
+		}
+		
+		state.showPrevAttempts = typeof data.showPrevAttempts == 'boolean' ? data.showPrevAttempts : defaults.showPrevAttempts;
+
+		state.checkNextCards = typeof data.checkNextCards == 'boolean' ? data.checkNextCards : defaults.checkNextCards;
+
+		if (typeof data.showSlot == 'undefined') {
+			data.showSlot = defaults.showSlot;
+		}
 
 		state.data = {};
-		state.padding = {};
-		state.flipPadding = {};
-		state.params = {};
+
+		// changed parameters
+
+		state.showSlot = typeof showSlot == 'boolean' ? showSlot : defaults.showSlot;
+
+		state.padding = {
+			"x": 0,
+			"y": 0
+		};
+
+		if (data.padding) {
+			if (
+				typeof data.padding.x == 'number' &&
+				typeof data.paddingX  != 'number'
+			) {
+				// data.paddingX = data.padding.x;
+				state.padding.x = data.padding.x
+			}
+			if (
+				typeof data.padding.y == 'number' &&
+				typeof data.paddingY  != 'number'
+			) {
+				// data.paddingY = data.padding.y;
+				state.padding.y = data.padding.y				
+			}
+		}
+
+		state.flipPadding = {
+			"x": 0,
+			"y": 0
+		};
+
+		if (data.flipPadding) {
+			if (
+				typeof data.flipPadding.x == 'number' &&
+				typeof data.flipPaddingX  != 'number'
+			) {
+				// data.flipPaddingX = data.flipPadding.x;
+				state.padding.x = data.flipPadding.x;
+			}
+			if (
+				typeof data.flipPadding.y == 'number' &&
+				typeof data.flipPaddingY  != 'number'
+			) {
+				// data.flipPaddingY = data.flipPadding.y;
+				state.padding.y = data.flipPadding.y;
+			}
+		}
+
+		state.params = {
+			"padding_y"      : typeof data.paddingY     == 'number' ? data.paddingY     : defaults.padding_y     ,
+			"flip_padding_y" : typeof data.flipPaddingY == 'number' ? data.flipPaddingY : defaults.flip_padding_y,
+			"padding_x"      : typeof data.paddingX     == 'number' ? data.paddingX     : defaults.padding_x     ,
+			"flip_padding_x" : typeof data.flipPaddingX == 'number' ? data.flipPaddingX : defaults.flip_padding_x,
+			"startZIndex"    : typeof data.startZIndex  == 'number' ? data.startZIndex  : defaults.startZIndex   ,
+			"rotate"         : typeof data.rotate       == 'number' ? data.rotate       : defaults.rotate        ,
+			"x"              : 0                                                                                 ,
+			"y"              : 0
+		};
+
+		// __data
+
+		// getPosition() {}
+
+		state.rotate = state.params.rotate;
+
+		state.autoUnflipTop = typeof data.autoUnflipTop == 'boolean' ? data.autoUnflipTop : defaults.autoUnflipTop;
 		
+		// cardFlipCheck()
+
+		// let stringWithColon()
+
+		// putRules
+
+		// takeRules
+
+		// fullRules
+
+		// padding()
+
+		state.actions = [];
+
+		if (data.actions) {
+			state.actions = data.actions;
+			// deckActions.add(this);
+		}
+
+		state.relations = data.relations ? data.relations : []
+
+		state.tags = data.tags ? data.tags : [];
+
 		state.cards = [];
+
+		// dispatch addDeckEl
+
+		// listen moveDragDeck
 
 		return state;
 	}
