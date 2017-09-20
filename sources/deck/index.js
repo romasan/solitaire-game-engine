@@ -23,6 +23,7 @@ import getDeck                from './getDeck'                                  
 import applyChangedParameters from '../io/renderEvents/common/applyChangedParameters';
 
 import React, {Component} from 'react';
+import {connect} from 'react-redux';
 
 class deckClass extends Component {
 
@@ -220,33 +221,73 @@ class deckClass extends Component {
 
 	render() {
 
+		console.log('%cDraw Deck', 'color: green;font-weight: bold');		
 		console.log('###DECK:', this.props);
 
-		const {showSlot} = this.props;		
-		
-		const transform = 'rotate(0deg)';
-		// const left      = '284px';
-		// const top       = '15px';
-		const width     = '71px';
-		const height    = '96px';
-		const display   = 'block';
-		const position  = 'relative';
+		const {
+			width ,
+			height,
+			left  ,
+			top   ,
+			zoom
+		} = this.props;
 
-		return <div className={`el deck${showSlot ? ' slot' : ''}`}
+		const {
+			showSlot,
+			visible ,
+			rotate
+		} = this.props.data;
+		
+		const transform = `rotate(${rotate}deg)`;
+		const display   = visible ? 'block' : 'none';
+
+		let cards = [];
+		
+		for (let i in this.props.data.cards) {
+
+			const {
+				id     ,
+				name   ,
+				flip   ,
+				visible
+			} = this.props.data.cards[i];
+
+			cards.push(
+				<Card
+					key     = {id}
+					id      = {id}
+					name    = {name}
+					width   = {zoom * defaults.card.width  + 'px'}
+					height  = {zoom * defaults.card.height + 'px'}
+					flip    = {flip}
+					visible = {visible}
+				/>
+			);
+		}
+
+		return <div
+			className={`el deck${showSlot ? ' slot' : ''}`}
 			style = {{
 				transform,
-				// left     ,
-				// top      ,
+				left     ,
+				top      ,
 				width    ,
 				height   ,
-				display,
-				position
-			}}></div>;
+				display
+			}}>
+			{cards}
+		</div>;
 	}
 
-	static create(state, data) {
+	/**
+	 * Init deck state part
+	 * @param {*} state
+	 * @param {*} data
+	 * @param {function} nextId
+	 */
+	static init(state, data, nextId) {
 
-		console.log('%cDeck create', 'color: blue');
+		console.log('%cInit Deck', 'color: blue;');
 
 		state.cards = [];
 		
@@ -255,7 +296,7 @@ class deckClass extends Component {
 
 		state.full = false;
 
-		// state.id   = 'deck_' + id;
+		state.id = 'deck_' + nextId();
 
 		let _parent_name = data.parent ? data.parent : 'no_parent';
 
@@ -265,7 +306,7 @@ class deckClass extends Component {
 
 		if (
 			typeof data.name != "string" &&
-					!data.deckIndex
+			      !data.deckIndex
 		) {
 			console.warn('Deck name', state.name, 'is incorrect');
 		}
@@ -274,23 +315,35 @@ class deckClass extends Component {
 
 		state.save = data.save ? true : false;
 
-		state.visible = typeof data.visible == 'boolean' ? data.visible : true;
+		state.visible = typeof data.visible == 'boolean'
+			? data.visible
+			: true;
 
-		state.deckIndex = typeof data.deckIndex == 'number' ? data.deckIndex : null;
+		state.deckIndex = typeof data.deckIndex == 'number'
+			? data.deckIndex
+			: null;
 
 		state.parent = typeof data.parent == 'string' ? data.parent : 'field';
 
-		state.autoHide = typeof data.autoHide == 'boolean' ? data.autoHide : defaults.autoHide;
+		state.autoHide = typeof data.autoHide == 'boolean'
+			? data.autoHide
+			: defaults.autoHide;
 
-		state.autoCheckFlip = typeof data.autoCheckFlip == 'boolean' ? data.autoCheckFlip : defaults.autoCheckFlip;
+		state.autoCheckFlip = typeof data.autoCheckFlip == 'boolean'
+			? data.autoCheckFlip
+			: defaults.autoCheckFlip;
 
 		if (typeof data.showPrefFlipCard == 'boolean') {
 			state.showPrefFlipCard = data.showPrefFlipCard;
 		}
 		
-		state.showPrevAttempts = typeof data.showPrevAttempts == 'boolean' ? data.showPrevAttempts : defaults.showPrevAttempts;
+		state.showPrevAttempts = typeof data.showPrevAttempts == 'boolean'
+			? data.showPrevAttempts
+			: defaults.showPrevAttempts;
 
-		state.checkNextCards = typeof data.checkNextCards == 'boolean' ? data.checkNextCards : defaults.checkNextCards;
+		state.checkNextCards = typeof data.checkNextCards == 'boolean'
+			? data.checkNextCards
+			: defaults.checkNextCards;
 
 		if (typeof data.showSlot == 'undefined') {
 			data.showSlot = defaults.showSlot;
@@ -300,7 +353,9 @@ class deckClass extends Component {
 
 		// changed parameters
 
-		state.showSlot = typeof showSlot == 'boolean' ? showSlot : defaults.showSlot;
+		state.showSlot = typeof showSlot == 'boolean'
+			? showSlot
+			: defaults.showSlot;
 
 		state.padding = {
 			"x": 0,
@@ -308,6 +363,7 @@ class deckClass extends Component {
 		};
 
 		if (data.padding) {
+
 			if (
 				typeof data.padding.x == 'number' &&
 				typeof data.paddingX  != 'number'
@@ -315,6 +371,7 @@ class deckClass extends Component {
 				// data.paddingX = data.padding.x;
 				state.padding.x = data.padding.x
 			}
+
 			if (
 				typeof data.padding.y == 'number' &&
 				typeof data.paddingY  != 'number'
@@ -330,6 +387,7 @@ class deckClass extends Component {
 		};
 
 		if (data.flipPadding) {
+
 			if (
 				typeof data.flipPadding.x == 'number' &&
 				typeof data.flipPaddingX  != 'number'
@@ -337,6 +395,7 @@ class deckClass extends Component {
 				// data.flipPaddingX = data.flipPadding.x;
 				state.padding.x = data.flipPadding.x;
 			}
+
 			if (
 				typeof data.flipPadding.y == 'number' &&
 				typeof data.flipPaddingY  != 'number'
@@ -347,14 +406,26 @@ class deckClass extends Component {
 		}
 
 		state.params = {
-			"padding_y"      : typeof data.paddingY     == 'number' ? data.paddingY     : defaults.padding_y     ,
-			"flip_padding_y" : typeof data.flipPaddingY == 'number' ? data.flipPaddingY : defaults.flip_padding_y,
-			"padding_x"      : typeof data.paddingX     == 'number' ? data.paddingX     : defaults.padding_x     ,
-			"flip_padding_x" : typeof data.flipPaddingX == 'number' ? data.flipPaddingX : defaults.flip_padding_x,
-			"startZIndex"    : typeof data.startZIndex  == 'number' ? data.startZIndex  : defaults.startZIndex   ,
-			"rotate"         : typeof data.rotate       == 'number' ? data.rotate       : defaults.rotate        ,
-			"x"              : 0                                                                                 ,
-			"y"              : 0
+			"padding_y"      : typeof data.paddingY     == 'number'
+				? data.paddingY
+				: defaults.padding_y,
+			"flip_padding_y" : typeof data.flipPaddingY == 'number'
+				? data.flipPaddingY
+				: defaults.flip_padding_,
+			"padding_x"      : typeof data.paddingX     == 'number'
+				? data.paddingX
+				: defaults.padding_x,
+			"flip_padding_x" : typeof data.flipPaddingX == 'number'
+				? data.flipPaddingX
+				: defaults.flip_padding_,
+			"startZIndex"    : typeof data.startZIndex  == 'number'
+				? data.startZIndex
+				: defaults.startZIndex,
+			"rotate"         : typeof data.rotate       == 'number'
+				? data.rotate
+				: defaults.rotate,
+			"x" : 0                                                                                 ,
+			"y" : 0
 		};
 
 		// __data
@@ -363,7 +434,9 @@ class deckClass extends Component {
 
 		state.rotate = state.params.rotate;
 
-		state.autoUnflipTop = typeof data.autoUnflipTop == 'boolean' ? data.autoUnflipTop : defaults.autoUnflipTop;
+		state.autoUnflipTop = typeof data.autoUnflipTop == 'boolean'
+			? data.autoUnflipTop
+			: defaults.autoUnflipTop;
 		
 		// cardFlipCheck()
 
@@ -388,11 +461,34 @@ class deckClass extends Component {
 
 		state.tags = data.tags ? data.tags : [];
 
+		/**
+		 * Cards
+		 */
+
 		state.cards = [];
+
+		if (data.fill) {
+
+			for (let i in data.fill) {
+
+				const name = data.fill[i];
+
+					state.cards.push(
+						Card.init({
+							name,
+							parent: state.id
+						},
+						nextId
+					)
+				);
+			}
+		}
 
 		// dispatch addDeckEl
 
 		// listen moveDragDeck
+
+		console.log('%cEnd init Deck', 'color: blue');		
 
 		return state;
 	}
@@ -465,28 +561,6 @@ class deckClass extends Component {
 	 */
 	static getDeckById(id) {
 		return getDeckById(id);
-	}
-
-	/**
-	 * Deck redraw
-	 * @param {*} data 
-	 */
-	Redraw(data) {
-
-		// console.log('deck:Redraw', this.name);
-
-		event.dispatch('redrawDeck', {
-			"deck"     : this        ,
-			"deckData" : data        ,
-			"params"   : this._params,
-			"cards"    : this.cards
-		});
-
-		// this.checkFlip();
-
-		event.dispatch('redrawDeckFlip', {
-			"cards" : this.cards
-		});
 	}
 
 	/**
@@ -1128,4 +1202,5 @@ class deckClass extends Component {
 	}
 }
 
-export default deckClass;
+export default connect(state => state.toJS())(deckClass);
+// export default deckClass;

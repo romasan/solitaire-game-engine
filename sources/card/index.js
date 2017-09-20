@@ -44,60 +44,55 @@ class cardClass extends Component {
 
 	render() {
 		
-		const {name, flip} = this.props;
+		const {
+			name   ,
+			flip   ,
+			width  ,
+			height ,
+			visible
+		} = this.props;
 
 		const transform = 'rotate(0deg)';
 		// const left      = '284px';
 		// const top       = '15px';
-		const width     = '71px';
-		const height    = '96px';
-		const display   = 'block';
-		const position  = 'relative';
+		const display   = visible ? 'block' : 'none';
 
-		return <div className={`el card ${name} ${flip ? 'flip' : ''}`}
+		return <div className={`el card ${name}${flip ? ' flip' : ''}`}
 			style ={{
 				transform,
 				// left     ,
 				// top      ,
 				width    ,
 				height   ,
-				display,
-				position
+				display
 			}}></div>;
 	}
 
-	static create(state, data) {
+	/**
+	 * Init card state part
+	 * @param {*} state
+	 * @param {function} nextId
+	 */
+	static init(state, nextId) {
 
-		let _id = 'card_' + common.genId();
+		const {
+			name
+		} = state;
 
-		const {name} = data;
+		state.id = 'card_' + nextId();
 
-		let suit  = name.slice(0, 1)                                       ,
-		    rank  = name.slice(1, 3)                                       ,
-		    color = null                                                   ,
-			value = defaults.card.values[defaults.card.ranks.indexOf(rank)];
+		state.suit = name.slice(0, 1);
+		state.rank = name.slice(1, 3);
+		state.value = defaults.card.values[defaults.card.ranks.indexOf(state.rank)];
 
-		let parent = "";
-			
 		for (let colorName in defaults.card.colors) {
-			if (defaults.card.colors[colorName].indexOf(suit) >= 0) {
-				color = colorName;
+			if (defaults.card.colors[colorName].indexOf(state.suit) >= 0) {
+				state.color = colorName;
 			}
 		}
 
-		const _card = {
-			"id"      : _id   ,
-			"name"    : name  ,
-			"visible" : true  ,
-			"flip"    : false ,
-			"parent"  : parent,
-			"color"   : color ,
-			"value"   : value ,
-			"suit"    : suit  ,
-			"rank"    : rank
-		};
-
-		state.push(_card);
+		state.visible = true;
+		state.flip = false;
 
 		return state;
 	}

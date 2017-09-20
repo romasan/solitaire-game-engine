@@ -115,7 +115,7 @@ class groupClass extends Component {
 		</div>;
 	}
 
-	static create(state, name, data) {
+	static init(state, name, data) {
 		return state;
 	}
 
@@ -460,14 +460,6 @@ class groupClass extends Component {
 		}
 
 		return _decks;
-	}
-
-	/**
-	 * Redraw group
-	 * @param {*} data 
-	 */
-	Redraw(data) {
-		groupRedraw(this, data);
 	}
 
 	/**

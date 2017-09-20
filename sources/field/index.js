@@ -17,52 +17,62 @@ import {Map, List, fromJS} from 'immutable';
 import {connect} from 'react-redux';
 
 class Field extends Component {
-
-	// constructor() {
-
-	// 	share.set('elements', {});
-
-	// 	this.tipsParams  = {};
-	// 	this.inputParams = {};
-	// }
-
 	
 	render() {
 
-		let classes = [
-			"solitaireField",
-			"default_field",
-			"default_face",
-			"alternative_back",
-			"solitaireField"
-		];
-		
-		console.log('>>>', this.props);
-		
-		let cards = [];
+		console.log('%cDraw Field', 'color: green;font-weight: bold');
 
-		let a = ['c1', 'd2', 'h3'];
-		for(let i in a) {
-			// key = id ???
-			cards.push(
-				<Card key={'card_' + i} name={a[i]}/>
-			);
-		}
+		const {
+			zoom
+		} = this.props;
+
+		let classes = [
+			"solitaireField"  ,
+			"default_field"   ,
+			"default_face"    ,
+			"alternative_back"
+		];
+
+		/**
+		 * Groups
+		 */
+
+		let groups = [
+			// <Group key="group_1"/>
+		];
+
+		/**
+		 * Decks
+		 */
 
 		let decks = [
 			// <Deck slot={true} key="deck_1"/>
 		];
 
-		for(let i in this.props.decks) {
-			const {id, slot} = this.props.decks[i];
+		for (let i in this.props.decks) {
+
+			const {
+				id  ,
+				left,
+				top
+			} = this.props.decks[i];
+
 			decks.push(
-				<Deck slot={slot} key={id}/>			
+				<Deck
+					key    = {id}
+					id     = {id}
+					data   = {this.props.decks[i]}
+					width  = {zoom * defaults.card.width  + 'px'}
+					height = {zoom * defaults.card.height + 'px'}
+					left   = {zoom * left                 + 'px'}
+					top    = {zoom * top                  + 'px'}
+				/>
 			);
 		}
 
 		return <div className={classes.join(' ')}>
+			{groups}
 			{decks}
-			{cards}
 		</div>;
 	}
 
@@ -71,19 +81,23 @@ class Field extends Component {
 	 * @param {Map} state
 	 * @param {*} data
 	 */
-	static create(state, data) {
+	static init(state, data) {
 
-		// this.clear();
+		// Init new state
 		const _state = {};
 
 		_state.currentId = 0;
 		
-		_state['homeGroups'] = data.homeGroups ? data.homeGroups : [];
+		_state.homeGroups = data.homeGroups ? data.homeGroups : [];
 		
-		_state['autoMoveToHomeOpenDecks'] = data.autoMoveToHomeOpenDecks ? data.autoMoveToHomeOpenDecks : [];
+		_state.autoMoveToHomeOpenDecks = data.autoMoveToHomeOpenDecks
+			? data.autoMoveToHomeOpenDecks
+			: [];
 		
 		// вкл./выкл. подсказок
-		_state['autoMoveToHomeOpenDecks'] = typeof data.showTips == "boolean" ? data.showTips : defaults.showTips;
+		_state.autoMoveToHomeOpenDecks = typeof data.showTips == "boolean"
+			? data.showTips
+			: defaults.showTips;
 		
 		// устанвливаем тип хода по умолчанию
 		_state['stepType'] = defaults.stepType;
@@ -111,10 +125,10 @@ class Field extends Component {
 		
 		// условие выигрыша
 		// share.set('winCheck', data.winCheck);
-		_state['stepType'] = data.winCheck;
+		_state.winCheck = data.winCheck;
 		
 		// Настройки оформления (если нет сохранений)
-		_state['theme'] = data.theme;
+		_state.theme = data.theme;
 
 		// Дополнительные настройки игры
 		if (data.preferences) {
@@ -149,8 +163,8 @@ class Field extends Component {
 		// параметры отображения подсказок
 		for (let tipParamName in defaults.tipsParams) {
 			_state.tipsParams[tipParamName] = (data.tipsParams && typeof data.tipsParams[tipParamName] != 'undefined')
-			? data.tipsParams[tipParamName]
-			: defaults.tipsParams[tipParamName]
+				? data.tipsParams[tipParamName]
+				: defaults.tipsParams[tipParamName]
 		}
 
 		_state.inputParams = {};
@@ -158,27 +172,31 @@ class Field extends Component {
 		// параметры ввода
 		for (let inputParamName in defaults.inputParams) {
 			_state.inputParams[inputParamName] = (data.inputParams && typeof data.inputParams[inputParamName] != 'undefined')
-			? data.inputParams[inputParamName]
-			: defaults.inputParams[inputParamName]
+				? data.inputParams[inputParamName]
+				: defaults.inputParams[inputParamName]
 		}
 		
 		// дополнительные параметры отображения
 		// начальная позиция порядка отображения элементов
-		if (data.startZIndex && typeof data.startZIndex == 'number') {
+		if (typeof data.startZIndex == 'number') {
 			_state['start_z_index'] = data.startZIndex;
 		}
 		
 		// инициализация автоходов
-		// if (data.autoSteps) {
-		// 	this.autoSteps = addAutoSteps(data.autoSteps);
-		// }
+		if (data.autoSteps) {
+			// this.autoSteps = addAutoSteps(data.autoSteps);
+		}
 
 		
 		// NOTE: на событие подписан deckActions
 		// если ставить позже отрисовки элементов, переделать
 		// event.dispatch('initField', data);
+		
+		/**
+		 * Groups
+		 */
 
-		_state.groups = {};
+		 _state.groups = {};
 		
 		// Отрисовка элементов
 		if (data.groups) {
@@ -188,9 +206,13 @@ class Field extends Component {
 				data.groups[groupName].name = groupName;
 				// Group.add(data.groups[groupName]);
 				
-				Group.create(_state.groups, groupName, data.groups[groupName]);
+				Group.init(_state.groups, groupName, data.groups[groupName]);
 			}
 		}
+
+		/**
+		 * Decks
+		 */
 		
 		_state.decks = [];
 
@@ -201,113 +223,51 @@ class Field extends Component {
 
 				// Deck.addDeck(data.decks[e]);
 
-				console.log('###', _state);
-
 				_state.decks.push(
-					Deck.create({
-						"id"               : 'deck_' + _state.currentId++,
-						"showPrefFlipCard" : _state.showPrefFlipCard
-					}, data.decks[e])
+					Deck.init(
+						{
+							"showPrefFlipCard" : _state.showPrefFlipCard
+						},
+						data.decks[e],
+						() => _state.currentId++
+					)
 				);
 			}
 		}
+
+		/**
+		 * Fill
+		 */
 		
 		// fill decks
 		// top priority
 		if (data.fill) {
 			
-			let _decks = Deck.getDecks();
-			let _fill  = null;
-			try {
-				_fill = Object.assign([], data.fill);
-			} catch (e) {
-				_fill = data.fill;
-			}
+			// let _decks = Deck.getDecks();
+			// let _fill  = null;
+			// try {
+			// 	_fill = Object.assign([], data.fill);
+			// } catch (e) {
+			// 	_fill = data.fill;
+			// }
 			
-			for (;_fill.length;) {
-				for (let deckId in _decks) {
-					if (_fill.length) {
-						let _card = _fill.shift();
-						_decks[deckId].Fill([_card]);
-					}
-				}
-			}
+			// for (;_fill.length;) {
+			// 	for (let deckId in _decks) {
+			// 		if (_fill.length) {
+			// 			let _card = _fill.shift();
+			// 			_decks[deckId].Fill([_card]);
+			// 		}
+			// 	}
+			// }
 		}
-		
+
 		// Найти возможные ходы
 		// Tips.checkTips();
 		
 		// событие: игра началась
 		// event.dispatch('newGame');
-		
+
 		return fromJS(_state);
-	}
-
-	/**
-	 * Redraw game field
-	 * @param {*} data
-	 */
-	Redraw(data) {
-
-		// console.log('Field:Redraw');
-
-		// прокидываеем <новую> конфигурацию
-		if (data) {
-
-			// ерерисовываем все группы и стопки в них
-			for (let _groupName in data.groups) {
-
-				let _group = Group.getByName(_groupName);
-
-				if (_group) {
-					_group.Redraw(data.groups[_groupName]);
-				}
-			}
-
-			// перерисовываем отдельно стоящие стопки
-			for (let i in data.decks) {
-
-				let _deck = Deck.getDeck(data.decks[i].name);
-
-				if (_deck) {
-					_deck.Redraw(data.decks[i]);
-				}
-			}
-
-		// перерисовка без конфигурации
-		} else {
-
-			// получаем все существующие стопки
-			let _decks = Deck.getDecks();
-
-			// перерисовываем каждую
-			for (let i in _decks) {
-				_decks[i].Redraw();
-			}
-		}
-	}
-
-	/**
-	 * Clear game field
-	 */
-	clear() {
-
-		// console.log('Field:clear');
-
-		let _elements = share.get('elements');
-
-		for (let i in _elements) {
-			if (_elements[i].type == 'deck') {
-				_elements[i].clear();
-				_elements[i] = null;
-			} else if (_elements[i].type == 'group') {
-				_elements[i] = null;
-			}
-		}
-
-		// event.dispatch('removeCardElements');
-
-		share.set('elements', {});
 	}
 }
 
