@@ -17,21 +17,29 @@ Types:
 
 let paddingTypes = {
 
-	"_default" : (params, card, index, length, deck) => {
+	/**
+	 * Deafult padding
+	 * @param {*} params - deck state.params
+	 * @param {*} card
+	 * @param {number} index
+	 * @param {number} length
+	 * @param {*[]} deck - cards list
+	 */
+	"_default" : (state, card, index, length, cards) => {
 
 		// console.log('_default', {params, card, index, length, deck});
 
-		let _y = params.y,
-		    _x = params.x;
+		let y = 0,
+		    x = 0;
 
 		for (let i = 0; i < index; i += 1) {
-			_y += deck[i] && deck[i].flip ? params.flip_padding_y : params.padding_y;
-			_x += deck[i] && deck[i].flip ? params.flip_padding_x : params.padding_x;
+			y += cards[i] && deck[i].flip ? state.flipPadding.y : state.padding.y;
+			x += cards[i] && deck[i].flip ? state.flipPadding.x : state.padding.x;
 		}
 
 		return {
-			"x" : _x,
-			"y" : _y
+			"x" : x,
+			"y" : y
 		};
 	},
 
@@ -125,16 +133,17 @@ let paddingTypes = {
 		return paddingTypes._default(_params, card, index, length, deck);
 	},
 
-	"roller": (params, card, index, length, deck, data) => {
+	"roller": (state, card, index, length, cards, value) => {
+	// "roller": (params, card, index, length, deck, data) => {
 		// data: "open,group,padding"
 		// flipRule: "topUnflip:open"
 
-		let _data   =   data.split(',') ,
+		let _data   =   value.split(',') ,
 		    open    =  _data[0] | 0     , // open cards count
 		    group   = (_data[1] | 0) > 0  // closed cards group count
 		    	? _data[1] | 0
 		    	: 1,
-		    padding = _data[2] | 0;
+		    padding = _data[2] | 0;       // padding
 
 		let correct = 0;
 
@@ -144,8 +153,8 @@ let paddingTypes = {
 		) {
 
 			return {
-				"x" : params.x + (defaults.card.width * share.get('zoom')) + padding + ((index - length + open - correct) * params.padding_x),
-				"y" : params.y + (index - length + open) * params.padding_y
+				"x" : defaults.card.width + padding + ((index - length + open - correct) * params.padding_x),
+				"y" : (index - length + open) * params.padding_y
 			}
 		} else {                          // before delimiter
 
@@ -154,14 +163,14 @@ let paddingTypes = {
 			}
 
 			return {
-				"x" : params.x + params.flip_padding_x * ((index / group) | 0),
-				"y" : params.y + params.flip_padding_y * ((index / group) | 0)
+				"x" : params.flip_padding_x * ((index / group) | 0),
+				"y" : params.flip_padding_y * ((index / group) | 0)
 			}
 		} 
 
 		return {
-			"x" : params.x,
-			"y" : params.y
+			"x" : 0,
+			"y" : 0
 		};
 	},
 

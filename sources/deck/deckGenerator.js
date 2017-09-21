@@ -152,7 +152,7 @@ let deckGenerator = data => {
 	}
 
 	if(cardDescription) {
-		_deck = _deck.map(e => Card.validateCardName(e));
+		_deck = _deck.map(e => Card.validateCardName(e, true));
 	}
 
 	return _deck;

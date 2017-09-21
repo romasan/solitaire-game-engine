@@ -7,6 +7,7 @@ import defaults from '../common/defaults';
 import Deck     from '../deck'           ;
 
 import React, {Component} from 'react';
+import {connect} from 'react-redux';
 
 class cardClass extends Component {
 
@@ -45,26 +46,32 @@ class cardClass extends Component {
 	render() {
 		
 		const {
+			id     ,
 			name   ,
 			flip   ,
-			width  ,
-			height ,
-			visible
+			left   ,
+			top    ,
+			visible,
+			rotate ,
+			zoom
 		} = this.props;
 
-		const transform = 'rotate(0deg)';
-		// const left      = '284px';
-		// const top       = '15px';
+		const {
+			width,
+			height
+		} = defaults.card;
+		
 		const display   = visible ? 'block' : 'none';
-
+		
 		return <div className={`el card ${name}${flip ? ' flip' : ''}`}
+			id = {id}
 			style ={{
-				transform,
-				// left     ,
-				// top      ,
-				width    ,
-				height   ,
-				display
+				display   : visible ? 'block' : 'none',
+				transform : `rotate(${rotate}deg)`    ,
+				left      : zoom * left   + 'px'      ,
+				top       : zoom * top    + 'px'      ,
+				width     : zoom * width  + 'px'      ,
+				height    : zoom * height + 'px'
 			}}></div>;
 	}
 
@@ -81,8 +88,8 @@ class cardClass extends Component {
 
 		state.id = 'card_' + nextId();
 
-		state.suit = name.slice(0, 1);
-		state.rank = name.slice(1, 3);
+		state.suit  = name.slice(0, 1);
+		state.rank  = name.slice(1, 3);
 		state.value = defaults.card.values[defaults.card.ranks.indexOf(state.rank)];
 
 		for (let colorName in defaults.card.colors) {
@@ -92,63 +99,27 @@ class cardClass extends Component {
 		}
 
 		state.visible = true;
-		state.flip = false;
+		state.flip    = false;
+
+		state.position = {
+			"x" : 0,
+			"y" : 0
+		};
+
+		state.offset = {
+			"x" : 0,
+			"y" : 0
+		};
 
 		return state;
 	}
 
 	/**
-	 * Generate card by name and add in to deck
-	 * @param {Deck} deck 
-	 * @param {string} name 
-	 * @param {boolean} last 
-	 * @returns {cardClass}
-	 */
-	static genCardByName(deck, name, last = true) {
-		
-		const {color, value, suit, rank, isCard} = this.validateCardName(name);
-
-		if (isCard) {
-
-
-			let _card = {
-				"id"      : _id    ,
-				"name"    : name   ,
-				"visible" : true   ,
-				"flip"    : false  ,
-				"parent"  : deck.id,
-				"color"   : color  ,
-				"value"   : value  ,
-				"suit"    : suit   ,
-				"rank"    : rank
-			};
-
-			let card = new cardClass(_card);
-
-			event.dispatch('addCardEl', card);
-
-			let _elements = share.get('elements');
-			_elements[_id] = card;
-			share.set('elements', _elements);
-
-			deck.Push([card]);
-			
-			if (last) {
-				deck.checkFlip();
-				deck.Redraw();
-			}
-
-			return _card;
-		}
-
-		return false;
-	}
-
-	/**
 	 * Validate card name
-	 * @param {string} name 
+	 * @param {string} name
+	 * @param {boolean} init - return card info
 	 */
-	static validateCardName(name) {
+	static validateCardName(name, init = false) {
 
 		if (typeof name != 'string') {
 
@@ -157,29 +128,30 @@ class cardClass extends Component {
 			return false;
 		}
 
-		let suit  = name.slice(0, 1)                                       ,
-		    rank  = name.slice(1, 3)                                       ,
-		    color = null                                                   ,
-		    value = defaults.card.values[defaults.card.ranks.indexOf(rank)];
-
-		for (let colorName in defaults.card.colors) {
-			if (defaults.card.colors[colorName].indexOf(suit) >= 0) {
-				color = colorName;
-			}
-		}
+		const suit = name.slice(0, 1),
+		      rank = name.slice(1, 3);
 
 		if (
 			defaults.card.suits.indexOf(suit) >= 0 &&
 			defaults.card.ranks.indexOf(rank) >= 0
 		) {
-			return {
-				"color"  : color,
-				"value"  : value,
-				"name"   : name ,
-				"suit"   : suit , 
-				"rank"   : rank ,
-				"isCard" : true
-			}
+			return !init ? true : {
+				"color"  : (e => {
+
+					for (let colorName in defaults.card.colors) {
+						if (defaults.card.colors[colorName].indexOf(suit) >= 0) {
+							return colorName;
+						}
+					}
+
+					console.warn('A card with a suit', e, 'does not have a color');
+				})(suit),
+				"value"  : defaults.card.values[defaults.card.ranks.indexOf(rank)],
+				"name"   : name                                                   ,
+				"suit"   : suit                                                   ,
+				"rank"   : rank
+				// "isCard" : true
+			};
 		} else {
 
 			console.warn('Warning: validate name:', name, '- incorrect');
@@ -189,4 +161,5 @@ class cardClass extends Component {
 	}
 }
 
-export default cardClass;
+// export default cardClass;
+export default connect(state => state.toJS())(cardClass);

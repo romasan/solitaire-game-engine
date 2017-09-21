@@ -16,15 +16,15 @@ import React, {Component} from 'react';
 import {Map, List, fromJS} from 'immutable';
 import {connect} from 'react-redux';
 
-class Field extends Component {
+class fieldClass extends Component {
 	
 	render() {
 
 		console.log('%cDraw Field', 'color: green;font-weight: bold');
 
-		const {
-			zoom
-		} = this.props;
+		/**
+		 * Theme
+		 */
 
 		let classes = [
 			"solitaireField"  ,
@@ -51,21 +51,13 @@ class Field extends Component {
 
 		for (let i in this.props.decks) {
 
-			const {
-				id  ,
-				left,
-				top
-			} = this.props.decks[i];
+			const {id} = this.props.decks[i];
 
 			decks.push(
 				<Deck
 					key    = {id}
 					id     = {id}
-					data   = {this.props.decks[i]}
-					width  = {zoom * defaults.card.width  + 'px'}
-					height = {zoom * defaults.card.height + 'px'}
-					left   = {zoom * left                 + 'px'}
-					top    = {zoom * top                  + 'px'}
+					{...this.props.decks[i]}
 				/>
 			);
 		}
@@ -271,6 +263,6 @@ class Field extends Component {
 	}
 }
 
-export default connect(state => state.toJS())(Field);
+export default connect(state => state.toJS())(fieldClass);
 
 // export default Field;

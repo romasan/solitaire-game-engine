@@ -29,23 +29,6 @@ class deckClass extends Component {
 
 	// constructor(data, id) {
 
-	// 	let __data = applyChangedParameters({
-	// 		"deckData" : data        ,
-	// 		"deck"     : this        ,
-	// 		"params"   : this._params
-	// 	}, false);
-
-	// 	/**
-	// 	 * Get position
-	// 	 * @returns {Vector2d}
-	// 	 */
-	// 	this.getPosition = e => {
-	// 		return {
-	// 			"x": __data.params.x,
-	// 			"y": __data.params.y
-	// 		};
-	// 	}
-
 	// 	// Flip
 	// 	let flipData = null;
 
@@ -151,31 +134,6 @@ class deckClass extends Component {
 	// 				: defaults.fullRules
 	// 		: defaults.fullRules;
 
-	// 	// Padding
-	// 	// порядок карт в колоде
-	// 	let paddingData = null;
-	// 	let padding = data.paddingType                                 // isset data.paddingType
-	// 		? typeof data.paddingType == 'string'                      // is string
-	// 			? paddingTypes[data.paddingType]                       // isset method
-	// 				? paddingTypes[data.paddingType]                   // use method(data.paddingType)
-	// 				: data.paddingType.indexOf(':') >= 0               // is method with attribute
-	// 					? (e => {
-
-	// 						let name = e[0];                           // method name
-
-	// 						if (paddingTypes[name]) {
-	// 							paddingData = e.length > 1             // save method data
-	// 								? e.slice(1).join(':')
-	// 								: '';
-	// 							return paddingTypes[name];             // use method(data.paddingType)
-	// 						}
-
-	// 						return paddingTypes[defaults.paddingType]; // use default
-	// 					})(data.paddingType.split(':'))
-	// 					: paddingTypes[defaults.paddingType]           // use default
-	// 			: paddingTypes[defaults.paddingType]                   // use default
-	// 		: paddingTypes[defaults.paddingType];                      // use default
-
 	// 	/**
 	// 	 * Get padding for card by index
 	// 	 * @param {number}
@@ -196,12 +154,6 @@ class deckClass extends Component {
 	// 			paddingData
 	// 		);
 	// 	}
-
-	// 	event.dispatch('addDeckEl', {
-	// 		"deckData" : data        , 
-	// 		"deck"     : this        ,
-	// 		"params"   : this._params
-	// 	});
 
 	// 	// Подписывается на перетаскивание стопки/карты
 	// 	let _callback = data => {
@@ -225,55 +177,47 @@ class deckClass extends Component {
 		console.log('###DECK:', this.props);
 
 		const {
-			width ,
-			height,
-			left  ,
-			top   ,
-			zoom
-		} = this.props;
-
-		const {
+			id      ,
+			position,
+			zoom    ,
 			showSlot,
 			visible ,
 			rotate
-		} = this.props.data;
-		
-		const transform = `rotate(${rotate}deg)`;
-		const display   = visible ? 'block' : 'none';
+		} = this.props;
+
+		const {
+			width,
+			height
+		} = defaults.card;
+
+		/**
+		 * Cards
+		 */
 
 		let cards = [];
 		
-		for (let i in this.props.data.cards) {
+		for (let i in this.props.cards) {
 
-			const {
-				id     ,
-				name   ,
-				flip   ,
-				visible
-			} = this.props.data.cards[i];
+			const {id} = this.props.cards[i];
 
 			cards.push(
 				<Card
-					key     = {id}
-					id      = {id}
-					name    = {name}
-					width   = {zoom * defaults.card.width  + 'px'}
-					height  = {zoom * defaults.card.height + 'px'}
-					flip    = {flip}
-					visible = {visible}
+					key = {id}
+					{...this.props.cards[i]}
 				/>
 			);
 		}
 
 		return <div
-			className={`el deck${showSlot ? ' slot' : ''}`}
+			className = {`el deck${showSlot ? ' slot' : ''}`}
+			id = {id}
 			style = {{
-				transform,
-				left     ,
-				top      ,
-				width    ,
-				height   ,
-				display
+				display   : visible ? 'block' : 'none',
+				transform : `rotate(${rotate}deg)`    ,
+				left      : zoom * position.x + 'px'  ,
+				top       : zoom * position.y + 'px'  ,
+				width     : zoom * width      + 'px'  ,
+				height    : zoom * height     + 'px'
 			}}>
 			{cards}
 		</div>;
@@ -357,82 +301,144 @@ class deckClass extends Component {
 			? showSlot
 			: defaults.showSlot;
 
+		/**
+		 * Padding
+		 */
+
 		state.padding = {
-			"x": 0,
-			"y": 0
+			"x" : defaults.padding_x,
+			"y" : defaults.padding_y
+		};
+
+		state.flipPadding = {
+			"x" : defaults.flip_padding_x,
+			"y" : defaults.flip_padding_y
 		};
 
 		if (data.padding) {
 
-			if (
-				typeof data.padding.x == 'number' &&
-				typeof data.paddingX  != 'number'
-			) {
-				// data.paddingX = data.padding.x;
-				state.padding.x = data.padding.x
+			if (typeof data.padding.x  == "number") {
+				state.padding.x = data.padding.x;
 			}
 
-			if (
-				typeof data.padding.y == 'number' &&
-				typeof data.paddingY  != 'number'
-			) {
-				// data.paddingY = data.padding.y;
-				state.padding.y = data.padding.y				
+			if (typeof data.padding.y  == "number") {
+				state.padding.y = data.padding.y;
 			}
 		}
-
-		state.flipPadding = {
-			"x": 0,
-			"y": 0
-		};
 
 		if (data.flipPadding) {
-
-			if (
-				typeof data.flipPadding.x == 'number' &&
-				typeof data.flipPaddingX  != 'number'
-			) {
-				// data.flipPaddingX = data.flipPadding.x;
-				state.padding.x = data.flipPadding.x;
+			
+			if (typeof data.flipPadding.x  == "number") {
+				state.flipPadding.x = data.flipPadding.x;
 			}
 
-			if (
-				typeof data.flipPadding.y == 'number' &&
-				typeof data.flipPaddingY  != 'number'
-			) {
-				// data.flipPaddingY = data.flipPadding.y;
-				state.padding.y = data.flipPadding.y;
+			if (typeof data.flipPadding.y  == "number") {
+				state.flipPadding.y = data.flipPadding.y;
 			}
 		}
 
-		state.params = {
-			"padding_y"      : typeof data.paddingY     == 'number'
-				? data.paddingY
-				: defaults.padding_y,
-			"flip_padding_y" : typeof data.flipPaddingY == 'number'
-				? data.flipPaddingY
-				: defaults.flip_padding_,
-			"padding_x"      : typeof data.paddingX     == 'number'
-				? data.paddingX
-				: defaults.padding_x,
-			"flip_padding_x" : typeof data.flipPaddingX == 'number'
-				? data.flipPaddingX
-				: defaults.flip_padding_,
-			"startZIndex"    : typeof data.startZIndex  == 'number'
-				? data.startZIndex
-				: defaults.startZIndex,
-			"rotate"         : typeof data.rotate       == 'number'
-				? data.rotate
-				: defaults.rotate,
-			"x" : 0                                                                                 ,
+		if (typeof data.paddingX == "number") {
+			state.padding.x = data.paddingX;
+		}
+
+		if (typeof data.paddingY == "number") {
+			state.padding.y = data.paddingY;
+		}
+
+		if (typeof data.flipPaddingX == "number") {
+			state.flipPadding.x = data.flipPaddingX;
+		}
+
+		if (typeof data.flipPaddingY == "number") {
+			state.flipPadding.y = data.flipPaddingY;
+		}
+
+		state.paddingType = {
+			"name"  : defaults.paddingType,
+			"value" : null
+		};
+		
+		if (
+			      typeof data.paddingType == "string"    &&
+			paddingTypes[data.paddingType.split(':')[0]]
+		) {
+
+			state.paddingType = {
+				"name"  : data.paddingType.split(':')[0],
+				"value" : data.paddingType.split(':')[1]
+			};
+		}
+
+		// TODO так же Flip и Full
+
+		// TODO пример для Take и Put
+
+		// const paddingTypes = data.paddingType || data.paddingTypes;
+		
+		// if (paddingTypes) {
+		// 	state.paddingTypes = typeof paddingTypes == 'string'   // is string
+		// 		? paddingTypes[data.paddingType.split(':')[0]]    // isset method
+		// 			? [{
+		// 				"name"  : paddingTypes.split(':')[0],
+		// 				"value" : paddingTypes.split(':')[1]
+		// 			}]
+		// 			: [defaults.paddingType]                      // use default
+		// 		: ((e, a) => {
+		// 			if (e.length) {
+
+		// 				for (i in e) {
+
+		// 					const paddingType = e[i];
+
+		// 					if (
+		// 						typeof paddingType == "string"          ||
+		// 						paddingTypes[paddingType.split(':')[0]]
+		// 					) {
+		// 						a.push({
+		// 							"name"  : null,
+		// 							"value" : null
+		// 						});
+		// 					}
+		// 				}
+
+		// 				if (e.length == 0 || a.length == 0) {
+		// 					return [defaults.paddingType]
+		// 				}
+		// 			} else {
+		// 				return [defaults.paddingType]
+		// 			}
+		// 		})(paddingTypes, [])
+		// }
+
+		console.log('deck', state.padding, state.name);
+
+		/**
+		 * Position
+		 */
+
+		state.position = {
+			"x" : 0,
 			"y" : 0
 		};
 
-		// __data
+		// TODO offset - позиция относительно Field
+		
+		state.offset = {
+			"x" : 0,
+			"y" : 0
+		};
 
-		// getPosition() {}
+		if (data.position) {
 
-		state.rotate = state.params.rotate;
+			const {x, y} = data.position;
+
+			state.position = {
+				"x" : x ? x : 0,
+				"y" : y ? y : 0
+			}
+		}
+
+		state.rotate = typeof data.rotate == "number" ? data.rotate : defaults.rotate;
 
 		state.autoUnflipTop = typeof data.autoUnflipTop == 'boolean'
 			? data.autoUnflipTop
@@ -448,7 +454,9 @@ class deckClass extends Component {
 
 		// fullRules
 
-		// padding()
+		/**
+		 * Actions
+		 */
 
 		state.actions = [];
 
@@ -473,14 +481,18 @@ class deckClass extends Component {
 
 				const name = data.fill[i];
 
+				if (Card.validateCardName(name)) {
+
 					state.cards.push(
-						Card.init({
-							name,
-							parent: state.id
-						},
-						nextId
-					)
-				);
+						Card.init(
+							{
+								name,
+								parent: state.id
+							},
+							nextId
+						)
+					);
+				}
 			}
 		}
 
@@ -491,6 +503,15 @@ class deckClass extends Component {
 		console.log('%cEnd init Deck', 'color: blue');		
 
 		return state;
+	}
+
+	/**
+	 * Padding
+	 * @param {number} index
+	 * @returns {Vector2d}
+	 */
+	static padding(state, index) {
+		// 
 	}
 
 	/**
