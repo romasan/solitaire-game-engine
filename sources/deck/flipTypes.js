@@ -51,11 +51,9 @@ let flipTypes = {
 
 	"topFlip"         : (i, length, data) => flipTypes._direction_type("top"   , "flip"  , i, length, data),
 
-	"topUnflip"       : (i, length, data, deck) => {
+	"topUnflip"       : (i, length, data) => {
 
 		let _result = flipTypes._direction_type("top"   , "unflip", i, length, data);
-
-		// console.log('topUnflip', i, length, data, deck.name, deck.cards[i].name, _result);
 
 		return _result;
 	}

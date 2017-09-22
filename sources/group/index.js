@@ -11,39 +11,40 @@ import groupRedraw    from './groupRedraw'     ;
 import groupGenerator from './groupGenerator'  ;
 
 import React, {Component} from 'react';
+// import {connect} from 'react-redux';
 
-const PARAMS = {
-	"flip"             : { "type" : 'any' },
-	"showSlot"         : { "type" : 'any' },
-	"takeRules"        : { "type" : 'any' },
-	"putRules"         : { "type" : 'any' },
-	"fullRules"        : { "type" : 'any' },
-	"autoHide"         : { "type" : 'any' },
-	"paddingType"      : { "type" : 'any' },
-	"padding"          : { "type" : 'any' },
-	"paddingX"         : { "type" : 'any' },
-	"paddingY"         : { "type" : 'any' },
-	"flipPadding"      : { "type" : 'any' },
-	"flipPaddingX"     : { "type" : 'any' },
-	"flipPaddingY"     : { "type" : 'any' },
-	"actions"          : { "type" : 'any' },
-	"tags"             : { "type" : 'any' },
-	"showPrefFlipCard" : { "type" :  null },
-	"showPrevAttempts" : { "type" :  null },
-	"checkNextCards"   : { "type" :  null },
-	"save" : {
-		"type"    : 'boolean',
-		"default" : true
-	},
-	"autoUnflipTop" : {
-		"type"    : 'boolean'             ,
-		"default" : defaults.autoUnflipTop
-	},
-	"autoCheckFlip"    : {
-		"type"    : 'boolean'             ,
-		"default" : defaults.autoCheckFlip
-	},
-};
+// const PARAMS = {
+// 	"flip"             : { "type" : 'any' },
+// 	"showSlot"         : { "type" : 'any' },
+// 	"takeRules"        : { "type" : 'any' },
+// 	"putRules"         : { "type" : 'any' },
+// 	"fullRules"        : { "type" : 'any' },
+// 	"autoHide"         : { "type" : 'any' },
+// 	"paddingType"      : { "type" : 'any' },
+// 	"padding"          : { "type" : 'any' },
+// 	"paddingX"         : { "type" : 'any' },
+// 	"paddingY"         : { "type" : 'any' },
+// 	"flipPadding"      : { "type" : 'any' },
+// 	"flipPaddingX"     : { "type" : 'any' },
+// 	"flipPaddingY"     : { "type" : 'any' },
+// 	"actions"          : { "type" : 'any' },
+// 	"tags"             : { "type" : 'any' },
+// 	"showPrefFlipCard" : { "type" :  null },
+// 	"showPrevAttempts" : { "type" :  null },
+// 	"checkNextCards"   : { "type" :  null },
+// 	"save" : {
+// 		"type"    : 'boolean',
+// 		"default" : true
+// 	},
+// 	"autoUnflipTop" : {
+// 		"type"    : 'boolean'             ,
+// 		"default" : defaults.autoUnflipTop
+// 	},
+// 	"autoCheckFlip"    : {
+// 		"type"    : 'boolean'             ,
+// 		"default" : defaults.autoCheckFlip
+// 	},
+// };
 
 class groupClass extends Component {
 
@@ -109,13 +110,59 @@ class groupClass extends Component {
 	// }
 
 	render() {
-		return <div class="group">
-			// array of decks
-			// array of cards
+
+		const {
+			id      ,
+			zoom    ,
+			position
+		} = this.props;
+
+		/**
+		 * Decks
+		 */
+
+		let decks = [];
+		
+		for (let i in this.props.decks) {
+
+			const {id} = this.props.decks[i];
+
+			decks.push(
+				<Deck
+					key    = {id}
+					{...this.props.decks[i]}
+				/>
+			);
+		}
+
+		return <div
+			id = {id}
+			className = "group"
+			style ={{
+				"left" : zoom * position.x + 'px',
+				"top"  : zoom * position.y + 'px'
+			}}
+		>
+			{decks}
 		</div>;
 	}
 
-	static init(state, name, data) {
+	static init(state, data, nextId) {
+
+		console.log('group init', state);
+
+		state.id = 'group_' + nextId();
+
+		state.position = {
+			"x" : 0,
+			"y" : 0
+		};
+
+		state.offset = { // = position
+			"x" : 0,
+			"y" : 0
+		};
+
 		return state;
 	}
 
@@ -481,4 +528,5 @@ class groupClass extends Component {
 	}
 }
 
+// export default connect(state => state.toJS())(groupClass);
 export default groupClass;

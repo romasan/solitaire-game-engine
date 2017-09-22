@@ -43,7 +43,7 @@ exports.onChangePreferences = callback => {
 
 exports.init = gameConfig => {
 	
-	console.log('gameConfig', gameConfig);	
+	console.log('gameConfig:', gameConfig);	
 	
 	store.dispatch({
 		type: actions.INIT_STATE,

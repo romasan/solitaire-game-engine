@@ -11,48 +11,15 @@ import {connect} from 'react-redux';
 
 class cardClass extends Component {
 
-	/**
-	 * Create card
-	 * @param {*} data 
-	 */
-	// constructor(data) {
-
-	// 	this.type = 'card';
-
-	// 	this.classList = {};
-
-	// 	const values = [
-	// 		'id'     ,
-	// 		'name'   ,
-	// 		'visible',
-	// 		'flip'   ,
-	// 		'parent' ,
-	// 		'color'  ,
-	// 		'value'  ,
-	// 		'suit'   ,
-	// 		'rank'
-	// 	];
-
-	// 	for (let i in values) {
-
-	// 		let value = values[i];
-
-	// 		if (typeof data[value] != 'undefined') {
-	// 			this[value] = data[value];
-	// 		}
-	// 	}
-	// }
-
 	render() {
 		
 		const {
-			id     ,
-			name   ,
-			flip   ,
-			left   ,
-			top    ,
-			visible,
-			rotate ,
+			id      ,
+			name    ,
+			flip    ,
+			position,
+			visible ,
+			rotate  ,
 			zoom
 		} = this.props;
 
@@ -63,15 +30,16 @@ class cardClass extends Component {
 		
 		const display   = visible ? 'block' : 'none';
 		
-		return <div className={`el card ${name}${flip ? ' flip' : ''}`}
+		return <div
 			id = {id}
+			className={`el card ${name}${flip ? ' flip' : ''}`}
 			style ={{
 				display   : visible ? 'block' : 'none',
 				transform : `rotate(${rotate}deg)`    ,
-				left      : zoom * left   + 'px'      ,
-				top       : zoom * top    + 'px'      ,
-				width     : zoom * width  + 'px'      ,
-				height    : zoom * height + 'px'
+				left      : zoom * position.x + 'px'  ,
+				top       : zoom * position.y + 'px'  ,
+				width     : zoom * width      + 'px'  ,
+				height    : zoom * height     + 'px'
 			}}></div>;
 	}
 

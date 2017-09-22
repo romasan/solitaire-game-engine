@@ -25,7 +25,7 @@ let paddingTypes = {
 	 * @param {number} length
 	 * @param {*[]} deck - cards list
 	 */
-	"_default" : (state, card, index, length, cards) => {
+	"_default" : (state, index) => {
 
 		// console.log('_default', {params, card, index, length, deck});
 
@@ -33,8 +33,8 @@ let paddingTypes = {
 		    x = 0;
 
 		for (let i = 0; i < index; i += 1) {
-			y += cards[i] && deck[i].flip ? state.flipPadding.y : state.padding.y;
-			x += cards[i] && deck[i].flip ? state.flipPadding.x : state.padding.x;
+			y += state.cards[i].flip ? state.flipPadding.y : state.padding.y;
+			x += state.cards[i].flip ? state.flipPadding.x : state.padding.x;
 		}
 
 		return {
@@ -43,16 +43,18 @@ let paddingTypes = {
 		};
 	},
 
-	"afterFlip" : (params, card, index, length, deck, data) => {
+	"afterFlip" : (state, index, value) => {
 
-		let _padding = paddingTypes._default(params, card, index, length, deck);
+		const card = state.cards[index];		
+
+		let _padding = paddingTypes._default(state, index, value);
 
 		let _plus = {
 			"x" : 0,
 			"y" : 0
 		};
 
-		let _data = data ? data.split(':') : [];
+		let _data = value ? value.split(':') : [];
 
 		if (_data.length > 1) {
 
@@ -101,42 +103,32 @@ let paddingTypes = {
 	// 	};
 	// },
 
-	"vertical": (params, card, index, length, deck) => {
+	"vertical": (state, index, value) => {
 
-		let _params = {};
+		state.padding.x     = state.padding.x     ? state.padding.x     : 0 ;
+		state.padding.y     = state.padding.y     ? state.padding.y     : 15;
+		state.flipPadding.x = state.flipPadding.x ? state.flipPadding.x : 0 ;
+		state.flipPadding.y = state.flipPadding.y ? state.flipPadding.y : 5 ;
 
-		for (let name in params) {
-			_params[name] = params[name];
-		}
-
-		_params.padding_x      = 0 ;
-		_params.padding_y      = 15;
-		_params.flip_padding_x = 0 ;
-		_params.flip_padding_y = 5 ;
-
-		return paddingTypes._default(_params, card, index, length, deck);
+		return paddingTypes._default(state, index, value);
 	},
 
-	"horizontal": (params, card, index, length, deck) => {
+	"horizontal": (state, index, value) => {
 
-		let _params = {};
+		state.padding.x     = state.padding.x     ? state.padding.x     : 10;
+		state.padding.y     = state.padding.y     ? state.padding.y     : 0 ;
+		state.flipPadding.x = state.flipPadding.x ? state.flipPadding.x : 5 ;
+		state.flipPadding.y = state.flipPadding.y ? state.flipPadding.y : 0 ;
 
-		for (let name in params) {
-			_params[name] = params[name];
-		}
-
-		_params.padding_x      = 10;
-		_params.padding_y      = 0 ;
-		_params.flip_padding_x = 5 ;
-		_params.flip_padding_y = 0 ;
-
-		return paddingTypes._default(_params, card, index, length, deck);
+		return paddingTypes._default(state, index, value);
 	},
 
-	"roller": (state, card, index, length, cards, value) => {
+	"roller": (state, index, value) => {
 	// "roller": (params, card, index, length, deck, data) => {
 		// data: "open,group,padding"
 		// flipRule: "topUnflip:open"
+
+		const card = state.cards[index];
 
 		let _data   =   value.split(',') ,
 		    open    =  _data[0] | 0     , // open cards count
@@ -153,8 +145,8 @@ let paddingTypes = {
 		) {
 
 			return {
-				"x" : defaults.card.width + padding + ((index - length + open - correct) * params.padding_x),
-				"y" : (index - length + open) * params.padding_y
+				"x" : defaults.card.width + padding + ((index - length + open - correct) * state.padding.x),
+				"y" : (index - length + open) * state.padding.y
 			}
 		} else {                          // before delimiter
 
@@ -163,8 +155,8 @@ let paddingTypes = {
 			}
 
 			return {
-				"x" : params.flip_padding_x * ((index / group) | 0),
-				"y" : params.flip_padding_y * ((index / group) | 0)
+				"x" : state.flipPadding.x * ((index / group) | 0),
+				"y" : state.flipPadding.y * ((index / group) | 0)
 			}
 		} 
 
@@ -174,15 +166,13 @@ let paddingTypes = {
 		};
 	},
 
-	"puffed": (params, card, index, length, deck, data) => {
+	"puffed": (state, index, value) => {
 
-		// console.log('puffed', data);
-
-		let group = (data | 0) > 0 ? (data | 0) : 1; 
+		let group = (value | 0) > 0 ? (value | 0) : 1; 
 
 		return {
-			"x" : params.x + params.flip_padding_x * ((index / group) | 0),
-			"y" : params.y + params.flip_padding_y * ((index / group) | 0)
+			"x" : state.flipPadding.x * ((index / group) | 0),
+			"y" : state.flipPadding.y * ((index / group) | 0)
 		}
 	}
 };

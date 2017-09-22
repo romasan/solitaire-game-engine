@@ -20,7 +20,7 @@ class fieldClass extends Component {
 	
 	render() {
 
-		console.log('%cDraw Field', 'color: green;font-weight: bold');
+		const {zoom} = this.props;
 
 		/**
 		 * Theme
@@ -37,17 +37,26 @@ class fieldClass extends Component {
 		 * Groups
 		 */
 
-		let groups = [
-			// <Group key="group_1"/>
-		];
+		let groups = [];
+
+		for(let i in this.props.groups) {
+
+			const {id} = this.props.groups[i];
+			
+			groups.push(
+				<Group
+					key = {id}
+					zoom = {zoom}
+					{...this.props.groups[i]}
+				/>
+			);
+		}
 
 		/**
 		 * Decks
 		 */
 
-		let decks = [
-			// <Deck slot={true} key="deck_1"/>
-		];
+		let decks = [];
 
 		for (let i in this.props.decks) {
 
@@ -55,8 +64,7 @@ class fieldClass extends Component {
 
 			decks.push(
 				<Deck
-					key    = {id}
-					id     = {id}
+					key = {id}
 					{...this.props.decks[i]}
 				/>
 			);
@@ -188,17 +196,25 @@ class fieldClass extends Component {
 		 * Groups
 		 */
 
-		 _state.groups = {};
+		 _state.groups = [];
 		
 		// Отрисовка элементов
 		if (data.groups) {
 			
 			for (let groupName in data.groups) {
 				
-				data.groups[groupName].name = groupName;
+				// data.groups[groupName].name = groupName;
 				// Group.add(data.groups[groupName]);
 				
-				Group.init(_state.groups, groupName, data.groups[groupName]);
+				_state.groups.push(
+					Group.init(
+						{
+							"name" : groupName
+						},
+						data.groups[groupName],
+						() => _state.currentId++
+					)
+				);
 			}
 		}
 

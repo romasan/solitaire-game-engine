@@ -1,180 +1,33 @@
 'use strict';
 
-import event                  from '../common/event'                                 ;
-import share                  from '../common/share'                                 ;
-import defaults               from '../common/defaults'                              ;
-import common                 from '../common'                                       ;
+import event         from '../common/event'   ;
+import share         from '../common/share'   ;
+import defaults      from '../common/defaults';
+import common        from '../common'         ;
 
-import flipTypes              from './flipTypes'                                     ;
-import putRules               from './putRules'                                      ;
-import takeRules              from './takeRules'                                     ;
-import fullRules              from './fullRules'                                     ;
-import paddingTypes           from './paddingTypes'                                  ;
-import deckActions            from './deckActions'                                   ;
-import Take                   from './deckTake'                                      ;
-import Put                    from './deckPut'                                       ;
-import Card                   from '../card'                                         ;
-import Group                  from '../group'                                        ;
+import flipTypes     from './flipTypes'       ;
+import putRules      from './putRules'        ;
+import takeRules     from './takeRules'       ;
+import fullRules     from './fullRules'       ;
+import paddingTypes  from './paddingTypes'    ;
+import deckActions   from './deckActions'     ;
+import Take          from './deckTake'        ;
+import Put           from './deckPut'         ;
+import Card          from '../card'           ;
+import Group         from '../group'          ;
 
-import getDecks               from './getDecks'                                      ;
-import getDeckById            from './getDeckById'                                   ;
-import deckCardNames          from './deckCardNames'                                 ;
-import getDeck                from './getDeck'                                       ;
-import applyChangedParameters from '../io/renderEvents/common/applyChangedParameters';
+import getDecks      from './getDecks'        ;
+import getDeckById   from './getDeckById'     ;
+import deckCardNames from './deckCardNames'   ;
+import getDeck       from './getDeck'         ;
+// import applyChangedParameters from '../io/renderEvents/common/applyChangedParameters';
 
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
 
 class deckClass extends Component {
 
-	// constructor(data, id) {
-
-	// 	// Flip
-	// 	let flipData = null;
-
-	// 	let flipType = data.flip && typeof data.flip == 'string'
-	// 		? data.flip.indexOf(':') > 0
-	// 			? (e => {
-
-	// 				let name = e[0];
-
-	// 				if (e.length == 2) {
-	// 					flipData = e[1];
-	// 				}
-
-	// 				return flipTypes[name]
-	// 					? name
-	// 					: defaults.flip_type;
-	// 			})(data.flip.split(':'))
-	// 			: flipTypes[data.flip]
-	// 				? data.flip
-	// 				: defaults.flip_type
-	// 		: defaults.flip_type;
-
-	// 	/**
-	// 	 * Check card flip
-	// 	 * @param {Card} card
-	// 	 * @param {number} index
-	// 	 * @param {number} length
-	// 	 */
-	// 	this.cardFlipCheck = (card, index, length) => {
-	// 		card.flip = flipTypes[flipType](index, length, flipData, this);
-	// 	};
-
-	// 	/**
-	// 	 * Parse string with parameter
-	// 	 * @param {string} line
-	// 	 * @returns {string}
-	// 	 */
-	// 	let stringWithColon = line => {
-	// 		if (
-	// 			typeof line == "string" &&
-	// 			line.indexOf(':') > 0
-	// 		) {
-	// 			return line.split(':')[0];
-	// 		} else {
-	// 			return line;
-	// 		}
-	// 	};
-
-	// 	/**
-	// 	 * Put rules
-	// 	 * @type {string|string[]}
-	// 	 */
-	// 	this.putRules = data.putRules
-	// 		? typeof data.putRules == 'string'
-	// 			? putRules[stringWithColon(data.putRules)]
-	// 				? [data.putRules]
-	// 				: defaults.putRules
-	// 			: data.putRules.constructor == Array
-	// 				? data.putRules.filter(
-	// 					ruleName => typeof ruleName == 'string' && putRules[stringWithColon(ruleName)] // TODO Exception (putRule "***" not found)
-	// 						? true
-	// 						: false
-	// 				)
-	// 				: defaults.putRules
-	// 		: defaults.putRules;
-
-	// 	if (this.putRules.length == 0) {
-	// 		this.putRules = defaults.putRules;
-	// 	}
-
-	// 	/**
-	// 	 * Take rules
-	// 	 * @type {string|string[]}
-	// 	 */
-	// 	this.takeRules = data.takeRules
-	// 		? typeof data.takeRules == 'string'
-	// 			? takeRules[data.takeRules]
-	// 				? [data.takeRules]
-	// 				: defaults.takeRules
-	// 			: data.takeRules.constructor == Array
-	// 				? data.takeRules.filter(
-	// 					ruleName => typeof ruleName == 'string' && takeRules[ruleName] // TODO Exception (takeRule "***" not found)
-	// 				)
-	// 				: defaults.takeRules
-	// 		: defaults.takeRules;
-
-	// 	// Правила сложенной колоды
-	// 	// Сложенная колода может использоваться для определения выиигрыша
-	// 	// В сложенную колоду нельзя класть новые карты
-	// 	/**
-	// 	 * Full rules
-	// 	 * @type {string|string[]}
-	// 	 */
-	// 	this.fullRules = data.fullRules
-	// 		? typeof data.fullRules == "string"
-	// 			? fullRules[data.fullRules]
-	// 				? [data.fullRules]
-	// 				: defaults.fullRules
-	// 			: data.fullRules.constructor == Array
-	// 				? data.fullRules.filter(
-	// 					ruleName => typeof ruleName == "string" && fullRules[ruleName]
-	// 				)
-	// 				: defaults.fullRules
-	// 		: defaults.fullRules;
-
-	// 	/**
-	// 	 * Get padding for card by index
-	// 	 * @param {number}
-	// 	 * @returns {Vector2d}
-	// 	 */
-	// 	this.padding = index => {
-
-	// 		let _cards = this.getCards();
-	// 		let _index = index < _cards.length ? index : _cards.length - 1;
-	// 		let _card  = _cards[_index] ? _cards[_index] : this.cards[index];
-
-	// 		return padding(
-	// 			this._params ,
-	// 			_card        ,
-	// 			_index       ,
-	// 			_cards.length,
-	// 			_cards       ,
-	// 			paddingData
-	// 		);
-	// 	}
-
-	// 	// Подписывается на перетаскивание стопки/карты
-	// 	let _callback = data => {
-
-	// 		// TODO
-	// 		// проверять fill только для тех стопок котрые участвовали в Action
-
-	// 		if (data.destination.name != this.name) {
-	// 			return;
-	// 		}
-
-	// 		this.checkFull();
-	// 	};
-
-	// 	event.listen('moveDragDeck', _callback);
-	// }
-
 	render() {
-
-		console.log('%cDraw Deck', 'color: green;font-weight: bold');		
-		console.log('###DECK:', this.props);
 
 		const {
 			id      ,
@@ -208,9 +61,13 @@ class deckClass extends Component {
 			);
 		}
 
+		/**
+		 * Rendering
+		 */
+
 		return <div
-			className = {`el deck${showSlot ? ' slot' : ''}`}
 			id = {id}
+			className = {`el deck${showSlot ? ' slot' : ''}`}
 			style = {{
 				display   : visible ? 'block' : 'none',
 				transform : `rotate(${rotate}deg)`    ,
@@ -230,8 +87,6 @@ class deckClass extends Component {
 	 * @param {function} nextId
 	 */
 	static init(state, data, nextId) {
-
-		console.log('%cInit Deck', 'color: blue;');
 
 		state.cards = [];
 		
@@ -277,9 +132,9 @@ class deckClass extends Component {
 			? data.autoCheckFlip
 			: defaults.autoCheckFlip;
 
-		if (typeof data.showPrefFlipCard == 'boolean') {
-			state.showPrefFlipCard = data.showPrefFlipCard;
-		}
+		state.showPrefFlipCard = typeof data.showPrefFlipCard == 'boolean'
+			? data.showPrefFlipCard
+			: defaults.showPrefFlipCard;
 		
 		state.showPrevAttempts = typeof data.showPrevAttempts == 'boolean'
 			? data.showPrevAttempts
@@ -289,17 +144,15 @@ class deckClass extends Component {
 			? data.checkNextCards
 			: defaults.checkNextCards;
 
-		if (typeof data.showSlot == 'undefined') {
-			data.showSlot = defaults.showSlot;
-		}
+		state.showSlot = typeof data.showSlot == 'boolean'
+			? data.showSlot
+			: defaults.showSlot;
+
+		state.autoUnflipTop = typeof data.autoUnflipTop == 'boolean'
+			? data.autoUnflipTop
+			: defaults.autoUnflipTop;
 
 		state.data = {};
-
-		// changed parameters
-
-		state.showSlot = typeof showSlot == 'boolean'
-			? showSlot
-			: defaults.showSlot;
 
 		/**
 		 * Padding
@@ -369,48 +222,162 @@ class deckClass extends Component {
 			};
 		}
 
-		// TODO так же Flip и Full
+		/**
+		 * Flip
+		 */
 
-		// TODO пример для Take и Put
+		const flipType = data.flip || data.flipType;
 
-		// const paddingTypes = data.paddingType || data.paddingTypes;
+		state.flipType = {
+			"name"  : defaults.flip_type,
+			"value" : null
+		};
 		
-		// if (paddingTypes) {
-		// 	state.paddingTypes = typeof paddingTypes == 'string'   // is string
-		// 		? paddingTypes[data.paddingType.split(':')[0]]    // isset method
-		// 			? [{
-		// 				"name"  : paddingTypes.split(':')[0],
-		// 				"value" : paddingTypes.split(':')[1]
-		// 			}]
-		// 			: [defaults.paddingType]                      // use default
-		// 		: ((e, a) => {
-		// 			if (e.length) {
+		if (
+			   typeof flipType == "string"    &&
+			flipTypes[flipType.split(':')[0]]
+		) {
 
-		// 				for (i in e) {
+			state.flipType = {
+				"name"  : flipType.split(':')[0],
+				"value" : flipType.split(':')[1]
+			};
+		}
 
-		// 					const paddingType = e[i];
+		/**
+		 * Take
+		 */
 
-		// 					if (
-		// 						typeof paddingType == "string"          ||
-		// 						paddingTypes[paddingType.split(':')[0]]
-		// 					) {
-		// 						a.push({
-		// 							"name"  : null,
-		// 							"value" : null
-		// 						});
-		// 					}
-		// 				}
+		state.takeRules = [{
+			"name"  : defaults.takeRules[0],
+			"value" : null
+		}];
+		
+		if (data.takeRules) {
+			if (
+				typeof takeRules == 'string'            &&
+				takeRules[data.takeRules.split(':')[0]]
+			) {
+				state.takeRules = [{
+					"name"  : takeRules.split(':')[0],
+					"value" : takeRules.split(':')[1]
+				}];
+			} else {
 
-		// 				if (e.length == 0 || a.length == 0) {
-		// 					return [defaults.paddingType]
-		// 				}
-		// 			} else {
-		// 				return [defaults.paddingType]
-		// 			}
-		// 		})(paddingTypes, [])
-		// }
+				state.takeRules = typeof data.takeRules != "string" &&
+										 data.takeRules.length      &&
+										 ((e, a) => {
 
-		console.log('deck', state.padding, state.name);
+					for (let i in e) {
+
+						const takeRule = e[i];
+
+						if (
+							typeof takeRule == "string"       ||
+							takeRules[takeRule.split(':')[0]]
+						) {
+							a.push({
+								"name"  : takeRule.split(':')[0],
+								"value" : takeRule.split(':')[1]
+							});
+						}
+					}
+
+					return a.length ? a : null
+				})(data.takeRules, [])                              ||
+				                         state.takeRules;
+			}
+		}
+
+		/**
+		 * Put
+		 */
+
+		state.putRules = [{
+			"name"  : defaults.putRules[0],
+			"value" : null
+		}];
+		
+		if (data.putRules) {
+			if (
+				typeof putRules == 'string'            &&
+				putRules[data.putRules.split(':')[0]]
+			) {
+				state.putRules = [{
+					"name"  : putRules.split(':')[0],
+					"value" : putRules.split(':')[1]
+				}];
+			} else {
+
+				state.putRules = typeof data.putRules != "string" &&
+										data.putRules.length      &&
+										 ((e, a) => {
+
+					for (let i in e) {
+
+						const putRule = e[i];
+
+						if (
+							typeof putRule == "string"       ||
+							putRules[putRule.split(':')[0]]
+						) {
+							a.push({
+								"name"  : putRule.split(':')[0],
+								"value" : putRule.split(':')[1]
+							});
+						}
+					}
+
+					return a.length ? a : null
+				})(data.putRules, [])                             ||
+				                        state.putRules;
+			}
+		}
+
+		/**
+		 * Full
+		 */
+
+		state.fullRules = [{
+			"name"  : defaults.fullRules[0],
+			"value" : null
+		}];
+		
+		if (data.fullRules) {
+			if (
+				typeof fullRules == 'string'            &&
+				fullRules[data.fullRules.split(':')[0]]
+			) {
+				state.fullRules = [{
+					"name"  : fullRules.split(':')[0],
+					"value" : fullRules.split(':')[1]
+				}];
+			} else {
+
+				state.fullRules = typeof data.fullRules != "string" &&
+										 data.fullRules.length      &&
+										 ((e, a) => {
+
+					for (let i in e) {
+
+						const fullRule = e[i];
+
+						if (
+							typeof fullRule == "string"       ||
+							fullRules[fullRule.split(':')[0]]
+						) {
+							a.push({
+								"name"  : fullRule.split(':')[0],
+								"value" : fullRule.split(':')[1]
+							});
+						}
+					}
+
+					return a.length ? a : null
+				})(data.fullRules, [])                              ||
+				                         state.fullRules;
+			}
+		}
 
 		/**
 		 * Position
@@ -439,21 +406,7 @@ class deckClass extends Component {
 		}
 
 		state.rotate = typeof data.rotate == "number" ? data.rotate : defaults.rotate;
-
-		state.autoUnflipTop = typeof data.autoUnflipTop == 'boolean'
-			? data.autoUnflipTop
-			: defaults.autoUnflipTop;
 		
-		// cardFlipCheck()
-
-		// let stringWithColon()
-
-		// putRules
-
-		// takeRules
-
-		// fullRules
-
 		/**
 		 * Actions
 		 */
@@ -483,35 +436,39 @@ class deckClass extends Component {
 
 				if (Card.validateCardName(name)) {
 
-					state.cards.push(
-						Card.init(
-							{
-								name,
-								parent: state.id
-							},
-							nextId
-						)
+					let card = Card.init(
+						{
+							name,
+							"parent" : state.id
+						},
+						nextId
 					);
+
+					state.cards.push(card);
 				}
+			}
+
+			for (let i in state.cards) {
+
+				let card = state.cards[i];
+
+				card.flip = flipTypes[state.flipType.name](
+					i                   ,
+					state.cards.length  ,
+					state.flipType.value
+				);
+
+				card.position = paddingTypes[state.paddingType.name](
+					state                  ,
+					i                      ,
+					state.paddingType.value
+				);
+
+				// card.ofset = {}
 			}
 		}
 
-		// dispatch addDeckEl
-
-		// listen moveDragDeck
-
-		console.log('%cEnd init Deck', 'color: blue');		
-
 		return state;
-	}
-
-	/**
-	 * Padding
-	 * @param {number} index
-	 * @returns {Vector2d}
-	 */
-	static padding(state, index) {
-		// 
 	}
 
 	/**
@@ -795,34 +752,6 @@ class deckClass extends Component {
 	}
 
 	/**
-	 * Filling the deck with name-generated cards
-	 * @param {string[]} cardNames
-	 */
-	Fill(cardNames) {
-
-		for (let i in cardNames) {
-			this.genCardByName(cardNames[i], i == cardNames.length - 1);
-		}
-	}
-
-	/**
-	 * Clear deck
-	 */
-	clear() {
-
-		// console.log('Deck:clear', this.name);
-
-		for (let i in this.cards) {
-			event.dispatch('removeEl', this.cards[i]);
-			this.cards[i] = null;
-		}
-
-		this.cards = [];
-
-		event.dispatch('removeEl', this);
-	}
-
-	/**
 	 * Push card or pile in to deck
 	 * @param {*[]} deck 
 	 * @param {boolean} afterVisible 
@@ -933,15 +862,6 @@ class deckClass extends Component {
 	}
 
 	/**
-	 * Generate card by name and add in to deck
-	 * @param {string} name 
-	 * @param {boolean} last 
-	 */
-	genCardByName(name, last) {
-		Card.genCardByName(this, name, last);
-	}
-
-	/**
 	 * Hide deck
 	 */
 	hide() {
@@ -990,10 +910,6 @@ class deckClass extends Component {
 				});
 			}
 			// event.dispatch('hideCard', this.cards[i]);
-		}
-
-		if (redraw) {
-			this.Redraw();
 		}
 	}
 
