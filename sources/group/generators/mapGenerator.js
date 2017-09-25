@@ -13,7 +13,7 @@ import mapCommon          from './mapCommon'                   ;
 // 	return typeof el == "string" ? el : typeof el != "undefined" && typeof el.name == "string" ? el.name : null;
 // };
 
-export default (group, data) => {
+export default (state, data) => {
 
 	// {
 	// 	type            : "map",
@@ -38,14 +38,14 @@ export default (group, data) => {
 	};
 
 	let _placement = 
-		group.placement
+		state.placement
 			? {
-				"x" : typeof group.placement.x != 'undefined' ? group.placement.x : _default_placement.x,
-				"y" : typeof group.placement.y != 'undefined' ? group.placement.y : _default_placement.y
+				"x" : typeof state.placement.x != 'undefined' ? state.placement.x : _default_placement.x,
+				"y" : typeof state.placement.y != 'undefined' ? state.placement.y : _default_placement.y
 			}
 			: _default_placement;
 
-	group.placement = {
+	state.placement = {
 		"x" : 0,
 		"y" : 0
 	};
@@ -66,13 +66,15 @@ export default (group, data) => {
 			};
 
 			if (typeof data.map[y][x] == 'string') {
-				data.map[y][x] = {name: data.map[y][x]};
+				data.map[y][x] = {
+					"name": data.map[y][x]
+				};
 			} else if (
-				data.map[y][x]                            &&
+				       data.map[y][x]                     &&
 				typeof data.map[y][x]      != 'undefined' &&
 				typeof data.map[y][x].name != 'string'
 			) {
-				data.map[y][x].name = group.name + '_deck_' + x + '_' + y;
+				data.map[y][x].name = state.name + '_deck_' + x + '_' + y;
 			};
 		}
 	}

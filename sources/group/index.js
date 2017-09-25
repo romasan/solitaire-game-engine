@@ -11,7 +11,7 @@ import groupRedraw    from './groupRedraw'     ;
 import groupGenerator from './groupGenerator'  ;
 
 import React, {Component} from 'react';
-// import {connect} from 'react-redux';
+import {connect} from 'react-redux';
 
 class groupClass extends Component {
 
@@ -28,22 +28,22 @@ class groupClass extends Component {
 		 */
 
 		let decks = [];
-		
-		for (let i in this.props.decks) {
 
-			const {id} = this.props.decks[i];
+		for (let i in this.props._decks) {
+
+			const {id} = this.props._decks[i];
 
 			decks.push(
 				<Deck
-					key    = {id}
-					{...this.props.decks[i]}
+					key = {id}
+					{...this.props._decks[i]}
 				/>
 			);
 		}
 
 		return <div
 			id = {id}
-			className = "group"
+			className = "el group"
 			style ={{
 				"left" : zoom * position.x + 'px',
 				"top"  : zoom * position.y + 'px'
@@ -78,10 +78,21 @@ class groupClass extends Component {
 		state.offset = state.position;
 
 		state.placement = {
-			"x" : 0,
-			"y" : 0
+			"x" : null,
+			"y" : null
 		};
-		
+
+		if (data.placement) {
+
+			if (typeof data.placement.x == "number") {
+				state.placement.x = data.placement.x;
+			}
+
+			if (typeof data.placement.y == "number") {
+				state.placement.y = data.placement.y;
+			}
+		}
+
 		/**
 		 * Decks
 		 */
@@ -119,13 +130,37 @@ class groupClass extends Component {
 
 			}
 
-			// sort decks by deckIndex			
+			// sort decks by deckIndex
+			data.decks.sort((a, b) => a.deckIndex > b.deckIndex ? 1 : -1)
+
+			for (let deckIndex in data.decks) {
+
+				const deck = data.decks[deckIndex];
+
+				if (!deck.position) {
+					deck.position = {};
+				}
+
+				if (
+					typeof deck.position.x   != "number" &&
+					typeof state.placement.x == "number"
+				) {
+					deck.position.x = deckIndex * defaults.card.width + deckIndex * state.placement.x;
+				}
+
+				if (
+					typeof deck.position.y   != "number" &&
+					typeof state.placement.y == "number"
+				) {
+					deck.position.y = deckIndex * defaults.card.width + deckIndex * state.placement.y;
+				}
+			}
 
 			for (let deckIndex in data.decks) {
 
 				let deck = data.decks[deckIndex];
 				
-				let data_transfuse_list = [
+				const data_transfuse_list = [
 					"save"            ,
 					"visible"         ,
 					"autoHide"        ,
@@ -163,23 +198,57 @@ class groupClass extends Component {
 			}
 		}
 
-		console.log(state.name, state.id, data.fill);
-
 		if (data.fill) {
 
-			// for (let deckIndex in state.decks) {
-			// 	if (state.decks[deckIndex].cards.length == 0) {
-			// 		state.decks[deckIndex].cards = [];
-			// 	}
-			// }
+			for (let fillIndex in data.fill) {
 
-			// -- OR --
+				const item = data.fill[fillIndex];
 
-			// for (let deckIndex in data.decks) {
-			// 	if (data.decks[deckIndex].fill.length == 0) {
-			// 		data.decks[deckIndex].fill = [...];
-			// 	}
-			// }
+				const deckIndex = fillIndex % data.decks.length;
+
+				const deck = data.decks[deckIndex];
+				
+				if (typeof item == "string") {
+
+					if (
+						deck.fill        &&
+						deck.fill.length
+					) {
+						deck.fill.push(item);
+					} else {
+						deck.fill = [item];
+					}
+				} else {
+					for (let i in item) {
+
+						const _item = item[i];
+
+						if (
+							deck.fill        &&
+							deck.fill.length
+						) {
+							deck.fill.push(_item);
+						} else {
+							deck.fill = [_item];
+						}
+					}
+				}
+			}
+		}
+
+		for (let i in data.decks) {
+
+			const deck = data.decks[i];
+
+			state.decks.push(
+				Deck.init(
+					{
+						"parent" : state.id
+					},
+					deck,
+					nextId
+				)
+			);
 		}
 		
 		return state;
@@ -547,5 +616,5 @@ class groupClass extends Component {
 	}
 }
 
-// export default connect(state => state.toJS())(groupClass);
-export default groupClass;
+export default connect(state => state.toJS())(groupClass);
+// export default groupClass;

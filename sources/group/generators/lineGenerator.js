@@ -6,7 +6,7 @@
 
 import relationsGenerator from './relations/relationsGenerator';
 
-export default (group, data) => {
+export default (state, data) => {
 
 	// {
 	// 	type	 : "line",
@@ -23,7 +23,7 @@ export default (group, data) => {
 
 	for (let deckIndex = 0; deckIndex < _count; deckIndex += 1) {
 
-		let _deckName = group.name + '_deck' + (deckIndex + 1);
+		let _deckName = state.name + '_deck' + (deckIndex + 1);
 
 		let _deck = {
 			"name" : _deckName,

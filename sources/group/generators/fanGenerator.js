@@ -6,7 +6,7 @@
 
 import defaults from '../../common/defaults';
 
-export default (group, data) => {
+export default (state, data) => {
 
 	// {
 	// 	type   : "fan",
@@ -18,7 +18,7 @@ export default (group, data) => {
 	// 	}
 	// }
 
-	group.placement = {
+	state.placement = {
 		"x" : 0,
 		"y" : 0
 	};
@@ -59,7 +59,7 @@ export default (group, data) => {
 		}
 
 		_decks.push({
-			"name"     : group.name + '_deck' + deckIndex,
+			"name"     : state.name + '_deck' + deckIndex,
 			"rotate"   : _angle,
 			"position" : {
 				"x" : _center.x + _a - defaults.card.width  / 2,

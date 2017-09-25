@@ -97,11 +97,11 @@ class deckClass extends Component {
 
 		state.id = 'deck_' + nextId();
 
-		let _parent_name = data.parent ? data.parent : 'no_parent';
+		// let _parent_name = data.parent ? data.parent : 'no_parent';
 
-		state.name = typeof data.name == 'string'
-			? data.name
-			: (_parent_name + '_' + data.deckIndex);
+		// state.name = typeof data.name == 'string'
+		// 	? data.name
+		// 	: (_parent_name + '_' + data.deckIndex);
 
 		if (
 			typeof data.name != "string" &&

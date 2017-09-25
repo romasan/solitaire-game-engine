@@ -125,7 +125,7 @@ let scanAttempts = data => {
 
 	// console.groupCollapsed('scanAttempts');
 
-	console.log('%cSCANATTEMPTS: STOP!', 'color: red; font-weight: bold;');
+	console.log('%cSCAN ATTEMPTS: STOP!', 'color: red; font-weight: bold;');
 	return;
 
 	// let _time = Date.now();

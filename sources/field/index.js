@@ -52,6 +52,7 @@ class fieldClass extends Component {
 					key = {id}
 					// zoom = {zoom}
 					{...this.props.groups[i]}
+					_decks = {this.props.groups[i].decks}
 				/>
 			);
 		}
@@ -238,7 +239,8 @@ class fieldClass extends Component {
 				_state.decks.push(
 					Deck.init(
 						{
-							"showPrevFlipCard" : _state.showPrevFlipCard
+							"parent" : "field"
+							// "showPrevFlipCard" : _state.showPrevFlipCard
 						},
 						data.decks[e],
 						() => _state.nextId++
