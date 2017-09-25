@@ -28,7 +28,7 @@ class cardClass extends Component {
 			height
 		} = defaults.card;
 		
-		const display   = visible ? 'block' : 'none';
+		const display = visible ? 'block' : 'none';
 		
 		return <div
 			id = {id}

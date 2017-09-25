@@ -13,6 +13,9 @@ export default function(state = Map({}), action) {
         case actions.INIT_STATE:
             return action.data ? Field.init(Map({}), action.data): Map({});
 
+        // case actions.CHANGE_TIPS_MODE:
+            // return Field.changeTipsMode(state, action.data);
+
         default:
             return state;
     }

@@ -99,15 +99,11 @@ class fieldClass extends Component {
 			? data.autoMoveToHomeOpenDecks
 			: [];
 		
-		// вкл./выкл. подсказок
-		_state.autoMoveToHomeOpenDecks = typeof data.showTips == "boolean"
-			? data.showTips
-			: defaults.showTips;
-		
 		// устанвливаем тип хода по умолчанию
 		_state['stepType'] = defaults.stepType;
 		
 		let _values = {
+			"showTips"             : 'boolean', // вкл./выкл. подсказок
 			"showTipsDestination"  : 'boolean', // Альтернативные подсказки
 			"showTipPriority"      : 'boolean',
 			"moveDistance"         : 'number' ,
@@ -122,11 +118,13 @@ class fieldClass extends Component {
 		};
 		
 		for (let valueName in _values) {
-
+			
 			_state[valueName] = typeof data[valueName] == _values[valueName]
-				? data[valueName] 
-				: defaults[valueName];
+			? data[valueName] 
+			: defaults[valueName];
 		}
+
+		console.log('###', _state.showTips);
 		
 		// условие выигрыша
 		// share.set('winCheck', data.winCheck);
@@ -191,7 +189,6 @@ class fieldClass extends Component {
 		if (data.autoSteps) {
 			// this.autoSteps = addAutoSteps(data.autoSteps);
 		}
-
 		
 		// NOTE: на событие подписан deckActions
 		// если ставить позже отрисовки элементов, переделать

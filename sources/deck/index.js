@@ -481,39 +481,6 @@ class deckClass extends Component {
 	}
 
 	/**
-	 * Add new deck
-	 * @param {*} data
-	 * @returns {deckClass}
-	 */
-	static addDeck(data) {
-
-		if (!data) {
-			return false;
-		}
-
-		let id = 'deck_' + common.genId();
-
-		let _deck = new deckClass(data, id);
-
-		// fill deck
-		if (data.fill) {
-			for (let i in data.fill) {
-				if (typeof data.fill[i] == 'string') {
-					_deck.genCardByName(data.fill[i], i == data.fill.length - 1);
-				}
-			}
-		}
-
-		let _elements = share.get('elements');
-
-		_elements[id] = _deck;
-
-		share.set('elements', _elements);
-
-		return _deck;
-	}
-
-	/**
 	 * Get a deck by name from a group with a specific name
 	 * @param {string} name 
 	 * @param {string} groupName 
