@@ -56,6 +56,8 @@ class cardClass extends Component {
 
 		state.id = 'card_' + nextId();
 
+		state.type = 'card';
+
 		state.suit  = name.slice(0, 1);
 		state.rank  = name.slice(1, 3);
 		state.value = defaults.card.values[defaults.card.ranks.indexOf(state.rank)];

@@ -43,14 +43,18 @@ exports.onChangePreferences = callback => {
 
 exports.init = gameConfig => {
 	
-	console.log('gameConfig:', gameConfig);	
+	console.groupCollapsed('gameConfig');
+	console.log( JSON.stringify( gameConfig, true, 2 ) );	
+	console.groupEnd();
 	
 	store.dispatch({
 		type: actions.INIT_STATE,
 		data: gameConfig
 	});
 	
-	console.log( 'state:', JSON.stringify( store.getState().toJS() , true, 2) );	
+	console.groupCollapsed('state');
+	console.log( JSON.stringify( store.getState().toJS() , true, 2) );	
+	console.groupEnd();
 
 	render(
 		<Provider store={store}>

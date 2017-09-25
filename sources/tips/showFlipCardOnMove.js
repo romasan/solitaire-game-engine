@@ -27,7 +27,7 @@ let showFlipCardOnMove = data => { // to, toCard
 	// if (
 	// 	!data.deck                           ||
 	// 	!data.card                           ||
-	// 	 data.deck.showPrefFlipCard == false
+	// 	 data.deck.showPrevFlipCard == false
 	// ) {
 	// 	return;
 	// }

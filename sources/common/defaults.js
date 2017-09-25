@@ -52,7 +52,7 @@ export default {
 
 	// "noReplayHistory"     : false,
 
-	"showPrefFlipCard"    : true,
+	"showPrevFlipCard"    : true,
 	"showPrevAttempts"    : false,
 
 	"checkNextCards"      : false,

@@ -132,9 +132,9 @@ class deckClass extends Component {
 			? data.autoCheckFlip
 			: defaults.autoCheckFlip;
 
-		state.showPrefFlipCard = typeof data.showPrefFlipCard == 'boolean'
-			? data.showPrefFlipCard
-			: defaults.showPrefFlipCard;
+		state.showPrevFlipCard = typeof data.showPrevFlipCard == 'boolean'
+			? data.showPrevFlipCard
+			: defaults.showPrevFlipCard;
 		
 		state.showPrevAttempts = typeof data.showPrevAttempts == 'boolean'
 			? data.showPrevAttempts
@@ -210,7 +210,7 @@ class deckClass extends Component {
 			"name"  : defaults.paddingType,
 			"value" : null
 		};
-		
+
 		if (
 			      typeof data.paddingType == "string"    &&
 			paddingTypes[data.paddingType.split(':')[0]]

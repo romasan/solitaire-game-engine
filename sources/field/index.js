@@ -26,6 +26,10 @@ class fieldClass extends Component {
 		 * Theme
 		 */
 
+		// TODO
+		// get theme from storage
+		// insert values to classes
+
 		let classes = [
 			"solitaireField"  ,
 			"default_field"   ,
@@ -46,7 +50,7 @@ class fieldClass extends Component {
 			groups.push(
 				<Group
 					key = {id}
-					zoom = {zoom}
+					// zoom = {zoom}
 					{...this.props.groups[i]}
 				/>
 			);
@@ -86,7 +90,7 @@ class fieldClass extends Component {
 		// Init new state
 		const _state = {};
 
-		_state.currentId = 0;
+		_state.nextId = 0;
 		
 		_state.homeGroups = data.homeGroups ? data.homeGroups : [];
 		
@@ -110,7 +114,7 @@ class fieldClass extends Component {
 			// "movesAnimation"    : 'string' ,
 			"animationTime"        : 'number' , // время анимации
 			"showHistoryAnimation" : 'boolean',
-			"showPrefFlipCard"     : 'boolean',
+			"showPrevFlipCard"     : 'boolean',
 			"gameIsWon"            : 'boolean',
 			// "noReplayHistory"      : 'boolean',
 			"locale"               : 'string'
@@ -212,7 +216,7 @@ class fieldClass extends Component {
 							"name" : groupName
 						},
 						data.groups[groupName],
-						() => _state.currentId++
+						() => _state.nextId++
 					)
 				);
 			}
@@ -234,10 +238,10 @@ class fieldClass extends Component {
 				_state.decks.push(
 					Deck.init(
 						{
-							"showPrefFlipCard" : _state.showPrefFlipCard
+							"showPrevFlipCard" : _state.showPrevFlipCard
 						},
 						data.decks[e],
-						() => _state.currentId++
+						() => _state.nextId++
 					)
 				);
 			}

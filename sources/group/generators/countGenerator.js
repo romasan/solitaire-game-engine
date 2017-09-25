@@ -4,7 +4,7 @@
 
 'use strict';
 
-export default (group, data) => {
+export default (state, data) => {
 
 	// {
 	// 	type   : "count",
@@ -16,7 +16,7 @@ export default (group, data) => {
 
 	for (let deckIndex = 0; deckIndex < _count; deckIndex += 1) {
 
-		let _deckName = group.name + "_deck" + (deckIndex + 1);
+		let _deckName = state.name + "_deck" + (deckIndex + 1);
 
 		_decks.push({
 			"name" : _deckName
