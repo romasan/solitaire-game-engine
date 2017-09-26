@@ -75,9 +75,12 @@ class fieldClass extends Component {
 			);
 		}
 
+		let cards = []; // dragged cards
+
 		return <div className={classes.join(' ')}>
 			{groups}
 			{decks}
+			{cards}
 		</div>;
 	}
 
@@ -254,26 +257,11 @@ class fieldClass extends Component {
 		// top priority
 		if (data.fill) {
 			
-			// let _decks = Deck.getDecks();
-			// let _fill  = null;
-			// try {
-			// 	_fill = Object.assign([], data.fill);
-			// } catch (e) {
-			// 	_fill = data.fill;
-			// }
-			
-			// for (;_fill.length;) {
-			// 	for (let deckId in _decks) {
-			// 		if (_fill.length) {
-			// 			let _card = _fill.shift();
-			// 			_decks[deckId].Fill([_card]);
-			// 		}
-			// 	}
-			// }
-		}
+			// for-in groups
+			//   for-in decks
 
-		// Найти возможные ходы
-		// Tips.checkTips();
+			// for in decks
+		}
 		
 		// событие: игра началась
 		// event.dispatch('newGame');

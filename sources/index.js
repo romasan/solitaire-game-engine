@@ -38,6 +38,7 @@ exports.onload = callback => {
 };
 
 exports.onChangePreferences = callback => {
+	// TODO
 	share.set('changePreferencesCallback', callback);
 };
 
@@ -65,7 +66,6 @@ exports.init = gameConfig => {
 
 	return;
 
-
 	// event.dispatch('gameInit', {
 	// 	"firstInit" : firstInit
 	// });
@@ -74,7 +74,6 @@ exports.init = gameConfig => {
 	// event.setTag    (event.tags.inGame);
 
 	// Field.create(gameConfig);
-	store.dispatch(actions.INIT_STATE);	
 
 	if (firstInit) {
 

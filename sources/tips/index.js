@@ -36,7 +36,9 @@ let _tips = [];
 
 let getTips = e => _tips;
 
-let checkTips = e => {
+let checkTips = state => {
+
+	return state;
 
 	event.dispatch('genNextCards');
 

@@ -77,6 +77,8 @@ class groupClass extends Component {
 
 		state.offset = state.position;
 
+		data.offset = state.position;
+
 		state.placement = {
 			"x" : null,
 			"y" : null

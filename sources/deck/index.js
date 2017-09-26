@@ -388,13 +388,6 @@ class deckClass extends Component {
 			"y" : 0
 		};
 
-		// TODO offset - позиция относительно Field
-		
-		state.offset = {
-			"x" : 0,
-			"y" : 0
-		};
-
 		if (data.position) {
 
 			const {x, y} = data.position;
@@ -402,6 +395,23 @@ class deckClass extends Component {
 			state.position = {
 				"x" : x ? x : 0,
 				"y" : y ? y : 0
+			}
+		}
+
+		//offset - позиция относительно Field
+		state.offset = {
+			"x" : state.position.x,
+			"y" : state.position.y
+		};
+
+		if (data.offset) {
+
+			if (typeof data.offset.x == "number") {
+				state.offset += data.offset.x;
+			}
+
+			if (typeof data.offset.y == "number") {
+				state.offset += data.offset.y;
 			}
 		}
 
@@ -463,6 +473,11 @@ class deckClass extends Component {
 					i                      ,
 					state.paddingType.value
 				);
+
+				card.offset = {
+					"x" : state.offset.x + card.position.x,
+					"y" : state.offset.y + card.position.y
+				};
 
 				// card.ofset = {}
 			}
