@@ -127,8 +127,6 @@ class fieldClass extends Component {
 			: defaults[valueName];
 		}
 
-		console.log('###', _state.showTips);
-		
 		// условие выигрыша
 		// share.set('winCheck', data.winCheck);
 		_state.winCheck = data.winCheck;
@@ -262,7 +260,7 @@ class fieldClass extends Component {
 
 			// for in decks
 		}
-		
+
 		// событие: игра началась
 		// event.dispatch('newGame');
 

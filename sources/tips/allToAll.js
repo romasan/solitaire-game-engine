@@ -1,25 +1,17 @@
 'use strict';
 
-/*
- * get
- * cardsInTakeDeck
- * decksToPut
- * put
- */
+import Take from '../deck/deckTake';
+import Put  from '../deck/deckPut' ;
 
 class allToAll {
 
-	constructor() {
-
-		this._decks = null;
-		this._moves = [];
-	}
+	constructor() {}
 
 	// 1)
 	// пробегаем все колоды
-	get(data) {
+	get(decks) {
 
-		this._decks = data.decks;
+		this._decks = decks;
 		this._moves = [];
 
 		for (let deckIndex in this._decks) {
@@ -41,7 +33,7 @@ class allToAll {
 
 			let _id = _cards[cardIndex].id;
 
-			let _take = this._decks[deckIndex].Take(_id);
+			let _take = Take(this._decks[deckIndex], _id);
 
 			if (_take) {
 				this.decksToPut(_cards, _take, deckIndex, cardIndex);
@@ -57,7 +49,8 @@ class allToAll {
 
 			if (deckIndex != deckIndex_2) {
 
-				let _put = this._decks[deckIndex_2].Put(_take);
+				let _put = Put(this._decks[deckIndex_2], _take);
+
 				if (_put) {
 					this.put(deckIndex_2, deckIndex, cardIndex, _cards)
 				};
@@ -89,8 +82,4 @@ class allToAll {
 	}
 };
 
-let _allToAll = new allToAll();
-
-export default data => {
-	return _allToAll.get(data);
-};
+export default new allToAll();

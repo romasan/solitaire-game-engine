@@ -1,22 +1,5 @@
 'use strict';
 
-/*
-
-Types:
-
- * none
- * all
- * notlast
- * bee
- * beeFlip
- * _direction_type
- * bottomFlip
- * bottomUnflip
- * topFlip
- * topUnflip
-
- */
-
 let flipTypes = {
 
 	"none"            : (i, length) => false                                                   ,

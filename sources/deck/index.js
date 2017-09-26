@@ -11,8 +11,6 @@ import takeRules     from './takeRules'       ;
 import fullRules     from './fullRules'       ;
 import paddingTypes  from './paddingTypes'    ;
 import deckActions   from './deckActions'     ;
-import Take          from './deckTake'        ;
-import Put           from './deckPut'         ;
 import Card          from '../card'           ;
 import Group         from '../group'          ;
 
@@ -817,30 +815,6 @@ class deckClass extends Component {
 		// this.Redraw();
 
 		return _deck;
-	}
-
-	/**
-	 * @typedef {Object} deckTakeReturns
-	 * @property {number} index
-	 * @property {Card} card
-	 */
-
-	/**
-	 * Take card from deck by cardId
-	 * @param {string} cardId
-	 * @returns {deckTakeReturns[]}
-	 */
-	Take(cardId) {
-		return Take(this, cardId);
-	}
-
-	/**
-	 * Checking, the possibility of putting the card
-	 * @param {deckTakeReturns[]} putDeck 
-	 * @returns {boolean}
-	 */
-	Put(putDeck) {
-		return Put(this, putDeck);
 	}
 
 	/**

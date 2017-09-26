@@ -10,20 +10,9 @@ import Deck           from '../deck'               ;
 import Field          from '../field'              ;
 import autoMoveToHome from '../move/autoMoveToHome';
 
+import {fromJS} from 'immutable';
+
 const EMPTY = "EMPTY";
-
-/*
- * getTips
- * checkTips
- * showTips
- * hideTips
- * tipsMove
- * tipsDestination
- * checkFrom
- * fromTo
- */
-
-let _showTips = null; // defaults.showTips;
 
 let tipTypes = [
 	'tip'        ,
@@ -32,32 +21,51 @@ let tipTypes = [
 	'tipToHome'
 ];
 
-let _tips = [];
-
-let getTips = e => _tips;
-
+/**
+ * Check tips
+ * @param {*} state
+ */
 let checkTips = state => {
 
-	return state;
+	let _state = state.toJS();
 
-	event.dispatch('genNextCards');
+	/**
+	 * Decks
+	 */
 
-	if (share.get('noTips')) {
-		return false;
+	let decks = [];
+
+	decks.push(
+		..._state.decks
+	);
+
+	for (let i in _state.groups) {
+		decks.push(
+			..._state.groups[i].decks
+		);
 	}
+
+	decks.filter(e => e.visible);
+
+	// state.tips = allToAll.get(decks);
+
+	return fromJS(_state);
+
+	// event.dispatch('genNextCards');
+
+	// if (share.get('noTips')) {
+	// 	return false;
+	// }
 
 	// console.log('check tips');
 
-	event.dispatch('hideTips');
+	// event.dispatch('hideTips');
 
-	let _decks = Deck.getDecks({
-		"visible" : true
-	});
+	// let _decks = Deck.getDecks({
+	// 	"visible" : true
+	// });
 
 	// console.groupCollapsed('check tips');
-	_tips = allToAll({
-		"decks" : _decks
-	});
 	// console.groupEnd();
 
 	if (
@@ -153,43 +161,15 @@ let checkTips = state => {
 			}
 		}
 	}
-
-	// console.log('Tips checked', _tips.length);
 };
-event.listen('makeStep' , checkTips);
-event.listen('checkTips', checkTips);
-
-// вкл./выкл. показа подсказок
-
-let showTips = data => {
-
-	// _showTips = true;
-	share.set('showTips', true);
-
-	if (data && data.init) {
-		return;
-	}
-
-	checkTips();
-};
-event.listen('tips:on', showTips);
-// event.listen('tipsON' , showTips);
-
-let hideTips = data => {
-
-	// _showTips = false;
-	share.set('showTips', false);
-
-	if (data && data.init) {
-		return;
-	}
-
-	checkTips();
-};
-event.listen('tips:off', hideTips);
-// event.listen('tipsOFF' , hideTips);
+// event.listen('makeStep' , checkTips);
+// event.listen('checkTips', checkTips);
 
 // лучший ход на в текущем положении перетаскиваемой стопки
+/**
+ * Tips for move
+ * @param {*} data 
+ */
 let tipsMove = data => {
 
 	if (!share.get('showTipPriority')) {
@@ -222,6 +202,10 @@ let tipsMove = data => {
 };
 
 // tips destination decks
+/**
+ * Tips for destination deck
+ * @param {*} data 
+ */
 let tipsDestination = data => {
 
 	if (share.get('showTipsDestination')) {
@@ -243,6 +227,10 @@ let tipsDestination = data => {
 };
 
 // has tips with from
+/**
+ * Has tips for moves to departure deck
+ * @param {*} from 
+ */
 let checkFrom = from => {
 
 	for (let i in _tips) {
@@ -257,6 +245,11 @@ let checkFrom = from => {
 };
 
 // has tips with from and to
+/**
+ * Has tips for moves from departure deck to destination deck
+ * @param {*} from 
+ * @param {*} to 
+ */
 let fromTo = (from, to) => {
 
 	for (let i in _tips) {
@@ -273,10 +266,7 @@ let fromTo = (from, to) => {
 
 export default {
 	"tipTypes"        : tipTypes       ,
-	"getTips"         : getTips        ,
 	"checkTips"       : checkTips      ,
-	"showTips"        : showTips       ,
-	"hideTips"        : hideTips       ,
 	"tipsMove"        : tipsMove       ,
 	"checkFrom"       : checkFrom      ,
 	"fromTo"          : fromTo         ,
