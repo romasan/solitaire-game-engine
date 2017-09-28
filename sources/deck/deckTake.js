@@ -39,13 +39,13 @@ let deckTake = (deck, cardId) => {
 	let cardName   = null; 
 	let cardSuit   = null; 
 	let cardRank   = null; 
-	let deckLength = deck.cardsCount();
+	let deckLength = deck.cards.filter(e => e.visible).length;
 
 	// проверяем не является ли перевернутой
 
 	let takeDeck = [];
 
-	let cards = deck.getCards();
+	let cards = deck.cards.filter(e => e.visible);
 	for (let i in cards) {
 
 		if (cards[i].id == cardId) {
@@ -85,7 +85,7 @@ let deckTake = (deck, cardId) => {
 
 	for (let ruleIndex in deck.takeRules) {
 
-		let ruleName = deck.takeRules[ruleIndex];
+		let ruleName = deck.takeRules[ruleIndex].name;
 
 		if (takeRules[ruleName]) {
 			rulesCorrect = rulesCorrect && takeRules[ruleName](_attrs);

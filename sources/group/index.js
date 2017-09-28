@@ -139,6 +139,8 @@ class groupClass extends Component {
 
 				const deck = data.decks[deckIndex];
 
+				deck.parent = state.id;
+
 				if (!deck.position) {
 					deck.position = {};
 				}

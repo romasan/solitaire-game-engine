@@ -49,11 +49,11 @@ class allToAll {
 
 			if (deckIndex != deckIndex_2) {
 
-				let _put = Put(this._decks[deckIndex_2], _take);
+				let _put = Put(this._decks[deckIndex_2], _take, this._decks);
 
-				if (_put) {
-					this.put(deckIndex_2, deckIndex, cardIndex, _cards)
-				};
+				// if (_put) {
+				// 	this.put(deckIndex_2, deckIndex, cardIndex, _cards)
+				// };
 			};
 		};
 	}

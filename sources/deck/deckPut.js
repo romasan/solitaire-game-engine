@@ -19,16 +19,16 @@ import putRules from './putRules'        ;
  * @param {deckTakeReturns[]} putDeck 
  * @returns {boolean}
  */
-let deckPut = (deck, putDeck) => {
+let deckPut = (deck, putDeck, decks) => {
 
-	// console.log('deckPut:', putDeck);
+	console.log('PUT:', deck, putDeck, decks);
 
 	let _stepType = share.get('stepType');
 
 	let rulesCorrect = true;
 
 	let _deckId         = putDeck[0].card.parent;
-	let _deck_departure = Deck.getDeckById(_deckId);
+	let _deck_departure = decks.filter(e => e.id == _deckId)[0];
 
 	rulesCorrect = rulesCorrect && !deck.locked;
 

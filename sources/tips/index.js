@@ -47,7 +47,9 @@ let checkTips = state => {
 
 	decks.filter(e => e.visible);
 
-	// state.tips = allToAll.get(decks);
+	console.groupCollapsed('allToAll');
+	state.tips = allToAll.get(decks);
+	console.groupEnd();
 
 	return fromJS(_state);
 
