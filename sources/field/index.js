@@ -96,6 +96,7 @@ class fieldClass extends Component {
 
 		_state.nextId = 0;
 		
+		// TODO пометить группы
 		_state.homeGroups = data.homeGroups ? data.homeGroups : [];
 		
 		_state.autoMoveToHomeOpenDecks = data.autoMoveToHomeOpenDecks
@@ -265,6 +266,13 @@ class fieldClass extends Component {
 		// event.dispatch('newGame');
 
 		return fromJS(_state);
+	}
+
+	static changeTipsMode(state, data) {
+
+		console.log('changeTipsMode', data);
+
+		return state;
 	}
 }
 

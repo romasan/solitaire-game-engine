@@ -35,20 +35,25 @@ let checkTips = state => {
 
 	let decks = [];
 
+	// Decks from Field
 	decks.push(
 		..._state.decks
 	);
 
+	// Decks from groups
 	for (let i in _state.groups) {
 		decks.push(
 			..._state.groups[i].decks
 		);
 	}
 
+	// Only visible decks
 	decks.filter(e => e.visible);
 
+	// All possible moves
 	_state.tips = allToAll.get(decks, state);
 
+	// Highlight cards
 	for (let deckIndex in decks) {
 
 		const deck = decks[deckIndex];
@@ -64,96 +69,86 @@ let checkTips = state => {
 					const tip = _state.tips[i];
 
 					if (
-						// tip.from.deck == dID &&
+						//  tip.from.deck == dID &&
 						tip.from.card == cID
 					) {
-						return _filter(_state, deck, card);
+
+						// Исключить ходы из "Дом-а"
+						if (
+							// (
+							// 	_tips[i].to.count === 0            &&
+							// 	Field.tipsParams.hideOnEmpty
+							// )                                   ||
+							// (
+							// не выделять подсказки с ходом из "дома"
+							state.tipsParams.excludeHomeGroups         &&
+							state.homeGroups                           &&
+							state.homeGroups.length                    &&
+							state.homeGroups.indexOf(deck.parent) >= 0
+							// )
+						) {
+							return false;
+						}
+
+						// Исключить равнозначные ходы внутри одной группы
+						// Например:
+						// С пустого слота на другой пустой слот
+						// С равнозначных предыдущих в стопке карт на такие же
+						if (
+							state.stepType == defaults.stepType
+						) {
+
+							let fromDeck = deck;
+							let   toDeck = decks.filter(e => e.id == tip.to.deck)[0];
+
+							let fromCards = fromDeck.cards.filter(e => e.visible);
+							let   toCards = toDeck  .cards.filter(e => e.visible);
+
+							let takeCardIndex = fromDeck.cards
+								.map((e, i) => ({i, e}))
+								.filter(e => e.id == _tips[i].from.card.id)[0].i;
+
+								let takeCardsLength = fromCards.length - takeCardIndex;
+
+							let fromParentCard = fromCards.length > 0 && takeCardIndex > 0
+								? fromCards[takeCardIndex - 1]
+								: EMPTY;
+
+							let toParentCard = toCards.length > 0                     
+								? toCards[toCards.length - 1]
+								: EMPTY;
+
+							if (
+								fromDeck.parent == toDeck.parent &&
+								(
+									fromParentCard == EMPTY &&
+									  toParentCard == EMPTY
+								) ||
+								(
+									fromParentCard       != EMPTY              &&
+									  toParentCard       != EMPTY              &&
+									fromParentCard.flip  == false              &&
+									// TODO сделать относительно takeRules и putRules
+									fromParentCard.color == toParentCard.color &&
+									fromParentCard.value == toParentCard.value
+									// TODO в идеале надо узнать не появится ли ход если убрать карту
+								)
+							) {
+								return false;
+							}
+						}
+
+						return true;
 					}
 				}
 
 				return false;
 			})(deck.id, card.id) : false;
-
-			if (card.tip) {
-				// 
-			}
 		}
 	}
 
 	return fromJS(_state);
 }
-
-let _filter = (state, deck, card) => {
-
-	console.log('filter');
-
-	return true;
-
-	let draw   = false;
-	let toHome = false;
-
-	// TODO инициализировать "hideTipsInDom" в Field.js 
-	if (
-		// (
-		// 	_tips[i].to.count === 0            &&
-		// 	Field.tipsParams.hideOnEmpty
-		// )                                   ||
-		(
-			state.tipsParams.excludeHomeGroups &&
-			state.homeGroups                   &&
-			state.homeGroups.length
-		)
-	) {
-
-		// не выделять подсказки с ходом из "дома"
-		if (state.homeGroups.indexOf(_tips[i].from.deck.parent) < 0) {
-			draw = true;
-		}
-
-		if (state.homeGroups.indexOf(_tips[i].to.deck.parent) >= 0) {
-			toHome = true;
-		}
-	} else {
-		draw = true;
-	}
-
-	// Filter
-	if (
-		draw                                       &&
-		_state.stepType == defaults.stepType
-	) {
-
-		let fromDeck = decks.filter(e => e.id == _tips[i].from.deck)[0];
-		let   toDeck = decks.filter(e => e.id == _tips[i].to  .deck)[0];
-
-		let fromCards = fromDeck.cards.filter(e => e.visible);
-		let   toCards = toDeck  .cards.filter(e => e.visible);
-
-		let takeCardIndex   = fromDeck.cards.map((e, i) => ({i,e})).filter(e => e.id == _tips[i].from.card.id)[0].i;
-		let takeCardsLength = fromCards.length - takeCardIndex;
-
-		let fromParentCard = fromCards.length > 0 && takeCardIndex  > 0 ? fromCards[takeCardIndex  - 1] : EMPTY;
-		let   toParentCard =   toCards.length > 0                       ?   toCards[toCards.length - 1] : EMPTY;
-
-		if (
-			fromDeck.parent == toDeck.parent &&
-			(
-				fromParentCard == EMPTY &&
-					toParentCard == EMPTY
-			) ||
-			(
-				fromParentCard                    != EMPTY              &&
-					toParentCard                  != EMPTY              &&
-				fromCards[takeCardIndex - 1].flip == false              &&
-				fromParentCard.color              == toParentCard.color &&
-				fromParentCard.value              == toParentCard.value
-				// TODO в идеале надо узнать не появится ли ход если убрать карту
-			)
-		) {
-			draw = false;
-		}
-	}
-};
 // event.listen('makeStep' , checkTips);
 // event.listen('checkTips', checkTips);
 

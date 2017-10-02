@@ -81,8 +81,11 @@ let config = {
 		}),
 
 		new webpack.DefinePlugin({
-			"dev"     : dev    ,
-			"version" : version
+			"dev"         : dev    ,
+			"version"     : version,
+			"process.env" : {
+				"NODE_ENV" : JSON.stringify('production')
+			}
 		}),
 
 		// My plugin
@@ -130,6 +133,9 @@ if(dev) {
 	);
 } else {
 
+	config.devtool = "cheap-module-source-map";
+	
+
 	config.plugins.push(
 		new OptimizeCssAssetsPlugin({
 			"assetNameRegExp"     : "../css/SolitaireEngine.css$",
@@ -157,11 +163,20 @@ if(dev) {
 				"preamble" : preamble
 			},
 			"compressor": {
-				"unsafe"       : true,
-				"drop_console" : true,
-				"warnings"     : true
+				"unsafe"       : true ,
+			//  "drop_console" : true ,
+				"sequences"    : true ,
+				"booleans"     : true ,
+				"loops"        : true ,
+				"unused"       : true ,
+				"warnings"     : false
 			}
-		})
+		}),
+		// new webpack.optimize.CommonsChunkPlugin({
+		// 	"children" : true,
+		// 	"async"    : true
+		// })
+		new webpack.optimize.DedupePlugin()
 	);
 };
 

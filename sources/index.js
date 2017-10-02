@@ -49,13 +49,13 @@ exports.init = gameConfig => {
 	console.groupEnd();
 	
 	store.dispatch({
-		type: actions.INIT_STATE,
-		data: gameConfig
+		"type" : actions.INIT_STATE,
+		"data" : gameConfig
 	});
 	
-	console.groupCollapsed('state');
-	console.log( JSON.stringify( store.getState().toJS() , true, 2) );	
-	console.groupEnd();
+	// console.groupCollapsed('state');
+	// console.log( JSON.stringify( store.getState().toJS() , true, 2) );	
+	// console.groupEnd();
 	console.log( 'state#', store.getState().toJS() );		
 
 	render(
@@ -87,7 +87,7 @@ exports.init = gameConfig => {
 			preloadCallback(_data);
 		}
 
-		event.dispatch('firstInit');
+		// event.dispatch('firstInit');
 	}
 
 	let changePreferencesCallback = share.get('changePreferencesCallback');
@@ -101,7 +101,7 @@ exports.init = gameConfig => {
 		});
 	}
 
-	event.dispatch('gameInited');
+	// event.dispatch('gameInited');
 
 	// exports.Redraw = data => {
 	// 	Field.Redraw(data);
