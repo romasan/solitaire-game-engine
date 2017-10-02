@@ -187,7 +187,7 @@ class fieldClass extends Component {
 		}
 		
 		// инициализация автоходов
-		if (data.autoSteps) {
+		if (data.autoSteps || data.stepTypes) {
 			// this.autoSteps = addAutoSteps(data.autoSteps);
 		}
 		

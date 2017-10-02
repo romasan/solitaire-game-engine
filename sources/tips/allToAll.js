@@ -9,7 +9,7 @@ class allToAll {
 
 	// 1)
 	// пробегаем все колоды
-	get(decks) {
+	get(decks, state) {
 
 		this._decks = decks;
 		this._moves = [];
@@ -18,7 +18,7 @@ class allToAll {
 
 			let _cards = this._decks[deckIndex].cards;
 			// each cards in  current deck
-			this.cardsInTakeDeck(_cards, deckIndex);
+			this.cardsInTakeDeck(_cards, deckIndex, state);
 		};
 
 		return this._moves;
@@ -27,7 +27,7 @@ class allToAll {
 	// 2)
 	// выбираем карты из колоды
 	// патаемся взять карту
-	cardsInTakeDeck(_cards, deckIndex) {
+	cardsInTakeDeck(_cards, deckIndex, state) {
 
 		for (let cardIndex in _cards) {
 
@@ -36,24 +36,24 @@ class allToAll {
 			let _take = Take(this._decks[deckIndex], _id);
 
 			if (_take) {
-				this.decksToPut(_cards, _take, deckIndex, cardIndex);
+				this.decksToPut(_cards, _take, deckIndex, cardIndex, state);
 			};
 		};
 	}
 
 	// 3)
 	// пробегаем все остальные колоды и пробуем положить на них то что взяли
-	decksToPut(_cards, _take, deckIndex, cardIndex) {
+	decksToPut(_cards, _take, deckIndex, cardIndex, state) {
 
 		for (let deckIndex_2 in this._decks) {
 
 			if (deckIndex != deckIndex_2) {
 
-				let _put = Put(this._decks[deckIndex_2], _take, this._decks);
+				let _put = Put(this._decks[deckIndex_2], _take, this._decks, state);
 
-				// if (_put) {
-				// 	this.put(deckIndex_2, deckIndex, cardIndex, _cards)
-				// };
+				if (_put) {
+					this.put(deckIndex_2, deckIndex, cardIndex, _cards)
+				};
 			};
 		};
 	}
@@ -63,18 +63,21 @@ class allToAll {
 	put(deckIndex_2, deckIndex, cardIndex, _cards) {
 
 		let _cards_to = this._decks[deckIndex_2].cards,
-		    _card_to  = _cards_to.length ? _cards_to[_cards_to.length - 1] : null;
+		    _card_to  = _cards_to.length ? _cards_to[_cards_to.length - 1].id : null;
 
 		this._moves.push({
 
 			"from" : {
-				"deck"  : this._decks[deckIndex],
-				"card"  : _cards[cardIndex]     ,
+				// "deck"  : this._decks[deckIndex],
+				"deck"  : this._decks[deckIndex].id,
+				// "card"  : _cards[cardIndex]     ,
+				"card"  : _cards[cardIndex].id     ,
 				"count" : _cards.length
 			},
 
 			"to" : {
-				"deck"     : this._decks[deckIndex_2],
+				// "deck"     : this._decks[deckIndex_2],
+				"deck"     : this._decks[deckIndex_2].id,
 				"lastCard" : _card_to                ,
 				"count"    : _cards_to.length
 			}

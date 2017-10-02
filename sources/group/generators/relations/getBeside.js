@@ -1,13 +1,15 @@
 'use strict';
 
+import Deck from '../../../deck';
+
 export default deck => { // deckClass
 
-	let prev = deck.getRelationsByName('beside', {
+	let prev = Deck.getRelationsByName(deck, 'beside', {
 		"from" : null,
 		"type" : 'prev'
 	})[0];
 
-	let next = deck.getRelationsByName('beside', {
+	let next = Deck.getRelationsByName(deck, 'beside', {
 		"from" : null,
 		"type" : 'next'
 	})[0];

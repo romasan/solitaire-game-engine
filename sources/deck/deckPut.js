@@ -3,8 +3,6 @@
 import share    from '../common/share'   ;
 import defaults from '../common/defaults';
 
-import Field    from '../field'          ;
-import Deck     from './'                ;
 import putRules from './putRules'        ;
 
 /**
@@ -19,9 +17,7 @@ import putRules from './putRules'        ;
  * @param {deckTakeReturns[]} putDeck 
  * @returns {boolean}
  */
-let deckPut = (deck, putDeck, decks) => {
-
-	console.log('PUT:', deck, putDeck, decks);
+let deckPut = (deck, putDeck, decks, state) => {
 
 	let _stepType = share.get('stepType');
 
@@ -37,14 +33,15 @@ let deckPut = (deck, putDeck, decks) => {
 	// Нестандартный ход (autosteps)
 	if (_stepType != defaults.stepType) {
 
-		rulesCorrect = rulesCorrect    &&
-			Field.autoSteps            &&
-			Field.autoSteps[_stepType]
-				? Field.autoSteps[_stepType].manual({
-					"putDeck" : putDeck,
-					"to"      : deck
-				})
-				: false;
+		// TODO
+		// rulesCorrect = rulesCorrect    &&
+		// 	state.autoSteps            &&
+		// 	state.autoSteps[_stepType]
+		// 		? state.autoSteps[_stepType].manual({
+		// 			"putDeck" : putDeck,
+		// 			"to"      : deck
+		// 		})
+		// 		: false;
 	// Стандартный ход
 	} else {
 		// let _link = null; // target deck name?
@@ -58,13 +55,13 @@ let deckPut = (deck, putDeck, decks) => {
 				// 	_deck = Deck.getDeck(_link);
 				// }
 
-				let ruleName = deck.putRules[ruleIndex];
-				let ruleProp = '';
+				let ruleName = deck.putRules[ruleIndex].name;
+				let ruleProp = deck.putRules[ruleIndex].value;
 
-				if (ruleName.indexOf(':') > 0) {
-					ruleProp = ruleName.split(':')[1];
-					ruleName = ruleName.split(':')[0];
-				}
+				// if (ruleName.indexOf(':') > 0) {
+				// 	ruleProp = ruleName.split(':')[1];
+				// 	ruleName = ruleName.split(':')[0];
+				// }
 
 				if (putRules[ruleName]) {
 
@@ -79,7 +76,7 @@ let deckPut = (deck, putDeck, decks) => {
 						// "link"    : _link
 					};
 
-					rulesCorrect = rulesCorrect && putRules[ruleName](_data, ruleProp);
+					rulesCorrect = rulesCorrect && putRules[ruleName](_data, ruleProp, decks);
 					// _link = _param.link;
 
 				} else {

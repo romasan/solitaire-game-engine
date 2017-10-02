@@ -406,17 +406,19 @@ let readyPutRules = {
 
 	"sum14"             : data => readyPutRules.sum(data, 14),
 
-	"around"            : data => { // {from, putDeck, cards}
+	"around"            : (data, prop, decks) => { // {from, putDeck, cards}
 
 		if (data.cards.length == 0) {
 			return true;
 		}
 
-		let _around = data.from.deck.getRelationsByName('around', {
+		let _around = Deck.getRelationsByName(data.from.deck, 'around', {
 			"from": null
 		});
 
-		let _parent = Deck.getDeckById(data.cards[0].parent);
+		// TODO
+		// let _parent = Deck.getDeckById(data.cards[0].parent);
+		let _parent = decks.filter(e => e.visible && e.id == data.cards[0].parent)[0];
 
 		for (let i in _around) {
 

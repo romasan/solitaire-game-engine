@@ -30,7 +30,7 @@ let checkTips = state => {
 	let _state = state.toJS();
 
 	/**
-	 * Decks
+	 * All decks
 	 */
 
 	let decks = [];
@@ -47,120 +47,110 @@ let checkTips = state => {
 
 	decks.filter(e => e.visible);
 
-	console.groupCollapsed('allToAll');
-	state.tips = allToAll.get(decks);
-	console.groupEnd();
+	_state.tips = allToAll.get(decks, state);
 
-	return fromJS(_state);
+	for (let deckIndex in decks) {
 
-	// event.dispatch('genNextCards');
+		const deck = decks[deckIndex];
 
-	// if (share.get('noTips')) {
-	// 	return false;
-	// }
+		for (let cardIndex in deck.cards) {
 
-	// console.log('check tips');
+			const card = deck.cards[cardIndex];
 
-	// event.dispatch('hideTips');
+			card.tip = _state.showTips ? ((dID, cID) => {
 
-	// let _decks = Deck.getDecks({
-	// 	"visible" : true
-	// });
+				for (let i in _state.tips) {
 
-	// console.groupCollapsed('check tips');
-	// console.groupEnd();
+					const tip = _state.tips[i];
 
-	if (
-		_tips.length == 0                          &&
-		share.get('stepType') == defaults.stepType
-	) {
+					if (
+						// tip.from.deck == dID &&
+						tip.from.card == cID
+					) {
+						return _filter(_state, deck, card);
+					}
+				}
 
-		event.dispatch('noTips');
+				return false;
+			})(deck.id, card.id) : false;
 
-		console.log('No possible moves.');
+			if (card.tip) {
+				// 
+			}
+		}
 	}
 
-	_showTips = typeof share.get('showTips') == "undefined"
-		? defaults.showTips
-		: share.get('showTips');
+	return fromJS(_state);
+}
 
-	if (_showTips) {
+let _filter = (state, deck, card) => {
 
-		let _homeGroups = Field.homeGroups;
+	console.log('filter');
 
-		for (let i in _tips) {
+	return true;
 
-			let draw   = false;
-			let toHome = false;
+	let draw   = false;
+	let toHome = false;
 
-			// TODO инициализировать "hideTipsInDom" в Field.js 
-			if (
-				// (
-				// 	_tips[i].to.count === 0            &&
-				// 	Field.tipsParams.hideOnEmpty
-				// )                                   ||
-				(
-					Field.tipsParams.excludeHomeGroups &&
-					_homeGroups                        &&
-					_homeGroups.length
-				)
-			) {
+	// TODO инициализировать "hideTipsInDom" в Field.js 
+	if (
+		// (
+		// 	_tips[i].to.count === 0            &&
+		// 	Field.tipsParams.hideOnEmpty
+		// )                                   ||
+		(
+			state.tipsParams.excludeHomeGroups &&
+			state.homeGroups                   &&
+			state.homeGroups.length
+		)
+	) {
 
-				// не выделять подсказки с ходом из "дома"
-				if (_homeGroups.indexOf(_tips[i].from.deck.parent) < 0) {
-					draw = true;
-				}
+		// не выделять подсказки с ходом из "дома"
+		if (state.homeGroups.indexOf(_tips[i].from.deck.parent) < 0) {
+			draw = true;
+		}
 
-				if (_homeGroups.indexOf(_tips[i].to.deck.parent) >= 0) {
-					toHome = true;
-				}
-			} else {
-				draw = true;
-			}
+		if (state.homeGroups.indexOf(_tips[i].to.deck.parent) >= 0) {
+			toHome = true;
+		}
+	} else {
+		draw = true;
+	}
 
-			// Filter
-			if (
-				draw                                       &&
-				share.get('stepType') == defaults.stepType
-			) {
+	// Filter
+	if (
+		draw                                       &&
+		_state.stepType == defaults.stepType
+	) {
 
-				let fromDeck = _tips[i].from.deck;
-				let   toDeck = _tips[i].to  .deck;
+		let fromDeck = decks.filter(e => e.id == _tips[i].from.deck)[0];
+		let   toDeck = decks.filter(e => e.id == _tips[i].to  .deck)[0];
 
-				let fromCards = fromDeck.getCards();
-				let   toCards = toDeck  .getCards();
+		let fromCards = fromDeck.cards.filter(e => e.visible);
+		let   toCards = toDeck  .cards.filter(e => e.visible);
 
-				let takeCardIndex   = _tips[i].from.deck.getCardIndexById(_tips[i].from.card.id);
-				let takeCardsLength = fromCards.length - takeCardIndex;
+		let takeCardIndex   = fromDeck.cards.map((e, i) => ({i,e})).filter(e => e.id == _tips[i].from.card.id)[0].i;
+		let takeCardsLength = fromCards.length - takeCardIndex;
 
-				let fromParentCard = fromCards.length > 0 && takeCardIndex  > 0 ? fromCards[takeCardIndex  - 1] : EMPTY;
-				let   toParentCard =   toCards.length > 0                       ?   toCards[toCards.length - 1] : EMPTY;
+		let fromParentCard = fromCards.length > 0 && takeCardIndex  > 0 ? fromCards[takeCardIndex  - 1] : EMPTY;
+		let   toParentCard =   toCards.length > 0                       ?   toCards[toCards.length - 1] : EMPTY;
 
-				if (
-					fromDeck.parent == toDeck.parent &&
-					(
-						fromParentCard == EMPTY &&
-						  toParentCard == EMPTY
-					) ||
-					(
-						fromParentCard                    != EMPTY              &&
-						  toParentCard                    != EMPTY              &&
-						fromCards[takeCardIndex - 1].flip == false              &&
-						fromParentCard.color              == toParentCard.color &&
-						fromParentCard.value              == toParentCard.value
-						// TODO в идеале надо узнать не появится ли ход если убрать карту
-					)
-				) {
-					draw = false;
-				}
-			}
-
-			if (draw) {
-				event.dispatch('showTip', {
-					"type" : toHome ? 'tipToHome' : 'tip',
-					"el"   : _tips[i].from.card
-				});
-			}
+		if (
+			fromDeck.parent == toDeck.parent &&
+			(
+				fromParentCard == EMPTY &&
+					toParentCard == EMPTY
+			) ||
+			(
+				fromParentCard                    != EMPTY              &&
+					toParentCard                  != EMPTY              &&
+				fromCards[takeCardIndex - 1].flip == false              &&
+				fromParentCard.color              == toParentCard.color &&
+				fromParentCard.value              == toParentCard.value
+				// TODO в идеале надо узнать не появится ли ход если убрать карту
+			)
+		) {
+			draw = false;
 		}
 	}
 };

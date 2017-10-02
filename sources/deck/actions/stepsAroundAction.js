@@ -32,7 +32,7 @@ class stepsAroundAction extends deckAction {
 		// stop Drag'n'Drop
 		common.curLock();
 
-		let _relations = deck.getRelationsByName('around', {from: null});
+		let _relations = Deck.getRelationsByName(deck, 'around', {from: null});
 		// let _tips = Tips.getTips();
 
 		// выполняется для всех вокруг

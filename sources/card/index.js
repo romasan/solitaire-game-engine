@@ -17,6 +17,7 @@ class cardClass extends Component {
 			id      ,
 			name    ,
 			flip    ,
+			tip     ,
 			position,
 			visible ,
 			rotate  ,
@@ -24,7 +25,7 @@ class cardClass extends Component {
 		} = this.props;
 
 		const {
-			width,
+			width ,
 			height
 		} = defaults.card;
 		
@@ -32,7 +33,7 @@ class cardClass extends Component {
 		
 		return <div
 			id = {id}
-			className={`el card ${name}${flip ? ' flip' : ''}`}
+			className={`el card ${name}${flip ? ' flip' : ''}${tip ? ' tip' : ''}`}
 			style ={{
 				display   : visible ? 'block' : 'none',
 				transform : `rotate(${rotate}deg)`    ,

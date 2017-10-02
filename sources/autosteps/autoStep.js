@@ -5,6 +5,7 @@ import event    from '../common/event'   ;
 import share    from '../common/share'   ;
 import defaults from '../common/defaults';
 
+// class stepType {
 class autoStep {
 
 	/**

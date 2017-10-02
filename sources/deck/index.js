@@ -1048,30 +1048,31 @@ class deckClass extends Component {
 
 	/**
 	 * Get deck relations with other decks by relation name
+	 * @param {*} state - Deck state
 	 * @param {string} relationName 
 	 * @param {*} filters 
 	 * @returns {deckRelation[]}
 	 */
-	getRelationsByName(relationName, filters) {
+	static getRelationsByName(state, relationName, filters) {
 
 		let _relations = [];
 
-		for (let i in this.relations) {
-			if (this.relations[i].name == relationName) {
+		for (let i in state.relations) {
+			if (state.relations[i].name == relationName) {
 
 				if (filters) {
 
 					let _correct = true;
 
 					for (let attr in filters) {
-						_correct = _correct && this.relations[i][attr] == filters[attr];
+						_correct = _correct && state.relations[i][attr] == filters[attr];
 					}
 
 					if (_correct) {
-						_relations.push(this.relations[i]);
+						_relations.push(state.relations[i]);
 					}
 				} else {
-					_relations.push(this.relations[i]);
+					_relations.push(state.relations[i]);
 				}
 			}
 		}
