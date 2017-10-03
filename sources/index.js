@@ -8,7 +8,9 @@ import defaults      from './common/defaults'   ;
 // init
 import Move          from './move'              ;
 import forceMove     from './move/forceMove'    ;
-import io            from './io'                ;
+// import io            from './io'                ;
+import styles        from './styles'            ;
+import Inputs        from './io/inputs'         ;
 import Field         from './field'             ;
 import common        from './common'            ;
 import winCheck      from './wincheck'          ;
@@ -64,6 +66,8 @@ exports.init = gameConfig => {
 		</Provider>,
 		document.getElementById('map')
 	);
+
+	Inputs.init();
 
 	return;
 

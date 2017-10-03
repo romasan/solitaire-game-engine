@@ -10,6 +10,8 @@ import Deck           from '../deck'               ;
 import Field          from '../field'              ;
 import autoMoveToHome from '../move/autoMoveToHome';
 
+import store from '../store';
+import actions from '../actions';
 import {fromJS} from 'immutable';
 
 const EMPTY = "EMPTY";
@@ -81,10 +83,11 @@ let checkTips = state => {
 							// )                                   ||
 							// (
 							// не выделять подсказки с ходом из "дома"
-							state.tipsParams.excludeHomeGroups         &&
-							state.homeGroups                           &&
-							state.homeGroups.length                    &&
-							state.homeGroups.indexOf(deck.parent) >= 0
+							_state.tipsParams                           &&
+							_state.tipsParams.excludeHomeGroups         &&
+							_state.homeGroups                           &&
+							_state.homeGroups.length                    &&
+							_state.homeGroups.indexOf(deck.parent) >= 0
 							// )
 						) {
 							return false;
@@ -151,6 +154,22 @@ let checkTips = state => {
 }
 // event.listen('makeStep' , checkTips);
 // event.listen('checkTips', checkTips);
+
+let showTips = () => {
+	store.dispatch({
+		"type": actions.SET_TIPS_MODE,
+		"data": true
+	});
+};
+event.listen('tips:on', showTips);
+
+let hideTips = () => {
+	store.dispatch({
+		"type": actions.SET_TIPS_MODE,
+		"data": false
+	});
+};
+event.listen('tips:off', hideTips);
 
 // лучший ход на в текущем положении перетаскиваемой стопки
 /**

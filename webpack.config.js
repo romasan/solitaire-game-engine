@@ -71,6 +71,9 @@ let config = {
 		]
 	},
 	// "resolve": {
+	// 	"alias" : {
+	// 		immutable : "immutable/dist/immutable.min.js"
+	// 	}
 	// 	// "modulesDirectories" : dirTree,
 	// 	"extensions" : ['.js', '.jsx']
 	// },
@@ -160,6 +163,7 @@ if(dev) {
  config.plugins.push(
 		new webpack.optimize.UglifyJsPlugin({
 			"output": {
+				"comments" : false   ,
 				"preamble" : preamble
 			},
 			"compressor": {

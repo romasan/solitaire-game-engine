@@ -17,7 +17,12 @@ export default function(state = Map({}), action) {
             );
 
         case actions.SET_TIPS_MODE:
-            return Field.changeTipsMode(state, action.data);
+            return Tips.checkTips(
+                Field.changeTipsMode(state, action.data)
+            );
+
+        case actions.TAKE_CARDS:
+            return Field.takeCards(state, action.data);
 
         default:
             return state;

@@ -23,8 +23,8 @@ class inputsClass {
 	 */
 	constructor() {
 
-		share.set('dragDeck'   , null);
-		share.set('startCursor', null);
+		// share.set('dragDeck'   , null);
+		// share.set('startCursor', null);
 
 		try {
 
@@ -186,6 +186,10 @@ class inputsClass {
 	 * @param {boolean} touch 
 	 */
 	take(target, x, y, touch) {
+
+		console.log('inputs:take', target.id);
+
+		return;
 
 		if (touch) {
 
@@ -507,14 +511,16 @@ class inputsClass {
 
 let _inputs = null;
 
-event.listen('newGame', e => {
-	if (!_inputs) {
-		_inputs = new inputsClass();
-	}
-});
+let init = () => {
+	!_inputs && (_inputs = new inputsClass());
+};
 
-event.listen('inputsBreak', e => {
-	if (_inputs) {
-		_inputs._break();
-	}
-});
+export default {
+	init
+}
+
+// event.listen('inputsBreak', e => {
+// 	if (_inputs) {
+// 		_inputs._break();
+// 	}
+// });

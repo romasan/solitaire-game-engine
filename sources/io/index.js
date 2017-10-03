@@ -16,57 +16,13 @@ import event          from '../common/event'              ;
 import share          from '../common/share'              ;
 import common         from '../common'                    ;
 
-import elRender       from './dom/elRender'               ;
-import inputs         from './inputs'                     ;
+// event.listen('render:on', e => {
+// 	share.set('nodraw', false);
+// });
 
-import initField      from './renderEvents/initField'     ;
-import drawDeck       from './renderEvents/drawDeck'      ;
-import drawCard       from './renderEvents/drawCard'      ;
-import drawTip        from './renderEvents/drawTip'       ;
-import moveDragDeck   from './renderEvents/moveDragDeck'  ;
-import moveCardBack   from './renderEvents/moveCardBack'  ;
-import fieldThemesSet from './renderEvents/fieldThemesSet';
-
-// styles DOM
-import '../styles/common.scss'                            ;
-import '../styles/default_theme.scss'                     ;
-import '../styles/alternative_theme.scss'                 ;
-import '../styles/environment.css'                        ;
-
-share.set('nodraw', false);
-
-event.listen('render:on', e => {
-	share.set('nodraw', false);
-});
-
-event.listen('render:off', e => {
-	share.set('nodraw', true);
-});
-
-event.listen('removeEl', data => {
-
-	// if (share.get('nodraw')) {
-
-	// 	if (data && typeof data.callback == "function") {
-	// 		data.callback();
-	// 	}
-
-	// 	return;
-	// }
-
-	let _elDomElement = share.get('domElement:' + data.id);
-
-	// try {
-	if (_elDomElement) {
-
-		_elDomElement.remove();
-
-		share.delete('domElement:' + data.id);
-	} else {
-	// } catch (e) {
-		// console.warn('Dom element for', data.id, 'not found');
-	}
-});
+// event.listen('render:off', e => {
+// 	share.set('nodraw', true);
+// });
 
 let triggerMouseEvent = (node, eventName) => {
 
@@ -96,10 +52,10 @@ event.listen('clickCard', card => {
 	}
 })
 
-event.listen('showCard', target => {
-	elRender(target).show();
-});
+// event.listen('showCard', target => {
+// 	elRender(target).show();
+// });
 
-event.listen('hideCard', target => {
-	elRender(target).hide();
-});
+// event.listen('hideCard', target => {
+// 	elRender(target).hide();
+// });

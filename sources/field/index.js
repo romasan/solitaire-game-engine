@@ -265,13 +265,30 @@ class fieldClass extends Component {
 		// событие: игра началась
 		// event.dispatch('newGame');
 
+		_state.drag = {
+			"cursor" : false,
+			"cards"  : []
+		};
+
 		return fromJS(_state);
 	}
 
 	static changeTipsMode(state, data) {
 
-		console.log('changeTipsMode', data);
+		// console.log('changeTipsMode', data);
 
+		let _state = state.toJS();
+
+		_state.showTips = data;
+
+		return fromJS(_state);
+		// return state;
+	}
+
+	static takeCards(state, data) {
+
+		console.log('takeCards', data);
+		
 		return state;
 	}
 }

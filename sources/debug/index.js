@@ -7,7 +7,6 @@ import defaults      from '../common/defaults'           ;
 
 import field         from '../field'                     ;
 import deckGenerator from '../deck/deckGenerator'        ;
-import elRender      from '../io/dom/elRender'           ;
 import _storage      from '../common/storage'            ;
 import stateManager  from '../common/stateManager'       ;
 import history       from '../history'                   ;
@@ -424,7 +423,6 @@ export default {
 	common       ,
 	field        ,
 	deckGenerator,
-	elRender     ,
 	storage : _storage,
 	stateManager ,
 	history      ,

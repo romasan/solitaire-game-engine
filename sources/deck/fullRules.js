@@ -4,7 +4,7 @@ import defaults  from '../common/defaults'                     ;
 
 import Group     from '../group'                               ;
 import Deck      from './'                                     ;
-import Tips      from '../tips'                                ;
+// import Tips      from '../tips'                                ;
 import getBeside from '../group/generators/relations/getBeside';
 
 /*
