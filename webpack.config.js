@@ -16,7 +16,7 @@ let _json = require(_file);
 
 let _index = 1;
 
-let version = parseInt('9' + _json.version.split('.').map(e => parseInt(e).toString(8)).join(9));
+// let version = parseInt('9' + _json.version.split('.').map(e => parseInt(e).toString(8)).join(9));
 
 // let directoryTree = require('directory-tree');
 // let getTree = data => {
@@ -85,7 +85,7 @@ let config = {
 
 		new webpack.DefinePlugin({
 			"dev"         : dev    ,
-			"version"     : version,
+			"version"     : JSON.stringify(_json.version),
 			"process.env" : {
 				"NODE_ENV" : JSON.stringify('production')
 			}

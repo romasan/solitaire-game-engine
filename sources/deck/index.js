@@ -86,8 +86,6 @@ class deckClass extends Component {
 	 */
 	static init(state, data, nextId) {
 
-		state.cards = [];
-		
 		// parameters
 		state.type = "deck";
 

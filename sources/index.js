@@ -25,6 +25,7 @@ import store         from './store'             ;
 import React from 'react';
 import ReactDOM, {render} from 'react-dom';
 import {Provider} from 'react-redux';
+// import {Map} from 'immutable';
 
 let preloadCallback = null,
     firstInit       = true;
@@ -33,7 +34,7 @@ exports.event     = event;
 exports.options   = defaults;
 exports.winCheck  = winCheck.hwinCheck;
 exports.generator = deckGenerator;
-exports.version   = version ? version.toString().split(9).slice(1).map(e => parseInt(e, 8)).join('.') : null;
+exports.version   = version; // ? version.toString().split(9).slice(1).map(e => parseInt(e, 8)).join('.') : null;
 
 exports.onload = callback => {
 	preloadCallback = callback;
@@ -49,6 +50,12 @@ exports.init = gameConfig => {
 	console.groupCollapsed('gameConfig');
 	console.log( JSON.stringify( gameConfig, true, 2 ) );	
 	console.groupEnd();
+
+	try {
+		gameConfig = JSON.parse( JSON.stringify(gameConfig) );
+	} catch (e) {
+		console.warn('Game config is incorrect');
+	}
 	
 	store.dispatch({
 		"type" : actions.INIT_STATE,
@@ -58,18 +65,7 @@ exports.init = gameConfig => {
 	// console.groupCollapsed('state');
 	// console.log( JSON.stringify( store.getState().toJS() , true, 2) );	
 	// console.groupEnd();
-	console.log( 'state#', store.getState().toJS() );		
-
-	render(
-		<Provider store={store}>
-			<Field/>
-		</Provider>,
-		document.getElementById('map')
-	);
-
-	Inputs.init();
-
-	return;
+	console.log( 'state#', store.getState().toJS() );
 
 	// event.dispatch('gameInit', {
 	// 	"firstInit" : firstInit
@@ -82,28 +78,39 @@ exports.init = gameConfig => {
 
 	if (firstInit) {
 
+		console.log('render >>>');
+
+		render(
+			<Provider store={store}>
+				<Field/>
+			</Provider>,
+			document.getElementById('map')
+		);
+	
+		Inputs.init();
+
 		firstInit = false;
 
-		if (typeof preloadCallback == 'function') {
+		// if (typeof preloadCallback == 'function') {
 
-			let _data = share.get('gamePreferencesData');
+		// 	let _data = share.get('gamePreferencesData');
 
-			preloadCallback(_data);
-		}
+		// 	preloadCallback(_data);
+		// }
 
 		// event.dispatch('firstInit');
 	}
 
-	let changePreferencesCallback = share.get('changePreferencesCallback');
+	// let changePreferencesCallback = share.get('changePreferencesCallback');
 
-	if (typeof changePreferencesCallback == 'function') {
+	// if (typeof changePreferencesCallback == 'function') {
 
-		let _data = share.get('gamePreferencesData');
+	// 	let _data = share.get('gamePreferencesData');
 
-		changePreferencesCallback(_data, {
-			"stepType" : share.get('stepType')
-		});
-	}
+	// 	changePreferencesCallback(_data, {
+	// 		"stepType" : share.get('stepType')
+	// 	});
+	// }
 
 	// event.dispatch('gameInited');
 

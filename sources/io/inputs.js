@@ -9,6 +9,9 @@ import Deck     from '../deck'           ;
 import Tips     from '../tips'           ;
 // import geometry from './geometry';
 
+import actions from '../actions';
+import store from '../store';
+
 /*
  * _break
  * take
@@ -188,6 +191,11 @@ class inputsClass {
 	take(target, x, y, touch) {
 
 		console.log('inputs:take', target.id);
+
+		// store.dispatch({
+		// 	"type": actions.TAKE_CARDS,
+		// 	"data": target.id
+		// });
 
 		return;
 
