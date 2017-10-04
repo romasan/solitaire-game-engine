@@ -77,6 +77,19 @@ class fieldClass extends Component {
 
 		let cards = []; // dragged cards
 
+		for (let i in this.props.drag.cards) {
+
+			const {id} = this.props.drag.cards[i];
+
+			cards.push(
+				<Card
+					key = {id}
+					id  = {id}
+					{...this.props.drag.cards[i]}
+				/>
+			)
+		}
+
 		return <div className={classes.join(' ')}>
 			{groups}
 			{decks}
@@ -287,9 +300,45 @@ class fieldClass extends Component {
 
 	static takeCards(state, data) {
 
-		console.log('takeCards', data);
+		let _state = state.toJS();
+
+		console.log('###', _state, decks);
+
+		/**
+		 * All decks
+		 */
+
+		let decks = [];
+	
+		// Decks from Field
+		decks.push(
+			..._state.decks
+		);
+	
+		// Decks from groups
+		for (let i in _state.groups) {
+			decks.push(
+				..._state.groups[i].decks
+			);
+		}
+	
+		// Departure deck
+		let deck = decks.filter(e => e.visible && e.cards.some(c => c.id == data.id))[0];
+
+		_state.drag.cards = deck && deck.cards.splice( deck.cards.findIndex(e => e.id == data.id) );
+		_state.drag.cursor = {
+			"x" : data.x,
+			"y" : data.y
+		};
+
+		_state.drag.cards && _state.drag.cards.forEach(e => {
+			console.log(e.name, e.position, e.offset);
+			e.position = e.offset;
+		});
+
+		console.log('takeCards', data, _state);
 		
-		return state;
+		return fromJS(_state);
 	}
 }
 

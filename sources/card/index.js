@@ -82,6 +82,17 @@ class cardClass extends Component {
 			"y" : 0
 		};
 
+		// if (card.offset) {
+
+		// 	if (typeof card.offset.x == "number") {
+		// 		state.offset.x = card.offset.x;
+		// 	}
+
+		// 	if (typeof card.offset.x == "number") {
+		// 		state.offset.x = card.offset.x;
+		// 	}
+		// }
+
 		return state;
 	}
 

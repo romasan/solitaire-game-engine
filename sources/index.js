@@ -78,8 +78,6 @@ exports.init = gameConfig => {
 
 	if (firstInit) {
 
-		console.log('render >>>');
-
 		render(
 			<Provider store={store}>
 				<Field/>

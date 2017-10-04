@@ -50,7 +50,7 @@ let checkTips = state => {
 	}
 
 	// Only visible decks
-	decks.filter(e => e.visible);
+	decks = decks.filter(e => e.visible);
 
 	// All possible moves
 	_state.tips = allToAll.get(decks, state);

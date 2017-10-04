@@ -77,8 +77,6 @@ class groupClass extends Component {
 
 		state.offset = state.position;
 
-		data.offset = state.position;
-
 		state.placement = {
 			"x" : null,
 			"y" : null
@@ -158,11 +156,14 @@ class groupClass extends Component {
 				) {
 					deck.position.y = deckIndex * defaults.card.height + deckIndex * state.placement.y;
 				}
-			}
 
-			for (let deckIndex in data.decks) {
+				deck.offset = state.offset;
 
-				let deck = data.decks[deckIndex];
+			// }
+
+			// for (let deckIndex in data.decks) {
+
+			// 	let deck = data.decks[deckIndex];
 				
 				const data_transfuse_list = [
 					"save"            ,

@@ -12,9 +12,9 @@
  * https://github.com/reactjs/react-transition-group
  */
 
-import event          from '../common/event'              ;
-import share          from '../common/share'              ;
-import common         from '../common'                    ;
+import event  from '../common/event';
+import share  from '../common/share';
+import common from '../common'      ;
 
 // event.listen('render:on', e => {
 // 	share.set('nodraw', false);

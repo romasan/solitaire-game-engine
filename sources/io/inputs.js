@@ -12,13 +12,6 @@ import Tips     from '../tips'           ;
 import actions from '../actions';
 import store from '../store';
 
-/*
- * _break
- * take
- * drag
- * put
- */
-
 class inputsClass {
 
 	/**
@@ -155,33 +148,6 @@ class inputsClass {
 	}
 
 	/**
-	 * Break inputs
-	 */
-	_break() {
-
-		let _dragDeck = share.get('dragDeck');
-
-		if (
-			_dragDeck                &&
-			_dragDeck[0]             &&
-			_dragDeck[0].card        &&
-			_dragDeck[0].card.parent
-		) {
-
-			let _deck = Deck.getDeckById(_dragDeck[0].card.parent);
-
-			if (_deck) {
-				_deck.Redraw();
-			}
-		}
-
-		share.set('dragDeck'   , null);
-		share.set('startCursor', null);
-
-		common.curUnLock();
-	}
-
-	/**
 	 * Take card
 	 * @param {EventTarget} target 
 	 * @param {number} x 
@@ -190,12 +156,20 @@ class inputsClass {
 	 */
 	take(target, x, y, touch) {
 
-		console.log('inputs:take', target.id);
+		if (
+			target                            &&
+			target.classList.contains('card') &&
+			target.id
+		) {
+			store.dispatch({
+				"type": actions.TAKE_CARDS,
+				"data": {
+					"id" : target.id,
+					x, y
+				}
+			});
+		}
 
-		// store.dispatch({
-		// 	"type": actions.TAKE_CARDS,
-		// 	"data": target.id
-		// });
 
 		return;
 
@@ -526,9 +500,3 @@ let init = () => {
 export default {
 	init
 }
-
-// event.listen('inputsBreak', e => {
-// 	if (_inputs) {
-// 		_inputs._break();
-// 	}
-// });

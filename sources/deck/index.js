@@ -470,6 +470,8 @@ class deckClass extends Component {
 					state.paddingType.value
 				);
 
+				console.log('###', state.offset, card.position);
+
 				card.offset = {
 					"x" : state.offset.x + card.position.x,
 					"y" : state.offset.y + card.position.y
