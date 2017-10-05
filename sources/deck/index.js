@@ -391,7 +391,7 @@ class deckClass extends Component {
 			state.position = {
 				"x" : x ? x : 0,
 				"y" : y ? y : 0
-			}
+			};
 		}
 
 		//offset - позиция относительно Field
@@ -399,18 +399,18 @@ class deckClass extends Component {
 			"x" : state.position.x,
 			"y" : state.position.y
 		};
-
+		
 		if (data.offset) {
-
+			
 			if (typeof data.offset.x == "number") {
-				state.offset += data.offset.x;
+				state.offset.x += data.offset.x;
 			}
-
+			
 			if (typeof data.offset.y == "number") {
-				state.offset += data.offset.y;
+				state.offset.y += data.offset.y;
 			}
 		}
-
+		
 		state.rotate = typeof data.rotate == "number" ? data.rotate : defaults.rotate;
 		
 		/**
@@ -424,7 +424,7 @@ class deckClass extends Component {
 			// deckActions.add(this);
 		}
 
-		state.relations = data.relations ? data.relations : []
+		state.relations = data.relations ? data.relations : [];
 
 		state.tags = data.tags ? data.tags : [];
 
@@ -469,8 +469,6 @@ class deckClass extends Component {
 					i                      ,
 					state.paddingType.value
 				);
-
-				console.log('###', state.offset, card.position);
 
 				card.offset = {
 					"x" : state.offset.x + card.position.x,

@@ -323,16 +323,23 @@ class fieldClass extends Component {
 		}
 	
 		// Departure deck
-		let deck = decks.filter(e => e.visible && e.cards.some(c => c.id == data.id))[0];
+		let deck = decks.filter(
+			e => e.visible && e.cards.some(
+				c => c.id == data.id
+			)
+		)[0];
 
 		_state.drag.cards = deck && deck.cards.splice( deck.cards.findIndex(e => e.id == data.id) );
+
 		_state.drag.cursor = {
 			"x" : data.x,
 			"y" : data.y
 		};
 
 		_state.drag.cards && _state.drag.cards.forEach(e => {
-			console.log(e.name, e.position, e.offset);
+
+			console.log( e.name, JSON.stringify(e.position), JSON.stringify(e.offset) );
+
 			e.position = e.offset;
 		});
 
