@@ -14,6 +14,8 @@ import mapCommon     from '../group/generators/mapCommon';
 
 import './debug.scss'                                    ;
 
+import immutable from 'immutable';
+
 let solitaireField = null;
 
 let triggerMouseEvent = (node, eventName, x, y) => {
@@ -417,6 +419,35 @@ try {
 	}
 } catch (e) {}
 
+let debugState = {
+	drag : {
+		cursor : {
+			x: 10,
+			y: 20
+		},
+		cards: [
+			{
+				name: 'c1',
+				position: {
+					x: 30,
+					y: 40
+				}
+			},
+			{
+				name: 'c2',
+				position: {
+					x: 50,
+					y: 60
+				}
+			}
+		]
+	}
+}
+
+// JSON.stringify( SolitaireEngine.debug.debugState.updateIn(['drag', 'cards'], e => e.map(d => 1)).toJS(), true, 2)
+// JSON.stringify( SolitaireEngine.debug.debugState.update(['drag.cards'], e => 1).toJS(), true, 2)
+// JSON.stringify( SolitaireEngine.debug.debugState, true, 2)
+
 export default {
 	share        ,
 	defaults     ,
@@ -427,5 +458,7 @@ export default {
 	stateManager ,
 	history      ,
 	mapCommon    ,
-	deckGenerator
+	deckGenerator,
+	immutable    ,
+	"debugState" : immutable.fromJS(debugState)
 };

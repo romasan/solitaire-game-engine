@@ -11,6 +11,15 @@ import {connect} from 'react-redux';
 
 class cardClass extends Component {
 
+	// constructor(props) {
+
+	// 	super(props);
+
+	// 	this.state = {
+	// 		test: 'test'
+	// 	};
+	// }
+
 	render() {
 		
 		const {
@@ -132,5 +141,6 @@ class cardClass extends Component {
 	}
 }
 
-// export default cardClass;
-export default connect(state => state.toJS())(cardClass);
+export default cardClass;
+// export default connect(state => state.toJS())(cardClass);
+// export default connect(state => state)(cardClass);

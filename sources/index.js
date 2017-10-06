@@ -65,7 +65,8 @@ exports.init = gameConfig => {
 	// console.groupCollapsed('state');
 	// console.log( JSON.stringify( store.getState().toJS() , true, 2) );	
 	// console.groupEnd();
-	console.log( 'state#', store.getState().toJS() );
+	// console.log( 'state#', store.getState().toJS() );
+	console.log( 'state#', store.getState() );
 
 	// event.dispatch('gameInit', {
 	// 	"firstInit" : firstInit

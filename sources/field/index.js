@@ -45,14 +45,23 @@ class fieldClass extends Component {
 
 		for(let i in this.props.groups) {
 
-			const {id} = this.props.groups[i];
+			const {
+				id,
+				position,
+				decks
+			} = this.props.groups[i];
 			
 			groups.push(
 				<Group
 					key = {id}
-					// zoom = {zoom}
-					{...this.props.groups[i]}
-					_decks = {this.props.groups[i].decks}
+					{...{
+						id      ,
+						zoom    ,
+						position,
+						decks
+					}}
+					// {...this.props.groups[i]}
+					// _decks = {this.props.groups[i].decks}
 				/>
 			);
 		}
@@ -65,12 +74,28 @@ class fieldClass extends Component {
 
 		for (let i in this.props.decks) {
 
-			const {id} = this.props.decks[i];
+			const {
+				id      ,
+				position,
+				showSlot,
+				visible ,
+				rotate  ,
+				cards				
+			} = this.props.decks[i];
 
 			decks.push(
 				<Deck
 					key = {id}
-					{...this.props.decks[i]}
+					{...{
+						id      ,
+						position,
+						zoom    ,
+						showSlot,
+						visible ,
+						rotate  ,
+						cards
+					}}
+					// {...this.props.decks[i]}
 				/>
 			);
 		}
@@ -79,13 +104,30 @@ class fieldClass extends Component {
 
 		for (let i in this.props.drag.cards) {
 
-			const {id} = this.props.drag.cards[i];
+			const {
+				id      ,
+				name    ,
+				flip    ,
+				tip     ,
+				position,
+				visible ,
+				rotate
+			} = this.props.drag.cards[i];
 
 			cards.push(
 				<Card
 					key = {id}
-					id  = {id}
-					{...this.props.drag.cards[i]}
+					{...{
+						id      ,
+						name    ,
+						flip    ,
+						tip     ,
+						position,
+						visible ,
+						rotate  ,
+						zoom
+					}}
+					// {...this.props.drag.cards[i]}
 				/>
 			)
 		}
@@ -283,25 +325,28 @@ class fieldClass extends Component {
 			"cards"  : []
 		};
 
-		return fromJS(_state);
+		// return fromJS(_state);
+		return JSON.parse( JSON.stringify(_state) );
 	}
 
 	static changeTipsMode(state, data) {
 
 		// console.log('changeTipsMode', data);
 
-		let _state = state.toJS();
+		// let _state = state.toJS();
+		let _state = state;
 
 		_state.showTips = data;
 
-		return fromJS(_state);
-		// return state;
+		// return fromJS(_state);
+		return _state;
 	}
 
 	static takeCards(state, data) {
 
-		let _state = state.toJS();
-
+		// let _state = state.toJS();
+		let _state = state;
+		
 		console.log('###', _state, decks);
 
 		/**
@@ -350,14 +395,32 @@ class fieldClass extends Component {
 
 		console.log('takeCards', data, _state);
 		
-		return fromJS(_state);
+		// return fromJS(_state);
+		return JSON.parse( JSON.stringify(_state) );
 	}
 
 	static moveCards(state, data) {
 
-		console.log('moveCards', data);
+		// let _state = state.toJS();
+		let _state = state;
 
-		return state;
+		for (let i in _state.drag.cards) {
+
+			let card = _state.drag.cards[i];
+
+			card.position = {
+				"x" : card.position.x - _state.drag.cursor.x + data.x,
+				"y" : card.position.y - _state.drag.cursor.y + data.y
+			};
+		}
+
+		_state.drag.cursor = {
+			"x" : data.x,
+			"y" : data.y
+		};
+
+		// return fromJS(_state);
+		return JSON.parse( JSON.stringify(_state) );
 	}
 
 	static putCards(state, data) {
@@ -368,6 +431,7 @@ class fieldClass extends Component {
 	}
 }
 
-export default connect(state => state.toJS())(fieldClass);
+// export default connect(state => state.toJS())(fieldClass);
+export default connect(state => state)(fieldClass);
 
 // export default Field;

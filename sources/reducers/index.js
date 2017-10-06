@@ -7,7 +7,8 @@ import Tips from '../tips';
 // import {combineReducers} from 'redux';
 // export default combineReducers({});
 
-export default function(state = Map({}), action) {
+// export default function(state = Map({}), action) {
+export default function(state = {}, action) {
 
     switch (action.type) {
 

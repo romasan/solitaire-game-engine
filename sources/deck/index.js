@@ -49,12 +49,30 @@ class deckClass extends Component {
 		
 		for (let i in this.props.cards) {
 
-			const {id} = this.props.cards[i];
+			const {
+				id      ,
+				name    ,
+				flip    ,
+				tip     ,
+				position,
+				visible ,
+				rotate
+			} = this.props.cards[i];
 
 			cards.push(
 				<Card
 					key = {id}
-					{...this.props.cards[i]}
+					{...{
+						id      ,
+						name    ,
+						flip    ,
+						tip     ,
+						position,
+						visible ,
+						rotate  ,
+						zoom
+					}}
+					// {...this.props.cards[i]}
 				/>
 			);
 		}
@@ -412,7 +430,7 @@ class deckClass extends Component {
 			}
 		}
 
-		console.log('deck', state.id, JSON.stringify(state.position), JSON.stringify(state.offset) );
+		// console.log('deck', state.id, JSON.stringify(state.position), JSON.stringify(state.offset) );
 		
 		state.rotate = typeof data.rotate == "number" ? data.rotate : defaults.rotate;
 		
@@ -478,7 +496,7 @@ class deckClass extends Component {
 					"y" : state.offset.y + card.position.y
 				};
 
-				console.log( card.id, card.name, card.parent, JSON.stringify(card.position), JSON.stringify(card.offset) );
+				// console.log( card.id, card.name, card.parent, JSON.stringify(card.position), JSON.stringify(card.offset) );
 			}
 		}
 
@@ -1097,5 +1115,6 @@ class deckClass extends Component {
 	}
 }
 
-export default connect(state => state.toJS())(deckClass);
-// export default deckClass;
+// export default connect(state => state.toJS())(deckClass);
+// export default connect(state => state)(deckClass);
+export default deckClass;

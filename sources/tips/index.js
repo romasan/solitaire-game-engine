@@ -29,7 +29,8 @@ let tipTypes = [
  */
 let checkTips = state => {
 
-	let _state = state.toJS();
+	// let _state = state.toJS();
+	let _state = state;
 
 	/**
 	 * All decks
@@ -150,7 +151,8 @@ let checkTips = state => {
 		}
 	}
 
-	return fromJS(_state);
+	// return fromJS(_state);
+	return JSON.parse( JSON.stringify(_state) );
 }
 // event.listen('makeStep' , checkTips);
 // event.listen('checkTips', checkTips);

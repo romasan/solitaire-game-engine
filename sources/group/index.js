@@ -11,7 +11,7 @@ import groupRedraw    from './groupRedraw'     ;
 import groupGenerator from './groupGenerator'  ;
 
 import React, {Component} from 'react';
-import {connect} from 'react-redux';
+// import {connect} from 'react-redux';
 
 class groupClass extends Component {
 
@@ -29,14 +29,30 @@ class groupClass extends Component {
 
 		let decks = [];
 
-		for (let i in this.props._decks) {
+		for (let i in this.props.decks) {
 
-			const {id} = this.props._decks[i];
+			const {
+				id      ,
+				position,
+				showSlot,
+				visible ,
+				rotate  ,
+				cards
+			} = this.props.decks[i];
 
 			decks.push(
 				<Deck
 					key = {id}
-					{...this.props._decks[i]}
+					{...{
+						id      ,
+						position,
+						zoom    ,
+						showSlot,
+						visible ,
+						rotate  ,
+						cards
+					}}
+					// {...this.props.decks[i]}
 				/>
 			);
 		}
@@ -392,5 +408,6 @@ class groupClass extends Component {
 	}
 }
 
-export default connect(state => state.toJS())(groupClass);
-// export default groupClass;
+// export default connect(state => state.toJS())(groupClass);
+// export default connect(state => state)(groupClass);
+export default groupClass;
