@@ -30,7 +30,6 @@ $ranks : ("d", "s", "h", "c");
 .#{$theme_name}_face {
 
 	.card {
-		box-sizing      : border-box;
 		border          : 1px solid #121212;
 		border-radius   : 3px;
 		background      : url('#{$img_dir}card.png');

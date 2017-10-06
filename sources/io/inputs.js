@@ -22,13 +22,9 @@ class inputsClass {
 		// share.set('dragDeck'   , null);
 		// share.set('startCursor', null);
 
+		this._drag = false;
+
 		try {
-
-			// let field = share.get('domElement:field');
-			let lastCoord = null ;
-			let lastTime  = null ;
-			let breakUp   = false;
-
 
 			// let isPC = ['Windows', 'Mac', 'Linux'].some(e => window.navigator.platform.indexOf(e) > -1);
 			let isMobileOrTablet = (
@@ -44,62 +40,25 @@ class inputsClass {
 					return;
 				}
 
-				let newTime = new Date().getTime();
-
-				// if (
-				// 	lastCoord                   &&
-				// 	lastCoord.x == data.clientX &&
-				// 	lastCoord.y == data.clientY &&
-				// 	newTime - lastTime < 500
-				// ) {
-
-				// 	breakUp = true;
-
-				// 	return;
-				// }
-
 				this.take(data.target, data.clientX, data.clientY);
-
-				lastCoord = {
-					"x" : data.clientX,
-					"y" : data.clientY
-				};
-
-				lastTime = newTime;
 			});
 
 			document.body.addEventListener('mousemove', data => {
 				this.drag(data.clientX, data.clientY);
-				// this.onmove(data.clientX, data.clientY);
 			});
 
 			document.body.addEventListener('mouseup', data => {
-
-				if (breakUp) {
-
-					breakUp = false;
-
-					return;
-				}
-
 				this.put(data.target, data.clientX, data.clientY);
 			});
 
 			document.body.addEventListener('mouseleave', data => {
-
-				breakUp = false;
-
 				this.put(data.target, data.clientX, data.clientY);
 			});
 
 			document.body.addEventListener('dblclick', data => {
 
-				// event.dispatch('stopAnimations');
-
 				this.take(data.target, data.clientX, data.clientY);
 				this.put (data.target, data.clientX, data.clientY, true);
-
-				common.curUnLock();
 			});
 
 			// Touch events
@@ -111,7 +70,9 @@ class inputsClass {
 					this.take(data.target, data.touches[0].clientX, data.touches[0].clientY, true);
 
 					if (data.target.className.split(' ').indexOf('card') >= 0) {
+
 						data.preventDefault();
+
 						return false;
 					}
 				}, {
@@ -122,10 +83,12 @@ class inputsClass {
 
 					this.drag(data.touches[0].clientX, data.touches[0].clientY);
 
-					// if (share.get('startCursor')) {
 					if (data.target.className.split(' ').indexOf('card') >= 0) {
+
 						data.preventDefault();
+
 						// data.stopPropagation();
+
 						return false;
 					}
 				}, {
@@ -137,7 +100,9 @@ class inputsClass {
 					this.put(data.changedTouches[0].target, data.changedTouches[0].clientX, data.changedTouches[0].clientY);
 
 					if (data.target.className.split(' ').indexOf('card') >= 0) {
+
 						data.preventDefault();
+
 						return false;
 					}
 				}, {
@@ -170,6 +135,7 @@ class inputsClass {
 			});
 		}
 
+		this._drag = true;
 
 		return;
 
@@ -196,7 +162,7 @@ class inputsClass {
 			return;
 		}
 
-		event.dispatch('startRunHistory');
+		// event.dispatch('startRunHistory');
 
 		// click empty deck
 		if (
@@ -343,24 +309,22 @@ class inputsClass {
 	 */
 	drag(x, y) {
 
-		if (common.isCurLock()) {
+		if (!this._drag) {
 			return;
 		}
 
-		let _startCursor = share.get('startCursor'),
-		    _dragDeck    = share.get('dragDeck')   ;
+		store.dispatch({
+			"type" : actions.MOVE_CARDS,
+			"data" : {x, y}
+		});
 
-		if (!_dragDeck || !_startCursor) {
-			return;
-		}
+		return;
 
 		let _distance = _startCursor 
 			? Math.sqrt((e => e * e)(x - _startCursor.x) + (e => e * e)(y - _startCursor.y))
 			: 0;
 
 		let _deck = common.getElementById(_dragDeck[0].card.parent);
-
-		// let _position = _deck.padding(_dragDeck[_dragDeck.length - 1].index);
 
 		event.dispatch('dragDeck', {
 			"x"           : x                ,
@@ -371,30 +335,6 @@ class inputsClass {
 			"card"        : _dragDeck[0].card,
 			"distance"    : _distance
 		});
-
-		// подсказка лучшего хода до отпускания
-
-		// let cursorMove = {
-		// 	distance     : _distance,
-		// 	direction    : {
-		// 		x     : x - _startCursor.x,// (+) rigth / (-) left
-		// 		y     : y - _startCursor.y,// (+) down  / (-) up
-		// 		right : x > _startCursor.x,
-		// 		left  : x < _startCursor.x,
-		// 		down  : y > _startCursor.y,
-		// 		up    : y < _startCursor.y
-		// 	},
-		// 	lastPosition : {x, y},
-		// 	deckPosition : {
-		// 		x : (_position.x + (x - _startCursor.x)),
-		// 		y : (_position.y + (y - _startCursor.y))
-		// 	}
-		// };
-
-		// Tips.tipsMove({
-		// 	moveDeck   : _dragDeck, 
-		// 	cursorMove : cursorMove
-		// });
 	}
 
 	/**
@@ -406,16 +346,22 @@ class inputsClass {
 	 */
 	put(target, x, y, dbclick) {
 
-		if (common.isCurLock()) {
+		if (!this._drag) {
 			return;
 		}
 
-		let _startCursor = share.get('startCursor'), // начальная позиция курсора
-		    _dragDeck    = share.get('dragDeck')   ;
+		// store.dispatch({
+		// 	"type" : actions.PUT_CARDS,
+		// 	"data" : {
+		// 		"id" : target.id,
+		// 		x,
+		// 		y
+		// 	}
+		// });
 
-		if (!_dragDeck || !_startCursor) {
-			return;
-		}
+		this._drag = false;
+
+		return;
 
 		let _deck = common.getElementById(_dragDeck[0].card.parent);
 
@@ -455,39 +401,15 @@ class inputsClass {
 		share.set('lastDragDeck', {
 			"dragDeckParentId" : _dragDeck[0].card.parent,
 			"dragDeck"         : _dragDeck
-		}, true); // defaults.forceClone);
+		}, true);
 
-		// let _top  = target.style.top;
-		// let _left = target.style.left;
-		// event.dispatch('hideCard', target);
-		if (!dbclick) {
-			// target.style.display = 'none';
-
-			// target.style.top  = y + 'px';
-			// target.style.left = x + 'px';
-		}
-		// let _dop = document.elementFromPoint(x, y);
 		let _dop = 'field';
-		// event.dispatch('showCard', target);
-		if (!dbclick) {
-			// target.style.display = 'block';
 
-			// target.style.top  = _top;
-			// target.style.left = _left;
-		}
-
-		// if (_dop && _dop.id) {
 		event.dispatch('move', {
 			"moveDeck"   : _dragDeck                        ,
 			"to"         : _dop && _dop.id ? _dop.id : 'mat',
 			"cursorMove" : cursorMove
 		});
-		// }
-
-		// _deck.Redraw();
-
-		share.set('dragDeck'   , null);
-		share.set('startCursor', null);
 	}
 }
 

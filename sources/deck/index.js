@@ -386,12 +386,13 @@ class deckClass extends Component {
 
 		if (data.position) {
 
-			const {x, y} = data.position;
+			if (typeof data.position.x == "number") {
+				state.position.x = data.position.x;
+			}
 
-			state.position = {
-				"x" : x ? x : 0,
-				"y" : y ? y : 0
-			};
+			if (typeof data.position.y == "number") {
+				state.position.y = data.position.y;
+			}
 		}
 
 		//offset - позиция относительно Field
@@ -410,6 +411,8 @@ class deckClass extends Component {
 				state.offset.y += data.offset.y;
 			}
 		}
+
+		console.log('deck', state.id, JSON.stringify(state.position), JSON.stringify(state.offset) );
 		
 		state.rotate = typeof data.rotate == "number" ? data.rotate : defaults.rotate;
 		
@@ -475,7 +478,7 @@ class deckClass extends Component {
 					"y" : state.offset.y + card.position.y
 				};
 
-				// card.ofset = {}
+				console.log( card.id, card.name, card.parent, JSON.stringify(card.position), JSON.stringify(card.offset) );
 			}
 		}
 

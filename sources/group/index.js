@@ -75,12 +75,17 @@ class groupClass extends Component {
 			}
 		}
 
-		state.offset = state.position;
+		state.offset = {
+			"x" : state.position.x,
+			"y" : state.position.y
+		};
 
 		state.placement = {
 			"x" : null,
 			"y" : null
 		};
+
+		console.log('group', state.name, state.id, JSON.stringify(state.position), JSON.stringify(state.offset));
 
 		if (data.placement) {
 

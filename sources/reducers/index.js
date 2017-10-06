@@ -24,6 +24,12 @@ export default function(state = Map({}), action) {
         case actions.TAKE_CARDS:
             return Field.takeCards(state, action.data);
 
+        case actions.MOVE_CARDS:
+            return Field.moveCards(state, action.data);
+
+        case actions.PUT_CARDS:
+            return Field.putCards(state, action.data);
+
         default:
             return state;
     }

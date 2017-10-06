@@ -331,6 +331,11 @@ class fieldClass extends Component {
 
 		_state.drag.cards = deck && deck.cards.splice( deck.cards.findIndex(e => e.id == data.id) );
 
+		_state.drag.start = {
+			"x" : data.x,
+			"y" : data.y
+		};
+
 		_state.drag.cursor = {
 			"x" : data.x,
 			"y" : data.y
@@ -346,6 +351,20 @@ class fieldClass extends Component {
 		console.log('takeCards', data, _state);
 		
 		return fromJS(_state);
+	}
+
+	static moveCards(state, data) {
+
+		console.log('moveCards', data);
+
+		return state;
+	}
+
+	static putCards(state, data) {
+
+		console.log('putCards', data);
+
+		return state;
 	}
 }
 
