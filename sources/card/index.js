@@ -25,17 +25,9 @@ class cardClass extends Component {
 			"offset": {
 				"x": 0,
 				"y": 0
-			},
-			"test": "TEST"
+			}
 		};
 	}
-
-	// updState(callback) {
-
-	// 	if (typeof callback == "function") {
-	// 		this.state = callback(this.state);
-	// 	}
-	// }
 
 	render() {
 		
@@ -47,12 +39,9 @@ class cardClass extends Component {
 			position,
 			visible ,
 			rotate  ,
-			zoom    ,
-			updState
+			zoom
 		} = this.props;
 
-		// updState(this.state);
-		console.log('updState', typeof updState);
 
 		const {
 			width ,
@@ -61,23 +50,40 @@ class cardClass extends Component {
 		
 		const display = visible ? 'block' : 'none';
 
-		// this.setState({
-		// 	test: 'AAA'
-		// });
-		
+		const classList = [
+			'el'  ,
+			'card',
+			name
+		];
+
+		if (flip) {
+			classList.push('flip');
+		}
+
+		if (tip) {
+			classList.push('tip');
+		}
+
 		return <div
 			id = {id}
-			className={`el card ${name}${flip ? ' flip' : ''}${tip ? ' tip' : ''}`}
-			style ={{
+			// className = {`el card ${name}${flip ? ' flip' : ''}${tip ? ' tip' : ''}`}
+			className = {classList.join(' ')}
+			style = {{
 				display   : visible ? 'block' : 'none',
 				transform : `rotate(${rotate}deg)`    ,
 				left      : zoom * position.x + 'px'  ,
 				top       : zoom * position.y + 'px'  ,
 				width     : zoom * width      + 'px'  ,
 				height    : zoom * height     + 'px'
-			}}>
-				{this.state.test}
-			</div>;
+			}}
+			onMouseDown = {this.Take}
+			onMouseMove = {this.Drag}
+			onMouseUp   = {this.Put}
+
+			onTouchStart = {this.Take}
+			onTouchMove  = {this.Drag}
+			onTouchEnd   = {this.Put}
+			></div>;
 	}
 
 	/**
@@ -121,8 +127,16 @@ class cardClass extends Component {
 		return state;
 	}
 
-	onclick() {
-		console.log('CLICK CARD');
+	Take(data) {
+		console.log('Take CARD', data);
+	}
+
+	Drag() {
+		console.log('Drag CARD');		
+	}
+
+	Put() {
+		console.log('Put CARD');		
 	}
 
 	/**

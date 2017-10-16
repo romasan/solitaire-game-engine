@@ -77,23 +77,30 @@ class deckClass extends Component {
 			);
 		}
 
+		const classList = [
+			'el'  ,
+			'deck'
+		];
+
+		if (showSlot) {
+			classList.push('slot');
+		}
+
 		/**
 		 * Rendering
 		 */
 
 		return <div
 			id = {id}
-			className = {`el deck${showSlot ? ' slot' : ''}`}
+			// className = {`el deck${showSlot ? ' slot' : ''}`}
+			className = {classList.join(' ')}
 			style = {{
 				display   : visible ? 'block' : 'none',
 				transform : `rotate(${rotate}deg)`    ,
 				left      : zoom * position.x + 'px'  ,
 				top       : zoom * position.y + 'px'  ,
 				width     : zoom * width      + 'px'  ,
-				height    : zoom * height     + 'px'  ,
-				updState  : state => {
-					state.test = 'test';
-				}
+				height    : zoom * height     + 'px'
 			}}>
 			{cards}
 		</div>;

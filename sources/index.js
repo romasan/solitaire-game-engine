@@ -86,7 +86,7 @@ exports.init = gameConfig => {
 			document.getElementById('map')
 		);
 	
-		Inputs.init();
+		// Inputs.init();
 
 		firstInit = false;
 
