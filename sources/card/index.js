@@ -11,13 +11,30 @@ import {connect} from 'react-redux';
 
 class cardClass extends Component {
 
-	// constructor(props) {
+	constructor(props) {
 
-	// 	super(props);
+		console.log('###', props);
 
-	// 	this.state = {
-	// 		test: 'test'
-	// 	};
+		super(props);
+
+		this.state = {
+			"position": {
+				"x": 0,
+				"y": 0
+			},
+			"offset": {
+				"x": 0,
+				"y": 0
+			},
+			"test": "TEST"
+		};
+	}
+
+	// updState(callback) {
+
+	// 	if (typeof callback == "function") {
+	// 		this.state = callback(this.state);
+	// 	}
 	// }
 
 	render() {
@@ -30,8 +47,12 @@ class cardClass extends Component {
 			position,
 			visible ,
 			rotate  ,
-			zoom
+			zoom    ,
+			updState
 		} = this.props;
+
+		// updState(this.state);
+		console.log('updState', typeof updState);
 
 		const {
 			width ,
@@ -39,6 +60,10 @@ class cardClass extends Component {
 		} = defaults.card;
 		
 		const display = visible ? 'block' : 'none';
+
+		// this.setState({
+		// 	test: 'AAA'
+		// });
 		
 		return <div
 			id = {id}
@@ -50,7 +75,9 @@ class cardClass extends Component {
 				top       : zoom * position.y + 'px'  ,
 				width     : zoom * width      + 'px'  ,
 				height    : zoom * height     + 'px'
-			}}></div>;
+			}}>
+				{this.state.test}
+			</div>;
 	}
 
 	/**
@@ -92,6 +119,10 @@ class cardClass extends Component {
 		};
 
 		return state;
+	}
+
+	onclick() {
+		console.log('CLICK CARD');
 	}
 
 	/**

@@ -110,7 +110,7 @@ let checkTips = state => {
 
 							let takeCardIndex = fromDeck.cards
 								.map((e, i) => ({i, e}))
-								.filter(e => e.id == _tips[i].from.card.id)[0].i;
+								.filter(e => e.id == _state.tips[i].from.card.id)[0].i;
 
 								let takeCardsLength = fromCards.length - takeCardIndex;
 

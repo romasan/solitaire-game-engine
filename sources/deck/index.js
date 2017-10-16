@@ -90,7 +90,10 @@ class deckClass extends Component {
 				left      : zoom * position.x + 'px'  ,
 				top       : zoom * position.y + 'px'  ,
 				width     : zoom * width      + 'px'  ,
-				height    : zoom * height     + 'px'
+				height    : zoom * height     + 'px'  ,
+				updState  : state => {
+					state.test = 'test';
+				}
 			}}>
 			{cards}
 		</div>;

@@ -347,7 +347,7 @@ class fieldClass extends Component {
 		// let _state = state.toJS();
 		let _state = state;
 		
-		console.log('###', _state, decks);
+		console.log('Take cards', _state, decks);
 
 		/**
 		 * All decks
