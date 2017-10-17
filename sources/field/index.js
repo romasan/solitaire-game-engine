@@ -30,7 +30,7 @@ class fieldClass extends Component {
 		// get theme from storage
 		// insert values to classes
 
-		let classes = [
+		let classList = [
 			"solitaireField"  ,
 			"default_field"   ,
 			"default_face"    ,
@@ -132,11 +132,33 @@ class fieldClass extends Component {
 			)
 		}
 
-		return <div className={classes.join(' ')}>
+		return <div
+			className = {classList.join(' ')}
+
+			onMouseDown  = {this.Take}
+			onMouseMove  = {this.Drag}
+			onMouseUp    = {this.Put}
+
+			onTouchStart = {this.Take}
+			onTouchMove  = {this.Drag}
+			onTouchEnd   = {this.Put}
+		>
 			{groups}
 			{decks}
 			{cards}
 		</div>;
+	}
+
+	Take(data) {
+		console.log('Take CARD', data);
+	}
+
+	Drag(data) {
+		console.log('Drag CARD', data);
+	}
+
+	Put(data) {
+		console.log('Put CARD', data);
 	}
 
 	/**

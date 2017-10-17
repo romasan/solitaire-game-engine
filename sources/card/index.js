@@ -76,14 +76,7 @@ class cardClass extends Component {
 				width     : zoom * width      + 'px'  ,
 				height    : zoom * height     + 'px'
 			}}
-			onMouseDown = {this.Take}
-			onMouseMove = {this.Drag}
-			onMouseUp   = {this.Put}
-
-			onTouchStart = {this.Take}
-			onTouchMove  = {this.Drag}
-			onTouchEnd   = {this.Put}
-			></div>;
+		></div>;
 	}
 
 	/**
@@ -125,18 +118,6 @@ class cardClass extends Component {
 		};
 
 		return state;
-	}
-
-	Take(data) {
-		console.log('Take CARD', data);
-	}
-
-	Drag() {
-		console.log('Drag CARD');		
-	}
-
-	Put() {
-		console.log('Put CARD');		
 	}
 
 	/**
