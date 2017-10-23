@@ -13,7 +13,7 @@ class cardClass extends Component {
 
 	constructor(props) {
 
-		console.log('###', props);
+		// console.log('###', props);
 
 		super(props);
 

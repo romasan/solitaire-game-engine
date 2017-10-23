@@ -10,6 +10,8 @@ import Tips from '../tips';
 // export default function(state = Map({}), action) {
 export default function(state = {}, action) {
 
+    console.log(action);
+
     switch (action.type) {
 
         case actions.INIT_STATE:
