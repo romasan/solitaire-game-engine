@@ -1,5 +1,8 @@
 $img_dir :"/solitaire_engine/img/";
 
+$card_width  : 71px;
+$card_height : 96px;
+
 * {
 	-webkit-touch-callout : none;
 	-webkit-user-select   : none;
@@ -197,4 +200,19 @@ $img_dir :"/solitaire_engine/img/";
 
 .card.tip.full:after {
 	content: none;
+}
+
+/* ******** */
+
+.american_back {
+	.flip:after {
+		content             : attr(data-content);
+		width               : $card_width;
+		height              : $card_height;
+		margin-left         : -1px;
+		display             : inline-block;
+		background-image    : url('#{$img_dir}rub2.png');
+		background-size     : 100% 100%;
+		background-position : 0px 0px;
+	}
 }

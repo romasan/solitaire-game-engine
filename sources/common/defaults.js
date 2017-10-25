@@ -15,7 +15,8 @@ export default {
 		],
 		"back" : [
 			'default_back'    ,
-			'alternative_back'
+			'alternative_back',
+			'american_back'
 		]
 	},
 
