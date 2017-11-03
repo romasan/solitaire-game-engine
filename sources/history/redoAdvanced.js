@@ -1,7 +1,9 @@
 'use strict';
 
 import event       from '../common/event'    ;
+import share       from '../common/share'    ;
 import common      from '../common'          ;
+import defaults    from '../common/defaults' ;
 
 import deckActions from '../deck/deckActions';
 
@@ -49,11 +51,15 @@ class redoAdvanced {
 
 			let to = null;
 
+			let toDeck = null;
+
 			if (typeof data.makeMove.to.cardName == "string") {
 				let toCard = common.getElementByName(data.makeMove.to.cardName, 'card');
 				to = toCard.id;
+				toDeck = common.getElementById(toCard.parent, 'deck');
 			} else if (typeof data.makeMove.to.deckName == "string") {
-				to = common.getElementByName(data.makeMove.to.deckName, 'deck').id;
+				toDeck = common.getElementByName(data.makeMove.to.deckName, 'deck');			
+				to = toDeck.id;
 			}
 			if (to) {
 
@@ -75,14 +81,50 @@ class redoAdvanced {
 					}
 				}
 
-				SolitaireEngine.event.dispatch('move', {
-					"moveDeck"   : moveDeck,
-					"to"         : to      ,
-					"cursorMove" : {
-						"dblclick" : false   ,
-						"distance" : Infinity
-					}
-				});
+				let fromDeckPosition = fromDeck.getPosition();
+				let toDeckPosition   = toDeck.getPosition();
+
+				const zoom = share.get('zoom');
+
+				const moveDistance = share.get('moveDistance');
+
+				let deckPosition = {
+					"x": toDeckPosition.x + defaults.card.width  * zoom / 2,
+					"y": toDeckPosition.y + defaults.card.height * zoom / 2
+				};
+
+				let direction = {
+					"x": toDeckPosition.x > fromDeckPosition.x ? moveDistance + 1 : -moveDistance - 1,
+					"y": toDeckPosition.y > fromDeckPosition.y ? moveDistance + 1 : -moveDistance - 1
+					// "right": null,
+					// "left" : null,
+					// "down" : null,
+					// "up"   : null
+				};
+
+				if (found) {
+
+					SolitaireEngine.event.dispatch('move', {
+						"moveDeck"   : moveDeck,
+						"to"         : to      ,
+						"cursorMove" : {
+							"dblclick" : false   ,
+							"distance" : Infinity,
+							"direction": direction,
+							"deckPosition": deckPosition
+						}
+					});
+				} else {
+					console.warn('АШИПКА ПРИ ПОПЫТКЕ ХОДА <<СТАРОГО>> ТИПА');
+					console.log('###', 'move', {
+						"moveDeck"   : moveDeck,
+						"to"         : to      ,
+						"cursorMove" : {
+							"dblclick" : false   ,
+							"distance" : Infinity
+						}
+					});
+				}
 			}
 
 			return true;

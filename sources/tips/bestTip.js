@@ -11,6 +11,24 @@ export default (moveDeck, cursorMove) => {
 
 	let _autoTips = [];
 
+	// if (
+	// 	typeof moveDeck   == 'undefined' ||
+	// 	typeof cursorMove == 'undefined'
+	// ) {
+	// 	console.warn(
+	// 		'typeof moveDeck:', typeof moveDeck,
+	// 		'typeof cursorMove:', typeof cursorMove
+	// 	);
+	// 	return;
+	// }
+
+	console.log(
+		'typeof moveDeck:', typeof moveDeck,
+		'typeof cursorMove:', typeof cursorMove,
+		moveDeck,
+		cursorMove
+	);
+
 	// выбрать подсказки для стопки из кторорой взяли карты
 	let _tips = Tips.getTips();
 	for (let i in _tips) {
