@@ -130,6 +130,7 @@ let readyPutRules = {
 
 	// Rules
 
+	// "oneColor" : data => false, // TODO
 	"striped"           : data => {
 
 		if (data.cards.length == 0) {

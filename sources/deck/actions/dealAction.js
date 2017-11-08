@@ -45,7 +45,7 @@ class dealAction extends deckAction {
 			return;
 		}
 
-		// меняем тип хода
+		// меняем тип хода - TODO зачем?
 		share.set('stepType', stepType);
 
 		let dealDeck = typeof data.actionData.from == 'string'

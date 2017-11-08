@@ -57,17 +57,17 @@ let checkTips = e => {
 		"decks" : _decks
 	});
 	// console.groupEnd();
-
+	
 	if (
 		_tips.length == 0                          &&
 		share.get('stepType') == defaults.stepType
 	) {
-
+		
 		event.dispatch('noTips');
-
+		
 		console.log('No possible moves.');
 	}
-
+	
 	_showTips = typeof share.get('showTips') == "undefined"
 		? defaults.showTips
 		: share.get('showTips');
