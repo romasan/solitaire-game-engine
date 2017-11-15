@@ -22,6 +22,8 @@ class redoAdvanced {
 			typeof data.runAction.deckName   == 'string'
 		) {
 
+			// console.log('RUN ACTION:', data.runAction.actionName, data.runAction.deckName);
+
 			let deck = common.getElementByName(data.runAction.deckName, 'deck');
 
 			deckActions.run({
@@ -44,7 +46,7 @@ class redoAdvanced {
 			typeof data.makeMove.from.cardName == "string"
 		) {
 
-			// console.log('redoAdvanced:makeMove', JSON.stringify(data.makeMove));
+			// console.log('%credoAdvanced:makeMove', 'color: blue;font-weight: bold;', JSON.stringify(data.makeMove));
 
 			let fromCard = common.getElementByName(data.makeMove.from.cardName, 'card');
 			let fromDeck = common.getElementById(fromCard.parent);
@@ -55,12 +57,13 @@ class redoAdvanced {
 
 			if (typeof data.makeMove.to.cardName == "string") {
 				let toCard = common.getElementByName(data.makeMove.to.cardName, 'card');
-				to = toCard.id;
 				toDeck = common.getElementById(toCard.parent, 'deck');
 			} else if (typeof data.makeMove.to.deckName == "string") {
 				toDeck = common.getElementByName(data.makeMove.to.deckName, 'deck');			
-				to = toDeck.id;
 			}
+
+			to = toDeck.id;
+			
 			if (to) {
 
 				let moveDeck = [];
@@ -102,6 +105,11 @@ class redoAdvanced {
 					// "up"   : null
 				};
 
+				let distance = Math.sqrt(
+					(e => e * e)(fromDeckPosition.x - toDeckPosition.x) + 
+					(e => e * e)(fromDeckPosition.y - toDeckPosition.y)
+				);
+
 				if (found) {
 
 					SolitaireEngine.event.dispatch('move', {
@@ -109,21 +117,13 @@ class redoAdvanced {
 						"to"         : to      ,
 						"cursorMove" : {
 							"dblclick" : false   ,
-							"distance" : Infinity,
+							"distance" : distance,
 							"direction": direction,
 							"deckPosition": deckPosition
 						}
 					});
 				} else {
-					console.warn('АШИПКА ПРИ ПОПЫТКЕ ХОДА <<СТАРОГО>> ТИПА');
-					console.log('###', 'move', {
-						"moveDeck"   : moveDeck,
-						"to"         : to      ,
-						"cursorMove" : {
-							"dblclick" : false   ,
-							"distance" : Infinity
-						}
-					});
+					console.warn('Ошибка при попытке хода <<старого>> типа');
 				}
 			}
 

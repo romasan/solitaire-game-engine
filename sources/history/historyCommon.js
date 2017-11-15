@@ -61,7 +61,7 @@ let saveSteps = e => {
 
 	if (data.length) {
 		event.dispatch('makeStep', data);
-	} else {
+	} else if ( !share.get('noSave') ) {
 		console.warn('Empty history to save.');
 	}
 };

@@ -26,7 +26,7 @@ let Move = data => {
 
 	const {moveDeck, to, cursorMove} = data;
 
-	// console.log("Move");
+	// console.log("Move", data);
 
 	let _deck_departure   = moveDeck[0].card.parent                        &&
 	                        common.getElementById(moveDeck[0].card.parent)   , // стопка из которой взяли
@@ -72,6 +72,13 @@ let Move = data => {
 	});
 
 	_success = _success && to; // to - не пустой
+
+	// if (
+	// 	typeof to != "string"         ||
+	// 	       to.indexOf('deck') < 0
+	// ) {
+	// 	console.warn('data TO is incorrect', to);
+	// }
 
 	let _el = null;
 
@@ -216,6 +223,8 @@ let Move = data => {
 	// или положить на лучшее возможное место
 	if (!_success && _deck_departure) {
 
+		// console.log("Move (!_success)", data, '>>>', debug_counter, '<<<', data.to);		
+
 		// достаточно ли перетащили (если клика не достаточно и не двойной клик)
 		if (
 			Field.inputParams.doubleClick                    &&
@@ -224,6 +233,8 @@ let Move = data => {
 		) {
 
 			let Tip = bestTip(moveDeck, cursorMove);
+
+			// console.log('Лучший ход:', Tip);
 
 			if (Tip) {
 

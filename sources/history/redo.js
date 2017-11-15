@@ -33,6 +33,8 @@ let redo = data => {
 		// stateManager.restore();
 	}
 
+	// console.log('REDO', data);
+
 	const {
 		flip       ,
 		unflip     ,

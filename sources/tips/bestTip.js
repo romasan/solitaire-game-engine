@@ -7,7 +7,7 @@ import common   from '../common'         ;
 import Tips     from './'                ;
 import Field    from '../field'          ;
 
-export default (moveDeck, cursorMove) => {
+let bestTip = (moveDeck, cursorMove) => {
 
 	let _autoTips = [];
 
@@ -22,15 +22,18 @@ export default (moveDeck, cursorMove) => {
 	// 	return;
 	// }
 
-	console.log(
-		'typeof moveDeck:', typeof moveDeck,
-		'typeof cursorMove:', typeof cursorMove,
-		moveDeck,
-		cursorMove
-	);
+	// console.log(
+	// 	'typeof moveDeck:', typeof moveDeck,
+	// 	'typeof cursorMove:', typeof cursorMove,
+	// 	moveDeck,
+	// 	cursorMove
+	// );
 
 	// выбрать подсказки для стопки из кторорой взяли карты
 	let _tips = Tips.getTips();
+
+	// console.log('bestTip', moveDeck, cursorMove, _tips); // .map(e => `${e.from.card.name} ${e.from.deck.name} -> ${e.to.deck.name}`));
+
 	for (let i in _tips) {
 		if (_tips[i].from.card.id == moveDeck[0].card.id) {
 			_autoTips.push(_tips[i]);
@@ -152,3 +155,5 @@ export default (moveDeck, cursorMove) => {
 
 	return _autoTips[0];
 };
+
+export default bestTip;

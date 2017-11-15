@@ -18,6 +18,8 @@ class rollerAction extends deckAction {
 
 	run(deck, data) {
 
+		// console.log('rollerAction:run', deck, data);
+
 		if (
 			!deck                   ||
 			!data                   ||
@@ -137,6 +139,7 @@ class rollerAction extends deckAction {
 
 					let stepsCount = 0;
 
+					// Пробегаем по истории с конца
 					for (let i = data.history.length - 1; i >= 0 && !found; i -= 1) {
 
 						stepsCount += 1;
@@ -230,6 +233,7 @@ class rollerAction extends deckAction {
 								}
 
 								// rewindStatus = 'break';
+								break;
 							}
 						}
 					}
@@ -245,16 +249,19 @@ class rollerAction extends deckAction {
 				// ещё есть скрытые карты
 				if (hiddenCardsCount > 0) {
 
+					// console.log('ещё есть скрытые карты', hiddenCardsCount, );
+
 					deck.showCards   (false, _save); // no redraw, add to history
 					deck.flipAllCards(false, _save); // no redraw, add to history
 
 					// event.dispatch('saveSteps');
-					this.run(deck, data);
+
+					// this.run(deck, data);
 
 					deck.Redraw();
 				}
 
-				return;
+				// return;
 			}
 
 			// первая прокрутка
@@ -364,6 +371,8 @@ class rollerAction extends deckAction {
 
 		// нет видимых карт
 		} else {
+
+			// console.log('нет видимых карт');
 
 			// Restore deck
 

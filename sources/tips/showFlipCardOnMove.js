@@ -24,13 +24,13 @@ let showFlipCardOnMove = data => { // to, toCard
 		return;
 	}
 
-	// if (
-	// 	!data.deck                           ||
-	// 	!data.card                           ||
-	// 	 data.deck.showPrefFlipCard == false
-	// ) {
-	// 	return;
-	// }
+	if (
+		deck.showPrefFlipCard == false
+	) {
+		return;
+	}
+
+	// console.log('showFlipCardOnMove:', data, deck.name, deck.showPrefFlipCard);
 
 	// let moveDistance = share.get('moveDistance');
 
