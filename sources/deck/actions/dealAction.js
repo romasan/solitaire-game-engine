@@ -25,6 +25,8 @@ class dealAction extends deckAction {
 
 	run(deck, data) { // Deck, {actionData, eventData, eventName}
 
+		console.log('dealAction:run', deck, data);
+
 		// console.groupCollapsed('dealAction:run');
 		// console.log(JSON.stringify(data, true, 2));
 		// console.groupEnd();
@@ -53,10 +55,12 @@ class dealAction extends deckAction {
 			: deck;
 
 		// смотрим остались ли карты
+		// карт не осталось
 		if (dealDeck.cards.length == 0) {
 
 			let _stepType = share.get('stepType');
 
+			// нестадартный ход
 			if (_stepType != defaults.stepType) {
 
 				share.set('stepType', defaults.stepType);
@@ -157,8 +161,10 @@ class dealAction extends deckAction {
 
 		// пробегаем колоды из списка
 
-		let moveDecks = _decks.filter(e => e.cards.length == 0);
+		let moveDecks = _decks; // .filter(e => e.cards.length == 0);
 		let _iterations = moveDecks.length;
+
+		console.log('###', moveDecks);
 
 		// for (let deckId in _decks) {
 		for (let deckId in moveDecks) {

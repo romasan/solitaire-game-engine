@@ -23,6 +23,7 @@ class redoAdvanced {
 		) {
 
 			// console.log('RUN ACTION:', data.runAction.actionName, data.runAction.deckName);
+			console.log('%credoAdvanced:runAction', 'color: orange;font-weight: bold;', JSON.stringify(data.runAction));
 
 			let deck = common.getElementByName(data.runAction.deckName, 'deck');
 
@@ -46,14 +47,23 @@ class redoAdvanced {
 			typeof data.makeMove.from.cardName == "string"
 		) {
 
-			// console.log('%credoAdvanced:makeMove', 'color: blue;font-weight: bold;', JSON.stringify(data.makeMove));
+			console.log('%credoAdvanced:makeMove', 'color: blue;font-weight: bold;', JSON.stringify(data.makeMove));
 
 			let fromCard = common.getElementByName(data.makeMove.from.cardName, 'card');
+			// try {
+
 			let fromDeck = common.getElementById(fromCard.parent);
+
+			// } catch (e) {
+			// 	console.warn('ERROR:', e);
+			// 	return;
+			// }
 
 			let to = null;
 
 			let toDeck = null;
+
+			// try {
 
 			if (typeof data.makeMove.to.cardName == "string") {
 				let toCard = common.getElementByName(data.makeMove.to.cardName, 'card');
@@ -62,12 +72,24 @@ class redoAdvanced {
 				toDeck = common.getElementByName(data.makeMove.to.deckName, 'deck');			
 			}
 
+			// } catch (e) {
+			// 	console.warn('ERROR:', e);
+			// 	return;
+			// }
+
 			to = toDeck.id;
 			
 			if (to) {
 
 				let moveDeck = [];
+				// try {
+				
 				let fromDeckCards = fromDeck.getCards();
+				
+				// } catch (e) {
+				// 	console.warn('ERROR:', e);
+				// 	return;
+				// }
 
 				let found = false;
 				for (let i in fromDeckCards) {
@@ -111,6 +133,8 @@ class redoAdvanced {
 				);
 
 				if (found) {
+
+					console.log('redoAdvanced:makeMove', moveDeck.map(e => e.card.name), fromDeck.name, '->', toDeck.name);
 
 					SolitaireEngine.event.dispatch('move', {
 						"moveDeck"   : moveDeck,

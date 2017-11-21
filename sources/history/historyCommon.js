@@ -89,6 +89,8 @@ let doHistory = e => {
 
 	for (let i in e.data) {
 
+		console.log('redo:', i, 'from', e.data.length);
+
 		// share.set('noSave', true);
 		event.dispatch('redo', e.data[i]);
 		// share.set('noSave', false);
@@ -99,6 +101,8 @@ let doHistory = e => {
 		) {
 			e.callback(e.data[i]);	
 		}
+
+		event.dispatch('solitaire_log');
 	}
 
 	common.animationDefault();
