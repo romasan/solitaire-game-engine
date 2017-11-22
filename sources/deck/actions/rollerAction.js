@@ -18,7 +18,7 @@ class rollerAction extends deckAction {
 
 	run(deck, data) {
 
-		// console.log('rollerAction:run', deck, data);
+		console.log('rollerAction:run', deck, data);
 
 		if (
 			!deck                   ||
@@ -26,10 +26,13 @@ class rollerAction extends deckAction {
 			!deck.cards             ||
 			 deck.cards.length == 0
 		) {
+			console.log('rollerAction:run -> break #0');
 			return;
 		}
 
+		// Не сохранять если ход из истории
 		let _save = data.eventName == 'moveEnd:force' ? false : true; // !share.get('noSave');
+		console.log('rollerAction:run -> _save:', _save);
 
 		/*
 		 * действие совершаемое после хода из стопки
@@ -38,7 +41,10 @@ class rollerAction extends deckAction {
 
 		if (data.eventName.indexOf('moveEnd') >= 0) {
 
+			console.log('rollerAction:run -> moveEnd');
+
 			if (data.eventData.from.name != deck.name) {
+				console.log('rollerAction:run -> moveEnd -> break#');
 				return;
 			}
 
@@ -53,11 +59,15 @@ class rollerAction extends deckAction {
 				"visible" : false
 			});
 
+			console.log('rollerAction:run -> moveEnd -> unflip:', unflipCardsCount, 'hidden:', hiddenCardsCount);
+
 			// если нет открытых карт показать предыдущую скрытую
 			if (
-				unflipCardsCount    == 0 &&
+				unflipCardsCount == 0 &&
 				hiddenCardsCount >  0
 			) {
+
+				console.log('rollerAction:run -> moveEnd -> 0unplip, +hidden');
 
 				let next = deck.cards.length - hiddenCardsCount;
 
@@ -65,6 +75,7 @@ class rollerAction extends deckAction {
 
 				// save step
 				if (_save) {
+					console.log('rollerAction:run -> moveEnd -> 0unplip, +hidden -> addStep:show');
 					event.dispatch('addStep', {
 						"show" : {
 							"cardIndex" : next                 ,
@@ -80,7 +91,7 @@ class rollerAction extends deckAction {
 			// event.dispatch('addStep', {
 			// 	"rollerActionEnd" : deck.name
 			// });
-
+			console.log('rollerAction:run -> moveEnd -> break#1');
 			return;
 		}
 
@@ -90,6 +101,7 @@ class rollerAction extends deckAction {
 		 */
 
 		if (data.eventData.to.name != deck.name) {
+			console.log('rollerAction:run -> break#2 (eventData.to.name != deck.name)');
 			return false;
 		}
 
@@ -108,8 +120,12 @@ class rollerAction extends deckAction {
 			"visible" : true
 		});
 
+		console.log('rollerAction:run -> openCount:', openCount, 'hidden:', hiddenCardsCount, 'visible:', cardsCount);
+
 		// есть видимые карты
 		if (cardsCount > 0) {
+
+			console.log('rollerAction:run -> +visible');
 
 			// количество открытых видимых карт
 			let unflipCardsCount = deck.cardsCount({
@@ -123,17 +139,25 @@ class rollerAction extends deckAction {
 				"flip"    : true
 			});
 
-			// не осталось видимых закрытых карт
+			console.log('rollerAction:run -> +visible -> v_unflip:', unflipCardsCount, 'v_flip:', flipCardsCount);
+
+			// не осталось видимых закрытых карт (все видимые открыты)
 			if (flipCardsCount == 0) {
+
+				console.log('rollerAction:run -> +visible -> +v_flip');
 
 				// количество скрытых карт
 				hiddenCardsCount = deck.cardsCount({
 					"visible" : false
 				});
 
+				console.log('rollerAction:run -> +visible -> +v_flip -> hidden:', hiddenCardsCount);
+
 				// let rewindStatus = null;
 
 				event.dispatch('rewindHistory', data => {
+
+					console.log('rollerAction:run -> +visible -> +v_flip -> rewindHistory');
 
 					let found = false;
 
@@ -279,8 +303,10 @@ class rollerAction extends deckAction {
 			// количество скрываемых дальше открытых карт
 			let unflippedCount = 0;
 
-			// скрываем открытые видимые карты
+			// скрываем открытые видимые карты (если есть)
 			if (unflipCardsCount > 0) {
+
+				console.log('rollerAction:run -> +visible -> +v_unflip');
 
 				let cards = deck.getCards();
 
@@ -293,6 +319,7 @@ class rollerAction extends deckAction {
 						deck.hideCardByIndex(i);
 
 						if (_save) {
+							console.log('rollerAction:run -> +visible -> +v_unflip -> addStep:hide');
 							event.dispatch('addStep', {
 								"hide" : {
 									"cardIndex" : i                 ,
@@ -306,12 +333,17 @@ class rollerAction extends deckAction {
 			}
 
 			// далее карты выкладываются в обратном порядке
+			// если выкладываем больше одной карты
 			// поэтому возвращаем выложенные на предыдущей итерации карты в исходное положение
 			if (openCount > 1) {
+
+				console.log('rollerAction:run -> +visible -> +openCount');
 
 				for (let i = cardsCount - unflippedCount; i < cardsCount; i += 1) {
 
 					let next = cardsCount * 2 - i - unflippedCount - 1;
+
+					console.log('rollerAction:run -> +visible -> +v_unflip -> +openCount -> swap:', i, next, i < next);
 
 					if (i < next) {
 						Atom.swap(deck, i, next, _save);
