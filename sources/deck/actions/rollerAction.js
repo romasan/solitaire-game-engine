@@ -34,10 +34,10 @@ class rollerAction extends deckAction {
 		let _save = data.eventName == 'moveEnd:force' ? false : true; // !share.get('noSave');
 		console.log('rollerAction:run -> _save:', _save);
 
-		/*
+		/* *********************************************************************
 		 * действие совершаемое после хода из стопки
 		 * если задан такой event
-		 */
+		 * ****************************************************************** */
 
 		if (data.eventName.indexOf('moveEnd') >= 0) {
 
@@ -48,13 +48,19 @@ class rollerAction extends deckAction {
 				return;
 			}
 
-			// количество открытых видимых карт
+			/**
+			 * количество открытых видимых карт
+			 * @type {number}
+			 */
 			let unflipCardsCount = deck.cardsCount({
 				"visible" : true ,
 				"flip"    : false
 			});
 
-			// количество скрытых карт
+			/**
+			 * количество скрытых карт
+			 * @type {number}
+			 */
 			let hiddenCardsCount = deck.cardsCount({
 				"visible" : false
 			});
@@ -95,27 +101,36 @@ class rollerAction extends deckAction {
 			return;
 		}
 
-		/*
-		 * действие совершаемое по прочим event-ам
-		 * предпочтительно клик
-		 */
+		/* *********************************************************************
+		 * действие совершаемое по прочим event-ам,
+		 * всем кроме хода из стопки, предпочтительно клик
+		 * ****************************************************************** */
 
 		if (data.eventData.to.name != deck.name) {
 			console.log('rollerAction:run -> break#2 (eventData.to.name != deck.name)');
 			return false;
 		}
 
-		// количество показываемых карт
+		/**
+		 * количество показываемых карт
+		 * @type {number}
+		 */
 		let openCount = data.actionData.openCount
 			? data.actionData.openCount
 			: defaultOpenCount;
 
-		// количество скрытых карт
+		/**
+		 * количество скрытых карт
+		 * @type {number}
+		 */
 		let hiddenCardsCount = deck.cardsCount({
 			"visible" : false
 		});
 
-		// количество видимых карт
+		/**
+		 * количество видимых карт
+		 * @type {number}
+		 */
 		let cardsCount = deck.cardsCount({
 			"visible" : true
 		});
@@ -127,13 +142,19 @@ class rollerAction extends deckAction {
 
 			console.log('rollerAction:run -> +visible');
 
-			// количество открытых видимых карт
+			/**
+			 * количество открытых видимых карт
+			 * @type {number}
+			 */
 			let unflipCardsCount = deck.cardsCount({
 				"visible" : true ,
 				"flip"    : false
 			});
 
-			// количество закрытых видимых карт
+			/**
+			 * количество закрытых видимых карт
+			 * @type {number}
+			 */
 			let flipCardsCount = deck.cardsCount({
 				"visible" : true,
 				"flip"    : true
@@ -142,11 +163,20 @@ class rollerAction extends deckAction {
 			console.log('rollerAction:run -> +visible -> v_unflip:', unflipCardsCount, 'v_flip:', flipCardsCount);
 
 			// не осталось видимых закрытых карт (все видимые открыты)
+
+			// ,...,   +-+-+---+
+			// :   :   |x|x|x  |
+			// :   :   | | |  x|
+			// :...:   +-+-+---+ [0 / +]
+
 			if (flipCardsCount == 0) {
 
 				console.log('rollerAction:run -> +visible -> +v_flip');
 
-				// количество скрытых карт
+				/**
+				 * количество скрытых карт
+				 * @type {number}
+				 */
 				hiddenCardsCount = deck.cardsCount({
 					"visible" : false
 				});
@@ -159,11 +189,12 @@ class rollerAction extends deckAction {
 
 					console.log('rollerAction:run -> +visible -> +v_flip -> rewindHistory');
 
+					// флаг найденного начала прокрутки колоды
 					let found = false;
 
 					let stepsCount = 0;
 
-					// Пробегаем по истории с конца
+					// Пробегаем по истории от последнего хода к первому
 					for (let i = data.history.length - 1; i >= 0 && !found; i -= 1) {
 
 						stepsCount += 1;
@@ -185,11 +216,13 @@ class rollerAction extends deckAction {
 						// 	}
 						// }
 
+						// пробегаемся по атомарным составным хода из истории
 						for (let atomIndex in step) {
 
 							let atom = step[atomIndex];
 
 							// rewind
+							// просматриваемый ход содержит флаг начала игры
 							if (
 								!found                                     &&
 								typeof atom.rollerActionStart == "string"  &&
@@ -216,6 +249,8 @@ class rollerAction extends deckAction {
 								!found    &&
 								atom.move
 							) {
+								// всё ещё не нашли начало прокрутки колоды
+								// текущая атомарная составляющая хода содержит перемещение карт
 
 								// Swap
 								for (let i = 0; i < ((unflipCardsCount / 2) | 0); i += 1) {
@@ -257,6 +292,7 @@ class rollerAction extends deckAction {
 								}
 
 								// rewindStatus = 'break';
+								// выходим из rewindHistory т.к. из стопки брали карты
 								break;
 							}
 						}
@@ -289,6 +325,12 @@ class rollerAction extends deckAction {
 			}
 
 			// первая прокрутка
+
+			// +---+   ,...,    
+			// |///|   :   :    
+			// |///|   :   :    
+			// +---+   :...:     [0]
+
 			if (
 				hiddenCardsCount == 0 && // нет скрытых карт
 				unflipCardsCount == 0    // нет открытых видимых карт
@@ -300,11 +342,19 @@ class rollerAction extends deckAction {
 				}
 			}
 
-			// количество скрываемых дальше открытых карт
+			/**
+			 * количество скрываемых дальше открытых карт
+			 * @type {number}
+			 */
 			let unflippedCount = 0;
 
 			// скрываем открытые видимые карты (если есть)
 			if (unflipCardsCount > 0) {
+
+				// +---+   +-+-+---+
+				// |///|   |x|x|x  |
+				// |///|   | | |  x|
+				// +---+   +-+-+---+ -> [...]
 
 				console.log('rollerAction:run -> +visible -> +v_unflip');
 
@@ -341,9 +391,9 @@ class rollerAction extends deckAction {
 
 				for (let i = cardsCount - unflippedCount; i < cardsCount; i += 1) {
 
-					let next = cardsCount * 2 - i - unflippedCount - 1;
+					let next = cardsCount * 2 - i - unflippedCount - 1; // TODO что тут происходит? почему * 2
 
-					console.log('rollerAction:run -> +visible -> +v_unflip -> +openCount -> swap:', i, next, i < next);
+					console.log('rollerAction:run -> +visible -> +v_unflip -> +openCount -> swap#1:', i, next, i < next);
 
 					if (i < next) {
 						Atom.swap(deck, i, next, _save);
@@ -376,7 +426,10 @@ class rollerAction extends deckAction {
 				}
 			}
 
-			// количество видимых карт
+			/**
+			 * количество видимых карт
+			 * @type {number}
+			 */
 			cardsCount = deck.cardsCount({
 				"visible" : true
 			});
