@@ -9,6 +9,8 @@ import history      from './'             ;
 import redoAdvanced from './redoAdvanced' ;
 import snapshot     from './snapshot'     ;
 
+const BREAK_HISTORY = true;
+
 /*
  * stopRunHistory
  * startRunHistory
@@ -68,6 +70,8 @@ let saveSteps = e => {
 event.listen('saveSteps', saveSteps);
 
 let doHistory = e => {
+
+	if (BREAK_HISTORY) return;
 	
 	// if (share.get('noReplayHistory')) {
 	// 	return;
@@ -90,6 +94,11 @@ let doHistory = e => {
 	for (let i in e.data) {
 
 		console.log('redo:', i, 'from', e.data.length);
+
+		const PAUSE_STEP = 30;
+		if (i == PAUSE_STEP) {
+			console.log('debug_pause_step', i);
+		}
 
 		// share.set('noSave', true);
 		event.dispatch('redo', e.data[i]);
@@ -122,6 +131,8 @@ let doHistory = e => {
 event.listen('doHistory', doHistory);
 
 let scanAttempts = data => {
+
+	if (BREAK_HISTORY) return;
 
 	// Field.clear();
 

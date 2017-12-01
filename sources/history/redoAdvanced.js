@@ -136,7 +136,7 @@ class redoAdvanced {
 
 					console.log('redoAdvanced:makeMove', moveDeck.map(e => e.card.name), fromDeck.name, '->', toDeck.name);
 
-					SolitaireEngine.event.dispatch('move', {
+					event.dispatch('move', {
 						"moveDeck"   : moveDeck,
 						"to"         : to      ,
 						"cursorMove" : {
