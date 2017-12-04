@@ -250,6 +250,23 @@ class rollerAction extends deckAction {
 			}
 		}
 
+		if (startIndexOfOpenCards < 0) {
+			startIndexOfOpenCards = flipCardsCount;
+		}
+
+		if (startIndexOfHiddenCards < 1) {
+			startIndexOfHiddenCards = startIndexOfOpenCards + unflipCardsCount;
+		}
+
+console.log(`
+visibleCardsCount       : ${visibleCardsCount      }
+hiddenCardsCount        : ${hiddenCardsCount       }
+flipCardsCount          : ${flipCardsCount         }
+unflipCardsCount        : ${unflipCardsCount       }
+startIndexOfOpenCards   : ${startIndexOfOpenCards  }
+startIndexOfHiddenCards : ${startIndexOfHiddenCards}
+`);
+
 		/**
 		 * количество скрываемых открытых карт
 		 * @type {number}
@@ -627,39 +644,49 @@ class rollerAction extends deckAction {
 
 		
 		// 1) переставляем открытые в обратном порядке
-		for (let i = 0; i < unflipCardsCount / 2; i += 1) {
-			let side_1 = startIndexOfOpenCards             + i    ,
-			side_2 = startIndexOfOpenCards + openCount - i - 1;
-			Atom.swap(deck, side_1, side_2, _save);
+		if (unflipCardsCount > 0) {
+
+			for (let i = 0; i <= unflipCardsCount / 2; i += 1) {
+				let side_1 = startIndexOfOpenCards             + i    ,
+				side_2 = startIndexOfOpenCards + openCount - i - 1;
+				console.log('SWAP#1', side_1, side_2);
+				Atom.swap(deck, side_1, side_2, _save);
+			}
+			
+			// 2) скрываем все открытые
+			for (let i = 0; i < unflipCardsCount; i += 1) {
+				let index = startIndexOfOpenCards + i;
+				console.log('SHOW', index);
+				deck.showCardByIndex(i);
+			}
 		}
-		
-		// 2) скрываем все открытые
-		for (let i = 0; i < unflipCardsCount; i += 1) {
-			let index = startIndexOfOpenCards + i;
-			deck.showCardByIndex(i);
-		}
-		
-		// 3) открываем N карт
+			
 		let _unflipCardsCount = 0;
 		
 		let _stopIndex = unflipCardsCount - openCount - 1;
 		
 		console.log('### unflip:', unflipCardsCount - 1, _stopIndex);
-		for (
-			let i  = unflipCardsCount - 1;
-			i >= 0 && i > _stopIndex;
-			i -= 1
-		) {
-			console.log('### unflip:', i);
-			deck.unflipCardByIndex(i);
-			_unflipCardsCount += 1;
-		}
 		
-		// 4) переставляем открытые в обратном порядке
-		for (let i = 0; i < _stopIndex + _unflipCardsCount / 2; i += 1) {
-			let side_1 = _stopIndex + i,
-			side_2 = _stopIndex
-			Atom.swap(deck, side_1, side_2, _save);
+		if (flipCardsCount > 0) {
+			
+			// 3) открываем N карт
+			for (
+				let i  = startIndexOfOpenCards - 1;
+				i >= 0 && i > _stopIndex;
+				i -= 1
+			) {
+				console.log('UNFLIP', i);
+				deck.unflipCardByIndex(i);
+				_unflipCardsCount += 1;
+			}
+			
+			// 4) переставляем открытые в обратном порядке
+			for (let i = 0; i < _stopIndex + _unflipCardsCount / 2; i += 1) {
+				let side_1 = _stopIndex + i,
+				side_2 = _stopIndex
+				console.log('SWAP#2', side_1, side_2);
+				Atom.swap(deck, side_1, side_2, _save);
+			}
 		}
 
 		// 5) смотрим сколько видимых
