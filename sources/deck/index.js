@@ -592,16 +592,6 @@ class deckClass {
 		if (this.cards.length > 0) {
 
 			this.unflipCardByIndex(this.cards.length - 1, save);
-
-			// if (save) {
-			// 	event.dispatch('addStep', {
-			// 		"unflip" : {
-			// 			"cardName"  : this.cards[this.cards.length - 1].name,
-			// 			"cardIndex" : this.cards.length - 1                 ,
-			// 			"deckName"  : this.name
-			// 		}
-			// 	});
-			// }
 		}
 	}
 
@@ -916,13 +906,25 @@ class deckClass {
 	 * @param {number} index 
 	 * @param {boolean} redraw 
 	 */
-	hideCardByIndex(index, redraw) {
+	hideCardByIndex(index, redraw, save) {
+
 		if (this.cards[index]) {
 
 			this.cards[index].visible = false;
 
 			if (redraw) {
 				this.Redraw();
+			}
+
+			if (save) {
+
+				event.dispatch('addStep', {
+					"hide" : {
+						"cardIndex" : index                 ,
+						"cardName"  : deck.cards[index].name,
+						"deckName"  : deck             .name
+					}
+				});
 			}
 		}
 	}
@@ -942,6 +944,7 @@ class deckClass {
 			this.cards[i].visible = true;
 
 			if (changed && save) {
+
 				event.dispatch('addStep', {
 					"show" : {
 						"cardName"  : this.cards[i].name,

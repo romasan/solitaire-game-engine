@@ -258,7 +258,7 @@ class rollerAction extends deckAction {
 			startIndexOfHiddenCards = (startIndexOfOpenCards | 0) + (unflipCardsCount | 0);
 		}
 
-console.log(`
+console.log(`#1
 visibleCardsCount       : ${visibleCardsCount      }
 hiddenCardsCount        : ${hiddenCardsCount       }
 flipCardsCount          : ${flipCardsCount         }
@@ -652,20 +652,24 @@ _save                   : ${_save                  }
 				    side_2 = (startIndexOfOpenCards | 0) + (openCount | 0) - (i | 0) - 1;
 				console.log('SWAP#1', side_1, side_2);
 				Atom.swap(deck, side_1, side_2, _save);
+				// save swap
 			}
 			
 			// 2) скрываем все открытые
 			for (let i = 0; i < unflipCardsCount; i += 1) {
 				let index = (startIndexOfOpenCards | 0) + i;
 				console.log('HIDE', index);
-				deck.hideCardByIndex(index);
+				deck.hideCardByIndex(index, false, _save);
+				hiddenCardsCount  += 1;
+				visibleCardsCount -= 1;
+				// save hide
 			}
 		}
 			
 		// let _unflipCardsCount = 0;
 		unflipCardsCount = 0;
 		
-		let _stopIndex = unflipCardsCount - openCount - 1;
+		// let _stopIndex = unflipCardsCount - openCount - 1;
 		
 		if (flipCardsCount > 0) {
 			
@@ -676,7 +680,7 @@ _save                   : ${_save                  }
 				i -= 1
 			) {
 				console.log('UNFLIP', i);
-				deck.unflipCardByIndex(i);
+				deck.unflipCardByIndex(i, _save);
 				unflipCardsCount += 1;
 			}
 			
@@ -695,11 +699,37 @@ _save                   : ${_save                  }
 		// 	"flip"    : false
 		// });
 
-		// 5.1) если 0, показываем и закрываем все скрытые 
+		// 5.1) если 0, показываем и закрываем все скрытые 10411
 		if (visibleCardsCount == 0) {
-			deck.flipAllCards(false, _save);
-			deck.showCards(false, _save);
+			deck.flipAllCards (false, _save);
+			deck.showCards    (false, _save);
+			visibleCardsCount = hiddenCardsCount;
+			hiddenCardsCount = 0;
 		}
+
+		// save hash
+		// do history back
+		//   make new hash of sate of step
+		//   find step or same hash
+
+		// или...
+
+		// посчитать сколько прокруток можно было сделать
+		// N = cardsCount / openCount
+		let backSteps = ( (visibleCardsCount | 0) + (hiddenCardsCount | 0) ) / openCount;
+		// если в этих ходах не найдётся move
+		//   провернуть назад N ходов
+
+console.log(`#2
+visibleCardsCount       : ${ visibleCardsCount       }
+hiddenCardsCount        : ${ hiddenCardsCount        }
+flipCardsCount          : ${ flipCardsCount          }
+unflipCardsCount        : ${ unflipCardsCount        }
+startIndexOfOpenCards   : ${ startIndexOfOpenCards   }
+startIndexOfHiddenCards : ${ startIndexOfHiddenCards }
+_save                   : ${ _save                   }
+backSteps               : ${ backSteps               }
+`);
 
 		if (DEBUG_LOG) console.groupEnd();
 

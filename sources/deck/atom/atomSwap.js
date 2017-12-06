@@ -20,6 +20,7 @@ export default (deck, fromIndex, toIndex, save = true) => {
 		deck.cards[toIndex]   = tmp                  ;
 
 		if (save) {
+
 			event.dispatch('addStep', {
 				"swap" : {
 					"deckName"  : deck.name,
