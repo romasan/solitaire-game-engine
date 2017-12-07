@@ -124,6 +124,8 @@ class rollerAction extends deckAction {
 		 * всем кроме хода из стопки, предпочтительно клик
 		 * ****************************************************************** */
 
+		console.log('-----------------------------------------------');		
+
 /*
 	как стоит делать
 
@@ -257,8 +259,8 @@ class rollerAction extends deckAction {
 		if (startIndexOfHiddenCards < 1) {
 			startIndexOfHiddenCards = (startIndexOfOpenCards | 0) + (unflipCardsCount | 0);
 		}
-
-console.log(`#1
+console.groupCollapsed('#1');
+console.log(`
 visibleCardsCount       : ${visibleCardsCount      }
 hiddenCardsCount        : ${hiddenCardsCount       }
 flipCardsCount          : ${flipCardsCount         }
@@ -267,6 +269,7 @@ startIndexOfOpenCards   : ${startIndexOfOpenCards  }
 startIndexOfHiddenCards : ${startIndexOfHiddenCards}
 _save                   : ${_save                  }
 `);
+console.groupEnd();
 
 		/**
 		 * количество скрываемых открытых карт
@@ -642,7 +645,6 @@ _save                   : ${_save                  }
 		}
 // ---
 		}
-
 		
 		// 1) переставляем открытые в обратном порядке
 		if (unflipCardsCount > 0) {
@@ -650,7 +652,7 @@ _save                   : ${_save                  }
 			for (let i = 0; i <= unflipCardsCount / 2 - 1; i += 1) {
 				let side_1 = (startIndexOfOpenCards | 0)                   + (i | 0),
 				    side_2 = (startIndexOfOpenCards | 0) + (openCount | 0) - (i | 0) - 1;
-				console.log('SWAP#1', side_1, side_2);
+				console.log('SWAP#1', side_1, side_2, deck.cards[side_1].name, deck.cards[side_2].name);
 				Atom.swap(deck, side_1, side_2, _save);
 				// save swap
 			}
@@ -658,7 +660,7 @@ _save                   : ${_save                  }
 			// 2) скрываем все открытые
 			for (let i = 0; i < unflipCardsCount; i += 1) {
 				let index = (startIndexOfOpenCards | 0) + i;
-				console.log('HIDE', index);
+				console.log('HIDE', index, deck.cards[index].name);
 				deck.hideCardByIndex(index, false, _save);
 				hiddenCardsCount  += 1;
 				visibleCardsCount -= 1;
@@ -688,7 +690,7 @@ _save                   : ${_save                  }
 			for (let i = 0; i <= unflipCardsCount / 2 - 1; i += 1) {
 				let side_1 = (startIndexOfOpenCards | 0)                          - i - 1,
 				    side_2 = (startIndexOfOpenCards | 0) - (unflipCardsCount | 0) + i    ;
-				console.log('SWAP#2', side_1, side_2);
+				console.log('SWAP#2', side_1, side_2, deck.cards[side_1].name, deck.cards[side_2].name);
 				Atom.swap(deck, side_1, side_2, _save);
 			}
 		}
@@ -720,7 +722,8 @@ _save                   : ${_save                  }
 		// если в этих ходах не найдётся move
 		//   провернуть назад N ходов
 
-console.log(`#2
+console.groupCollapsed('#2');
+console.log(`
 visibleCardsCount       : ${ visibleCardsCount       }
 hiddenCardsCount        : ${ hiddenCardsCount        }
 flipCardsCount          : ${ flipCardsCount          }
@@ -730,6 +733,7 @@ startIndexOfHiddenCards : ${ startIndexOfHiddenCards }
 _save                   : ${ _save                   }
 backSteps               : ${ backSteps               }
 `);
+console.groupEnd();
 
 		if (DEBUG_LOG) console.groupEnd();
 

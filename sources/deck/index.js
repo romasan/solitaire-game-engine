@@ -921,8 +921,8 @@ class deckClass {
 				event.dispatch('addStep', {
 					"hide" : {
 						"cardIndex" : index                 ,
-						"cardName"  : deck.cards[index].name,
-						"deckName"  : deck             .name
+						"cardName"  : this.cards[index].name,
+						"deckName"  : this             .name
 					}
 				});
 			}
