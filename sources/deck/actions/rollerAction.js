@@ -261,13 +261,14 @@ class rollerAction extends deckAction {
 		}
 console.groupCollapsed('#1');
 console.log(`
-visibleCardsCount       : ${visibleCardsCount      }
-hiddenCardsCount        : ${hiddenCardsCount       }
-flipCardsCount          : ${flipCardsCount         }
-unflipCardsCount        : ${unflipCardsCount       }
-startIndexOfOpenCards   : ${startIndexOfOpenCards  }
-startIndexOfHiddenCards : ${startIndexOfHiddenCards}
-_save                   : ${_save                  }
+openCount               : ${ openCount               }
+visibleCardsCount       : ${ visibleCardsCount       }
+hiddenCardsCount        : ${ hiddenCardsCount        }
+flipCardsCount          : ${ flipCardsCount          }
+unflipCardsCount        : ${ unflipCardsCount        }
+startIndexOfOpenCards   : ${ startIndexOfOpenCards   }
+startIndexOfHiddenCards : ${ startIndexOfHiddenCards }
+_save                   : ${ _save                   }
 `);
 console.groupEnd();
 
@@ -649,7 +650,7 @@ console.groupEnd();
 		// 1) переставляем открытые в обратном порядке
 		if (unflipCardsCount > 0) {
 
-			for (let i = 0; i <= unflipCardsCount / 2 - 1; i += 1) {
+			for (let i = 0; i <= unflipCardsCount / 2; i += 1) {
 				let side_1 = (startIndexOfOpenCards | 0)                   + (i | 0),
 				    side_2 = (startIndexOfOpenCards | 0) + (openCount | 0) - (i | 0) - 1;
 				console.log('SWAP#1', side_1, side_2, deck.cards[side_1].name, deck.cards[side_2].name);
@@ -681,13 +682,13 @@ console.groupEnd();
 				i >= 0 && i > (startIndexOfOpenCards | 0) - (openCount | 0) - 1;
 				i -= 1
 			) {
-				console.log('UNFLIP', i);
+				console.log('UNFLIP', i, deck.cards[i].name);
 				deck.unflipCardByIndex(i, _save);
 				unflipCardsCount += 1;
 			}
 			
 			// 4) переставляем открытые в обратном порядке
-			for (let i = 0; i <= unflipCardsCount / 2 - 1; i += 1) {
+			for (let i = 0; i <= unflipCardsCount / 2; i += 1) {
 				let side_1 = (startIndexOfOpenCards | 0)                          - i - 1,
 				    side_2 = (startIndexOfOpenCards | 0) - (unflipCardsCount | 0) + i    ;
 				console.log('SWAP#2', side_1, side_2, deck.cards[side_1].name, deck.cards[side_2].name);
@@ -724,6 +725,7 @@ console.groupEnd();
 
 console.groupCollapsed('#2');
 console.log(`
+openCount               : ${ openCount               }
 visibleCardsCount       : ${ visibleCardsCount       }
 hiddenCardsCount        : ${ hiddenCardsCount        }
 flipCardsCount          : ${ flipCardsCount          }
