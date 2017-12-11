@@ -7,6 +7,11 @@ import deckAction from './deckAction'      ;
 import Deck       from '../'               ;
 import History    from '../../history'     ;
 import Atom       from '../atom'           ;
+import fallAutoStep from '../../autosteps/fallAutoStep';
+
+const NOT_FOUND    = 0,
+      ROLLER_START = 1,
+      MOVE_STEP    = 2;
 
 const DEBUG_LOG = false;
 
@@ -226,6 +231,18 @@ _save                   : ${ _save                   }
 `);
 console.groupEnd();
 
+		// первая прокрутка
+		if (
+			visibleCardsCount >  0 &&
+			 hiddenCardsCount == 0 && // нет скрытых карт
+			 unflipCardsCount == 0 && // нет открытых видимых карт
+			 _save
+		) {
+			event.dispatch('addStep', {
+				"rollerActionStart" : deck.name
+			});
+		}
+
 		/**
 		 * количество скрываемых открытых карт
 		 * @type {number}
@@ -274,9 +291,9 @@ console.groupEnd();
 			
 			// 3) открываем N карт
 			for (
-				let i  = (startIndexOfOpenCards | 0) - 1;
-				i >= 0 && i > (startIndexOfOpenCards | 0) - (openCount | 0) - 1;
-				i -= 1
+				let i  =          (startIndexOfOpenCards | 0)                   - 1;
+				    i >= 0 && i > (startIndexOfOpenCards | 0) - (openCount | 0) - 1;
+				    i -= 1
 			) {
 				console.log('UNFLIP', i, deck.cards[i].name);
 				deck.unflipCardByIndex(i, _save);
@@ -308,121 +325,98 @@ console.groupEnd();
 			hiddenCardsCount  = 0;
 		}
 
-		if (_save) {
-			event.dispatch('saveSteps');
-		}
-
-		// save hash
-		// do history back
-		//   make new hash of sate of step
-		//   find step or same hash
-
-		// или...
-
-		// посчитать сколько прокруток можно было сделать
-		// N = cardsCount / openCount
-		let backSteps = ( (visibleCardsCount | 0) + (hiddenCardsCount | 0) ) / openCount;
-		// если в этих ходах не найдётся move
-		//   провернуть назад N ходов
+		// let backSteps = ( (visibleCardsCount | 0) + (hiddenCardsCount | 0) ) / openCount;
 
 		/* *********************************************** */
-		// смотрим делали ли мы ход за время прокрутки
-		/*event.dispatch('rewindHistory', data => {
 
-			// флаг найденного начала прокрутки колоды
-			let found = false;
+		if (_save) {
 
-			let stepsCount = 0;
+			visibleCardsCount = deck.cardsCount({
+				"visible" : true
+			});
 
-			// Пробегаем по истории от последнего хода к первому
-			for (let i = data.history.length - 1; i >= 0 && !found; i -= 1) {
+			hiddenCardsCount = deck.cardsCount({
+				"visible" : false
+			});
 
-				stepsCount += 1;
+			unflipCardsCount = deck.cardsCount({
+				"visible" : false,
+				"flip"    : false
+			});
 
-				let step = data.history[i];
+			let found = NOT_FOUND;
 
-				// пробегаемся по атомарным составным хода из истории
-				for (let atomIndex in step) {
+			// смотрим делали ли мы ход за время прокрутки
+			if (
+				hiddenCardsCount  == 0 &&
+				unflipCardsCount  == 0 &&
+				visibleCardsCount >  0
+			) {
 
-					let atom = step[atomIndex];
-
-					// rewind
-					// просматриваемый ход содержит флаг начала игры
-					if (
-						!found                                     &&
-						typeof atom.rollerActionStart == "string"  && // больше эта конструкция не нужна
-						       atom.rollerActionStart == deck.name
+				event.dispatch('rewindHistory', data => {
+					
+					let stepsCount = 0;
+					
+					// Пробегаем по истории от последнего хода к первому
+					// console.log('пробегаем историю в обратном порядке на', backSteps, 'ходов');
+					for (
+						let i  = data.history.length - 1;
+							i >= 0 && found == NOT_FOUND;
+							i -= 1
 					) {
+						
+						stepsCount += 1;
+						
+						let step = data.history[i];
+						
+						// пробегаемся по атомарным составным хода из истории
+						for (let atomIndex in step) {
+							
+							let atom = step[atomIndex];
+							
+							if (
+								found == NOT_FOUND                         &&
+								typeof atom.rollerActionStart == "string"  &&
+								       atom.rollerActionStart == deck.name
+							) {
+								
+								found = ROLLER_START;
+							}
+							
+							if (
+								found == NOT_FOUND              &&
+								typeof atom.move != "undefined"
+							) {
 
-						found = true;
+								found == MOVE_STEP
+							}
+						}
+					}
+
+					if (found == ROLLER_START) {
+
+						// console.log('нашли ход из стопки (любой)');
+						console.log('нашли начало прокрутки');
 
 						event.dispatch('resetHistory');
 
 						for (let i = 0; i < stepsCount; i += 1) {
 							data.undo();
 						}
-
+						
 						// reset deck
-						deck.showCards   (false); // no redraw, not add in history
-						deck.flipAllCards(false); // no redraw, not add in history
+						// deck.showCards   (false); // no redraw, not add in history
+						// deck.flipAllCards(false); // no redraw, not add in history
+						// deck.Redraw();
 
-						// rewindStatus = 'done';
-
-					// reset
-					// если ход в истории найден раньше начала прокруток остановить rewind
-					} else if (
-						!found    &&
-						atom.move
-					) {
-						// всё ещё не нашли начало прокрутки колоды
-						// текущая атомарная составляющая хода содержит перемещение карт
-
-						// Swap
-						for (let i = 0; i < ((unflipCardsCount / 2) | 0); i += 1) {
-
-							let next = unflipCardsCount - i - 1;
-
-							if (i < next) {
-								Atom.swap(deck, i, next, _save); // deck, fromIndex, toIndex, save
-							}
-						}
-
-						// Hide visible flipped cards
-						for (let i = 0; i < unflipCardsCount; i += 1) {
-
-							deck.hideCardByIndex(i, true); // index, redraw
-
-							// save step
-							if (_save) {
-								event.dispatch('addStep', {
-									"hide" : {
-										"cardIndex" : i                 ,
-										"cardName"  : deck.cards[i].name,
-										"deckName"  : deck         .name
-									}
-								});
-							}
-						}
-
-						found = true;
-
-						// reset deck
-						deck.showCards   (false, _save); // no redraw, add in history
-						deck.flipAllCards(false, _save); // no redraw, add in history
-
-						deck.Redraw();
-
-						if (_save) {
-							event.dispatch('saveSteps');
-						}
-
-						// rewindStatus = 'break';
-						// выходим из rewindHistory т.к. из стопки брали карты
-						break;
 					}
-				}
+				});
 			}
-		});*/
+
+			if (found != ROLLER_START) {
+				event.dispatch('saveSteps');
+			}
+		}
 		/* *********************************************** */
 
 console.groupCollapsed('#2');
@@ -435,7 +429,7 @@ unflipCardsCount        : ${ unflipCardsCount        }
 startIndexOfOpenCards   : ${ startIndexOfOpenCards   }
 startIndexOfHiddenCards : ${ startIndexOfHiddenCards }
 _save                   : ${ _save                   }
-backSteps               : ${ backSteps               }
+backSteps               : ${ typeof backSteps != "undefined" ? backSteps : 'undefined' }
 `);
 console.groupEnd();
 
