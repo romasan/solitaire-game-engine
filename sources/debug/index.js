@@ -254,10 +254,11 @@ let eachDecksInGroup = (groupName, callback) => {
 
 let logCardsInDeck = deck => {
 
-	let _log = [deck.name + ' (' + deck.cards.length + '): '];
+	let _log = ['%c' + deck.name + ' (' + deck.cards.length + '): ', 'line-height:25px;'];
 
-	for (let card of deck.cards) {
-		_log[0] += '%c' + card.name + '%c ';
+	for (let i in deck.cards) {
+		let card = deck.cards[i];
+		_log[0] += '%c' + card.name + '%c %c' + i;
 		_log.push(
 			card.visible
 				? card.flip
@@ -268,6 +269,7 @@ let logCardsInDeck = deck => {
 					: 'color:grey;'
 		);
 		_log.push('text-decoration: none;');
+		_log.push('font-size:70%;color:transparent;margin-left:-8px;text-shadow:-8px 8px 0px #000000;');
 	}
 
 	console.groupCollapsed.apply(console, _log);
