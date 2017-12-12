@@ -73,14 +73,13 @@ event.listen('revokeSpecialStep', ({callback}) => {
 		common.animationOn();
 	} else {
 
-		console.log('revokeSpecialStep TYPE 2');
+		// console.log('revokeSpecialStep TYPE 2');
 
 		event.dispatch('rewindHistory', data => {
 
-			console.log('rewindHistory', data.redoSteps.length - revokeLength, data.redoSteps.length, revokeLength);
+			// console.log('rewindHistory', data.redoSteps.length - revokeLength, data.redoSteps.length, revokeLength);
 
 			for (let i = data.redoSteps.length - revokeLength; i > 0; i -= 1) {
-				console.log('>>> redo');
 				data.redo();
 			}
 		});

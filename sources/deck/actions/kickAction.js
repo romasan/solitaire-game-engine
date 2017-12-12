@@ -57,8 +57,6 @@ class kickAction extends deckAction {
 
 		let _callback = e => {
 
-			// console.log('### kickAction:_callback');
-
 			let _addStep = historyData => {
 
 				for (let i in _deck) {

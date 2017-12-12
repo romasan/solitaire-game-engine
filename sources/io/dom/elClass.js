@@ -159,8 +159,6 @@ export default class elClass {
 
 		try {
 
-			console.log('HIDE CARD');
-
 			return this.css({
 				"display" : 'none'
 			});
@@ -266,8 +264,6 @@ export default class elClass {
 			return false;
 		}
 
-		// console.log('Animation, mode:', _animation ? 'ON' : 'OFF', this.el.id);
-
 		/*
 		 * Animation On
 		 */
@@ -284,7 +280,6 @@ export default class elClass {
 
 				if (distance > 100) {
 					animationTime = animationTime + (animationTime * (distance / 100)) / 5;
-					// console.log('New animationTime: from', defaults.animationTime, 'to', animationTime, 'for', distance + 'px');
 				}
 
 				this.css({
@@ -309,13 +304,9 @@ export default class elClass {
 					this.el.style[attrName] = params[attrName]; // set new style
 				}
 
-				// console.log('### animation changes', this.el.id, counter);
-
 				this.addClass('animated');
 
 				// let animationKey = Math.random();
-
-				// console.log('animation START ' + animationKey, counter);
 
 				let transitionEndCallback = e => {
 
@@ -323,11 +314,7 @@ export default class elClass {
 
 					// event.dispatch('animationEnd', this);
 
-					// console.log('animate:callback', counter, e.propertyName);
-
 					if (counter == 0) {
-
-						// console.log('animation END ' + animationKey, counter);
 
 						this.removeClass('animated');
 

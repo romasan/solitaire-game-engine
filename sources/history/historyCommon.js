@@ -9,7 +9,7 @@ import history      from './'             ;
 import redoAdvanced from './redoAdvanced' ;
 import snapshot     from './snapshot'     ;
 
-const BREAK_HISTORY = true;
+const BREAK_HISTORY = false;
 
 /*
  * stopRunHistory
@@ -81,8 +81,6 @@ let doHistory = e => {
 
 	share.set('inDoHistory', true);	
 
-	// let _time = Date.now();
-
 	// common.animationOff();
 	if (!e || !e.data) {
 		console.warn('doHistory data:', e);
@@ -93,12 +91,7 @@ let doHistory = e => {
 
 	for (let i in e.data) {
 
-		console.log('redo:', i, 'from', e.data.length);
-
-		const PAUSE_STEP = 30;
-		if (i == PAUSE_STEP) {
-			console.log('debug_pause_step', i);
-		}
+		// console.log('redo:', i, 'from', e.data.length);
 
 		// share.set('noSave', true);
 		event.dispatch('redo', e.data[i]);
@@ -111,7 +104,7 @@ let doHistory = e => {
 			e.callback(e.data[i]);	
 		}
 
-		event.dispatch('solitaire_log');
+		// event.dispatch('solitaire_log');
 	}
 
 	common.animationDefault();
@@ -121,8 +114,6 @@ let doHistory = e => {
 	setTimeout(Field.Redraw, 0);
 
 	// let _decks = common.getElementsByType('deck');
-
-	// console.log(((Date.now() - _time) / 1e3) + 's.');
 
 	share.set('inDoHistory', false);			
 
@@ -137,7 +128,6 @@ let scanAttempts = data => {
 	// Field.clear();
 
 	// console.groupCollapsed('scanAttempts');
-	// let _time = Date.now();
 
 	event.dispatch('render:off');
 	common.animationOff();
@@ -188,8 +178,6 @@ let scanAttempts = data => {
 	snapshot.applyState(summary, {
 		"flip" : "prevFlip"
 	});
-
-	// console.log(((Date.now() - _time) / 1e3) + 's.');
 
 	// console.groupEnd();
 };

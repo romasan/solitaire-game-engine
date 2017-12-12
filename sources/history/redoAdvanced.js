@@ -23,7 +23,7 @@ class redoAdvanced {
 		) {
 
 			// console.log('RUN ACTION:', data.runAction.actionName, data.runAction.deckName);
-			console.log('%credoAdvanced:runAction', 'color: orange;font-weight: bold;', JSON.stringify(data.runAction));
+			// console.log('%credoAdvanced:runAction', 'color: orange;font-weight: bold;', JSON.stringify(data.runAction));
 
 			let deck = common.getElementByName(data.runAction.deckName, 'deck');
 
@@ -47,7 +47,7 @@ class redoAdvanced {
 			typeof data.makeMove.from.cardName == "string"
 		) {
 
-			console.log('%credoAdvanced:makeMove', 'color: blue;font-weight: bold;', JSON.stringify(data.makeMove));
+			// console.log('%credoAdvanced:makeMove', 'color: blue;font-weight: bold;', JSON.stringify(data.makeMove));
 
 			let fromCard = common.getElementByName(data.makeMove.from.cardName, 'card');
 			// try {
@@ -134,7 +134,7 @@ class redoAdvanced {
 
 				if (found) {
 
-					console.log('redoAdvanced:makeMove', moveDeck.map(e => e.card.name), fromDeck.name, '->', toDeck.name);
+					// console.log('redoAdvanced:makeMove', moveDeck.map(e => e.card.name), fromDeck.name, '->', toDeck.name);
 
 					event.dispatch('move', {
 						"moveDeck"   : moveDeck,

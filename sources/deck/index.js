@@ -629,7 +629,7 @@ class deckClass {
 	 */
 	unflipAllCards(redraw = true, save) {
 
-		console.log('deck:unflipAllCards', save);
+		// console.log('deck:unflipAllCards', save);
 
 		for (let i in this.cards) {
 

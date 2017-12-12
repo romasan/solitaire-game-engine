@@ -13,8 +13,6 @@ const NOT_FOUND    = 'NOT_FOUND'   ,
       ROLLER_START = 'ROLLER_START',
       MOVE_STEP    = 'MOVE_STEP'   ;
 
-const DEBUG_LOG = false;
-
 const defaultOpenCount = 3;
 
 class rollerAction extends deckAction {
@@ -25,8 +23,6 @@ class rollerAction extends deckAction {
 
 	run(deck, data) {
 
-		if (DEBUG_LOG) console.log('rollerAction:run', deck, data);
-
 		// в стопке больше нет карт
 		if (
 			!deck                   ||
@@ -34,15 +30,12 @@ class rollerAction extends deckAction {
 			!deck.cards             ||
 			 deck.cards.length == 0
 		) {
-			if (DEBUG_LOG) console.log('rollerAction:run -> break #0');
 			return;
 		}
 
 		// Не сохранять если action вызван из истории
 		let _save = data.eventName != 'moveEnd:force'; // !share.get('noSave');
 		
-		if (DEBUG_LOG) console.log('rollerAction:run -> _save:', _save);
-
 		/* *********************************************************************
 		 * действие совершаемое после хода из стопки
 		 * если задан такой event
@@ -50,16 +43,8 @@ class rollerAction extends deckAction {
 
 		if (data.eventName.indexOf('moveEnd') >= 0) {
 
-			if (DEBUG_LOG) console.groupCollapsed('сделали ход из роллера');
-
-			if (DEBUG_LOG) console.log('rollerAction:run -> moveEnd');
-
 			// относится ли событие к данной стопке?
 			if (data.eventData.from.name != deck.name) {
-
-				if (DEBUG_LOG) console.log('rollerAction:run -> moveEnd -> break#');
-				if (DEBUG_LOG) console.groupEnd();
-
 				return;
 			}
 
@@ -80,17 +65,11 @@ class rollerAction extends deckAction {
 				"visible" : false
 			});
 
-			if (DEBUG_LOG) console.log('rollerAction:run -> moveEnd -> unflip:', unflipCardsCount, 'hidden:', hiddenCardsCount);
-
-			if (DEBUG_LOG) console.groupCollapsed('если нет открытых карт показать предыдущую скрытую');
-
 			// если нет открытых карт показать предыдущую скрытую
 			if (
 				unflipCardsCount == 0 &&
 				hiddenCardsCount >  0
 			) {
-
-				if (DEBUG_LOG) console.log('rollerAction:run -> moveEnd -> 0unplip, +hidden');
 
 				let next = deck.cards.length - hiddenCardsCount;
 
@@ -98,8 +77,6 @@ class rollerAction extends deckAction {
 
 				// save step
 				if (_save) {
-
-					if (DEBUG_LOG) console.log('rollerAction:run -> moveEnd -> 0unplip, +hidden -> addStep:show');
 
 					event.dispatch('addStep', {
 						"show" : {
@@ -112,14 +89,10 @@ class rollerAction extends deckAction {
 
 				event.dispatch('checkTips');
 			}
-			if (DEBUG_LOG) console.groupEnd();
 			
 			// event.dispatch('addStep', {
 			// 	"rollerActionEnd" : deck.name
 			// });
-
-			if (DEBUG_LOG) console.log('rollerAction:run -> moveEnd -> break#1');
-			if (DEBUG_LOG) console.groupEnd();
 
 			return;
 		}
@@ -129,11 +102,8 @@ class rollerAction extends deckAction {
 		 * всем кроме хода из стопки, предпочтительно клик
 		 * ****************************************************************** */
 
-		console.log('-----------------------------------------------');		
-
 		// относится ли событие к данной стопке?
 		if (data.eventData.to.name != deck.name) {
-			console.log('rollerAction:run -> break#2 (eventData.to.name != deck.name)');
 			return false;
 		}
 
@@ -218,19 +188,6 @@ class rollerAction extends deckAction {
 			startIndexOfHiddenCards = (startIndexOfOpenCards | 0) + (unflipCardsCount | 0);
 		}
 
-console.groupCollapsed('#1');
-console.log(`
-openCount               : ${ openCount               }
-visibleCardsCount       : ${ visibleCardsCount       }
-hiddenCardsCount        : ${ hiddenCardsCount        }
-flipCardsCount          : ${ flipCardsCount          }
-unflipCardsCount        : ${ unflipCardsCount        }
-startIndexOfOpenCards   : ${ startIndexOfOpenCards   }
-startIndexOfHiddenCards : ${ startIndexOfHiddenCards }
-_save                   : ${ _save                   }
-`);
-console.groupEnd();
-
 		// первая прокрутка
 		if (
 			visibleCardsCount >  0 &&
@@ -249,9 +206,6 @@ console.groupEnd();
 		 */
 		// let unflippedCount = 0;
 
-		if (DEBUG_LOG) console.groupCollapsed('клик по роллеру');
-		if (DEBUG_LOG) console.log('rollerAction:run -> openCount:', openCount, 'hidden:', hiddenCardsCount, 'visible:', cardsCount);
-
 		// 1) переставляем открытые в обратном порядке
 		if (unflipCardsCount > 0) {
 
@@ -259,12 +213,7 @@ console.groupEnd();
 
 				let side_1 = (startIndexOfOpenCards | 0)                          + (i | 0)    ,
 				    side_2 = (startIndexOfOpenCards | 0) + (unflipCardsCount | 0) - (i | 0) - 1;
-				try {
-						console.log('SWAP#1', side_1, side_2, deck.cards[side_1].name, deck.cards[side_2].name);
-				} catch (e) {
-					console.warn('Error (SWAP#1):', e);
-					console.log(side_1, side_2);
-				}
+
 				if (side_1 != side_2) {
 				  Atom.swap(deck, side_1, side_2, _save);
 				}
@@ -274,7 +223,6 @@ console.groupEnd();
 			// 2) скрываем все открытые
 			for (let i = 0; i < unflipCardsCount; i += 1) {
 				let index = (startIndexOfOpenCards | 0) + i;
-				console.log('HIDE', index, deck.cards[index].name);
 				deck.hideCardByIndex(index, false, _save);
 				hiddenCardsCount  += 1;
 				visibleCardsCount -= 1;
@@ -295,7 +243,6 @@ console.groupEnd();
 				    i >= 0 && i > (startIndexOfOpenCards | 0) - (openCount | 0) - 1;
 				    i -= 1
 			) {
-				console.log('UNFLIP', i, deck.cards[i].name);
 				deck.unflipCardByIndex(i, _save);
 				unflipCardsCount += 1;
 			}
@@ -305,7 +252,6 @@ console.groupEnd();
 				let side_1 = (startIndexOfOpenCards | 0)                          - i - 1,
 				    side_2 = (startIndexOfOpenCards | 0) - (unflipCardsCount | 0) + i    ;
 			  if (side_1 != side_2) {
-				  console.log('SWAP#2', side_1, side_2, deck.cards[side_1].name, deck.cards[side_2].name);
 					Atom.swap(deck, side_1, side_2, _save);
 				}
 			}
@@ -358,7 +304,6 @@ console.groupEnd();
 					let stepsCount = 0;
 					
 					// Пробегаем по истории от последнего хода к первому
-					// console.log('пробегаем историю в обратном порядке на', backSteps, 'ходов');
 					for (
 						let i  = data.history.length - 1;
 							i >= 0 && found == NOT_FOUND;
@@ -393,12 +338,7 @@ console.groupEnd();
 						}
 					}
 
-					console.log('found:', found);
-
 					if (found == ROLLER_START) {
-
-						// console.log('нашли ход из стопки (любой)');
-						console.log('нашли начало прокрутки');
 
 						event.dispatch('resetHistory');
 
@@ -419,23 +359,8 @@ console.groupEnd();
 				event.dispatch('saveSteps');
 			}
 		}
+
 		/* *********************************************** */
-
-console.groupCollapsed('#2');
-console.log(`
-openCount               : ${ openCount               }
-visibleCardsCount       : ${ visibleCardsCount       }
-hiddenCardsCount        : ${ hiddenCardsCount        }
-flipCardsCount          : ${ flipCardsCount          }
-unflipCardsCount        : ${ unflipCardsCount        }
-startIndexOfOpenCards   : ${ startIndexOfOpenCards   }
-startIndexOfHiddenCards : ${ startIndexOfHiddenCards }
-_save                   : ${ _save                   }
-backSteps               : ${ typeof backSteps != "undefined" ? backSteps : 'undefined' }
-`);
-console.groupEnd();
-
-		if (DEBUG_LOG) console.groupEnd();
 
 		deck.Redraw();
 

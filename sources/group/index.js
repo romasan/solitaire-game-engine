@@ -191,8 +191,6 @@ class groupClass {
 		_elements[id] = _el_group;
 		share.set('elements', _elements);
 
-		// console.log('>>>add group to share:', _el_group.name);
-
 		// fill group
 		if (data && data.fill) {
 
