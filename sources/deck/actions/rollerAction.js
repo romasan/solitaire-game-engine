@@ -9,9 +9,9 @@ import History    from '../../history'     ;
 import Atom       from '../atom'           ;
 import fallAutoStep from '../../autosteps/fallAutoStep';
 
-const NOT_FOUND    = 0,
-      ROLLER_START = 1,
-      MOVE_STEP    = 2;
+const NOT_FOUND    = 'NOT_FOUND'   ,
+      ROLLER_START = 'ROLLER_START',
+      MOVE_STEP    = 'MOVE_STEP'   ;
 
 const DEBUG_LOG = false;
 
@@ -143,8 +143,8 @@ class rollerAction extends deckAction {
 		 * @type {number}
 		 */
 		let openCount = data.actionData.openCount
-			? data.actionData.openCount
-			: defaultOpenCount;
+		              ? data.actionData.openCount
+		              : defaultOpenCount;
 
 		/**
 		 * количество скрытых карт
@@ -388,10 +388,12 @@ console.groupEnd();
 								typeof atom.move != "undefined"
 							) {
 
-								found == MOVE_STEP
+								found = MOVE_STEP
 							}
 						}
 					}
+
+					console.log('found:', found);
 
 					if (found == ROLLER_START) {
 
