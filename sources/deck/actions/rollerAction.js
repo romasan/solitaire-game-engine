@@ -340,9 +340,10 @@ class rollerAction extends deckAction {
 
 					if (found == ROLLER_START) {
 
-						event.dispatch('resetHistory');
+						// event.dispatch('resetHistory');
+						event.dispatch('saveSteps');
 
-						for (let i = 0; i < stepsCount; i += 1) {
+						for (let i = 0; i <= stepsCount; i += 1) {
 							data.undo();
 						}
 						

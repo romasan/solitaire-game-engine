@@ -268,6 +268,8 @@ event.listen('redo', redoData => {
 		return;
 	}
 
+	event.dispatch('undoredo', 'redo');
+
 	// share.set('inRedo', true);
 
 	// inputs.break();

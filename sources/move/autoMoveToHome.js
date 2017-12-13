@@ -6,6 +6,7 @@ import common from '../common'      ;
 
 import Field  from '../field'       ;
 import Tips   from '../tips'        ;
+import fallAutoStep from '../autosteps/fallAutoStep';
 
 let checkAutoMoveToHomeOpenDecks = e => {
 
@@ -43,7 +44,28 @@ let checkAutoMoveToHomeOpenDecks = e => {
 }
 
 // Автоход в "дом"
-let autoMoveToHome = e => {
+let autoMoveToHomeActive = false;
+let breakAutoMoveToHome  = false;
+
+let autoMoveToHome = outer => {
+
+	if (autoMoveToHomeActive && outer) {
+		console.log('auto move to home is active');
+		return;
+	}
+
+	if (outer) {
+		breakAutoMoveToHome = false;
+	}
+
+	if (breakAutoMoveToHome) {
+		breakAutoMoveToHome = false;
+		autoMoveToHomeActive = false;
+		console.log('break auto move to home on history undo/redo');
+		return;
+	}
+
+	autoMoveToHomeActive = true;
 
 	// console.log('autoMoveToHome');
 
@@ -125,6 +147,8 @@ let autoMoveToHome = e => {
 		event.dispatch('forceMove', forceMoveData);
 	} else {
 
+		autoMoveToHomeActive = false;
+
 		event.dispatch('winCheck', {
 			"show" : true
 		});
@@ -132,4 +156,16 @@ let autoMoveToHome = e => {
 		event.dispatch('autoMoveToHome:done');
 	}
 };
-event.listen('autoMoveToHome', autoMoveToHome);
+
+event.listen('undoredo', e => {
+	console.log('make', e);
+	breakAutoMoveToHome = true;
+});
+
+event.listen('initField', e => {
+	autoMoveToHomeActive = false;
+})
+
+event.listen('autoMoveToHome', e => {
+	autoMoveToHome(true);
+});

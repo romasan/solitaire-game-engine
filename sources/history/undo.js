@@ -265,6 +265,8 @@ event.listen('undo', undoData => {
 		return;
 	}
 
+	event.dispatch('undoredo', 'undo');
+
 	// inputs.break();
 	event.dispatch('inputsBreak');
 
