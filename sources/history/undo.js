@@ -261,6 +261,19 @@ let undo = data => {
 
 event.listen('undo', undoData => {
 
+	// let _break = false;
+
+	// event.dispatch('checkAnimations', issetAnimated => {
+	// 	if (issetAnimated) {
+	// 		_break = true;
+	// 	}
+	// });
+
+	// if (_break) {
+	// 	// TODO -> redo
+	// 	return;
+	// }
+
 	if (!undoData || share.get('stopRunHistory')) {
 		return;
 	}

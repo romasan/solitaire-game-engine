@@ -46,7 +46,7 @@ class redoAdvanced {
 			       data.makeMove.from                      &&
 			typeof data.makeMove.from.cardName == "string"
 		) {
-
+			// TODO check imput data and log warning
 			// console.log('%credoAdvanced:makeMove', 'color: blue;font-weight: bold;', JSON.stringify(data.makeMove));
 
 			let fromCard = common.getElementByName(data.makeMove.from.cardName, 'card');

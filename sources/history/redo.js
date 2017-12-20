@@ -264,6 +264,19 @@ let redo = data => {
 
 event.listen('redo', redoData => {
 
+	// let _break = false;
+	
+	// event.dispatch('checkAnimations', issetAnimated => {
+	// 	if (issetAnimated) {
+	// 		_break = true;
+	// 	}
+	// });
+
+	// if (_break) {
+	// 	// TODO -> undo
+	// 	return;
+	// }
+
 	if (!redoData || share.get('stopRunHistory')) {
 		return;
 	}

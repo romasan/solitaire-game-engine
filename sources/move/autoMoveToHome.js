@@ -54,14 +54,24 @@ let autoMoveToHome = outer => {
 		return;
 	}
 
-	if (outer) {
-		breakAutoMoveToHome = false;
-	}
+	// if (outer) {
+	// 	breakAutoMoveToHome = false;
+	// }
+
+	share.set('pre_undo_redo_callback', () => {
+
+		share.delete('pre_undo_redo_callback');
+
+		breakAutoMoveToHome = true;
+	});
 
 	if (breakAutoMoveToHome) {
-		breakAutoMoveToHome = false;
+
+		breakAutoMoveToHome  = false;
 		autoMoveToHomeActive = false;
-		console.log('break auto move to home on history undo/redo');
+
+		share.delete('pre_undo_redo_callback');
+	// 	console.log('break auto move to home on history undo/redo');
 		return;
 	}
 
@@ -132,15 +142,17 @@ let autoMoveToHome = outer => {
 
 			Tips.checkTips();
 
+			event.dispatch('undo_redo_end_of_expectation', 'autoMoveToHome');
+			
 			autoMoveToHome();
 		};
 
 		let forceMoveData = {
-			"from"     :  tip.from.deck.name ,
-			"to"       :  tip.to  .deck.name ,
-			"deck"     : [tip.from.card.name],
-			"addStep"  : true                ,
-			"save"     : true                ,
+			"from"     :  tip.from.deck.name   ,
+			"to"       :  tip.to  .deck.name   ,
+			"deck"     : [tip.from.card.name]  ,
+			"addStep"  : true                  ,
+			"save"     : true                  ,
 			"callback" : autoMoveToHomeCallback
 		};
 
@@ -148,6 +160,10 @@ let autoMoveToHome = outer => {
 	} else {
 
 		autoMoveToHomeActive = false;
+
+		share.delete('pre_undo_redo_callback');
+
+		event.dispatch('undo_redo_end_of_expectation', 'autoMoveToHome');
 
 		event.dispatch('winCheck', {
 			"show" : true
@@ -157,10 +173,10 @@ let autoMoveToHome = outer => {
 	}
 };
 
-event.listen('undoredo', e => {
-	console.log('make', e);
-	breakAutoMoveToHome = true;
-});
+// event.listen('undoredo', e => {
+// 	console.log('make', e);
+// 	breakAutoMoveToHome = true;
+// });
 
 event.listen('initField', e => {
 	autoMoveToHomeActive = false;

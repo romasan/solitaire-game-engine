@@ -91,3 +91,7 @@ event.listen('showCard', target => {
 event.listen('hideCard', target => {
 	elRender(target).hide();
 });
+
+event.listen('checkAnimations', callback => {
+	callback( document.getElementsByClassName('animated').length > 0 );
+})

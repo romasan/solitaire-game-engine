@@ -9,8 +9,6 @@ import history      from './'             ;
 import redoAdvanced from './redoAdvanced' ;
 import snapshot     from './snapshot'     ;
 
-const BREAK_HISTORY = false;
-
 /*
  * stopRunHistory
  * startRunHistory
@@ -26,6 +24,8 @@ const BREAK_HISTORY = false;
  * newGame
  * quickHistoryMove
  */
+
+let historyQueue = [];
 
 let stopRunHistory = e => {
 	share.set('stopRunHistory', true);
@@ -71,8 +71,6 @@ event.listen('saveSteps', saveSteps);
 
 let doHistory = e => {
 
-	if (BREAK_HISTORY) return;
-	
 	// if (share.get('noReplayHistory')) {
 	// 	return;
 	// }
@@ -122,8 +120,6 @@ let doHistory = e => {
 event.listen('doHistory', doHistory);
 
 let scanAttempts = data => {
-
-	if (BREAK_HISTORY) return;
 
 	// Field.clear();
 
@@ -255,3 +251,56 @@ let quickHistoryMove = callback => {
 	}
 };
 event.listen('quickHistoryMove', quickHistoryMove);
+
+share.set('pre_undo_redo_callback', null);
+
+let undo_redo_end_of_expectation_callback = null;
+
+let pre_undo_redo = (callback, type) => {
+
+	let pre_undo_redo_callback = share.get('pre_undo_redo_callback');
+
+	let _issetAnimated = false;
+
+	event.dispatch('checkAnimations', issetAnimated => {
+		_issetAnimated = issetAnimated;
+	});
+
+	// есть callback который надо выполнить перед ходом назад/вперёд
+	// а после undo_redo_end_of_expectation_callback
+	if (typeof pre_undo_redo_callback == "function") {
+
+		pre_undo_redo_callback();
+
+		undo_redo_end_of_expectation_callback = name => {
+
+			undo_redo_end_of_expectation_callback = null;
+
+			if (type == 'undo') {
+				event.dispatch('rewindHistory', data => {
+					data.undo();
+				});
+			}
+		}
+	} else {
+		if (_issetAnimated == false) {
+			if (typeof callback == "function") {
+				callback();
+			}
+		}
+	}
+}
+
+event.listen('undo_redo_end_of_expectation', from => {
+	if (typeof undo_redo_end_of_expectation_callback == "function") {
+		undo_redo_end_of_expectation_callback(from);
+	}
+})
+
+event.listen('PRE_UNDO', callback => {
+	pre_undo_redo(callback, 'undo');
+});
+
+event.listen('PRE_REDO', callback => {
+	pre_undo_redo(callback, 'redo');
+});

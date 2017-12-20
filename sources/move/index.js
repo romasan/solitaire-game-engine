@@ -247,8 +247,6 @@ let Move = data => {
 				return;
 			} else {
 
-				console.log('###', moveDeck, cursorMove, to);
-
 				event.dispatch('moveCardBack', {
 					"moveDeck"  : moveDeck       ,
 					"departure" : _deck_departure
