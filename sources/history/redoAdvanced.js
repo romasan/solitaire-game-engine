@@ -147,7 +147,11 @@ class redoAdvanced {
 						}
 					});
 				} else {
-					console.warn('Ошибка при попытке хода <<старого>> типа');
+					console.warn('Ошибка при попытке хода <<старого>> типа; makeMove',
+						data.makeMove.from.cardName + ' ' + 
+						data.makeMove.to  .cardName
+					);
+					// event.dispatch('solitaire_log');
 				}
 			}
 

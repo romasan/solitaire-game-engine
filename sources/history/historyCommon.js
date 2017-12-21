@@ -89,7 +89,17 @@ let doHistory = e => {
 
 	for (let i in e.data) {
 
-		// console.log('redo:', i, 'from', e.data.length);
+		// console.log('redo:', i, 'from', e.data.length,
+		// 	e.data[i][0].makeMove
+		// 		? 'makeMove ' + 
+		// 			(e => e.cardName || e.deckName)(e.data[i][0].makeMove.from) + ' ' +
+		// 			(e => e.cardName || e.deckName)(e.data[i][0].makeMove.to)
+		// 		: e.data[i][0].runAction
+		// 			? 'runAction ' +
+		// 				e.data[i][0].runAction.actionName + ' ' + 
+		// 				e.data[i][0].runAction.deckName
+		// 			: e.data[i]
+		// );
 
 		// share.set('noSave', true);
 		event.dispatch('redo', e.data[i]);

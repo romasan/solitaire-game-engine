@@ -47,7 +47,7 @@ class rollerAction extends deckAction {
 			if (data.eventData.from.name != deck.name) {
 				return;
 			}
-
+			
 			/**
 			 * количество открытых видимых карт
 			 * @type {number}
@@ -57,6 +57,11 @@ class rollerAction extends deckAction {
 				"flip"    : false
 			});
 
+			// let test = deck.getCards({
+			// 	"visible" : true ,
+			// 	"flip"    : false
+			// });
+			
 			/**
 			 * количество скрытых карт
 			 * @type {number}
@@ -64,6 +69,16 @@ class rollerAction extends deckAction {
 			let hiddenCardsCount = deck.cardsCount({
 				"visible" : false
 			});
+			
+			// console.groupCollapsed('из этой стопки переместили карту', deck.name,
+			// 	unflipCardsCount, hiddenCardsCount, test.map(e=>({
+			// 		"name"    : e.name   ,
+			// 		"visible" : e.visible,
+			// 		"flip"    : e.flip
+			// 	}))
+			// );
+			// event.dispatch('solitaire_log');
+			// console.groupEnd();
 
 			// если нет открытых карт показать предыдущую скрытую
 			if (
@@ -74,6 +89,8 @@ class rollerAction extends deckAction {
 				let next = deck.cards.length - hiddenCardsCount;
 
 				deck.showCardByIndex(next, true); // index, redraw
+
+				// console.log('показываем карту', next, deck.cards[next].name);
 
 				// save step
 				if (_save) {

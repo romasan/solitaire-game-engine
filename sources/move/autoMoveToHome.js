@@ -85,12 +85,17 @@ let autoMoveToHome = outer => {
 
 	for (let i in autoMoveToHomeOpenDecks.decks) {
 
-		let _topCard = autoMoveToHomeOpenDecks.decks[i].getTopCard();
+		let _topCard = autoMoveToHomeOpenDecks.decks[i].getTopCard({
+			"visible" : null
+		});
 
-		if (_topCard && _topCard.flip == true) {
+		if (
+			_topCard              &&
+			_topCard.flip == true
+		) {
 			event.dispatch('clickCard', _topCard);
 		}
-	}
+}
 
 	// Tips.checkTips();
 

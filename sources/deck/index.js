@@ -1012,7 +1012,13 @@ class deckClass {
 
 			for (let filterName in filters) {
 				try {
-					_correct = _correct && this.cards[i][filterName] == filters[filterName];
+					_correct = _correct && (
+						filters[filterName] == null
+							? true
+							: (
+								this.cards[i][filterName] == filters[filterName]
+							)
+					);
 				} catch (e) {
 					console.warn('Incorrect filter ' + filterName + ' in deck:getCards');
 				}
