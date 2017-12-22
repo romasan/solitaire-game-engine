@@ -47,6 +47,30 @@ let checkAutoMoveToHomeOpenDecks = e => {
 let autoMoveToHomeActive = false;
 let breakAutoMoveToHome  = false;
 
+let openDecks = () => {
+
+	let autoMoveToHomeOpenDecks = share.get('autoMoveToHomeOpenDecks');
+
+	let _correct = false;
+	
+	for (let i in autoMoveToHomeOpenDecks.decks) {
+
+		let _topCard = autoMoveToHomeOpenDecks.decks[i].getTopCard({
+			"visible" : null
+		});
+
+		if (
+			_topCard              &&
+			_topCard.flip == true
+		) {
+			_correct = true;
+			event.dispatch('clickCard', _topCard);
+		}
+	}
+
+	return _correct;
+};
+
 let autoMoveToHome = outer => {
 
 	if (autoMoveToHomeActive && outer) {
@@ -80,22 +104,6 @@ let autoMoveToHome = outer => {
 	// console.log('autoMoveToHome');
 
 	checkAutoMoveToHomeOpenDecks();
-
-	let autoMoveToHomeOpenDecks = share.get('autoMoveToHomeOpenDecks');
-
-	for (let i in autoMoveToHomeOpenDecks.decks) {
-
-		let _topCard = autoMoveToHomeOpenDecks.decks[i].getTopCard({
-			"visible" : null
-		});
-
-		if (
-			_topCard              &&
-			_topCard.flip == true
-		) {
-			event.dispatch('clickCard', _topCard);
-		}
-}
 
 	// Tips.checkTips();
 
@@ -175,6 +183,10 @@ let autoMoveToHome = outer => {
 		});
 
 		event.dispatch('autoMoveToHome:done');
+
+		if ( openDecks() ) {
+			autoMoveToHome();
+		}
 	}
 };
 
