@@ -94,4 +94,4 @@ event.listen('hideCard', target => {
 
 event.listen('checkAnimations', callback => {
 	callback( document.getElementsByClassName('animated').length > 0 );
-})
+});

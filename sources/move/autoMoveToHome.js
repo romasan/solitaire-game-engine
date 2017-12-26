@@ -73,6 +73,17 @@ let openDecks = () => {
 
 let autoMoveToHome = outer => {
 
+	console.warn('autoMoveToHome;', 'is outer:', outer, 'active:', autoMoveToHomeActive);
+
+	let _issetAnimated = false;
+
+	event.dispatch('checkAnimations', isset => {_issetAnimated = isset});
+
+	if (_issetAnimated) {
+		console.warn('autoMoveToHome:issetAnimated');
+		return;
+	}
+
 	if (autoMoveToHomeActive && outer) {
 		console.log('auto move to home is active');
 		return;

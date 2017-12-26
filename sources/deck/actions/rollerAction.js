@@ -207,11 +207,14 @@ class rollerAction extends deckAction {
 
 		// первая прокрутка
 		if (
-			visibleCardsCount >  0 &&
+			visibleCardsCount >  0 && // есть видимые карты
 			 hiddenCardsCount == 0 && // нет скрытых карт
 			 unflipCardsCount == 0 && // нет открытых видимых карт
 			 _save
 		) {
+			console.log('save rollerActionStart');
+			event.dispatch('solitaire_log');
+
 			event.dispatch('addStep', {
 				"rollerActionStart" : deck.name
 			});
