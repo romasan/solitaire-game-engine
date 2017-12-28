@@ -48,7 +48,7 @@ class rollerAction extends deckAction {
 				return;
 			}
 
-			console.warn('rollerAction:moveEnd');
+			// console.warn('rollerAction:moveEnd');
 			
 			/**
 			 * количество открытых видимых карт
@@ -95,7 +95,7 @@ class rollerAction extends deckAction {
 				// console.log('показываем карту', next, deck.cards[next].name);
 
 				// save step
-				console.log('rollerAction:moveEnd:save', _save, data);
+				// console.log('rollerAction:moveEnd:save', _save, data);
 
 				if (_save) {
 
@@ -220,8 +220,8 @@ class rollerAction extends deckAction {
 			 unflipCardsCount == 0 && // нет открытых видимых карт
 			 _save
 		) {
-			console.log('save rollerActionStart');
-			event.dispatch('solitaire_log');
+			// console.log('save rollerActionStart');
+			// event.dispatch('solitaire_log');
 
 			event.dispatch('addStep', {
 				"rollerActionStart" : deck.name

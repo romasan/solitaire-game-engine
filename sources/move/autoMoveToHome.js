@@ -76,11 +76,27 @@ let openDecks = () => {
 
 let autoMoveToHome = outer => {
 
-	console.warn('autoMoveToHome;', 'is outer:', outer, 'active:', autoMoveToHomeActive);
+	console.warn('autoMoveToHome;',
+		'is outer:', outer,
+		'active:', autoMoveToHomeActive,
+		'breakAutoMoveToHome:', breakAutoMoveToHome
+	);
 
 	let _issetAnimated = false;
 
 	event.dispatch('checkAnimations', isset => {_issetAnimated = isset});
+
+	if (breakAutoMoveToHome) {
+
+		console.log('#breakAutoMoveToHome', breakAutoMoveToHome, autoMoveToHomeActive);
+
+		breakAutoMoveToHome  = false;
+		autoMoveToHomeActive = false;
+
+		share.delete('pre_undo_redo_callback');
+	// 	console.log('break auto move to home on history undo/redo');
+		return;
+	}
 
 	if (_issetAnimated) {
 		console.warn('autoMoveToHome:issetAnimated');
@@ -100,18 +116,10 @@ let autoMoveToHome = outer => {
 
 		share.delete('pre_undo_redo_callback');
 
+		console.log('>>>');
+
 		breakAutoMoveToHome = true;
 	});
-
-	if (breakAutoMoveToHome) {
-
-		breakAutoMoveToHome  = false;
-		autoMoveToHomeActive = false;
-
-		share.delete('pre_undo_redo_callback');
-	// 	console.log('break auto move to home on history undo/redo');
-		return;
-	}
 
 	autoMoveToHomeActive = true;
 
@@ -167,7 +175,7 @@ let autoMoveToHome = outer => {
 
 		let autoMoveToHomeCallback = e => {
 
-			console.log('autoMoveToHomeCallback');
+			// console.log('autoMoveToHomeCallback');
 
 			Tips.checkTips();
 
@@ -176,13 +184,17 @@ let autoMoveToHome = outer => {
 			autoMoveToHome();
 		};
 
+		let waitActions = typeof tip.from.deck.actions.length == "number"
+			? tip.from.deck.actions.length > 0
+			: true;
+
 		let forceMoveData = {
 			"from"        :  tip.from.deck.name   ,
 			"to"          :  tip.to  .deck.name   ,
 			"deck"        : [tip.from.card.name]  ,
 			"addStep"     : true                  ,
 			"save"        : true                  ,
-			"waitActions" : true                  ,
+			"waitActions" : waitActions           ,
 			"callback"    : autoMoveToHomeCallback
 		};
 

@@ -41,8 +41,6 @@ class historyClass {
 			return;
 		}
 
-		console.warn('history:add', step);
-
 		// console.log('History:add', step);
 
 		this._nextId += 1;
@@ -82,10 +80,10 @@ class historyClass {
 	// get steps and reset
 	get(reset = true) {
 
-		console.warn('history:get;', 'reset:', reset);
-		console.groupCollapsed('data');
-		console.log( JSON.stringify(this.steps, true, 2) );
-		console.groupEnd();
+		// console.warn('history:get;', 'reset:', reset);
+		// console.groupCollapsed('data');
+		// console.log( JSON.stringify(this.steps, true, 2) );
+		// console.groupEnd();
 
 		let _req = [];
 		for (let i in this.steps) {

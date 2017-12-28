@@ -282,6 +282,8 @@ let pre_undo_redo = (callback, type) => {
 
 		pre_undo_redo_callback();
 
+		console.log(pre_undo_redo_callback);
+
 		undo_redo_end_of_expectation_callback = name => {
 
 			undo_redo_end_of_expectation_callback = null;

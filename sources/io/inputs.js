@@ -249,7 +249,9 @@ class inputsClass {
 			let _id     = target.id                                                ,
 			    _card   = _id                   ? common.getElementById(_id) : null,
 			    _parent = _card && _card.parent ? _card.parent               : null,
-			    _deck   = _parent               ? Deck.getDeckById(_parent)  : null;
+				_deck   = _parent               ? Deck.getDeckById(_parent)  : null;
+				
+			event.dispatch('takeCard', _card);
 
 			// mark card
 			if (_deck && share.get('markerMode')) { // break;
@@ -491,6 +493,9 @@ class inputsClass {
 		}
 
 		// if (_dop && _dop.id) {
+
+		event.dispatch('takeCard', _dragDeck[0]);
+		
 		event.dispatch('move', {
 			"moveDeck"   : _dragDeck                        ,
 			"to"         : _dop && _dop.id ? _dop.id : 'mat',
