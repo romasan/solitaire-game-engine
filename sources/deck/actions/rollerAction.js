@@ -34,7 +34,7 @@ class rollerAction extends deckAction {
 		}
 
 		// Не сохранять если action вызван из истории
-		let _save = data.eventName != 'moveEnd:force'; // !share.get('noSave');
+		let _save = data.eventName != 'moveEnd:force' || data.eventData.waitActions; // !share.get('noSave');
 		
 		/* *********************************************************************
 		 * действие совершаемое после хода из стопки
@@ -47,6 +47,8 @@ class rollerAction extends deckAction {
 			if (data.eventData.from.name != deck.name) {
 				return;
 			}
+
+			console.warn('rollerAction:moveEnd');
 			
 			/**
 			 * количество открытых видимых карт
@@ -93,6 +95,8 @@ class rollerAction extends deckAction {
 				// console.log('показываем карту', next, deck.cards[next].name);
 
 				// save step
+				console.log('rollerAction:moveEnd:save', _save, data);
+
 				if (_save) {
 
 					event.dispatch('addStep', {
@@ -102,6 +106,10 @@ class rollerAction extends deckAction {
 							"deckName"  : deck            .name
 						}
 					});
+
+					if (data.eventData.waitActions) {
+						event.dispatch('saveSteps');
+					}
 				}
 
 				event.dispatch('checkTips');

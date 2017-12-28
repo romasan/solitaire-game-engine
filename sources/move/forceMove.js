@@ -26,7 +26,7 @@ import Card   from '../card'        ;
   */
 let forceMove = data => {
 
-	const {from, to, deck, flip, callback, steps, save, addStep} = data;
+	const {from, to, deck, flip, callback, steps, save, addStep, waitActions} = data;
 
 	if (
 		!from ||
@@ -194,17 +194,24 @@ let forceMove = data => {
 				deckFrom.unflipTopCard(addStep);
 			}
 
-			if (save) {
+			if (
+				event.has('actionEvent:moveEnd:' + deckFrom.name)
+			) {
+
+			}
+
+			if (save && !waitActions) {
 				event.dispatch('saveSteps');
 			}
 
 			event.dispatch('forceMoveEnd');
 
 			let moveEndData = {
-				"from"     : deckFrom             ,
-				"to"       : deckTo               ,
-				"moveDeck" : moveDeck             ,
-				"stepType" : share.get('stepType')
+				"from"        : deckFrom             ,
+				"to"          : deckTo               ,
+				"moveDeck"    : moveDeck             ,
+				"stepType"    : share.get('stepType'),
+				"waitActions" : waitActions
 			};
 
 			event.dispatch('moveEnd:force', moveEndData);

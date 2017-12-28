@@ -90,6 +90,7 @@ let addActionEvent = eventName => {
 	);
 
 };
+
 /**
  * Add actions by names
  * @param {Deck} deck 
@@ -121,7 +122,7 @@ let add = deck => {
 					"action" : actionName
 				});
 
-				share.set('actionEvent:' + deck.name + ':' + _event, true);
+				share.set('actionEvent:' + deck.name + ':' + _event, true); // TODO узнать нужна ли ещё эта строчка
 
 				// создаём событие если оно еще не создано
 				if (!_events.indexOf(_event) >= 0) {

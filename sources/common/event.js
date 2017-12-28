@@ -246,9 +246,10 @@ class Event {
 	/**
 	 * Are there subscriptions with a specific name
 	 * @param {string} eventName 
-	 * @param {*} filter 
+	 * @param {*} filter
+	 * @param {boolean} count
 	 */
-	has(eventName, filter) {
+	has(eventName, filter, count = false) {
 
 		if (filter) {
 
@@ -263,13 +264,20 @@ class Event {
 				}
 
 				if (_correct) {
-					_count += 1;
+
+					if (count) {
+						_count += 1;
+					} else {
+						return true;
+					}
 				}
 			}
 
 			return _count;
-		} else {
+		} else if (count) {
 			return this._events[eventName] ? this._events[eventName].length : 0;
+		} else {
+			return this._events[eventName] ? true : false;
 		}
 	}
 

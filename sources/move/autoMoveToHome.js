@@ -64,6 +64,9 @@ let openDecks = () => {
 			_topCard.flip == true
 		) {
 			_correct = true;
+
+			// console.log('autoMoveToHome:openDecks:clickCard:', decks[i].name, _topCard.name, _topCard.flip, _topCard.visible);
+
 			event.dispatch('clickCard', _topCard);
 		}
 	}
@@ -164,6 +167,8 @@ let autoMoveToHome = outer => {
 
 		let autoMoveToHomeCallback = e => {
 
+			console.log('autoMoveToHomeCallback');
+
 			Tips.checkTips();
 
 			event.dispatch('undo_redo_end_of_expectation', 'autoMoveToHome');
@@ -172,12 +177,13 @@ let autoMoveToHome = outer => {
 		};
 
 		let forceMoveData = {
-			"from"     :  tip.from.deck.name   ,
-			"to"       :  tip.to  .deck.name   ,
-			"deck"     : [tip.from.card.name]  ,
-			"addStep"  : true                  ,
-			"save"     : true                  ,
-			"callback" : autoMoveToHomeCallback
+			"from"        :  tip.from.deck.name   ,
+			"to"          :  tip.to  .deck.name   ,
+			"deck"        : [tip.from.card.name]  ,
+			"addStep"     : true                  ,
+			"save"        : true                  ,
+			"waitActions" : true                  ,
+			"callback"    : autoMoveToHomeCallback
 		};
 
 		event.dispatch('forceMove', forceMoveData);
