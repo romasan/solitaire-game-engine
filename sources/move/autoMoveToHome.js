@@ -76,19 +76,11 @@ let openDecks = () => {
 
 let autoMoveToHome = outer => {
 
-	console.warn('autoMoveToHome;',
-		'is outer:', outer,
-		'active:', autoMoveToHomeActive,
-		'breakAutoMoveToHome:', breakAutoMoveToHome
-	);
-
 	let _issetAnimated = false;
 
 	event.dispatch('checkAnimations', isset => {_issetAnimated = isset});
 
 	if (breakAutoMoveToHome) {
-
-		console.log('#breakAutoMoveToHome', breakAutoMoveToHome, autoMoveToHomeActive);
 
 		breakAutoMoveToHome  = false;
 		autoMoveToHomeActive = false;
@@ -99,12 +91,12 @@ let autoMoveToHome = outer => {
 	}
 
 	if (_issetAnimated) {
-		console.warn('autoMoveToHome:issetAnimated');
+		// console.warn('autoMoveToHome:issetAnimated');
 		return;
 	}
 
 	if (autoMoveToHomeActive && outer) {
-		console.log('auto move to home is active');
+		// console.log('auto move to home is active');
 		return;
 	}
 
@@ -115,8 +107,6 @@ let autoMoveToHome = outer => {
 	share.set('pre_undo_redo_callback', () => {
 
 		share.delete('pre_undo_redo_callback');
-
-		console.log('>>>');
 
 		breakAutoMoveToHome = true;
 	});

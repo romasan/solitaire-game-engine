@@ -110,6 +110,7 @@ class inputsClass {
 
 			if (isMobileOrTablet) {
 
+				// TODO vk frame touch
 				window.addEventListener('touchstart', data => {
 
 					this.take(data.target, data.touches[0].clientX, data.touches[0].clientY, true);
