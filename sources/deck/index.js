@@ -1143,6 +1143,138 @@ class deckClass {
 
 		return false;
 	}
+
+	hasCard(card, stat = false) {//
+		
+		let name = null,
+			id   = null;
+
+		let data = {
+			cards: []
+		};
+
+		if (typeof card == "string") {
+			name = card;
+		} else if (card && typeof card.type == "string" && card.type == "card") {
+			id = card.id;
+		}
+
+		for (let i in this.cards) {
+
+			let result = false;
+
+			const card = this.cards[i];
+
+			if (name && card.name == name) {
+				result = true;
+			}
+
+			if (id && card.id == id) {
+				result = true;
+			}
+
+			if (stat) {
+
+				data.cards[i] = {
+					"name"    : card.name   ,
+					"id"      : card.id     ,
+					"flip"    : card.flip   ,
+					"visible" : card.visible
+				};
+
+				if (result) {
+					data.index = i;
+					data.name  = card.name;
+					data.id    = card.id;
+				}
+
+			} else if (result){
+				return result;
+			}
+		}
+
+		if (stat) {
+
+			let visible   = 0,
+				invisible = 0,
+				flip      = 0,
+				unflip    = 0;
+
+			for (let i in data.cards) {
+
+				const card = data.cards[i];
+
+				if (i < data.index) {
+
+					if (card.visible == true) {
+						visible += 1;
+						invisible = 0;
+					}
+
+					if (card.visible == false) {
+						invisible += 1;
+						visible = 0;
+					}
+
+					if (card.flip == true) {
+						flip += 1;
+						unflip = 0;
+					}
+
+					if (card.flip == false) {
+						unflip += 1;
+						flip = 0;
+					}
+				} else if (i == data.index) {
+
+					data.before = {
+						"visible"   : visible  ,
+						"invisible" : invisible,
+						"flip"      : flip     ,
+						"unflip"    : unflip
+					};
+
+					visible   = 0;
+					invisible = 0;
+					flip      = 0;
+					unflip    = 0;
+				} else if (i > datacards.index) {
+
+					if (card.visible == true) {
+						visible += 1;
+						invisible = 0;
+					}
+
+					if (card.visible == false) {
+						invisible += 1;
+						visible = 0;
+					}
+
+					if (card.flip == true) {
+						flip += 1;
+						unflip = 0;
+					}
+
+					if (card.flip == false) {
+						unflip += 1;
+						flip = 0;
+					} 
+				}
+			}
+
+			data.after = {
+				"visible"   : visible  ,
+				"invisible" : invisible,
+				"flip"      : flip     ,
+				"unflip"    : unflip
+			};
+
+			return data;
+		}
+
+		return false;
+	
+	}
 }
 
 export default deckClass;

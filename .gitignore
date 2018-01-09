@@ -4,3 +4,4 @@ frontend/css/
 docs/
 npm-debug.log
 *.map
+yarn.lock

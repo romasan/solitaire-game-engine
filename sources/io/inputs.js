@@ -9,13 +9,6 @@ import Deck     from '../deck'           ;
 import Tips     from '../tips'           ;
 // import geometry from './geometry';
 
-/*
- * _break
- * take
- * drag
- * put
- */
-
 class inputsClass {
 
 	/**

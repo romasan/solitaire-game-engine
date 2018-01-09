@@ -91,7 +91,7 @@ class Event {
 			for (let eventName in this._events) {
 				this._events[eventName] = this._events[eventName].filter(e => e.id != data);
 			}
-		} else if (typeof data == 'string' && this._events[eventName]) {
+		} else if (typeof data == 'string' && this._events[data]) {
 
 			delete this._events[data]
 		} else if (data) { // } && typeof data.context == 'string') {
