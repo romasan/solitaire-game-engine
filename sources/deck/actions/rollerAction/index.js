@@ -1,13 +1,15 @@
 'use strict';
 
-import event      from '../../common/event';
-import share      from '../../common/share';
+import event        from '../../../common/event'          ;
+import share        from '../../../common/share'          ;
 
-import deckAction from './deckAction'      ;
-import Deck       from '../'               ;
-import History    from '../../history'     ;
-import Atom       from '../atom'           ;
-import fallAutoStep from '../../autosteps/fallAutoStep';
+import deckAction   from '../deckAction'                  ;
+import Deck         from '../../'                         ;
+import History      from '../../../history'               ;
+import Atom         from '../../atom'                     ;
+import fallAutoStep from '../../../autosteps/fallAutoStep';
+
+// import padding      from './extends/padding'              ;
 
 const NOT_FOUND    = 'NOT_FOUND'   ,
       ROLLER_START = 'ROLLER_START',
@@ -42,16 +44,16 @@ class rollerAction extends deckAction {
 		 * ****************************************************************** */
 
 		if (
-			data.eventName.indexOf('moveEnd') >= 0 ||
-			data.eventName == "click:unflipCard"
+			data.eventName.indexOf('moveEnd') >= 0 // ||
+			// data.eventName == "click:unflipCard"
 		) {
 
-			let takeUnflipCard = false;
+			// let takeUnflipCard = false;
 
-			if (data.eventName == "click:unflipCard") {
-				_save = false;
-				takeUnflipCard = true;
-			}
+			// if (data.eventName == "click:unflipCard") {
+			// 	_save = false;
+			// 	takeUnflipCard = true;
+			// }
 
 			// относится ли событие к данной стопке?
 			if (
@@ -60,8 +62,6 @@ class rollerAction extends deckAction {
 			) {
 				return;
 			}
-
-			console.log('#');
 
 			// console.warn('rollerAction:moveEnd');
 			
@@ -98,7 +98,6 @@ class rollerAction extends deckAction {
 			// console.groupEnd();
 
 			// если нет открытых карт показать предыдущую скрытую
-			console.log('>', unflipCardsCount, hiddenCardsCount);
 			if (
 				unflipCardsCount == 0 && // TODO || (takeUnflipCard && unflipCardsCount == 1) &&
 				hiddenCardsCount >  0
@@ -413,6 +412,12 @@ class rollerAction extends deckAction {
 
 		event.dispatch('checkTips');
 	}
+
+	// extends() {
+	// 	return {
+	// 		"padding": padding
+	// 	};
+	// }
 }
 
 export default new rollerAction();

@@ -186,7 +186,10 @@ let runAction = data => { // {actionName, deckName, <eventData>, eventName}
 	}
 }
 
+// let getExtends = key => _actions[key].extends();
+
 export default {
-	"add" : add      ,
-	"run" : runAction
+	"add"        : add       ,
+	"run"        : runAction ,
+	// "getExtends" : getExtends
 }

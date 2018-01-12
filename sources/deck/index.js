@@ -15,6 +15,7 @@ import Take                   from './deckTake'                                 
 import Put                    from './deckPut'                                       ;
 import Card                   from '../card'                                         ;
 import Group                  from '../group'                                        ;
+import Extends                from './extends'                                       ;
 
 import getDecks               from './getDecks'                                      ;
 import getDeckById            from './getDeckById'                                   ;
@@ -345,11 +346,13 @@ class deckClass {
 		 */
 		this.padding = index => {
 
-			let _cards = this.getCards();
+			// console.log('padding', this.name, index);
+
+			let _cards = this.getCards(); // filter = {"visible" : true}
 			let _index = index < _cards.length ? index : _cards.length - 1;
 			let _card  = _cards[_index] ? _cards[_index] : this.cards[index];
 
-			return padding(
+			let _padding = padding(
 				this._params ,
 				_card        ,
 				_index       ,
@@ -357,6 +360,38 @@ class deckClass {
 				_cards       ,
 				paddingData
 			);
+
+			// for (let key in this.actions) {
+
+			// 	const actionExtends = deckActions.getExtends(key);
+
+			// 	if (
+			// 		       actionExtends                       &&
+			// 		typeof actionExtends.padding == "function"
+			// 	) {
+			// 		_padding = actionExtends.padding(this, _padding, padding, index);
+			// 	}
+			// }
+
+			let e_padding = Extends.padding(
+				this,
+				_padding,
+				e_index => padding(
+					this._params ,
+					_card        ,
+					e_index      ,
+					_cards.length,
+					_cards       ,
+					paddingData
+				),
+				index
+			);
+
+			if (e_padding) {
+				_padding = e_padding;
+			}
+
+			return _padding;
 		}
 
 		/**
@@ -1144,7 +1179,7 @@ class deckClass {
 		return false;
 	}
 
-	hasCard(card, stat = false) {//
+	hasCard(card) { // , stat = false) {
 		
 		let name = null,
 			id   = null;
@@ -1161,116 +1196,118 @@ class deckClass {
 
 		for (let i in this.cards) {
 
-			let result = false;
+			// let result = false;
 
 			const card = this.cards[i];
 
 			if (name && card.name == name) {
-				result = true;
+				// result = true;
+				return true;
 			}
 
 			if (id && card.id == id) {
-				result = true;
+				// result = true;
+				return true;
 			}
 
-			if (stat) {
+			// if (stat) {
 
-				data.cards[i] = {
-					"name"    : card.name   ,
-					"id"      : card.id     ,
-					"flip"    : card.flip   ,
-					"visible" : card.visible
-				};
+			// 	data.cards[i] = {
+			// 		"name"    : card.name   ,
+			// 		"id"      : card.id     ,
+			// 		"flip"    : card.flip   ,
+			// 		"visible" : card.visible
+			// 	};
 
-				if (result) {
-					data.index = i;
-					data.name  = card.name;
-					data.id    = card.id;
-				}
+			// 	if (result) {
+			// 		data.index = i;
+			// 		data.name  = card.name;
+			// 		data.id    = card.id;
+			// 	}
 
-			} else if (result){
-				return result;
-			}
+			// } else if (result){
+			// 	return result;
+			// }
 		}
 
-		if (stat) {
+		// if (stat) {
 
-			let visible   = 0,
-				invisible = 0,
-				flip      = 0,
-				unflip    = 0;
+		// 	let visible   = 0,
+		// 		invisible = 0,
+		// 		flip      = 0,
+		// 		unflip    = 0;
 
-			for (let i in data.cards) {
+		// 	for (let i in data.cards) {
 
-				const card = data.cards[i];
+		// 		const card = data.cards[i];
 
-				if (i < data.index) {
+		// 		if (i < data.index) {
 
-					if (card.visible == true) {
-						visible += 1;
-						invisible = 0;
-					}
+		// 			if (card.visible == true) {
+		// 				visible += 1;
+		// 				invisible = 0;
+		// 			}
 
-					if (card.visible == false) {
-						invisible += 1;
-						visible = 0;
-					}
+		// 			if (card.visible == false) {
+		// 				invisible += 1;
+		// 				visible = 0;
+		// 			}
 
-					if (card.flip == true) {
-						flip += 1;
-						unflip = 0;
-					}
+		// 			if (card.flip == true) {
+		// 				flip += 1;
+		// 				unflip = 0;
+		// 			}
 
-					if (card.flip == false) {
-						unflip += 1;
-						flip = 0;
-					}
-				} else if (i == data.index) {
+		// 			if (card.flip == false) {
+		// 				unflip += 1;
+		// 				flip = 0;
+		// 			}
+		// 		} else if (i == data.index) {
 
-					data.before = {
-						"visible"   : visible  ,
-						"invisible" : invisible,
-						"flip"      : flip     ,
-						"unflip"    : unflip
-					};
+		// 			data.before = {
+		// 				"visible"   : visible  ,
+		// 				"invisible" : invisible,
+		// 				"flip"      : flip     ,
+		// 				"unflip"    : unflip
+		// 			};
 
-					visible   = 0;
-					invisible = 0;
-					flip      = 0;
-					unflip    = 0;
-				} else if (i > datacards.index) {
+		// 			visible   = 0;
+		// 			invisible = 0;
+		// 			flip      = 0;
+		// 			unflip    = 0;
+		// 		} else if (i > datacards.index) {
 
-					if (card.visible == true) {
-						visible += 1;
-						invisible = 0;
-					}
+		// 			if (card.visible == true) {
+		// 				visible += 1;
+		// 				invisible = 0;
+		// 			}
 
-					if (card.visible == false) {
-						invisible += 1;
-						visible = 0;
-					}
+		// 			if (card.visible == false) {
+		// 				invisible += 1;
+		// 				visible = 0;
+		// 			}
 
-					if (card.flip == true) {
-						flip += 1;
-						unflip = 0;
-					}
+		// 			if (card.flip == true) {
+		// 				flip += 1;
+		// 				unflip = 0;
+		// 			}
 
-					if (card.flip == false) {
-						unflip += 1;
-						flip = 0;
-					} 
-				}
-			}
+		// 			if (card.flip == false) {
+		// 				unflip += 1;
+		// 				flip = 0;
+		// 			} 
+		// 		}
+		// 	}
 
-			data.after = {
-				"visible"   : visible  ,
-				"invisible" : invisible,
-				"flip"      : flip     ,
-				"unflip"    : unflip
-			};
+		// 	data.after = {
+		// 		"visible"   : visible  ,
+		// 		"invisible" : invisible,
+		// 		"flip"      : flip     ,
+		// 		"unflip"    : unflip
+		// 	};
 
-			return data;
-		}
+		// 	return data;
+		// }
 
 		return false;
 	

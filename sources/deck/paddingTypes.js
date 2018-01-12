@@ -4,17 +4,6 @@ import share    from '../common/share'   ;
 import defaults from '../common/defaults';
 import common   from '../common'         ;
 
-/*
-
-Types:
-
- * _default
- * vertical
- * horizontal
- * roller
-
- */
-
 let paddingTypes = {
 
 	"_default" : (params, card, index, length, deck) => {

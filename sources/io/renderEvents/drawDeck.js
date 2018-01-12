@@ -140,8 +140,8 @@ event.listen('redrawDeck', data => {
 		return;
 	}
 
-	// console.log('redrawDeck', data.deck.name);
-
+	const ignore_visibility = data.deck.hasTag('ignore_visibility');
+	
 	if (
 		data          &&
 		data.deckData &&
@@ -150,13 +150,13 @@ event.listen('redrawDeck', data => {
 	) {
 		applyChangedParameters(data);
 	}
-
+	
 	// перерисовка стопки
 	let _params = {
-		"transform" : 'rotate(' + (data.params.rotate | 0) + 'deg)',
-		"left"      : data.params.x + 'px'                         ,
-		"top"       : data.params.y + 'px'                         ,
-		"display"   : data.deck.visible ? 'block' : 'none'
+		"transform" : 'rotate(' + (data.params.rotate | 0) + 'deg)'            ,
+		"left"      : data.params.x + 'px'                                     ,
+		"top"       : data.params.y + 'px'                                     ,
+		"display"   : data.deck.visible || ignore_visibility ? 'block' : 'none'
 	};
 
 	let _deckDomElement = share.get('domElement:' + data.deck.id);
@@ -167,10 +167,26 @@ event.listen('redrawDeck', data => {
 	// full deck (add class full to all cards in deck)
 	
 	let _cards = data.deck.getCards();
-	
-	for (let i in _cards) {
+
+	let openCount   = 0,
+	    hiddenCount = 0;
+
+	for (let i in data.cards) {
+
+		const card = data.cards[i];
 		
-		let _cardDomElement = share.get('domElement:' + _cards[i].id);
+		let _cardDomElement = share.get('domElement:' + card.id);
+
+		if (ignore_visibility) {
+
+			if (card.visible && card.flip == false) {
+				openCount += 1;
+			}
+
+			if (card.visible == false) {
+				hiddenCount += 1;
+			}
+		}
 		
 		if (_cardDomElement) {
 			
@@ -184,22 +200,30 @@ event.listen('redrawDeck', data => {
 		}
 	}
 
-
 	// перерисовка карт
 	for (let i in data.cards) {
+
+		const card = data.cards[i];
 
 		let _card_position = data.deck.padding(i);
 		let _zIndex        = (data.params.startZIndex | 0) + (i | 0);
 
 		let _params = {
-			"-ms-transform"     : 'rotate(' + (data.params.rotate | 0) + 'deg)',
-			"-webkit-transform" : 'rotate(' + (data.params.rotate | 0) + 'deg)',
-			"-moz-transform"    : 'rotate(' + (data.params.rotate | 0) + 'deg)',
-			"transform"         : 'rotate(' + (data.params.rotate | 0) + 'deg)',
-			"left"              :              _card_position.x        + 'px'  ,
-			"top"               :              _card_position.y        + 'px'  ,
-			"z-index"           :              _zIndex                         ,
-			"display"           : data.deck.visible && data.cards[i].visible
+			"-ms-transform"     : 'rotate(' + (data.params.rotate | 0) + 'deg)'                    ,
+			"-webkit-transform" : 'rotate(' + (data.params.rotate | 0) + 'deg)'                    ,
+			"-moz-transform"    : 'rotate(' + (data.params.rotate | 0) + 'deg)'                    ,
+			"transform"         : 'rotate(' + (data.params.rotate | 0) + 'deg)'                    ,
+			"left"              :              _card_position.x        + 'px'                      ,
+			"top"               :              _card_position.y        + 'px'                      ,
+			"z-index"           : (
+				ignore_visibility
+					? (card.visible
+						? (_zIndex + hiddenCount)
+						: (_zIndex - openCount)
+					) 
+					: _zIndex
+			),
+			"display"           : (data.deck.visible && data.cards[i].visible) || ignore_visibility
 			                    	? 'block'
 			                    	: 'none'
 		};
@@ -216,7 +240,6 @@ event.listen('redrawDeck', data => {
 				.removeClass('flip');
 		}
 		
-		// console.log(data.cards[i].classList);
 		for (let _class in data.cards[i].classList) {
 
 			if (data.cards[i].classList[_class] === true) {
@@ -255,7 +278,9 @@ event.listen('updateNextCards', function(data) {
 		if (oneRank) {
 			// _content = defaults.card.names[share.get('locale')][defaults.card.ranks.indexOf(_cards[0].rank)];
 			// _content = _cards[0].rank.toUpperCase();
-			_content = _cards.length ? defaults.card.aliases[defaults.card.ranks.indexOf(_cards[0].rank)] : '';
+			_content = _cards.length
+				? defaults.card.aliases[defaults.card.ranks.indexOf(_cards[0].rank)]
+				: '';
 		} else {
 			_content = data[deckId].map(e => e.name).join(', ').toUpperCase();
 		}
