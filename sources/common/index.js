@@ -160,6 +160,7 @@ let getElementsByType = (type, filter) => {
 	let _elements = share.get('elements');
 
 	if (type) {
+
 		for (let i in _elements) {
 			if (
 				typeof _elements[i].type == 'string' &&

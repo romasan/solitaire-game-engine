@@ -22,11 +22,17 @@ for (let actionName in actionsExtends) {
 
     if (typeof actionsExtends[actionName].padding.do == "function") {
         Extends.push({
-            "type" : "padding",
+            "type" : "padding"                            ,
             "from" : "action"                             ,
             "name" : actionName                           ,
             "do"   : actionsExtends[actionName].padding.do
         });
+    }
+
+    if (typeof actionsExtends[actionName].padding.rules != "undefined") {
+        for (let ruleName in actionsExtends[actionName].padding.rules) {
+            paddingTypes._add(ruleName, actionsExtends[actionName].padding.rules[ruleName]);
+        }
     }
 }
 

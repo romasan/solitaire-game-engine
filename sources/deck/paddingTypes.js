@@ -1,10 +1,61 @@
 'use strict';
 
-import share    from '../common/share'   ;
-import defaults from '../common/defaults';
-import common   from '../common'         ;
+import share    from '../common/share'                       ;
+import defaults from '../common/defaults'                    ;
+import common   from '../common'                             ;
+import padding  from './actions/rollerAction/extends/padding';
 
 let paddingTypes = {
+
+	"_backup" : {},
+
+	"_add" : (name, rule, overwrite = false) => {
+
+		let _break = false;
+
+		if (typeof name != "string") {
+			console.warn('incorrect rule name (not string)');
+			_break = true;
+		}
+
+		if (typeof rule != "function") {
+			console.warn('incorrect rule (not function)');
+			_break = true;
+		}
+
+		if (_break) {
+			return;
+		}
+
+		if (paddingTypes[name] && overwrite === false) {
+			console.warn('rule', name, 'exist in padding types');
+			return;
+		}
+
+		if (overwrite) {
+			paddingTypes._backup[name] = paddingTypes[name];
+		}
+
+		paddingTypes[name] = (...args) => {
+
+			try {
+				return rule(...args);
+			} catch (e) {
+
+				console.warn('rule', name, 'is incorrect, replace to default rule');
+
+				if (overwrite && paddingTypes._backup[name]) {
+					paddingTypes[name] = paddingTypes._backup[name];	
+				} else {
+					paddingTypes[name] = (...args) => {
+						return paddingTypes._default(...args);
+					};
+				}
+
+				return paddingTypes._default(...args);
+			}
+		};
+	},
 
 	"_default" : (params, card, index, length, deck) => {
 
@@ -112,46 +163,6 @@ let paddingTypes = {
 		_params.flip_padding_y = 0 ;
 
 		return paddingTypes._default(_params, card, index, length, deck);
-	},
-
-	"roller": (params, card, index, length, deck, data) => {
-		// data: "open,group,padding"
-		// flipRule: "topUnflip:open"
-
-		let _data   =   data.split(',') ,
-		    open    =  _data[0] | 0     , // open cards count
-		    group   = (_data[1] | 0) > 0  // closed cards group count
-		    	? _data[1] | 0
-		    	: 1,
-		    padding = _data[2] | 0;
-
-		let correct = 0;
-
-		if (
-			index     >= length - open && // delimiter and after
-			card.flip == false            // closed cards
-		) {
-
-			return {
-				"x" : params.x + (defaults.card.width * share.get('zoom')) + padding + ((index - length + open - correct) * params.padding_x),
-				"y" : params.y + (index - length + open) * params.padding_y
-			}
-		} else {                          // before delimiter
-
-			if (index >= length - open) {
-				correct += 1;
-			}
-
-			return {
-				"x" : params.x + params.flip_padding_x * ((index / group) | 0),
-				"y" : params.y + params.flip_padding_y * ((index / group) | 0)
-			}
-		} 
-
-		return {
-			"x" : params.x,
-			"y" : params.y
-		};
 	},
 
 	"puffed": (params, card, index, length, deck, data) => {

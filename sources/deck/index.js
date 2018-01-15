@@ -374,8 +374,8 @@ class deckClass {
 			// }
 
 			let e_padding = Extends.padding(
-				this,
-				_padding,
+				this               ,
+				_padding           ,
 				e_index => padding(
 					this._params ,
 					_card        ,

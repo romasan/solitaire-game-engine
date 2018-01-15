@@ -9,12 +9,57 @@ import undo          from './undo'            ;
 import redo          from './redo'            ;
 import historyCommon from './historyCommon'   ;
 
-/*
- * reset
- * add
- * get
- * count
- */
+const stepTypes = {
+
+	"flip"        : { // {flip : {cardName : "h9", cardIndex: 3, deckName: "deck_name"} -> "fD12C3h9;"
+		"key" : "f",
+		"values" : {
+			"deck" : {
+				"key" : "D"
+			}
+		}
+	},
+
+	"unflip"      : {
+		"key" : "u"
+	},
+
+	"show"        : {
+		"key" : "s"
+	},
+
+	"hide"        : {
+		"key" : "h"
+	},
+
+	"lock"        : {
+		"key" : "l"
+	},
+
+	"unlock"      : {
+		"key" : "n"
+	},
+
+	"swap"        : {
+		"key" : "w"
+	},
+
+	"move"        : {
+		"key" : "m"
+	},
+
+	"markCard"    : {
+		"key" : "r"
+	},
+
+	"unmarkCard"  : {
+		"key" : "a"
+	},
+
+	"setStepType" : {
+		"key" : "t"
+	}
+};
 
 class historyClass {
 
@@ -26,6 +71,9 @@ class historyClass {
 		this._nextId = 0;
 	}
 
+	/**
+	 * Reset
+	 */
 	reset() {
 
 		// console.log('History:clear');
@@ -34,9 +82,13 @@ class historyClass {
 		this.steps = [];
 	}
 
+	/**
+	 * Add
+	 * @param {*} step 
+	 */
 	add(step) { // {move || flip ... }
 
-		if (share.get('noSave')) {
+		if ( share.get('noSave') ) {
 			// console.warn('Add step to history break. noSave mode.');
 			return;
 		}
@@ -60,6 +112,10 @@ class historyClass {
 		return stepId;
 	}
 
+	/**
+	 * Delete
+	 * @param {*} steps 
+	 */
 	delete(steps) { // stepId || [stepId]
 
 		// console.log('History:delete:', steps);
@@ -77,7 +133,10 @@ class historyClass {
 		this.steps = this.steps.filter(e => steps.indexOf(e.id) < 0);
 	}
 
-	// get steps and reset
+	/**
+	 * Get
+	 * @param {boolean} reset 
+	 */
 	get(reset = true) {
 
 		// console.warn('history:get;', 'reset:', reset);
@@ -109,22 +168,47 @@ class historyClass {
 		return _req;
 	}
 
+	/**
+	 * Count
+	 * @returns {number}
+	 */
 	count() {
 		return this.steps.length;
 	}
 
 	// TODO
 	zip() {
-		// 
+
+		let decks = common.getElementsByType('deck');
+
+		let f = (key, data, path) => {
+			let line = "";
+			if (path[key]) {
+				line += path[key];
+			}
+			if (path[values]) {
+				// line += f(null, data, path[values]);
+			}
+			// TODO
+			return line;
+		}
+
+		for (let i in this.steps) {
+
+			const step = this.steps[i];
+			let result = [];
+			for (let key in step) {
+				if (stepTypes[key]) {
+					result.push( f(key, step[key], stepTypes[key]) );
+				}
+ 			}
+			this.steps = result.join(';');
+		}
 	}
 
 	unzip(data) {
 		// 
 	}
-
-	// _debugLod() {
-	// 	return this._debugData;
-	// }
 }
 
 let history = new historyClass();

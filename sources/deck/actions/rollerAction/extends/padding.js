@@ -1,4 +1,4 @@
-let rules = {}; // TODO roller paddingRule
+import rules from './paddingTypes';
 
 let rollerPaddingExtend = (deck, padding, paddingMethod, index) => {
 
