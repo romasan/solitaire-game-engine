@@ -129,6 +129,9 @@ class Field {
 			this.autoSteps = addAutoSteps(data.autoSteps);
 		}
 
+		// сжимание истории
+		share.set('zipHistory', data.zipHistory ? true : false);
+
 		// NOTE: на событие подписан deckActions
 		// если ставить позже отрисовки элементов, переделать
 		event.dispatch('initField', data);

@@ -9,19 +9,45 @@ import undo          from './undo'            ;
 import redo          from './redo'            ;
 import historyCommon from './historyCommon'   ;
 
+const DECK_NAME = "DECK_NAME",
+      AS_IT_IS  = "AS_IT_IS" ;
+
 const stepTypes = {
 
-	"flip"        : { // {flip : {cardName : "h9", cardIndex: 3, deckName: "deck_name"} -> "fD12C3h9;"
+	"flip"        : { // {flip : {cardName : "h9", cardIndex: 3, deckName: "deck_name"} -> "fD12I3Ch9;"
 		"key" : "f",
 		"values" : {
-			"deck" : {
-				"key" : "D"
+			"deckName" : {
+				"key" : "D",
+				"value" : DECK_NAME
+			},
+			"cardIndex" : {
+				"key" : "I",
+				"value" : AS_IT_IS
+			},
+			"cardName" : {
+				"key" : "C",
+				"value" : AS_IT_IS
 			}
 		}
 	},
 
 	"unflip"      : {
-		"key" : "u"
+		"key" : "u",
+		"values" : {
+			"deckName" : {
+				"key" : "D",
+				"value" : DECK_NAME
+			},
+			"cardIndex" : {
+				"key" : "I",
+				"value" : AS_IT_IS
+			},
+			"cardName" : {
+				"key" : "C",
+				"value" : AS_IT_IS
+			}
+		}
 	},
 
 	"show"        : {
@@ -140,11 +166,16 @@ class historyClass {
 	get(reset = true) {
 
 		// console.warn('history:get;', 'reset:', reset);
-		// console.groupCollapsed('data');
-		// console.log( JSON.stringify(this.steps, true, 2) );
-		// console.groupEnd();
-
+		console.groupCollapsed('history:get');
+		console.log( JSON.stringify(this.steps, true, 2) );
+		console.groupEnd();
+		
+		if (share.get('zipHistory')) {
+			this.zip();
+		}
+		
 		let _req = [];
+
 		for (let i in this.steps) {
 			_req.push(this.steps[i].step);
 		}
@@ -176,33 +207,74 @@ class historyClass {
 		return this.steps.length;
 	}
 
-	// TODO
-	zip() {
+	_zipParse(key, data, path) {
 
-		let decks = common.getElementsByType('deck');
+		console.log('parse:', key, data, path);
 
-		let f = (key, data, path) => {
-			let line = "";
-			if (path[key]) {
-				line += path[key];
-			}
-			if (path[values]) {
-				// line += f(null, data, path[values]);
-			}
-			// TODO
-			return line;
+		if (
+			typeof key  == "undefined" ||
+			typeof data == "undefined" ||
+			typeof path == "undefined"
+		) {
+			return "";
 		}
 
-		for (let i in this.steps) {
+		let line = "";
 
-			const step = this.steps[i];
-			let result = [];
-			for (let key in step) {
+		if (path.key) {
+			line += path.key;
+		} else {
+			return "";
+		}
+
+		if (path.values) {
+			for (let _key in path.values) {
+				line += this._zipParse(_key, data[_key], path.values[_key]);
+			}
+		}
+
+		if (path.value) {
+			if (
+				path.value              &&
+				path.value == DECK_NAME
+			) {
+
+				let decks = common.getElementsByType('deck').map(e => e.name);
+
+				let deckIndex = decks.indexOf(data);
+
+				if (deckIndex >= 0) {
+					line += deckIndex;
+				}
+			}
+
+			if (path.value == AS_IT_IS) {
+				line += data;
+			}
+		}
+
+		return line;
+	}
+
+	zip() {
+
+		console.log('zip:', this.steps);
+
+		for (let stepIndex in this.steps) {
+
+			for (let key in this.steps[stepIndex].step) {
+
 				if (stepTypes[key]) {
-					result.push( f(key, step[key], stepTypes[key]) );
+
+					console.log('zip key:', key);
+
+					this.steps[stepIndex].step = this._zipParse(
+						key                            ,
+						this.steps[stepIndex].step[key],
+						stepTypes[key]
+					);
 				}
  			}
-			this.steps = result.join(';');
 		}
 	}
 
