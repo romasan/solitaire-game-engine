@@ -1,3 +1,6 @@
+import share    from "../../../../common/share"   ;
+import defaults from '../../../../common/defaults';
+
 export default {
 
     "roller": (params, card, index, length, deck, data) => {
