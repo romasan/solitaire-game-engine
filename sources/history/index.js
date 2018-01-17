@@ -10,80 +10,114 @@ import redo          from './redo'            ;
 import historyCommon from './historyCommon'   ;
 
 const DECK_NAME = "DECK_NAME",
-      AS_IT_IS  = "AS_IT_IS" ;
+	  OBJ_NAME  = "OBJ_NAME" ,
+	  BOOL      = "BOOL"     ,
+	  AS_IT_IS  = "AS_IT_IS" ;
+
+const SHEME_D_I_C = {
+	"deckName" : {
+		"key" : "D",
+		"value" : DECK_NAME
+	},
+	"cardIndex" : {
+		"key" : "I",
+		"value" : AS_IT_IS
+	},
+	"cardName" : {
+		"key" : "C",
+		"value" : AS_IT_IS
+	}
+};
 
 const stepTypes = {
 
 	"flip"        : { // {flip : {cardName : "h9", cardIndex: 3, deckName: "deck_name"} -> "fD12I3Ch9;"
 		"key" : "f",
-		"values" : {
-			"deckName" : {
-				"key" : "D",
-				"value" : DECK_NAME
-			},
-			"cardIndex" : {
-				"key" : "I",
-				"value" : AS_IT_IS
-			},
-			"cardName" : {
-				"key" : "C",
-				"value" : AS_IT_IS
-			}
-		}
+		"values" : SHEME_D_I_C
 	},
 
 	"unflip"      : {
 		"key" : "u",
+		"values" : SHEME_D_I_C
+	},
+
+	"show"        : {
+		"key" : "s",
+		"values" : SHEME_D_I_C
+	},
+
+	"hide"        : {
+		"key" : "h",
+		"values" : SHEME_D_I_C
+	},
+
+	"lock"        : {
+		"key" : "l",
+		"value" : OBJ_NAME // TODO
+	},
+
+	"unlock"      : {
+		"key" : "n",
+		"value" : OBJ_NAME
+	},
+
+	"swap"        : {
+		"key" : "w",
 		"values" : {
-			"deckName" : {
-				"key" : "D",
+			"deckName"  : {
+				"key" : null,
 				"value" : DECK_NAME
 			},
-			"cardIndex" : {
-				"key" : "I",
+			"fromIndex" : {
+				"key" : null,
 				"value" : AS_IT_IS
 			},
-			"cardName" : {
-				"key" : "C",
+			"toIndex"   : {
+				"key" : null,
 				"value" : AS_IT_IS
 			}
 		}
 	},
 
-	"show"        : {
-		"key" : "s"
-	},
-
-	"hide"        : {
-		"key" : "h"
-	},
-
-	"lock"        : {
-		"key" : "l"
-	},
-
-	"unlock"      : {
-		"key" : "n"
-	},
-
-	"swap"        : {
-		"key" : "w"
-	},
-
 	"move"        : {
-		"key" : "m"
+		"key" : "m",
+		"values" : {
+			"from" : {
+				"key" : null,
+				"value" : null
+			},
+			"to" : {
+				"key" : null,
+				"value" : null
+			},
+			"deck" : {
+				"key" : null,
+				"value" : null
+			},
+			"flip" : {
+				"key" : null,
+				"value" : null
+			},
+			"stepType" : {
+				"key" : "t",
+				"value" : AS_IT_IS
+			}
+		}
 	},
 
 	"markCard"    : {
-		"key" : "r"
+		"key" : "r",
+		"values" : SHEME_D_I_C
 	},
 
 	"unmarkCard"  : {
-		"key" : "a"
+		"key" : "a",
+		"values" : SHEME_D_I_C
 	},
 
 	"setStepType" : {
-		"key" : "t"
+		"key" : "t",
+		"value" : AS_IT_IS
 	}
 };
 

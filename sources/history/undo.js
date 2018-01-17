@@ -252,7 +252,7 @@ let undo = data => {
 	// }
 
 	if (
-		setStepType                         &&
+		       setStepType                  &&
 		typeof setStepType.undo == "string"
 	) {
 		share.set('stepType', stepType.undo);

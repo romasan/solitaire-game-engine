@@ -241,7 +241,7 @@ let redo = data => {
 		let card = deck.getCardByIndex(cardIndex | 0);
 
 		if (
-			card                  &&
+			            card      &&
 			cardName == card.name
 		) {
 			event.dispatch('unmarkCard', {
