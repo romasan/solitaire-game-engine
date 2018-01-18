@@ -342,7 +342,7 @@ class historyClass {
 
 	_zipParse(data) {
 
-		console.log('zipParse:', data, typeof data);
+		// console.log('--zipParse:', JSON.stringify(data), typeof data);
 
 		if (typeof data != "string") {
 			return data;
@@ -372,17 +372,19 @@ class historyClass {
 
 			let keys = [];
 
-			for (let key in sheme) {
+			for (let key in sheme.values) {
 
-				const shortKey = sheme[key];
+				const shortKey = sheme.values[key].key;
 
 				keys.push({
 					"key"   : shortKey                    ,
-					"name"  : shemeName                   ,
+					"name"  : key                         ,
 					"index" : data.indexOf(shortKey + ':'),
-					"type"  : sheme[key].value
+					"type"  : sheme.values[key].value
 				});
 			}
+
+			console.log('#', JSON.stringify(keys, true, 2));
 
 			keys.sort((a, b) => (a.index > b.index ? 1 : -1));
 			keys = keys.filter(e => e.index >= 0);
@@ -391,13 +393,15 @@ class historyClass {
 
 			let decks = null;
 
+			console.log('>', keys);
+
 			for (let i in keys) {
 
 				let start = keys[i].index + keys[i].key.length + 1                                       ,
 					end   = (start | 0) + ((i < keys.length - 1) ? keys[(i | 0) + 1].index : data.length),
 					line  = data.slice(start, end)                                                       ;
 
-				console.log(keys[i].name, keys[i].type, line);
+				console.log('###', keys[i].name, keys[i].key, keys[i].type, line, start, end, i, keys.length, keys);
 
 				if (keys[i].type == DECK_NAME) {
 

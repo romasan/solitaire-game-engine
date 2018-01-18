@@ -92,12 +92,12 @@ let doHistory = e => {
 		
 		let steps = e.data[i];
 		
-		console.log('doHistory:', i, steps);
+		console.log('%cdoHistory: ' + i + ' ' + JSON.stringify(steps), 'color: green;');
 
 		if ( share.get('zipHistory') ) {
 			steps = history.unzip(steps);
 
-			console.log('unzipped:', steps);
+			console.log('%cunzipped: ' + JSON.stringify(steps), 'color: blue;');
 		}
 
 		// console.log('redo:', i, 'from', e.data.length,
