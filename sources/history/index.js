@@ -9,10 +9,12 @@ import undo          from './undo'            ;
 import redo          from './redo'            ;
 import historyCommon from './historyCommon'   ;
 
-const DECK_NAME = "DECK_NAME",
-	  OBJ_NAME  = "OBJ_NAME" ,
-	  BOOL      = "BOOL"     ,
-	  AS_IT_IS  = "AS_IT_IS" ;
+const DECK_NAME = "DECK_NAME", // index of deck
+//    OBJ_NAME  = "OBJ_NAME" ,
+	  CARD_LIST = "CARD_LIST", // c1-h2-d3
+	  BOOL      = "BOOL"     , // 1 - true, 0 - false
+	  STEP_TYPE = "STEP_TYPE", // "step_type" | "step_type+step_type" 
+	  AS_IT_IS  = "AS_IT_IS" ; // string | number
 
 const SHEME_D_I_C = {
 	"deckName" : {
@@ -29,9 +31,9 @@ const SHEME_D_I_C = {
 	}
 };
 
-const stepTypes = {
+const SHEMES = {
 
-	"flip"        : { // {flip : {cardName : "h9", cardIndex: 3, deckName: "deck_name"} -> "fD12I3Ch9;"
+	"flip"        : { // {flip : {cardName : "h9", cardIndex: 3, deckName: "deck_name"} -> "fD12I3Ch9;" (fD:12I:3C:h9)
 		"key" : "f",
 		"values" : SHEME_D_I_C
 	},
@@ -51,29 +53,29 @@ const stepTypes = {
 		"values" : SHEME_D_I_C
 	},
 
-	"lock"        : {
-		"key" : "l",
-		"value" : OBJ_NAME // TODO
-	},
+	// "lock"        : {
+	// 	"key" : "l",
+	// 	"value" : OBJ_NAME
+	// },
 
-	"unlock"      : {
-		"key" : "n",
-		"value" : OBJ_NAME
-	},
+	// "unlock"      : {
+	// 	"key" : "n",
+	// 	"value" : OBJ_NAME
+	// },
 
 	"swap"        : {
 		"key" : "w",
 		"values" : {
 			"deckName"  : {
-				"key" : null,
+				"key" : "D",
 				"value" : DECK_NAME
 			},
 			"fromIndex" : {
-				"key" : null,
+				"key" : "F",
 				"value" : AS_IT_IS
 			},
 			"toIndex"   : {
-				"key" : null,
+				"key" : "T",
 				"value" : AS_IT_IS
 			}
 		}
@@ -83,23 +85,27 @@ const stepTypes = {
 		"key" : "m",
 		"values" : {
 			"from" : {
-				"key" : null,
-				"value" : null
+				"key" : "F",
+				"value" : DECK_NAME
 			},
 			"to" : {
-				"key" : null,
-				"value" : null
+				"key" : "T",
+				"value" : DECK_NAME
 			},
 			"deck" : {
-				"key" : null,
-				"value" : null
+				"key" : "D",
+				"value" : CARD_LIST
 			},
 			"flip" : {
-				"key" : null,
-				"value" : null
+				"key" : "L",
+				"value" : BOOL
 			},
 			"stepType" : {
 				"key" : "t",
+				"value" : STEP_TYPE
+			},
+			"context" : {
+				"key" : "x",
 				"value" : AS_IT_IS
 			}
 		}
@@ -200,9 +206,9 @@ class historyClass {
 	get(reset = true) {
 
 		// console.warn('history:get;', 'reset:', reset);
-		console.groupCollapsed('history:get');
-		console.log( JSON.stringify(this.steps, true, 2) );
-		console.groupEnd();
+		// console.groupCollapsed('history:get');
+		// console.log( JSON.stringify(this.steps, true, 2) );
+		// console.groupEnd();
 		
 		if (share.get('zipHistory')) {
 			this.zip();
@@ -241,9 +247,9 @@ class historyClass {
 		return this.steps.length;
 	}
 
-	_zipParse(key, data, path) {
+	_zipMinify(key, data, path) {
 
-		console.log('parse:', key, data, path);
+		// console.log('parse:', key, data, path);
 
 		if (
 			typeof key  == "undefined" ||
@@ -256,22 +262,20 @@ class historyClass {
 		let line = "";
 
 		if (path.key) {
-			line += path.key;
+			line += path.key + ':';
 		} else {
 			return "";
 		}
 
 		if (path.values) {
 			for (let _key in path.values) {
-				line += this._zipParse(_key, data[_key], path.values[_key]);
+				line += this._zipMinify(_key, data[_key], path.values[_key]);
 			}
 		}
 
 		if (path.value) {
-			if (
-				path.value              &&
-				path.value == DECK_NAME
-			) {
+
+			if (path.value == DECK_NAME) {
 
 				let decks = common.getElementsByType('deck').map(e => e.name);
 
@@ -280,6 +284,30 @@ class historyClass {
 				if (deckIndex >= 0) {
 					line += deckIndex;
 				}
+			}
+
+			if (path.value == CARD_LIST) {
+				line += data.join('-');
+			}
+
+			if (path.value == BOOL) {
+				line += data == true ? 1 : 0;
+			}
+
+			if (path.value == STEP_TYPE) {
+
+				let undo = "",
+				    redo = "";
+
+				if (typeof data.undo == "string") {
+					undo = data.undo;
+				}
+
+				if (typeof data.redo == "string") {
+					redo = data.redo;
+				}
+
+				line += typeof data == "string" ? data : undo + '+' + redo;
 			}
 
 			if (path.value == AS_IT_IS) {
@@ -292,31 +320,133 @@ class historyClass {
 
 	zip() {
 
-		console.log('zip:', this.steps);
+		// console.log('zip:', this.steps);
 
 		for (let stepIndex in this.steps) {
 
 			for (let key in this.steps[stepIndex].step) {
 
-				if (stepTypes[key]) {
+				if (SHEMES[key]) {
 
-					console.log('zip key:', key);
+					// console.log('zip key:', key);
 
-					this.steps[stepIndex].step = this._zipParse(
+					this.steps[stepIndex].step = this._zipMinify(
 						key                            ,
 						this.steps[stepIndex].step[key],
-						stepTypes[key]
+						SHEMES[key]
 					);
 				}
  			}
 		}
 	}
 
-	unzip(data) {
-		// 
+	_zipParse(data) {
+
+		console.log('zipParse:', data, typeof data);
+
+		if (typeof data != "string") {
+			return data;
+		}
+
+		if (!this._keys_cache) {
+
+			this._keys_cache = {
+				short_keys : [],
+				keys : []
+			};
+
+			for(let name in SHEMES) {
+				this._keys_cache.short_keys.push(SHEMES[name].key);
+				this._keys_cache.keys.push(name);
+			}
+		} 
+
+		const index = this._keys_cache.short_keys.indexOf(data[0]);
+
+		console.log('zipParse', index, data[0]);
+
+		if (index >= 0) {
+
+			const shemeName = this._keys_cache.keys[index];
+			const sheme = SHEMES[shemeName];
+
+			let keys = [];
+
+			for (let key in sheme) {
+
+				const shortKey = sheme[key];
+
+				keys.push({
+					"key"   : shortKey                    ,
+					"name"  : shemeName                   ,
+					"index" : data.indexOf(shortKey + ':'),
+					"type"  : sheme[key].value
+				});
+			}
+
+			keys.sort((a, b) => (a.index > b.index ? 1 : -1));
+			keys = keys.filter(e => e.index >= 0);
+
+			let _data = {};
+
+			let decks = null;
+
+			for (let i in keys) {
+
+				let start = keys[i].index + keys[i].key.length + 1                                       ,
+					end   = (start | 0) + ((i < keys.length - 1) ? keys[(i | 0) + 1].index : data.length),
+					line  = data.slice(start, end)                                                       ;
+
+				console.log(keys[i].name, keys[i].type, line);
+
+				if (keys[i].type == DECK_NAME) {
+
+					if (!decks) {
+						decks = common.getElementsByType('deck').map(e => e.name);
+					}
+
+					_data[keys[i].name] = decks[line];
+				}
+
+				if (keys[i].type == CARD_LIST) {
+					_data[keys[i].name] = line.split('-');
+				}
+
+				if (keys[i].type == BOOL) {
+					_data[keys[i].name] = line == "1" ? true : false;
+				}
+
+				if (keys[i].type == STEP_TYPE) {
+					_data[keys[i].name] = "";
+				}
+
+				if (keys[i].type == AS_IT_IS) {
+					_data[keys[i].name] = line;
+				}
+			}
+
+			return _data;
+		}
+	}
+
+	unzip(steps) {
+
+		if (!steps) {
+			steps = this.steps;
+		}
+
+		for (let i in steps) {
+			steps[i] = this._zipParse(steps[i]);
+		}
+
+		return steps;
 	}
 }
 
 let history = new historyClass();
+
+event.listen('newGame', e => {
+	history._keys_cache = null;
+});
 
 export default history;

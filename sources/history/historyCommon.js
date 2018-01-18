@@ -89,6 +89,17 @@ let doHistory = e => {
 
 	for (let i in e.data) {
 
+		
+		let steps = e.data[i];
+		
+		console.log('doHistory:', i, steps);
+
+		if ( share.get('zipHistory') ) {
+			steps = history.unzip(steps);
+
+			console.log('unzipped:', steps);
+		}
+
 		// console.log('redo:', i, 'from', e.data.length,
 		// 	e.data[i][0].makeMove
 		// 		? 'makeMove ' + 
@@ -102,14 +113,14 @@ let doHistory = e => {
 		// );
 
 		// share.set('noSave', true);
-		event.dispatch('redo', e.data[i]);
+		event.dispatch('redo', steps);
 		// share.set('noSave', false);
 
 		if (
-			!redoAdvanced.handle(e.data[i][0]) &&
+			!redoAdvanced.handle(steps[0]) &&
 			typeof e.callback == 'function'
 		) {
-			e.callback(e.data[i]);	
+			e.callback(steps);
 		}
 
 		// event.dispatch('solitaire_log');
