@@ -296,8 +296,10 @@ event.listen('redo', redoData => {
 		event.dispatch('stopAnimations');
 	}
 
+	let zipHistory = share.get('zipHistory');
+
 	// History.reset();
-	let history = History.get();
+	let history = History.get(true, zipHistory);
 
 	if (history.length > 0) {
 
@@ -314,6 +316,10 @@ event.listen('redo', redoData => {
 	// Обратная совместимость
 	// console.groupCollapsed('redo');
 	if (redoData instanceof Array) {
+
+		if (zipHistory) {
+			redoData = History.unzip(redoData);
+		}
 
 		for (let _i in redoData) {
 			let data = redoData[_i];

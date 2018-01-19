@@ -8,30 +8,30 @@ for (let actionName in actionsExtends) {
 
     if (actionsExtends[actionName].padding) {
 
-        if (actionsExtends[actionName].padding && actionsExtends[actionName].padding.rules) {
-            for(let key in actionsExtends[actionName].padding.rules) {
+        // if (actionsExtends[actionName].padding && actionsExtends[actionName].padding.rules) {
+        //     for(let key in actionsExtends[actionName].padding.rules) {
 
-                if (paddingTypes[key]) {
-                    console.warn(`Padding type ${key} exist in defaults rules list`);
-                } else {
-                    paddingTypes[key] = actionsExtends[actionName].padding.rules[key];
-                }
-            }
+        //         if (paddingTypes[key]) {
+        //             console.warn(`Padding type ${key} exist in defaults rules list`);
+        //         } else {
+        //             paddingTypes[key] = actionsExtends[actionName].padding.rules[key];
+        //         }
+        //     }
+        // }
+
+        if (typeof actionsExtends[actionName].padding.do == "function") {
+            Extends.push({
+                "type" : "padding"                            ,
+                "from" : "action"                             ,
+                "name" : actionName                           ,
+                "do"   : actionsExtends[actionName].padding.do
+            });
         }
-    }
-
-    if (typeof actionsExtends[actionName].padding.do == "function") {
-        Extends.push({
-            "type" : "padding"                            ,
-            "from" : "action"                             ,
-            "name" : actionName                           ,
-            "do"   : actionsExtends[actionName].padding.do
-        });
-    }
-
-    if (typeof actionsExtends[actionName].padding.rules != "undefined") {
-        for (let ruleName in actionsExtends[actionName].padding.rules) {
-            paddingTypes._add(ruleName, actionsExtends[actionName].padding.rules[ruleName]);
+    
+        if (typeof actionsExtends[actionName].padding.rules != "undefined") {
+            for (let ruleName in actionsExtends[actionName].padding.rules) {
+                paddingTypes._add(ruleName, actionsExtends[actionName].padding.rules[ruleName]);
+            }
         }
     }
 }

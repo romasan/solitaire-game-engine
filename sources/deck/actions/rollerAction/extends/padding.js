@@ -2,14 +2,14 @@ import rules from './paddingTypes';
 
 let rollerPaddingExtend = (deck, padding, paddingMethod, index) => {
 
-    if (!deck.hasTag('ignore_visibility')) {
+    if ( !deck.hasTag('ignore_visibility') ) {
         return padding;
     }
-
+    
     let firstOpenCardIndex = -1;
-
+    
     const cards = deck.getCards({});
-
+    
     for (let i in cards) {
         if (
             firstOpenCardIndex < 0 &&
@@ -18,15 +18,21 @@ let rollerPaddingExtend = (deck, padding, paddingMethod, index) => {
             firstOpenCardIndex = i;
         }
     }
-
+    
     // console.log('rollerPaddingExtend', deck.name, index, firstOpenCardIndex);
-
+    
     if (
-        deck.cards[index].visible   == false &&
-                 firstOpenCardIndex >= 0     &&
+        cards[index].visible == false    &&
+                 firstOpenCardIndex >= 0 &&
         index >= firstOpenCardIndex
     ) {
-        return paddingMethod(firstOpenCardIndex);
+
+        let _padding = paddingMethod(firstOpenCardIndex);
+
+        // TODO
+        console.log('rollerPaddingExtend', deck.hasTag('ignore_visibility'), index, cards[index].name, firstOpenCardIndex, _padding);
+
+        return _padding;
     }
 
     return padding;

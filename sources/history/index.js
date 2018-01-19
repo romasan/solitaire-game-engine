@@ -203,7 +203,11 @@ class historyClass {
 	 * Get
 	 * @param {boolean} reset 
 	 */
-	get(reset = true) {
+	get(reset = true, unzip = false) {
+
+		if (unzip) {
+			this.unzip();
+		}
 
 		// console.warn('history:get;', 'reset:', reset);
 		// console.groupCollapsed('history:get');
@@ -363,7 +367,7 @@ class historyClass {
 
 		const index = this._keys_cache.short_keys.indexOf(data[0]);
 
-		console.log('zipParse', index, data[0]);
+		// console.log('zipParse', index, data[0]);
 
 		if (index >= 0) {
 
@@ -384,7 +388,7 @@ class historyClass {
 				});
 			}
 
-			console.log('#', JSON.stringify(keys, true, 2));
+			// console.log('#', JSON.stringify(keys, true, 2));
 
 			keys.sort((a, b) => (a.index > b.index ? 1 : -1));
 			keys = keys.filter(e => e.index >= 0);
@@ -393,15 +397,15 @@ class historyClass {
 
 			let decks = null;
 
-			console.log('>', keys);
+			// console.log('>', keys);
 
 			for (let i in keys) {
 
-				let start = keys[i].index + keys[i].key.length + 1                                       ,
-					end   = (start | 0) + ((i < keys.length - 1) ? keys[(i | 0) + 1].index : data.length),
-					line  = data.slice(start, end)                                                       ;
+				let start = keys[i].index + keys[i].key.length + 1                         ,
+					end   = ((i < keys.length - 1) ? keys[(i | 0) + 1].index : data.length),
+					line  = data.slice(start, end)                                         ;
 
-				console.log('###', keys[i].name, keys[i].key, keys[i].type, line, start, end, i, keys.length, keys);
+				// console.log('###', keys[i].name, keys[i].key, keys[i].type, line, start, end, i, keys.length, data.length, i < keys.length - 1, (i | 0) + 1);
 
 				if (keys[i].type == DECK_NAME) {
 
@@ -421,7 +425,25 @@ class historyClass {
 				}
 
 				if (keys[i].type == STEP_TYPE) {
-					_data[keys[i].name] = "";
+
+					let _line = line.split('+');
+
+					if ( _line.length == 1 ) {
+						_data[keys[i].name] = line;
+					} else {
+
+						let stepType = {};
+
+						if (_line[0].length) {
+							stepType.undo = _line[0];
+						}
+
+						if (_line[1].length) {
+							stepType.redo = _line[1];
+						}
+
+						_data[keys[i].name] = stepType;
+					}
 				}
 
 				if (keys[i].type == AS_IT_IS) {
@@ -429,7 +451,7 @@ class historyClass {
 				}
 			}
 
-			return _data;
+			return {[shemeName] : _data};
 		}
 	}
 
@@ -442,6 +464,8 @@ class historyClass {
 		for (let i in steps) {
 			steps[i] = this._zipParse(steps[i]);
 		}
+
+		// console.log('%cunzipped: ' + JSON.stringify(steps), 'color: blue;');
 
 		return steps;
 	}

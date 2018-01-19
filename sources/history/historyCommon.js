@@ -88,17 +88,16 @@ let doHistory = e => {
 	common.animationOff();
 
 	for (let i in e.data) {
-
 		
 		let steps = e.data[i];
 		
-		console.log('%cdoHistory: ' + i + ' ' + JSON.stringify(steps), 'color: green;');
+		// console.log('%cdoHistory: ' + i + ' ' + JSON.stringify(steps), 'color: green;');
 
-		if ( share.get('zipHistory') ) {
-			steps = history.unzip(steps);
+		// if ( share.get('zipHistory') ) {
+		// 	steps = history.unzip(steps);
 
-			console.log('%cunzipped: ' + JSON.stringify(steps), 'color: blue;');
-		}
+		// 	console.log('%cunzipped: ' + JSON.stringify(steps), 'color: blue;');
+		// }
 
 		// console.log('redo:', i, 'from', e.data.length,
 		// 	e.data[i][0].makeMove

@@ -1,15 +1,16 @@
 'use strict';
 
-import share    from '../common/share'                       ;
-import defaults from '../common/defaults'                    ;
-import common   from '../common'                             ;
-import padding  from './actions/rollerAction/extends/padding';
+import share    from '../common/share'   ;
+import defaults from '../common/defaults';
+import common   from '../common'         ;
 
 let paddingTypes = {
 
 	"_backup" : {},
 
 	"_add" : (name, rule, overwrite = false) => {
+
+		console.log('Add padding rule:', name, 'overwrite', overwrite);
 
 		let _break = false;
 
@@ -55,6 +56,8 @@ let paddingTypes = {
 				return paddingTypes._default(...args);
 			}
 		};
+
+		console.log( Object.keys(paddingTypes) );
 	},
 
 	"_default" : (params, card, index, length, deck) => {

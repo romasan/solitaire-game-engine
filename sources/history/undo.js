@@ -291,8 +291,10 @@ event.listen('undo', undoData => {
 		event.dispatch('stopAnimations');
 	}
 
+	let zipHistory = share.get('zipHistory');
+
 	// History.reset();
-	let history = History.get();
+	let history = History.get(true, zipHistory);
 
 	if (history.length > 0) {
 
@@ -308,6 +310,10 @@ event.listen('undo', undoData => {
 
 	// Обратная совместимость
 	if (undoData instanceof Array) {
+
+		if (zipHistory) {
+			redoData = History.unzip(redoData);
+		}
 
 		undoData.reverse();
 
