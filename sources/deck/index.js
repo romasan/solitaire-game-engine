@@ -516,7 +516,7 @@ class deckClass {
 	 */
 	Redraw(data) {
 
-		// console.log('deck:Redraw', this.name);
+		console.warn('deck:Redraw', this.name);
 
 		event.dispatch('redrawDeck', {
 			"deck"     : this        ,

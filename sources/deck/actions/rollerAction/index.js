@@ -9,8 +9,6 @@ import History      from '../../../history'               ;
 import Atom         from '../../atom'                     ;
 import fallAutoStep from '../../../autosteps/fallAutoStep';
 
-// import padding      from './extends/padding'              ;
-
 const NOT_FOUND    = 'NOT_FOUND'   ,
       ROLLER_START = 'ROLLER_START',
       MOVE_STEP    = 'MOVE_STEP'   ;
@@ -286,15 +284,21 @@ class rollerAction extends deckAction {
 				    i >= 0 && i > (startIndexOfOpenCards | 0) - (openCount | 0) - 1;
 				    i -= 1
 			) {
+
+				console.log('rollerAction:unflip card', i, deck.cards[i].name);
+
 				deck.unflipCardByIndex(i, _save);
+
 				unflipCardsCount += 1;
 			}
 			
 			// 4) переставляем открытые в обратном порядке
 			for (let i = 0; i < unflipCardsCount / 2; i += 1) {
+
 				let side_1 = (startIndexOfOpenCards | 0)                          - i - 1,
 				    side_2 = (startIndexOfOpenCards | 0) - (unflipCardsCount | 0) + i    ;
-			  if (side_1 != side_2) {
+
+				if (side_1 != side_2) {
 					Atom.swap(deck, side_1, side_2, _save);
 				}
 			}
@@ -308,10 +312,13 @@ class rollerAction extends deckAction {
 
 		// 5.1) если 0, показываем и закрываем все скрытые 10411
 		if (visibleCardsCount == 0) {
+
 			deck.flipAllCards (false, _save);
 			deck.showCards    (false, _save);
+
 			visibleCardsCount = hiddenCardsCount;
-			hiddenCardsCount  = 0;
+
+			hiddenCardsCount = 0;
 		}
 
 		// let backSteps = ( (visibleCardsCount | 0) + (hiddenCardsCount | 0) ) / openCount;
@@ -412,12 +419,6 @@ class rollerAction extends deckAction {
 
 		event.dispatch('checkTips');
 	}
-
-	// extends() {
-	// 	return {
-	// 		"padding": padding
-	// 	};
-	// }
 }
 
 export default new rollerAction();

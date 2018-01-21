@@ -1,4 +1,5 @@
-import rules from './paddingTypes';
+import rules from './paddingTypes'          ;
+import event from '../../../../common/event';
 
 let rollerPaddingExtend = (deck, padding, paddingMethod, index) => {
 
@@ -20,7 +21,7 @@ let rollerPaddingExtend = (deck, padding, paddingMethod, index) => {
     }
     
     // console.log('rollerPaddingExtend', deck.name, index, firstOpenCardIndex);
-    
+
     if (
         cards[index].visible == false    &&
                  firstOpenCardIndex >= 0 &&
@@ -30,7 +31,8 @@ let rollerPaddingExtend = (deck, padding, paddingMethod, index) => {
         let _padding = paddingMethod(firstOpenCardIndex);
 
         // TODO
-        console.log('rollerPaddingExtend', deck.hasTag('ignore_visibility'), index, cards[index].name, firstOpenCardIndex, _padding);
+        console.log('rollerPaddingExtend', deck.hasTag('ignore_visibility'), index, cards[index].name, firstOpenCardIndex, _padding, cards[firstOpenCardIndex].name);
+        // event.dispatch('solitaire_log');
 
         return _padding;
     }
