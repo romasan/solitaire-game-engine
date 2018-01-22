@@ -231,7 +231,7 @@ class rollerAction extends deckAction {
 			visibleCardsCount >  0 && // есть видимые карты
 			 hiddenCardsCount == 0 && // нет скрытых карт
 			 unflipCardsCount == 0 && // нет открытых видимых карт
-			 _save
+			_save
 		) {
 			// console.log('save rollerActionStart');
 			// event.dispatch('solitaire_log');
@@ -263,8 +263,11 @@ class rollerAction extends deckAction {
 			
 			// 2) скрываем все открытые
 			for (let i = 0; i < unflipCardsCount; i += 1) {
+
 				let index = (startIndexOfOpenCards | 0) + i;
+
 				deck.hideCardByIndex(index, false, _save);
+
 				hiddenCardsCount  += 1;
 				visibleCardsCount -= 1;
 				// save hide
@@ -285,7 +288,7 @@ class rollerAction extends deckAction {
 				    i -= 1
 			) {
 
-				console.log('rollerAction:unflip card', i, deck.cards[i].name);
+				// console.log('rollerAction:unflip card', i, deck.cards[i].name);
 
 				deck.unflipCardByIndex(i, _save);
 
@@ -322,8 +325,6 @@ class rollerAction extends deckAction {
 		}
 
 		// let backSteps = ( (visibleCardsCount | 0) + (hiddenCardsCount | 0) ) / openCount;
-
-		/* *********************************************** */
 
 		if (_save) {
 
@@ -410,8 +411,6 @@ class rollerAction extends deckAction {
 				event.dispatch('saveSteps');
 			}
 		}
-
-		/* *********************************************** */
 
 		deck.Redraw();
 

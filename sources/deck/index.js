@@ -346,8 +346,6 @@ class deckClass {
 		 */
 		this.padding = index => {
 
-			// console.log('padding', this.name, index);
-
 			let _cards = this.getCards(); // filter = {"visible" : true}
 			let _index = index < _cards.length ? index : _cards.length - 1;
 			let _card  = _cards[_index] ? _cards[_index] : this.cards[index];
@@ -374,8 +372,8 @@ class deckClass {
 			// }
 
 			let e_padding = Extends.padding(
-				this               ,
-				_padding           ,
+				this    ,
+				_padding,
 				e_index => padding(
 					this._params ,
 					_card        ,
@@ -516,7 +514,7 @@ class deckClass {
 	 */
 	Redraw(data) {
 
-		console.warn('deck:Redraw', this.name);
+		// console.log('deck:Redraw', this.name);
 
 		event.dispatch('redrawDeck', {
 			"deck"     : this        ,

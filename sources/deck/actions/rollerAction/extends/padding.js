@@ -16,23 +16,17 @@ let rollerPaddingExtend = (deck, padding, paddingMethod, index) => {
             firstOpenCardIndex < 0 &&
             cards[i].flip == false
         ) {
-            firstOpenCardIndex = i;
+            firstOpenCardIndex = (i | 0);
         }
     }
     
-    // console.log('rollerPaddingExtend', deck.name, index, firstOpenCardIndex);
-
     if (
-        cards[index].visible == false    &&
-                 firstOpenCardIndex >= 0 &&
-        index >= firstOpenCardIndex
+        cards[index].visible == false          &&
+                       firstOpenCardIndex >= 0 &&
+        (index | 0) >= firstOpenCardIndex
     ) {
 
         let _padding = paddingMethod(firstOpenCardIndex);
-
-        // TODO
-        console.log('rollerPaddingExtend', deck.hasTag('ignore_visibility'), index, cards[index].name, firstOpenCardIndex, _padding, cards[firstOpenCardIndex].name);
-        // event.dispatch('solitaire_log');
 
         return _padding;
     }
