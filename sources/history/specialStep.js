@@ -24,6 +24,10 @@ event.listen('specialStep', ({card, callback}) => {
 
 			let step = data.history[i];
 
+			if ( share.get('zipHistory') ) {
+				step = History.unzip(step);
+			}
+
 			for (let atomIndex in step) {
 
 				let atom = step[atomIndex];

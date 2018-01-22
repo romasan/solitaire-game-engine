@@ -590,7 +590,7 @@ class deckClass {
 	 * @param {number} index 
 	 * @param {boolean} save 
 	 */
-	unflipCardByIndex(index, save) {
+	unflipCardByIndex(index, redraw = true, save) {
 
 		// console.log('deck:unflipCardByIndex:', this.name, index);
 
@@ -599,7 +599,9 @@ class deckClass {
 			this.cards[index].flip = false;
 
 			// event.dispatch('redrawDeckFlip', this);
-			this.Redraw();
+			if (redraw) {
+				this.Redraw();
+			}
 
 			if (save) {
 
@@ -624,7 +626,7 @@ class deckClass {
 
 		if (this.cards.length > 0) {
 
-			this.unflipCardByIndex(this.cards.length - 1, save);
+			this.unflipCardByIndex(this.cards.length - 1, true, save);
 		}
 	}
 

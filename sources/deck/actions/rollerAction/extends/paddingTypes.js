@@ -12,7 +12,9 @@ export default {
 		    group   = (_data[1] | 0) > 0  // closed cards group count
 		    	? _data[1] | 0
 		    	: 1,
-		    padding = _data[2] | 0;
+			padding = _data[2] | 0;
+
+		console.warn('padding', open, group, padding, card.name, index);
 
 		let correct = 0;
 
@@ -23,7 +25,7 @@ export default {
 
 			return {
 				"x" : params.x + (defaults.card.width * share.get('zoom')) + padding + ((index - length + open - correct) * params.padding_x),
-				"y" : params.y + (index - length + open) * params.padding_y
+				"y" : params.y                                                       +  (index - length + open)           * params.padding_y
 			}
 		} else {                          // before delimiter
 

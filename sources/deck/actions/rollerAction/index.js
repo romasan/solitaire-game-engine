@@ -290,7 +290,7 @@ class rollerAction extends deckAction {
 
 				// console.log('rollerAction:unflip card', i, deck.cards[i].name);
 
-				deck.unflipCardByIndex(i, _save);
+				deck.unflipCardByIndex(i, false, _save);
 
 				unflipCardsCount += 1;
 			}
@@ -351,6 +351,8 @@ class rollerAction extends deckAction {
 			) {
 
 				event.dispatch('rewindHistory', data => {
+
+					// console.log('rollerAction:rewindHistory', data);
 					
 					let stepsCount = 0;
 					
@@ -364,6 +366,10 @@ class rollerAction extends deckAction {
 						stepsCount += 1;
 						
 						let step = data.history[i];
+
+						if ( share.get('zipHistory') ) {
+							step = History.unzip(step);
+						}
 						
 						// пробегаемся по атомарным составным хода из истории
 						for (let atomIndex in step) {
@@ -384,7 +390,7 @@ class rollerAction extends deckAction {
 								typeof atom.move != "undefined"
 							) {
 
-								found = MOVE_STEP
+								found = MOVE_STEP;
 							}
 						}
 					}
