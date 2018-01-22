@@ -299,11 +299,10 @@ event.listen('undo', undoData => {
 	if (history.length > 0) {
 
 		for (let i = history.length - 1; i >= 0; i -= 1) {
-			
+
 			// console.groupCollapsed('<<<');
 			// console.log(JSON.stringify(history[i], true, 2));
 			// console.groupEnd();
-
 			undo(history[i]);
 		}
 	}
@@ -312,7 +311,7 @@ event.listen('undo', undoData => {
 	if (undoData instanceof Array) {
 
 		if (zipHistory) {
-			redoData = History.unzip(redoData);
+			undoData = History.unzip(undoData);
 		}
 
 		undoData.reverse();
