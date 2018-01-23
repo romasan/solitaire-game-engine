@@ -375,12 +375,13 @@ class deckClass {
 				this    ,
 				_padding,
 				e_index => padding(
-					this._params ,
-					_card        ,
-					e_index      ,
-					_cards.length,
-					_cards       ,
-					paddingData
+					this._params     ,
+					_card            ,
+					e_index          ,
+					_cards.length    ,
+					_cards           ,
+					paddingData      ,
+					'extends:padding'
 				),
 				index
 			);

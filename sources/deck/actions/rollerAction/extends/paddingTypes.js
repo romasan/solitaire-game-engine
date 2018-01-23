@@ -3,7 +3,7 @@ import defaults from '../../../../common/defaults';
 
 export default {
 
-    "roller": (params, card, index, length, deck, data) => {
+    "roller": (params, card, index, length, deck, data, context) => {
 		// data: "open,group,padding"
 		// flipRule: "topUnflip:open"
 
@@ -14,30 +14,32 @@ export default {
 		    	: 1,
 			padding = _data[2] | 0;
 
-		console.warn('padding', open, group, padding, card.name, index);
-
-		let correct = 0;
+		console.warn('padding', card.parent, open, group, padding, card.name, index, length, context);
 
 		if (
-			index     >= length - open && // delimiter and after
-			card.flip == false            // closed cards
+			(index | 0) >= length - open && // delimiter and after
+			card.flip   == false            // closed cards
 		) {
 
+			let shift = 0;
+
+			if (length - open < 0) {
+				shift = -(length - open);
+			}
+
+			console.log('#1', index - shift, length, open, shift);
+
 			return {
-				"x" : params.x + (defaults.card.width * share.get('zoom')) + padding + ((index - length + open - correct) * params.padding_x),
-				"y" : params.y                                                       +  (index - length + open)           * params.padding_y
+				"x" : params.x + (defaults.card.width * share.get('zoom')) + padding + ((index - shift) - length + open) * params.padding_x,
+				"y" : params.y                                                       + ((index - shift) - length + open) * params.padding_y
 			}
 		} else {                          // before delimiter
-
-			if (index >= length - open) {
-				correct += 1;
-			}
 
 			return {
 				"x" : params.x + params.flip_padding_x * ((index / group) | 0),
 				"y" : params.y + params.flip_padding_y * ((index / group) | 0)
 			}
-		} 
+		}
 
 		return {
 			"x" : params.x,
