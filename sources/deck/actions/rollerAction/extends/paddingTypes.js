@@ -14,8 +14,28 @@ export default {
 		    	: 1,
 			padding = _data[2] | 0;
 
-		console.warn('padding', card.parent, open, group, padding, card.name, index, length, context);
+			let firstOpenCardIndex   = -1;
+			let firstHiddenCardIndex = deck.length;
+			
+			for (let i in deck) {
+				
+			if (
+				firstOpenCardIndex <  0     &&
+				deck[i].flip       == false
+			) {
+				firstOpenCardIndex = (i | 0);
+			}
+			
+			// if (
+			// 	firstHiddenCardIndex <  0     &&
+			// 	deck[i].visible      == false
+			// ) {
+			// 	firstHiddenCardIndex = (i | 0);
+			// }
+		}
 
+		console.warn('padding', card.parent, open, group, padding, card.name, index, length, firstOpenCardIndex, firstHiddenCardIndex, context, deck.length, firstHiddenCardIndex - firstOpenCardIndex);
+		
 		if (
 			(index | 0) >= length - open && // delimiter and after
 			card.flip   == false            // closed cards
@@ -25,6 +45,10 @@ export default {
 
 			if (length - open < 0) {
 				shift = -(length - open);
+			}
+
+			if (firstHiddenCardIndex - firstOpenCardIndex < open) {
+				shift = open - (firstHiddenCardIndex - firstOpenCardIndex);
 			}
 
 			console.log('#1', index - shift, length, open, shift);
