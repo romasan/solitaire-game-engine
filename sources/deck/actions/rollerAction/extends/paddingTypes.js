@@ -34,9 +34,7 @@ export default {
 			// }
 		}
 
-		console.warn('padding', card.parent, open, group, padding, card.name, index, length, firstOpenCardIndex, firstHiddenCardIndex, context, deck.length, firstHiddenCardIndex - firstOpenCardIndex);
-		
-		if (
+			if (
 			(index | 0) >= length - open && // delimiter and after
 			card.flip   == false            // closed cards
 		) {
@@ -50,8 +48,6 @@ export default {
 			if (firstHiddenCardIndex - firstOpenCardIndex < open) {
 				shift = open - (firstHiddenCardIndex - firstOpenCardIndex);
 			}
-
-			console.log('#1', index - shift, length, open, shift);
 
 			return {
 				"x" : params.x + (defaults.card.width * share.get('zoom')) + padding + ((index - shift) - length + open) * params.padding_x,

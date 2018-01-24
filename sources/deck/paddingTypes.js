@@ -10,7 +10,7 @@ let paddingTypes = {
 
 	"_add" : (name, rule, overwrite = false) => {
 
-		console.log('Add padding rule:', name, 'overwrite', overwrite);
+		// console.log('Add padding rule:', name, 'overwrite', overwrite);
 
 		let _break = false;
 
@@ -56,8 +56,6 @@ let paddingTypes = {
 				return paddingTypes._default(...args);
 			}
 		};
-
-		console.log( Object.keys(paddingTypes) );
 	},
 
 	"_default" : (params, card, index, length, deck) => {
