@@ -218,8 +218,8 @@ event.listen('redrawDeck', data => {
 			"z-index"           : (
 				ignore_visibility
 					? (card.visible
-						? (_zIndex + hiddenCount)
-						: (_zIndex - openCount)
+						? _zIndex + hiddenCount + openCount
+						: data.cards.length - _zIndex + (data.params.startZIndex | 0) * 2 - 1
 					) 
 					: _zIndex
 			),

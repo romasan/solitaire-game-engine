@@ -257,8 +257,12 @@ let logCardsInDeck = deck => {
 	let _log = ['%c' + deck.name + ' (' + deck.cards.length + '): ', 'line-height:25px;'];
 
 	for (let i in deck.cards) {
+
 		let card = deck.cards[i];
-		_log[0] += '%c' + card.name + '%c %c' + i;
+
+		let _zIndex = document.querySelector('#' + card.id).style.zIndex;
+
+		_log[0] += '%c' + card.name + '%c %c' + i + '%c' + _zIndex;
 		_log.push(
 			card.visible
 				? card.flip
@@ -270,6 +274,7 @@ let logCardsInDeck = deck => {
 		);
 		_log.push('text-decoration: none;');
 		_log.push('font-size:70%;color:transparent;margin-left:-8px;text-shadow:-8px 8px 0px #000000;');
+		_log.push('font-size:70%;color:transparent;margin-left:-8px;text-shadow:-8px -10px 0px #008000;');
 	}
 
 	console.groupCollapsed.apply(console, _log);
