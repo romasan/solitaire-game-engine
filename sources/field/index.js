@@ -188,6 +188,11 @@ class Field {
 		// прокидываеем <новую> конфигурацию
 		if (data) {
 
+			if (typeof data.zoom == "number") {
+				console.log('new zoom = ', data.zoom);
+				share.set('zoom', data.zoom);
+			}
+
 			// ерерисовываем все группы и стопки в них
 			for (let _groupName in data.groups) {
 
