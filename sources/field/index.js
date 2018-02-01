@@ -56,6 +56,7 @@ class Field {
 			"zoom"                 : 'number' , // масштаб отображения
 			// "movesAnimation"    : 'string' ,
 			"animationTime"        : 'number' , // время анимации
+			"animations"           : 'boolean', // показывать ли вообще анимации
 			"showHistoryAnimation" : 'boolean',
 			"showPrefFlipCard"     : 'boolean',
 			"gameIsWon"            : 'boolean',

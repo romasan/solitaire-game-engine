@@ -142,6 +142,20 @@ class shareClass {
 		delete this._data[name];
 		// this._checkNames();
 	}
+
+	/**
+	 * Assign a value to an existing variable.
+	 * @param {string} name 
+	 * @param {string} fromName 
+	 */
+	setFrom(name, fromName) {
+
+		if (typeof this._data[fromName] != "undefined") {
+			this._data[name] = this._data[fromName];	
+		} else {
+			console.warn(`The variable ${fromName} does not exist.`);
+		}
+	}
 }
 
 export default new shareClass();

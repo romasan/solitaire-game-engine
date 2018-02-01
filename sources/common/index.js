@@ -203,12 +203,14 @@ share.set('animation', defaults.animation);
 
 let animationOn = e => {
 	// console.warn('animationOn');
-	share.set('animation', true);
+	if ( share.get('animations') ) {
+		share.set('animation', true);
+	}
 };
 
 let animationDefault = e => {
 	// console.warn('animationDefault');
-	share.set('animation', defaults.animation);
+	share.setFrom('animation', 'animations');
 };
 
 let animationOff = e => {

@@ -48,7 +48,7 @@ export default {
 
 	"locale"              : 'ru',
 
-	"animation"           : true,
+	"animations"          : true,
 	"animationTime"       : 100 , // time in milliseconds for 100px
 
 	// "noReplayHistory"     : false,
