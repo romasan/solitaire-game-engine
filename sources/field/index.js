@@ -184,7 +184,7 @@ class Field {
 	 */
 	Redraw(data) {
 
-		// console.log('Field:Redraw');
+		console.log('Field:Redraw', typeof data);
 
 		// прокидываеем <новую> конфигурацию
 		if (data) {

@@ -4,6 +4,8 @@ import defaults from '../common/defaults';
 
 export default (group, data) => {
 
+	console.log('Group:Redraw', group.name, typeof data);
+
 	if (!group || !data) {
 		return;
 	}
