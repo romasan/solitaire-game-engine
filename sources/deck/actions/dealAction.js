@@ -161,19 +161,25 @@ class dealAction extends deckAction {
 
 		// пробегаем колоды из списка
 
-		let moveDecks = _decks; // .filter(e => e.cards.length == 0);
+		let moveDecks = _decks.filter(e => data.actionData.onlyEmpty
+			? e.cards.length == 0
+			: true
+		);
+
 		let _iterations = moveDecks.length;
+
+		// console.log('_iterations:', _iterations, moveDecks);
 
 		// for (let deckId in _decks) {
 		for (let deckId in moveDecks) {
 
 			// флаг что такой ход возможен
-			let _canStep = data.actionData.onlyEmpty
-				? moveDecks[deckId].cards.length == 0
-				: true;
+			// let _canStep = data.actionData.onlyEmpty
+			// 	? moveDecks[deckId].cards.length == 0
+			// 	: true;
 
 			if (
-				_canStep &&
+				// _canStep &&
 				dealDeck.cards.length > 0
 			) {
 
@@ -233,12 +239,15 @@ class dealAction extends deckAction {
 					_iterations -= 1;
 
 					// console.log('dealAction:run:_callback', _iterations);
+					// console.log('dealAction:forceMove:_callback', _iterations);
 
 					if (_iterations == 0) {
 						// _after();
 						// let _after = e => {
 							
 						// #2
+
+						// console.log('dealAction:forceMove:_callback:last iteration');
 
 						if (_makeStep && save) { // && hasNextSteps
 							// сохраняем если раздача удалась

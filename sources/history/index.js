@@ -205,6 +205,8 @@ class historyClass {
 	 */
 	get(reset = true, unzip = false) {
 
+		// console.log('History:get reset:', reset, 'unzip:', unzip);
+
 		if (unzip) {
 			this.unzip();
 		}
