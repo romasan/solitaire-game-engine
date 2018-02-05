@@ -143,6 +143,7 @@ let scanAttempts = data => {
 
 	// Field.clear();
 
+	// console.log('scanAttempts');
 	// console.groupCollapsed('scanAttempts');
 
 	event.dispatch('render:off');
@@ -194,6 +195,10 @@ let scanAttempts = data => {
 	snapshot.applyState(summary, {
 		"flip" : "prevFlip"
 	});
+
+	event.dispatch('scanAttempts:done');
+
+	// console.log('scanAttempts:done');
 
 	// console.groupEnd();
 };

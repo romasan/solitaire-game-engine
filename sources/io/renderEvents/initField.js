@@ -7,6 +7,8 @@ import defaults from '../../common/defaults';
 import Field    from '../../field'          ;
 import elRender from '../dom/elRender'      ;
 
+let _timer = null;
+
 event.listen('initField', data => {
 
 	if (share.get('nodraw')) {
@@ -49,6 +51,31 @@ event.listen('initField', data => {
 	elRender(domElement)
 		.css(_params)
 		.addClass('solitaireField')
+		.addClass('solitaire-load-overlay');
+
+	if (typeof _timer == "number") {
+		clearTimeout(_timer);
+		// _timer = null;
+	}
+
+	_timer = setTimeout(() => {
+		elRender(domElement)
+			.removeClass('solitaire-load-overlay');
+		_timer = null;
+	}, 500);
 
 	share.set('domElement:field', domElement);
+});
+
+event.listen('scanAttempts:done', () => {
+
+	if(typeof _timer == "number") {
+		clearTimeout(_timer);
+		_timer = null;
+
+		let domElement = share.get('domElement:field');
+
+		elRender(domElement)
+			.removeClass('solitaire-load-overlay');
+	}
 });
