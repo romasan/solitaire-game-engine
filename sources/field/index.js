@@ -60,7 +60,7 @@ class Field {
 			"showHistoryAnimation" : 'boolean',
 			"showPrefFlipCard"     : 'boolean',
 			"gameIsWon"            : 'boolean',
-			// "noReplayHistory"      : 'boolean',
+			// "noReplayHistory"   : 'boolean',
 			"locale"               : 'string'
 		};
 
@@ -184,13 +184,12 @@ class Field {
 	 */
 	Redraw(data) {
 
-		console.log('Field:Redraw', typeof data);
+		// console.log('Field:Redraw', typeof data);
 
 		// прокидываеем <новую> конфигурацию
 		if (data) {
 
 			if (typeof data.zoom == "number") {
-				console.log('new zoom = ', data.zoom);
 				share.set('zoom', data.zoom);
 			}
 

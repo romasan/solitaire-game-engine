@@ -158,16 +158,16 @@ event.listen('dragDeck', data => { // {x, y, dragDeck, startCursor, deck}
 
 		return;
 	}
+	
+	const zoom = share.get('zoom');
 
 	for (let i in data.dragDeck) {
-
-		let _zoom = share.get('zoom');
 
 		let _position = data.deck.padding(data.dragDeck[i].index);
 
 		let _params = {
-			"left"    : (_position.x + (data.x - data.startCursor.x) / _zoom) + 'px',
-			"top"     : (_position.y + (data.y - data.startCursor.y) / _zoom) + 'px',
+			"left"    : (_position.x * zoom + (data.x - data.startCursor.x)) + 'px',
+			"top"     : (_position.y * zoom + (data.y - data.startCursor.y)) + 'px',
 			"z-index" : defaults.topZIndex + (i | 0)
 		}
 

@@ -150,12 +150,16 @@ event.listen('redrawDeck', data => {
 	) {
 		applyChangedParameters(data);
 	}
+
+	const zoom = share.get('zoom');
 	
 	// перерисовка стопки
 	let _params = {
 		"transform" : 'rotate(' + (data.params.rotate | 0) + 'deg)'            ,
-		"left"      : data.params.x + 'px'                                     ,
-		"top"       : data.params.y + 'px'                                     ,
+		"left"      :              data.params.x * zoom + 'px'                 ,
+		"top"       :              data.params.y * zoom + 'px'                 ,
+		"width"     :       defaults.card.width  * zoom + 'px'                 ,
+		"height"    :       defaults.card.height * zoom + 'px'                 ,
 		"display"   : data.deck.visible || ignore_visibility ? 'block' : 'none'
 	};
 
@@ -209,12 +213,14 @@ event.listen('redrawDeck', data => {
 		let _zIndex        = (data.params.startZIndex | 0) + (i | 0);
 
 		let _params = {
-			"-ms-transform"     : 'rotate(' + (data.params.rotate | 0) + 'deg)'                    ,
-			"-webkit-transform" : 'rotate(' + (data.params.rotate | 0) + 'deg)'                    ,
-			"-moz-transform"    : 'rotate(' + (data.params.rotate | 0) + 'deg)'                    ,
-			"transform"         : 'rotate(' + (data.params.rotate | 0) + 'deg)'                    ,
-			"left"              :              _card_position.x        + 'px'                      ,
-			"top"               :              _card_position.y        + 'px'                      ,
+			"-ms-transform"     : 'rotate(' + (data.params.rotate | 0) + 'deg)',
+			"-webkit-transform" : 'rotate(' + (data.params.rotate | 0) + 'deg)',
+			"-moz-transform"    : 'rotate(' + (data.params.rotate | 0) + 'deg)',
+			"transform"         : 'rotate(' + (data.params.rotate | 0) + 'deg)',
+			"left"              :     _card_position.x * zoom + 'px'           ,
+			"top"               :     _card_position.y * zoom + 'px'           ,
+			"width"             : defaults.card.width  * zoom + 'px'           ,
+			"height"            : defaults.card.height * zoom + 'px'           ,
 			"z-index"           : (
 				ignore_visibility
 					? (card.visible

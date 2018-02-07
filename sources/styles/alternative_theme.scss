@@ -5,8 +5,8 @@ $card_height : 96px;
 
 $theme_name  : "alternative";
 
-$cards : ("1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "j", "q", "k");
-$ranks : ("d", "s", "h", "c");
+$cards : ("1", "k", "q", "j", "10", "9", "8", "7", "6", "5", "4", "3", "2", "1");
+$ranks : ("d", "c", "h", "s");
 
 .#{$theme_name}_field {
 	background-image : url('#{$img_dir}bg_large1.jpg');
@@ -39,9 +39,13 @@ $ranks : ("d", "s", "h", "c");
 
 	@each $rank in $ranks {
 		@each $card in $cards {
+
+			$x : index($cards, $card) - 1;
+			$y : index($ranks, $rank) - 1;
 			
 			.#{$rank}#{$card} {
-				background-position : $card_width * (index($cards, $card) - 1) - 2 $card_height * (index($ranks, $rank) - 1) - 2;
+				background-position: calc(100% / 12 * #{$x}) calc(100% / 3 * #{$y});
+				background-size: calc(100% * 13) calc(100% * 4);
 			}
 		}
 	}

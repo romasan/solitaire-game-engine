@@ -46,8 +46,8 @@ let applyChangedParameters = (data, rewrite = true) => {
 			: 0;
 
 	let paddingValues = {
-		'paddingY'     : 'padding_y'     ,
-		'paddingX'     : 'padding_x'     ,
+		    'paddingY' :      'padding_y',
+		    'paddingX' :      'padding_x',
 		'flipPaddingY' : 'flip_padding_y',
 		'flipPaddingX' : 'flip_padding_x'
 	};

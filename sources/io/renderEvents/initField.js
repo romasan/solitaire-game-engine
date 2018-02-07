@@ -42,11 +42,12 @@ event.listen('initField', data => {
 	if (data.top    && typeof data.top    == 'number') { _params.top    = data.top    + 'px'; }
 	if (data.left   && typeof data.left   == 'number') { _params.left   = data.left   + 'px'; }
 
-	let _zoom = share.get('zoom');
-	if (_zoom != defaults.zoom || _zoom != 1) {
-		_params.transform = 'scale(' + _zoom + ')';
-		_params['transform-origin'] = '0 0';
-	}
+	// const zoom = share.get('zoom');
+
+	// if (zoom != defaults.zoom || zoom != 1) {
+	// 	_params.transform = 'scale(' + zoom + ')';
+	// 	_params['transform-origin'] = '0 0';
+	// }
 
 	elRender(domElement)
 		.css(_params)

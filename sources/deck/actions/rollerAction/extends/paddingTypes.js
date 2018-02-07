@@ -50,8 +50,8 @@ export default {
 			}
 
 			return {
-				"x" : params.x + (defaults.card.width * share.get('zoom')) + padding + ((index - shift) - length + open) * params.padding_x,
-				"y" : params.y                                                       + ((index - shift) - length + open) * params.padding_y
+				"x" : params.x + (defaults.card.width) + padding + ((index - shift) - length + open) * params.padding_x,
+				"y" : params.y                                   + ((index - shift) - length + open) * params.padding_y
 			}
 		} else {                          // before delimiter
 
