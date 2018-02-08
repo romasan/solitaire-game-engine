@@ -46,7 +46,11 @@ event.listen('moveDragDeck', data => {
 
 	for (let i in data.moveDeck) {
 
-		let _position = data.destination.padding(data.destination.cardsCount() - data.moveDeck.length + (i | 0), true);
+		let _position = data.destination.padding(
+			data.destination.cardsCount() - data.moveDeck.length + (i | 0),
+			true
+		);
+
 		_position.random = Math.random();
 
 		let departureAngle   = angleValidate(data.departure	 .rotate), 

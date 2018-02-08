@@ -201,22 +201,60 @@ let genId = (i => () => i++)(0);
 
 share.set('animation', defaults.animation);
 
-let animationOn = e => {
+let animationOn = context => {
+
+	console.warn('animationOn', context);
+
 	// console.warn('animationOn');
+
 	if ( share.get('animations') ) {
 		share.set('animation', true);
 	}
+
+	if (
+		typeof context == "string"
+	) {
+		const animationKey = share.get('animationKeys')[context];
+		if (typeof animationKey == "boolean") {
+			share.set('animation', animationKey)
+		}
+
+	}
 };
 
-let animationDefault = e => {
-	// console.warn('animationDefault');
+event.listen('animationOn', animationOn);
+event.listen('animation:on', animationOn);
+
+let animationDefault = context => {
+
+	console.warn('animationDefault', context);
+
 	share.setFrom('animation', 'animations');
+
+	if (
+		typeof context == "string"
+	) {
+		const animationKey = share.get('animationKeys')[context];
+		if (typeof animationKey == "boolean") {
+			// console.log('###', context, animationKey);
+			share.set('animation', animationKey);
+		}
+
+	}
 };
 
-let animationOff = e => {
-	// console.warn('animationOff');
+event.listen('animationDefault', animationDefault);
+event.listen('animation:default', animationDefault);
+
+let animationOff = context => {
+
+	console.warn('animationOff', context);
+
 	share.set('animation', false);
 };
+
+event.listen('animationOff', animationOff);
+event.listen('animation:off', animationOff);
 
 // history
 

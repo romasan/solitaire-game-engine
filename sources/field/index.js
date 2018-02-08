@@ -33,7 +33,10 @@ class Field {
 
 		this.homeGroups = data.homeGroups ? data.homeGroups : [];
 
-		share.set('autoMoveToHomeOpenDecks', data.autoMoveToHomeOpenDecks ? data.autoMoveToHomeOpenDecks : []);
+		share.set('autoMoveToHomeOpenDecks', data.autoMoveToHomeOpenDecks
+			? data.autoMoveToHomeOpenDecks
+			: []
+		);
 
 		// вкл./выкл. подсказок
 		if (typeof data.showTips == 'boolean' && data.showTips) {
@@ -56,7 +59,7 @@ class Field {
 			"zoom"                 : 'number' , // масштаб отображения
 			// "movesAnimation"    : 'string' ,
 			"animationTime"        : 'number' , // время анимации
-			"animations"           : 'boolean', // показывать ли вообще анимации
+			// "animations"        : 'boolean', // показывать ли вообще анимации
 			"showHistoryAnimation" : 'boolean',
 			"showPrefFlipCard"     : 'boolean',
 			"gameIsWon"            : 'boolean',
@@ -71,6 +74,33 @@ class Field {
 					? data[valueName] 
 					: defaults[valueName]
 			);	
+		}
+
+		if (typeof data.animations != "undefined") {
+
+			if (typeof data.animations == "boolean") {
+				share.set('animations', data.animations);
+			} else {
+
+				if (typeof data.animations.default == "boolean") {
+					share.set('animations', data.animations.default);
+				} else {
+					share.set('animations', defaults.animations);
+				}
+
+				for (let key in data.animations) {
+
+					let animationKeys = {};
+
+					if (key != "default" && typeof data.animations[key] == "boolean") {
+						animationKeys[key] = data.animations[key];
+					}
+
+					share.set('animationKeys', animationKeys);
+				}
+			}
+		} else {
+			share.set('animations', defaults.animations);
 		}
 
 		// условие выигрыша
@@ -107,14 +137,20 @@ class Field {
 
 		// параметры отображения подсказок
 		for (let tipParamName in defaults.tipsParams) {
-			this.tipsParams[tipParamName] = (data.tipsParams && typeof data.tipsParams[tipParamName] != 'undefined')
+			this.tipsParams[tipParamName] = (
+				       data.tipsParams                              &&
+				typeof data.tipsParams[tipParamName] != 'undefined'
+			)
 				? data.tipsParams[tipParamName]
 				: defaults.tipsParams[tipParamName]
 		}
 
 		// параметры ввода
 		for (let inputParamName in defaults.inputParams) {
-			this.inputParams[inputParamName] = (data.inputParams && typeof data.inputParams[inputParamName] != 'undefined')
+			this.inputParams[inputParamName] = (
+				       data.inputParams                                &&
+				typeof data.inputParams[inputParamName] != 'undefined'
+			)
 				? data.inputParams[inputParamName]
 				: defaults.inputParams[inputParamName]
 		}

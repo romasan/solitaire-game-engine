@@ -229,6 +229,8 @@ export default class elClass {
 	animate(params, animationTime, callback, animationName) {
 
 		let _animation = share.get('animation');
+
+		// console.log('#animate', _animation);
 		
 		typeof animationTime == 'undefined' && (                          animationTime = share.get('animationTime'));
 		typeof animationTime == 'function'  && (callback = animationTime, animationTime = share.get('animationTime'));
@@ -252,6 +254,17 @@ export default class elClass {
 
 			return data;
 		};
+		
+		// let reType = data => { // )===
+
+		// 	const px = (data + '').split('px');
+
+		// 	if (px.length == 2) {
+		// 		return (px[0] | 0) + 'px';
+		// 	}
+
+		// 	return data;
+		// };
 
 		let noPX = data => {
 

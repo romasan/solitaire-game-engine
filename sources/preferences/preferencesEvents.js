@@ -89,7 +89,8 @@ export default e => {
 
 		// $('#bbParameters').click(onShowParameters);
 
-		document.getElementById('bbParameters').addEventListener('click', onShowParameters);
+		document.getElementById('bbParameters')
+			.addEventListener('click', onShowParameters);
 		
 		// event.dispatch('addDomEvent', {
 		// 	"event"    : "click"
@@ -102,7 +103,11 @@ export default e => {
 		// $('#parametersPanel').on('change', 'input', applyParameters);
 
 		document.getElementById('parametersPanel')
-			.addEventListener('change', e => {e.target.nodeName == 'INPUT' ? applyParameters() : null});
+			.addEventListener('change', e => {
+				if (e.target.nodeName == 'INPUT') {
+					applyParameters()
+				}
+			});
 
 		// $("#solitaire-engine-style-preferences input").change(applyParameters);
 

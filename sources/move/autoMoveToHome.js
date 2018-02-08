@@ -76,6 +76,8 @@ let openDecks = () => {
 
 let autoMoveToHome = outer => {
 
+	event.dispatch('animation:default', 'autoMoveToHome');
+
 	let _issetAnimated = false;
 
 	event.dispatch('checkAnimations', isset => {_issetAnimated = isset});
@@ -205,6 +207,8 @@ let autoMoveToHome = outer => {
 
 		if ( openDecks() ) {
 			autoMoveToHome();
+		} else {
+			event.dispatch('animation:default');
 		}
 	}
 };

@@ -26,7 +26,17 @@ import Card   from '../card'        ;
   */
 let forceMove = data => {
 
-	const {from, to, deck, flip, callback, steps, save, addStep, waitActions} = data;
+	const {
+		from       ,
+		to         ,
+		deck       ,
+		flip       ,
+		callback   ,
+		steps      ,
+		save       ,
+		addStep    ,
+		waitActions
+	} = data;
 
 	if (
 		!from ||
@@ -55,7 +65,7 @@ let forceMove = data => {
 	/**
 	 * @type {Deck}
 	 */
-	let deckTo   = typeof to   == 'string'
+	let deckTo = typeof to == 'string'
 		? Deck.getDeck(to)
 		: to;
 

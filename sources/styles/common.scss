@@ -207,8 +207,8 @@ $card_height : 96px;
 .american_back {
 	.flip:after {
 		content             : attr(data-content);
-		width               : $card_width;
-		height              : $card_height;
+		width               : 100%;
+		height              : 100%;
 		margin-left         : -1px;
 		display             : inline-block;
 		background-image    : url('#{$img_dir}rub2.png');
