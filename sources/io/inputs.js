@@ -327,7 +327,9 @@ class inputsClass {
 
 			// _deck.runActions();
 
-			let _dragDeck = _deck ? _deck.Take(_id) : null;
+			let _dragDeck = _deck
+				? _deck.Take(_id)
+				: null;
 
 			share.set('dragDeck', _dragDeck);
 

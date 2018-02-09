@@ -7,15 +7,19 @@ import Tips   from './'             ;
 
 let usedCardId = null;
 
-let showFlipCardOnMove = data => { // to, toCard
+let showFlipCardOnMove = data => { // {to : deckClass, toCard: cardClass}
 
-	if (!data.toCard || !data.toCard.parent) {
+	console.warn('show flip card on move');
+
+	const {to, toCard} = data;
+
+	if (!toCard || !toCard.parent) {
 		return;
 	}
 
 	// console.log('showFlipCardOnMove:', data);
 
-	let deck = common.getElementById(data.toCard.parent);
+	let deck = common.getElementById(toCard.parent);
 
 	if (
 		!deck               ||
@@ -24,9 +28,7 @@ let showFlipCardOnMove = data => { // to, toCard
 		return;
 	}
 
-	if (
-		deck.showPrefFlipCard == false
-	) {
+	if (deck.showPrefFlipCard == false) {
 		return;
 	}
 
@@ -73,7 +75,9 @@ let showFlipCardOnMove = data => { // to, toCard
 	let cardIndex = deck.getCardIndexById(data.toCard.id);
 	let moveDeckCount = deck.cards.length - cardIndex;
 
-	let prevCard = deck.cards.length > moveDeckCount ? deck.cards[deck.cards.length - moveDeckCount - 1] : null;
+	let prevCard = deck.cards.length > moveDeckCount
+		? deck.cards[deck.cards.length - moveDeckCount - 1]
+		: null;
 
 		// for (let i = data.deck.cards.length - 1; i >= 0 && !prevCard; i -= 1) {
 		// 	if (data.deck.cards[i].id == data.card.id && i > 0) {
@@ -90,3 +94,7 @@ let showFlipCardOnMove = data => { // to, toCard
 };
 
 event.listen('click:unflipCard', showFlipCardOnMove);
+
+event.listen('dragDeck', data => {
+	console.log('#', data);
+});
