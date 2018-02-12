@@ -1,11 +1,16 @@
 'use strict';
 
-import event  from '../common/event';
-import common from '../common'      ;
+import AA/*, {event, defaults}*/ from '../common';
 
-import Tips   from './'             ;
+console.log('#1', AA);
+// console.log('#2', event);
+// console.log('#3', defaults);
+
+import Tips from './';
 
 let usedCardId = null;
+
+/*
 
 let showFlipCardOnMove = data => { // {to : deckClass, toCard: cardClass}
 
@@ -93,8 +98,11 @@ let showFlipCardOnMove = data => { // {to : deckClass, toCard: cardClass}
 	// }
 };
 
+
 event.listen('click:unflipCard', showFlipCardOnMove);
 
 event.listen('dragDeck', data => {
 	console.log('#', data);
 });
+
+*/

@@ -24,7 +24,11 @@ import Field    from '../field'          ;
  */
 let Move = data => {
 
-	const {moveDeck, to, cursorMove} = data;
+	const {
+		moveDeck,
+		to,
+		cursorMove
+	} = data;
 
 	// console.log("Move", data);
 
@@ -267,4 +271,8 @@ let Move = data => {
 	}
 };
 
+
+/**
+ * move - Listener
+ */
 event.listen('move', Move);

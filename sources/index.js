@@ -39,7 +39,16 @@ exports.event     = event;
 exports.options   = defaults;
 exports.winCheck  = winCheck.hwinCheck;
 exports.generator = deckGenerator;
-exports.version   = version ? version.toString().split(9).slice(1).map(e => parseInt(e, 8)).join('.') : null;
+exports.version   = version
+	? version
+		.toString()
+		.split(9)
+		.slice(1)
+		.map(
+			e => parseInt(e, 8)
+		)
+		.join('.')
+	: null;
 
 exports.onload = callback => {
 	preloadCallback = callback;

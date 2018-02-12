@@ -15,47 +15,51 @@ import moveDragDeck   from './renderEvents/moveDragDeck'  ;
 import moveCardBack   from './renderEvents/moveCardBack'  ;
 import fieldThemesSet from './renderEvents/fieldThemesSet';
 
-// styles DOM
 import '../styles/common.scss'                            ;
 import '../styles/default_theme.scss'                     ;
 import '../styles/alternative_theme.scss'                 ;
 import '../styles/environment.css'                        ;
 
+/**
+ * Set default noredraw value
+ */
 share.set('nodraw', false);
 
+/**
+ * Render on - Listener
+ */
 event.listen('render:on', e => {
 	share.set('nodraw', false);
 });
 
+/**
+ * Render off - Listener
+ */
 event.listen('render:off', e => {
 	share.set('nodraw', true);
 });
 
+/**
+ * removeEl - Listener
+ */
 event.listen('removeEl', data => {
-
-	// if (share.get('nodraw')) {
-
-	// 	if (data && typeof data.callback == "function") {
-	// 		data.callback();
-	// 	}
-
-	// 	return;
-	// }
 
 	let _elDomElement = share.get('domElement:' + data.id);
 
-	// try {
 	if (_elDomElement) {
 
 		_elDomElement.remove();
 
 		share.delete('domElement:' + data.id);
-	} else {
-	// } catch (e) {
-		// console.warn('Dom element for', data.id, 'not found');
 	}
 });
 
+
+/**
+ * triggerMouseEvent
+ * @param {*} node 
+ * @param {string} eventName 
+ */
 let triggerMouseEvent = (node, eventName) => {
 
     let mouseEvent = document.createEvent('MouseEvents');
@@ -65,13 +69,10 @@ let triggerMouseEvent = (node, eventName) => {
     node.dispatchEvent(mouseEvent);
 };
 
+/**
+ * clickCard - Listener
+ */
 event.listen('clickCard', card => {
-
-	// let _elDomElement = share.get('domElement:' + card.id);
-
-	// console.log('clickCard', card.name);
-
-	// triggerMouseEvent(_elDomElement.el, 'mousedown');
 
 	let deck = common.getElementById(card.parent);
 
@@ -82,16 +83,27 @@ event.listen('clickCard', card => {
 			"toCard" : card  // card
 		});
 	}
-})
+});
 
+/**
+ * showCard - Listener
+ */
 event.listen('showCard', target => {
-	elRender(target).show();
+	elRender(target)
+		.show();
 });
 
+/**
+ * hideCard - Listener
+ */
 event.listen('hideCard', target => {
-	elRender(target).hide();
+	elRender(target)
+		.hide();
 });
 
+/**
+ * checkAnimations - Listener
+ */
 event.listen('checkAnimations', callback => {
 	callback( document.getElementsByClassName('animated').length > 0 );
 });

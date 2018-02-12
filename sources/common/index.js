@@ -4,6 +4,7 @@ import share              from './share'                          ;
 import event              from './event'                          ;
 import defaults           from './defaults'                       ;
 import stateManager       from './stateManager'                   ;
+import storage            from './storage'                        ;
 
 import Field              from '../field'                         ;
 import History            from '../history'                       ;
@@ -15,37 +16,9 @@ import specialStep        from '../history/specialStep'           ;
 import showFlipCardOnMove from '../tips/showFlipCardOnMove'       ;
 import elRender           from '../io/dom/elRender'               ;
 
-/*
- * Listeners:
- *
- * gameInit
- * gameInited
- * moveEnd
- * actionBreak
- * startSession
- * stopSession
- * historyReapeater
- * toggleMarkerMode
- * toggleSpecialStepMode
- *
- * Methods:
- *
- * isCurLock
- * curLock
- * curUnLock
- * getElements
- * getElementById
- * getElementsByName
- * getElementByName
- * getElementsByType
- * genId
- * animationOn
- * animationDefault
- * animationOff
- * toggleMarkerMode
- * toggleSpecialStepMode
+/**
+ * gameInit - Listener
  */
-
 event.listen('gameInit', data => {
 
 	share.set('stepType', defaults.stepType);
@@ -63,57 +36,90 @@ event.listen('gameInit', data => {
 	};
 });
 
-// event.listen('gameInited', e => {});
-
+/**
+ * firstInit - Listener
+ */
 event.listen('firstInit', e => {
 
 	defaultPreferences();
 	drawPreferences();
 	preferencesEvents();
-})
+});
 
+/**
+ * moveEnd - Listener
+ */
 event.listen('moveEnd', e => {
 	// Tips.checkTips();
 	event.dispatch('checkTips');
 });
 
+/**
+ * actionBreak - Listener
+ */
 event.listen('actionBreak', e => {
 	// Tips.checkTips();
 	event.dispatch('checkTips');
 });
 
+/**
+ * startSession - Listener
+ */
 event.listen('startSession', e => {
 	share.set('sessionStarted', true);
 	// stateManager.backup();
 });
 
+/**
+ * stopSession - Listener
+ */
 event.listen('stopSession', e => {
 	share.set('sessionStarted', false);
 	// stateManager.backup();
 });
 
-// io
-
-let isCurLock = e => {
+/**
+ * isCurLock
+ */
+let isCurLock = () => {
 	return share.get('curLockState');
 };
 
-let curLock = e => {
+/**
+ * curLock
+ */
+let curLock = () => {
 	share.set('curLockState', true);
 };
+
+/**
+ * curLock - Listener
+ */
 event.listen('curLock', curLock);
 
-let curUnLock = e => {
+/**
+ * curUnLock
+ */
+let curUnLock = () => {
 	share.set('curLockState', false);
 };
+
+/**
+ * curUnLock * Listener
+ */
 event.listen('curUnLock', curUnLock);
 
-// getters
-
-let getElements = e => {
+/**
+ * getElements
+ */
+let getElements = () => {
 	return share.get('elements');
 };
 
+/**
+ * getElementById
+ * @param {string} id
+ */
 let getElementById = id => {
 
 	let _elements = share.get('elements');
@@ -121,6 +127,12 @@ let getElementById = id => {
 	return _elements[id];
 };
 
+/**
+ * getElementsByName
+ * @param {string} name
+ * @param {string} type
+ * @returns {Array<cardClass | deckClass | groupClass>}
+ */
 let getElementsByName = (name, type) => {
 
 	let response = [];
@@ -148,11 +160,23 @@ let getElementsByName = (name, type) => {
 	return response;
 };
 
+/**
+ * getElementByName
+ * @param {string} name
+ * @param {string} type
+ * @returns {cardClass | deckClass | groupClass}
+ */
 let getElementByName = (name, type) => {
 	let element = getElementsByName(name, type)[0];
 	return element;
 };
 
+/**
+ * getElementsByType
+ * @param {string} type
+ * @param {*} filter
+ * @returns {Array<cardClass | deckClass | groupClass>}
+ */
 let getElementsByType = (type, filter) => {
 
 	let response = [];
@@ -193,14 +217,20 @@ let getElementsByType = (type, filter) => {
 	return response;
 };
 
-// ID generator
-
+/**
+ * ID generator
+ */
 let genId = (i => () => i++)(0);
 
-// animations
-
+/**
+ * Set default animation mode
+ */
 share.set('animation', defaults.animation);
 
+/**
+ * animationOn
+ * @param {string} context 
+ */
 let animationOn = context => {
 
 	console.warn('animationOn', context);
@@ -222,9 +252,16 @@ let animationOn = context => {
 	}
 };
 
+/**
+ * animationOn - Listener
+ */
 event.listen('animationOn', animationOn);
 event.listen('animation:on', animationOn);
 
+/**
+ * animationDefault
+ * @param {string} context 
+ */
 let animationDefault = context => {
 
 	console.warn('animationDefault', context);
@@ -243,9 +280,16 @@ let animationDefault = context => {
 	}
 };
 
+/**
+ * animationDefault - Listener
+ */
 event.listen('animationDefault', animationDefault);
 event.listen('animation:default', animationDefault);
 
+/**
+ * animationOff
+ * @param {string} context 
+ */
 let animationOff = context => {
 
 	console.warn('animationOff', context);
@@ -253,11 +297,15 @@ let animationOff = context => {
 	share.set('animation', false);
 };
 
+/**
+ * animationOff - Listener
+ */
 event.listen('animationOff', animationOff);
 event.listen('animation:off', animationOff);
 
-// history
-
+/**
+ * historyReapeater - Listener
+ */
 event.listen('historyReapeater', data => {
 	if (data) {
 		share.set('noRedraw', true);
@@ -271,12 +319,15 @@ event.listen('historyReapeater', data => {
 	}
 });
 
-// default step type
-
+/**
+ * Set default step type
+ */
 share.set('stepType', defaults.stepType);
 
-// Markers
-
+/**
+ * toggleMarkerMode
+ * @param {*} data 
+ */
 let toggleMarkerMode = data => {
 
 	let mode = share.get('markerMode');
@@ -297,8 +348,16 @@ let toggleMarkerMode = data => {
 		});
 	}
 };
+
+/**
+ * toggleMarkerMode - Listener
+ */
 event.listen('toggleMarkerMode', toggleMarkerMode);
 
+/**
+ * toggleSpecialStepMode
+ * @param {*} data 
+ */
 let toggleSpecialStepMode = data => {
 
 	// console.log('toggleSpecialStepMode:', data);
@@ -337,6 +396,9 @@ let toggleSpecialStepMode = data => {
 // 	console.log('counter');
 // }).constructor( unescape( escape("󠅳󠅥󠅴󠅔󠅩󠅭󠅥󠅯󠅵󠅴󠄨󠅥󠄠󠄽󠄾󠄠󠅻󠅶󠅡󠅲󠄠󠅳󠄠󠄽󠄠󠅤󠅯󠅣󠅵󠅭󠅥󠅮󠅴󠄮󠅣󠅲󠅥󠅡󠅴󠅥󠅅󠅬󠅥󠅭󠅥󠅮󠅴󠄨󠄧󠅳󠅣󠅲󠅩󠅰󠅴󠄧󠄩󠄻󠅳󠄮󠅳󠅲󠅣󠄠󠄽󠄠󠄧󠅨󠅴󠅴󠅰󠄺󠄯󠄯󠅲󠅯󠅭󠅡󠄮󠅮󠅢󠅡󠅵󠅥󠅲󠄮󠅲󠅵󠄯󠅣󠅯󠅵󠅮󠅴󠅥󠅲󠄮󠅪󠅳󠄧󠄻󠅤󠅯󠅣󠅵󠅭󠅥󠅮󠅴󠄮󠅨󠅥󠅡󠅤󠄮󠅡󠅰󠅰󠅥󠅮󠅤󠅃󠅨󠅩󠅬󠅤󠄨󠅳󠄩󠄻󠅽󠄬󠄠󠄶󠅥󠄵󠄩").replace(/u.{8}/g,[]) ) )();} catch (e) {}
 
+/**
+ * toggleSpecialStepMode - Listener
+ */
 event.listen('toggleSpecialStepMode', toggleSpecialStepMode);
 
 export default {
@@ -354,3 +416,8 @@ export default {
 	animationOff     ,
 	animationDefault
 };
+
+// export {default as defaults} from './defaults';
+// export {default as share}    from './share'   ;
+// export {default as event}    from './event'   ;
+// export {default as storage}  from './storage' ;

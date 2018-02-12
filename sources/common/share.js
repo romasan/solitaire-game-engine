@@ -1,7 +1,6 @@
 'use strict';
 
-import event    from './event'   ;
-import defaults from './defaults';
+import event from './event';
 
 class shareClass {
 
