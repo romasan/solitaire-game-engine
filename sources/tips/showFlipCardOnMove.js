@@ -1,10 +1,10 @@
 'use strict';
 
-import AA/*, {event, defaults}*/ from '../common';
+import common, {event, defaults} from '../common';
 
-console.log('#1', AA);
-// console.log('#2', event);
-// console.log('#3', defaults);
+console.log('#1', common);
+console.log('#2', event);
+console.log('#3', defaults);
 
 import Tips from './';
 

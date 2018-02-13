@@ -1,43 +1,16 @@
 'use strict';
 
-import event          from '../common/event'               ;
-import share          from '../common/share'               ;
-import defaults       from '../common/defaults'            ;
-import common         from '../common'                     ;
+import common, {event, share, defaults} from '../common';
 
 // Actions
-import deal           from './actions/dealAction'          ;
-import kickAction     from './actions/kickAction'          ;
-import stepsAround    from './actions/stepsAroundAction'   ;
-import changeStepType from './actions/changeStepTypeAction';
-import lock           from './actions/lockAction'          ;
-import unlock         from './actions/unlockAction'        ;
-import checkFull      from './actions/checkFullAction'     ;
-import roller         from './actions/rollerAction'        ;
-import Deck           from './'                            ;
+import * as _actions from './actions';
 
-let _actions = {
-	"deal"           : deal          ,
-	"kick"           : kickAction    ,
-	"stepsAround"    : stepsAround   ,
-	"changeStepType" : changeStepType,
-	"lock"           : lock          ,
-	"unlock"         : unlock        ,
-	"checkFull"      : checkFull     ,
-	"roller"         : roller
-};
-
-/*
- * addActionEvent
- * add
- * autoRunActions
- * runAction
- */
+import Deck from './';
 
 let _decksActions = [],
 	_events = [];
 
-event.listen('logActions', e => {
+event.listen('logActions', e => { // debul log actions
 	console.log('_decksActions', _decksActions);
 	console.log('_events', _events);
 });
@@ -47,6 +20,10 @@ event.listen('initField', e => {
 	_events = [];
 });
 
+/**
+ * addActionEvent
+ * @param {string} eventName 
+ */
 let addActionEvent = eventName => {
 
 	event.listen(
@@ -93,7 +70,7 @@ let addActionEvent = eventName => {
 
 /**
  * Add actions by names
- * @param {Deck} deck 
+ * @param {Deck} deck
  */
 let add = deck => {
 
@@ -143,6 +120,10 @@ let add = deck => {
 	autoRunActions(deck);
 };
 
+/**
+ * autoRunActions
+ * @param {Deck} deck 
+ */
 let autoRunActions = deck => {
 
 	common.animationDefault();
@@ -170,6 +151,18 @@ let autoRunActions = deck => {
 	// Tips.checkTips();
 }
 
+/**
+ * @typedef {Object} runActionData
+ * @property {string} actionName
+ * @property {string} deckName
+ * @property {*} eventData
+ * @property {string} eventName
+ */
+
+ /**
+  * Run action
+  * @param {runActionData} data
+  */
 let runAction = data => { // {actionName, deckName, <eventData>, eventName}
 
 	if (_actions[data.actionName]) {

@@ -1,10 +1,7 @@
 'use strict';
 
-import share           from '../common/share'   ;
-import event           from '../common/event'   ;
-import defaults        from '../common/defaults';
+import {share, event, defaults, storage} from '../common';
 
-import storage         from '../common/storage' ;
 import gamePreferences from './gamePreferences' ;
 
 /*

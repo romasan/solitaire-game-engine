@@ -1,9 +1,6 @@
 'use strict';
 
-import event            from '../../common/event'   ;
-import share            from '../../common/share'   ;
-import defaults         from '../../common/defaults';
-import common           from '../../common'         ;
+import common, {event, share, defaults} from '../../common';
 
 import deckAction       from './deckAction'         ;
 import lockActionCommon from './lockActionCommon'   ;

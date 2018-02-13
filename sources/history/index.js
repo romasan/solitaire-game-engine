@@ -1,13 +1,10 @@
 'use strict';
 
-import event         from '../common/event'   ;
-import share         from '../common/share'   ;
-import defaults      from '../common/defaults';
-import common        from '../common'         ;
+import common, {event, share, defaults} from '../common';
 
-import undo          from './undo'            ;
-import redo          from './redo'            ;
-import historyCommon from './historyCommon'   ;
+import undo          from './undo'         ;
+import redo          from './redo'         ;
+import historyCommon from './historyCommon';
 
 const DECK_NAME = "DECK_NAME", // index of deck
 //    OBJ_NAME  = "OBJ_NAME" ,

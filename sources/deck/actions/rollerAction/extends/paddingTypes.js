@@ -1,5 +1,4 @@
-import share    from "../../../../common/share"   ;
-import defaults from '../../../../common/defaults';
+import {share, defaults} from '../../../../common';
 
 export default {
 

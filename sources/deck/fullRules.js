@@ -1,11 +1,11 @@
 'use strict';
 
-import defaults  from '../common/defaults'                     ;
+import {defaults} from '../common'                              ;
 
-import Group     from '../group'                               ;
-import Deck      from './'                                     ;
-import Tips      from '../tips'                                ;
-import getBeside from '../group/generators/relations/getBeside';
+import Group      from '../group'                               ;
+import Deck       from './'                                     ;
+import Tips       from '../tips'                                ;
+import getBeside  from '../group/generators/relations/getBeside';
 
 /*
 
@@ -258,21 +258,45 @@ let fullRules = {
 		return _card && _card.rank == defaults.card.ranks[lastIndex];
 	},
 
-	"prevDeckTopCardDescStep" : deck => fullRules._besideTopCard(deck, 'prev', (from, to) => from.value == (to.value | 0) + 1),
+	"prevDeckTopCardDescStep" : deck => fullRules._besideTopCard(
+		deck                                           ,
+		'prev'                                         ,
+		(from, to) => from.value == (to.value | 0) + 1),
 
-	"prevDeckTopCardAscStep"  : deck => fullRules._besideTopCard(deck, 'prev', (from, to) => (from.value | 0) + 1 == to.value),
+	"prevDeckTopCardAscStep"  : deck => fullRules._besideTopCard(
+		deck                                           ,
+		'prev'                                         ,
+		(from, to) => (from.value | 0) + 1 == to.value),
 
-	"nextDeckTopCardDescStep" : deck => fullRules._besideTopCard(deck, 'next', (from, to) => from.value == (to.value | 0) + 1),
+	"nextDeckTopCardDescStep" : deck => fullRules._besideTopCard(
+		deck                                           ,
+		'next'                                         ,
+		(from, to) => from.value == (to.value | 0) + 1),
 
-	"nextDeckTopCardAscStep"  : deck => fullRules._besideTopCard(deck, 'next', (from, to) => (from.value | 0) + 1 == to.value),
+	"nextDeckTopCardAscStep"  : deck => fullRules._besideTopCard(
+		deck                                           ,
+		'next'                                         ,
+		(from, to) => (from.value | 0) + 1 == to.value),
 
-	"prevDeckTopCardDesc"     : deck => fullRules._besideTopCard(deck, 'prev', (from, to) => from.value > to.value)           ,
+	"prevDeckTopCardDesc"     : deck => fullRules._besideTopCard(
+		deck                                ,
+		'prev'                              ,
+		(from, to) => from.value > to.value),
 
-	"prevDeckTopCardAsc"      : deck => fullRules._besideTopCard(deck, 'prev', (from, to) => from.value < to.value)           ,
+	"prevDeckTopCardAsc"      : deck => fullRules._besideTopCard(
+		deck                                ,
+		'prev'                              ,
+		(from, to) => from.value < to.value),
 
-	"nextDeckTopCardDesc"     : deck => fullRules._besideTopCard(deck, 'next', (from, to) => from.value > to.value)           ,
+	"nextDeckTopCardDesc"     : deck => fullRules._besideTopCard(
+		deck                                ,
+		'next'                              ,
+		(from, to) => from.value > to.value),
 
-	"nextDeckTopCardAsc"      : deck => fullRules._besideTopCard(deck, 'next', (from, to) => from.value < to.value)           ,
+	"nextDeckTopCardAsc"      : deck => fullRules._besideTopCard(
+		deck                                ,
+		'next'                              ,
+		(from, to) => from.value < to.value),
 
 	"recoursivePrevNotEmpty"  : deck => {
 		return false; // TODO
@@ -282,21 +306,45 @@ let fullRules = {
 		return false; // TODO
 	},
 
-	"recoursivePrevDeckTopCardDescStep" : deck => fullRules._besideTopCardRecoursive(deck, 'prev', (from, to) => from.value == (to.value | 0) + 1),
+	"recoursivePrevDeckTopCardDescStep" : deck => fullRules._besideTopCardRecoursive(
+		deck                                           ,
+		'prev'                                         ,
+		(from, to) => from.value == (to.value | 0) + 1),
 
-	"recoursivePrevDeckTopCardAscStep"  : deck => fullRules._besideTopCardRecoursive(deck, 'prev', (from, to) => (from.value | 0) + 1 == to.value),
+	"recoursivePrevDeckTopCardAscStep"  : deck => fullRules._besideTopCardRecoursive(
+		deck                                           ,
+		'prev'                                         ,
+		(from, to) => (from.value | 0) + 1 == to.value),
 
-	"recoursiveNextDeckTopCardDescStep" : deck => fullRules._besideTopCardRecoursive(deck, 'next', (from, to) => from.value == (to.value | 0) + 1),
+	"recoursiveNextDeckTopCardDescStep" : deck => fullRules._besideTopCardRecoursive(
+		deck                                           ,
+		'next'                                         ,
+		(from, to) => from.value == (to.value | 0) + 1),
 
-	"recoursiveNextDeckTopCardAscStep"  : deck => fullRules._besideTopCardRecoursive(deck, 'next', (from, to) => (from.value | 0) + 1 == to.value),
+	"recoursiveNextDeckTopCardAscStep"  : deck => fullRules._besideTopCardRecoursive(
+		deck                                           ,
+		'next'                                         ,
+		(from, to) => (from.value | 0) + 1 == to.value),
 
-	"recoursivePrevDeckTopCardDesc"     : deck => fullRules._besideTopCardRecoursive(deck, 'prev', (from, to) => from.value > to.value)           ,
+	"recoursivePrevDeckTopCardDesc"     : deck => fullRules._besideTopCardRecoursive(
+		deck                                ,
+		'prev'                              ,
+		(from, to) => from.value > to.value),
 
-	"recoursivePrevDeckTopCardAsc"      : deck => fullRules._besideTopCardRecoursive(deck, 'prev', (from, to) => from.value < to.value)           ,
+	"recoursivePrevDeckTopCardAsc"      : deck => fullRules._besideTopCardRecoursive(
+		deck                                ,
+		'prev'                              ,
+		(from, to) => from.value < to.value),
 
-	"recoursiveNextDeckTopCardDesc"     : deck => fullRules._besideTopCardRecoursive(deck, 'next', (from, to) => from.value > to.value)           ,
+	"recoursiveNextDeckTopCardDesc"     : deck => fullRules._besideTopCardRecoursive(
+		deck                                ,
+		'next'                              ,
+		(from, to) => from.value > to.value),
 
-	"recoursiveNextDeckTopCardAsc"      : deck => fullRules._besideTopCardRecoursive(deck, 'next', (from, to) => from.value < to.value)           ,
+	"recoursiveNextDeckTopCardAsc"      : deck => fullRules._besideTopCardRecoursive(
+		deck                                ,
+		'next'                              ,
+		(from, to) => from.value < to.value),
 
 	"descByStep" : deck => fullRules._deckRecoursive(deck, (up, down) => up.value == (down.value | 0) + 1),
 
@@ -306,9 +354,12 @@ let fullRules = {
 
 	"desc"       : deck => fullRules._deckRecoursive(deck, (up, down) => up.value < down.value)           ,
 
-	"prevDeckTopCardEquallySuit" : deck => fullRules._besideTopCard(deck, 'prev', (up, down) => up.suit == down.suit),
+	"prevDeckTopCardEquallySuit" : deck => fullRules._besideTopCard(
+		deck                               ,
+		'prev'                             ,
+		(up, down) => up.suit == down.suit),
 
-	"nextDeckTopCardEquallySuit" : deck => false,
+	"nextDeckTopCardEquallySuit" : deck => false, // TODO
 
 	"prevDeckFull"               : deck => Deck.getDeck(getBeside(deck).prev.to).full,
 

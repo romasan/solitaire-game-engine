@@ -1,8 +1,6 @@
 'use strict';
 
-import share    from '../common/share'   ;
-import defaults from '../common/defaults';
-import common   from '../common'         ;
+import common, {share, defaults} from '../common';
 
 let paddingTypes = {
 

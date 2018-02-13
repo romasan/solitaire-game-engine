@@ -1,12 +1,10 @@
 'use strict';
 
-import event                  from '../../common/event'             ;
-import share                  from '../../common/share'             ;
-import defaults               from '../../common/defaults'          ;
+import {event, share, defaults} from '../../common'                   ;
 
-import Field                  from '../../field'                    ;
-import elRender               from '../dom/elRender'                ;
-import applyChangedParameters from './common/applyChangedParameters';
+import Field                    from '../../field'                    ;
+import elRender                 from '../dom/elRender'                ;
+import applyChangedParameters   from './common/applyChangedParameters';
 
 /*
  * addDeckEl

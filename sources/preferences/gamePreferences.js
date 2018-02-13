@@ -1,6 +1,6 @@
 'use strict';
 
-import share from '../common/share';
+import {share} from '../common';
 
 /*
  * draw

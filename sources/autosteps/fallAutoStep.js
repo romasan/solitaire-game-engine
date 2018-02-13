@@ -1,12 +1,10 @@
 'use strict';
 
-import share    from '../common/share'   ;
-import defaults from '../common/defaults';
-import event    from '../common/event'   ;
+import {share, defaults, event} from '../common' ;
 
-import autoStep from './autoStep'        ;
-import Deck     from '../deck'           ;
-import Tips     from '../tips'           ;
+import autoStep                 from './autoStep';
+import Deck                     from '../deck'   ;
+import Tips                     from '../tips'   ;
 
 export default class fallAutoStep extends autoStep {
 

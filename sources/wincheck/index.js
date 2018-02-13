@@ -1,11 +1,9 @@
 'use strict';
 
-import share         from '../common/share';
-import event         from '../common/event';
-import common        from '../common'      ;
+import common, {share, event} from '../common';
 
-import winCheckRules from './winCheckRules';
-import Deck          from '../deck'        ;
+import winCheckRules from './winCheckRules'   ;
+import Deck          from '../deck'           ;
 
 let winCheck = params => {
 

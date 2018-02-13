@@ -1,15 +1,16 @@
 'use strict';
 
-import common        from '../common'                    ;
-import share         from '../common/share'              ;
-import event         from '../common/event'              ;
-import defaults      from '../common/defaults'           ;
+import common, {
+	share              ,
+	event              ,
+	defaults           ,
+	stateManager       ,
+	storage as _storage
+} from '../common' ;
 
 import field         from '../field'                     ;
 import deckGenerator from '../deck/deckGenerator'        ;
 import elRender      from '../io/dom/elRender'           ;
-import _storage      from '../common/storage'            ;
-import stateManager  from '../common/stateManager'       ;
 import history       from '../history'                   ;
 import mapCommon     from '../group/generators/mapCommon';
 

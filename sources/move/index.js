@@ -1,15 +1,12 @@
 'use strict';
 
-import event    from '../common/event'   ;
-import share    from '../common/share'   ;
-import defaults from '../common/defaults';
-import common   from '../common'         ;
+import common, {event, share, defaults} from '../common';
 
-import Deck     from '../deck'           ;
-import Card     from '../card'           ;
-import Tips     from '../tips'           ;
-import bestTip  from '../tips/bestTip'   ;
-import Field    from '../field'          ;
+import Deck    from '../deck'        ;
+import Card    from '../card'        ;
+import Tips    from '../tips'        ;
+import bestTip from '../tips/bestTip';
+import Field   from '../field'       ;
 
 /**
  * @typedef {Object} moveData

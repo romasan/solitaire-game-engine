@@ -1,6 +1,6 @@
 'use strict';
 
-import share from './share';
+import {share} from './';
 
 class Event {
 

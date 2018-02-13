@@ -1,6 +1,6 @@
 'use strict';
 
-import defaults from '../common/defaults';
+import {defaults} from '../common';
 
 export default (group, data) => {
 

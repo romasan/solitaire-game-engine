@@ -1,7 +1,6 @@
 'use strict';
 
-import event    from '../../common/event';
-import share    from '../../common/share';
+import {event, share} from '../../common';
 
 import elRender from '../dom/elRender'   ;
 import Tips     from '../../tips'        ;

@@ -1,11 +1,9 @@
 'use strict';
 
-import share    from '../../common/share'   ;
-import event    from '../../common/event'   ;
-import defaults from '../../common/defaults';
+import {share, event, defaults} from '../../common'   ;
 
-import Field    from '../../field'          ;
-import elRender from '../dom/elRender'      ;
+import Field                    from '../../field'    ;
+import elRender                 from '../dom/elRender';
 
 // let _timer = null;
 

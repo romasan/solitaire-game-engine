@@ -1,7 +1,6 @@
 'use strict';
 
-import defaults from '../common/defaults';
-import share    from '../common/share'   ;
+import {defaults, share} from '../common';
 
 
 export default e => {

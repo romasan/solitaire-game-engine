@@ -1,8 +1,6 @@
 'use strict';
 
-import event          from '../common/event'       ;
-import share          from '../common/share'       ;
-import defaults       from '../common/defaults'    ;
+import {event, share, defaults} from '../common'   ;
 
 import allToAll       from './allToAll'            ;
 import bestTip        from './bestTip'             ;

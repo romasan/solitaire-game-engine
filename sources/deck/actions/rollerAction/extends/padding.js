@@ -1,5 +1,4 @@
-import rules from './paddingTypes'          ;
-import event from '../../../../common/event';
+import rules from './paddingTypes';
 
 let rollerPaddingExtend = (deck, padding, paddingMethod, index) => {
 

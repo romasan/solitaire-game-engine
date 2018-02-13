@@ -1,6 +1,6 @@
 'use strict';
 
-import event         from '../common/event'      ;
+import {event}       from '../common'            ;
 
 import deckGenerator from '../deck/deckGenerator';
 import Card          from '../card'              ;

@@ -1,6 +1,6 @@
 'use strict'
 
-import event from '../../common/event';
+import {event} from '../../common';
 
 export default (deck, fromIndex, toIndex, save = true) => {
 

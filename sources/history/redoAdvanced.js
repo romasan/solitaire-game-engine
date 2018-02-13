@@ -1,9 +1,6 @@
 'use strict';
 
-import event       from '../common/event'    ;
-import share       from '../common/share'    ;
-import common      from '../common'          ;
-import defaults    from '../common/defaults' ;
+import common, {event, share, defaults} from '../common';
 
 import deckActions from '../deck/deckActions';
 

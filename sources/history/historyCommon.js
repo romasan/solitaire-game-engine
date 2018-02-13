@@ -1,8 +1,6 @@
 'use strict'
 
-import event        from '../common/event';
-import share        from '../common/share';
-import common       from '../common'      ;
+import common, {event, share} from '../common';
 
 import Field        from '../field'       ;
 import history      from './'             ;

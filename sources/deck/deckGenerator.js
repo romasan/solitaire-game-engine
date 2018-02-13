@@ -1,21 +1,22 @@
 'use strict';
 
-import defaults from '../common/defaults';
-import event    from '../common/event'   ;
+import {defaults, event} from '../common';
 
-import Card     from '../card'           ;
+import Card              from '../card'  ;
 
-/*
- * shuffleArray
- * genType
- * genTypes
- * deckGenerator
+/**
+ * Shuffle array
+ * @param {*} deck 
  */
-
 let shuffleArray = deck => {
 	for (let j, x, i = deck.length; i; j = Math.floor(Math.random() * i), x = deck[--i], deck[i] = deck[j], deck[j] = x);
 };
 
+/**
+ * Generation of an array of map names for certain colors and suits
+ * @param {*} _cardsColors 
+ * @param {*} _cardsRanks 
+ */
 let genType = (_cardsColors, _cardsRanks) => {
 
 	let _deck = [];
@@ -35,6 +36,9 @@ let genType = (_cardsColors, _cardsRanks) => {
 	return _deck;
 };
 
+/**
+ * Combinations of colors and suits
+ */
 let genTypes = {
 
 	"all"    : ranks => genType(defaults.card.suits, ranks),
@@ -56,8 +60,12 @@ let genTypes = {
 	"black_and_red" : ranks => {
 
 		let _cardsSuits = [
-			defaults.card.colors.red  [(Math.random() * defaults.card.colors.red  .length) | 0], 
-			defaults.card.colors.black[(Math.random() * defaults.card.colors.black.length) | 0]
+			defaults.card.colors.red  [
+				(Math.random() * defaults.card.colors.red  .length) | 0
+			], 
+			defaults.card.colors.black[
+				(Math.random() * defaults.card.colors.black.length) | 0
+			]
 		];
 
 		return genType(_cardsSuits, ranks);
@@ -93,7 +101,11 @@ let genTypes = {
 
 	"one_rank_only" : ranks => {
 
-		let _cardsSuits = [defaults.card.solors[(Math.random() * defaults.card.solors.length) | 0]];
+		let _cardsSuits = [
+			defaults.card.solors[
+				(Math.random() * defaults.card.solors.length) | 0
+			]
+		];
 
 		return genType(_cardsSuits, ranks);
 	},
@@ -107,18 +119,45 @@ let genTypes = {
 	"spades"        : ranks => genTypes.s_only()
 };
 
+/**
+ * @typedef {Object} generatorParameters
+ * @property {?string} type
+ * @property {?number} deckCount
+ * @property {?number} iterations
+ * @property {?boolean} shuffle
+ * @property {?boolean} cardDescription
+ * @property {?Array<string>} excludeCards
+ */
+
+/**
+ * Generating an array of map names for specified parameters
+ * @param {generatorParameters} data 
+ */
 let deckGenerator = data => {
 
 	let default_type = 'all';
 
 	let default_shuffle = false;
-	let max_iterations  = 10;
 
-	let type            = data && typeof data.type            == 'string'                                        ? data.type            : default_type   ;
-	let deckCount       = data && typeof data.deckCount       == 'number'                                        ? data.deckCount       : 52             ;
-	let iterations      = data && typeof data.iterations      == 'number'    && data.iterations < max_iterations ? data.iterations      : 1              ;
-	let shuffle         = data && typeof data.shuffle         != 'undefuned'                                     ? data.shuffle         : default_shuffle;
-	let cardDescription = data && typeof data.cardDescription == 'boolean'                                       ? data.cardDescription : false;
+	let type            = data && typeof data.type            == 'string'                                       
+		? data.type
+		: default_type;
+
+	let deckCount       = data && typeof data.deckCount       == 'number'                                       
+		? data.deckCount
+		: 52;
+
+	let iterations      = data && typeof data.iterations      == 'number' // && data.iterations < max_iterations
+		? data.iterations
+		: 1;
+
+	let shuffle         = data && typeof data.shuffle         != 'undefuned'                                    
+		? data.shuffle
+		: default_shuffle;
+
+	let cardDescription = data && typeof data.cardDescription == 'boolean'                                      
+		? data.cardDescription
+		: false;
 
 	let excludeCards = data && data.excludeCards;
 
@@ -131,7 +170,7 @@ let deckGenerator = data => {
 		_ranks = [];
 
 		for (i in data.ranks) {
-			if (defaults.card.rank.indexOf(data.ranks[i].toString()) >= 0) {
+			if ( defaults.card.rank.indexOf( data.ranks[i].toString() ) >= 0 ) {
 				_ranks.push(data.ranks[i].toString());
 			}
 		}
@@ -158,7 +197,11 @@ let deckGenerator = data => {
 	return _deck;
 };
 
+/**
+ * deckGenerator - Listener
+ */
 event.listen('generateDeck', e => {
+
 	if(typeof e.callback == "function") {
 		e.callback( deckGenerator(e.data) );
 	}

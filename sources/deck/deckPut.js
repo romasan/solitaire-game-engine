@@ -1,7 +1,6 @@
 'use strict';
 
-import share    from '../common/share'   ;
-import defaults from '../common/defaults';
+import {share, defaults} from '../common';
 
 import Field    from '../field'          ;
 import Deck     from './'                ;

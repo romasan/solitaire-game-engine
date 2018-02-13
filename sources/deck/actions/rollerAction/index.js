@@ -1,13 +1,12 @@
 'use strict';
 
-import event        from '../../../common/event'          ;
-import share        from '../../../common/share'          ;
+import {event, share} from '../../../common'   ;
 
-import deckAction   from '../deckAction'                  ;
-import Deck         from '../../'                         ;
-import History      from '../../../history'               ;
-import Atom         from '../../atom'                     ;
-import fallAutoStep from '../../../autosteps/fallAutoStep';
+import deckAction     from '../deckAction'     ;
+import Deck           from '../../'            ;
+import History        from '../../../history'  ;
+import Atom           from '../../atom'        ;
+import {fallAutoStep} from '../../../autosteps';
 
 const NOT_FOUND    = 'NOT_FOUND'   ,
       ROLLER_START = 'ROLLER_START',

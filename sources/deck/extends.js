@@ -1,5 +1,4 @@
 import paddingTypes   from './paddingTypes'   ;
-
 import actionsExtends from './actions/extends';
 
 let Extends = [];
@@ -7,17 +6,6 @@ let Extends = [];
 for (let actionName in actionsExtends) {
 
     if (actionsExtends[actionName].padding) {
-
-        // if (actionsExtends[actionName].padding && actionsExtends[actionName].padding.rules) {
-        //     for(let key in actionsExtends[actionName].padding.rules) {
-
-        //         if (paddingTypes[key]) {
-        //             console.warn(`Padding type ${key} exist in defaults rules list`);
-        //         } else {
-        //             paddingTypes[key] = actionsExtends[actionName].padding.rules[key];
-        //         }
-        //     }
-        // }
 
         if (typeof actionsExtends[actionName].padding.do == "function") {
             Extends.push({

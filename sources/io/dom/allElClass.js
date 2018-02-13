@@ -1,8 +1,8 @@
 'use strict';
 
-import defaults from '../../common/defaults';
+import {defaults} from '../../common';
 
-import elClass  from './elClass'            ;
+import elClass  from './elClass'     ;
 
 /*
  * attr

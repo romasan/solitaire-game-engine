@@ -1,20 +1,20 @@
 'use strict';
 
-import share              from './share'                          ;
-import event              from './event'                          ;
-import defaults           from './defaults'                       ;
-import stateManager       from './stateManager'                   ;
-import storage            from './storage'                        ;
+import share        from './share'       ;
+import event        from './event'       ;
+import defaults     from './defaults'    ;
+import stateManager from './stateManager';
+import storage      from './storage'     ;
 
-import Field              from '../field'                         ;
-import History            from '../history'                       ;
+import Field        from '../field'      ;
 
-import drawPreferences    from '../preferences/drawPreferences'   ;
-import preferencesEvents  from '../preferences/preferencesEvents' ;
-import defaultPreferences from '../preferences/defaultPreferences';
-import specialStep        from '../history/specialStep'           ;
-import showFlipCardOnMove from '../tips/showFlipCardOnMove'       ;
-import elRender           from '../io/dom/elRender'               ;
+import {
+	drawPreferences   ,
+	preferencesEvents ,
+	defaultPreferences
+} from '../preferences';
+
+import elRender from '../io/dom/elRender';
 
 /**
  * gameInit - Listener
@@ -233,9 +233,7 @@ share.set('animation', defaults.animation);
  */
 let animationOn = context => {
 
-	console.warn('animationOn', context);
-
-	// console.warn('animationOn');
+	// console.warn('animationOn', context);
 
 	if ( share.get('animations') ) {
 		share.set('animation', true);
@@ -264,7 +262,7 @@ event.listen('animation:on', animationOn);
  */
 let animationDefault = context => {
 
-	console.warn('animationDefault', context);
+	// console.warn('animationDefault', context);
 
 	share.setFrom('animation', 'animations');
 
@@ -292,7 +290,7 @@ event.listen('animation:default', animationDefault);
  */
 let animationOff = context => {
 
-	console.warn('animationOff', context);
+	// console.warn('animationOff', context);
 
 	share.set('animation', false);
 };
@@ -366,9 +364,10 @@ let toggleSpecialStepMode = data => {
 
 	share.set('specialStepMode', !mode);
 
-	let el = elRender(share.get('domElement:field'));
+	let el = elRender( share.get('domElement:field') );
 	
 	if (!mode) {
+
 		el.addClass('specialStepMark');
 
 		// выключить остальные режимы
@@ -402,7 +401,13 @@ let toggleSpecialStepMode = data => {
 event.listen('toggleSpecialStepMode', toggleSpecialStepMode);
 
 export default {
+
+	defaults         ,
+	share            ,
+	event            ,
 	stateManager     ,
+	storage          ,
+
 	isCurLock        ,
 	curLock          ,
 	curUnLock        ,
@@ -417,7 +422,8 @@ export default {
 	animationDefault
 };
 
-// export {default as defaults} from './defaults';
-// export {default as share}    from './share'   ;
-// export {default as event}    from './event'   ;
-// export {default as storage}  from './storage' ;
+export { default as defaults     } from './defaults'     ;
+export { default as share        } from './share'        ;
+export { default as event        } from './event'        ;
+export { default as stateManager } from './stateManager' ;
+export { default as storage      } from './storage'      ;

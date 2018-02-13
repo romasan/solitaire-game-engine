@@ -1,14 +1,11 @@
 'use strict';
 
-import event      from '../../common/event'   ;
-import share      from '../../common/share'   ;
-import defaults   from '../../common/defaults';
-import common     from '../../common'         ;
+import common, {event, share, defaults} from '../../common';
 
-import forceMove  from '../../move/forceMove' ;
-import deckAction from './deckAction'         ;
-import History    from '../../history'        ;
-import Deck       from '../'                  ;
+import forceMove  from '../../move/forceMove';
+import deckAction from './deckAction'        ;
+import History    from '../../history'       ;
+import Deck       from '../'                 ;
 
 const stepType = 'dealStepType';
 
@@ -298,12 +295,8 @@ class dealAction extends deckAction {
 
 				// moveDecks[deckId].checkFlip();
 				// _decks[deckId].Redraw();
-
-				// #1
 			}
 		}
-
-		// #2
 	}
 
 	end() {

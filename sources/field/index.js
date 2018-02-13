@@ -1,15 +1,11 @@
 'use strict';
 
-import share        from '../common/share'          ;
-import event        from '../common/event'          ;
-import defaults     from '../common/defaults'       ;
-import common       from '../common'                ;
+import common, {share, event, defaults, storage} from '../common';
 
-import Group        from '../group'                 ;
-import Deck         from '../deck'                  ;
-import Tips         from '../tips'                  ;
-import addAutoSteps from '../autosteps/addAutoSteps';
-import storage      from '../common/storage'        ;
+import Group          from '../group'                            ;
+import Deck           from '../deck'                             ;
+import Tips           from '../tips'                             ;
+import {addAutoSteps} from '../autosteps'                        ;
 
 class Field {
 

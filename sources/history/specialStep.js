@@ -1,11 +1,9 @@
 'use strict';
 
-import share  from '../common/share';
-import event  from '../common/event';
-import common from '../common'      ;
+import common, {share, event} from '../common';
 
-import Deck    from '../deck'       ;
-import History from '../history'    ;
+import Deck    from '../deck'   ;
+import History from '../history';
 
 let revokeLength = null;
 

@@ -1,11 +1,9 @@
 'use strict';
 
-import share    from '../common/share'   ;
-import defaults from '../common/defaults';
-import common   from '../common'         ;
+import common, {share, defaults} from '../common';
 
-import Tips     from './'                ;
-import Field    from '../field'          ;
+import Tips                      from './'       ;
+import Field                     from '../field' ;
 
 let bestTip = (moveDeck, cursorMove) => {
 

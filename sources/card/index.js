@@ -1,10 +1,7 @@
 'use strict';
 
-import common   from '../common'         ;
-import event    from '../common/event'   ;
-import share    from '../common/share'   ;
-import defaults from '../common/defaults';
-import Deck     from '../deck'           ;
+import common, {event, share, defaults} from '../common';
+import Deck                             from '../deck'  ;
 
 class cardClass {
 

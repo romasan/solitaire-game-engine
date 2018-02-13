@@ -1,12 +1,9 @@
 'use strict';
 
-import share    from '../common/share'   ;
-import event    from '../common/event'   ;
-import defaults from '../common/defaults';
-import common   from '../common'         ;
+import common, {share, event, defaults} from '../common';
 
-import Deck     from '../deck'           ;
-import Tips     from '../tips'           ;
+import Deck                             from '../deck'  ;
+import Tips                             from '../tips'  ;
 // import geometry from './geometry';
 
 class inputsClass {
