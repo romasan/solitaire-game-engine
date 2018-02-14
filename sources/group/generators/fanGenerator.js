@@ -1,8 +1,8 @@
-/*
+'use strict';
+
+/**
  * сгенерировать группу для полумесяца
  */
-
-'use strict';
 
 import {defaults} from '../../common';
 

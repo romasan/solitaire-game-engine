@@ -1,14 +1,8 @@
 'use strict';
 
-import common, {event, share, defaults} from '../../common'   ;
+import common, {event, share, defaults} from '../../common';
 
-import elRender                         from '../dom/elRender';
-
-/*
- * moveDragDeck
- * moveDragDeckDone
- * dragDeck
- */
+import {elRender} from '../dom';
 
 let angleValidate = angle => {
 
@@ -23,6 +17,9 @@ let angleValidate = angle => {
 	return angle;
 };
 
+/**
+ * moveDeck - Listener
+ */
 event.listen('moveDragDeck', data => {
 
 	if (share.get('nodraw')) {
@@ -123,6 +120,9 @@ event.listen('moveDragDeck', data => {
 	}
 });
 
+/**
+ * moveDragDeckDone - Listener
+ */
 event.listen('moveDragDeckDone', data => {
 
 	if (!data.deck.full) {
@@ -149,6 +149,9 @@ event.listen('moveDragDeckDone', data => {
 	}
 });
 
+/**
+ * dragDeck - Listener
+ */
 event.listen('dragDeck', data => { // {x, y, dragDeck, startCursor, deck}
 
 	if (share.get('nodraw')) {

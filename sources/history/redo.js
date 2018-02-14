@@ -1,12 +1,11 @@
 'use strict';
 
-import common, {event, share, defaults} from '../common';
+import common, {event, share, defaults, stateManager} from '../common';
 
-import History      from './'                    ;
-import Tips         from '../tips'               ;
-import atom         from '../deck/atom'          ;
-import stateManager from '../common/stateManager';
-import undo         from './undo'                ;
+import History from './'     ;
+import Tips    from '../tips';
+import {atom}  from '../deck';
+import undo    from './undo' ;
 
 /*
  * flip

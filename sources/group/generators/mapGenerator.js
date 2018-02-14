@@ -1,13 +1,13 @@
-/*
+'use strict';
+
+/**
  * сгенерировать группу из матрицы
  */
 
-'use strict';
+import {defaults}              from '../../common'                  ;
 
-import {defaults}         from '../../common'                  ;
-
-import relationsGenerator from './relations/relationsGenerator';
-import mapCommon          from './mapCommon'                   ;
+import * as relationsGenerator from './relations/relationsGenerator';
+import mapCommon               from './mapCommon'                   ;
 
 // let getName = (el)=>{
 // 	return typeof el == "string" ? el : typeof el != "undefined" && typeof el.name == "string" ? el.name : null;

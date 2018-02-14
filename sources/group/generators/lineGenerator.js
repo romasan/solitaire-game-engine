@@ -1,10 +1,10 @@
-/*
+'use strict';
+
+/**
  * сгенерировать ряд из N карт
  */
 
-'use strict';
-
-import relationsGenerator from './relations/relationsGenerator';
+import * as relationsGenerator from './relations/relationsGenerator';
 
 export default (group, data) => {
 

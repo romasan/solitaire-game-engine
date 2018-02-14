@@ -1,12 +1,12 @@
 'use strict';
 
-import {event}       from '../common'            ;
+import {event}     from '../common';
 
-import deckGenerator from '../deck/deckGenerator';
-import Card          from '../card'              ;
-import Deck          from '../deck'              ;
+import {generator} from '../deck'  ;
+import Card        from '../card'  ;
+import Deck        from '../deck'  ;
 
-let nextCards = deckGenerator({
+let nextCards = generator({
 	"cardDescription" : true
 });
 

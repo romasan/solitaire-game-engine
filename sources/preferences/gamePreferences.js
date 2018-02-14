@@ -2,12 +2,6 @@
 
 import {share} from '../common';
 
-/*
- * draw
- * show
- * get
- */
-
 class gamePreferences {
 
 	constructor() {

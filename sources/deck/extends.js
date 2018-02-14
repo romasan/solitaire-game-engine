@@ -1,3 +1,5 @@
+'use strict';
+
 import paddingTypes   from './paddingTypes'   ;
 import actionsExtends from './actions/extends';
 

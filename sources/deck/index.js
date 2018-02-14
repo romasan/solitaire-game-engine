@@ -1,6 +1,6 @@
 'use strict';
 
-import common, {event, share, defaults} from '../common/'                            ;
+import common, {event, share, defaults} from '../common'                             ;
 
 import flipTypes              from './flipTypes'                                     ;
 import putRules               from './putRules'                                      ;
@@ -1314,6 +1314,8 @@ class deckClass {
 
 export default deckClass;
 
-export { default as getDecks      } from './getDecks'     ;
-export { default as getDeckById   } from './getDeckById'  ;
-export { default as deckGenerator } from './deckGenerator';
+export { default as getDecks    } from './getDecks'     ;
+export { default as getDeckById } from './getDeckById'  ;
+export { default as generator   } from './deckGenerator';
+export { default as actions     } from './deckActions'  ;
+export { default as atom        } from './atom'         ;

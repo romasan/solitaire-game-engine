@@ -3,16 +3,12 @@
 import {event, share, defaults} from '../../common'                   ;
 
 import Field                    from '../../field'                    ;
-import elRender                 from '../dom/elRender'                ;
+import {elRender}               from '../dom'                         ;
 import applyChangedParameters   from './common/applyChangedParameters';
 
-/*
- * addDeckEl
- * redrawDeckFlip
- * redrawDeckIndexes
- * redrawDeck
+/**
+ * addDeckEl - Listener
  */
-
 event.listen('addDeckEl', data => {
 
 	if (share.get('nodraw')) {
@@ -64,6 +60,9 @@ event.listen('addDeckEl', data => {
 	share.set('domElement:' + data.deck.id, _deckDomElement);
 });
 
+/**
+ * addDeckEl - Listener
+ */
 event.listen('redrawDeckFlip', data => {
 
 	if (!data || !data.cards) {
@@ -95,6 +94,9 @@ event.listen('redrawDeckFlip', data => {
 	}
 });
 
+/**
+ * redrawDeckIndexes - Listener
+ */
 event.listen('redrawDeckIndexes', data => {
 
 	if (
@@ -123,6 +125,9 @@ event.listen('redrawDeckIndexes', data => {
 	}
 });
 
+/**
+ * redrawDeck - Listener
+ */
 event.listen('redrawDeck', data => {
 
 	if (share.get('noRedraw')) {
@@ -265,6 +270,9 @@ event.listen('redrawDeck', data => {
 	}
 });
 
+/**
+ * updateNextCards - Listener
+ */
 event.listen('updateNextCards', function(data) {
 
 	for (let deckId in data) {

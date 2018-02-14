@@ -1,19 +1,13 @@
 'use strict';
 
-import common, {share, event, defaults} from '../../common'   ;
+import common, {share, event, defaults} from '../../common';
 
-import Field                            from '../../field'    ;
-import elRender                         from '../dom/elRender';
+import Field                            from '../../field' ;
+import {elRender}                       from '../dom'      ;
 
-/*
- * addCardEl
- * toggleMarkCard
- * markCard
- * unmarkCard
- * unflipCard
- * removeCardElements
+/**
+ * addCardEl - Listener
  */
-
 event.listen('addCardEl', data => {
 
 	if (share.get('nodraw')) {
@@ -48,6 +42,9 @@ event.listen('addCardEl', data => {
 		.append(_domElement);
 });
 
+/**
+ * toggleMarkCard - Listener
+ */
 event.listen('toggleMarkCard', data => {
 
 	let el = share.get('domElement:' + data.card.id);
@@ -77,6 +74,9 @@ event.listen('toggleMarkCard', data => {
 	}
 });
 
+/**
+ * markCard - Listener
+ */
 event.listen('markCard', data => {
 
 	let el = share.get('domElement:' + data.card.id);
@@ -86,6 +86,9 @@ event.listen('markCard', data => {
 	}
 });
 
+/**
+ * unmarkCard - Listener
+ */
 event.listen('unmarkCard', data => {
 
 	let el = share.get('domElement:' + data.card.id);
@@ -98,6 +101,9 @@ event.listen('unmarkCard', data => {
 	}
 });
 
+/**
+ * unflipCard - Listener
+ */
 event.listen('unflipCard', card => {
 
 	if (share.get('nodraw')) {
@@ -119,6 +125,9 @@ event.listen('unflipCard', card => {
 	} 
 });
 
+/**
+ * removeCardElements - Listener
+ */
 event.listen('removeCardElements', e => {
 
 	let item = null;

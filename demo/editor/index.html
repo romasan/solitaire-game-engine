@@ -1,0 +1,131 @@
+<html>
+    <head>
+        <title>Visual Solitaire Editor</title>
+        <script src="../../frontend/js/SolitaireEngine.js"></script>
+        <link rel="stylesheet" href="../../frontend/css/SolitaireEngine.css"/>
+        <!-- <script src="./index.js"></script> -->
+        <script>
+            class _Obj {
+                constructor(name, ...args) {
+                    this.name = name;
+                    this._data = {};
+                    // for (let i in args) {
+                    //     this._data[key] = data[key];
+                    // }
+                }
+            }
+
+            class _Arr {
+                constructor(...args) {
+
+                }
+            }
+
+            class Simple {
+                constructor(name, default_value) {
+                    this.name = name;
+                    if (typeof default_value == this.type) {
+                        this.default = default_value;
+                    }
+                }
+            }
+
+            class _Str extends Simple {
+                constructor(...args) {
+                    this.type = "string";
+                    this.default = "";
+                    super(...args);
+                }
+            }
+
+            class _Num extends Simple {
+                constructor(...args) {
+                    this.type = "number" ;              
+                    this.default = 0;  
+                    super(...args);
+                }
+            }
+ 
+            class _Bool extends Simple{
+                constructor(...args) {
+                    this.type = "boolean";                  
+                    this.default = true;
+                    super(...args);
+                }
+            }
+
+            class _Or {
+                constructor(...attrs) {}
+            }
+
+            class _Of {}
+
+            const Obj  = (...attrs) => new _Obj(...attrs);
+            const Arr  = (...attrs) => new _Arr(...attrs);
+            const Str  = (...attrs) => new _Str(...attrs);
+            const Num  = (...attrs) => new _Num(...attrs);
+            const Bool = (...attrs) => new _Bool(...attrs);
+            const Or   = (...attrs) => new _Or(...attrs);
+            const Of   = (...attrs) => new _Of(...attrs);
+
+            let gameConfig = Obj({
+                "moveDistance" : Num(),
+                "inputParams" : Obj({
+                    "doubleClick" : Bool()
+                }),
+                "tipsParams" : Obj({
+                    "excludeHomeGroups" : Bool()
+                }),
+                "winCheck" : Obj({
+                    "query" : Arr(Obj({
+                        "filters" : Arr(Obj({
+                            "groups" : Arr(),
+                            // "group" : Str(),
+                            "decks" : Arr()
+                        }))
+                    })),
+                    "rules" : Arr()
+                }),
+                "groups" : Obj(),
+                "decks" : Arr(Obj({
+                    "name" : Str(),
+                    "position" : Obj({
+                        "x" : Num,
+                        "y" : Num                    }),
+                    "showSlot" : Bool,
+                    "takeRules" : Arr(Of(["rule1", "rule2"]))
+                })),
+                "padding" : Obj(),
+                "flipPadding" : Obj({}),
+                "paddingType" : Or( Str, Of([]) ),
+                "flip" : Of([]),
+                "takeRules" : Arr(Of([])),
+                "putRules" : Arr(Of([])),
+                "autoUnflipTop" : Bool
+            })
+            document.addEventListener("DOMContentLoaded", () => {
+
+            });
+        </script>
+        <style>
+            html, body {
+                margin: 0px;
+                padding: 0px;
+            }
+            #bar {
+                width: 100%;
+                height: 100px;
+                background-color: #cccccc;
+            }
+            #wrap {
+                color: #008000;
+                width: 100%;
+                height: calc(100% - 100px);
+            }
+        </style>
+    </head>
+    <body>
+        <div id="bar"></div>
+        <div id="wrap"></div>
+    </body>
+</html>

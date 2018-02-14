@@ -1,11 +1,5 @@
 'use strict';
 
-/*
- * inMap
- * exist
- * mapSize
- */
-
 const beSide = {
 	"left"  : {
 		"x" : -1,

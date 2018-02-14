@@ -2,9 +2,12 @@
 
 import {event, share} from '../../common';
 
-import elRender from '../dom/elRender'   ;
-import Tips     from '../../tips'        ;
+import {elRender}     from '../dom'      ;
+import Tips           from '../../tips'  ;
 
+/**
+ * showTip - Listener
+ */
 event.listen('showTip', data => {
 
 	if (share.get('nodraw')) {
@@ -25,6 +28,9 @@ event.listen('showTip', data => {
 	}
 });
 
+/**
+ * hideTips - Listener
+ */
 event.listen('hideTips', data => {
 
 	if (share.get('nodraw')) {

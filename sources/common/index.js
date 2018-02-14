@@ -14,7 +14,7 @@ import {
 	defaultPreferences
 } from '../preferences';
 
-import elRender from '../io/dom/elRender';
+import {elRender} from '../io/dom';
 
 /**
  * gameInit - Listener
@@ -422,8 +422,8 @@ export default {
 	animationDefault
 };
 
-export { default as defaults     } from './defaults'     ;
-export { default as share        } from './share'        ;
-export { default as event        } from './event'        ;
-export { default as stateManager } from './stateManager' ;
-export { default as storage      } from './storage'      ;
+export { default as defaults     } from './defaults'    ;
+export { default as share        } from './share'       ;
+export { default as event        } from './event'       ;
+export { default as stateManager } from './stateManager';
+export { default as storage      } from './storage'     ;

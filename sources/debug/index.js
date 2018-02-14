@@ -8,13 +8,12 @@ import common, {
 	storage as _storage
 } from '../common' ;
 
-import field         from '../field'                     ;
-import deckGenerator from '../deck/deckGenerator'        ;
-import elRender      from '../io/dom/elRender'           ;
-import history       from '../history'                   ;
-import mapCommon     from '../group/generators/mapCommon';
+import field           from '../field'                     ;
+import {elRender}      from '../io/dom'                    ;
+import history         from '../history'                   ;
+import mapCommon       from '../group/generators/mapCommon';
 
-import './debug.scss'                                    ;
+import './debug.scss'                                      ;
 
 let solitaireField = null;
 
@@ -431,11 +430,9 @@ export default {
 	defaults     ,
 	common       ,
 	field        ,
-	deckGenerator,
 	elRender     ,
 	storage : _storage,
 	stateManager ,
 	history      ,
-	mapCommon    ,
-	deckGenerator
+	mapCommon
 };

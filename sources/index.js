@@ -1,13 +1,13 @@
 'use strict';
 
 // common
-import {share, event, defaults} from './common' ;
+import {share, event, defaults} from './common';
 
-import './common/imports'                       ;
+import './common/imports';
 
-import Field           from './field'           ;
-import winCheck        from './wincheck'        ;
-import {deckGenerator} from './deck'            ;
+import Field       from './field'   ;
+import winCheck    from './wincheck';
+import {generator} from './deck'    ;
 
 let preloadCallback = null,
     firstInit       = true;
@@ -30,7 +30,7 @@ let preloadCallback = null,
 exports.event     = event;
 exports.options   = defaults;
 exports.winCheck  = winCheck.hwinCheck;
-exports.generator = deckGenerator;
+exports.generator = generator;
 exports.version   = version
 	? version
 		.toString()

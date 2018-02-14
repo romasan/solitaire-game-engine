@@ -1,3 +1,5 @@
+'use strict';
+
 import rules from './paddingTypes';
 
 let rollerPaddingExtend = (deck, padding, paddingMethod, index) => {

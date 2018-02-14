@@ -1,8 +1,8 @@
-/*
+'use strict';
+
+/**
  * генерация стопок в группах
  */
-
-'use strict';
 
 import countGenerator from './generators/countGenerator';
 import   fanGenerator from './generators/fanGenerator'  ;

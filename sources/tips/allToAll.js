@@ -1,12 +1,5 @@
 'use strict';
 
-/*
- * get
- * cardsInTakeDeck
- * decksToPut
- * put
- */
-
 class allToAll {
 
 	constructor() {
@@ -15,8 +8,9 @@ class allToAll {
 		this._moves = [];
 	}
 
-	// 1)
-	// пробегаем все колоды
+	/**
+	 * пробегаем все колоды
+	 */
 	get(data) {
 
 		this._decks = data.decks;
@@ -32,9 +26,10 @@ class allToAll {
 		return this._moves;
 	}
 
-	// 2)
-	// выбираем карты из колоды
-	// патаемся взять карту
+	/**
+	 * выбираем карты из колоды
+	 * патаемся взять карту
+	 */
 	cardsInTakeDeck(_cards, deckIndex) {
 
 		for (let cardIndex in _cards) {
@@ -49,8 +44,9 @@ class allToAll {
 		};
 	}
 
-	// 3)
-	// пробегаем все остальные колоды и пробуем положить на них то что взяли
+	/**
+	 * пробегаем все остальные колоды и пробуем положить на них то что взяли
+	 */
 	decksToPut(_cards, _take, deckIndex, cardIndex) {
 
 		for (let deckIndex_2 in this._decks) {
@@ -65,8 +61,9 @@ class allToAll {
 		};
 	}
 
-	// 4)
-	// если получилось положить карты (с текущими правилами) записываем как возможный ход
+	/**
+	 * если получилось положить карты (с текущими правилами) записываем как возможный ход
+	 */
 	put(deckIndex_2, deckIndex, cardIndex, _cards) {
 
 		let _cards_to = this._decks[deckIndex_2].cards,

@@ -1,3 +1,5 @@
+'use strict';
+
 import {share, defaults} from '../../../../common';
 
 export default {

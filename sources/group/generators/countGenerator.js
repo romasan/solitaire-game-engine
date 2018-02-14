@@ -1,8 +1,8 @@
-/*
+'use strict';
+
+/**
  * сгенерировать ряд из N карт
  */
-
-'use strict';
 
 export default (group, data) => {
 

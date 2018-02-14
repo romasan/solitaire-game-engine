@@ -1,3 +1,5 @@
+'use strict';
+
 export { default as deal           } from './dealAction'          ;
 export { default as kick           } from './kickAction'          ;
 export { default as stepsAround    } from './stepsAroundAction'   ;

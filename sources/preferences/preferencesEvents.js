@@ -4,12 +4,6 @@ import {share, event, defaults, storage} from '../common';
 
 import gamePreferences from './gamePreferences' ;
 
-/*
- * onShowParameters
- * applyParameters
- * saveParameters
- */
-
 let onShowParameters = e => {
 
 	let pref = storage.get('pref');
@@ -84,8 +78,6 @@ export default e => {
 
 	try {
 
-		// $('#bbParameters').click(onShowParameters);
-
 		document.getElementById('bbParameters')
 			.addEventListener('click', onShowParameters);
 		
@@ -95,18 +87,12 @@ export default e => {
 		// 	"callback" : onShowParameters
 		// });
 
-		// $("#gpCommit").click(saveParameters);
-
-		// $('#parametersPanel').on('change', 'input', applyParameters);
-
 		document.getElementById('parametersPanel')
 			.addEventListener('change', e => {
 				if (e.target.nodeName == 'INPUT') {
 					applyParameters()
 				}
 			});
-
-		// $("#solitaire-engine-style-preferences input").change(applyParameters);
 
 		// event.dispatch('addDomEvent', {
 		// 	"event"    : "change"

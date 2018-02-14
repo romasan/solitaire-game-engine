@@ -2,7 +2,7 @@
 
 import common, {event, share, defaults} from '../common';
 
-import deckActions from '../deck/deckActions';
+import {actions as deckActions} from '../deck';
 
 class redoAdvanced {
 

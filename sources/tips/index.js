@@ -10,17 +10,6 @@ import autoMoveToHome from '../move/autoMoveToHome';
 
 const EMPTY = "EMPTY";
 
-/*
- * getTips
- * checkTips
- * showTips
- * hideTips
- * tipsMove
- * tipsDestination
- * checkFrom
- * fromTo
- */
-
 let _showTips = null; // defaults.showTips;
 
 let tipTypes = [

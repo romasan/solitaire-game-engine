@@ -9,11 +9,6 @@ import Deck       from '../'                 ;
 
 const stepType = 'dealStepType';
 
-/*
- * run
- * end
- */ 
-
 class dealAction extends deckAction {
 
 	constructor() {

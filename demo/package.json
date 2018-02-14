@@ -1,0 +1,14 @@
+{
+  "name": "solitaire-engine-demo",
+  "version": "1.0",
+  "description": "Solitaire game engine DEMO",
+  "author": "Roman Bauer",
+  "email": "kotapesic@gmail.com",
+  "license": "UNLICENSED",
+  "scripts": {
+    "dev": "node node_modules/simple-server/bin.js"
+  },
+  "dependencies": {
+    "simple-server": "^1.1.1"
+  }
+}

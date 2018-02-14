@@ -10,8 +10,6 @@ import Tips from './';
 
 let usedCardId = null;
 
-/*
-
 let showFlipCardOnMove = data => { // {to : deckClass, toCard: cardClass}
 
 	console.warn('show flip card on move');
@@ -91,7 +89,7 @@ let showFlipCardOnMove = data => { // {to : deckClass, toCard: cardClass}
 		// }
 
 		// if (prevCard) {
-	if (prevCard) {
+	if (prevCard && prevCard.flip) {
 		// event.dispatch('unflipCard', prevCard);
 		event.dispatch('unflipCard', prevCard);
 	}
@@ -99,10 +97,19 @@ let showFlipCardOnMove = data => { // {to : deckClass, toCard: cardClass}
 };
 
 
-event.listen('click:unflipCard', showFlipCardOnMove);
+// event.listen('click:unflipCard', showFlipCardOnMove);
 
 event.listen('dragDeck', data => {
-	console.log('#', data);
+	if (
+		data                                    &&
+		data.card                               &&
+		data.deck                               &&
+		data.distance                           &&
+		data.distance > defaults.card.width / 3
+	) {
+		showFlipCardOnMove({
+			"toCard" : data.card,
+			"toDeck" : data.deck
+		})
+	}
 });
-
-*/

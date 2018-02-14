@@ -1,3 +1,5 @@
+'use strict';
+
 import './initField'     ;
 import './drawDeck'      ;
 import './drawCard'      ;
