@@ -2,7 +2,7 @@
 
 import common, {event, share, defaults} from '../../common';
 
-import {elRender} from '../dom';
+import {elRender}                       from '../dom'      ;
 
 let angleValidate = angle => {
 

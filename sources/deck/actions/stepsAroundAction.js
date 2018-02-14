@@ -2,9 +2,9 @@
 
 import common, {event, share, defaults} from '../../common';
 
-import deckAction from './deckAction'         ;
-import Tips       from '../../tips'           ;
-import Deck       from '../'                  ;
+import deckAction                       from './deckAction';
+import Tips                             from '../../tips'  ;
+import Deck                             from '../'         ;
 
 let stepType = 'stepsAround';
 

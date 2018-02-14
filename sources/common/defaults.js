@@ -28,8 +28,6 @@ export default {
 
 // Tips
 
-	// "tips" : {
-
 	"showTips"            : true ,
 	"showTipsDestination" : false,
 	"showTipPriority"     : false,
@@ -42,18 +40,16 @@ export default {
 
 // Field
 
-	// "field" : {
-
 	"zoom"                : 1.0 ,
 
 	"locale"              : 'ru',
 
 	"animations"          : true,
-	"animationTime"       : 100 , // time in milliseconds for 100px
+	"animationTime"       : 100 ,       // time in milliseconds for 100px
 
 	// "noReplayHistory"     : false,
 
-	"showPrefFlipCard"    : true,
+	"showPrefFlipCard"    : true ,
 	"showPrevAttempts"    : false,
 
 	"checkNextCards"      : false,
@@ -64,28 +60,26 @@ export default {
 
 // Group
 
-	"flip"                : null, // param for deck
-	"actions"             : null, // param for deck
+	"flip"                : null,       // param for deck
+	"actions"             : null,       // param for deck
 
 // Deck
 
-	// "deck" : {
-
-	// "can_move_flip"       : false     ,
+	// "can_move_flip"    : false     ,
 	"showSlot"            : true      , // показывать место для карты в пустой стопке
 
 	"autohide"            : false     , // скрывать стопку если вынули все карты
 	"autoUnflipTop"       : true      , // открывать верхнюю карту при ходе из стопки
 	"autoCheckFlip"       : false     , // применять правило переворачивания после каждого хода
-	                                    // из/в стопку
+	                                    // из / в стопку
 
 	"paddingType"         : '_default',
 	"flip_type"           : 'none'    ,
 
 	"rotate"              : 0         ,
 
-	"takeRules"           : ['any']   , // правило применяемое чтобы взять карту/карты из стопки
-	"putRules"            : ['any']   , // правило применяемое чтобы взять карту/карты в стопку
+	"takeRules"           : ['any']   , // правило применяемое чтобы взять карту / карты из стопки
+	"putRules"            : ['any']   , // правило применяемое чтобы взять карту / карты в стопку
 
 	"fullRules"           : ['not']   , // правило проверки сложенности стопки
 
@@ -96,7 +90,7 @@ export default {
 	"padding_x"           : 0         ,
 	"flip_padding_y"      : 0         ,
 	"flip_padding_x"      : 0         ,
-	// "debugLabels"         : false     ,
+	// "debugLabels"      : false     ,
 
 	"startZIndex"         : 10        ,
 	"topZIndex"           : 900       ,
@@ -122,7 +116,7 @@ export default {
 // Other
 
 	"stepType"             : 'default',
-	// "forceClone"           : true     ,
-	// "movesAnimation"    : "simple" // simple|byStep|not
+	// "forceClone"        : true     ,
+	// "movesAnimation"    : "simple"   // simple | byStep | not
 	"showHistoryAnimation" : true
 };

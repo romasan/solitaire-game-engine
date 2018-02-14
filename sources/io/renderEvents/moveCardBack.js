@@ -1,8 +1,8 @@
 'use strict';
 
-import common, {event, share} from '../../common'   ;
+import common, {event, share} from '../../common';
 
-import {elRender} from '../dom';
+import {elRender}             from '../dom'      ;
 
 // Move card to home
 event.listen('moveCardBack', data => {

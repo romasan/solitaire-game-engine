@@ -2,9 +2,9 @@
 
 import common, {event, share} from '../common';
 
-import Deck from '../deck';
-import Tips from '../tips';
-import Card from '../card';
+import Deck                   from '../deck'  ;
+import Tips                   from '../tips'  ;
+import Card                   from '../card'  ;
 
 /**
  * @typedef {Object} forceMoveData

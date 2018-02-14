@@ -1,9 +1,9 @@
 'use strict';
 
-import common, {event, share, defaults} from '../../common';
+import common, {event, share, defaults} from '../../common'      ;
 
-import deckAction       from './deckAction'         ;
-import lockActionCommon from './lockActionCommon'   ;
+import deckAction                       from './deckAction'      ;
+import lockActionCommon                 from './lockActionCommon';
 
 class unlockAction extends deckAction {
 
