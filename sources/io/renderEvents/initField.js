@@ -9,7 +9,7 @@ import {elRender}               from '../dom'      ;
 
 event.listen('initField', data => {
 
-	if (share.get('nodraw')) {
+	if ( share.get('nodraw') ) {
 
 		if (data && typeof data.callback == "function") {
 			data.callback();
@@ -18,9 +18,10 @@ event.listen('initField', data => {
 		return;
 	}
 
-	let domElement = data.field ? data.field : '#map';
+	let domElement = data.field ? data.field : defaults.fieldElement;
 
 	if (typeof domElement == 'string') {
+
 		if (domElement.split('.').length == 2) {
 			domElement = document.getElementsByClassName(domElement.split('.')[1])[0];
 		} else if (domElement.split('#').length == 2) {
@@ -28,10 +29,13 @@ event.listen('initField', data => {
 		} else {
 			domElement = document.getElementsByTagName(domElement);
 		}
-		if (!domElement) {
-			domElement = document.getElementById('mat');
-		}
 	};
+
+	if (!domElement) {
+		if (document.querySelector) {
+			domElement = document.querySelector(defaults.fieldElement);
+		}
+	}
 
 	let _params = {};
 
@@ -47,10 +51,18 @@ event.listen('initField', data => {
 	// 	_params['transform-origin'] = '0 0';
 	// }
 
-	elRender(domElement)
-		.css(_params)
-		.addClass('solitaireField')
-		// .addClass('solitaire-load-overlay');
+	if (domElement) {
+
+		elRender(domElement)
+			.css(_params)
+			.addClass('solitaireField');
+			// .addClass('solitaire-load-overlay');
+	} else {
+		console.warn(
+			'Field dom element not found.\n%cCheck «field» value in game configuration json.',
+			'color: red; font-weight: bold;font-size: 200%;'
+		);
+	}
 
 	// if (typeof _timer == "number") {
 	// 	clearTimeout(_timer);

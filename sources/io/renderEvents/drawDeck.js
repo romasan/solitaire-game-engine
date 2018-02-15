@@ -54,8 +54,10 @@ event.listen('addDeckEl', data => {
 
 	let _fieldDomElement = share.get('domElement:field');
 
-	elRender(_fieldDomElement)
-		.append(_deckDomElement);
+	if (_fieldDomElement) {
+		elRender(_fieldDomElement)
+			.append(_deckDomElement);
+	}
 
 	share.set('domElement:' + data.deck.id, _deckDomElement);
 });

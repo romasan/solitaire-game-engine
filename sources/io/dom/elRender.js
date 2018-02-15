@@ -20,7 +20,7 @@ let _allEl = data => {
 	}
 
 	if (!data) {
-		throw new Error('elRender:empty arguments.');
+		throw new Error('elRender: Empty arguments.');
 	}
 
 	if (typeof data == 'string') {

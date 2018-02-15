@@ -26,6 +26,8 @@ export default {
 		"back"  : 'default_back'
 	},
 
+	"fieldElement" : '#map',
+
 // Tips
 
 	"showTips"            : true ,

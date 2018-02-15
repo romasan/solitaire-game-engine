@@ -38,8 +38,10 @@ event.listen('addCardEl', data => {
 
 	let _fieldDomElement = share.get('domElement:field');
 
-	elRender(_fieldDomElement)
-		.append(_domElement);
+	if (_fieldDomElement) {
+		elRender(_fieldDomElement)
+			.append(_domElement);
+	}
 });
 
 /**
