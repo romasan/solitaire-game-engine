@@ -26,8 +26,8 @@ let winCheck = params => {
 
 		// winCheck - Object
 		if (
-			typeof ruleName == "string" &&
-			winCheck[ruleName]
+			       typeof ruleName == "string" &&
+			winCheckRules[ruleName]
 		) {
 			rulesCorrect = rulesCorrect && winCheckRules[ruleName]({
 				"decks"     : Deck.getDecks({
@@ -38,10 +38,11 @@ let winCheck = params => {
 
 		// winCheck - Array of string
 		} else if (
-			typeof ruleName == "number"  &&
-			winCheck[winCheck[ruleName]]
+			// typeof ruleName == "number"  &&
+			         typeof winCheck[ruleName] == "string" &&
+			  winCheckRules[winCheck[ruleName]]
 		) {
-			rulesCorrect = rulesCorrect && winCheckRules[ruleName]({
+			rulesCorrect = rulesCorrect && winCheckRules[winCheck[ruleName]]({
 				"decks" : Deck.getDecks({
 					"visible" : true
 				})

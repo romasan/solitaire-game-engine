@@ -464,22 +464,22 @@ config.decks[0].fill = ["c1", "c2", "c3", "c4"];
 
 ```
 var config = {
-	winCheck: ["allInOne"],
+    winCheck: ["allInOne"],
     decks: [
         {
             name: "deck_one",
             position: {
                 x: 100,
-                y: 100
+                y: 20
             },
             takeRules: ["onlytop"],
             putRules: ["not"]
         },
-		{
+        {
             name: "deck_two",
             position: {
-                x: 200,
-                y: 100
+                x: 400,
+                y: 20
             },
             takeRules: ["onlytop"],
             putRules: ["not"]
@@ -487,8 +487,8 @@ var config = {
         {
             name : "deck_three",
             position : {
-                x: 100,
-                y: 200
+                x: 250,
+                y: 70
             },
             takeRules: ["not"],
             putRules: ["any"]
@@ -496,6 +496,52 @@ var config = {
     ]
 };
 
-config.decks[0].fill = ["c1", "c2", "c3", "c4"];
-config.decks[1].fill = ["c1", "c2", "c3", "c4"];
+config.decks[0].fill = ["c7", "c5", "c3", "c1"];
+config.decks[1].fill = ["c8", "c6", "c4", "c2"];
+```
+
+#### _Группа стопок_
+
+```
+var config = {
+    winCheck: ["allInOne"],
+    groups: {
+        group_1: {
+            takeRules: ["onlytop"],
+            putRules: ["not"],
+            position: {
+                y: 20
+            },
+            decks: [
+                {
+                    position: {
+                        x: 100
+                    },
+                    
+                },
+                {
+                    position: {
+                        x: 400
+                    }
+                }
+            ]
+        }
+    },
+    decks: [
+        {
+            name : "deck_three",
+            position : {
+                x: 250,
+                y: 70
+            },
+            takeRules: ["not"],
+            putRules: ["any"]
+        }
+    ]
+};
+
+config.groups.group_1.fill = [
+    ["c7", "c5", "c3", "c1"],
+    ["c8", "c6", "c4", "c2"]
+];
 ```
