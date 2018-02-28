@@ -175,6 +175,13 @@ class Event {
 	}
 
 	/**
+	 * @alias dispatch
+	 */
+	emit(eventName, data) {
+		this.dispatch(eventName, data);
+	}
+
+	/**
 	 * Delete events without subscribes
 	 * @param {string} eventName 
 	 */
