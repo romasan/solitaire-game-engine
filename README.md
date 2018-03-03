@@ -6,5 +6,3 @@
 | **Сборка**                       | `npm run build` |
 | **Отладка**                      | `npm run dev`   |
 | **Генерация документации ESDoc** | `npm run docs`  |
-
-# [Wiki Документация](../../wiki)
