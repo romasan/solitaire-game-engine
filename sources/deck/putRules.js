@@ -131,6 +131,10 @@ let readyPutRules = {
 	// Rules
 
 	// "oneColor" : data => false, // TODO
+	/**
+	 * Карты можно класть друг на друга только чередуя цвета,
+	 * черную на красную, и на оборот.
+	 */
 	"striped"           : data => {
 
 		if (data.cards.length == 0) {
@@ -148,14 +152,29 @@ let readyPutRules = {
 		return color_A != color_B;
 	},
 
+	/**
+	 * На пустую стопку можно положить только туз
+	 */
 	"firstAce"          : data => readyPutRules._isFirst(data, defaults.card.ranks[0]),
 
+	/**
+	 * На пустую стопку можно положить только короля
+	 */
 	"firstKing"         : data => readyPutRules._isFirst(data, defaults.card.ranks[defaults.card.ranks.length - 1]),
 
+	/**
+	 * На пустую стопку нельзя класть карты
+	 */
 	"notForEmpty"       : data => data.cards.length > 0,
 
+	/**
+	 * Можно класть карты только если стопка пуста
+	 */
 	"onlyEmpty"         : data => data.cards.length == 0,
 
+	/**
+	 * Можно класть только карты одного достоинства
+	 */
 	"oneRank"           : data => {
 
 		if (data.cards.length == 0) {
@@ -167,6 +186,9 @@ let readyPutRules = {
 		return du && du.up.rank == du.down.rank;
 	},
 
+	/**
+	 * Можно класть только карты одной масти
+	 */
 	"oneSuit"           : data => {
 
 		if (data.cards.length == 0) {
@@ -178,10 +200,19 @@ let readyPutRules = {
 		return du && du.up.suit == du.down.suit;
 	},
 
+	/**
+	 * Можно класть любые карты
+	 */
 	"any"               : data => true,
 
+	/**
+	 * Нельзя класть карты
+	 */
 	"not"               : data => false,
 
+	/**
+	 * Можно класть стопку карт в которой каждая следующая выше достоинством
+	 */
 	"ascendDeck"        : data => { //ascend data by step
 
 		if (data.putDeck.length == 1) {
@@ -207,8 +238,15 @@ let readyPutRules = {
 
 		return ruleCorrect;
 	},
+
+	/**
+	 * @alias ascendDeck
+	 */
 	"ascentDeck"        : data => readyPutRules.ascendDeck(data), // обратная совместимость
 
+	/**
+	 * Можно класть стопку карт в которой каждая следующая ниже достоинством
+	 */
 	"descendDeck"       : data => { //ascend data by step
 
 		if (data.putDeck.length == 1) {
@@ -234,8 +272,15 @@ let readyPutRules = {
 
 		return ruleCorrect;
 	},
+
+	/**
+	 * @alias descendDeck
+	 */
 	"descentDeck"       : data => readyPutRules.descendDeck(data),
 
+	/**
+	 * Можно класть стопку карт в которой все карты одного достоинства
+	 */
 	"oneRankDeck"       : data => {
 
 		if (data.putDeck.length == 1) {
@@ -258,6 +303,9 @@ let readyPutRules = {
 		return ruleCorrect;
 	},
 
+	/**
+	 * Можно класть стопку карт в которой все карты одной масти
+	 */
 	"oneSuitDeck"       : data => {
 
 		if (data.putDeck.length == 1) {
@@ -280,6 +328,9 @@ let readyPutRules = {
 		return ruleCorrect;
 	},
 
+	/**
+	 * Можно класть карту выше достоинством
+	 */
 	"ascend"            : data => {
 
 		if (data.cards.length == 0) {
@@ -290,8 +341,15 @@ let readyPutRules = {
 
 		return da && da.down < da.up;
 	},
+
+	/**
+	 * @alias ascend
+	 */
 	"ascent"            : data => readyPutRules.ascend(data),
 
+	/**
+	 * Можно класть карту ниже достоинством
+	 */
 	"descend"           : data => {
 
 		if (data.cards.length == 0) {
@@ -302,11 +360,25 @@ let readyPutRules = {
 
 		return da && da.down > da.up;
 	},
+
+	/**
+	 * @alias descend
+	 */
 	"descent"           : data => readyPutRules.descend(data),
 
+	/**
+	 * Можно класть карту на единицу ниже достоинством
+	 */
 	"ascendOne"         : data => readyPutRules.ascendNum(data, 1),
+	
+	/**
+	 * @alias ascendOne
+	 */
 	"ascentOne"         : data => readyPutRules.ascendOne(data),
 
+	/**
+	 * Можно класть карту на N выше достоинством, например "ascendNum:2"
+	 */
 	"ascendNum"         : (data, prop) => {
 
 		if (data.cards.length == 0) {
@@ -319,11 +391,25 @@ let readyPutRules = {
 
 		return da && num + da.down == da.up;
 	},
+
+	/**
+	 * @alias ascendNum
+	 */
 	"ascentNum"         : (data, prop) => readyPutRules.ascendNum(data, prop),
 
+	/**
+	 * Можно класть карту на единицу ниже достоинством
+	 */
 	"descendOne"        : data => readyPutRules.descentNum(data, 1),
+
+	/**
+	 * @alias descendOne
+	 */
 	"descentOne"        : data => readyPutRules.descendOne(data),
 
+	/**
+	 * Можно класть карту на N ниже достоинством, например "descendNum:2"
+	 */
 	"descendNum"        : (data, prop) => {
 
 		if (data.cards.length == 0) {
@@ -336,10 +422,20 @@ let readyPutRules = {
 
 		return da && da.down == num + da.up;
 	},
+
+	/**
+	 * @alias descendNum
+	 */
 	"descentNum"        : (data, prop) => readyPutRules.descendNum(data, prop),
 
+	/**
+	 * Можно класть карту на единицу ниже или выше достоинством
+	 */
 	"ascdescOne"        : data => readyPutRules.ascdescNum(data, 1),
 
+	/**
+	 * Можно класть карту на N ниже или выше достоинством, например "ascdescNum:2"
+	 */
 	"ascdescNum"        : (data, prop) => {
 
 		if (data.cards.length == 0) {
@@ -369,28 +465,37 @@ let readyPutRules = {
 				: du.down.value + num                              == du.up.value
 		);
 	},
+
+	/**
+	 * @alias ascendNumLoop
+	 */
 	"ascentNumLoop"     : (data, prop) => readyPutRules.ascendNumLoop(data, prop),
 
 	"descendNumLoop"    : (data, prop) => {
 		
-		// if (data.cards.length == 0) {
-		// 	return true;
-		// }
+		if (data.cards.length == 0) {
+			return true;
+		}
 
-		// let num = (prop | 0) > 0 ? (prop | 0) : 1;
+		let num = (prop | 0) > 0 ? (prop | 0) : 1;
 
-		// let du = readyPutRules._down_up_cards(data);
+		let du = readyPutRules._down_up_cards(data);
 
-		// return du && (
-		// 	du.down.value + num > defaults.card.ranks.length
-		// 		? du.down.value + num - defaults.card.ranks.length == du.up.value
-		// 		: du.down.value + num                              == du.up.value
-		// );
-
-		return false;
+		return du && (
+			du.down.value - num < 1
+				? du.down.value - num + defaults.card.ranks.length == du.up.value
+				: du.down.value - num                              == du.up.value
+		);
 	},
+
+	/**
+	 * @alias descendNumLoop
+	 */
 	"descentNumLoop"    : (data, prop) => readyPutRules.descendNumLoop(data, prop),
 
+	/**
+	 * Можно класть карту дающую с верхней в сумме N, например "sum:10"
+	 */
 	"sum"               : (data, prop) => {
 
 		if (data.cards.length == 0) {
@@ -405,8 +510,14 @@ let readyPutRules = {
 		return _sum == num;
 	},
 
+	/**
+	 * Можно класть карту дающую с верхней в сумме 14
+	 */
 	"sum14"             : data => readyPutRules.sum(data, 14),
 
+	/**
+	 * Можно класть карту из стопку с которой есть связь типа around
+	 */
 	"around"            : data => { // {from, putDeck, cards}
 
 		if (data.cards.length == 0) {
@@ -429,6 +540,13 @@ let readyPutRules = {
 		return false;
 	},
 
+	"beside": data => {
+		return false; // TODO
+	},
+
+	/**
+	 * Можно класть карту только из стопки принадлежащей другой группе
+	 */
 	"notOneGroup"       : (data, prop) => {
 
 		let _result = data.from.deck.parent != data.to.parent;
@@ -443,6 +561,10 @@ let readyPutRules = {
 		}
 
 		return _result;
+	},
+
+	"oneGroup": data => {
+		return false; // TODO
 	}
 };
 

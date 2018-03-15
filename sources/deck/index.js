@@ -70,7 +70,8 @@ class deckClass {
 			typeof data.name != "string" &&
 				  !data.deckIndex
 		) {
-			console.warn('Deck name', this.name, 'is incorrect');
+			// console.warn('Deck name', this.name, 'is incorrect');
+			this.name = "deck_no_name_" + this.id;
 		}
 
 		// console.log('Deck', id, this.name);

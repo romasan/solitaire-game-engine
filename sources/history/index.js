@@ -156,7 +156,7 @@ class historyClass {
 			return;
 		}
 
-		// console.log('History:add', step);
+		console.log('History:add', step);
 
 		this._nextId += 1;
 		let stepId = this._nextId | 0;
@@ -202,7 +202,7 @@ class historyClass {
 	 */
 	get(reset = true, unzip = false) {
 
-		// console.log('History:get reset:', reset, 'unzip:', unzip);
+		console.log('History:get reset:', reset, 'unzip:', unzip);
 
 		if (unzip) {
 			this.unzip();
