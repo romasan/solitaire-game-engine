@@ -3,9 +3,9 @@
 import common, {event, share, defaults} from '../common'                             ;
 
 import flipTypes              from './flipTypes'                                     ;
-import putRules               from './putRules'                                      ;
-import takeRules              from './takeRules'                                     ;
-import fullRules              from './fullRules'                                     ;
+import PutRules               from './putRules'                                      ;
+import TakeRules              from './takeRules'                                     ;
+import FullRules              from './fullRules'                                     ;
 import paddingTypes           from './paddingTypes'                                  ;
 import deckActions            from './deckActions'                                   ;
 import Take                   from './deckTake'                                      ;
@@ -33,6 +33,27 @@ class deckClass {
 			return false;
 		}
 
+		const {
+			name            ,
+			parent          ,
+			deckIndex       ,
+			locked          ,
+			save            ,
+			visible         ,
+			autoHide        ,
+			autoCheckFlip   ,
+			showPrefFlipCard,
+			showPrevAttempts,
+			checkNextCards  ,
+			autoUnflipTop   ,
+			flip            ,
+			putRules        ,
+			takeRules       ,
+			fullRules       ,
+			paddingType     ,
+			actions
+		} = data;
+
 		/**
 		 * @type {Card[]}
 		 */
@@ -57,18 +78,18 @@ class deckClass {
 		// let _parent_el   = Group.getByName(data.parent)                  ,
 		//     _parent_name = _parent_el ? _parent_el.name : 'no_parent_'   ,
 		// 	_new_id      = _parent_el ? _parent_el.getDecks().length : id;
-		let _parent_name = data.parent ? data.parent : 'no_parent';
+		let _parent_name = parent ? parent : 'no_parent';
 
 		/**
 		 * @type {name}
 		 */
-		this.name = typeof data.name == 'string'
-			? data.name
-			: (_parent_name + '_' + data.deckIndex);
+		this.name = typeof name == 'string'
+			? name
+			: (_parent_name + '_' + deckIndex);
 		
 		if (
-			typeof data.name != "string" &&
-				  !data.deckIndex
+			typeof name != "string" &&
+			!deckIndex
 		) {
 			// console.warn('Deck name', this.name, 'is incorrect');
 			this.name = "deck_no_name_" + this.id;
@@ -79,22 +100,22 @@ class deckClass {
 		/**
 		 * @type {boolean}
 		 */
-		this.locked = data.locked ? true : false;
+		this.locked = typeof locked == "boolean" ? locked : false;
 
 		/**
 		 * @type {boolean}
 		 */
-		this.save = data.save ? true : false;
+		this.save = typeof save == "boolean" ? save : true;
 
 		/**
 		 * @type {boolean}
 		 */
-		this.visible = typeof data.visible == 'boolean' ? data.visible : true;
+		this.visible = typeof visible == 'boolean' ? visible : true;
 
 		/**
 		 * @type {number}
 		 */
-		this.deckIndex = typeof data.deckIndex == 'number' ? data.deckIndex : null;
+		this.deckIndex = typeof deckIndex == 'number' ? deckIndex : null;
 
 		/**
 		 * @type {string}
@@ -104,27 +125,27 @@ class deckClass {
 		/**
 		 * @type {boolean}
 		 */
-		this.autoHide = typeof data.autoHide == 'boolean' ? data.autoHide : defaults.autohide;
+		this.autoHide = typeof autoHide == 'boolean' ? autoHide : defaults.autohide;
 
 		/**
 		 * @type {boolean}
 		 */
-		this.autoCheckFlip = typeof data.autoCheckFlip == 'boolean' ? data.autoCheckFlip : defaults.autoCheckFlip;
+		this.autoCheckFlip = typeof autoCheckFlip == 'boolean' ? autoCheckFlip : defaults.autoCheckFlip;
 
 		/**
 		 * @type {boolean}
 		 */
-		this.showPrefFlipCard = typeof data.showPrefFlipCard == 'boolean' ? data.showPrefFlipCard : share.get('showPrefFlipCard');
+		this.showPrefFlipCard = typeof showPrefFlipCard == 'boolean' ? showPrefFlipCard : share.get('showPrefFlipCard');
 
 		/**
 		 * @type {boolean}
 		 */
-		this.showPrevAttempts = typeof data.showPrevAttempts == 'boolean' ? data.showPrevAttempts : defaults.showPrevAttempts;
+		this.showPrevAttempts = typeof showPrevAttempts == 'boolean' ? showPrevAttempts : defaults.showPrevAttempts;
 
 		/**
 		 * @type {boolean}
 		 */
-		this.checkNextCards = typeof data.checkNextCards == 'boolean' ? data.checkNextCards : defaults.checkNextCards;
+		this.checkNextCards = typeof checkNextCards == 'boolean' ? checkNextCards : defaults.checkNextCards;
 
 		this.data = {};
 
@@ -205,13 +226,13 @@ class deckClass {
 		/**
 		 * @type {boolean}
 		 */
-		this.autoUnflipTop = typeof data.autoUnflipTop == 'boolean' ? data.autoUnflipTop : defaults.autoUnflipTop;
+		this.autoUnflipTop = typeof autoUnflipTop == 'boolean' ? autoUnflipTop : defaults.autoUnflipTop;
 
 		// Flip
 		let flipData = null;
 
-		let flipType = data.flip && typeof data.flip == 'string'
-			? data.flip.indexOf(':') > 0
+		let flipType = flip && typeof flip == 'string'
+			? flip.indexOf(':') > 0
 				? (e => {
 
 					let name = e[0];
@@ -223,9 +244,9 @@ class deckClass {
 					return flipTypes[name]
 						? name
 						: defaults.flip_type;
-				})(data.flip.split(':'))
-				: flipTypes[data.flip]
-					? data.flip
+				})(flip.split(':'))
+				: flipTypes[flip]
+					? flip
 					: defaults.flip_type
 			: defaults.flip_type;
 
@@ -259,14 +280,14 @@ class deckClass {
 		 * Put rules
 		 * @type {string|string[]}
 		 */
-		this.putRules = data.putRules
-			? typeof data.putRules == 'string'
-				? putRules[stringWithColon(data.putRules)]
-					? [data.putRules]
+		this.putRules = putRules
+			? typeof putRules == 'string'
+				? PutRules[stringWithColon(putRules)]
+					? [putRules]
 					: defaults.putRules
-				: data.putRules.constructor == Array
-					? data.putRules.filter(
-						ruleName => typeof ruleName == 'string' && putRules[stringWithColon(ruleName)] // TODO Exception (putRule "***" not found)
+				: putRules.constructor == Array
+					? putRules.filter(
+						ruleName => typeof ruleName == 'string' && PutRules[stringWithColon(ruleName)] // TODO Exception (putRule "***" not found)
 							? true
 							: false
 					)
@@ -279,16 +300,16 @@ class deckClass {
 
 		/**
 		 * Take rules
-		 * @type {string|string[]}
+		 * @type {string | Array<string>}
 		 */
-		this.takeRules = data.takeRules
-			? typeof data.takeRules == 'string'
-				? takeRules[data.takeRules]
-					? [data.takeRules]
+		this.takeRules = takeRules
+			? typeof takeRules == 'string'
+				? TakeRules[takeRules]
+					? [takeRules]
 					: defaults.takeRules
-				: data.takeRules.constructor == Array
-					? data.takeRules.filter(
-						ruleName => typeof ruleName == 'string' && takeRules[ruleName] // TODO Exception (takeRule "***" not found)
+				: takeRules.constructor == Array
+					? takeRules.filter(
+						ruleName => typeof ruleName == 'string' && TakeRules[ruleName] // TODO Exception (takeRule "***" not found)
 					)
 					: defaults.takeRules
 			: defaults.takeRules;
@@ -298,16 +319,16 @@ class deckClass {
 		// В сложенную колоду нельзя класть новые карты
 		/**
 		 * Full rules
-		 * @type {string|string[]}
+		 * @type {string | Array<string>}
 		 */
-		this.fullRules = data.fullRules
-			? typeof data.fullRules == "string"
-				? fullRules[data.fullRules]
-					? [data.fullRules]
+		this.fullRules = fullRules
+			? typeof fullRules == "string"
+				? FullRules[fullRules]
+					? [fullRules]
 					: defaults.fullRules
-				: data.fullRules.constructor == Array
-					? data.fullRules.filter(
-						ruleName => typeof ruleName == "string" && fullRules[ruleName]
+				: fullRules.constructor == Array
+					? fullRules.filter(
+						ruleName => typeof ruleName == "string" && FullRules[ruleName]
 					)
 					: defaults.fullRules
 			: defaults.fullRules;
@@ -315,11 +336,11 @@ class deckClass {
 		// Padding
 		// порядок карт в колоде
 		let paddingData = null;
-		let padding = data.paddingType                                 // isset data.paddingType
-			? typeof data.paddingType == 'string'                      // is string
-				? paddingTypes[data.paddingType]                       // isset method
-					? paddingTypes[data.paddingType]                   // use method(data.paddingType)
-					: data.paddingType.indexOf(':') >= 0               // is method with attribute
+		let padding = paddingType                                 // isset paddingType
+			? typeof paddingType == 'string'                      // is string
+				? paddingTypes[paddingType]                       // isset method
+					? paddingTypes[paddingType]                   // use method(paddingType)
+					: paddingType.indexOf(':') >= 0               // is method with attribute
 						? (e => {
 
 							let name = e[0];                           // method name
@@ -328,11 +349,11 @@ class deckClass {
 								paddingData = e.length > 1             // save method data
 									? e.slice(1).join(':')
 									: '';
-								return paddingTypes[name];             // use method(data.paddingType)
+								return paddingTypes[name];             // use method(paddingType)
 							}
 
 							return paddingTypes[defaults.paddingType]; // use default
-						})(data.paddingType.split(':'))
+						})(paddingType.split(':'))
 						: paddingTypes[defaults.paddingType]           // use default
 				: paddingTypes[defaults.paddingType]                   // use default
 			: paddingTypes[defaults.paddingType];                      // use default
@@ -396,8 +417,8 @@ class deckClass {
 		 */
 		this.actions = [];
 
-		if (data.actions) {
-			this.actions = data.actions;
+		if (actions) {
+			this.actions = actions;
 			deckActions.add(this);
 		}
 
@@ -706,8 +727,8 @@ class deckClass {
 					typeof _rule == 'string'
 				) {
 					full = full                                  &&
-					       typeof fullRules[_rule] == 'function' &&
-					       fullRules[_rule](this);
+					       typeof FullRules[_rule] == 'function' &&
+					       FullRules[_rule](this);
 				} else {
 
 					for (let subRule in _rule) {
@@ -715,7 +736,7 @@ class deckClass {
 							typeof subRule            == 'string'   &&
 							typeof fullRules[subRule] == 'function'
 						) {
-							full = full && fullRules[subRule](this, _rule[subRule]);
+							full = full && FullRules[subRule](this, _rule[subRule]);
 						}
 					}
 
