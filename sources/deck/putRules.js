@@ -5,54 +5,11 @@ import {defaults} from '../common'                              ;
 import Deck       from './'                                     ;
 import getBeside  from '../group/generators/relations/getBeside';
 
-/*
-
-Relations filters:
-
- * linePrev
- * lineNext
-
-Internal use:
-
- * _down_up_cards
- * _down_up_rank_num
- * _isFirst
-
-Rules:
-
- * striped
- * firstAce
- * firstKing
- * notForEmpty
- * onlyEmpty
- * oneRank
- * oneSuit
- * any
- * not
- * ascendDeck
- * descendDeck
- * oneRankDeck
- * oneSuitDeck
- * ascend | ascent
- * descend | descent
- * ascendOne | ascentOne
- * ascendNum | ascentNum
- * descendOne | descentOne
- * descendNum | descentNum
- * ascdescOne
- * ascdescNum
- * ascendNumLoop | ascentNumLoop
- * sum
- * sum14
- * around
- 
- */
-
 let readyPutRules = {
 
 	// Relations filters
 
-	"linePrev"          : data => {
+	"linePrev": data => {
 
 		let prev = getBeside(data.to).prev;
 
@@ -66,7 +23,7 @@ let readyPutRules = {
 		return false;
 	},
 
-	"lineNext"          : data => {
+	"lineNext": data => {
 
 		let next = getBeside(data.to).next;
 
@@ -82,7 +39,7 @@ let readyPutRules = {
 
 	// Internal use
 
-	"_down_up_cards"    : data => {
+	"_down_up_cards": data => {
 
 		if (data.cards.length == 0) {
 			return false;
@@ -103,7 +60,7 @@ let readyPutRules = {
 		}
 	},
 
-	"_down_up_rank_num" : data => {
+	"_down_up_rank_num": data => {
 
 		let du = readyPutRules._down_up_cards(data);
 
@@ -113,7 +70,7 @@ let readyPutRules = {
 		} : false;
 	},
 
-	"_isFirst"          : (data, _name) => {
+	"_isFirst": (data, _name) => {
 
 		if (data.cards.length == 0) {
 
@@ -130,12 +87,11 @@ let readyPutRules = {
 
 	// Rules
 
-	// "oneColor" : data => false, // TODO
 	/**
 	 * Карты можно класть друг на друга только чередуя цвета,
 	 * черную на красную, и на оборот.
 	 */
-	"striped"           : data => {
+	"striped": data => {
 
 		if (data.cards.length == 0) {
 			return true;
@@ -153,29 +109,49 @@ let readyPutRules = {
 	},
 
 	/**
+	 * Можно класть только карту того же цвета, что предыдущая
+	 */
+	"oneColor" : data => {
+
+		if (data.cards.length == 0) {
+			return true;
+		}
+
+		let color_A   = data.cards[data.cards.length - 1].color,
+			color_B   = null,
+			_validate = null;
+
+		if (data.putDeck[0].card) {
+			color_B = data.putDeck[0].card.color;
+		}
+
+		return color_A == color_B;
+	},
+
+	/**
 	 * На пустую стопку можно положить только туз
 	 */
-	"firstAce"          : data => readyPutRules._isFirst(data, defaults.card.ranks[0]),
+	"firstAce": data => readyPutRules._isFirst(data, defaults.card.ranks[0]),
 
 	/**
 	 * На пустую стопку можно положить только короля
 	 */
-	"firstKing"         : data => readyPutRules._isFirst(data, defaults.card.ranks[defaults.card.ranks.length - 1]),
+	"firstKing": data => readyPutRules._isFirst(data, defaults.card.ranks[defaults.card.ranks.length - 1]),
 
 	/**
 	 * На пустую стопку нельзя класть карты
 	 */
-	"notForEmpty"       : data => data.cards.length > 0,
+	"notForEmpty": data => data.cards.length > 0,
 
 	/**
 	 * Можно класть карты только если стопка пуста
 	 */
-	"onlyEmpty"         : data => data.cards.length == 0,
+	"onlyEmpty": data => data.cards.length == 0,
 
 	/**
 	 * Можно класть только карты одного достоинства
 	 */
-	"oneRank"           : data => {
+	"oneRank": data => {
 
 		if (data.cards.length == 0) {
 			return true;
@@ -189,7 +165,7 @@ let readyPutRules = {
 	/**
 	 * Можно класть только карты одной масти
 	 */
-	"oneSuit"           : data => {
+	"oneSuit": data => {
 
 		if (data.cards.length == 0) {
 			return true;
@@ -203,17 +179,17 @@ let readyPutRules = {
 	/**
 	 * Можно класть любые карты
 	 */
-	"any"               : data => true,
+	"any": data => true,
 
 	/**
 	 * Нельзя класть карты
 	 */
-	"not"               : data => false,
+	"not": data => false,
 
 	/**
 	 * Можно класть стопку карт в которой каждая следующая выше достоинством
 	 */
-	"ascendDeck"        : data => { //ascend data by step
+	"ascendDeck": data => { //ascend data by step
 
 		if (data.putDeck.length == 1) {
 			return true;
@@ -242,12 +218,12 @@ let readyPutRules = {
 	/**
 	 * @alias ascendDeck
 	 */
-	"ascentDeck"        : data => readyPutRules.ascendDeck(data), // обратная совместимость
+	"ascentDeck": data => readyPutRules.ascendDeck(data), // обратная совместимость
 
 	/**
 	 * Можно класть стопку карт в которой каждая следующая ниже достоинством
 	 */
-	"descendDeck"       : data => { //ascend data by step
+	"descendDeck": data => { //ascend data by step
 
 		if (data.putDeck.length == 1) {
 			return true;
@@ -276,12 +252,12 @@ let readyPutRules = {
 	/**
 	 * @alias descendDeck
 	 */
-	"descentDeck"       : data => readyPutRules.descendDeck(data),
+	"descentDeck": data => readyPutRules.descendDeck(data),
 
 	/**
 	 * Можно класть стопку карт в которой все карты одного достоинства
 	 */
-	"oneRankDeck"       : data => {
+	"oneRankDeck": data => {
 
 		if (data.putDeck.length == 1) {
 			return true;
@@ -306,7 +282,7 @@ let readyPutRules = {
 	/**
 	 * Можно класть стопку карт в которой все карты одной масти
 	 */
-	"oneSuitDeck"       : data => {
+	"oneSuitDeck": data => {
 
 		if (data.putDeck.length == 1) {
 			return true;
@@ -331,7 +307,7 @@ let readyPutRules = {
 	/**
 	 * Можно класть карту выше достоинством
 	 */
-	"ascend"            : data => {
+	"ascend": data => {
 
 		if (data.cards.length == 0) {
 			return true;
@@ -345,12 +321,12 @@ let readyPutRules = {
 	/**
 	 * @alias ascend
 	 */
-	"ascent"            : data => readyPutRules.ascend(data),
+	"ascent": data => readyPutRules.ascend(data),
 
 	/**
 	 * Можно класть карту ниже достоинством
 	 */
-	"descend"           : data => {
+	"descend": data => {
 
 		if (data.cards.length == 0) {
 			return true;
@@ -364,22 +340,22 @@ let readyPutRules = {
 	/**
 	 * @alias descend
 	 */
-	"descent"           : data => readyPutRules.descend(data),
+	"descent": data => readyPutRules.descend(data),
 
 	/**
 	 * Можно класть карту на единицу ниже достоинством
 	 */
-	"ascendOne"         : data => readyPutRules.ascendNum(data, 1),
+	"ascendOne": data => readyPutRules.ascendNum(data, 1),
 	
 	/**
 	 * @alias ascendOne
 	 */
-	"ascentOne"         : data => readyPutRules.ascendOne(data),
+	"ascentOne": data => readyPutRules.ascendOne(data),
 
 	/**
 	 * Можно класть карту на N выше достоинством, например "ascendNum:2"
 	 */
-	"ascendNum"         : (data, prop) => {
+	"ascendNum": (data, prop) => {
 
 		if (data.cards.length == 0) {
 			return true;
@@ -395,22 +371,22 @@ let readyPutRules = {
 	/**
 	 * @alias ascendNum
 	 */
-	"ascentNum"         : (data, prop) => readyPutRules.ascendNum(data, prop),
+	"ascentNum": (data, prop) => readyPutRules.ascendNum(data, prop),
 
 	/**
 	 * Можно класть карту на единицу ниже достоинством
 	 */
-	"descendOne"        : data => readyPutRules.descentNum(data, 1),
+	"descendOne": data => readyPutRules.descentNum(data, 1),
 
 	/**
 	 * @alias descendOne
 	 */
-	"descentOne"        : data => readyPutRules.descendOne(data),
+	"descentOne": data => readyPutRules.descendOne(data),
 
 	/**
 	 * Можно класть карту на N ниже достоинством, например "descendNum:2"
 	 */
-	"descendNum"        : (data, prop) => {
+	"descendNum": (data, prop) => {
 
 		if (data.cards.length == 0) {
 			return true;
@@ -426,17 +402,17 @@ let readyPutRules = {
 	/**
 	 * @alias descendNum
 	 */
-	"descentNum"        : (data, prop) => readyPutRules.descendNum(data, prop),
+	"descentNum": (data, prop) => readyPutRules.descendNum(data, prop),
 
 	/**
 	 * Можно класть карту на единицу ниже или выше достоинством
 	 */
-	"ascdescOne"        : data => readyPutRules.ascdescNum(data, 1),
+	"ascdescOne": data => readyPutRules.ascdescNum(data, 1),
 
 	/**
 	 * Можно класть карту на N ниже или выше достоинством, например "ascdescNum:2"
 	 */
-	"ascdescNum"        : (data, prop) => {
+	"ascdescNum": (data, prop) => {
 
 		if (data.cards.length == 0) {
 			return true;
@@ -449,7 +425,7 @@ let readyPutRules = {
 		return da && Math.abs(da.down - da.up) == num;
 	},
 
-	"ascendNumLoop"     : (data, prop) => {
+	"ascendNumLoop": (data, prop) => {
 
 		if (data.cards.length == 0) {
 			return true;
@@ -469,9 +445,9 @@ let readyPutRules = {
 	/**
 	 * @alias ascendNumLoop
 	 */
-	"ascentNumLoop"     : (data, prop) => readyPutRules.ascendNumLoop(data, prop),
+	"ascentNumLoop": (data, prop) => readyPutRules.ascendNumLoop(data, prop),
 
-	"descendNumLoop"    : (data, prop) => {
+	"descendNumLoop": (data, prop) => {
 		
 		if (data.cards.length == 0) {
 			return true;
@@ -491,12 +467,12 @@ let readyPutRules = {
 	/**
 	 * @alias descendNumLoop
 	 */
-	"descentNumLoop"    : (data, prop) => readyPutRules.descendNumLoop(data, prop),
+	"descentNumLoop": (data, prop) => readyPutRules.descendNumLoop(data, prop),
 
 	/**
 	 * Можно класть карту дающую с верхней в сумме N, например "sum:10"
 	 */
-	"sum"               : (data, prop) => {
+	"sum": (data, prop) => {
 
 		if (data.cards.length == 0) {
 			return true;
@@ -513,26 +489,23 @@ let readyPutRules = {
 	/**
 	 * Можно класть карту дающую с верхней в сумме 14
 	 */
-	"sum14"             : data => readyPutRules.sum(data, 14),
+	"sum14": data => readyPutRules.sum(data, 14),
 
-	/**
-	 * Можно класть карту из стопку с которой есть связь типа around
-	 */
-	"around"            : data => { // {from, putDeck, cards}
+	"_byRelation": (data, relation) => { // {from, putDeck, cards}, relation name
 
 		if (data.cards.length == 0) {
 			return true;
 		}
 
-		let _around = data.from.deck.getRelationsByName('around', {
+		let _relations = data.from.deck.getRelationsByName(relation, {
 			"from": null
 		});
 
 		let _parent = Deck.getDeckById(data.cards[0].parent);
 
-		for (let i in _around) {
+		for (let i in _relations) {
 
-			if (_around[i].to == _parent.name) {
+			if (_relations[i].to == _parent.name) {
 				return true;
 			}
 		}
@@ -540,14 +513,20 @@ let readyPutRules = {
 		return false;
 	},
 
-	"beside": data => {
-		return false; // TODO
-	},
+	/**
+	 * Можно класть карту из стопку с которой есть связь типа around
+	 */
+	"around": data => readyPutRules._byRelation(data, 'around'),
 
 	/**
-	 * Можно класть карту только из стопки принадлежащей другой группе
+	 * Можно класть карту из стопку с которой есть связь типа beside
 	 */
-	"notOneGroup"       : (data, prop) => {
+	"beside": data => readyPutRules._byRelation(data, 'beside'),
+
+	/**
+	 * Можно класть карты только из стопки принадлежащей другой группе
+	 */
+	"notOneGroup": (data, prop) => {
 
 		let _result = data.from.deck.parent != data.to.parent;
 
@@ -563,8 +542,11 @@ let readyPutRules = {
 		return _result;
 	},
 
+	/**
+	 * Можно класть карты только из стопки той же группы, что и текущая стопка
+	 */
 	"oneGroup": data => {
-		return false; // TODO
+		return data.from.deck.parent == data.to.parent;
 	}
 };
 

@@ -2,7 +2,6 @@
 
 export { default as deal           } from './dealAction'          ;
 export { default as kick           } from './kickAction'          ;
-export { default as stepsAround    } from './stepsAroundAction'   ;
 export { default as changeStepType } from './changeStepTypeAction';
 export { default as lock           } from './lockAction'          ;
 export { default as unlock         } from './unlockAction'        ;
