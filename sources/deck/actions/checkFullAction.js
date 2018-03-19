@@ -5,6 +5,9 @@ import {event}    from '../../common';
 import Group      from '../../group' ;
 import deckAction from './deckAction';
 
+/**
+ * Проверить заполнение определённых стопок
+ */
 class checkFullAction extends deckAction {
 
 	constructor() {
@@ -12,17 +15,26 @@ class checkFullAction extends deckAction {
 	}
 
 	run(deck, data) {
+		
+		const {
+			eventData,
+			actionData
+		} = data;
+
+		// if (
+		// 	 eventData.to.name != deck.name &&
+		// 	 actionData                     &&
+		// 	!actionData.any
+		// ) {
+		// 	return false;
+		// }
 
 		if (
-			data.eventData.to.name != deck.name &&
-			!data.actionData.any
+			actionData       &&
+			actionData.query
 		) {
-			return false;
-		}
 
-		if (data && data.actionData && data.actionData.query) {
-
-			let _query = data.actionData.query;
+			let _query = actionData.query;
 
 			let _selectedDecks = [];
 
@@ -33,7 +45,6 @@ class checkFullAction extends deckAction {
 				for (let groupNameIndex in _query.groups) {
 
 					let groupName = _query.groups[groupNameIndex];
-
 					let _group = Group.getByName(groupName);
 
 					if (_select == 'first') {
@@ -47,13 +58,11 @@ class checkFullAction extends deckAction {
 					} else if (_select == 'last') {
 
 						let _index = _group.decksCount;
-
 						let _deck = _group.getDeckByIndex(_index);
 
 						if (_deck) {
 
 							let _index = _group.decksCount;
-
 							let _deck = _group.getDeckByIndex(_index);
 
 							_selectedDecks.push(_deck);
@@ -72,7 +81,6 @@ class checkFullAction extends deckAction {
 				for (let deckNameIndex in _query.decks) {
 
 					let deckName = _query.decks[deckNameIndex];
-
 					let _deck = Deck.getByName(deckName);
 
 					if (_deck) {
@@ -80,6 +88,7 @@ class checkFullAction extends deckAction {
 					}
 				}
 			}
+
 			for (let deckIndex in _selectedDecks) {
 
 				let deck = _selectedDecks[deckIndex];

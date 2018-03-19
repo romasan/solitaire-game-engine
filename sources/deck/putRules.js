@@ -5,6 +5,9 @@ import {defaults} from '../common'                              ;
 import Deck       from './'                                     ;
 import getBeside  from '../group/generators/relations/getBeside';
 
+/**
+ * Правила помещения карт в стопку
+ */
 let readyPutRules = {
 
 	// Relations filters
