@@ -70,10 +70,12 @@ event.listen('moveDragDeck', data => {
 			destinationAngle -= 360;
 		}
 
+		const zoom = share.get('zoom');
+
 		let _params = {
 			"transform" : 'rotate(' + destinationAngle + 'deg)',
-			"left"      : _position.x + 'px'                   ,
-			"top"       : _position.y + 'px'
+			"left"      : _position.x * zoom + 'px'                   ,
+			"top"       : _position.y * zoom + 'px'
 		};
 
 		let _zIndex = (defaults.topZIndex | 0) + (i | 0);

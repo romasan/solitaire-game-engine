@@ -214,7 +214,9 @@ let tipsDestination = data => {
 		event.dispatch('hideTips');
 
 		if (data && data.currentCard && data.currentCard.id) {
+
 			for (let i in _tips) {
+
 				if (_tips[i].from.card.id == data.currentCard.id) {					
 
 					event.dispatch('showTip', {
@@ -231,6 +233,7 @@ let tipsDestination = data => {
 let checkFrom = from => {
 
 	for (let i in _tips) {
+
 		if (
 			_tips[i].from.deck.name == from
 		) {

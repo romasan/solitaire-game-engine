@@ -47,7 +47,9 @@ let bestTip = (moveDeck, cursorMove) => {
 	    _in_direction_count =  0,
 	    _min_distance       = -1;
 
-	let inDistance = ((defaults.card.height - (defaults.card.height - defaults.card.width) / 2) * share.get('zoom')) / 2;
+	const zoom = share.get('zoom');
+
+	let inDistance = ((defaults.card.height - (defaults.card.height - defaults.card.width) / 2) * zoom) / 2;
 
 	// Приоритет для homeGroups
 	let _homeGroups = Field.homeGroups;
