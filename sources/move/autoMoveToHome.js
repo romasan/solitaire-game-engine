@@ -72,6 +72,10 @@ let openDecks = () => {
 	return _correct;
 };
 
+/**
+ * Автоход в стопки групп входящих в «дом»
+ * @param {boolean} outer 
+ */
 let autoMoveToHome = outer => {
 
 	event.dispatch('animation:default', 'autoMoveToHome');
@@ -160,9 +164,9 @@ let autoMoveToHome = outer => {
 	}
 
 	if (suitableTips.length > 0) {
-
+		
 		let tip = suitableTips[0];
-
+		
 		let autoMoveToHomeCallback = e => {
 
 			// console.log('autoMoveToHomeCallback');
@@ -178,10 +182,19 @@ let autoMoveToHome = outer => {
 			? tip.from.deck.actions.length > 0
 			: true;
 
+		let _deck = (
+			index => tip.from.deck.cards
+				.filter((e, i) => i >= index)
+				.map(e => e.name)
+		)(
+			tip.from.deck.cards
+				.findIndex(e => e.name == tip.from.card.name)
+		);
+
 		let forceMoveData = {
 			"from"        :  tip.from.deck.name   ,
 			"to"          :  tip.to  .deck.name   ,
-			"deck"        : [tip.from.card.name]  ,
+			"deck"        : _deck                 ,
 			"addStep"     : true                  ,
 			"save"        : true                  ,
 			"waitActions" : waitActions           ,

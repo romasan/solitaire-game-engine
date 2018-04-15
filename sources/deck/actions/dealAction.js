@@ -2,10 +2,9 @@
 
 import common, {event, share, defaults} from '../../common';
 
-import forceMove  from '../../move/forceMove';
-import deckAction from './deckAction'        ;
-import History    from '../../history'       ;
-import Deck       from '../'                 ;
+import deckAction from './deckAction' ;
+import History    from '../../history';
+import Deck       from '../'          ;
 
 const stepType = 'dealStepType';
 
@@ -286,7 +285,7 @@ class dealAction extends deckAction {
 					forceMoveData.flip = false;
 				}
 
-				forceMove(forceMoveData, true);
+				event.emit('forceMove', forceMoveData);
 
 				// moveDecks[deckId].checkFlip();
 				// _decks[deckId].Redraw();

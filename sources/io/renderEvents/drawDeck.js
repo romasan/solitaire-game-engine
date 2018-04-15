@@ -22,15 +22,16 @@ event.listen('addDeckEl', data => {
 
 	applyChangedParameters(data);
 
-	let _deckDomElement = 
-		elRender('<div>');
+	let _deckDomElement = elRender('<div>');
+
+	const zoom = share.get('zoom');
 
 	let _params = {
 		"transform" : 'rotate(' + (data.params.rotate | 0) + 'deg)'    ,
-		"left"      :              data.params.x           + 'px'      ,
-		"top"       :              data.params.y           + 'px'      ,
-		"width"     :              defaults.card.width     + 'px'      ,
-		"height"    :              defaults.card.height    + 'px'      ,
+		"left"      :       zoom * data.params.x           + 'px'      ,
+		"top"       :       zoom * data.params.y           + 'px'      ,
+		"width"     :       zoom * defaults.card.width     + 'px'      ,
+		"height"    :       zoom * defaults.card.height    + 'px'      ,
 		"display"   :              data.deck.visible ? 'block' : 'none'
 	};
 

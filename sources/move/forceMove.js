@@ -94,13 +94,6 @@ let forceMove = data => {
 				deck[_index]                          &&
 				deckFromCards[i].name != deck[_index]
 			) {
-
-				console.warn('forceMove:check:false', deckFrom.name, deckTo.name); //,
-				// 	i, deckFromCards.length, deck.length,
-				// 	deckFromCards[i].name, deck[_index]
-				// );
-				// event.dispatch('solitaire_log', '%cforceMove:warn|color: red');
-
 				check = false;
 			}
 		}

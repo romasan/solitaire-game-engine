@@ -81,7 +81,9 @@ class allToAll {
 				"deck"     : this._decks[deckIndex_2],
 				"lastCard" : _card_to                ,
 				"count"    : _cards_to.length
-			}
+			},
+
+			"index": (this._moves.length | 0) + 1
 		});
 	}
 };

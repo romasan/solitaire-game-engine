@@ -28,9 +28,9 @@ let preloadCallback = null,
  */
 
 exports.event     = event;
-exports.on        = event.on;
-exports.once      = event.once;
-exports.emit      = event.emit;
+exports.on        = (...e) => event.on   (...e);
+exports.once      = (...e) => event.once (...e);
+exports.emit      = (...e) => event.emit (...e);
 exports.options   = defaults;
 exports.winCheck  = winCheck.hwinCheck;
 exports.generator = generator;

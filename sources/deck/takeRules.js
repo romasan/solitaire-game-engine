@@ -4,6 +4,13 @@
  * Правила взятия карт из стопки
  */
 let takeRules = {
+
+	__list: {
+		not      : { exclude: "*" },
+		notFirst : { exclude: "*" },
+		any      : { exclude: "*" },
+		onlyTop  : { exclude: "*" }
+	},
 				
 	// SimpleRules
 	/**

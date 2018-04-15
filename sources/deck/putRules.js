@@ -10,6 +10,60 @@ import getBeside  from '../group/generators/relations/getBeside';
  */
 let readyPutRules = {
 
+	__list: {
+		// linePrev: {exclude: []},
+		// lineNext: {exclude: []},
+		// _down_up_cards: {exclude: []},
+		// _down_up_rank_num: {exclude: []},
+		// _isFirst: {exclude: []},
+
+		// ascentDeck: {exclude: []},
+		// descentDeck: {exclude: []},
+		// ascent: {exclude: []},
+		// descent: {exclude: []},
+		// ascentOne: {exclude: []},
+		// ascentNum: {exclude: []},
+		// descentOne: {exclude: []},
+		// descentNum: {exclude: []},
+		// ascentNumLoop: {exclude: []},
+		// descentNumLoop: {exclude: []},
+		// sum14: {exclude: []},
+		// _byRelation: {exclude: []},
+
+		any            : { exclude: "*"},
+		not            : { exclude: "*"},
+
+		striped        : { exclude: [] },
+		oneColor       : { exclude: [] },
+		firstAce       : { exclude: [] },
+		firstKing      : { exclude: [] },
+		// TODO firstIs:j
+		// TODO all to lowercase on check
+		notForEmpty    : { exclude: ["onlyEmpty"] },
+		onlyEmpty      : { exclude: ["notForEmpty"] },
+		oneRank        : { exclude: [] },
+		oneSuit        : { exclude: [] },
+		ascendDeck     : { exclude: ["descendDeck", "descend"] },
+		descendDeck    : { exclude: ["ascendDeck", "ascend"] },
+		oneRankDeck    : { exclude: [] },
+		oneSuitDeck    : { exclude: [] },
+		ascend         : { exclude: ["descend", "descendDeck"] },
+		descend        : { exclude: ["ascend", "ascendDeck"] },
+		ascendOne      : { exclude: ["descend", "descendDeck"], twins: ["descendOne", "ascdescNum", "descendNum"] },
+		ascendNum      : { exclude: [], withParam: true },
+		descendOne     : { exclude: [] },
+		descendNum     : { exclude: [], withParam: true, twins: ["descendNum", "ascendNum"] },
+		ascdescOne     : { exclude: [] },
+		ascdescNum     : { exclude: [], withParam: true },
+		ascendNumLoop  : { exclude: [], withParam: true },
+		descendNumLoop : { exclude: [], withParam: true },
+		sum            : { exclude: [], withParam: true, twins: ["sum"] },
+		around         : { exclude: [] },
+		beside         : { exclude: [] },
+		notOneGroup    : { exclude: ["oneGroup"] },
+		oneGroup       : { exclude: ["notOneGroup"] }
+	},
+
 	// Relations filters
 
 	"linePrev": data => {

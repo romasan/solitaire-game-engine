@@ -84,16 +84,16 @@ class Field {
 					share.set('animations', defaults.animations);
 				}
 
+				let animationKeys = {};
+				
 				for (let key in data.animations) {
-
-					let animationKeys = {};
 
 					if (key != "default" && typeof data.animations[key] == "boolean") {
 						animationKeys[key] = data.animations[key];
 					}
-
-					share.set('animationKeys', animationKeys);
 				}
+
+				share.set('animationKeys', animationKeys);
 			}
 		} else {
 			share.set('animations', defaults.animations);

@@ -269,7 +269,10 @@ let animationDefault = context => {
 	if (
 		typeof context == "string"
 	) {
-		const animationKey = share.get('animationKeys')[context];
+
+		const animationKeys = share.get('animationKeys'); 
+		const animationKey = animationKeys && animationKeys[context];
+
 		if (typeof animationKey == "boolean") {
 			// console.log('###', context, animationKey);
 			share.set('animation', animationKey);

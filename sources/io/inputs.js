@@ -2,8 +2,9 @@
 
 import common, {share, event, defaults} from '../common';
 
-import Deck                             from '../deck'  ;
-import Tips                             from '../tips'  ;
+import Deck                       from '../deck'  ;
+import Tips                       from '../tips'  ;
+import {existAnimatedElementsNow} from './dom'    ;
 // import geometry from './geometry';
 
 class inputsClass {
@@ -193,9 +194,9 @@ class inputsClass {
 		}
 
 		if (
-			common.isCurLock()                                 ||
-			document.getElementsByClassName('animated').length || // TODO
-			share.get('gameIsWon')                             ||
+			common.isCurLock()          ||
+			existAnimatedElementsNow()  ||
+			share.get('gameIsWon')      ||
 			share.get('sessionStarted')
 		) {
 			return;

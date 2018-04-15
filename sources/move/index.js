@@ -8,6 +8,8 @@ import Tips    from '../tips'        ;
 import bestTip from '../tips/bestTip';
 import Field   from '../field'       ;
 
+import './autoMoveToHome';
+
 /**
  * @typedef {Object} moveData
  * @property {{card:Card}[]} moveDeck
