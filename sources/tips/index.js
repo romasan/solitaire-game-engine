@@ -60,7 +60,7 @@ let checkTips = e => {
 
 	if (_showTips) {
 
-		let _homeGroups = Field.homeGroups;
+		let _homeGroups = share.get('homeGroups');
 
 		for (let i in _tips) {
 
@@ -92,6 +92,8 @@ let checkTips = e => {
 				draw = true;
 			}
 
+			let showEquivalentSteps = share.get('showEquivalentSteps');
+
 			// Filter
 			if (
 				draw                                       &&
@@ -117,6 +119,7 @@ let checkTips = e => {
 						  toParentCard == EMPTY
 					) ||
 					(
+						showEquivalentSteps               == false              &&
 						fromParentCard                    != EMPTY              &&
 						  toParentCard                    != EMPTY              &&
 						fromCards[takeCardIndex - 1].flip == false              &&

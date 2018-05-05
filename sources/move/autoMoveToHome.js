@@ -2,7 +2,6 @@
 
 import common, {event, share} from '../common'   ;
 
-import Field                  from '../field'    ;
 import Tips                   from '../tips'     ;
 import {fallAutoStep}         from '../autosteps';
 
@@ -131,7 +130,7 @@ let autoMoveToHome = outer => {
 
 	// event.dispatch('startRunHistory');
 
-	let _homeGroups = Field.homeGroups;
+	let _homeGroups = share.get('homeGroups');
 	let homeGroupDecksNames = [];
 
 	for (let groupNameIndex in _homeGroups) {

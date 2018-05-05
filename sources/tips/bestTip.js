@@ -3,34 +3,13 @@
 import common, {share, defaults} from '../common';
 
 import Tips                      from './'       ;
-import Field                     from '../field' ;
 
 let bestTip = (moveDeck, cursorMove) => {
 
 	let _autoTips = [];
 
-	// if (
-	// 	typeof moveDeck   == 'undefined' ||
-	// 	typeof cursorMove == 'undefined'
-	// ) {
-	// 	console.warn(
-	// 		'typeof moveDeck:', typeof moveDeck,
-	// 		'typeof cursorMove:', typeof cursorMove
-	// 	);
-	// 	return;
-	// }
-
-	// console.log(
-	// 	'typeof moveDeck:', typeof moveDeck,
-	// 	'typeof cursorMove:', typeof cursorMove,
-	// 	moveDeck,
-	// 	cursorMove
-	// );
-
-	// выбрать подсказки для стопки из кторорой взяли карты
+	// Выбор подсказки для стопки из которой взяли карты
 	let _tips = Tips.getTips();
-
-	// console.log('bestTip', moveDeck, cursorMove, _tips); // .map(e => `${e.from.card.name} ${e.from.deck.name} -> ${e.to.deck.name}`));
 
 	for (let i in _tips) {
 		if (_tips[i].from.card.id == moveDeck[0].card.id) {
@@ -52,13 +31,12 @@ let bestTip = (moveDeck, cursorMove) => {
 	let inDistance = ((defaults.card.height - (defaults.card.height - defaults.card.width) / 2) * zoom) / 2;
 
 	// Приоритет для homeGroups
-	let _homeGroups = Field.homeGroups;
+	let _homeGroups = share.get('homeGroups');
 
-	// console.log(_autoTips.map(e => e.distance), _autoTips.length);
 	// вариантов несколько
 	if (_autoTips.length > 1) {
 
-		// ищем расстояние до карт/стопок назначения от перетаскиваемой карты
+		// Поиск расстояния до карт/стопок назначения от перетаскиваемой карты
 		// и направление перетаскивания
 		for (let i in _autoTips) {
 
@@ -88,7 +66,7 @@ let bestTip = (moveDeck, cursorMove) => {
 			// расстояние между стопкой и перетаскиваемой картой/стопкой
 			_autoTips[i].distance = Math.sqrt((i => i * i)(center_from.x - center_to.x) + (i => i * i)(center_from.y - center_to.y));
 
-			// смотрим находится ли стопка назначения в направлении движения
+			// Определение находится ли стопка назначения в направлении движения
 			_autoTips[i].inHorisontalDirection = false;
 
 			if (
@@ -100,10 +78,10 @@ let bestTip = (moveDeck, cursorMove) => {
 			}
 		}
 
-		// ищем ближайшую
+		// Поиск ближайшей
 		_autoTips.sort((a, b) => parseFloat(a.distance) > parseFloat(b.distance) ? 1 : -1);
 
-		// если карта над ближайшей, то этот ход с самым высоким приоритетом
+		// Если карта над ближайшей, то этот ход с самым высоким приоритетом
 		// карта над другой стопкой или над полем
 		if (_autoTips[0].distance > inDistance) {
 			
@@ -141,7 +119,7 @@ let bestTip = (moveDeck, cursorMove) => {
 				}
 			}
 
-			// ищем ближайшую стопку из подсказок
+			// Поиск ближайшей стопку из подсказок
 			if (_in_direction_count == 0) {
 
 				let _tips = _autoTips.filter(e => e.inHorisontalDirection);

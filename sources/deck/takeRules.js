@@ -5,11 +5,13 @@
  */
 let takeRules = {
 
-	__list: {
-		not      : { exclude: "*" },
-		notFirst : { exclude: "*" },
-		any      : { exclude: "*" },
-		onlyTop  : { exclude: "*" }
+	__model: {
+		someOf: {
+			not      : { exclude: "*" },
+			notFirst : { exclude: "*" },
+			any      : { exclude: "*" },
+			onlyTop  : { exclude: "*" }
+		}
 	},
 				
 	// SimpleRules

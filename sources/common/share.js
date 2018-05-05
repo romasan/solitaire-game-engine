@@ -127,6 +127,19 @@ class shareClass {
 	}
 
 	/**
+	 * Update element
+	 * @param {String} name 
+	 * @param {Function | *} dataCallback 
+	 */
+	update(name, dataCallback) {
+		if (typeof dataCallback == "function") {
+			this.set(name, dataCallback(this.get(name)));
+		} else {
+			this.set(name, dataCallback);
+		}
+	}
+
+	/**
 	 * Get all elements
 	 */
 	getAll() {

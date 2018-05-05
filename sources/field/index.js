@@ -27,7 +27,9 @@ class Field {
 
 		// console.log('Field:create');
 
-		this.homeGroups = data.homeGroups ? data.homeGroups : [];
+		// this.homeGroups = data.homeGroups ? data.homeGroups : [];
+
+		share.set('homeGroups', data.homeGroups ? data.homeGroups : []);
 
 		share.set('autoMoveToHomeOpenDecks', data.autoMoveToHomeOpenDecks
 			? data.autoMoveToHomeOpenDecks
@@ -60,7 +62,8 @@ class Field {
 			"showPrefFlipCard"     : 'boolean',
 			"gameIsWon"            : 'boolean',
 			// "noReplayHistory"   : 'boolean',
-			"locale"               : 'string'
+			"locale"               : 'string' ,
+			"showEquivalentSteps"  : 'boolean'
 		};
 
 		for (let valueName in _values) {

@@ -98,6 +98,12 @@ class groupClass {
 			}
 		};
 
+		if (data.inHome) {
+			share.update('homeGroups', e =>
+				e.indexOf(this.name) < 0 ? [...e, this.name] : e
+			);
+		}
+
 		this.deckIndex = [];
 
 		this.tags = data.tags;

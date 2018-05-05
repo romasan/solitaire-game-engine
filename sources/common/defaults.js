@@ -30,10 +30,11 @@ export default {
 
 // Tips
 
-	"showTips"            : true ,
+	"showTips"            : true , // отбражение подсказок
 	"showTipsDestination" : false,
 	"showTipPriority"     : false,
-	"canMoveFlip"         : false,
+	"showEquivalentSteps" : false, // отображение подсказок для равнозначных ходов
+	"canMoveFlip"         : false, // ход закрытой картой
 
 	"tipsParams" : {
 		"hideOnEmpty"       : false,
